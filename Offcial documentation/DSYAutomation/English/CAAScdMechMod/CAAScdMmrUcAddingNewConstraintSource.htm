@@ -1,0 +1,161 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Adding New Constraint Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Adding New Constraint
+'
+'Mission: This use case fundamentally illustrates about adding new constraint. This use case demonstrates how to create constraints according to its type.
+'
+'Steps:  1- Retrieve Part Object from Selection
+'        2- Retrieve Constraints
+'        3- Add new constraint according to its type
+'        4- Display BrokenConstraintsCount and UnUpdatedConstraintsCount
+
+
+Sub AddingNewConstraint()
+
+'Error Handling
+On Error GoTo ErrorSub
+ 
+       'Retrieve active editor
+       Dim oCurrentActiveEditor As Editor
+       Set oCurrentActiveEditor = CATIA.ActiveEditor
+    
+       'Retrieve Selection object from active editor
+       Dim oObjSelection
+       Set oObjSelection = CATIA.ActiveEditor.Selection
+    
+       'Selection Object updated with selection criteria (Part type)
+       Dim strStatus As String
+       Dim oInputObjectType(0)
+    
+       oInputObjectType(0) = &quot;Part&quot;
+       strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select a Part Element from spec tree or the 3D Viewer&quot;, False)
+            
+       'Retrieve Selected Element
+       Dim oSelectedElement As SelectedElement
+       Set oSelectedElement = oObjSelection.Item(1)
+       
+       'Retrieve Part object from Selected Element
+       Dim oPart As Part
+       Set oPart = oSelectedElement.Value
+              
+       MsgBox (&quot;Selected Part Name :&quot;) + oPart.Name
+        
+       'Retrieve Constraints
+       Dim oConstraints As Constraints
+       Set oConstraints = oPart.Constraints
+                
+       'Prompt the user to input the geometric elements number
+       Dim iGeometricElementsNumber As Integer
+       iGeometricElementsNumber = InputBox(&quot;Please enter the geometric elements number to add the Constraint(1- AddMonoEltCst, 2- AddBiEltCst, 3- AddTriEltCst)&quot;, &quot;Enter Geometric Elements Number&quot;)
+
+       'Prompt the user to input the Constraint type number
+       Dim iConstraintType As Integer
+       iConstraintType = InputBox(&quot;Please enter the Constraint Type number to create the Constraint&quot;, &quot;Enter Constraint Type&quot;)
+ 
+       'Clear the selection object
+       oObjSelection.Clear
+      
+      'We propose to the user that he select the first Reference
+       oInputObjectType(0) = &quot;Reference&quot;
+       Status = oObjSelection.SelectElement(oInputObjectType, &quot;Select the first Reference&quot;, False)
+   
+       Dim oFirstReference As Reference
+       Set oFirstReference = oObjSelection.Item(1).Value
+            
+       'Clear the selection object
+       oObjSelection.Clear
+       
+       Dim oConstraint As Constraint
+                
+       If (1 = iGeometricElementsNumber) Then
+           
+           'Add mono element constraint
+           Set oConstraint = oConstraints.AddMonoEltCst(iConstraintType, oFirstReference)
+            
+       ElseIf (2 = iGeometricElementsNumber) Then
+           
+          'We propose to the user to select the second Reference
+          strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the second Reference&quot;, False)
+              
+          Dim oSecondReference As Reference
+          Set oSecondReference = oObjSelection.Item(1).Value
+            
+          'Add bi element constraint
+          Set oConstraint = oConstraints.AddBiEltCst(iConstraintType, oFirstReference, oSecondReference)
+             
+       ElseIf (3 = iGeometricElementsNumber) Then
+            
+          'We propose to the user to select the second Reference
+           strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the second Reference&quot;, False)
+            
+           Dim oSecondReferenceForAddTriEltCst As Reference
+           Set oSecondReferenceForAddTriEltCst = oObjSelection.Item(1).Value
+            
+          'Clear the selection object
+           oObjSelection.Clear
+            
+           'We propose to the user to select the third Reference
+           strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the third Reference&quot;, False)
+            
+           Dim oThirdReferenceForAddTriEltCst As Reference
+           Set oThirdReferenceForAddTriEltCst = oObjSelection.Item(1).Value
+            
+           'Add tri element constraint
+           Set oConstraint = oConstraints.AddTriEltCst(iConstraintType, oFirstReference, oSecondReferenceForAddTriEltCst, oThirdReferenceForAddTriEltCst)
+             
+       End If
+       
+       'Display broken constraint
+       Dim longBrokenConstraintsCount As Long
+       longBrokenConstraintsCount = oConstraints.BrokenConstraintsCount
+        
+       MsgBox &quot; Broken Constraints Count:&quot; &amp; longBrokenConstraintsCount
+        
+       'Display un-updated constraint
+       Dim longUnUpdatedConstraintsCount As Long
+       longUnUpdatedConstraintsCount = oConstraints.UnUpdatedConstraintsCount
+        
+       MsgBox &quot; UnUpdated Constraints Count:&quot; &amp; longUnUpdatedConstraintsCount
+           
+       'Update Part
+       oPart.Update
+        
+       'Saving All data in Session
+       CATIA.GetSessionService(&quot;PLMPropagateService&quot;).Save
+
+       MsgBox &quot;All data in CATIA Session are saved&quot;
+        
+'Error Handling
+   GoTo EndSub
+
+ErrorSub:
+          MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+          GoTo EndSub
+EndSub:
+End Sub
+</pre>
+
+</body>
+
+</html>

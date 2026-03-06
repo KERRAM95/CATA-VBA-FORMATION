@@ -1,0 +1,218 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELResourceBuilderIDLItf RscObjFrameProfile (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELResourceBuilderIDLItf.htm" href="../DELResourceBuilderIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELResourceBuilderIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RscObjFrameProfile"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RscObjFrameProfile<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RscObjFrameProfile_45652','RscObjFrameProfile','0');</script>
+<section id='maindesc'>
+<b><i> Interface to manage Generic ObjFrame Profile of Robot controller.</i></b><br>
+
+
+ <strong>Role</strong>:
+  This interface provides methods to get/set data  related to ObjFrame
+  Profile.
+ <dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example code shows how to retrieve the Obj Frame profile interface.
+ <pre>
+ '1- Retrieve Selection object from active editor
+  Dim oCurrentActiveEditor As Editor
+  Set oCurrentActiveEditor = CATIA.ActiveEditor
+  Dim oObjSelection
+  Set oObjSelection = oCurrentActiveEditor.Selection
+
+ '2.1-Update selection object with the search criteria and prompt for selection
+ 'Selection Object updated with selection criteria (RscObjFrameProfile)
+  Dim oInputObjectType(0)
+  oInputObjectType(0) = "RscObjFrameProfile"
+
+ 'Application prompts for user selection from CATIA spec tree
+  Dim strStatus As String
+  strStatus = oObjSelection.SelectElement(oInputObjectType, "Select Obj Frame Profile from spec tree", False)
+    
+ '2.2- Retrieve obj frame profile
+  Dim oSelectedElement As SelectedElement
+  Set oSelectedElement = oObjSelection.Item(1)
+ 
+  Dim oRscObjFrameProfile As RscObjFrameProfile
+  Set oRscObjFrameProfile = oSelectedElement.Value
+ </pre>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#OffsetTargetMode"><b>OffsetTargetMode</b></a>
+</td><td  id='tdright'>  Retrieves/Sets offset mode of the Object Frame.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetObjectFrame"><b>GetObjectFrame</b></a>
+</td><td  id='tdright'>  Retrieves the underlying x, y, z, roll, pitch, yaw of the Object Frame 
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetObjectFrame"><b>SetObjectFrame</b></a>
+</td><td  id='tdright'>  Sets the underlying x, y, z, roll, pitch, yaw of the Object Frame 
+ 
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="OffsetTargetMode"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>OffsetTargetMode</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('short','short')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves/Sets offset mode of the Object Frame.
+ If Offset mode is TRUE offset will be applied to all Targets
+ defined in the Cartesian Space that is Tag/Weld, Else 
+ If Offset mode is FALSE then the offset will be applied 
+ to the "Cartesian Targets" only.
+ <dl>
+ <dt><b>Example:</b>
+ <pre>
+ 'Display OffsetTargetMode
+ If (0 = oRscObjFrameProfile.<font color="red">OffsetTargetMode</font>) Then
+    MsgBox "OffsetTargetMode =  OFF"
+ Else
+    MsgBox "OffsetTargetMode =  ON"
+ End If 
+
+ 'Set OffsetTargetMode to OFF
+ oRscObjFrameProfile.<font color="red">OffsetTargetMode</font> = 0
+ </pre>
+ </dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetObjectFrame"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetObjectFrame</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oZ</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oRoll</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oPitch</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oYaw</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the underlying x, y, z, roll, pitch, yaw of the Object Frame 
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oX</span></dt>
+   <dd>  The X Coordinate.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oY</span></dt>
+   <dd>   The Y Coordinate.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oZ</span></dt>
+   <dd>   The Z Coordinate.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oRoll</span></dt>
+   <dd>   The roll Coordinate.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oPitch</span></dt>
+   <dd>   The pitch Coordinate.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oYaw</span></dt>
+   <dd>   The yaw Coordinate.
+ </dl>
+ <dt><b>Example:</b>
+ <dd>
+ <pre>
+ Dim oX As double
+ Dim oY As double
+ Dim oZ As double
+ Dim oRoll As double
+ Dim oPitch As double
+ Dim oYaw As double
+ oRscObjFrameProfile.<font color="red">GetObjectFrame</font> oX,oY,oZ,oRoll,oPitch,oYaw
+ </pre>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetObjectFrame"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetObjectFrame</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iZ</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iRoll</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iPitch</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iYaw</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the underlying x, y, z, roll, pitch, yaw of the Object Frame 
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iX</span></dt>
+   <dd>  The X Coordinate.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iY</span></dt>
+   <dd>   The Y Coordinate.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iZ</span></dt>
+   <dd>   The Z Coordinate.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRoll</span></dt>
+   <dd>   The roll Coordinate.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iPitch</span></dt>
+   <dd>   The pitch Coordinate.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iYaw</span></dt>
+   <dd>   The yaw Coordinate
+ </dl>
+ <dt><b>Example:</b>
+ <dd>
+ <pre>
+ oRscObjFrameProfile.<font color="red">SetObjectFrame</font> 100,100,100,0,0,0
+ </pre>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

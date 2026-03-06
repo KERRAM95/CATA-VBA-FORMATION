@@ -1,0 +1,141 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Automating Settings</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Automating Settings</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 Automation macros to take advantage of the Open 
+		<strong>3D</strong>EXPERIENCE platform PLM infrastructure. It explains how to transform an application 
+		that was automating access to settings to make it <strong>3D</strong>EXPERIENCE platform compliant.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p>The way to access settings through Automation is simplified and can 
+now be performed most of the time using the generic methods of the 
+<strong>SettingRepository</strong> object relying on the XML-based 
+description of the setting repositories and attributes.</p>
+<p>V5 setting attributes are each managed using a dedicated read/write property 
+and two dedicated methods: one for locking/unlocking the setting attribute, and 
+one for retrieving information about it. For each setting attribute, in addition 
+to its name and role, the tab page where it is accessed interactively, you then 
+need to know or find its setting controller object and the way to retrieve it, 
+and the property and method names to manage the setting attribute.</p>
+<p><strong>3D</strong>EXPERIENCE platform setting attributes are declared in XML files and managed using the set of 
+six generic methods of the single <strong>SettingRepository</strong> object:</p>
+<ul>
+	<li>GetAttr and PutAttr to retrieve and set the value of a simple type 
+	setting attribute.</li>
+	<li>GetAttrArray and PutAttrArray to retrieve and set the value of an array 
+	type setting attribute.</li>
+	<li>GetAttrInfo to retrieve information about a setting attribute: is it 
+	administrated, locked, modified at the current administration level?</li>
+	<li>SetAttrLock to lock or unlock a setting attribute.</li>
+</ul>
+<p>To access a <strong>3D</strong>EXPERIENCE platform setting attribute, you just need to know its name and in which 
+setting repository it is stored.</p>
+<p>For example, the following pattern can be applied to retrieve a setting attribute 
+value:</p>
+<table>
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td><pre><span class="comment">&#39; Accessing the setting controller dedicated to </span>
+<span class="comment">&#39; the global session settings tab page</span>
+<span class="keyword">Dim</span> cSettingControllers <span class="keyword">As</span> SettingControllers<span class="keyword">
+Set</span> cSettingControllers = CATIA.SettingControllers
+<span class="keyword">Dim</span> oGeneralSessionSettingAtt <span class="keyword">As</span> GeneralSessionSettingAtt<span class="keyword">
+Set</span> oGeneralSessionSettingAtt = _
+    cSettingControllers.Item(&quot;CATCafGeneralSessionSettingCtrl&quot;)
+
+<span class="comment">&#39; Determining if Drag &amp; Drop is enabled</span>
+<span class="comment">&#39; to Copy/Paste using a specific property</span>
+<span class="keyword">Dim</span> bDragDropForCPPEnabled
+bDragDropForCPPEnabled = oGeneralSessionSettingAtt.DragDrop	</pre>
+		</td>
+		<td><pre><span class="comment">&#39; Accessing a generic setting controller for</span>
+<span class="comment">&#39; the global session settings tab page</span>
+<span class="keyword">Dim</span> cSettingControllers <span class="keyword">As</span> SettingControllers <span class="keyword">
+Set</span> cSettingControllers = CATIA.SettingControllers
+<span class="keyword">Dim</span> oSettingRepository <span class="keyword">As</span> SettingRepository
+<span class="keyword">Set</span> oSettingRepository = _
+    cSettingControllers.Item(&quot;GeneralGeneral&quot;)
+
+<span class="comment">&#39; Determining if Drag &amp; Drop is enabled</span>
+<span class="comment">&#39; to Copy/Paste using the generic method</span>
+<span class="keyword">Dim</span> bDragDropForCPPEnabled
+bDragDropForCPPEnabled = oSettingRepository.GetAttr(&quot;DragAndDrop&quot;)</pre>
+</td>
+		</tr></tbody></table><p>In this example, the V5 drag &amp; drop ability setting 
+attribute is managed by a specific property (DragDrop) of the specific setting 
+controller object (GeneralSessionSettingAtt) managing the underlying setting 
+repository. Another setting attribute is managed using a different property of 
+possibly a different setting controller if the setting attribute belongs to a 
+different setting repository. With <strong>3D</strong>EXPERIENCE platform, the setting repositories are handled 
+using a single object (SettingRepository), and the value of any setting 
+attribute of a simple type, that is, that is not an array, is retrieved thanks 
+to the GetAttr method.</p>
+<p>For more information, consult the <strong>
+<a href="../CAAScdInfInfrastructure/CAAInfObjSettingCtrl.htm">SettingController Object</a></strong>, 
+that describes how to retrieve a <strong>
+SettingRepository</strong> object and details how to use it, and the 
+<a href="../CAAScrSettings/CAAScrTocSettings.htm">Setting Repository Reference</a> 
+that describes and lists the setting repositories along with their 
+setting attributes.</p>
+<p>Note that the following V5 setting controller objects still exist in <strong>3D</strong>EXPERIENCE platform. The 
+associated setting repositories cannot thus be managed using the generic setting 
+controller:</p>
+<ul>
+	<li><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'DLNameSettingAtt');return false;">DLNameSettingAtt</a></li>
+	<li><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'DynLicenseSettingAtt');return false;">DynLicenseSettingAtt</a></li>
+	<li><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'LicenseSettingAtt');return false;">LicenseSettingAtt</a></li>
+	<li><a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'MacrosSettingAtt');return false;">MacrosSettingAtt</a></li>
+</ul>
+<p>In addition, note that the <strong>FileAccessStatisticsSettingAtt</strong>  object is removed in <strong>3D</strong>EXPERIENCE platform, since no files are 
+used any longer.</p>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

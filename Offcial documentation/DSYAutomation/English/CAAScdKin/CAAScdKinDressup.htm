@@ -1,0 +1,170 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Managing Mechanism Dressup</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Editing the Mechanism Dressup</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1"><span class="run-in">Before you begin:</span> 
+						<ul>
+							<li>Launch 3DEXPERIENCE and import the
+							<code><div class=vb_sample_data>SliderCrankMechanism.3dxml</div></code> file located in 
+							<code>InstallRootFolder\CAADoc\Doc\CAAScdKin\samples\</code> 
+							<code>InstallRootFolder</code> where InstallRootFolder is the directory 
+							where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdKinDressupSource.htm">CAAScdKinDressupSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This sample shows how to use the   
+		<b> GetDressupProducts, AttachDressupProduct , DetachDressupProduct</b> methods, and the 
+		<b> MechanismProducts </b> property. </p>		
+		<p>Open <b>SliderCrankMechanism</b> product before launching the macro. It contains a mechanism pointing to the 
+		Part3.1 product. 
+		The macro will list all the products attached to Part3.1. Only Product1.2 is attached to it.
+		Each attached product will be detached from Part3.1. Then, another Product, Product1.1, will be attached to Part3.1.
+        In the last step, all the mechanism products will be listed.		
+	    
+		</p>		
+		<p>This sample is divided in 13 steps:</p>
+		<ol>
+			<li><a > 1 Gets the current editor </a></li>
+			<li><a > 2 Gets the product service from the Editor </a></li>
+			<li><a > 3 Gets all the occurrences under the root occurrence </a></li>
+			<li><a > 4 Gets the context </a></li>
+			<li><a > 5 Gets the discipline of all representation of the tree </a></li>
+			<li><a href="#Step6" > 6 Gets the mechanism representation if the V_discipline is mechanism </a></li>
+			<li><a > 7 Gets Part3.1, an occurrence of the mechanism </a></li>
+			<li><a href="#Step8" > 8 Gets all the occurrences attached to Part3.1 </a></li>
+			<li><a href="#Step9" > 9 Detaches all the products previously attached to Part3.1 </a></li>
+			<li><a > 10 Gets Product1.1 VPMOccurrence </a></li>
+			<li><a href="#Step11"> 11 Attaches Product1.1 to Part3.1 </a></li>
+			<li><a > 12 Lists all the products attached to Part3.1 </a></li>
+			<li><a href="#Step13"> 13 Lists all the mechanism products </a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+		  <li>
+			<p><strong><a name="Step6"></a>Gets the Mechanism Representation </strong></p>
+			<pre class="code">... 
+             <span class="comment">' 6 Gets the Mechanism Representation if the V_discipline is Mechanism </span>
+             <span class="keyword">If</span> (attr = &quot;Mechanism&quot;) <span class="keyword">Then</span> 
+             <span class="keyword">Dim</span> MyMechRep <span class="keyword">As</span> KinMechanism 
+             <span class="keyword">Set</span> MyMechRep = MyRepRef.GetItem(&quot;MECHRep&quot;) 
+             MsgBox &quot; The mechanism name is &quot; &amp; MyMechRep.Name 			
+...</pre>
+		  </li>
+		  <li>
+			<p><strong><a name="Step8"></a>Gets all the occurrences attached to Part3.1 </strong></p>
+			Part3.1 is a mechanism product. With the <b>GetDressupProducts</b> method, all the dressup products attached
+			to Part3.1 are obtained.
+			<pre class="code">... 
+             <span class="comment">' 8 Gets all the occurrences attached to Part3.1 </span>
+             <span class="keyword">Dim</span> ListAttached 
+             ListAttached = MyMechRep.GetDressupProducts(Part31) 
+             MsgBox &quot; call of GetDressupProducts &quot; 
+...</pre>
+		  </li>
+		  <li>
+			<p><strong><a name="Step9"></a>Detaches all the products previously attached to Part3.1 </strong></p>
+			The <b>DetachDressupProduct</b> method detaches all the dressup products attached
+			to Part3.1. The corresponding rigid connection will be also removed.
+             <pre class="code">... 
+            <span class="comment">' 9 Detaches all the products previously attached to Part3.1 </span>
+            <span class="keyword">Dim</span> Maxi 
+            Maxi = UBound(ListAttached) 
+            MsgBox &quot; Number of dressup attached product to Part3.1 = &quot; &amp; (Maxi + 1) 
+            <span class="keyword">Dim</span> j <span class="keyword">As</span> Integer 
+            <span class="keyword">For</span> j = 0 <span class="keyword">To</span> Maxi 
+               <span class="keyword">Dim</span> Product <span class="keyword">As</span> VPMOccurrence 
+               <span class="keyword">Set</span> Product = ListAttached(j) 
+               Call MyMechRep.DetachDressupProduct(Product) 
+               MsgBox Product.Name &amp; &quot; is detached from &quot; &amp; Part31.Name 
+            <span class="keyword">Next</span>
+...</pre>
+		  </li>
+		  <li>
+			<p><strong><a name="Step11"></a>Attaches Product1.1 to Part3.1 </strong></p>
+			The <b>AttachDressupProduct</b> method creates a dressup link and a rigid
+			engineering connection between Product1.1 and Part3.1. 
+			<pre class="code">... 
+            <span class="comment">' 11 Attaches Product1.1 to Part3.1 </span>
+            Call MyMechRep.AttachDressupProduct(Part31, Product11) 
+            MsgBox &quot; Attach Product1.1 to Part3.1&quot;  
+...</pre>
+		  </li>
+		  <li>
+			<p><strong><a name="Step13"></a>13 Lists all the mechanism products </strong></p>
+			The <b>MechanismProducts</b> property gives only the mechanism products and not the attached dressup products.
+			<pre class="code">... 
+            <span class="comment">' 13 Lists all the mechanism products </span>
+            <span class="keyword">Dim</span> MechProducts 
+            MechProducts = MyMechRep.MechanismProducts 
+
+            <span class="keyword">Dim</span> Msg <span class="keyword">As</span> String 
+            <span class="keyword">Dim</span> i <span class="keyword">As</span> Integer 
+            <span class="keyword">For</span> i = 0 <span class="keyword">To</span> UBound(MechProducts) 
+               <span class="keyword">Dim</span> MecProduct <span class="keyword">As</span> VPMOccurrence 
+               <span class="keyword">Set</span> MecProduct = MechProducts(i) 
+               Msg = Msg &amp; MecProduct.Name 
+            <span class="keyword">Next</span> 
+            MsgBox &quot; The mechanism contains the following product : &quot; &amp; Msg  
+...</pre>
+		  </li>
+
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

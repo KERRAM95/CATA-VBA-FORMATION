@@ -1,0 +1,139 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>FbdiSettingsRep Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>FbdiSettingsRep Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>FbdiSettingsRep</h2>
+<p><strong>Role:</strong> Settings for the FBDI command.</p>
+<p><strong>Detailed role:</strong> This setting allows define extensions not to process during File-based Design Import. It also allows to define the migration of CAA data.</p>
+<p>The FbdiSettingsRep repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /General/FBDI</li>
+  <li><strong>Repository File</strong>: FbdiSettingsRep</li>
+  <li><strong>Version</strong>: 2</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+</ul>
+<p>FbdiSettingsRep setting repository attributes:</p>
+<ul>
+  <li><a name="FBDI_ActV5PropertiesMode"></a><strong>FBDI_ActV5PropertiesMode</strong>
+    <br /><strong>Role</strong>: Activate the V5 Properties.
+    <br /><strong>Detailed role</strong>: Check Box, by default checked, to activate the migration/import of the 'Activate/Deactivate' V5 Properties (0 for box Unchecked = not activated, 1 for box Checked = activated).<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="FBDI_ActivatedCAA"></a><strong>FBDI_ActivatedCAA</strong>
+    <br /><strong>Role</strong>: Activate the support of CAA data in FBDI.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: 0</li>
+    </ul>
+  </li>
+  <li><a name="FBDI_AsynchronousMode"></a><strong>FBDI_AsynchronousMode</strong>
+    <br /><strong>Role</strong>: Activate the asynchronous mode.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: 0</li>
+    </ul>
+  </li>
+  <li><a name="FBDI_AttrMappingConcat"></a><strong>FBDI_AttrMappingConcat</strong>
+    <br /><strong>Role</strong>: Add V5 Id to PLM_ExternalId attribute.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="FBDI_AttrMappingName"></a><strong>FBDI_AttrMappingName</strong>
+    <br /><strong>Role</strong>: Attribute name mapped with the phase 1 Part number.
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: V_Name</li>
+    </ul>
+  </li>
+  <li><a name="FBDI_CATPartMode"></a><strong>FBDI_CATPartMode</strong>
+    <br /><strong>Role</strong>: CATPart import mode.
+    <br /><strong>Detailed role</strong>: Type of object created by CATPart import (1 for 3DPart, 2 for once inst Rep, 3 for sharable Rep).<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="FBDI_Files_Filter_Size"></a><strong>FBDI_Files_Filter_Size</strong>
+    <br /><strong>Role</strong>: Control the File Access mode.
+    <br /><strong>Detailed role</strong>: This option allows to control the numbers of extensions to ignore.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+    </ul>
+  </li>
+  <li><a name="FBDI_LinkIsolationMode"></a><strong>FBDI_LinkIsolationMode</strong>
+    <br /><strong>Role</strong>: Link isolation mode.
+    <br /><strong>Detailed role</strong>: This attribute can take 3 values 1 2 3 corresponding to 3 modes (Always Never User).<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 3</li>
+    </ul>
+  </li>
+  <li><a name="FBDI_MappingTablesDirectory"></a><strong>FBDI_MappingTablesDirectory</strong>
+    <br /><strong>Role</strong>: Path of the Directory Mapping Table which contains the mapping tables used for asynchronous mode.
+    <ul>
+      <li><strong>Type</strong>: URN</li>
+      <li><strong>Default value</strong>:</li>
+    </ul>
+  </li>
+  <li><a name="FBDI_RemoveUnmigrableCAACont"></a><strong>FBDI_RemoveUnmigrableCAACont</strong>
+    <br /><strong>Role</strong>: Remove CAA Containers which can not be imported.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: 0</li>
+    </ul>
+  </li>
+  <li><a name="FBDI_UseMappingTablesMode"></a><strong>FBDI_UseMappingTablesMode</strong>
+    <br /><strong>Role</strong>: Use Mapping Tables mode.
+    <br /><strong>Detailed role</strong>: This attribute can take 3 values 1 2 3 corresponding to 3 modes (Always Never User).<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 3</li>
+    </ul>
+  </li>
+  <li><a name="FBDI_XMLDirectoryCAA"></a><strong>FBDI_XMLDirectoryCAA</strong>
+    <br /><strong>Role</strong>: Path of the directory for the XML files for CAA support.
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>:</li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

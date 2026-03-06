@@ -1,0 +1,360 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdKniUcCreateParametersAndRelationsSource.htm</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Creating Parameters and Relations
+'
+'Mission: This use case creates different types of user Parameters and Relations.
+'
+'Steps:
+'
+'  1. Creates the 3DShape
+'  2. Retrieves the KnowledgeObjects Object from Part
+'  3. Creates the Parameters Set beneath the Part
+'  4. Creates Relations Set beneath the Part
+'  5. Creates the Parameter Objects
+'  6. Creates the Relation Objects
+'  7. Updates the Part
+'--------------------------------------------------------------------------------------------------------------------
+
+Sub CreatingParametersNFormulas()
+  'Error handling
+  On Error GoTo ErrorSub
+    
+    '1- Creates the 3DShape
+    Dim MyNewPart As Part
+    Create3DShape MyNewPart
+    
+    '2-Retrieves the KnowledgeObjects Object from Part
+    Dim oKnowledgeObjects As KnowledgeObjects
+    Set oKnowledgeObjects = MyNewPart.GetItem(&quot;KnowledgeObjects&quot;)
+       
+    '3-Creates the Parameters Set beneath the Part
+    Dim oParmsSet As ParmsSet
+    Set oParmsSet = oKnowledgeObjects.GetKnowledgeRootSet(True, kweParametersType)
+    
+    '4-Creates Relations Set beneath the Part
+    Dim oRelsSet As RelsSet
+    Set oRelsSet = oKnowledgeObjects.GetKnowledgeRootSet(True, kweRelationsType)
+    
+    ' 5- Creates the Parameter Objects
+    
+    'Retrieves the ParametersFactory from Parameter Set object
+    Dim oParametersFactory As ParametersFactory
+    Set oParametersFactory = oParmsSet.Factory
+    
+    'Creates the ProjectId parameter this parameter is a string type parameter its initial value is CATLifKnowledgeAdvisor
+    Dim oParamString1 As Parameter
+    Set oParamString1 = oParametersFactory.CreateString(&quot;ProjectId&quot;, &quot;CATLifKnowledgeAdvisor&quot;)
+
+    'Creates the ProjectKey parameter this parameter is a string type parameter its initial value is a blank string
+    Dim oParamString2 As Parameter
+    Set oParamString2 = oParametersFactory.CreateString(&quot;ProjectKey&quot;, &quot;&quot;)
+
+    'Creates an integer type parameter its name is Stringlength - its initial value is 0
+    Dim oParamStringLength As Parameter
+    Set oParamStringLength = oParametersFactory.CreateInteger(&quot;StringLength&quot;, 0)
+    
+    'Creates a Length type parameter its initial name is blank its initial value is 0
+    'Note that units are specified in internal units i.e the units used by the geometric modeler (mm for Length)
+    Dim oParamSphereRadius As Parameter
+    Set oParamSphereRadius = oParametersFactory.CreateDimension(&quot;&quot;, &quot;LENGTH&quot;, 0)
+    'Renames the created parameter and assigns a value to it
+    oParamSphereRadius.Rename &quot;SphereRadius&quot;
+    oParamSphereRadius.Value = 50
+    
+   
+    'Creates a Volume type parameter its name is SphereVolume and its initial value is 0 m3
+    Dim oParamSphereVol As Parameter
+    Set oParamSphereVol = oParametersFactory.CreateDimension(&quot;SphereVolume&quot;, &quot;VOLUME&quot;, 0)
+    
+    ' 6- Creates the Relation Objects
+    
+    'Retrieves the RelationsFactory from Relation Set object
+    Dim oRelationsFactory As RelationsFactory
+    Set oRelationsFactory = oRelsSet.Factory    
+
+    'Creates a formula which specifies that the ProjectKey parameter value equals the three first characters of ProjectId
+    'To do so we use the CreateFormula method
+    'object - the constrained parameter is passed as the third argument of the
+    'method - The formula expression is passed as the fourth argument.
+    'Note that the Extract function is provided by the Knowledge Basics
+    'string function dictionary
+ 
+    Dim oFormula1 As Formula
+    Set oFormula1 = oRelationsFactory.CreateFormula(&quot;Formula1&quot;, &quot;&quot;, oParamString2, &quot;ProjectId.Extract(0,3)&quot;)
+
+    'Creates a formula which applies to the StringLength parameter
+    'The formula expression passed as the fourth argument
+    'uses the Length function which is provided with the string functions of the
+    ' Knowledge Basics dictionary
+    Dim oFormula2 As Formula
+    Set oFormula2 = oRelationsFactory.CreateFormula(&quot;Formula2&quot;, &quot;&quot;, oParamStringLength, &quot;ProjectId.Length()&quot;)
+ 
+    'Creates a formula which applies to the SphereVolume parameter
+    'It just calculates the volume from the radius
+    Dim oFormula3 As Formula
+    Set oFormula3 = oRelationsFactory.CreateFormula(&quot;Formula3&quot;, &quot;&quot;, oParamSphereVol, &quot;(4/3)*PI*SphereRadius**3&quot;)
+
+    '7- Updates the Part
+    MyNewPart.Update
+        
+    'Error Handling
+    GoTo EndSub
+        
+ErrorSub:
+        MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+        GoTo EndSub
+EndSub:
+        
+End Sub
+
+
+'--------------------------------------------------------------------------------------------------------------------
+'Creates 3DShape
+'
+'Steps:
+'
+'  1. Creates a 3DShape
+'  2. Creates Pad
+'       2.1 - Retrieves the part from the Active Editor
+'       2.2 - Retrieves the sketch from the Part body
+'       2.3 - Retrieves handle to the Sketch 2DFactory as Factory2D type
+'       2.4 - Creates with 2D Factory, four 2DPoints
+'       2.5 - Creates with 2D Factory,  four 2DLines passing through these four Points, which outputs a rectangle
+'       2.6 - Creates a Pad using the rectangular sketch
+'--------------------------------------------------------------------------------------------------------------------
+
+Sub Create3DShape(oPart)
+
+  'Error handling
+  On Error GoTo ErrorSub
+
+    '1. Creates a 3DShape
+    'Creates a new 3DShape Rep Ref
+    Dim oNewService As PLMNewService
+    Set oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+ 
+    Dim oEditor3DShape As Editor
+    oNewService.PLMCreate &quot;3DShape&quot;, oEditor3DShape
+
+    '2.1 - Retrieves the part from the Active Editor
+    Set oPart = oEditor3DShape.ActiveObject
+
+    MsgBox (&quot;Part Name :&quot;) + oPart.Name
+
+    'Retrieves Bodies from the part
+    Set Bodies1 = oPart.Bodies
+
+    Set Body1 = Bodies1.Add()
+
+    oPart.Update
+
+    '2.2 - Retrieves the sketch from the Part body
+    Set sketches1 = Body1.Sketches
+
+    'Retrieves the Axis
+    Set originElements1 = oPart.OriginElements
+
+    'Retrieves the YZ plane
+    Set Reference1 = originElements1.PlaneYZ
+
+    Set sketch1 = sketches1.Add(Reference1)
+
+    Dim arrayOfVariantOfDouble1(8)
+    arrayOfVariantOfDouble1(0) = 0#
+    arrayOfVariantOfDouble1(1) = 0#
+    arrayOfVariantOfDouble1(2) = 0#
+    arrayOfVariantOfDouble1(3) = 0#
+    arrayOfVariantOfDouble1(4) = 1#
+    arrayOfVariantOfDouble1(5) = 0#
+    arrayOfVariantOfDouble1(6) = 0#
+    arrayOfVariantOfDouble1(7) = 0#
+    arrayOfVariantOfDouble1(8) = 1#
+
+    'Sets the absolute axis of the sketch in 3D space
+    sketch1.SetAbsoluteAxisData arrayOfVariantOfDouble1
+
+    'Sets the in work object of the part as the newly created sketch.
+    oPart.InWorkObject = sketch1
+
+    '2.3 - Retrieves handle to the Sketch 2DFactory as CATIAFactory2D type
+    Set factory2D1 = sketch1.OpenEdition()
+
+    'Returns the list of geometrical elements included in the sketch
+    Set geometricElements1 = sketch1.GeometricElements
+
+    'Returns the &quot;AbsoluteAxis&quot; item from the GeometricElements collection
+    Set axis2D1 = geometricElements1.Item(&quot;AbsoluteAxis&quot;)
+
+    '2.4 - Creates with 2D Factory, four 2DPoints
+
+    'Sets the Horizontal direction as line2D1 with reference to &quot;AbsoluteAxis&quot;
+    Set line2D1 = axis2D1.GetItem(&quot;HDirection&quot;)
+
+    line2D1.ReportName = 1
+
+    'Sets the Vertical direction as line2D2 with reference to &quot;AbsoluteAxis&quot;
+    Set line2D2 = axis2D1.GetItem(&quot;VDirection&quot;)
+
+    line2D2.ReportName = 2
+
+    'Creates with 2D Factory, 1st 2DPoint
+    Set point2D1 = factory2D1.CreatePoint(-60#, 40#)
+
+    point2D1.ReportName = 3
+
+    'Creates with 2D Factory, 2nd 2DPoint
+    Set point2D2 = factory2D1.CreatePoint(60#, 40#)
+
+    point2D2.ReportName = 4
+
+    'Creates with 2D Factory, 3rd 2DPoint
+    Set point2D3 = factory2D1.CreatePoint(60#, -50#)
+
+    point2D3.ReportName = 6
+
+    'Creates with 2D Factory, 4th 2DPoint
+    Set point2D4 = factory2D1.CreatePoint(-60#, -50#)
+
+    point2D4.ReportName = 8
+
+    '2.5 - Creates with 2D Factory,  four 2DLines passing through these four Points,which outputs a rectangle
+
+    'Creates and returns a 2D line between 1st Point and 2nd Point. We refer to it as Line.1 hereafter
+    Set line2D3 = factory2D1.CreateLine(-60#, 40#, 60#, 40#)
+
+    line2D3.ReportName = 5
+
+    line2D3.StartPoint = point2D1
+
+    line2D3.EndPoint = point2D2
+
+
+    'Creates and returns a 2D line between 2nd Point and 3rd Point. We refer to it as Line.2 hereafter
+    Set line2D4 = factory2D1.CreateLine(60#, 40#, 60#, -50#)
+
+    line2D4.ReportName = 7
+
+    line2D4.EndPoint = point2D2
+
+    line2D4.StartPoint = point2D3
+
+
+    'Creates and returns a 2D line between 3rd Point and 4th Point. We refer to it as Line.3 hereafter
+    Set line2D5 = factory2D1.CreateLine(60#, -50#, -60#, -50#)
+
+    line2D5.ReportName = 9
+
+    line2D5.StartPoint = point2D3
+
+    line2D5.EndPoint = point2D4
+
+
+    'Creates and returns a 2D line between 4th Point and 1st Point. We refer to it as Line.4 hereafter
+    Set line2D6 = factory2D1.CreateLine(-60#, -50#, -60#, 40#)
+
+    line2D6.ReportName = 10
+
+    line2D6.EndPoint = point2D4
+
+    line2D6.StartPoint = point2D1
+
+    'Sets sketch constraints
+    Set constraints1 = sketch1.Constraints
+
+    'Creates a reference from Line.1
+    Set Reference2 = oPart.CreateReferenceFromObject(line2D3)
+
+    'Creates a reference from line2D1 (HDirection)
+    Set reference3 = oPart.CreateReferenceFromObject(line2D1)
+
+    'Adds Horizontality constraint on Line.1 in sketch constraints
+    Set constraint1 = constraints1.AddBiEltCst(catCstTypeHorizontality, Reference2, reference3)
+
+    'Sets constraint driving mode
+    constraint1.Mode = catCstModeDrivingDimension
+
+    'Creates a reference from Line.3
+    Set reference4 = oPart.CreateReferenceFromObject(line2D5)
+
+    'Creates a reference from line2D1 (HDirection)
+    Set reference5 = oPart.CreateReferenceFromObject(line2D1)
+
+    'Adds Horizontality constraint on Line.3 in sketch constraints
+    Set constraint2 = constraints1.AddBiEltCst(catCstTypeHorizontality, reference4, reference5)
+
+    'Sets constraint driving mode
+    constraint2.Mode = catCstModeDrivingDimension
+
+    'Creates a reference from Line.2
+    Set reference6 = oPart.CreateReferenceFromObject(line2D4)
+
+    'Creates a reference from line2D2 (VDirection)
+    Set reference7 = oPart.CreateReferenceFromObject(line2D2)
+
+    'Adds Verticality constraint on Line.2 in sketch constraints
+    Set constraint3 = constraints1.AddBiEltCst(catCstTypeVerticality, reference6, reference7)
+
+    'Sets constraint driving mode
+    constraint3.Mode = catCstModeDrivingDimension
+
+    'Creates a reference from Line.4
+    Set reference8 = oPart.CreateReferenceFromObject(line2D6)
+
+    'Creates a reference from line2D2 (VDirection)
+    Set reference9 = oPart.CreateReferenceFromObject(line2D2)
+
+    'Adds Verticality constraint on Line.4 in sketch constraints
+    Set constraint4 = constraints1.AddBiEltCst(catCstTypeVerticality, reference8, reference9)
+
+    'Sets constraint driving mode
+    constraint4.Mode = catCstModeDrivingDimension
+
+    'Closes the sketch editor
+    sketch1.CloseEdition
+
+    'Sets the in work object of the part as the newly created sketch.
+    oPart.InWorkObject = sketch1
+
+    oPart.Update
+
+    'Returns the part shape factory
+    Set shapeFactory1 = oPart.ShapeFactory
+
+    '2.6 - Creates a Pad using the rectangular sketch (Sketch1)
+    Set pad1 = shapeFactory1.AddNewPad(sketch1, 20#)
+
+    oPart.Update
+
+    GoTo EndSub
+
+ErrorSub:
+        MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+        GoTo EndSub
+EndSub:
+
+End Sub</pre>
+
+</body>
+
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>OLP Profile Matching</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody><tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>OLP Profile Matching</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody></table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody><tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article provides details on translating profiles and the methods 
+		used to reuse existing profiles while uploading a robot program.</p>
+		</td>
+	</tr>
+</tbody></table>
+
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Introduction"></a>An Introduction to DELMIA Profiles</h2>
+<p>Robot language instructions have many parameters. In DELMIA Robotics, we have 
+grouped together these parameters into profiles. For example, the <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpMotionProfile');return false;">
+Motion Profile</a> contains all the parameters related to specifying the speed 
+and acceleration of the robot. There are also profiles for specific 
+manufacturing applications such as Spot Welding and Painting. 
+</p>
+<p>The grouping of the parameters in DELMIA frequently does not match the 
+groupings in the robot language or the individual parameter may be set on an 
+instruction directly. During upload, these parameters will need to be grouped 
+according to the DELMIA profiles and each unique set of parameter values should 
+have just 1 profile instance created and should be re-used on all the 
+instructions where those parameter values are needed.
+</p>
+<p>When <a href="CAAScdOlpUcTranslator.htm">customizing a translator</a>, you 
+have 2 choices for how to create and re-use a profile. The first option is 
+manage the creation and re-used of the profiles directly in the translator. The 
+second option is to assign the parameter values directly to the instruction and 
+specify the rules for when an existing profile should be re-used. Each option 
+will be discussed below.
+</p>
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="DirectCreation"></a>Managing Profile Creation Directly</h2>
+<p class="MsoNormal">This method is similar to how a user creates and assigns 
+profiles through our user interface. Therefor it is a simpler method. However, 
+you may need to write a lot of logic in the translator to get it to work 
+correctly.</p>
+<table class="Remark">
+	<tbody><tr>
+		<td class="Remark"><span class="run-in">Warning</span>:
+		Robot language parameters might not be grouped the same way as the 
+		DELMIA profiles.
+		</td>
+	</tr>
+</tbody></table>
+<table class="Remark">
+	<tbody><tr>
+		<td class="Remark"><span class="run-in">Warning</span>: Robot program 
+		translation is performed sequentially &#8211; that is, instruction by 
+		instruction.</td>
+	</tr>
+</tbody></table>
+<p>Given the nature of the problem, some (or a lot) of logic is required to 
+properly manage the creation and retrieval of a profile type given a set of 
+parameters. This logic should only create new profiles if the parameters given 
+do not match any other existent profile, or if the application specifically 
+dictates to do so. It is important to re-use profile as much as possible for 
+performance and usability.</p>
+
+<p>There are 3 steps to working with profiles like this:</p>
+<ol>
+	<li><a href="#Step1">Get or Create the profile from the list of profiles</a></li>
+	<li><a href="#Step2">Set the parameter values</a></li>
+	<li><a href="#Step3">Assign the profile to an instruction</a></li>
+</ol>
+
+<h3><a name="Step1"></a>Get or Create the profile from the list of profiles</h3>
+<p>With this method, the profiles are managed by name. You can create a new 
+profile, or retrieve an existing profile with a specific name by calling <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpProfiles', 'GetOrCreateProfile');return false;">
+GetOrCreateProfile</a>(&#8220;MyProfileName&#8221;) on an object implementing 
+<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpProfiles');return false;">
+OlpProfiles</a> by passing the profile name as the argument. Some of those 
+objects can be retrieved like:</p>
+<pre class="code">Dim MyProfiles As OlpProfiles = MainMotionGroup.PrimaryDevice.GetApplicativeProfileList(&quot;MyProfileType&quot;)
+Dim ToolProfiles As OlpProfiles = MainMotionGroup.PrimaryDevice.ToolProfileList
+Dim AccuracyProfiles As OlpProfiles = MainMotionGroup.PrimaryDevice.AccuracyProfileList
+Dim ObjectProfiles As OlpProfiles = MainMotionGroup.PrimaryDevice.ObjectFrameProfileList
+Dim SpotProfiles As OlpProfiles = MainMotionGroup.PrimaryDevice.SpotProfileList
+         ...
+</pre>
+<p>And then the profile is created:</p>
+<pre class="code">Dim MyProfile As OlpProfile = MyProfiles.GetOrCreateProfile(&quot;MyProfileName&quot;)</pre>
+<h3><a name="Step2"></a>Set the parameter values</h3>
+<p>You can then set the parameters of that profile directly by calling <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpProfile', 'SetParameter');return false;">
+OlpProfile.SetParameter</a>.</p>
+<pre class="code">
+SetParameter(CATBSTR iProfileType, 
+ 	    CATBSTR iParameterName, 
+	    CATVariant iValue, 
+	    Boolean iMatch)</pre>
+<p>For example to set the attribute &#8220;MyParameterName&#8221; of the profile we created 
+above to the value 1.0 you would do this:</p>
+<pre class="code">MyProfile.SetParameter(&quot;&quot;, &quot;MyParameterName&quot;, 1.0, False)</pre>
+<p>The first argument is the profile type. When setting a parameter directly on 
+a profile, it is not needed and can be blank. Some profiles can have sub 
+groupings of parameters and this argument is used to set which sub group the 
+parameter is in. The 2nd argument is the parameter name. The 3rd argument is the 
+parameter value and can be any simple data type. The 4th argument is not used 
+when a profile has been retrieved directly from the OlpProfiles list. Its 
+purpose will be discussed in the next section.</p>
+<p>The main profile types like Motion Profile, Tool Profile, Spot Profile, etc 
+have dedicated Object types and methods to access their properties. User 
+profiles and Applicative Profiles use the generic object type OlpProfile.</p>
+<h3><a name="Step3"></a>Assign the profile to an instruction</h3>
+<p>Finally you assign the profile to an instruction. For dedicated profile types 
+you can assign it directly:</p>
+<pre class="code">Dim MotionProfiles As OlpProfiles = MainMotionGroup.PrimaryDevice.MotionProfileList
+Dim MyMotionProfile As OlpProfile = MotionProfiles.GetOrCreateProfile(&quot;MyMotionProfileName&quot;)
+MyRobotTarget.MotionProfileOlp = MyMotionProfile</pre>
+<p>For applicative and user profiles you need to assign it by name.  </p>
+<pre class="code">MyRobotTarget.SetProfileName(&quot;MyProfileType&quot;, MyProfile.Name, True)</pre>
+<p>The 1st argument is the type of your profile, the 2nd argument is the name of 
+your profiles and the 3rd argument must be TRUE so that the instruction will go 
+search for a profile that matches the given name.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="UsingMatchProfiles"></a>Using Match Profiles</h2>
+<p>The main idea with matching profiles is that when translating, parameters are 
+associated to a motion instruction. Rather than writing code to create the 
+profiles and search through created profiles for one that has all the same 
+parameter values, translators can just set the parameters on the instruction and 
+the system will automatically create a new profile or re-use an existing one. 
+This type of profile creation solves the creation/retrieval problem we depicted 
+above.</p>
+<p>However, in order for this to work, the system needs to know which parameters 
+to search for and which ones to ignore. This is because many of the parameters 
+of a profile may not specified in the robot program for a particular language.</p>
+<h3><a name="SettingParameter"></a>Setting a parameter</h3>
+<p>You can set user and applicative profile parameters on a robot motion target 
+or instruction using the SetParameter method. It is the same as the 
+OlpProfile.SetParameter method. Except you need to specify the profile type</p>
+<pre class="code">SetParameter(CATBSTR iProfileType, 
+	    CATBSTR iParameterName, 
+	    CATVariant iValue, 
+	    Boolean iMatch)
+</pre>
+<p>For example to set the attribute &#8220;MyParameter&#8221; of a profile to the value 1.0 
+you would do this:</p>
+<pre class="code">MyRobotTarget.SetParameter(&quot;MyProfileType&quot;, &quot;MyParameterName&quot;, 1.0, True)</pre>
+<p>The first argument is the profile type and must be specified. If a profile 
+with this type does not exist a new user profile with that type will be created. 
+The 2nd argument is the parameter name. If a parameter does not exist on the 
+applicative or user profile, a new user parameter will be added with the 
+datatype of the 3rd argument. The 3rd argument is the parameter value and can be 
+any simple data type. The 4th argument indicates if you want to use this 
+parameter to search for an existing profile to re-use.  </p>
+<p>For all profiles types that have a method within an OlpController object to 
+retrieve a profile list (Accuracy, Conveyor Tracking, Motion, Object Frame, 
+Paint, Spot and Tool) you can set their parameters in two ways:</p>
+<h4>Directly on the object profile:</h4>
+<pre class="code">MyRobotTarget.MotionProfileOlp.SetTCPSpeedLinear(DELOlpMotionProfileUnits.delOlpMotionProfileAbsolute, 0.5, True)</pre>
+<h4>Or by retrieving a generic profile and then assigning it to the object:</h4>
+<pre class="code">Dim MyMotionProfile As OlpMotionProfile = MotionProfiles.GetOrCreateByMatch(True)
+' The True argument in GetOrCreateByMatch is used to avoid duplicate creation of default (empty) profiles 
+MyMotionProfile.SetTCPSpeedLinear(DELOlpMotionProfileUnits.delOlpMotionProfileAbsolute, 0.5, True)
+MyRobotTarget.MotionProfileOlp = MyMotionProfile</pre>
+<h3><a name="MatchingDetails"></a>Matching Details</h3>
+<p>In most cases, you will want to match every property that is set. However, 
+there are some scenarios where this is not desired. There are a few guidelines 
+you must following in order for matching to work correctly:</p>
+<ol>
+	<li>At least 1 parameter or the profile name for a given profile type must 
+	have iMatch set to TRUE. If no parameters are set to match, then the system 
+	doesn&#8217;t know how to find a profile to reuse and a new profile will be 
+	created for every instruction and warning will be issued.</li>
+	<li>You can match either the profile name or some parameters, but never 
+	both. The profile name is always unique so if you are matching the profile 
+	name, it doesn&#8217;t makes sense to also match a parameter.</li>
+	<li>You should match the same parameters on every instruction for a specific 
+	profile type. When searching for a matching profile, the 1st profile that 
+	use all the same parameters will be used. If you don&#8217;t always match the same 
+	set of parameters, you may re-use an incorrect profile.</li>
+</ol>
+<p>To help debug the mapping behavior you can set the environment variable 
+&#8220;DNB_OLP_MATCH_DEBUG&#8221; to any value. It will display trace message in the console 
+window describing when a matching profile is found and when a new profile is 
+created.</p>
+<h4>A Simple Example:</h4>
+<p>Here is a simple example to illustrate matching. Let&#8217;s say there is a profile 
+with 3 attributes in addition to the name:</p>
+<pre class="code">
+MyProfileType
+	Attribute1 (String)
+	Attribute2 (Integer)
+	Attribute3 (Double)</pre>
+<p>Before uploading let say there are 2 profile instances already:</p>
+<table class="fill">
+	<tr>
+		<th>Name</th>
+		<th>Attribute1</th>
+		<th>Attribute2</th>
+		<th>Attribute3</th>
+	</tr>
+	<tr>
+		<td>Profile.1</td>
+		<td>Abc</td>
+		<td>3</td>
+		<td>3.14</td>
+	</tr>
+	<tr>
+		<td>Profile.2</td>
+		<td>Xyz</td>
+		<td>2</td>
+		<td>2.72</td>
+	</tr>
+</table>
+<p>Let&#8217;s say you are uploading some motions that have 2 of these attributes but 
+attribute 3 is not included in the program.</p>
+
+<table class="fill">
+	<tr>
+		<th>Instruction</th>
+		<th>Attribute1</th>
+		<th>Attribute2</th>
+	</tr>
+	<tr>
+		<td>Move.1</td>
+		<td>Abc</td>
+		<td>1</td>
+	</tr>
+	<tr>
+		<td>Move.2</td>
+		<td>Xyz</td>
+		<td>2</td>
+	</tr>
+	<tr>
+		<td>Move.3</td>
+		<td>Abc</td>
+		<td>1</td>
+	</tr>
+</table>
+<p>When uploading the 1st move you would make 4 calls:</p>
+<pre class="code">
+Target1.SetParameter(&quot;MyProfileType&quot;, &quot;Attribute.1&quot;, &quot;Abc&quot;, True)
+Target1.SetParameter(&quot;MyProfileType&quot;, &quot;Attribute.2&quot;, 1, True)
+Target1.SetParameter(&quot;MyProfileType&quot;, &quot;Attribute.3&quot;, 1.1111, False)
+Target1.SetProfileName(&quot;MyProfileType&quot;, &quot;Abc.1&quot;, False)</pre>
+<p>The result is a new profile will be created because no existing profile has 
+Attribute1= &#8220;Abc&#8221; and Attribute2=1. The last 2 calls for setting Attribute.3 and 
+setting the profile name without matching are optional and depend on your 
+desired results. If those arguments were not specified the default name and 
+attribute value would be used for the new profile.</p>
+<p>When uploading the 2nd move you would make 4 calls: </p>
+<pre class="code">
+Target2.SetParameter(&quot;MyProfileType&quot;, &quot;Attribute.1&quot;, &quot;Xyz&quot;, True)
+Target2.SetParameter(&quot;MyProfileType&quot;, &quot;Attribute.2&quot;, 2, True)
+Target2.SetParameter(&quot;MyProfileType&quot;, &quot;Attribute.3&quot;, 2.2222, False)
+Target2.SetProfileName(&quot;MyProfileType&quot;, &quot;Xyz.2&quot;, False)</pre>
+<p>This time the result is that Profile.2 from above will be matched because 
+Attribute.1= &#8220;Xyz&#8221; and Attribute.2 = 2. The value of attribute 3 does not matter 
+for matching a profile because iMatch is false. Also the name does matter for 
+matching the profile for the same reason. Those value will be set on the 
+profile.</p>
+<p>When uploading the 3rd move you would make 4 calls: </p>
+<pre class="code">
+Target3.SetParameter(&quot;MyProfileType&quot;, &quot;Attribute.1&quot;, &quot;Abc&quot;, True)
+Target3.SetParameter(&quot;MyProfileType&quot;, &quot;Attribute.2&quot;, 1, True)
+Target3.SetParameter(&quot;MyProfileType&quot;, &quot;Attribute.3&quot;, 1.1111, False)
+Target3.SetParameter(&quot;MyProfileType&quot;, &quot;Attribute.4&quot;, &quot;Abc.1&quot;, False)</pre>
+<p>This time the same profile created for the 1st move will be matched and used 
+again.</p>
+<p>So after upload you want to have this:</p>
+
+<table class="fill">
+	<tr>
+		<th>Name</th>
+		<th>Attribute1</th>
+		<th>Attribute2</th>
+		<th>Attribute3</th>
+	</tr>
+	<tr>
+		<td>Profile.1</td>
+		<td>Abc</td>
+		<td>3</td>
+		<td>3.14</td>
+	</tr>
+	<tr>
+		<td>Xyz.2*</td>
+		<td>Xyz</td>
+		<td>2</td>
+		<td>2.22222**</td>
+	</tr>
+	<tr>
+		<td>Abc.1</td>
+		<td>Abc</td>
+		<td>1</td>
+		<td>1.11111</td>
+	</tr>
+</table>
+<p><em>* The profile name was changed from Profile.2 to Xyz.2 because the name 
+was set without matching.</em></p>
+<p><em>** The attribute value was changed from 2.72 to 2.2222 because it was set 
+without matching.</em></p>
+<p>An the task would look like this:</p>
+<table class="fill">
+	<tr>
+		<th>Instruction</th>
+		<th>MyProfileType</th>
+	</tr>
+	<tr>
+		<td>Move.1</td>
+		<td>Abc.1</td>
+	</tr>
+	<tr>
+		<td>Move.2</td>
+		<td>Xyz.2</td>
+	</tr>
+	<tr>
+		<td>Move.3</td>
+		<td>Abc.1</td>
+	</tr>
+</table>
+<p>If you do not set the name or an attribute during upload and a new profile is 
+created a default value will be used for the attribute. If an existing profile 
+is matched, the value from the original profile will be kept.  </p>
+<script type="text/javascript">insertLinkToTop();</script>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody><tr>
+		<td>[1]</td>
+		<td>
+		<a href="CAAScdOlpTaOverview.htm">Robotics Programming Overview</a></td></tr>
+		<tr><td>[2]</td>
+		<td>
+		<a href="CAAScdOlpUcTranslator.htm">Customizing a Translator</a></td></tr>
+		<tr><td>[3]</td>
+		<td>
+		<a href="CAAScdOlpUcInstruction.htm">Translating an Instruction</a></td>
+	</tr></tbody></table>
+</div>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="history">
+	<caption>History</caption>
+	<tbody><tr>
+		<td>Version: <strong>1</strong> [Jun 2020]</td>
+		<td>Document created</td>
+	</tr>
+</tbody></table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating Ordered Geometrical Sets in a 3DShape</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating Ordered Geometrical Sets in a 3DShape</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates creating Ordered Geometrical Sets in a 3DShape.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA </li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdMmrUcCreateOGSSource.htm">CAAScdGsiUcCreateOGSSource.htm</a></span></p>
+						<span class="run-in"></span></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrTocPart.htm">Part Object Model Map</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 7 steps</p>
+		<ol>
+			<li><a href="#Step1">Creates a 3DShape</a></li>
+			<li><a href="#Step2">Retrieves its Part Object</a></li>
+			<li><a href="#Step3">Retrieves its Ordered Geometrical Set collection</a></li>
+			<li><a href="#Step4">Creates an Ordered Geometrical Set</a></li>
+			<li><a href="#Step5">Retrieves its own Ordered Geometrical Set Collection</a></li>
+			<li><a href="#Step6">Creates an Ordered Geometrical Set beneath the 
+			New One</a></li>
+			<li><a href="#Step7">Updates Part Object</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<caption></caption>
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Creates a 3DShape</strong></p>
+			<p>As a first step, this UC creates a 3DShape thanks to the PLMNewService 
+			service in CATIA.</p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oPLMNewService <span class="keyword">As</span> PLMNewService
+    <span class="keyword">Set</span> oPLMNewService = CATIA.<strong>GetSessionService</strong>(&quot;PLMNewService&quot;)
+    
+    <span class="keyword">Dim</span> oEditor3DShape <span class="keyword">As</span> Editor
+    oPLMNewService.<strong>PLMCreate</strong> &quot;3DShape&quot;, oEditor3DShape
+...</pre>
+			<p>The 3DShape is created and edited through the 3D Shape editor ,
+			<code>oEditor3DShape.</code> For further information on Creating 3DShape, 
+			Please refer to <a href="#References">[1] </a></p>
+			</li>
+			<li>
+			<p><a name="Step2"></a><strong>Retrieves its Part Object</strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+    <span class="keyword">Set</span> oPart = oEditor3DShape.<strong>ActiveObject</strong>   
+...</pre>
+			<p>The <em>ActiveObject</em> method of3D Shape Editor, <code>oEditor3DShape
+			</code>returns the <a href="CAAMmrObjPart.htm">Part Object</a>,
+			<code>oPart</code></p>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves its Ordered Geometrical 
+			Set collection</strong></p>
+			<p>Further, we retrieve the Ordered Geometrical Sets Collection 
+			from the Part Object.</p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oOrderedGeometricalSets <span class="keyword">As</span> OrderedGeometricalSets
+    <span class="keyword">Set</span> oOrderedGeometricalSets = oPart.<strong>OrderedGeometricalSets</strong> 
+... </pre>
+			<p>The <em>OrderedGeometricalSets</em> method of the Part object, returns 
+			the OrderedGeometricalSets<code> </code>object , which is the collection 
+			of OrderedGeometricalSet objects aggregated by the Part object,
+			<code>oPart</code></p>
+			</li>
+			<li>
+			<p><a name="Step4"></a><strong>Creates an Ordered Geometrical Set</strong></p>
+			<p>In this step, we create and add the OGS to the Ordered 
+			Geometrical Sets Collection.</p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oOrderedGeometricalSet <span class="keyword">As</span> OrderedGeometricalSet
+    <span class="keyword">Set</span> oOrderedGeometricalSet = oOrderedGeometricalSets.<strong>Add</strong>   
+...</pre>
+			<p>The <em>Add</em> method of the OrderedGeometricalSets 
+			object, creates a new OGS, <code>oOrderedGeometricalSet </code>and adds 
+			it to the OrderedGeometricalSets collection, <code>oOrderedGeometricalSets</code></p>
+			</li>
+			<li>
+			<p><a name="Step5"></a><strong>Retrieves its own Ordered Geometrical Set Collection</strong></p>
+			<p>In this step, we retrieve the Ordered Geometrical Set's 
+			OrderedGeometricalSets collection.</p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oOrderedGeometricalSetsBeneathOtherOGS <span class="keyword">As</span> OrderedGeometricalSets
+    <span class="keyword">Set</span> oOrderedGeometricalSetsBeneathOtherOGS = oOrderedGeometricalSet.<strong>OrderedGeometricalSets</strong>   
+...</pre>
+			<p>The <em>OrderedGeometricalSets</em> method returns 
+			in <code>oOrderedGeometricalSetsBeneathOtherOGS </code>the collection 
+			of OrderedGeometricalSet aggregated by the OrderedGeometricalSet,
+			<code>oOrderedGeometricalSet</code></p>
+			</li>
+			<li>
+			<p><a name="Step6"></a><strong>Creates an Ordered Geometrical 
+			Set beneath the New One</strong></p>
+			<p>In this step, we create and add the OGS to other Ordered 
+			Geometrical Sets Collection retrieved in the earlier step</p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oOrderedGeometricalSetBeneathOtherOGS <span class="keyword">As</span> OrderedGeometricalSet
+    <span class="keyword">Set</span> oOrderedGeometricalSetBeneathOtherOGS = oOrderedGeometricalSetsBeneathOtherOGS.<strong>Add</strong>   
+...</pre>
+			<p>The <em>Add</em> method of the OrderedGeometricalSets 
+			object, creates a new OrderedGeometricalSet, <code>oOrderedGeometricalSetBeneathOtherOGS
+			</code>and adds it to the OrderedGeometricalSets collection, <code>oOrderedGeometricalSetsBeneathOtherOGS</code>. 
+			As shown in below figure, <a href="#Fig1">Fig.1</a></p>
+			<table>
+				<caption><a name="Fig1"></a>Fig. 1 OGS Added in the Specification 
+				Tree within CATIA</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="OGS Added in the Specification Tree" src="CAAScdMmrUcCreateOGS.jpg" width="198" height="167"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Updates Part</strong><a name="Step7"></a>
+			<strong>Object</strong></p>
+			<pre class="code">...
+    oPart.<strong>Update</strong>
+<span class="keyword">End Sub</span></pre>
+			<p>Updates the Part Object, <code>oPart </code>result with 
+			respect to its specifications.</p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[<a name="1"></a>1]</td>
+		<td>
+		<a href="../CAAScdMechMod/CAAScdMmrUcCreating3DShape.htm">Creating 
+		3DShape</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

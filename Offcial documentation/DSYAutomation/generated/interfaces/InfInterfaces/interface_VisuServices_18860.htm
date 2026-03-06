@@ -1,0 +1,242 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>InfInterfaces VisuServices (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../InfInterfaces.htm" href="../InfInterfaces.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "InfInterfaces";	}
+		function getCurrentObjectName() { 
+ 	return "VisuServices"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> VisuServices<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_VisuServices_18860','VisuServices','0');</script>
+<section id='maindesc'>
+<b><i> Represents the visualizations services.</i></b><br>
+ It gathers all the commands to retrieve the camera collection, create
+ a new window, manage the model hidden element visibility and manage the filters and layers.
+ This service can be retrieve from an Editor
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <pre>
+ Dim Editor1 as Editor
+ Dim VisuServices1 as VisuServices
+ 
+ Set Editor1 = CATIA.ActiveEditor
+ Set VisuServices1 = Editor1.GetService("VisuServices")
+ </pre>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Cameras"><b>Cameras</b></a>
+</td><td  id='tdright'>  Returns the model collection of cameras.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CurrentFilter"><b>CurrentFilter</b></a>
+</td><td  id='tdright'>  Returns or sets the current visualization filter.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CurrentLayer"><b>CurrentLayer</b></a>
+</td><td  id='tdright'>  Returns or sets the current layer.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SeeHiddenElements"><b>SeeHiddenElements</b></a>
+</td><td  id='tdright'>  Returns or sets the model hidden elements visibility.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#CreateFilter"><b>CreateFilter</b></a>
+</td><td  id='tdright'>  Creates a new visualization filter from a name and a definition.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#NewWindow"><b>NewWindow</b></a>
+</td><td  id='tdright'>  Creates a new window for the model.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RemoveFilter"><b>RemoveFilter</b></a>
+</td><td  id='tdright'>  Removes an existing visualization filter.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Cameras"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Cameras</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('Cameras','Cameras')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the model collection of cameras.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example retrieves in <tt>CameraCollection</tt> the collection of
+ cameras attached to the <tt>ViuServices1</tt> VisuServices.
+ <pre>
+ Dim CameraCollection As Cameras
+ Set CameraCollection = ViuServices1.<font color="red">Cameras</font>
+ </pre>
+ </dl>
+</dd>
+<a id="CurrentFilter"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CurrentFilter</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the current visualization filter.
+ <tt>CurrentFilter</tt> uses the filter name and not its definition.
+ The "All visible" filter means that all layers are visible.
+ For all filters, remind that the current layer is always visible.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example makes the filter named "Filter001" as the current visualization filter
+ for the <tt>ViuServices1</tt> VisuServices.
+ <pre>
+ VisuServices1.<font color="red">CurrentFilter</font> = "Filter001"
+ </pre>
+ </dl>
+</dd>
+<a id="CurrentLayer"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CurrentLayer</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the current layer.
+ <tt>CurrentLayer</tt> uses the layer name and not its number.
+ The "None" layer means that there is no current layer.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example makes the layer named "Layer 3" as the current layer 
+ for the <tt>ViuServices1</tt> VisuServices. 
+ <pre>
+ VisuServices.<font color="red">CurrentLayer</font> = "Layer 3"
+ </pre>
+ </dl>
+</dd>
+<a id="SeeHiddenElements"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SeeHiddenElements</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the model hidden elements visibility.
+ <br>
+ <b>True</b> if the model hidden elements are visible for the user.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example makes the <tt>VisuService</tt> model's hidden elements visible.
+ <pre>
+ VisuService.<font color="red">SeeHiddenElements</font> = True
+ </pre>
+ </dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="CreateFilter"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>CreateFilter</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFilterName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFilterDefinition</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Creates a new visualization filter from a name and a definition.
+ Fails if there is already a filter named iFilterName.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFilterName</span></dt>
+   <dd>   The filter name.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iFilterDefinition</span></dt>
+   <dd>	 The filter definition
+ <! @sample>
+ <dt><b>Example:</b>
+ <dd>
+ This example creates the filter named "Filter001" and with "layer= 2 & layer= 1" definition
+ for the <tt>ViuServices1</tt> VisuServices.
+ <pre>
+ ViuServices1.<font color="red">CreateFilter</font> ("Filter001", "layer= 2 & layer= 1")
+ </pre>
+ </dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="NewWindow"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>NewWindow</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('Window','Window')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a new window for the model.
+ This implies creating a window, displaying the model in this window,
+ making this model the active one if it was not, making
+ this window the active one, and adding the
+ window to the collection of windows.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example creates the <tt>MyWindow</tt> new window for
+ the <tt>VisuServ</tt> model visualization services.
+ <pre>
+ Dim MyWindow As Window
+ Set MyWindow = VisuServ.<font color="red">NewWindow</font>()
+ </pre>
+ </dl>
+</dd>
+<a id="RemoveFilter"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>RemoveFilter</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFilterName</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Removes an existing visualization filter.
+ Fails if the filter to be removed is the current filter.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFilterName</span></dt>
+   <dd>   The filter name.
+ <! @sample>
+ <dt><b>Example:</b>
+ <dd>
+ This example removes the filter named "Filter001" for the <tt>ViuServices1</tt> VisuServices.
+ <pre>
+ ViuServices1.<font color="red">RemoveFilter</font> ("Filter001")
+ </pre>
+ </dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

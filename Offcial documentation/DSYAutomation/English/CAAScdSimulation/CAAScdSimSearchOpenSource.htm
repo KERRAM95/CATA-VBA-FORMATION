@@ -1,0 +1,99 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'Searching a Simulation Reference</span>
+<span class="comment">'Mission: This Use case searches a Root Simulation Reference from database according to end user criteria.
+'         In the process Use Case demonstrates about searching the Simulation Reference from the database.
+'          </span>
+<span class="comment">'</span>
+<span class="comment">'Steps:</span>
+<span class="comment">'   'Steps:
+'        1- Searches for a Simulation in Database
+</span>
+</pre>
+<pre>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Sub </span>CATMain()
+<span class="comment">'   1- Searches for a Simulation in Database </span>
+<span class="keyword">        Dim </span>oDatabaseSearch <span class="keyword">As  DatabaseSearch</span>
+<span class="keyword">        Set oDatabaseSearch </span>= SearchSimulation
+ 
+ 
+<span class="keyword">End Sub</span>
+
+</pre>
+
+<pre>
+<span class="comment">'--------------------------------------------------------------------------------------------
+' 1- Searches for a Simulation in Database
+'    The search criteria is:
+'     - The Simulation reference type (SIMObjSimulationObjectGenericDS)
+'     - A PLM_ExternalID value entered by the end user
+'    Output  : the PLMSearch object containing the result of the search
+'--------------------------------------------------------------------------------------------
+'</span>
+
+Function SearchSimulation() As DatabaseSearch
+   'Error handling
+   On Error GoTo ErrorSub
+    
+    &#39;Retrieving the SearchService Object
+    Dim oSearchService As SearchService
+    Set oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    
+    &#39;Retrieving the the Databasesearch Object
+    Dim oDBSearch As DatabaseSearch
+    Set oDBSearch = oSearchService.DatabaseSearch
+     
+    &#39;Sets the type for the Object to search
+    'Sets the type of objects to search for SIMObjSimulationObjectGeneric in this case)
+    oDBSearch.BaseType = &quot;SIMObjSimulationObjectGeneric&quot;
+    
+    'Prompts the user to input the PLM_ExternalID for search purpose
+    Dim strInputPLMIDName As String
+    strInputPLMIDName = InputBox(&quot;Please enter the PLM_ExternalID to search&quot;, &quot;Enter PLM_ExternalID&quot;)
+    
+    
+        
+    'Updates the PLM Search object created in the above steps with the attribute criteria.
+    oDBSearch.AddEasyCriteria &quot;PLM_ExternalID&quot;, strInputPLMIDName
+   
+       
+    'Triggers the Search
+    oSearchService.Search
+    
+    'Valuates the output
+    Set SearchSimulation = oDBSearch
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+    
+End Function
+</pre>
+
+</body>
+
+</html>

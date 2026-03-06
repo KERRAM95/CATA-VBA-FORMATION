@@ -1,0 +1,204 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample creates mesh part objects into the mesh set.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'    1- Searches and opens model which is named as &quot;CAAScdFeaProductWithoutFEM&quot;</span>
+<span class="comment">'    2- Retrieves the root product</span>
+<span class="comment">'    3- Retrieves the PartBody</span>
+<span class="comment">'    4- Creates a FEM representation and retrieve its root object</span>
+<span class="comment">'    5- Retrieves the mesh set</span>
+<span class="comment">'    6- Creates a mesh part</span>
+<span class="comment">'    7- Creates a local topology specification</span>
+<span class="comment">'    8- Creates a local mesh specification</span>
+<span class="comment">'    9- Generates the mesh</span>
+
+<span class="keyword">Sub</span> CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 1- Searches and opens model which is named as &quot;CAAScdFeaProductWithoutFEM&quot;</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyEditor <span class="keyword">As</span> Editor
+OpenProduct MyEditor
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 2- Retrieves the root product</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyRootOcc <span class="keyword">As</span> VPMRootOccurrence
+<span class="keyword">Set</span> MyRootOcc = MyEditor.ActiveObject
+
+<span class="keyword">Dim</span> MyRootProduct <span class="keyword">As</span> VPMReference
+<span class="keyword">Set</span> MyRootProduct = MyRootOcc.PLMEntity
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 3- Retrieves the PartBody</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyContext <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> MyContext = MyEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> MyPart <span class="keyword">As</span> Part
+<span class="keyword">Dim</span> MyPartInstance <span class="keyword">As</span> VPMRepInstance
+<span class="keyword">Dim</span> MyBody <span class="keyword">As</span> Body
+<span class="keyword">For Each</span> MyEntity <span class="keyword">In</span> MyContext.EditedContent
+    <span class="keyword">Dim</span> MyRef <span class="keyword">As</span> VPMReference
+    <span class="keyword">Set</span> MyRef = MyEntity
+
+    <span class="keyword">Dim</span> MyReps <span class="keyword">As</span> VPMRepInstances
+    <span class="keyword">Set</span> MyReps = MyRef.RepInstances
+
+    <span class="keyword">For Each</span> MyRep <span class="keyword">In</span> MyReps
+        <span class="keyword">Dim</span> MyRepRef <span class="keyword">As</span> VPMRepReference
+        <span class="keyword">Set</span> MyRepRef = MyRep.ReferenceInstanceOf
+        <span class="keyword">Dim</span> attr <span class="keyword">As</span> String
+        attr = MyRepRef.GetAttributeValue(&quot;V_discipline&quot;)
+
+        <span class="keyword">If</span> (attr = &quot;Design&quot;) <span class="keyword">Then</span>
+            <span class="keyword">Set</span> MyPart = MyRepRef.GetItem(&quot;Part&quot;)
+            <span class="keyword">Set</span> MyPartInstance = MyRep
+            <span class="keyword">Set</span> MyBody = MyPart.MainBody
+        <span class="keyword">End If</span>
+    <span class="keyword">Next</span>
+<span class="keyword">Next</span>
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 4- Creates a FEM representation and retrieve its root object</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyPrdRepFactory <span class="keyword">As</span> SimPrdRepFactory
+<span class="keyword">Set</span> MyPrdRepFactory = MyRootProduct.GetItem(&quot;SimPrdRepFactory&quot;)
+<span class="keyword">Dim</span> MyFemRepRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">Set</span> MyFemRepRef = MyPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+<span class="keyword">Dim</span> MyFemRepRoot <span class="keyword">As</span> SimFemRoot
+<span class="keyword">Set</span> MyFemRepRoot = MyFemRepRef.GetItem(&quot;SimFemRoot&quot;)
+
+<span class="keyword">Dim</span> MyProductService <span class="keyword">As</span> PLMProductService
+Set MyProductService = MyEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> MyReference <span class="keyword">As</span> Reference
+Set MyReference = MyPart.CreateReferenceFromObject(MyBody)
+<span class="keyword">Dim</span> MyLink <span class="keyword">As</span> AnyObject
+Set MyLink = MyProductService.ComposeLink(MyRootOcc, MyPartInstance, MyReference)
+MyFemRepRoot.AddAssociatedRep MyLink
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 5- Retrieves the mesh set</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyMeshSet <span class="keyword">As</span> SimMeshSet
+Set MyMeshSet = MyFemRepRoot.GetSet(&quot;SimNodesElements&quot;)
+<span class="keyword">Dim</span> MyMeshParts <span class="keyword">As</span> SimMeshParts
+Set MyMeshParts = MyMeshSet.MeshParts
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 6- Creates a mesh part</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyMeshPart <span class="keyword">As</span> SimMeshPart
+Set MyMeshPart = MyMeshParts.Add(&quot;CATFmtSurfTriaMesher&quot;)
+
+<span class="comment">'Set the Mesh Part support</span>
+Set MyPartSupp = MyPart.FindObjectByName(&quot;Fill.1&quot;)
+Set MyReference = MyPart.CreateReferenceFromObject(MyPartSupp)
+Set MyLink = MyContext.ComposeLink(MyRootOcc, MyPartInstance, MyReference)
+MyMeshPart.AddSupport MyLink
+
+<span class="comment">'Define the Mesh Part</span>
+MyMeshPart.SetAttributeValue &quot;Mesh&quot;, &quot;MeshSizeValue&quot;, &quot;20 mm&quot;
+MyMeshPart.SetAttributeValue &quot;Mesh&quot;, &quot;ElementOrder&quot;, 2
+MyMeshPart.SetAttributeValue &quot;Mesh&quot;, &quot;AbsoluteSag&quot;, 2
+MyMeshPart.SetAttributeValue &quot;Mesh&quot;, &quot;AbsoluteSagValue&quot;, &quot;2 mm&quot;
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 7- Creates a local topology specification</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyTopologySpecifications <span class="keyword">As</span> SimTopologySpecifications
+Set MyTopologySpecifications = MyMeshPart.GetTopologySpecifications
+<span class="keyword">Dim</span> MyTopologySpecification <span class="keyword">As</span> SimTopologySpecification
+Set MyTopologySpecification = MyTopologySpecifications.Add(&quot;CATFmtExternalCurveLocalSpec&quot;)
+
+<span class="comment">'Set the mesh specification support</span>
+Set MySpecSupp = MyPart.FindObjectByName(&quot;MyLine&quot;)
+Set MyReference = MyPart.CreateReferenceFromObject(MySpecSupp)
+Set MyLink = MyContext.ComposeLink(MyRootOcc, MyPartInstance, MyReference)
+<span class="keyword">Dim</span> MyLinkAccess <span class="keyword">As</span> SimLinkAccess
+Set MyLinkAccess = MyTopologySpecification.GetItem(&quot;SimLinkAccess&quot;)
+MyLinkAccess.AddLink &quot;ConnectorList&quot;, MyLink
+
+<span class="comment">'Define the topology specification</span>
+MyTopologySpecification.SetAttributeValue &quot;ToleranceValue&quot;, &quot;1 mm&quot;
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 8- Creates a local mesh specification</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyMeshSpecifications <span class="keyword">As</span> SimMeshSpecifications
+Set MyMeshSpecifications = MyMeshPart.GetMeshSpecifications
+<span class="keyword">Dim</span> MyMeshSpecification <span class="keyword">As</span> SimMeshSpecification
+Set MyMeshSpecification = MyMeshSpecifications.Add(&quot;CATFmtStudioDistributionSpec&quot;)
+
+<span class="comment">'Set the mesh specification support</span>
+Set MyLinkAccess = MyMeshSpecification.GetItem(&quot;SimLinkAccess&quot;)
+MyLinkAccess.AddLink &quot;ConnectorList&quot;, MyTopologySpecification
+
+<span class="comment">'Define the mesh specification</span>
+MyMeshSpecification.SetAttributeValue &quot;Type&quot;, 3
+MyMeshSpecification.SetAttributeValue &quot;NbElementsValue&quot;, 10
+MyMeshSpecification.SetAttributeValue &quot;Symmetry&quot;, 2
+MyMeshSpecification.SetAttributeValue &quot;RatioValue&quot;, 3
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 9- Generates the mesh</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+MyMeshPart.Update
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> OpenProduct(oEditor <span class="keyword">As</span> Editor)
+    <span class="comment">'Search product and open it:</span>
+    <span class="comment">'Get the Search Service</span>
+    <span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> SearchService
+    Set oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch
+    Set oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the Product by its Title, use V_Name attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, &quot;CAAScdFeaProductWithoutFEM&quot;
+    oSearchService.Search
+
+    <span class="comment">'Retrieve the listed entities</span>
+    <span class="keyword">Dim</span> cPLMEntities <span class="keyword">As</span> PLMEntities
+    Set cPLMEntities = oDBSearch.Results
+    <span class="keyword">If</span> cPLMEntities.Count &lt;&gt; 0 <span class="keyword">Then</span>
+       Set oPLMEntity = cPLMEntities.Item(1)
+       <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity</span>
+       Set oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+       <span class="comment">'Get the editor</span>
+       oPLMOpenService.PLMOpen oPLMEntity, oEditor
+    <span class="keyword">End If</span>
+<span class="keyword">End Sub</span>
+
+</pre>
+
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>
+

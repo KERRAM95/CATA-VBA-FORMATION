@@ -1,0 +1,94 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Details of the Example Language</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Details of the Example Language</h1>
+		</td>
+	</tr>
+</table>
+<h2>Using the Example Translator</h2>
+<p>The Example Translator converts between 3DExperience tasks
+and text files using a custom syntax (the Example Language). The provided
+Example Translator will translate motion instructions and will render all other
+instructions as comments. The following is the syntax used in the text files:</p>
+<ul>
+	<li>MoveJoint 50% Joint[{0deg,0deg,0deg,0deg,0deg,0deg}] Tool[1m,2m,3m,4deg,5deg,6deg] Stop[Fine]</li>
+	<li>MoveLine .5m/s Cart[{0.6m,0.2m,0.3m,10deg,20deg,30deg} Config{1}] Tool[.01m,.02m,0.03m,5deg,10deg,15deg] Stop[Fine]</li>
+</ul>
+<h4>Movement Type:</h4>
+<p>The Example Language handles Linear and Joint movement. The
+keywords for these are MoveLine (for linear) and MoveJoint (for joint).</p>
+<h4>Movement Speed:</h4>
+<p>The Example Language handles Linear and Relative speeds.
+Linear (absolute, in 3DExperience movement terms) speeds are measured in meters
+per second (m/s) by default, while Relative speeds are measured as a percentage
+of maximum (%).</p>
+<h4>Target Location:</h4>
+<p>The Example Language support Joint and Cartesian (Joint and
+Cart keywords, respectively) position data. By default, it is configured to
+accept joint positions as such:</p>
+<ul>
+	<li>Joint[{10deg, 20deg, 20deg, 0deg, 45deg, 0deg}]</li>
+</ul>
+<p>Where "Joint" identifies the type of position data, and each
+joint's position is then specified in degrees. These values are stored as
+doubles. The brackets identify the scope of the joint position and the curly
+braces identify the scope of the joint values.</p>
+<p>By default, the Example Language is configured to accept
+Cartesian positions as such:</p>
+<ul>
+	<li>Cart[{.5m, 0m, .1m, 0deg, -90deg, 0deg} Config{1}]</li>
+</ul>
+<p>Where "Cart" identifies the type of position data, and the
+brackets identify the scope of this data. The first set of curly braces
+identifies the scope of the Cartesian coordinates, measured in meters ("m") and
+degrees ("deg") and stored as doubles, while "Config" and the second set of
+curly braces identify the configuration of the robot at this position.
+Configuration numbers reference the index of the pose saved to the 3DExperience
+controller, and must be an integer.</p>
+<h4>Tool Offset:</h4>
+<p>The key word "Tool" identifies the tool offset
+specification, contained in its own set of brackets. As with Cartesian
+positions, this is a Cartesian vector measured in meters (m) and degrees (deg)
+by default. These values are stored as doubles.</p>
+
+<h4>Stop Type:</h4>
+<p>The "Stop" key word identifies the stop type information.
+The Example Translator provided supports three stop types: </p>
+<ul>
+	<li>Stop[Fine] will cause the simulated robot to perform a fine
+move, coming to a stop at the target location.</li>
+	<li>Stop[.05m] will cause the simulated robot to use corner
+rounding, slowing down as much as is required to come within the specified
+distance (in meters) of the target location.</li>
+	<li>Stop[70%] will cause the robot to brake to 70% of its speed
+as it approaches the target location before moving on to the next position.</li>
+</ul>
+<p>As with the position and tool data, values are stored as
+doubles.</p>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

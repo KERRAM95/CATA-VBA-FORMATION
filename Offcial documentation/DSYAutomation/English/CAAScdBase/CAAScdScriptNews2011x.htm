@@ -1,0 +1,1940 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>What's New with V6R2011x Automation</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>What&#39;s New with V6R2011x Automation</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article presents Automation objects, methods, and properties that 
+		are added since V6R2011 GA to enhance V6 Automation capabilities, support 
+		functional evolutions, and correct defects. Some of those modifications 
+		may already exist in V6R2011 maintenance fixes. A few properties and methods 
+		might have been modified or removed. VB and VBScripts code using those methods 
+		may have to be modified. VB projects using the corresponding objects must 
+		be recompiled.</p>
+		<p>Consult 
+		<a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation 
+		Languages, Debug, and Compatibility</a> for details on manual adjustments 
+		that may be required for existing VB/VBA and VSTA projects to be usable on a new 
+		release.</p>
+		<ul>
+			<li><a href="#NewArticles">New Articles</a></li>
+			<li><a href="#NewSetting">New Settings Repositories</a></li>
+			<li><a href="#NewObject">New Objects</a></li>
+			<li><a href="#NewMethod">New Methods</a></li>
+			<li><a href="#NewEnum">New Enums</a></li>
+			<li><a href="#NewProperty">New Properties</a></li>
+			<li><a href="#Modif">Modified Methods and Properties</a></li>
+			<li><a href="#Suppress">Removed Objects, Collections, Methods and Properties</a></li>
+		</ul>
+		<p>Deprecated APIs can be found in
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Deprecated');return false;">
+		V6 IDL API Deprecated Index</a>.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p>You can also find news from previous V6 releases:</p>
+		<ul>
+			<li><a href="CAAScdScriptNews2011.htm">V6R2011 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2010x.htm">V6R2010x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2010.htm">V6R2010 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2009x.htm">V6R2009x What&#39;s New?</a></li>
+		</ul>
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="fill">
+	<tr>
+		<th colspan="2"><a name="NewArticles"></a>New Articles</th>
+	</tr>
+<tr><td><a href="../CAAScdProduct/CAAScdPstTaProductAttributes.htm">Product Modeler Attributes</a></td><td></td></tr>
+<tr><td><a href="../CAAScdProduct/CAAScdPstUcCreateSkateProductModel.htm">Creating Skate Product Model Interactively</a></td><td></td></tr>
+<tr><td><a href="../CAAScdProduct/CAAScdPstUcPositionProductModel.htm">Positioning Product Model</a></td><td></td></tr>
+<tr><td><a href="../CAAScdProduct/CAAScdPstUcSettingFlexibilityRepostionableSkateModel.htm">Setting Flexibility/Repositionable for Skate Product Model Interactively</a></td><td></td></tr>
+<tr><td><a href="../CAAScdProduct/CAAScdPstUcOverloadingOccurrenceModel.htm">Overloading Occurrence Position</a></td><td></td></tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="fill">
+	<tr>
+		<th colspan="2"><a name="NewSetting"></a>New Settings Repositories</th>
+	</tr>
+<tr><td><a href="../CAAScrSettings/CATPublishingSettings.htm">CATPublishingSettings</a></td><td>
+	Publishing Settings</td></tr>
+<tr><td><a href="../CAAScrSettings/CATSimClashConfigSettings.htm">CATSimClashConfigSettings</a></td><td>
+	Settings to handle clash management</td></tr>
+<tr><td><a href="../CAAScrSettings/DELMSDHighlightSettings.htm">DELMSDHighlightSettings</a></td><td>
+	Settings for Highlight</td></tr>
+<tr><td><a href="../CAAScrSettings/DNBSimTraceSettings.htm">DNBSimTraceSettings</a></td><td>
+	Settings to handle the parameters of Motion Traces</td></tr>
+<tr><td><a href="../CAAScrSettings/L3dDesignCriteria.htm">L3dDesignCriteria</a></td><td>
+		Short Qualification of the usage of the setting</td></tr>
+<tr><td><a href="../CAAScrSettings/MaterialFBDIOptionsSettings.htm">MaterialFBDIOptionsSettings</a></td><td>
+	Setting to modify material behavior during FBDI</td></tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="fill">
+	<tr>
+		<th colspan="2"><a name="NewObject"></a>New Object</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsInertiaIDLItf', 'interface', 'Inertia');return false;">Inertia</a>
+		</td>
+   <td>
+Interface representing the inertia of an element.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2');return false;">Annotation2</a>
+		</td>
+   <td>
+Interface for the Technological Product Specification (TPS) objects.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2');return false;">AnnotationFactory2</a>
+		</td>
+   <td>
+Interface for the TPS Factory.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'NonSemanticDimension');return false;">NonSemanticDimension</a>
+		</td>
+   <td>
+Interface Managing Non Semantic Dimension.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT');return false;">SemanticGDT</a>
+		</td>
+   <td>
+Interface managing Semantic GDT.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfile');return false;">RscApplicativeProfile</a>
+		</td>
+   <td>
+Interface to manage Applicative Profiles.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfilesGroup');return false;">RscApplicativeProfilesGroup</a>
+		</td>
+   <td>
+Interface to manage Applicative Profile Groups.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfilesMgr');return false;">RscApplicativeProfilesMgr</a>
+		</td>
+   <td>
+Interface to manage a collection of all Applicative Profile Groups.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscUserProfilesMgr');return false;">RscUserProfilesMgr</a>
+		</td>
+   <td>
+Interface to manage a collection of all User Profile Groups.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingInsert');return false;">ManufacturingInsert</a>
+		</td>
+   <td>
+Interface dedicated to insert objects management.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingMachine');return false;">ManufacturingMachine</a>
+		</td>
+   <td>
+Interface dedicated to Machine objects management.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource');return false;">ManufacturingResource</a>
+		</td>
+   <td>
+ Interface dedicated to resource objects management.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingShank');return false;">ManufacturingShank</a>
+		</td>
+   <td>
+Interface representing Shank.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingTool');return false;">ManufacturingTool</a>
+		</td>
+   <td>
+ Interface dedicated to tool object management.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingToolAssembly');return false;">ManufacturingToolAssembly</a>
+		</td>
+   <td>
+ Interface dedicated to Tool Assembly objects management.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingToolHolder');return false;">ManufacturingToolHolder</a>
+		</td>
+   <td>
+Interface representing Tool Holder.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingToolHolderConical');return false;">ManufacturingToolHolderConical</a>
+		</td>
+   <td>
+Interface representing Conical Tool Holder.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingToolHolderPrismatic');return false;">ManufacturingToolHolderPrismatic</a>
+		</td>
+   <td>
+Interface representing prismatic Tool Holder.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity');return false;">ManufacturingActivity</a>
+		</td>
+   <td>
+ Interface dedicated to manufacturing operation management.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingContainer');return false;">ManufacturingContainer</a>
+		</td>
+   <td>
+Interface to manage the machining activities container.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingFactories');return false;">ManufacturingFactories</a>
+		</td>
+   <td>
+Interface to manage manufacturing factories.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperation');return false;">ManufacturingPartOperation</a>
+		</td>
+   <td>
+Interface to manage Part Operation (Setup).
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition');return false;">ManufacturingPartOperationPosition</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingProgram');return false;">ManufacturingProgram</a>
+		</td>
+   <td>
+ Interface dedicated to Program Object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation');return false;">ManufacturingToolCompensation</a>
+		</td>
+   <td>
+ Interface dedicated to Compensation management on Tool objects.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCorrector');return false;">ManufacturingToolCorrector</a>
+		</td>
+   <td>
+ Interface dedicated to Tool Corrector objects management.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'VPMEditorContextIDLItf', 'interface', 'PLMProductService');return false;">PLMProductService</a>
+		</td>
+   <td>
+Interface representing service to manage VPM Editor content.
+	</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="fill">
+	<tr>
+		<th colspan="2"><a name="NewMethod"></a>New method</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsInertiaIDLItf', 'interface', 'Inertia', 'GetCOGPosition');return false;">GetCOGPosition</a>
+		</td>
+   <td>
+Retrieves the position of the center of gravity.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsInertiaIDLItf', 'interface', 'Inertia', 'GetInertiaMatrix');return false;">GetInertiaMatrix</a>
+		</td>
+   <td>
+Retrieves the matrix of inertia.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsInertiaIDLItf', 'interface', 'Inertia', 'GetMass');return false;">GetMass</a>
+		</td>
+   <td>
+Retrieves the mass.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsInertiaIDLItf', 'interface', 'Inertia', 'GetPrincipalAxes');return false;">GetPrincipalAxes</a>
+		</td>
+   <td>
+Retrieves the principal axes of inertia.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsInertiaIDLItf', 'interface', 'Inertia', 'GetPrincipalMoments');return false;">GetPrincipalMoments</a>
+		</td>
+   <td>
+Retrieves the principal moments of inertia.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'AddLeader');return false;">AddLeader</a>
+		</td>
+   <td>
+Add a leader.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationSet', 'AnnotationFactory2');return false;">AnnotationFactory2</a>
+		</td>
+   <td>
+Obtain the factory to create annotations.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'AssociatedRefFrame');return false;">AssociatedRefFrame</a>
+		</td>
+   <td>
+Returns the annotation on the AssociatedRefFrame interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'CompositeTolerance');return false;">CompositeTolerance</a>
+		</td>
+   <td>
+Returns the CompositeTolerance interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateDatum');return false;">CreateDatum</a>
+		</td>
+   <td>
+Create a Datum Feature.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateDatumReferenceFrame');return false;">CreateDatumReferenceFrame</a>
+		</td>
+   <td>
+Create a Reference Frame (DRF).
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateDatumTarget');return false;">CreateDatumTarget</a>
+		</td>
+   <td>
+Create a Datum Target.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateEvoluateDatum');return false;">CreateEvoluateDatum</a>
+		</td>
+   <td>
+Create a Datum Feature.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateEvoluateText');return false;">CreateEvoluateText</a>
+		</td>
+   <td>
+Create a Text.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateFlagNote');return false;">CreateFlagNote</a>
+		</td>
+   <td>
+Create a FlagNote.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateNonSemanticDimension');return false;">CreateNonSemanticDimension</a>
+		</td>
+   <td>
+Creates a non semantic Dimension specification.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateRoughness');return false;">CreateRoughness</a>
+		</td>
+   <td>
+Create a Roughness.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateSemanticDimension');return false;">CreateSemanticDimension</a>
+		</td>
+   <td>
+Creates a semantic Dimension specification.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateText');return false;">CreateText</a>
+		</td>
+   <td>
+Create a Text.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateTextNOA');return false;">CreateTextNOA</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateTextOnAnnot');return false;">CreateTextOnAnnot</a>
+		</td>
+   <td>
+Create a Text grouped to an annotation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateToleranceWithDRF');return false;">CreateToleranceWithDRF</a>
+		</td>
+   <td>
+Create a Tolerance With a Reference Frame DRF.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'CreateToleranceWithoutDRF');return false;">CreateToleranceWithoutDRF</a>
+		</td>
+   <td>
+Create a Tolerance Without a Reference Frame (DRF).
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'DatumSimple');return false;">DatumSimple</a>
+		</td>
+   <td>
+Get the annotation on the DatumSimple interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'DatumTarget');return false;">DatumTarget</a>
+		</td>
+   <td>
+Get the annotation on the DatumTarget interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'DefaultAnnotation');return false;">DefaultAnnotation</a>
+		</td>
+   <td>
+Get the annotation on the DefaultAnnotation interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'Dimension3D');return false;">Dimension3D</a>
+		</td>
+   <td>
+Get the 3D Dimension on the 3D Dimension interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'NonSemanticDimension', 'DimensionLimit');return false;">DimensionLimit</a>
+		</td>
+   <td>
+Gets the Dimension on the DimensionLimit interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'FlagNote');return false;">FlagNote</a>
+		</td>
+   <td>
+Get the annotation on the FlagNote interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'FreeState');return false;">FreeState</a>
+		</td>
+   <td>
+Returns the FreeState interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'NonSemanticDimension', 'Get2dAnnot');return false;">Get2dAnnot</a>
+		</td>
+   <td>
+Retrieves Drafting Dimension.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'GetSurfaces');return false;">GetSurfaces</a>
+		</td>
+   <td>
+Get the geometry on which the Annotation is applied to.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'GetSurfacesCount');return false;">GetSurfacesCount</a>
+		</td>
+   <td>
+Count the geometry on which the Annotation is applied to.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'HasAFreeState');return false;">HasAFreeState</a>
+		</td>
+   <td>
+Checks if the GDT has a Free State.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'HasAMaterialCondition');return false;">HasAMaterialCondition</a>
+		</td>
+   <td>
+Checks if the GDT has a Material Condition.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'HasAParticularTolElem');return false;">HasAParticularTolElem</a>
+		</td>
+   <td>
+Checks if the GDT has a Particuler Element.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'HasATangentPlane');return false;">HasATangentPlane</a>
+		</td>
+   <td>
+Checks if the GDT has a Tangent Plane Modifier.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'HasATolerancePerUnitBasisRestrictiveValue');return false;">HasATolerancePerUnitBasisRestrictiveValue</a>
+		</td>
+   <td>
+Checks if the GDT has a Tolerance Per Unit Basis Restricted Value.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'NonSemanticDimension', 'HasDimensionLimit');return false;">HasDimensionLimit</a>
+		</td>
+   <td>
+Checks if the Dimension has a Dimension Limit.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory2', 'InstanciateNOA');return false;">InstanciateNOA</a>
+		</td>
+   <td>
+Instanciate an NOA from a Reference NOA.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'IsACompositeTolerance');return false;">IsACompositeTolerance</a>
+		</td>
+   <td>
+Checks if the GDT is a Composite Tolerance.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'IsADefaultAnnotation');return false;">IsADefaultAnnotation</a>
+		</td>
+   <td>
+To know if the Annotation is a Default Annotation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'IsAProjectedToleranceZone');return false;">IsAProjectedToleranceZone</a>
+		</td>
+   <td>
+Checks if the GDT is a Projected Zone.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'IsAShiftedProfileTolerance');return false;">IsAShiftedProfileTolerance</a>
+		</td>
+   <td>
+Checks if the GDT is a Shifted Profile Tolerance.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'IsAToleranceUnitBasisValue');return false;">IsAToleranceUnitBasisValue</a>
+		</td>
+   <td>
+Checks if the GDT is a Tolerance Unit Basis Value.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'IsAToleranceZone');return false;">IsAToleranceZone</a>
+		</td>
+   <td>
+Checks if a Tolerance Zone exists.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'IsAnAssociatedRefFrame');return false;">IsAnAssociatedRefFrame</a>
+		</td>
+   <td>
+Checks if the GDT is an Associated Reference Frame.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotations', 'Item2');return false;">Item2</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'MaterialCondition');return false;">MaterialCondition</a>
+		</td>
+   <td>
+Returns the MaterialCondition interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'ModifyVisu');return false;">ModifyVisu</a>
+		</td>
+   <td>
+To refresh the 3D visualization.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'Noa');return false;">Noa</a>
+		</td>
+   <td>
+Get the annotation on the Noa interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'NonSemanticDatum');return false;">NonSemanticDatum</a>
+		</td>
+   <td>
+Get the annotation on the DatumSimple interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'NonSemanticDatumTarget');return false;">NonSemanticDatumTarget</a>
+		</td>
+   <td>
+Get the annotation on the DatumSimple interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'NonSemanticDimension');return false;">NonSemanticDimension</a>
+		</td>
+   <td>
+Get the annotation on the DatumSimple interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'NonSemanticGDT');return false;">NonSemanticGDT</a>
+		</td>
+   <td>
+Get the annotation on the DatumSimple interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'ParticularTolElem');return false;">ParticularTolElem</a>
+		</td>
+   <td>
+Returns the ParticularTolElem interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'ProjectedToleranceZone');return false;">ProjectedToleranceZone</a>
+		</td>
+   <td>
+Returrns the ProjectedToleranceZone interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'ReferenceFrame');return false;">ReferenceFrame</a>
+		</td>
+   <td>
+Get the annotation on the ReferenceFrame interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AssociatedRefFrame', 'ReferenceFrame2');return false;">ReferenceFrame2</a>
+		</td>
+   <td>
+Retrieves the Datum Reference Frame associated to a TPS.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'Roughness');return false;">Roughness</a>
+		</td>
+   <td>
+Get the annotation on the Roughness interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'SemanticGDT');return false;">SemanticGDT</a>
+		</td>
+   <td>
+Get the annotation on the DatumSimple interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'SetXY');return false;">SetXY</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'ShiftedProfileTolerance');return false;">ShiftedProfileTolerance</a>
+		</td>
+   <td>
+Returns the ShiftedProfileTolerance interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'SuperType');return false;">SuperType</a>
+		</td>
+   <td>
+Get the Super Type.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'TPSStatus');return false;">TPSStatus</a>
+		</td>
+   <td>
+Get the TPS Status.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'TangentPlane');return false;">TangentPlane</a>
+		</td>
+   <td>
+Returns the Tangent Plane interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'Text');return false;">Text</a>
+		</td>
+   <td>
+Get the annotation on the Text interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'TolerancePerUnitBasisRestrictiveValue');return false;">TolerancePerUnitBasisRestrictiveValue</a>
+		</td>
+   <td>
+Returns the TolerancePerUnitBasisRestrictiveValue interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'ToleranceUnitBasisValue');return false;">ToleranceUnitBasisValue</a>
+		</td>
+   <td>
+Returns the ToleranceUnitBasisValue interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'ToleranceZone');return false;">ToleranceZone</a>
+		</td>
+   <td>
+Returns the ToleranceZone interface.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'TransfertToView');return false;">TransfertToView</a>
+		</td>
+   <td>
+Move the annotation in another view.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'Type');return false;">Type</a>
+		</td>
+   <td>
+Get the Type.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'Z');return false;">Z</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfile', 'Attributes');return false;">Attributes</a>
+		</td>
+   <td>
+Retrieves the attributes for this profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfilesMgr', 'AvailableGroups');return false;">AvailableGroups</a>
+		</td>
+   <td>
+Get a list of all profile group types including groups which have not yet been created.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfilesGroup', 'BuildProfileInstance');return false;">BuildProfileInstance</a>
+		</td>
+   <td>
+Creates a new profile instance in this applicative profile group.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscUserProfilesMgr', 'BuildUserGroup');return false;">BuildUserGroup</a>
+		</td>
+   <td>
+Creates a new user profile group.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfilesGroup', 'CurrentProfile');return false;">CurrentProfile</a>
+		</td>
+   <td>
+Gets/sets the current profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfilesGroup', 'GetTemplateProfile');return false;">GetTemplateProfile</a>
+		</td>
+   <td>
+Retrieves the template profile for this applicative profile group.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfile', 'IsCurrent');return false;">IsCurrent</a>
+		</td>
+   <td>
+Retrieves whether this profile is the current profile or not.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfile', 'IsUserDefined');return false;">IsUserDefined</a>
+		</td>
+   <td>
+Retrieves whether this profile is user defined or not.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfilesGroup', 'Item');return false;">Item</a>
+		</td>
+   <td>
+Retrieves a profile using its index or its name.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfilesMgr', 'Item');return false;">Item</a>
+		</td>
+   <td>
+Retrieves a profile group using its index or its name.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscUserProfilesMgr', 'Item');return false;">Item</a>
+		</td>
+   <td>
+Retrieves a profile group using its index or its name.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfilesGroup', 'ProfileType');return false;">ProfileType</a>
+		</td>
+   <td>
+Retrieves the profile type for this applicative profile group.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfilesGroup', 'RemoveProfile');return false;">RemoveProfile</a>
+		</td>
+   <td>
+Removes (and deletes) an existing profile from applicative profile group.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfilesMgr', 'RemoveProfileGroup');return false;">RemoveProfileGroup</a>
+		</td>
+   <td>
+Removes (and deletes) an existing profile group.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscUserProfilesMgr', 'RemoveUserGroup');return false;">RemoveUserGroup</a>
+		</td>
+   <td>
+Removes (and deletes) a user profile group.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscApplicativeProfile', 'UserParams');return false;">UserParams</a>
+		</td>
+   <td>
+Retrieves the user defined parameters for this profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Drafting2DLIDLItf', 'interface', 'Layout2DView', 'AddViewText');return false;">AddViewText</a>
+		</td>
+   <td>
+Adds a view text in the Layout2D view.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Drafting2DLIDLItf', 'interface', 'Layout2DView', 'GetViewText');return false;">GetViewText</a>
+		</td>
+   <td>
+Returns the the view text of the Layout2D view.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingView', 'AddViewText');return false;">AddViewText</a>
+		</td>
+   <td>
+Adds a view text in the drawing view.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingView', 'GetViewText');return false;">GetViewText</a>
+		</td>
+   <td>
+Returns the the view text of the drawing view.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingToolAssembly', 'AddComponent');return false;">AddComponent</a>
+		</td>
+   <td>
+Adds a new component to tool assembly.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingTool', 'AddComponent');return false;">AddComponent</a>
+		</td>
+   <td>
+Adds a new component to tool.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingToolAssembly', 'GetAllComponents');return false;">GetAllComponents</a>
+		</td>
+   <td>
+Returns the list of all components associated with the tool assembly.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingTool', 'GetAllComponents');return false;">GetAllComponents</a>
+		</td>
+   <td>
+Returns the list of all components associated with the tool.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetDefaultName');return false;">GetDefaultName</a>
+		</td>
+   <td>
+Retrieves the default name of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingToolAssembly', 'GetEditableStatus');return false;">GetEditableStatus</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingToolAssembly', 'GetHolders');return false;">GetHolders</a>
+		</td>
+   <td>
+Returns the list of holder associated with the tool assembly.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingTool', 'GetInserts');return false;">GetInserts</a>
+		</td>
+   <td>
+Returns the list of shank associated with the tool.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetLinkedObject');return false;">GetLinkedObject</a>
+		</td>
+   <td>
+Retrieves the linked object associated on the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetName');return false;">GetName</a>
+		</td>
+   <td>
+Retrieves the name of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetParametrization');return false;">GetParametrization</a>
+		</td>
+   <td>
+Retrieves the parametrization set of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingMachine', 'GetPostProcessorFile');return false;">GetPostProcessorFile</a>
+		</td>
+   <td>
+Retrieves the post processor file associated to the Machine.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingTool', 'GetShanks');return false;">GetShanks</a>
+		</td>
+   <td>
+Returns the list of shank associated with the tool.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingToolAssembly', 'GetTools');return false;">GetTools</a>
+		</td>
+   <td>
+Returns the list of tool associated with the tool assembly.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetType');return false;">GetType</a>
+		</td>
+   <td>
+Retrieves the type of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetValueBoolean');return false;">GetValueBoolean</a>
+		</td>
+   <td>
+Retrieves value of a boolean attribute of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetValueDouble');return false;">GetValueDouble</a>
+		</td>
+   <td>
+Retrieves value of a double attribute of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetValueLong');return false;">GetValueLong</a>
+		</td>
+   <td>
+Retrieves value of an integer attribute of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetValueParameter');return false;">GetValueParameter</a>
+		</td>
+   <td>
+Retrieves value of a CATICkeParm attribute of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetValueStr');return false;">GetValueStr</a>
+		</td>
+   <td>
+Retrieves value of a string attribute of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetValues');return false;">GetValues</a>
+		</td>
+   <td>
+Retrieves values of parameters of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'GetVersion');return false;">GetVersion</a>
+		</td>
+   <td>
+Retrieves the version of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingToolAssembly', 'RemoveAllComponents');return false;">RemoveAllComponents</a>
+		</td>
+   <td>
+Remove all the components of tool assembly.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingTool', 'RemoveAllComponents');return false;">RemoveAllComponents</a>
+		</td>
+   <td>
+Remove all the components of tool.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingToolAssembly', 'RemoveComponent');return false;">RemoveComponent</a>
+		</td>
+   <td>
+Removes a component of tool assembly.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingTool', 'RemoveComponent');return false;">RemoveComponent</a>
+		</td>
+   <td>
+Removes a component of tool.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'SetDefaultName');return false;">SetDefaultName</a>
+		</td>
+   <td>
+Sets the default name of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'SetDefaultValues');return false;">SetDefaultValues</a>
+		</td>
+   <td>
+Sets default values to parameters of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'SetLinkedObject');return false;">SetLinkedObject</a>
+		</td>
+   <td>
+Sets the link to the object on the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'SetName');return false;">SetName</a>
+		</td>
+   <td>
+Sets the name of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'SetParametrization');return false;">SetParametrization</a>
+		</td>
+   <td>
+Sets the parametrization set of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'SetValueBoolean');return false;">SetValueBoolean</a>
+		</td>
+   <td>
+Sets value to a boolean attribute of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'SetValueDouble');return false;">SetValueDouble</a>
+		</td>
+   <td>
+Sets value to a double attribute of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'SetValueLong');return false;">SetValueLong</a>
+		</td>
+   <td>
+Sets value to an integer attribute of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'SetValueParameter');return false;">SetValueParameter</a>
+		</td>
+   <td>
+Sets value to a CATICkeParm attribute of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'SetValueStr');return false;">SetValueStr</a>
+		</td>
+   <td>
+Sets value to a string attribute of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingResource', 'SetValues');return false;">SetValues</a>
+		</td>
+   <td>
+Sets values to parameters of the resource object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'AddCorrector');return false;">AddCorrector</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'AddCorrectorObject');return false;">AddCorrectorObject</a>
+		</td>
+   <td>
+Add the defined corrector on the compensation parameters
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingProgram', 'AppendOperation');return false;">AppendOperation</a>
+		</td>
+   <td>
+Inserts a new Manufacturing Operation at the begining of the program.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'CheckToolChanges');return false;">CheckToolChanges</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperation', 'GetActualStockMode');return false;">GetActualStockMode</a>
+		</td>
+   <td>
+Gets the actual stock computation mode.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'GetAlias');return false;">GetAlias</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'GetAttachStatus');return false;">GetAttachStatus</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'GetAuthorizedFatherActivity');return false;">GetAuthorizedFatherActivity</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'GetComment');return false;">GetComment</a>
+		</td>
+   <td>
+ Get comment on activity.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'GetCorrectorFromCorrectorNumber');return false;">GetCorrectorFromCorrectorNumber</a>
+		</td>
+   <td>
+Read corrector from a corrector number
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'GetCorrectors');return false;">GetCorrectors</a>
+		</td>
+   <td>
+Get the list of defined correctors on the compensation parameters
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'GetDiameterValueFromCorrectorNumber');return false;">GetDiameterValueFromCorrectorNumber</a>
+		</td>
+   <td>
+Read Diameter corrector value from a corrector number
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'GetDistanceFromCorrectorNumber');return false;">GetDistanceFromCorrectorNumber</a>
+		</td>
+   <td>
+Get Distance from Tool Tip to compensated Point from a corrector number along Tool Axis
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'GetFeature');return false;">GetFeature</a>
+		</td>
+   <td>
+Returns the manufacturing feature or design feature associated with the manufacturing operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'GetFeatureInContext');return false;">GetFeatureInContext</a>
+		</td>
+   <td>
+Returns the manufacturing feature associated with the manufacturing operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'GetLengthNumberFromCorrectorNumber');return false;">GetLengthNumberFromCorrectorNumber</a>
+		</td>
+   <td>
+Read length corrector Number from a corrector number
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperation', 'GetMachine');return false;">GetMachine</a>
+		</td>
+   <td>
+Retrieves the machine.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperation', 'GetMachineLocalParameters');return false;">GetMachineLocalParameters</a>
+		</td>
+   <td>
+Retrieves the local parameters of machine.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingFactories', 'GetManufacturingActivityFactory');return false;">GetManufacturingActivityFactory</a>
+		</td>
+   <td>
+Retrieves the manufacturing activity factory.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingProgram', 'GetOperations');return false;">GetOperations</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingProgram', 'GetOutputNCRep');return false;">GetOutputNCRep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'GetPartOperation');return false;">GetPartOperation</a>
+		</td>
+   <td>
+Retrieves the part operation of the Activity.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'GetPartOperation');return false;">GetPartOperation</a>
+		</td>
+   <td>
+Associates a product to the Part Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingContainer', 'GetPartOperations');return false;">GetPartOperations</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'GetPatternUsage');return false;">GetPatternUsage</a>
+		</td>
+   <td>
+Get the pattern usage of the activity.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'GetPointFromCorrectorNumber');return false;">GetPointFromCorrectorNumber</a>
+		</td>
+   <td>
+Read corrector point from a corrector number
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'GetProduct');return false;">GetProduct</a>
+		</td>
+   <td>
+Retrieves the product associated to the Part Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'GetProductOccurrence');return false;">GetProductOccurrence</a>
+		</td>
+   <td>
+Retrieves the product associated to the Part Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'GetProgram');return false;">GetProgram</a>
+		</td>
+   <td>
+Retrieves the Program of the Activity.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperation', 'GetPrograms');return false;">GetPrograms</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'GetRadiusNumberFromCorrectorNumber');return false;">GetRadiusNumberFromCorrectorNumber</a>
+		</td>
+   <td>
+Read radius corrector Number from a corrector number
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'GetRotaryPlanes');return false;">GetRotaryPlanes</a>
+		</td>
+   <td>
+Retrieves the rotary planes associated to the Part Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'GetSafetyPlaneSO');return false;">GetSafetyPlaneSO</a>
+		</td>
+   <td>
+Retrieves the safety plane associated to the Part Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'GetTool');return false;">GetTool</a>
+		</td>
+   <td>
+Returns the tool associated with the manufacturing operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'GetToolAndAssembly');return false;">GetToolAndAssembly</a>
+		</td>
+   <td>
+Returns the tool and the tool assembly associated with the manufacturing operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperation', 'GetToolChangeLocation');return false;">GetToolChangeLocation</a>
+		</td>
+   <td>
+Gets the setup parameters defining the Tool Change point.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'GetTopPlaneDirectionInversion');return false;">GetTopPlaneDirectionInversion</a>
+		</td>
+   <td>
+Gets the top plane direction inversion value.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'GetTransitionPlanes');return false;">GetTransitionPlanes</a>
+		</td>
+   <td>
+Retrieves the transition planes associated to the Part Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCorrector', 'GetValues');return false;">GetValues</a>
+		</td>
+   <td>
+Get the values according to a Corrector.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperation', 'InsertNewProgram');return false;">InsertNewProgram</a>
+		</td>
+   <td>
+Creates and insert a Program in the Part Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingProgram', 'MoveOperation');return false;">MoveOperation</a>
+		</td>
+   <td>
+Moves an existing Manufacturing Operation before a reference Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperation', 'MoveProgramAfter');return false;">MoveProgramAfter</a>
+		</td>
+   <td>
+Moves a Program inside the Part Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'RemoveCorrector');return false;">RemoveCorrector</a>
+		</td>
+   <td>
+Remove the defined corrector from the compensation parameters
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'RemoveCorrectors');return false;">RemoveCorrectors</a>
+		</td>
+   <td>
+Remove all the defined correctors from the compensation parameters
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'SetAlias');return false;">SetAlias</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'SetComment');return false;">SetComment</a>
+		</td>
+   <td>
+ Set comment on activity.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingProgram', 'SetCurrentAuthorizedTool');return false;">SetCurrentAuthorizedTool</a>
+		</td>
+   <td>
+Writes the current authorized tool.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCompensation', 'SetDefaultCorrector');return false;">SetDefaultCorrector</a>
+		</td>
+   <td>
+Set the default corrector on the Tool.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'SetFeature');return false;">SetFeature</a>
+		</td>
+   <td>
+Assign a feature to a Manufacturing Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperation', 'SetMachine');return false;">SetMachine</a>
+		</td>
+   <td>
+Replace current machine.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperation', 'SetMachiningAxis');return false;">SetMachiningAxis</a>
+		</td>
+   <td>
+Associates a Machining Axis System feature to the Part Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'SetPatternUsage');return false;">SetPatternUsage</a>
+		</td>
+   <td>
+Set the pattern usage of the activity.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'SetProduct');return false;">SetProduct</a>
+		</td>
+   <td>
+Associates a product to the Part Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'SetSafetyPlaneSO');return false;">SetSafetyPlaneSO</a>
+		</td>
+   <td>
+Set the safety plane associated to the Part Operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivity', 'SetTool');return false;">SetTool</a>
+		</td>
+   <td>
+Associates the tool with the manufacturing operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperation', 'SetToolChangeLocation');return false;">SetToolChangeLocation</a>
+		</td>
+   <td>
+ Set the mathematical definition of the Tool Change point.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingPartOperationPosition', 'SetTopPlaneDirectionInversion');return false;">SetTopPlaneDirectionInversion</a>
+		</td>
+   <td>
+Sets the top plane direction inversion value in order to determine the traverse box position
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingToolCorrector', 'SetValues');return false;">SetValues</a>
+		</td>
+   <td>
+Set the values according to a Corrector.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMSessionBuilderIDLItf', 'interface', 'PLMPropagateService', 'Save');return false;">Save</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMOccurrence', 'InstanceOccurrenceOf');return false;">InstanceOccurrenceOf</a>
+		</td>
+   <td>
+Returns its associated PLM Product Instance.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMOccurrence', 'Occurrences');return false;">Occurrences</a>
+		</td>
+   <td>
+Returns its PLM Product Occurrences collection.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMRootOccurrence', 'ReferenceRootOccurrenceOf');return false;">ReferenceRootOccurrenceOf</a>
+		</td>
+   <td>
+Returns its associated PLM Product Reference.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'VPMEditorContextIDLItf', 'interface', 'PLMProductService', 'ComposeLink');return false;">ComposeLink</a>
+		</td>
+   <td>
+Creates a Link memory object to be used later for persistent Link.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'VPMEditorContextIDLItf', 'interface', 'PLMProductService', 'EditedContent');return false;">EditedContent</a>
+		</td>
+   <td>
+Returns Root entities of active Editor, first of which is the root Product.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'VPMEditorContextIDLItf', 'interface', 'PLMProductService', 'RootOccurrence');return false;">RootOccurrence</a>
+		</td>
+   <td>
+Returns the Root Product Occurrence being edited in current VPM Editor.
+	</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="fill">
+	<tr>
+		<th colspan="2"><a name="NewEnum"></a>New Enums</th>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="fill">
+	<tr>
+		<th colspan="2"><a name="NewProperty"></a>New Properties</th>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="fill">
+	<tr>
+		<th colspan="2"><a name="Modif"></a>Modified Methods and Properties</th>
+	</tr>
+		<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableInContext', 'GetAxisSystemFromMeasurable');return false;">MeasurableInContext::GetAxisSystemFromMeasurable</a>
+		</td>
+		<td>
+		Method didn't work. Signature has been slightly changed to conform to Automation specifications. 
+		Macros that tried to use it don't have to be changed.</td>
+	</tr>
+
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="fill">
+	<tr>
+		<th colspan="2"><a name="Suppress"></a>Removed Objects, Collections, Methods, 
+		and Properties </th>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+</body>
+
+</html>

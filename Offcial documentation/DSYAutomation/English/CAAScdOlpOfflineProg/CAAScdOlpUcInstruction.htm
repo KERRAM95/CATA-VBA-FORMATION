@@ -1,0 +1,468 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Translating an Instruction</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Translating an Instruction</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This example illustrates 
+						how to convert a non-standard robot language instruction 
+						into DELMIA instructions and back again. </p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span><ul>
+							<li>You should have read
+							<a href="CAAScdOlpTaOverview.htm">Robotics Programming Overview</a> and
+							<a href="CAAScdOlpUcTranslator.htm">Customizing a 
+							Translator</a>.</li>
+							<li>You can import a working version of the customized 
+							translator from the file <code><div class=vb_sample_data>MyFanucTranslatorR2016x.3dxml</div></code> 
+							supplied in the folder<br />
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdOlpOfflineProg\samples\</code><br />
+							where <code>InstallRoot</code>Folder
+							is the folder where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="MyIO_SYNCSource.htm">MyIO_SYNCSource.htm</a></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td class="Intro2">
+						<p class="header">This example steps through how to translate 
+						a non-standard FANUC instruction. To illustrate the example, 
+						we have invented a custom FANUC instruction &quot;IO_SYNC&quot;. The 
+						details of the IO_SYNC instruction are explained in
+						<a href="CAAScdOlpUcTranslator.htm">Customizing a Translator</a>.</p>
+							<pre class="code" style="text-align: center">CALL IO_SYNC(&#39;0000000100000000&#39;) ;</pre>
+						<p>We recommend putting all your modifications into new 
+						classes. This way it is clear what code has been customized 
+						and what is part of the DELMIA standard translator. This 
+						will also make it simple to move your customization to a 
+						new version of the DELMIA translator.</p>
+						<p>The translators have been written with Object Oriented 
+						design. With this approach, your class can inherit from 
+						an existing class in the DELMIA translator. You will only 
+						need to write code for your specific customization. This 
+						will make your development faster because you can make use 
+						of existing class methods to do much of the work. This will 
+						also mean that if the standard translator is improved, your 
+						customized class can also benefit.</p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdOlpTaOverview.htm">Robotics Programming Overview</a> </td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdOlpUcTranslator.htm">Customizing a 
+						Translator</a></td>
+					</tr>
+					<tr>
+						<td>
+						<a href="CAAScdOlpUcIntegrate.htm">Integrating Your Customizations</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>The modifications required to translate the IO_SYNC instruction are:</p>
+		<ol>
+			<li><a href="#BaseClass">Determine the Base Class</a></li>
+			<li><a href="#Constructor">Create the constructor</a></li>
+			<li><a href="#Identify">Identify properties and methods to override</a></li>
+			<li><a href="#IO_SYNC">Create the IO_SYNC task</a></li>
+			<li><a href="#UploadProcedure">Overriding UploadProcedure</a></li>
+			<li><a href="#UploadArguments">Overriding UploadArguments</a></li>
+			<li><a href="#AppendArguments">Overriding AppendArguments</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="BaseClass"></a>Determine the Base Class</strong></p>
+			<p>The first step in object oriented design is to plan the relationships 
+			between your classes. In this case we want to create one class to translate 
+			FANUC CALL instruction into a DELMIA run instruction, but only when 
+			the called task is IO_SYNC. Our class has the following behavior:</p>
+			<ul class="task">
+				<li>on upload creates an IO_SYNC procedure if it does not already 
+				exist</li>
+				<li>on upload create a run IO_SYNC instruction from a CALL IO_SYNC 
+				instruction</li>
+				<li>on upload convert the argument from a string to an integer in 
+				binary format</li>
+				<li>on download create a CALL IO_SYNC instruction from a run IO_SYNC 
+				instruction</li>
+				<li>on download convert the argument from an integer in binary format 
+				into a string</li>
+			</ul>
+			<p>Our class takes as input an existing FANUC CALL IO_SYNC instruction 
+			(on upload) or DELMIA run IO_SYNC instruction (on download). It does 
+			not need to identify the type of instruction. Identifying the instruction 
+			type and calling this class when needed is addressed in the use case
+			<a href="CAAScdOlpUcIntegrate.htm">Integrating Your Customizations</a>.</p>
+			<p>The behavior of our class is a specialized version of the FanucCallInstruction 
+			class which is used to translate a normal CALL instruction into a run 
+			instruction. So we will use FanucCallInstruction as our base class.
+			</p>
+			<pre class="code">&lt;CLSCompliant(False)&gt; <span class="keyword">Public</span> <span class="keyword">Class</span> MyIO_SYNC
+    <span class="keyword">Inherits</span> FanucCallInstruction</pre>
+			</li>
+			<li>
+			<p><a name="Constructor"></a><strong>Create the constructor</strong></p>
+			<p>Since our class inherits from FanucCallInstruction, we must have 
+			a constructor with a similar signature. In this case we simply take 
+			the same inputs and pass them to the base class, FanucCallInstruction, 
+			constructor.</p>
+			<pre class="code">    <span class="keyword">Public</span> <span class="keyword">Sub</span> New(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, _
+                    <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, _
+                    <span class="keyword">ByRef</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)
+        MyBase.New(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Sub</span></pre>
+			</li>
+			<li>
+			<p><a name="Identify"><strong></strong></a><strong>Identify the properties 
+			and methods to override</strong></p>
+			<p>By identifying the differences between the normal CALL translation 
+			and the CALL IO_SYNC translation we can identify what behavior we need 
+			to override.</p>
+			<table cellpadding="4">
+				<tr>
+					<td>
+					<p><strong>Method to Override</strong></p>
+					</td>
+					<td>
+					<p><strong>Reason to Override</strong></p>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">
+					<p>UploadProcedure</p>
+					</td>
+					<td>
+					<p>The default behavior is to create a blank task if the called 
+					task does not exist. Instead, we want to create the IO_SYNC 
+					procedure with the correct arguments and instructions.</p>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">
+					<p>UploadArguments</p>
+					</td>
+					<td>
+					<p>We need to convert the string argument into an integer and 
+					validate that the argument is in the expected format.</p>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">
+					<p>AppendArguments</p>
+					</td>
+					<td>
+					<p>This is used on download to create the AST for the arguments. 
+					We need to convert the integer to a string and validate that 
+					the argument is in the expected format.</p>
+					</td>
+				</tr>
+			</table>
+			<p>All other behavior is already included in the FanucCallInstruction 
+			translator, such as creating the run instruction on upload and creating 
+			the CALL instruction AST on download.</p>
+			</li>
+			<li>
+			<p><a name="IO_SYNC"></a><strong>Creating the IO_SYNC task</strong></p>
+			<p>First we will write the function to create the task. This function 
+			will be called if the task does not already exist. You may recall from
+			<a href="CAAScdOlpUcTranslator.htm">Customizing a Translator</a> that 
+			the IO_SYNC task will look like this:</p>
+			<table>
+				<caption><a name="Fig1"></a>Fig.1: IO_SYNC Task</caption>
+				<tr valign="middle">
+					<td valign="top">
+					<img src="CAAScdOlpUseCaseTranslator_IO_SYNC.jpg" alt="Image"/>
+					</td>
+				</tr>
+			</table>
+			<p>We will write a function to create this task. First we create the 
+			task and give it a name.</p>
+			<pre class="code">    <span class="keyword">Protected</span> <span class="keyword">Overridable</span> <span class="keyword">Function</span> CreateIOSYNC()<span class="keyword"> As </span>OlpProcedure
+<span class="keyword">        Dim </span>IO_SYNC<span class="keyword"> As </span>OlpProcedure = Main.TransHelper.Behavior.Procedures.CreateRobotTask()
+        IO_SYNC.Name = <span class="string">&quot;IO_SYNC&quot;</span>
+        ...
+</pre>
+			<p>Then we add the task input argument.</p>
+			<pre class="code">
+        ...
+<span class="keyword">        Dim </span>io_value<span class="keyword"> As </span>OlpVariable = IO_SYNC.LocalVariables.GetOrCreateIO(<span class="string">&quot;io_value&quot;</span>, _
+                                                                            DELOlpDataType.delOlpInteger, _
+                                                                            DELOlpIODirection.delOlpInput)
+        ...
+</pre>
+			<p>Now we need to create the instructions in the task to set the group 
+			output and wait for the group input. But before we do this, we need 
+			to get the external IOs. We assume that IO_SYNC always uses GO[1] as 
+			the output and GI[1] as the input.</p>
+			<pre class="code">
+        ...
+<span class="keyword">        Dim </span>ExternalIO<span class="keyword"> As </span>OlpVariables = Main.TransHelper.Behavior.GlobalVariables
+<span class="keyword">        Dim </span>go1<span class="keyword"> As </span>OlpVariable = ExternalIO.GetOrCreateIO(<span class="string">&quot;GO1&quot;</span>, DELOlpDataType.delOlpInteger, DELOlpIODirection.delOlpOutput)
+<span class="keyword">        Dim </span>gi1<span class="keyword"> As </span>OlpVariable = ExternalIO.GetOrCreateIO(<span class="string">&quot;GI1&quot;</span>, DELOlpDataType.delOlpInteger, DELOlpIODirection.delOlpInput)
+        ...
+</pre>
+			<p>Then we create the set and wait instructions. The last two arguments 
+			to CreateInstruction determine where the instructions are created. We 
+			want to append the instructions to the task so we specify &quot;Nothing&quot; 
+			as the position and &quot;True&quot; to create at the end (instead of the beginning).</p>
+			<pre class="code">
+        ...
+<span class="keyword">        Dim </span>Instructions<span class="keyword"> As </span>OlpInstructions = IO_SYNC.Instructions
+<span class="keyword">        Dim </span>SetOutput<span class="keyword"> As </span>OlpAssign = Instructions.CreateInstruction(DELOlpInstructionType.delOlpAssign, Nothing, True)
+<span class="keyword">        Dim </span>WaitInput<span class="keyword"> As </span>OlpWait = Instructions.CreateInstruction(DELOlpInstructionType.delOlpWait, Nothing, True)
+        ...
+</pre>
+			<p>Next we configure the Set instruction. First, by setting the group 
+			output as the destination of the assignment.</p>
+			<pre class="code">
+        ...
+        SetOutput.Destination = go1
+        ...
+</pre>
+			<p>Then we configure the value that is assigned to the output. The value 
+			can be any expression which is assigned in AST format. DELMIA expressions 
+			have a dedicated AST format which is detailed in
+			<a href="CAAScdOlpTaExpression.htm">OLP Expression Translation</a>. In our 
+			case we want a very simple expression which contains just the input 
+			argument identifier. This is the AST format (expressed as XML) we want 
+			to create:</p>
+			<pre class="code">&lt;<span class="keyword">Expression</span>&gt;
+	&lt;<span class="keyword">Identifier</span>&gt;io_value&lt;<span class="keyword">/Identifier</span>&gt;
+&lt;<span class="keyword">/Expression</span>&gt;</pre>
+			<p>That AST format is created by the following code and then assigned 
+			to the set instruction source.</p>
+			<pre class="code">
+        ...
+<span class="keyword">        Dim </span>SetExpression<span class="keyword"> As </span>OlpAstBranch = Main.TransHelper.AstRoot.CreateBranch(DELOlpAstNodeType.delAstEXPRESSION, <span class="string">&quot;&quot;</span>)
+        SetExpression.AppendLeaf(DELOlpAstNodeType.delAstIDENTIFIER, <span class="string">&quot;&quot;</span>, io_value.Name)
+        SetOutput.Source = SetExpression
+        ...
+</pre>
+			<p>Finally we configure the Wait instruction. The wait expression is 
+			also in AST format. In this case we want to wait for the task input 
+			argument to be equal to the external group input.</p>
+			<pre class="code">&lt;<span class="keyword">BinaryExpression</span>&gt;
+	&lt;<span class="keyword">Identifier</span> id=&quot;Operand1&quot;&gt;GO1&lt;<span class="keyword">/Identifier</span>&gt;
+	&lt;<span class="keyword">Operator</span>&gt;=&lt;<span class="keyword">/Operator</span>&gt;
+	&lt;<span class="keyword">Identifier</span> id=&quot;Operand2&quot;&gt;io_value&lt;<span class="keyword">/Identifier</span>&gt;
+&lt;<span class="keyword">/BinaryExpression</span>&gt;</pre>
+			<p>That AST format is created with the following code. We also set the 
+			WAIT instruction to not timeout.</p>
+			<pre class="code">
+        ...
+        WaitInput.UseTimeout = False
+
+<span class="keyword">        Dim </span>WaitExpression<span class="keyword"> As </span>OlpAstBranch = Main.TransHelper.AstRoot.CreateBranch(DELOlpAstNodeType.delAstBINARYEXP, <span class="string">&quot;&quot;</span>)
+        WaitExpression.AppendLeaf(DELOlpAstNodeType.delAstIDENTIFIER, <span class="string">&quot;Operand1&quot;</span>, gi1.Name)
+        WaitExpression.AppendLeaf(DELOlpAstNodeType.delAstOPERATOR, <span class="string">&quot;&quot;</span>, <span class="string">&quot;=&quot;</span>)
+        WaitExpression.AppendLeaf(DELOlpAstNodeType.delAstIDENTIFIER, <span class="string">&quot;Operand2&quot;</span>, io_value.Name)
+        WaitInput.Condition = WaitExpression
+
+        Return IO_SYNC
+<span class="keyword">    End Function</span></pre>
+			</li>
+			<li>
+			<p><a name="UploadProcedure"><strong></strong></a><strong>Overriding 
+			UploadProcedure</strong></p>
+			<p>We need to call the CreateIOSYNC function if the IO_SYNC task does 
+			not exist. We assume that if it exists that the logic inside the task 
+			is correct. You could improve this macro by validating the IO_SYNC task 
+			logic is correct the first time you upload a CALL IO_SYNC instruction.</p>
+			<pre class="code">
+    <span class="keyword">Public</span> <span class="keyword">Overrides</span> <span class="keyword">Sub</span> UploadProcedure()
+<span class="keyword">        Dim </span>IO_SYNC<span class="keyword"> As </span>OlpProcedure = Nothing
+
+        <span class="comment">&#39; see if the task already exists</span>
+        IO_SYNC = Main.TransHelper.Behavior.Procedures.Item(<span class="string">&quot;IO_SYNC&quot;</span>)
+
+<span class="keyword">        If </span>IO_SYNC Is Nothing<span class="keyword"> Then</span>
+            <span class="comment">&#39; if it does not exist, create it</span>
+            IO_SYNC = CreateIOSYNC()
+<span class="keyword">        End If</span>
+
+        <span class="comment">&#39; set the run instruction to call IO_SYNC</span>
+        RunInstr.Procedure = IO_SYNC
+
+<span class="keyword">    End Sub</span></pre>
+			</li>
+			<li>
+			<p><a name="UploadArguments"><strong></strong></a><strong>Overriding 
+			UploadArguments</strong></p>
+			<p>UploadArguments converts the Arguments AST branch into arguments 
+			for the DELMIA run instruction. The DELMIA run instruction arguments 
+			are also specified as an AST branch. So we need to convert the FANUC 
+			AST format into the expression AST format as described in 
+			<a href="CAAScdOlpTaExpression.htm">OLP Expression Translation</a>.
+			Note that an Abstract Syntax Tree (AST) is different for each language 
+			since it contains a parsed version of the robot program. </p>
+			<p>First we find the FANUC arguments AST branch which is a child of 
+			the CALL instruction AST branch. You can find the full AST format for 
+			the FANUC CALL instruction
+			<a href="CAAScdOlpUcTranslator.htm#DetermineAST">here</a>. We use 
+			the function ExistsChildByType so that we can detect missing arguments. 
+			After finding the argument, we make a copy so we don&#39;t modify the parsed 
+			FANUC AST.</p>
+			<pre class="code">
+    <span class="keyword">Protected</span> <span class="keyword">Overrides</span> <span class="keyword">Sub</span> UploadArguments()
+
+ <span class="keyword">       Dim </span>ArgsNode<span class="keyword"> As </span>OlpAstNode = Nothing
+<span class="keyword">        Dim </span>ExpressionOK<span class="keyword"> As </span>Boolean = False
+<span class="keyword">        If </span>AstInstruction.ExistsChildByType(DELOlpAstNodeType.delAstARGUMENTS, ArgsNode)<span class="keyword"> Then</span>
+<span class="keyword">            Dim </span>ArgsBranch<span class="keyword"> As </span>OlpAstBranch = ArgsNode.Clone
+        ...
+</pre>
+			<p>Then we locate the argument. Again we validate that there is only 
+			one argument and get the argument with ExistsChildByType in case the 
+			CALL IO_SYNC instruction has a syntax error.</p>
+			<pre class="code">
+        ...
+<span class="keyword">            Dim </span>StringNode<span class="keyword"> As </span>OlpAstNode = Nothing
+<span class="keyword">            If </span>ArgsBranch.Count = 1 And ArgsBranch.ExistsChildByType(DELOlpAstNodeType.delAstSTRING, StringNode)<span class="keyword"> Then</span>
+
+                ExpressionOK = True
+        ...
+</pre>
+			<p>We know from the AST format that the argument is an AST leaf node, 
+			so now we need to convert it from a string to an integer. We can change 
+			the AST node type. We also convert &#39;0001000&#39; into 0b0001000 by removing 
+			the quotes and adding &quot;0b&quot;. Then we update the AST value.</p>
+			<pre class="code">
+        ...
+<span class="keyword">                Dim </span>StringLeaf<span class="keyword"> As </span>OlpAstLeaf = StringNode
+                StringLeaf.Type = DELOlpAstNodeType.delAstCONST_INTEGER
+                
+<span class="keyword">                Dim </span>StringValue<span class="keyword"> As </span>String = StringLeaf.Value
+                StringLeaf.Value = <span class="string">&quot;0b&quot;</span> &amp; StringValue.Substring(1, StringValue.Length - 2)
+        ...
+</pre>
+			<p>Finally we set the run instruction arguments if they were in the 
+			correct format or post a warning if they were not.</p>
+			<pre class="code">
+        ...
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+
+<span class="keyword">        If </span>ExpressionOK<span class="keyword"> Then</span>
+            RunInstr.Arguments = ArgsBranch
+        <span class="keyword">Else</span>
+            Main.ErrorReporter.AddMessage(DELOlpMessageType.delOlpWarning, <span class="string">&quot;Invalid arguments in call to IO_SYNC.  There should be 1 string input.&quot;</span>, RunInstr, AstInstruction)
+<span class="keyword">        End If</span>
+
+<span class="keyword">    End Sub</span></pre>
+			</li>
+			<li>
+			<p><a name="AppendArguments"><strong></strong></a><strong>Overriding 
+			AppendArguments</strong></p>
+			<p>This is the method used on download to add the arguments to the AST. 
+			This is the reverse logic of UploadArguments. </p>
+			<p>First we get the run instruction arguments. We do not need to make 
+			a copy because OlpRun.Arguments returns an AST branch that can be modified.</p>
+			<pre class="code">
+    <span class="keyword">Protected</span> <span class="keyword">Overrides</span> <span class="keyword">Sub</span> AppendArguments()
+<span class="keyword">        Dim </span>V6Args<span class="keyword"> As </span>OlpAstBranch = RunInstr.Arguments
+        ...
+</pre>
+			<p>Then we verify that there is only one argument, that the argument 
+			is an integer, and get that argument.</p>
+			<pre class="code">
+        ...
+<span class="keyword">        Dim </span>ExpressionOK<span class="keyword"> As </span>Boolean = False
+<span class="keyword">        If </span>V6Args.Count = 1<span class="keyword"> Then</span>
+<span class="keyword">            Dim </span>Arg1<span class="keyword"> As </span>OlpAstBranch = V6Args.Item(1)
+<span class="keyword">            Dim </span>IntegerNode<span class="keyword"> As </span>OlpAstNode = Nothing
+<span class="keyword">            If </span>Arg1.Count = 1 And Arg1.ExistsChildByType(DELOlpAstNodeType.delAstCONST_INTEGER,IntegerNode)<span class="keyword"> Then</span>
+                ExpressionOK = True
+        ...
+</pre>
+			<p>The integer argument is converted to a string. For details on on 
+			the CovertIntToString method please see the
+			<a href="MyIO_SYNCSource.htm#ConvertIntToString">full source code</a>.</p>
+			<pre class="code">
+        ...
+                ConvertIntToString(IntegerNode)
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+        ...
+</pre>
+			<p>Finally, if the arguments were valid, we add the arguments to the 
+			instruction AST, if not we post a warning.</p>
+			<pre class="code">
+        ...
+<span class="keyword">        If </span>ExpressionOK<span class="keyword"> Then</span>
+            AstInstruction.AppendLeaf(DELOlpAstNodeType.delAstOPERATOR, <span class="string">&quot;&quot;</span>, <span class="string">&quot;(&quot;</span>)
+            AstInstruction.Append(V6Args)
+            AstInstruction.AppendLeaf(DELOlpAstNodeType.delAstOPERATOR, <span class="string">&quot;&quot;</span>, <span class="string">&quot;)&quot;</span>)
+        <span class="keyword">Else</span>
+            Main.ErrorReporter.AddMessage(DELOlpMessageType.delOlpWarning, <span class="string">&quot;Invalid arguments in call to IO_SYNC.  There should be 1 string input.&quot;</span>, RunInstr, AstInstruction)
+<span class="keyword">        End If</span>
+
+<span class="keyword">    End Sub</span></pre>
+			</li>
+		</ol>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

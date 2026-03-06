@@ -1,0 +1,135 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="topictype" content="Uc" />
+    <meta name="devlang" content="idl" />
+    <meta name="devlang" content="idl" />
+    <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+    <title>Frequency Sensor</title>
+    <style type="text/css">
+        .padded td, .padded th
+        {
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+    <table class="table1">
+        <tr>
+            <td class="DocHeader1">
+                <h1>Creating a frequency sensor</h1>
+            </td>
+        </tr>
+        <tr>
+            <td class="DocHeader3" style="width: 1807px">
+                <table class="DocHeaderIntro">
+                    <tr>
+                        <td class="Intro1">
+                            <p class="header">This article explains how to open the results and create a frequency sensor.</p>
+                            <hr class="header" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span class="run-in">Where to find the macro: <a href="CAAScdFeaResultsFrequencySensorSourcePython.htm">CAAScdFeaResultsFrequencySensorSourcePython.htm</a></span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="indented">
+        <tr>
+            <td>
+                <p>This use case can be divided in 7 steps:</p>
+                <ol>
+                    <li><a href="#Step1">Opens the document and retrieves the results analysis case</a></li>
+                    <li><a href="#Step2">Creates a frequency sensor</a></li>
+                    <li><a href="#Step3">Creates the frame selection</a></li>
+                    <li><a href="#Step4">Sets the frame selection attributes</a></li>
+                    <li><a href="#Step5">Sets the frame selection in the sensor</a></li>
+                    <li><a href="#Step6">Updates the sensor</a></li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+    <table class="table1">
+
+        <tr>
+            <td>
+                <ol class="task">
+                    <li>
+                        <p><strong><a name="Step1"></a>Opens the document and retrieves the results analysis case</strong></p>
+                        <p>As a first step, the following code will show how to open the simulation document and retrieve the 
+                            results analysis case. </p>
+                        <a href="CAAScdFeaResultsOpenDocumentPython.htm">Retrieve the analysis case</a>
+                    </li>
+                    <ul></ul>
+                    <li>
+
+                        <p><strong><a name="Step2"></a>Creates a frequency sensor</strong></p>
+                        <p>This step shows how to create a sensor from the results analysis case retrieved from the earlier step.</p>
+                        <pre class="code">...
+oFrequencySensor = oResultsAnalysisCase.CreateFrequencySensor
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step3"></a>Creates the frame selection</strong></p>
+                        <p>Here we create a frame selection object. </p>
+                        <pre class="code">...
+oFrameSelector = oResultsAnalysisCase.CreateFrameSelector()
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step4"></a>Sets the frame selection attributes</strong></p>
+                        <p>In this step we set the frame selection attributes. More options for frames selection can be found at <a href="CAAScdFeaResultsFrameSelectionAPI.htm"> Frames Selection</a></p>
+                        <pre class="code">...
+oFrameSelector.SymbolicFrameRange = ENUM.SimFrequencyFrames
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step5"></a>Sets the frame selection in the sensor</strong></p>
+                        <p>Following code sets the frame selection in the sensor.</p>
+                        <pre class="code">...
+oFrequencySensor.FrameSelector = oFrameSelector
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step6"></a>Updates the sensor</strong></p>
+                        <p>Following code updates the sensor.</p>
+                        <pre class="code">...
+oFrequencySensor.Update()
+...
+</pre>
+
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

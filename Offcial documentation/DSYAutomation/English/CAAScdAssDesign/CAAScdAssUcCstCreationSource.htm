@@ -1,0 +1,120 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates an Assembly Constraint between 2 instances of a basic PAD.</span>
+<span class="comment">'The created constraint is associated to a face of each instance. The pointed faces are identified by their publication</span></pre>
+<pre>
+' </pre>
+<pre>
+<span class="comment">' Each face is defined in an instance</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;EngCntRootProduct&quot;</span>
+<span class="comment">'   2- Retrieves the Root Product</span>
+<span class="comment">'   3- Retrieves the collection of the Engineering Connection</span>
+<span class="comment">'   4- Creates an Engineering Connection between the two instances aggregated by the Root Product</span>
+<span class="comment">'   5- Retrieves the collection of the Assembly Constraints</span>
+<span class="comment">'   6- Creates a distance &quot;plan-plan&quot; constraint between faces identified by their publication</span>
+<span class="comment">'   7- Sets the driving mode</span>
+<span class="comment">'   8- Adds Engineering Connection in Selection object to Diplay it</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Sub </span>CATMain()
+
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="keyword">Dim </span>EngCntEditor<span class="keyword"> As  </span>Editor
+OpenProduct EngCntEditor
+    
+<span class="comment">'   2- Retrieves the VPMReference from the current Editor.</span>
+<span class="keyword">Dim</span> MyPrdService   <span class="keyword">'As </span> MyPrdService
+<span class="keyword">Set</span> MyPrdService = EngCntEditor.GetService(&quot;PLMProductService&quot;)
+<span class="keyword">Dim</span> myRootOccurrence <span class="keyword">'As </span> VPMRootOccurrence
+<span class="keyword">Set</span> myRootOccurrence = MyPrdService.RootOccurrence
+<span class="keyword">Dim</span> myMCXParent <span class="keyword">'As </span> VPMReference
+<span class="keyword">Set</span> myMCXParent = myRootOccurrence.ReferenceRootOccurrenceOf
+
+<span class="comment">'   3- Retrieves the collection of Engineering Connection from a Product Root.</span>
+<span class="keyword">Dim</span> myEngConnections <span class="keyword">'As </span> EngConnections
+<span class="keyword">Set</span> myEngConnections = myMCXParent.GetItem(&quot;CATEngConnections&quot;)
+<span class="keyword">Dim</span> myNewMCX <span class="keyword">'As </span> EngConnection
+
+<span class="comment">'   4- Creates an Engineering Connection between the two instances aggregated by the Product Root.</span>
+<span class="keyword">ReDim</span>  myImpacteds(1) <span class="keyword">'As </span> Collection
+myImpacteds(0) = &quot;Part1.1&quot;
+myImpacteds(1) = &quot;Part1.2&quot;
+<span class="keyword">Set</span> myNewMCX = myEngConnections.Add(catUserDefined, myImpacteds)
+
+<span class="comment">'   5- Retrieves the collection of Assembly Constraints.</span>
+<span class="keyword">Dim</span> myConstraints <span class="keyword">'As </span> AssemblyConstraints
+<span class="keyword">Set</span> myConstraints = myNewMCX.AssemblyConstraints
+
+<span class="comment">'   6- Creates a distance constraint between 2 planar faces identified by their publication.</span>
+<span class="keyword">ReDim</span>  myGeometries(1) <span class="keyword">'As </span> Collection
+myGeometries(0) = &quot;FacePart1.1&quot;
+myGeometries(1) = &quot;FacePart1.2&quot;
+<span class="keyword">Dim</span> myNewAssemblyConstraint11<span class="keyword"><span class="keyword"> 'As </span> </span> AssemblyConstraint
+<span class="keyword">Set</span> myNewAssemblyConstraint11 = myConstraints.Add(catDistancePlanePlane, myGeometries)
+
+<span class="comment">'   7- Sets the Driving Mode for the created constraint.</span>
+myNewAssemblyConstraint11.Mode = catDrivingMode
+myNewAssemblyConstraint11.SetValue 1, 200.0
+
+<span class="comment">'   8- Adds Engineering Connection in Selection object to display it.</span>
+CATIA.ActiveEditor.Selection.Add myNewAssemblyConstraint11</pre>
+<pre>
+&nbsp;</pre>
+<pre>
+
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>OpenProduct(SDDPrdEditor<span class="keyword"> As </span>Editor)
+    <span class="comment">'Search product and open it:</span>
+    <span class="comment">'Get the Search Service</span>
+    <span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> SearchService
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the Product by its Title, use V_Name attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, &quot;EngCntRootProduct&quot; 
+    oSearchService.Search
+
+    <span class="comment">'Retrieve the listed entities</span>
+    <span class="keyword">Dim </span>cPLMEntities<span class="keyword"> As </span>PLMEntities
+    <span class="keyword">Set </span>cPLMEntities = oDBSearch.Results
+    <span class="keyword">If</span> cPLMEntities.Count &lt;&gt; 0 <span class="keyword">Then</span>
+    <span class="keyword">   Set </span>oPLMEntity = cPLMEntities.Item(1)
+    <span class="comment">   'Get the PLMOpen service &amp; Open the first retrieved entity</span>
+    <span class="keyword">   Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">   'Get the editor</span>
+       oPLMOpenService.PLMOpen oPLMEntity, SDDPrdEditor
+    <span class="keyword">End if</span>
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

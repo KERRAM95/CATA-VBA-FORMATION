@@ -1,0 +1,342 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Applying a Material with Domains on a 3D Part</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Applying a Material with Domains on a 3D Part</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and then import and open the <div class=vb_sample_data>CAAScdMat3DPart.3dxml</div> file supplied in the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdMat\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder where the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdMatApplyMatSource.htm">CAAScdMatApplyMatSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdMatTocMaterial.htm">Material Definition Object Model Map</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in twelve steps:</p>
+		<ol>
+			<li><a href="#Step1">Open the 3DPart</a></li>
+			<li><a href="#Step2">Create the compose link used for the apply material</a></li>
+			<li><a href="#Step3">Retrieves the Material Service</a></li>
+			<li><a href="#Step4">Material and Domain Creation</a></li>
+			<li><a href="#Step5">Apply a Covering and Core Material on Root Occurrence</a></li>
+			<li><a href="#Step6">Apply a Covering and Core Material on RepInstance</a></li>
+			<li><a href="#Step7">Apply a Covering and Core Material on Feature</a></li>
+			<li><a href="#Step8">Get Applied-Material on Root Occurrence</a></li>
+			<li><a href="#Step9">Get Applied-Material on RepInstance</a></li>
+			<li><a href="#Step10">Get Applied-Material on Feature</a></li>
+			<li><a href="#Step11">Remove Applied Covering Material</a></li>
+			<li><a href="#Step12">Remove Applied Core Material</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the 3DPart Service</strong></p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>My3DPartService   <span class="keyword">As  </span>PLMNewService
+  <span class="keyword">Set </span>My3DPartService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step1"></a>Search and Open 3DPart (by its Title, using V_Name attribute)</strong></p>
+			<pre class="code">... 
+  <span class="keyword"></span><span>oDBSearch.AddEasyCriteria &quot;V_Name&quot;, &quot;CAAScdMat3DPart&quot; </span>
+  <span class="keyword"></span><span>oSearchService.Search</span>
+  <span class="keyword">Dim </span>MyEditor3DShape   <span class="keyword">As  </span>Editor
+  <span class="keyword">Dim </span>cPLMEntities   <span class="keyword">As  </span>PLMEntities
+  <span class="keyword">Set </span>cPLMEntities <span class="keyword"> </span>= oDBSearch.Results
+
+  <span class="keyword">If cPLMEntities.Count &lt;&gt; 0 Then </span>                 
+    <span class="keyword">Set </span>oPLMEntity <span class="keyword"> </span>= cPLMEntities.Item(1)
+    <span class="keyword">Set </span>oPLMOpenService <span class="keyword"> </span>= CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="keyword">oPLMOpenService.PLMOpen </span>oPLMEntity, <span class="keyword"> </span> MyEditor3DShape 
+  <span class="keyword">End If </span>
+...</pre>
+			</li>					
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the active Object</strong></p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>MyEditor<span class="keyword"> As </span> Part
+  <span class="keyword">Set </span>MyEditor<span class="keyword"> </span>= MyEditor3DShape.ActiveObject
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the VPMRepReference</strong></p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>MyVPMRepRef   <span class="keyword">As  </span>VPMRepReference
+  <span class="keyword">Set </span>MyVPMRepRef   = MyEditor.Parent
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the PartBody</strong></p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>MyPartBody   <span class="keyword">As  </span>Body
+  <span class="keyword">Set </span>MyPartBody   = MyEditor.MainBody
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the Reference of 3DPart</strong></p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>MyRootRef   <span class="keyword">As  </span>VPMReference
+  <span class="keyword">Set </span>MyRootRef   = MyVPMRepRef.Father
+...</pre>			
+			</li>
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the RepInstance</strong></p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>MyRepInstance   <span class="keyword">As  </span>VPMRepInstance
+  <span class="keyword">Dim </span>ListInstance    <span class="keyword">As  </span>VPMRepInstances
+  <span class="keyword">Set </span>ListInstance    = MyRootRef.RepInstances
+  <span class="keyword">Set </span>MyRepInstance   = ListInstance.Item(1)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the Product Service</strong></p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>MyProductService   <span class="keyword">As  </span>PLMNewService
+  <span class="keyword">Set </span>MyProductService   = CATIA.GetSessionService(&quot;PLMProductService&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the Root Occurrence</strong></p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>MyVPMRootOcc   <span class="keyword">As  </span>VPMRootOccurrence
+  <span class="keyword">Set </span>MyVPMRootOcc   = MyProductService.RootOccurrence
+...</pre>
+			</li>			
+			<li>
+			<p><strong><a name="Step2"></a>Create the compose link used for the apply material</strong></p>
+			<p>The apply material can be done on Root Occurrence, RepInstance or PartBody. For each case, you need to compose a link that points a target :
+			  </p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>NoRef      <span class="keyword">As  </span>VPMReference
+  <span class="keyword">Dim </span>NoRepInst  <span class="keyword">As  </span>PLMEntity
+  <span class="keyword">Dim </span>NoOcc      <span class="keyword">As  </span>VPMOccurrence
+...</pre>
+			<p>&nbsp;&nbsp;&nbsp;&nbsp; - Root Occurrence :&nbsp; the 
+			RepInstance and Reference have to be NULL</p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>myLinkOnRootOcc <span class="keyword"> As </span>AnyObject
+  <span class="keyword">Set </span>myLinkOnRootOcc  = MyProductService.ComposeLink(MyVPMRootOcc, Nothing, Nothing)
+...</pre>
+   			<p>&nbsp;&nbsp;&nbsp;&nbsp; - RepInstance :&nbsp; the VPMReference
+			and Reference have to be NULL</p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>myLinkOnRepInst   <span class="keyword">As </span>AnyObject
+  <span class="keyword">Set </span>myLinkOnRepInst   = MyProductService.ComposeLink(Nothing, MyRepInstance, Nothing)
+...</pre>
+
+   			<p>&nbsp;&nbsp;&nbsp;&nbsp; - Feature (PartBody, ...) : the VPMReference has to be NULL, but not the RepInstance.
+          <br />
+          In automation, the feature is a CATIAReference, you have to not confuse it with 
+          VPMReference.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>myLinkOnFeature  <span class="keyword">As </span>AnyObject
+  <span class="comment">' Create a CATIAReference from Object ( as Body, etc ...)</span>
+  <span class="keyword">Set </span>MyReference      = MyEditor.CreateReferenceFromObject(MyPartBody)
+  <span class="keyword">Set </span>myLinkOnFeature  = MyProductService.ComposeLink(Nothing, MyRepInstance, MyReference)
+...</pre>
+			</li>			
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves the Material Service</strong></p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>MatService   <span class="keyword">As  </span>MATPLMService
+  <span class="keyword">Set </span>MatService   = CATIA.GetSessionService(&quot;MATPLMService&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Material and Domain Creation</strong></p>
+			<p>
+			The material and domain creation is not described in this page. You can found it in <a href="CAAScdMatCreateMat.htm#Step2">CAAScdMatCreateMat.htm.</a></p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Apply a Covering and Core Material on Root Occurrence</strong></p>
+			<p>Before that you need to compose your link thanks to Product Service. <a href="#Step2">here</a></p>
+			<pre class="code">...
+  <span class="keyword">Dim </span>MyCoveringAppliedMat   <span class="keyword">As</span> AppliedMaterial
+  <span class="keyword">Dim </span>MyCoreAppliedMat       <span class="keyword">As </span>AppliedMaterial
+  
+  <span class="comment">' Apply covering material on Root Occurrence</span>
+  <span class="code">MatService.SetMaterialCovering myLinkOnRootOcc, MyCoveringMatRef, MyCoveringAppliedMat</span>
+  
+  <span class="comment">' Apply core material on Root Occurrence</span>
+  <span class="code">MatService.SetMaterialCore myLinkOnRootOcc, MyCoreMatRef, MyCoreAppliedMat</span>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Apply a Covering and Core Material on RepInstance</strong></p>
+			<p>Before that you need to compose your link thanks to Product Service. <a href="#Step2">here</a></p>
+			<pre class="code">...
+  <span class="keyword">Dim </span>MyCoveringAppliedMat   <span class="keyword">As </span>AppliedMaterial
+  <span class="keyword">Dim </span>MyCoreAppliedMat       <span class="keyword">As </span>AppliedMaterial
+  
+  <span class="comment">' Apply covering material on RepInstance</span>
+  <span class="code">MatService.SetMaterialCovering myLinkOnRepInst, MyCoveringMatRef, MyCoveringAppliedMat</span>
+  
+  <span class="comment">' Apply core material on RepInstance</span>
+  <span class="code">MatService.SetMaterialCore myLinkOnRepInst, MyCoreMatRef, MyCoreAppliedMat</span>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Apply a Covering and Core Material on Feature</strong></p>
+			<p>Before that you need to compose your link thanks to Product Service. <a href="#Step2">here</a></p>
+			<pre class="code">...
+  <span class="keyword">Dim </span>MyCoveringAppliedMat   <span class="keyword">As</span> AppliedMaterial
+  <span class="keyword">Dim </span>MyCoreAppliedMat       <span class="keyword">As</span> AppliedMaterial
+  
+  <span class="comment">' Apply covering material on PartBody</span>
+  <span class="code">MatService.SetMaterialCovering myLinkOnFeature, MyCoveringMatRef, MyCoveringAppliedMat</span>
+  
+  <span class="comment">' Apply core material on PartBody</span>
+  <span class="code">MatService.SetMaterialCore myLinkOnFeature, MyCoreMatRef, MyCoreAppliedMat</span>
+...</pre>
+			</li>			
+			<li>
+			<p><strong><a name="Step8"></a>Get Applied-Material on Root Occurrence</strong></p>
+			<p>Before that you need to compose your link thanks to Product Service. <a href="#Step2">here</a></p>
+			<pre class="code">...
+  <span class="comment">' Materials and Applied-Material for Covering Material</span>
+  <span class="keyword">Dim </span>MyCoveringMatRefList      <span class="keyword">As </span>ListObject
+  <span class="keyword">Dim </span>MyCoveringAppliedMatList  <span class="keyword">As </span>AppliedMaterials
+  <span class="comment">' Applied-Material for Core Material</span>
+  <span class="keyword">Dim </span>MyCoreAppliedMat          <span class="keyword">As</span> AppliedMaterial
+  
+  <span class="comment">' Get Covering Material and Applied-Material on Root Occurrence</span>
+  <span class="code">MatService.GetMaterialCovering myLinkOnRootOcc, MyCoveringMatRefList, MyCoveringAppliedMatList</span>
+  
+  <span class="comment">' Get Core Material and Applied-Material on Root Occurrence</span>
+  <span class="code">MatService.GetMaterialCore myLinkOnRootOcc, MyCoreMatRef, MyCoreAppliedMat</span>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step9"></a>Get Applied-Material on RepInstance</strong></p>
+			<p>Before that you need to compose your link thanks to Product Service. <a href="#Step2">here</a></p>
+			<pre class="code">...
+  <span class="comment">' Materials and Applied-Material for Covering Material</span>
+  <span class="keyword">Dim </span>MyCoveringMatRefList      <span class="keyword">As </span>ListObject
+  <span class="keyword">Dim </span>MyCoveringAppliedMatList  <span class="keyword">As </span>AppliedMaterials
+  <span class="comment">' Applied-Material for Core Material</span>
+  <span class="keyword">Dim </span>MyCoreAppliedMat          <span class="keyword">As</span> AppliedMaterial
+    
+  <span class="comment">' Get Covering Material and Applied-Material on RepInstance</span>
+  <span class="code">MatService.GetMaterialCovering myLinkOnRepInst, MyCoveringMatRefList, MyCoveringAppliedMatList</span>
+  
+  <span class="comment">' Get Core Material and Applied-Material on RepInstance</span>
+  <span class="code">MatService.GetMaterialCore myLinkOnRepInst, MyCoreMatRef, MyCoreAppliedMat</span>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step10"></a>Get Applied-Material on Feature</strong></p>
+			<p>Before that you need to compose your link thanks to Product Service. <a href="#Step2">here</a></p>
+			<pre class="code">...
+  <span class="comment">' Materials and Applied-Material for Covering Material</span>
+  <span class="keyword">Dim </span>MyCoveringMatRefList      <span class="keyword">As </span>ListObject
+  <span class="keyword">Dim </span>MyCoveringAppliedMatList  <span class="keyword">As </span>AppliedMaterials
+  <span class="comment">' Applied-Material for Core Material</span>
+  <span class="keyword">Dim </span>MyCoreAppliedMat          <span class="keyword">As</span> AppliedMaterial
+    
+  <span class="comment">' Get Covering Material and Applied-Material on Feature</span>
+  <span class="code">MatService.GetMaterialCovering myLinkOnFeature, MyCoveringMatRefList, MyCoveringAppliedMatList</span>
+  
+  <span class="comment">' Get Core Material and Applied-Material on Feature</span>
+  <span class="code">MatService.GetMaterialCore myLinkOnFeature, MyCoreMatRef, MyCoreAppliedMat</span>
+...</pre>
+		</li>
+			<li>
+			<p><strong><a name="Step11"></a>Remove Applied Covering Material</strong></p>
+			<pre class="code">...
+  <span class="comment">' Materials and Applied-Material for Covering Material</span>
+  <span class="keyword">Dim </span>MyCoveringAppliedMat      <span class="keyword">As</span> AppliedMaterial
+  <span class="keyword">Dim </span>MyCoveringMatRefList      <span class="keyword">As </span>ListObject
+  <span class="keyword">Dim </span>MyCoveringAppliedMatList  <span class="keyword">As </span>AppliedMaterials
+             
+  <span class="comment">' Get Covering Material and Applied-Material on Feature</span>
+  <span class="code">MatService.GetMaterialCovering myLinkOnFeature, MyCoveringMatRefList, MyCoveringAppliedMatList</span>
+  
+  <span class="comment">' Get the first Applied-Material of list</span>
+  <span class="keyword">Set </span>MyCoveringAppliedMat = MyCoveringAppliedMatList.Item(1)
+  
+  <span class="comment">' Remove the applied covering material</span>
+  <span class="code">MatService.RemoveAppliedMaterial MyCoveringAppliedMat</span>
+...</pre>
+		</li>
+			<li>
+			<p><strong><a name="Step12"></a>Remove Applied Core Material</strong></p>
+			<pre class="code">...
+  <span class="comment">' Applied Coe Material and Core Material</span>
+  <span class="keyword">Dim </span>MyCoreAppliedMat  <span class="keyword">As</span> AppliedMaterial
+  <span class="keyword">Dim </span>MyCoreMatRef      <span class="keyword">As </span>Material
+  
+  <span class="comment">' Get Core Material and Applied Core Material</span>
+  <span class="code">MatService.GetMaterialCore myLinkOnFeature, MyCoreMatRef, MyCoreAppliedMat</span>
+  
+  <span class="comment">' Remove the applied core material</span>
+  <span class="code">MatService.RemoveAppliedMaterial MyCoreAppliedMat</span>
+...</pre>
+		  </li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

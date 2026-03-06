@@ -1,0 +1,339 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocScript.js">/* */</script>
+<title>Using ComposeLink method</title>
+</head>
+
+<body onload="initCode();highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Using ComposeLink method</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This article explains how to use the ComposeLink method of the PLMProductService object. It will show the different way to create a link memory object in Python.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2" style="height: 110px"><span class="run-in">Before you begin:</span> 
+					<ul>
+						<li>Launch CATIA and then import and 
+						open the
+						<code><div class=vb_sample_data>CAAScdFeaPumpModel.3dxml</div></code> file supplied in 
+						the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaScenario\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder where 
+						the API CD-ROM is installed.</li>
+						<li>Launch the structural scenario App and create a structural simulation.</li>
+						<li>Make sure that you have all of the licenses required for launching execution and perform a solve operation in the interactive session for a similar simulation to confirm the licenses.</li>
+					</ul>
+					<p><span class="run-in">Where to find the macro: <a href="CAAScdFeaComposeLinkWithPublicationInPythonSource.htm">
+					CAAScdFeaComposeLinkWithPublicationInPythonSource.htm</a></span></p>
+                    <p><span class="run-in">Where to find the macro: <a href="CAAScdFeaComposeLinkWithoutPublicationInPythonSource.htm">
+					CAAScdFeaComposeLinkWithoutPublicationInPythonSource.htm</a></span></p>
+
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided into seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the simulation and its product</a></li>
+			<li><a href="#Step2">Creates link</a></li>
+			<li><a href="#Step3">Associates representation to FEM</a></li>
+			<li><a href="#Step4">Creates a Shell section</a></li>
+			<li><a href="#Step5">Sets the shell section attributes</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the simulation and its product</strong></p>
+			<p>As a first step, the UC retrieves the active editor and retrieves the simulation model.</p>
+<div class="codeSample">
+<table>
+<tr>
+<th>Using Publication</th>
+<th>Without Publication</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- Using Publication -->
+<pre class="code">... 
+<span class="comment"># As a first step, retrieve the simulation editor which is the actived one</span>
+myEditor = CATIA.ActiveEditor
+
+<span class="comment"># Then retrieve the product service</span>
+myProdService = myEditor.GetService("PLMProductService")
+
+<span class="comment"># Retrieve the Root Occurrence</span>
+myRootOccurrence = myProdService.RootOccurrence
+...
+</pre>
+</div>
+<div>
+<!-- Without Publication -->
+<pre class="code">...
+<span class="comment"># As a first step, retrieve the simulation editor which is the actived one</span>
+myEditor = CATIA.ActiveEditor
+
+<span class="comment"># Then retrieve the product service</span>
+myProdService = myEditor.GetService("PLMProductService")
+
+<span class="comment"># Retrieve the PLMEntities</span>
+myEntities = myProdService.EditedContent
+
+<span class="comment"># Now retrieve the PLMEntity</span>
+myEntity = myEntities.Item(1)
+
+<span class="comment"># Get the simulation Root</span>
+MySimulationRoot = myEntity
+
+<span class="comment"># Now retrieve the Model</span>
+myModel = MySimulationRoot.Model
+
+<span class="comment"># UC Opens now the model to retrieve the root occurrence.</span>
+<span class="comment"># The root occurrence has to be retrieved to access to the part occurences.</span>
+
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+
+myProductEditor = CATIA.ActiveEditor
+MyProductService = myProductEditor.GetService("PLMProductService")
+
+myRootOccurrence = MyProductService.RootOccurrence
+...</pre>
+</div>
+</div>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Creates link</strong></p>
+			<p> In this step, the UC retrieves usefull data to compose link to the support.</p>
+			<p> The created link, 
+			a 3D Shape in this case, is used to associate the Pipe part to the FemRep.</p>
+			
+			<img alt="FemRep" height="308" src="images/FemRep.png" width="516"/>
+			<div class="codeSample">
+<table>
+<tr>
+<th>Using Publication</th>
+<th>Without Publication</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- Using Publication -->
+<pre class="code">...
+<span class="comment"># retrieve the publications set</span>
+myPublications = myRootOccurrence.ReferenceRootOccurrenceOf.Publications
+
+<span class="comment"># retrieve the Pipe_Extrude publication, it is a 3D Shape</span>
+myPublication = myPublications.GetItem("Pipe_Extrude")
+
+<span class="comment"># Create the link with ComposeLink method.</span>
+<span class="comment"># As we use publication, we do not need to give the representation instance as the publication is under the product reference.</span>
+<span class="comment"># Set as third argument the retrieved publication defining the feature needed to be linked</span>
+myLink = myProdService.ComposeLink(myRootOccurrence, None, myPublication)
+...</pre>
+<p>Used publication is aggregated to the part wanted to be associated and the 
+publication points a 3D Shape element. So it has the exact path of the needed 3D Shape.</p>
+
+	<img alt="" height="605" src="images/PublicationCase.png" width="604"/></div>
+<div>
+<!-- Without Publication -->
+<pre class="code">...
+<span class="comment"># To create the correct link, retrieve the part occurence, needed for the first argument</span>
+<span class="comment"># Retrieve the part rep instance, needed for the second argument</span>
+<span class="comment"># Creates a reference for the 3D Shape object needed for the third argument</span>
+<span class="comment"># Be aware to retrieve the part occurence and the part rep instance to whom the 3D Shape is associated</span>
+</pre>
+<p><img alt="" height="436" src="images/Pipe_ChildPartOccurrence_V2.png" width="496"/></p>
+<pre class="code">
+<span class="comment"># Retrieve the ws3_pipe_neutral_fiber_part.1 part occurrence</span>
+iMaxCnt = myRootOccurrence.Occurrences.Count
+
+<span class="keyword">for</span> index <span class="keyword">in</span> <span class="keyword">range</span>(1, iMaxCnt+1):
+    <span class="keyword">if</span> myRootOccurrence.Occurrences.Item(index).Name == "ws3_pipe_neutral_fiber_part.1":
+       myPartOccurrence = myRootOccurrence.Occurrences.Item(index)
+
+<span class="comment"># Retrieve the ws3_pipe_neutral_fiber_part.1 part rep instance</span>
+myPartInstance = myPartOccurrence.InstanceOccurrenceOf
+myPartInstanceRef = myPartInstance.ReferenceInstanceOf
+myPartRepInstance = myPartInstanceRef.RepInstances.Item(1)
+
+<span class="comment"># Retrieve the ws3_pipe_neutral_fiber_part.1 part body</span>
+myPartRepInstanceRef = myPartRepInstance.ReferenceInstanceOf
+myPart = myPartRepInstanceRef.GetItem("Part")
+myPartBody = myPart.MainBody
+
+<span class="comment"># Retrieve the 3D shape Extrude.1</span>
+myExtrude = myPart.FindObjectByName("Extrude.1")
+myReference = myPart.CreateReferenceFromObject(myExtrude)
+
+<span class="comment"># Create the link with ComposeLink method.</span>
+myLink = myProdService.ComposeLink(myPartOccurrence, myPartRepInstance, myReference)
+...</pre>
+<p><b>Important :</b> </p>
+<p>To retrieve the needed path throught the compose link method, correct arguments 
+have to been gived.</p>
+<p>As First argument, it is necessary to give the 
+part occurence because sometimes the root occurrence could have two same part as 
+child occurrence. Due to this, created myReference argument is difficult to 
+locate correctly, even if the correct PartRepInstance is given, the reference 
+will be the same for each same object. See an example on the image below.</p>
+
+	<img alt="" height="639" src="images/PumpModelChildOccurrence.png" width="579"/></div>
+
+</div>
+						</li>
+			<li>
+				<p><strong><a name="Step3"></a>Associates representation to FEM</strong></p>
+				<p>In this step, UC creates the FEM rep and associates the representation to it</p>
+<div class="codeSample">
+<table>
+<tr>
+<th>Using Publication</th>
+<th>Without Publication</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- Using Publication -->
+<pre class="code">...
+<span class="comment"># retrieve the Product representation factory to create a FEM</span>
+MyPrdRepFactory = myModel.GetItem("SimPrdRepFactory")
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep("FEM")
+MyFemRepRoot = MyFemRepRef.GetItem("SimFemRoot")
+
+<span class="comment"># Add link to the FEM rep</span>
+MyFemRepRoot.AddAssociatedRep (myLink)
+
+...</pre>
+</div>
+<div>
+<!-- Without Publication -->
+<pre class="code">...
+<span class="comment"># retrieve the Product representation factory to create a FEM</span>
+MyPrdRepFactory = myModel.GetItem("SimPrdRepFactory")
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep("FEM")
+MyFemRepRoot = MyFemRepRef.GetItem("SimFemRoot")
+
+<span class="comment"># Add link to the FEM rep</span>
+MyFemRepRoot.AddAssociatedRep (myLink)
+...</pre>
+</div>
+</div>
+<p><b>Important :</b> When using publication, we do not need to create a link in memory. The publication can directly be setted as argument</p>
+<p>MyFemRepRoot.AddAssociatedRep (myPublication)</p>
+
+							</li>
+			<li>
+				<p><strong><a name="Step4"></a>Creates a Shell section</strong></p>
+				<p>In this step, UC creates shell section</p>
+<div class="codeSample">
+<table>
+<tr>
+<th>Using Publication</th>
+<th>Without Publication</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- Using Publication -->
+<pre class="code">...
+<span class="comment"># Retrieve the properties set </span>
+myPropertiesSet = MyFemRepRoot.GetSet("SimProperties")
+
+<span class="comment"># Create individual properties</span>
+myShellSection = myPropertiesSet.Add("SimShellSection")
+...</pre>
+</div>
+<div>
+<!-- Without Publication -->
+<pre class="code">...
+<span class="comment"># Retrieve the properties set </span>
+myPropertiesSet = MyFemRepRoot.GetSet("SimProperties")
+
+<span class="comment"># Create individual properties</span>
+myShellSection = myPropertiesSet.Add("SimShellSection")
+...</pre>
+</div>
+</div>
+			</li>
+			<li>
+				<p><strong><a name="Step5"></a>Set the shell section attributes</strong></p>
+				<p>In this step, UC sets attributes to the created shell section</p>
+<div class="codeSample">
+<table>
+<tr>
+<th>Using Publication</th>
+<th>Without Publication</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- Using Publication -->
+<pre class="code">...
+<span class="comment"># Set the section support</span>
+myLinkAccess = myShellSection.GetItem("SimLinkAccess")
+<span class="comment"># Add the link created before</span>
+myLinkAccess.AddLink ("MainSupport", myLink)
+myShellSection.UniformThickness = 1.0
+...</pre>
+</div>
+<div>
+<!-- Without Publication -->
+<pre class="code">...
+<span class="comment"># Set the section support</span>
+myLinkAccess = myShellSection.GetItem("SimLinkAccess")
+<span class="comment"># Add the link created before.</span>
+myLinkAccess.AddLink ("MainSupport", myLink)
+myShellSection.UniformThickness = 1.0
+...</pre>
+</div>
+</div>
+<p><b>Important :</b> When using publication, we do not need to create a link in memory. The publication can directly be setted as argument</p>
+<p>myLinkAccess.AddLink ("MainSupport", myPublication)</p>
+
+			</li>
+			
+	</ol>
+	</td>
+	</tr>
+</table>	
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

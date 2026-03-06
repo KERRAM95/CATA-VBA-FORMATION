@@ -1,0 +1,332 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATMultiLayerIDLItf MLPSimuLayer (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATMultiLayerIDLItf.htm" href="../CATMultiLayerIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATMultiLayerIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "MLPSimuLayer"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> MLPSimuLayer<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_MLPSimuLayer_26597','MLPSimuLayer','0');</script>
+<section id='maindesc'>
+<b><i> CATIAMLPSimuLayer
+ <b>Role</b>:Represents CATIAMLPSimuLayer  that allow to query on Layer entity.</i></b><br>
+. 
+ <dl>
+ <dt>Example:</dt>
+ <dd>
+ This example illustrates how to call CATIAMLPSimuLayer interfaces .
+ </dd> 
+ <dd>
+ <pre>
+  Dim Layer As MLPSimuLayer
+		Set Layer = listOfLayers.Item(I)
+
+
+		Debug.Print "--------------------------------------------"
+		Debug.Print "Name : " & Layer.Name
+		Debug.Print "IsGlue : " & Layer.IsGlue
+		Debug.Print "IsGridOrProfile : " & Layer.IsGridOrProfile
+
+
+'MATERIAL INFORMATION
+		If Layer.HasMaterial = True Then
+
+			Dim LayerMaterial As PLMEntity
+			Set LayerMaterial = Layer.LayerMaterial
+			Debug.Print "Name Of Material : " & LayerMaterial.Name
+			Debug.Print "Thickness : " & Layer.ThicknessValue
+
+		End If
+'GLUE INFORMATION (Relation Layer & Mechanical Bond)
+		If Layer.IsGlue = True Then
+
+			Debug.Print "Type glue : " & Layer.TypeOfGlue
+				Dim ListGluedLayer As MLPSimuLayers
+				Set ListGluedLayer = StackingSimuService.GetGluedLayers(Layer)
+				For J = 1 To ListGluedLayer.Count
+
+					Dim LayerIsGlued As MLPSimuLayer
+					Set LayerIsGlued = ListGluedLayer.Item(J)
+					Debug.Print "  - GluedLayers : " & LayerIsGlued.Name
+				Next
+		Else
+
+'AXIS SYSTEM
+			Dim AxisLayer As AxisSystem
+			Set AxisLayer = Layer.LayerAxisSystem
+			Debug.Print "Name Axis : " & AxisLayer.Name
+
+		End If
+ </pre>
+ </dd>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#GluedLayers"><b>GluedLayers</b></a>
+</td><td  id='tdright'>  Returns the list of glued layers by the current layer.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#HasMaterial"><b>HasMaterial</b></a>
+</td><td  id='tdright'>  Returns if the current layer have a material.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IsElastic"><b>IsElastic</b></a>
+</td><td  id='tdright'>  Returns if the Layer is an elastic.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IsGlue"><b>IsGlue</b></a>
+</td><td  id='tdright'>  Returns if the Layer is a Glue.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IsGridOrProfile"><b>IsGridOrProfile</b></a>
+</td><td  id='tdright'>  Returns if the Layer is a grid or a profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#LayerAxisSystem"><b>LayerAxisSystem</b></a>
+</td><td  id='tdright'>  Returns the axis system of a Layer.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#LayerMaterial"><b>LayerMaterial</b></a>
+</td><td  id='tdright'>  Returns the material reference of a current layer.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#StretchRatio"><b>StretchRatio</b></a>
+</td><td  id='tdright'>  Returns the value of the stretch ratio if the layer is an elastic.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ThicknessValue"><b>ThicknessValue</b></a>
+</td><td  id='tdright'>  Returns thickness of a Layer.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TypeOfGlue"><b>TypeOfGlue</b></a>
+</td><td  id='tdright'>  Returns the type of Glue.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GluedLayersAtPosition"><b>GluedLayersAtPosition</b></a>
+</td><td  id='tdright'>  Returns the list of glued layers by the current layer.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="GluedLayers"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>GluedLayers</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIACollection','CATIACollection')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the list of glued layers by the current layer.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oListOfGluedLayers</span></dt>
+   <dd>   The list of glued layers by the current layer
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="HasMaterial"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>HasMaterial</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns if the current layer have a material.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oHasMaterial</span></dt>
+   <dd>   The method returns true if the layer have a material
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="IsElastic"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IsElastic</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns if the Layer is an elastic.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oIsElastic</span></dt>
+   <dd>   If the method return true, the Layer is an elastic
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="IsGlue"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IsGlue</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns if the Layer is a Glue.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oIsGlue</span></dt>
+   <dd>   If the method return true, the Layer is a Glue
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="IsGridOrProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IsGridOrProfile</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns if the Layer is a grid or a profile.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oIsGridOrProfile</span></dt>
+   <dd>   If the method return true, the Layer is a grid or profile
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="LayerAxisSystem"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>LayerAxisSystem</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAAxisSystem','CATIAAxisSystem')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the axis system of a Layer.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oAxisSystem</span></dt>
+   <dd>   Axis System of the current Layer
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="LayerMaterial"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>LayerMaterial</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAPLMEntity','CATIAPLMEntity')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the material reference of a current layer.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oMaterial</span></dt>
+   <dd>   The material applied to the current layer
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="StretchRatio"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>StretchRatio</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the value of the stretch ratio if the layer is an elastic.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oStretchRatio</span></dt>
+   <dd>   The method returns the strech ratio
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="ThicknessValue"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ThicknessValue</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns thickness of a Layer.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oThickness</span></dt>
+   <dd>   Thickness of the current Layer
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="TypeOfGlue"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TypeOfGlue</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the type of Glue.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oGlueType</span></dt>
+   <dd>   The method returns the type of the current glue layer
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GluedLayersAtPosition"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GluedLayersAtPosition</span><span class='signature'>(<script type="text/javascript"> activateLink('float','float')</script> <span class='param'>iX</span>,<script type="text/javascript"> activateLink('float','float')</script> <span class='param'>iY</span>,<script type="text/javascript"> activateLink('float','float')</script> <span class='param'>iZ</span>)</span> As <script type="text/javascript"> activateLink('CATIACollection','CATIACollection')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the list of glued layers by the current layer.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oListOfGluedLayers</span></dt>
+   <dd>   The list of glued layers by the current layer
+ 
+ </ dd>
+    <dt><span class='paramitem'> iX</span></dt>
+   <dd>   Position X
+ 
+ </ dd>
+    <dt><span class='paramitem'> iY</span></dt>
+   <dd>   Position Y
+ 
+ </ dd>
+    <dt><span class='paramitem'> iZ</span></dt>
+   <dd>   Position Z
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

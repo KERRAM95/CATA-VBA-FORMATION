@@ -1,0 +1,176 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Navigating Product Model</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Navigating Product Model</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article gives brief introduction to navigating Product model. 
+		Article introduces object structure and APIs to navigate through product 
+		model, this navigation includes Occurrence model as well Reference-Instance Model 
+		navigation. In addition this article gives way to switching objects 
+		occurrence model to Ref-Inst model.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Introduction"></a>Introduction</h2>
+<p>In order to navigate or edit a data model there are some API's exposed by the 
+Automation Interfaces. This 
+article explains how to navigate on a Reference-Instance Model and on an Occurrence structure. 
+In addition it explains how to jump from the Occurrence Model to the 
+Reference-Instance model. 
+For understanding of this article user need to read article "Product Modeler Overview" [<a href="#References">1</a>]&nbsp;which 
+explains Occurrence and Reference-Instance model in detail.</p>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="VPMOccurrence"></a>Navigating a VPM Occurrence Structure</h2>
+<p>This section explains how to navigate on a <em>VPMOccurrence</em> structure, starting from the 
+Root Occurrence to a terminal Occurrence.</p>
+<p>From an occurrence it is possible to retrieve the Reference-Instance Model corresponding object (<em>VPMInstance</em>/<em>VPMReference</em>) and continue the navigation through the product model.</p>
+<p>Navigating Occurrence Model basically means navigating through or retrieving 
+every occurrence which is part of the hierarchy or the tree structure of the 
+Occurrence model.</p>
+<p>This navigation includes logical steps<br />
+<strong>i)</strong> To find or retrieve Product Root Occurrence from VPM editor 
+(logically speaking: to work on some object first you need to retrieve it).</p>
+<p>
+<strong>ii)</strong> Once we find the Root-Occurrence, we list all the child-occurrences under the Root 
+Occurrence using the property Occurrences exposed by the <em>VPMRootOccurrence</em> 
+Interface.</p>
+<p>
+<strong>iii)</strong> Now all the child-occurrences found may still have further 
+children. In order to list these children, we run a loop where all the 
+above found list of child-occurrences are each navigated recursively. The list 
+of children found is stored in the object of <em>VPMOccurrence</em> [<a href="#References">2</a>].</p>
+<p>
+<img alt="" src="CAAScdPstTaNavigatingProduct_image3_occ.jpg" width="291" height="332"/></p>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Reference-Instance"></a>Navigating the 
+Reference-Instance model or VPM Product Structure</h2>
+<p>This section exposes how to navigate on a Reference-Instance model, starting from the root product to a terminal representation by following the 
+Instance&#8211;Reference model.
+From a Representation it is possible to jump to the applicative automation model included inside the stream associated to this representation and then continue the navigation through this data. 
+To implement this operation, each entities of the product structure modeler (Reference, instance , Representation reference,  
+Representation Instance, Port) expose an Automation Interface.</p>
+<p>Navigating through the Reference-Instance basically means navigation thorough 
+or retrieving the Reference-Instance modeler entities (Reference, Instance , 
+Representation Reference, Representation Instance).</p>
+<p>
+<img alt="" src="CAAScdPstTaNavigatingProduct_image2_repinst.jpg" width="288" height="449"/></p>
+<p>In order to navigate Reference-Instance Model:<br />
+<br />
+<strong>i)</strong> We need to retrieve the Root-Reference of the product. But 
+there's no API/Index available as such which will directly retrieve the 
+Root-Reference of the Reference-Instance structure. This is because in case of UserInterface we have to retrieve the Root from the editor, and from editor we 
+can retrieve only Occurrence Root and not Root-Reference.</p>
+<p>
+<strong>ii)</strong> Hence we first retrieve the Root Product Occurrence (as in 
+case of while navigating the occurrence model). Then the Root-Reference is 
+retrieved from the Root Product Occurrence using the property <code>ReferenceRootOccurrenceOf</code> 
+exposed by the <em>VPMReference</em> interface.</p>
+<p>
+<strong>iii)</strong> Once we get the Root-Reference, we list all the Children-Instances under 
+the Product-reference using the property <code>Instances</code> which is exposed by the 
+<em>VPMReference</em> Interface. The instances may be Reference-Instances or 
+Representation-Instances. The instances are then counted.</p>
+<p><strong>iv)</strong> Reference-Instances point to References and 
+Representation-Instances point to Representation-References.</p>
+<p><strong>v)</strong> Now these References (found at second level) may again 
+have Reference-Instances or Representation-Instances and this chain goes on. So 
+in order to list down all these entities we run a loop which goes on listing all 
+the instances at every level and we can retrieve their corresponding References 
+[<a href="#References">3</a>].</p>
+<p>The following picture presents the Occurrence model (green) and the corresponding 
+Reference-Instance model (blue).</p>
+<p>
+<img alt="" src="CAAScdPstTaNavigatingProduct_image1_model.jpg" width="619" height="245"/></p>
+<p>Using automation APIs, it is possible to navigate:</p>
+<ul>
+	<li>From RootOccurrence (RootOcc) to get the Product Root Reference (P0), then from 
+	P0.
+	continue navigation through Reference-Instance model.</li>
+	<li>From Occurrence O1 to get the Product Instance I1, then from I1 to 
+	continue navigation through Reference-Instance model.</li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="InShort"></a>In Short</h2>
+<p>It is possible to navigate through the Reference-Instance Model as well as Occurrence 
+Model. We can directly navigate through the Occurrence Model but to navigate 
+through the Reference-Instance Model we have to jump from the Occurrence to the 
+Reference-Instance side.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[1]</td>
+		<td><a href="CAAScdPstTaProductOverview.htm">Product Modeler Overview</a></td>
+	</tr>
+	<tr>
+		<td valign="top">[2]</td>
+		<td><a href="CAAScdPstUcBrowseOccurrenceModel.htm">Browsing Occurrence Model</a></td>
+	</tr>
+	<tr>
+		<td valign="top">[3]</td>
+		<td><a href="CAAScdPstUcBrowsingProductContents.htm">Browsing Product Contents</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="History"></a>History</h2>
+<table class="history">
+	<tbody>
+	<tr>
+		<td>Version: <strong>1</strong> [Dec 2011]</td>
+		<td>Document created</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>
+

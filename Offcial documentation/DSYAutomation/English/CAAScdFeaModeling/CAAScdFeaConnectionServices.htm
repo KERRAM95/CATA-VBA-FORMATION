@@ -1,0 +1,291 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaConnectionServices</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+	<table class="table1">
+		<tr>	<td class="DocHeader1"> <h1>&nbsp;Connection Services </h1> 
+				</td> 
+		</tr>
+		<tr> 	
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+		<tr>
+		<td class="Intro1" style="height: 42px">
+					<p class="header"> This article describe how to use 
+					available connection services throught the object 
+					SimConnectionServices, used to create automatic connections.&nbsp; 
+					It also provides use cases for each method.</p>
+					<p><b>Example :</b></p>
+					<ul>
+						<li> <p> Given a SimFemRoot object you can retrieve a SimConnectionServices object as following: </p>
+						<br/>
+						<p><span class="keyword">Dim </span>myFEMRepRoot <span class="keyword">As</span> SimFemRoot </p>
+						<p>...</p>
+						<p><span class="keyword">Dim</span> myConnectionServices <span class="keyword">As</span> SimConnectionServices</p>
+						<p><span class="keyword">Set</span> myConnectionServices = myFEMRepRoot.GetItem(&quot;SimConnectionServices&quot;) </p>
+						<br/>
+						<br/>
+						<p><b>Important :</b> The FEM representation used for each method is the one on which the SimConnectionServices object is retrieved. </p>
+						
+						
+
+						</li>
+					</ul>
+					<p><b>Before you begin :</b></p>
+					<ul>
+						<li>
+							<p>Launch CATIA and then import and open the model 
+							corresponding to each method. These files are supplied in the folder InstallRootFolder\CAADoc\Doc\English\CAAScdFeaScenario\samples\ where InstallRootFolder is the folder where the API CD-ROM is installed.</p>
+						</li>
+					</ul>
+				</td>
+		</tr>
+		</table>
+		</td>
+		</tr>
+	</table>
+
+<table class="indented">
+	<tr>
+		<td>
+		<p> Four methods are provided to create fastener connections</p>
+		<ol> 
+			<li><a href="#Step1">ImportFromFSR</a>
+			<p>Creates point fasteners from FSR products. </p></li>
+			<li><a href="#Step2">ImportFromXML</a>
+			<p>Creates fasteners connections from an XML file import containing all necessary data. </p></li>
+			<li><a href="#Step3">CreatePointsFromSearch</a>
+			<p>Automatically creates point fasteners.</p></li>
+			<li><a href="#Step4">CreateLinesFromSearch</a>
+			<p>Automatically creates Line fasteners.</p></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+
+		<h2><a name="Step1">&nbsp;ImportFromFSR</a></h2>
+		<p> Sub <b>ImportFromFSR</b> (<span class="keyword">CATBSTR</span> iPrefix) </p>
+		<p>Creates points fastener from importing FSR Products.</p>
+	<ul>	
+		<li>
+		<b>Parameter :</b>
+		<ul>[in] iPrefix : Prefix for the name of all created fastener connections.</ul>
+		</li>
+	</ul>
+	<p><b>Important :</b> The method searches for FSR products on the root product associated to the FEM representation.</p>
+	<p><br/></p>
+	<p><b>Example :</b> For this example, import <span class="keyword">CAAScdFeaImportFromFSRModel.3DXml</span>.</p>
+	<p><b>Important : </b>Make sure to open the model with its FEM Reps before 
+	launching the script.</p>
+    <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<span class="run-in">Where to find the macro: 						<a href="CAAScdFeaImportFromFSRSource.htm">
+					CAAScdFeaImportFromFSRSource.htm</a></span></p>
+	<p>This use case is divided in 8 steps.</p>
+	<ol class="task">
+		<li>Opens the assembly product</li>
+		<li>Retrieves the active editor</li>
+		<li>Retrieves the root occurrence </li>
+		<li>Retrieves the active product</li>
+		<li>Retrieves the rep instance</li>
+		<li>Retrieves the FEM Representation</li>
+		<li>Retrieves the connection services object
+		<pre class="code">... 
+
+<span class="keyword">Dim</span> myConnectionService <span class="keyword">As</span> SimConnectionServices
+<span class="keyword">Set</span> myConnectionService = MyFemRepRoot.GetItem("SimConnectionServices")
+
+...</pre>
+		</li>
+		<li> Import point fastener from FSR
+		product&nbsp;
+		<pre class="code">...
+
+myConnectionService.ImportFromFSR "Test_"
+
+...</pre>
+		</li>
+	</ol>
+		<h2><a name="Step2">&nbsp;ImportFromXML</a></h2>
+	<p> Sub <b>ImportFromXML</b> ( <span class="keyword">CATBSTR</span> iXMLFilePath, <span class="keyword">CATBSTR</span> iPrefix)</p>
+	<p>Creates fastener connections from an XML file import containing all necessary data.</p>
+	<ul>
+		<li><b>Parameters :</b>
+		<ul>
+			[in] iXMLFilePath : Full path of the XML file to import.</ul>
+		<ul>
+			[in] iPrefix : Prefix for the name of all created fastener connections.</ul>
+		</li>
+	</ul>
+	<p><br/></p>
+	<p><b>Example :</b> For this example, import <span class="keyword">CAAScdFeaXMLImportModel.3DXml</span>.</p>
+	<p><b>Important : </b>Make sure to open the model with its FEM Reps before 
+	launching the script.</p>
+	<p>You should also copy into the folder pointed by the "TEMP" environment variable the "importTest.xml.txt" file supplied in the same folder as the 3dxml file. The file extension must be changed to "xml" instead of "txt"</p>
+    <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<span class="run-in">Where to find the macro: 						<a href="CAAScdFeaImportFromXMLSource.htm">
+					CAAScdFeaImportFromXMLSource.htm</a></span></p>
+	<p>This use case is divided in 8 steps.</p>
+	<ol class="task">
+		<li>Opens the assembly product</li>
+		<li>Retrieves the active editor</li>
+		<li>Retrieves the root occurrence </li>
+		<li>Retrieves the active product</li>
+		<li>Retrieves the rep instance</li>
+		<li>Retrieves the FEM Representation</li>
+		<li>Retrieves the connection services object
+		<pre class="code">... 
+
+<span class="keyword">Dim</span> myConnectionService <span class="keyword">As</span> SimConnectionServices
+<span class="keyword">Set</span> myConnectionService = MyFemRepRoot.GetItem("SimConnectionServices")
+
+...</pre>
+		</li>
+		<li> Import fastener connection From XML
+		file
+		import
+		<pre class="code">...
+
+<span class="keyword">Dim</span> sTempPath <span class="keyword">As</span> String
+sTempPath =CATIA.SystemService.Environ("TEMP")
+
+<span class="keyword">Dim</span> sXMLPath <span class="keyword">As</span> String
+sXMLPath = sTempPath &amp; &quot;/&quot; &amp; &quot;importTest.xml&quot;
+
+myConnectionService.ImportFromXML sXMLPath, "Test_"
+
+...</pre>
+		</li>
+	</ol>
+			<h2><a name="Step3">&nbsp;CreatePointsFromSearch</a></h2>
+		<p> Sub <b>CreatePointsFromSearch</b> (<span class="keyword">CATSafeArrayVariant</span> iHandlers, <span class="keyword">CATBSTR</span> iPrefix, <span class="keyword">CATVariant</span> iTolerance) </p>
+	<p>Automatically creates point fasteners by giving an handlers list containing point.</p>
+	
+	<ul>	
+		<li>
+		<b>Parameters :</b>
+		<ul>[in] iHandlers : List of points or geometrical set containing the candidates points.</ul>
+		<ul>[in] iPrefix : Prefix for the name of all created fastener connections.</ul>
+		<ul>[in] iTolerance : Double value used to limit the projection of the point on the supports.</ul>
+		</li>
+	</ul>
+	<p><b>Important :</b> Points are retrieved on the given iHandlers. The search domain is limited to meshed parts supports 
+	(automatically retrieved 
+	using the FEM representation).</p>
+	<p><br/></p>
+	<p><b>Example :</b> For this example, import <span class="keyword">CAAScdFeaFastenerImportModel.3DXml</span>.</p>
+	<p><b>Important : </b>Make sure to open the model with its FEM Reps before 
+	launching the script.</p>
+    <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<span class="run-in">Where to find the macro: 						<a href="CAAScdFeaCreatePointsFromSearchSource.htm">
+					CAAScdFeaCreatePointsFromSearchSource.htm</a></span></p>
+	<p>This use case is divided in 9 steps.</p>
+	<ol class="task">
+		<li>Opens the assembly product</li>
+		<li>Retrieves the active editor</li>
+		<li>Retrieves the root occurrence </li>
+		<li>Retrieves the active product</li>
+		<li>Retrieves the rep instance</li>
+		<li>Retrieves the FEM Representation and the part</li>
+		<li>Retrieves the connection services object
+		<pre class="code">... 
+
+<span class="keyword">Dim</span> myConnectionService <span class="keyword">As</span> SimConnectionServices
+<span class="keyword">Set</span> myConnectionService = MyFemRepRoot.GetItem("SimConnectionServices")
+
+...</pre>
+		</li>
+		<li> Get the geometrical set named : Weld Edges for CAE
+		<pre class="code">...
+
+<span class="keyword">Dim</span> hander(0)
+<span class="keyword">Set</span> hander(0) = MyPart.FindObjectByName("Weld Edges for CAE")
+
+...</pre>
+		</li>
+
+		<li> Creates point fasteners from search
+		<pre class="code">...
+
+myConnectionService.CreatePointsFromSearch hander, "Test_", 10.0
+...</pre>
+		</li>
+	</ol>
+
+	
+			<h2><a name="Step4">CreateLinesFromSearch</a></h2>
+
+		<p> Sub <b>CreateLinesFromSearch</b> (<span class="keyword">CATSafeArrayVariant</span> iHandlers, <span class="keyword">CATBSTR</span> iPrefix, <span class="keyword">CATVariant</span> iTolerance) </p>
+	<p>Automatically creates line fasteners by giving an handlers list containing lines.</p>
+	<ul>	
+		<li>
+		<b>Parameters :</b>
+		<ul>[in] iHandlers : List of lines or geometrical set containing the candidates lines.</ul>
+		<ul>[in] iPrefix : Prefix for the name of all created fastener connections.</ul>
+		<ul>[in] iTolerance : Double value used to limit the projection of the line on the supports.</ul>
+		</li>
+	</ul>
+	<p><b>Important :</b> Lines are retrieved on the given iHandlers. The search domain is limited to meshed parts supports 
+	(automatically retrieved using the FEM representation).</p>
+	<p><br/></p>
+		<p><b>Example :</b> For this example, import <span class="keyword">CAAScdFeaFastenerImportModel.3DXml</span>.</p>
+	<p><b>Important : </b>Make sure to open the model with its FEM Reps before 
+	launching the script.</p>
+    <p>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;<span class="run-in">Where to find the macro: 						<a href="CAAScdFeaCreateLinesFromSearchSource.htm">
+					CAAScdFeaCreateLinesFromSearchSource.htm</a></span></p>
+	<p>This use case is divided in 9 steps.</p>
+	<ol class="task">
+		<li>Opens the assembly product</li>
+		<li>Retrieves the active editor</li>
+		<li>Retrieves the root occurrence </li>
+		<li>Retrieves the active product</li>
+		<li>Retrieves the rep instance</li>
+		<li>Retrieves the FEM Representation and the part</li>
+		<li>Retrieves the connection services object
+		<pre class="code">... 
+
+<span class="keyword">Dim</span> myConnectionService <span class="keyword">As</span> SimConnectionServices
+<span class="keyword">Set</span> myConnectionService = MyFemRepRoot.GetItem("SimConnectionServices")
+
+...</pre>
+		</li>
+		<li> Get the geometrical set named : Weld Edges for CAE
+		<pre class="code">...
+
+<span class="keyword">Dim</span> hander(0)
+<span class="keyword">Set</span> hander(0) = MyPart.FindObjectByName("Weld Edges for CAE")
+
+...</pre>
+		</li>
+
+		<li> Creates Line fasteners from search
+		<pre class="code">...
+
+myConnectionService.CreateLinesFromSearch hander, "Test_", 10.0
+
+...</pre>
+		</li>
+	</ol>
+
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>
+
+

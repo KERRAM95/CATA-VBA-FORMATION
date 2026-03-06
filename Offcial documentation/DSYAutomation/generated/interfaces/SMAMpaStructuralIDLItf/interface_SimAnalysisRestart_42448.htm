@@ -1,0 +1,153 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAMpaStructuralIDLItf SimAnalysisRestart (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAMpaStructuralIDLItf.htm" href="../SMAMpaStructuralIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAMpaStructuralIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimAnalysisRestart"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimAnalysisRestart<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimAnalysisRestart_42448','SimAnalysisRestart','0');</script>
+<section id='maindesc'>
+<b><i> Represents the analysis restart object.</i></b><br>
+
+ The <code>SimAnalysisRestart</code> is an object that connects the downstream <script type="text/javascript"> activateLinkAnchor('SMAIAMpaAnalysisCase','','SMAIAMpaAnalysisCase') </script> to an upstream 
+<script type="text/javascript"> activateLinkAnchor('SMAIAMpaAnalysisCase','','SMAIAMpaAnalysisCase') </script> to continue the simulation from the specifed upstream step. The <code>SimAnalysisRestart</code> is created in the downstream 
+<script type="text/javascript"> activateLinkAnchor('SMAIAMpaAnalysisCase','','SMAIAMpaAnalysisCase') </script>  by the following example:
+ 
+ <dl>
+ <dt><strong>Example:</strong></dt>
+ <dd>
+ This example demonstrates how to create the <code>SimAnalysisRestart</code> object
+ from the 
+<script type="text/javascript"> activateLinkAnchor('SMAIAMpaAnalysisCase','Features','SMAIAMpaAnalysisCase.Features') </script> property. <pre>
+ Dim MyDownstreamCase As SimAnalysisCase
+ ...
+ Dim MyFeatureSet As SimFeatureSet
+ Set MyFeatureSet = MyDownstreamCase.Features
+ Dim MyRestart As SimAnalysisRestart
+ Set MyRestart = MyFeatureSet.Add("SimAnalysisRestart")
+ </pre>
+ </dd>
+ <dt><strong>Example in Python:</strong></dt>
+ <dd>
+ <pre>
+ MyFeatureSet = MyDownstreamCase.Features
+ MyRestart = MyFeatureSet.Add("SimAnalysisRestart")
+ </pre>
+ </dd>
+ <dt><strong>Restrictions:</strong></dt>
+ <ul>
+ <li>Only one <code>SimAnalysisRestart</code> can be created per 
+<script type="text/javascript"> activateLinkAnchor('SMAIAMpaAnalysisCase','','SMAIAMpaAnalysisCase') </script>.</li> <li>The <code>SimAnalysisRestart</code> cannot be removed from the 
+<script type="text/javascript"> activateLinkAnchor('SMAIAMpaAnalysisCase','','SMAIAMpaAnalysisCase') </script>.</li> <li>The 
+<script type="text/javascript"> activateLinkAnchor('SMAIAMpaAnalysisCase','','SMAIAMpaAnalysisCase') </script> must be an 
+<script type="text/javascript"> activateLinkAnchor('SMAIAMpaMechanicalAnalysisCase','','SMAIAMpaMechanicalAnalysisCase') </script>.</li> <li>The 
+<script type="text/javascript"> activateLinkAnchor('SMAIAMpaAnalysisCase','','SMAIAMpaAnalysisCase') </script> must be empty to create a <code>SimAnalysisRestart</code> object.</li> </ul>
+ An error will be returned if these restrictions are not met.
+ </dl>
+ <br>
+
+ Usage of the <code>SimAnalysisRestart</code> object is demonstrated in the following example:
+ <dl>
+ <dt><strong>Example:</strong></dt>
+ <dd>
+ This example demonstrates how to use the properties of the <code>SimAnalysisRestart</code> object.
+ Setting the <code>UpstreamStep</code> property will valuate the <code>UpstreamAnalysisCase</code> property,
+ the <code>UpstreamSimulation</code> property, and clone the features from the upstream 
+<script type="text/javascript"> activateLinkAnchor('SMAIAMpaAnalysisCase','','SMAIAMpaAnalysisCase') </script>. <pre>
+ Dim MyUpstreamCase As SimAnalysisCase
+ ...
+ Dim MyLastStep As SimStaticStep
+ ...
+ Dim MyDownstreamCase As SimAnalysisCase
+ ...
+ Dim MyRestart As SimAnalysisRestart
+ ...
+ MyRestart.UpstreamStep = MyLastStep
+ </pre>
+ </dd>
+ <dt><strong>Example in Python:</strong></dt>
+ <dd>
+ <pre>
+ MyRestart.UpstreamStep = MyLastStep
+ </pre>
+ </dd>
+ </dl>
+
+ 
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('SMAIAMpaAnalysisRestartStepProperty','','SMAIAMpaAnalysisRestartStepProperty') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#UpstreamAnalysisCase"><b>UpstreamAnalysisCase</b></a>
+</td><td  id='tdright'>  Returns the upstream analysis case to restart from.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UpstreamSimulation"><b>UpstreamSimulation</b></a>
+</td><td  id='tdright'>  Returns the upstream simulation to restart from.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UpstreamStep"><b>UpstreamStep</b></a>
+</td><td  id='tdright'>  Sets or returns the upstream step to restart from.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="UpstreamAnalysisCase"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UpstreamAnalysisCase</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SMAIAMpaAnalysisCase','SMAIAMpaAnalysisCase')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the upstream analysis case to restart from.
+</dd>
+<a id="UpstreamSimulation"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UpstreamSimulation</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIABase','CATIABase')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the upstream simulation to restart from.
+</dd>
+<a id="UpstreamStep"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UpstreamStep</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SMAIAMpaStep','SMAIAMpaStep')</script> </span></dt>
+  <dd class='ddmethod'>
+ Sets or returns the upstream step to restart from.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

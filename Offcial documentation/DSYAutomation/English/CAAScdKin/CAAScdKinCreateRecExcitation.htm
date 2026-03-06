@@ -1,0 +1,202 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Simulating a Mechanism</title>
+<style type="text/css">
+
+.auto-style1 {
+	color: #008000;
+}
+.auto-style2 {
+	color: #0000FF;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Create a Kinematics Recorded Excitation</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>Simple_kinematics_simulation.3dxml</div></code> file supplied in 
+							folder <code>InstallRootFolder\CAADoc\Doc\CAAScdKin\samples\</code> 
+							where <code>InstallRootFolder</code> is the folder 
+							where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdKinCreateRecExcitationSource.htm">CAAScdKinCreateRecExcitationSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic1</em>&gt;</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic2</em>&gt;</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in the following steps:</p>
+		<ol>
+			<li><a href="#Step1">Gets a link to the mechanism</a></li>
+			<li><a href="#Step2">Creates a kinematics scenario</a></li>
+			<li><a href="#Step3">Creates a recorded excitation</a></li>
+			<li><a href="#Step4">Populates the recorded excitation</a></li>
+		</ol>
+		<p>Before launching the script be sure to have the simulation object 
+		opened in a 3D window.</p>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Gets a link to the mechanism</strong></p>
+			<p>we create a link to the mechanism with the  
+			VPMRootOccurrence and the VPMRepInstance of the mechanism.</p>
+			<pre class="code"><span class="auto-style1">' Gets the root occurrence of the simulation</span>
+<span class="auto-style2">Dim</span> oRootOcc <span class="auto-style2">As</span> VPMRootOccurrence
+<span class="auto-style2">Set</span> oRootOcc = oSimulationService.GetProductRootOccurrence(oSimulation)
+
+<span class="auto-style1">' Gets the rep instance of the mechanism</span>
+<span class="auto-style2">Dim</span> oMechRepInst As VPMRepInstance
+Set oMechRepInst = oRootOcc.RepOccurrences.Item(1).RelatedRepInstance
+
+<span class="auto-style1">' Gets the mechanism object</span>
+<span class="auto-style2">Dim</span> oMechRoot <span class="auto-style2">As</span> KinMechanism
+<span class="auto-style2">Set</span> oMechRoot = oMechRepInst.ReferenceInstanceOf.GetItem(&quot;MECHRep&quot;)
+
+<span class="auto-style2">Dim</span> oBehaviorLink <span class="auto-style1">'As AnyObject</span>
+Set oBehaviorLink = oProdService.ComposeLink(oRootOcc, oMechRepInst, oMechRoot)
+<span class="auto-style2">ReDim</span> LinkArray(0) <span class="auto-style1">'As Variant</span>
+<span class="auto-style2">Set</span> LinkArray(0) = oBehaviorLink
+
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Creates a kinematics scenario </strong></p>
+			<p>We create a the kinematics scenario by giving 
+			the key word CATKinSolverOption and the link to the mechanism.</p>
+			<pre class="code">... 
+<span class="auto-style1">' Retrieves the SimulationSpecifications</span>
+<span class="auto-style2">Dim</span> oSimSpecs <span class="auto-style2">As</span> SimulationSpecifications
+<span class="auto-style2">Set</span> oSimSpecs = oSimulation.Specifications
+
+<span class="auto-style1">' Retrieve the SimulationRepresentation</span>
+<span class="auto-style2">Dim</span> oSimSpecRep As SimulationRepresentation
+Set oSimSpecRep = oSimSpecs.Item(1)
+
+<span class="auto-style1">' Retrieves the SimSpecsRepManager</span>
+<span class="auto-style2">Dim</span> oScenarioRepManager <span class="auto-style2">As</span> SimSpecsRepManager
+<span class="auto-style2">Set</span> oScenarioRepManager = oSimSpecRep.Root
+
+<span class="auto-style1">' Retrieves the SimScenarioSpecs</span>
+<span class="auto-style2">Dim</span> oScenarioSpecs <span class="auto-style1">'As SimScenarioSpecs</span>
+<span class="auto-style2">Set</span> oScenarioSpecs = oScenarioRepManager.ScenarioSpecs
+
+<span class="auto-style1">' Creates a scenario</span>
+Set oScenarioSpec = oScenarioSpecs.Add(&quot;CATKinSolverOption&quot;, &quot;&quot;, &quot;&quot;, LinkArray).</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Creates a recorded excitation</strong></p>
+			<p>We create the recored excitation attached to the 
+			kinematics scenatio thru the AddRecordedExcitation method.</p>
+			<pre class="code">...
+<span class="auto-style1">'Gets the KinScenarioSpec</span>
+<span class="auto-style2">Dim</span> oKinScenarioSpec <span class="auto-style1">'As KinScenarioSpec</span>
+<span class="auto-style2">Set</span> oKinScenarioSpec = oScenarioSpec.GetItem(&quot;KinScenario&quot;)
+
+<span class="auto-style1">' Creates a recorded excitation under the kin scenario</span>
+<span class="auto-style2">Dim</span> oKinExcitation <span class="auto-style1">'As KinRecordedExcitation</span>
+<span class="auto-style2">Set</span> oKinExcitation = oKinScenarioSpec.AddRecordedExcitation
+.</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Populates the recorded excitation </strong></p>
+			<p>We set the key frames for time with (0s, 100s), the 1rst command 
+			(0mm,100mm) and for the 2nd command (90deg,450deg).</p>
+			<pre class="code">...			
+<span class="auto-style1">' Sets the key frames times</span>
+<span class="auto-style2">Dim</span> KeyTimes(1) 'As CATSafeArrayVariant
+KeyTimes(0) = 0#
+KeyTimes(1) = 100#
+oKinExcitation.SetKeyFramesTimes (KeyTimes)
+
+<span class="auto-style2">Dim</span> StartTime, EndTime, TimeStep  <span class="auto-style2">As</span> Double
+StartTime = 0#
+EndTime = 100#
+TimeStep = 1#
+
+<span class="auto-style1">' Sets the times parameters</span>
+<span class="auto-style2">Call</span> oKinScenarioSpec.SetTimeParameters(StartTime, EndTime, TimeStep)
+
+<span class="auto-style2">Dim</span> KeyCmdValues(1) <span class="auto-style1">'As CATSafeArrayVariant</span>
+
+<span class="auto-style1">' Sets the key frames values for the 1rst kineatics command</span>
+KeyCmdValues(0) = 0#
+KeyCmdValues(1) = 100#
+oKinExcitation.SetKeyFramesValues MyCommand1, KeyCmdValues
+
+<span class="auto-style1">' Set the key frames values for the 2nd kinematics command
+</span>KeyCmdValues(0) = 90#
+KeyCmdValues(1) = 450#
+oKinExcitation.SetKeyFramesValues MyCommand2, KeyCmdValues
+					
+</pre>
+			</li>
+
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

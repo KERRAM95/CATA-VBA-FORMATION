@@ -1,0 +1,218 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateSlot.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates a sdd slot and edit it.</span>
+<span class="comment">'This script requires sdd model which contains two intersecting panels and a stiffener on one </span>
+<span class="comment">'of the panel. Stiffener is running through the panel.</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="comment">'   4- Retrieves a SDD stiffener object</span>
+<span class="comment">'   5- Retrieves a SDD plate object.</span>
+<span class="comment">'   6- Creates Slot.</span>
+<span class="comment">'   7- Updates the Plate object.</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+Language=&quot;VBSCRIPT&quot; 
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>PlatePart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>StiffenerPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>SDDProdSel<span class="keyword"> As </span>Selection
+
+<span class="keyword">Sub </span>CATMain()
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot; </span>
+
+<span class="keyword">    Dim </span>SDDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SddProduct&quot;
+    OpenProduct prdName , SDDPrdEditor
+
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="keyword">    Set </span>SDDProdSel = SDDPrdEditor.Selection
+
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="keyword">    Dim </span>product1Service  <span class="keyword"> As </span>PLMProductService
+<span class="keyword">    Set </span>product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+<span class="keyword">    Dim </span>ObjVPMRootOccurrence  <span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">    Set </span>ObjVPMRootOccurrence = product1Service.RootOccurrence
+<span class="keyword">    Dim </span>ObjVPMReference<span class="keyword"> As </span>VPMReference
+<span class="keyword">    Set </span>ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+<span class="keyword">    Dim </span>ObjVPMRepInstances<span class="keyword"> As </span>VPMRepInstances
+<span class="keyword">    Set </span>ObjVPMRepInstances = ObjVPMReference.RepInstances
+<span class="keyword">    Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+
+<span class="comment">'   4- Retrieves a SDD stiffener object</span>
+    <span class="comment">'Get product stiffener</span>
+<span class="keyword">    Set </span>ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">    Set </span>StiffenerRef = ListOfInstances.Item(2).ReferenceInstanceOf
+<span class="keyword">    Set </span>StiffenerRepInstances = StiffenerRef.RepInstances
+<span class="keyword">    Set </span>StiffenerRepInstReference = StiffenerRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>StiffenerPart = StiffenerRepInstReference.GetItem(&quot;Part&quot;)
+    <span class="comment">'Get Sdd stiffener</span>
+<span class="keyword">    Dim </span>ObjSddProductStiffener<span class="keyword"> As </span>SddProductStiffener
+    SDDProdSel.Add StiffenerRef
+<span class="keyword">    Set </span>ObjSddProductStiffener = SDDProdSel.FindObject(&quot;CATIASddProductStiffener&quot;)
+<span class="keyword">    Dim </span>ObjSddStiffener<span class="keyword"> As </span>SddStiffener
+<span class="keyword">    Set </span>ObjSddStiffener = ObjSddProductStiffener.SddStiffener
+    
+<span class="comment">'   5- Retrieves a SDD plate object.</span>
+    <span class="comment">'Get product plate</span>
+<span class="keyword">    Set </span>ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">    Set </span>PlateRef = ListOfInstances.Item(3).ReferenceInstanceOf
+<span class="keyword">    Set </span>PlateRepInstances = PlateRef.RepInstances
+<span class="keyword">    Set </span>PlateRepInstReference = PlateRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>PlatePart = PlateRepInstReference.GetItem(&quot;Part&quot;)
+    <span class="comment">'Get Sdd plate</span>
+<span class="keyword">    Dim </span>ObjSddProductPlate<span class="keyword"> As </span>SddProductPlate
+    SDDProdSel.Add PlateRef
+<span class="keyword">    Set </span>ObjSddProductPlate = SDDProdSel.FindObject(&quot;CATIASddProductPlate&quot;)
+<span class="keyword">    Dim </span>ObjSddPlate<span class="keyword"> As </span>SddPlate
+<span class="keyword">    Set </span>ObjSddPlate = ObjSddProductPlate.SddPlate
+
+<span class="comment">'   6- Creates Slot.</span>
+<span class="keyword">    Dim </span>ObjStrSlot<span class="keyword"> As </span>StrSlot
+    CreateSlot ObjSddPlate, ObjSddStiffener, ObjStrSlot
+    
+<span class="comment">'   7- Updates the Plate object.</span>
+    ObjSddProductPlate.Update
+
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Slot</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   6.1- Retrieves StrSlots object and and create an slot with no data        </span>
+<span class="comment">'   6.2- Sets penetrating profile for slot</span>
+<span class="comment">'   6.3- sets slot parameters</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateSlot(iObjSddPlate<span class="keyword"> As </span>SddPlate, iObjSddStiffener<span class="keyword"> As </span>SddStiffener, oObjStrSlot<span class="keyword"> As </span>StrSlot)
+
+<span class="comment">'   6.1- Retrieves StrSlots object and and create an slot with no data        </span>
+    <span class="comment">'Get StrSlots object</span>
+<span class="keyword">    Dim </span>ObjStrSlots<span class="keyword"> As </span>StrSlots
+<span class="keyword">    Set </span>ObjStrSlots = iObjSddPlate.StrSlots
+    <span class="comment">'Create StrSlot</span>
+<span class="keyword">    Set </span>oObjStrSlot = ObjStrSlots.Add
+    
+<span class="comment">'   6.2- Sets penetrating element for slot</span>
+<span class="keyword">    Dim </span>penetratingElem<span class="keyword"> As </span>Reference
+<span class="keyword">    Set </span>penetratingElem = StiffenerPart.CreateReferenceFromObject(iObjSddStiffener)
+    oObjStrSlot.SetPenetratingProfile penetratingElem
+    
+<span class="comment">'   6.3- sets slot parameters</span>
+    SetSlotParameters oObjStrSlot, iObjSddPlate
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set Slot parameters</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   6.3.1- Retrieves StrDetailFeature object </span>
+<span class="comment">'   6.3.2- Sets Slot type    </span>
+<span class="comment">'   6.3.3- Sets slot name</span>
+<span class="comment">'   6.3.4- Retrieves list of parameters of impacted object </span>
+<span class="comment">'   6.3.5- Creates parameters and stores role of each parameter in an array</span>
+<span class="comment">'   6.3.6- Sets parameters</span>
+<span class="comment">'   6.3.7- Updates the ObjStrDetailFeature object</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetSlotParameters(iObjStrSlot<span class="keyword"> As </span>StrSlot, iObjSddPlate<span class="keyword"> As </span>SddPlate)
+<span class="comment">'   6.3.1- Retrieves StrDetailFeature object</span>
+<span class="keyword">    Dim </span>ObjStrDetailFeature<span class="keyword"> As </span>StrDetailFeature
+<span class="keyword">    Set </span>ObjStrDetailFeature = iObjStrSlot.StrDetailFeature
+
+<span class="comment">'   6.3.2- Sets Slot type    </span>
+    ObjStrDetailFeature.Type = &quot;RECT&quot;
+
+<span class="comment">'   6.3.3- Sets slot name</span>
+    ObjStrDetailFeature.FeatureName = &quot;RECT_UNI_WT&quot;
+    
+<span class="comment">'   6.3.5- Creates parameters and stores role of each parameter in an array</span>
+<span class="keyword">    Set </span>ObjPartParameters = PlatePart.Parameters
+<span class="keyword">    Dim </span>HB<span class="keyword"> As </span>AnyObject
+    <span class="comment">'this will cause the parameters to be aggregated under panel</span>
+    <span class="comment">'Set HB = iObjSddPlate</span>
+<span class="keyword">    Set </span>HBParameters = ObjPartParameters.SubList(iObjSddPlate, True)
+    HBParametersCount = HBParameters.Count
+    ObjPartParametersCount = ObjPartParameters.Count
+
+    <span class="comment">'Create parameters</span>
+<span class="keyword">    Dim </span>DBB<span class="keyword"> As </span>Dimension
+<span class="keyword">    Set </span>DBB = HBParameters.CreateDimension(&quot;DBB&quot;, &quot;LENGTH&quot;, &quot;300&quot;)
+<span class="keyword">    Dim </span>DR<span class="keyword"> As </span>Dimension
+<span class="keyword">    Set </span>DR = HBParameters.CreateDimension(&quot;DR&quot;, &quot;LENGTH&quot;, &quot;200&quot;)
+<span class="keyword">    Dim </span>DL<span class="keyword"> As </span>Dimension
+<span class="keyword">    Set </span>DL = HBParameters.CreateDimension(&quot;DL&quot;, &quot;LENGTH&quot;, &quot;200&quot;)
+<span class="keyword">    Dim </span>DTT<span class="keyword"> As </span>Dimension
+<span class="keyword">    Set </span>DTT = HBParameters.CreateDimension(&quot;DTT&quot;, &quot;LENGTH&quot;, &quot;50&quot;)
+    <span class="comment">'Define parameter roles in an array</span>
+<span class="keyword">    Dim </span>ParamRoles(3)<span class="keyword"> As </span>Variant
+    ParamRoles(0) = &quot;DBB&quot;
+    ParamRoles(1) = &quot;DR&quot;
+    ParamRoles(2) = &quot;DL&quot;
+    ParamRoles(3) = &quot;DTT&quot;
+    DBB.Rename &quot;DBB&quot;
+    DR.Rename &quot;DR&quot;
+    DL.Rename &quot;DL&quot;
+    DTT.Rename &quot;DTT&quot;
+
+<span class="comment">'   6.3.6- Sets parameters</span>
+    ObjStrDetailFeature.SetParameters HBParameters, ParamRoles
+    
+<span class="comment">'   6.3.7- Updates the ObjStrDetailFeature object</span>
+    ObjStrDetailFeature.Update
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SDDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SDDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

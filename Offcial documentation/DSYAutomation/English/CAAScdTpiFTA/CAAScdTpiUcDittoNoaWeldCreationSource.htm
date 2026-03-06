@@ -1,0 +1,141 @@
+<!DOCTYPE html 
+	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<head>
+		<meta http-equiv="Content-Language" content="en-us" />
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta name="topictype" content="Uc" />
+		<meta name="devlang" content="idl" />
+		<meta name="devlang" content="idl" />
+		<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+		<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+		<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+		<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+		<title> TITLE </title>
+	</head>
+
+	<body onload="highlightSearchTerms();"> 
+		<pre>
+<span class="comment">' COPYRIGHT DASSAULT SYSTEMES 2016 </span>
+
+<span class="comment">' *********************************************************************** </span>
+<span class="comment">' Purpose: This macro is derived from CAADriInstantiateOuterDitto </span>
+<span class="comment">' CATScript file given as material of Drafting VB Use Cases. </span>
+<span class="comment">' Objective of this sample is to create a NOA ditto based </span>
+<span class="comment">' on a drawing ditto read from a source document. </span>
+<span class="comment">' NOA Ditto entity is created on the XY Plane of the </span>
+<span class="comment">' the new CATPart document created by the macro. </span>
+<span class="comment">' To complement this test, a Weld feature is also created </span>
+<span class="comment">' on the same plane. Its content is then edited thanks to </span>
+<span class="comment">' Drafting APIs. </span>
+<span class="comment">' Author: </span>
+<span class="comment">' Languages: VBScript </span>
+<span class="comment">' Locales: English </span>
+<span class="comment">' CATIA Level: 3DExperience R2017x </span>
+<span class="comment">' *********************************************************************** </span>
+
+<span class="keyword">Sub</span> CATMain() 
+
+   <span class="comment">' Set the CATIA popup file alerts to False </span>
+   <span class="comment">' It prevents to stop the macro at each alert during its execution </span>
+   CATIA.DisplayFileAlerts = False 
+
+   <span class="comment">' Ask user to select the ditto </span>
+   <span class="keyword">Dim</span> Selection 
+   <span class="keyword">Set</span> Selection = CATIA.ActiveEditor.Selection 
+
+   <span class="comment">' Triggerthe selection processing </span>
+   <span class="keyword">Dim</span> Status, InputObjectType(0) 
+   InputObjectType(0) = &quot;AnyObject&quot; 
+   Status = Selection.SelectElement( InputObjectType, &quot;Select a Ditto&quot;, False) 
+   <span class="keyword">If</span> (Status = &quot;Cancel&quot;) <span class="keyword">Then</span>       <span class="keyword">Exit</span> <span class="keyword">Sub</span> 
+
+      <span class="comment">' Retrieve the ditto </span>
+      <span class="keyword">Dim</span> oSelectionItem <span class="keyword">As</span> SelectedElement 
+      <span class="keyword">Set</span> oSelectionItem = Selection.Item( 1 ) 
+      <span class="keyword">Dim</span> oDitto <span class="keyword">As</span> DrawingComponent 
+      <span class="keyword">Set</span> oDitto = oSelectionItem.Value 
+
+      <span class="comment">' Get the Part root feature </span>
+      <span class="keyword">Dim</span> oPart as Part 
+      <span class="keyword">Set</span> oPart = CATIA.ActiveEditor.ActiveObject 
+
+      <span class="comment">' Create a new ASME Annotation Set </span>
+      <span class="keyword">Dim</span> oAnnotationSets <span class="keyword">As</span> Collection 
+      <span class="keyword">Set</span> oAnnotationSets = oPart.AnnotationSets 
+      <span class="keyword">Dim</span> oAnnotationSet as AnnotationSet 
+      <span class="keyword">Set</span> oAnnotationSet = oAnnotationSets.Add(&quot;ASME&quot;) 
+
+      <span class="comment">' Retrieve the factory </span>
+      <span class="keyword">Dim</span> oFactory as AnnotationFactory2 
+      <span class="keyword">Set</span> oFactory = oAnnotationSet.AnnotationFactory2 
+
+      <span class="comment">' Create a reference on the XY Plane of the Part </span>
+      <span class="keyword">Dim</span> oReferenceOnXYPlane as Reference 
+      <span class="keyword">Set</span> oReferenceOnXYPlane = oPart.CreateReferenceFromObject( oPart.OriginElements.PlaneXY ) 
+
+      <span class="comment">' Make the user surface corresponding to this reference </span>
+      <span class="keyword">Dim</span> oUserSurface <span class="keyword">As</span> UserSurface 
+      <span class="keyword">Set</span> oUserSurface = oPart.UserSurfaces.Generate( oReferenceOnXYPlane ) 
+
+      <span class="comment">' Create the NOA Ditto with option &quot;Stick Ditto perpendicular to geometry&quot; </span>
+      <span class="keyword">Dim</span> oNewDittoNOA as Annotation2 
+      <span class="keyword">Set</span> oNewDittoNOA = oFactory.CreateDittoNOA( oUserSurface, &quot;VB_DittoNOA&quot;, oDitto , TRUE ) 
+
+      <span class="comment">' Retrieve the ditto as component of this newly created NOA </span>
+      <span class="keyword">Dim</span> o2DComponentInNOA <span class="keyword">As</span> DrawingComponent 
+      <span class="keyword">Set</span> o2DComponentInNOA = oNewDittoNOA.Noa.GetDitto( ) 
+
+      <span class="comment">' Retrieve the modifiable text of the ditto </span>
+      <span class="keyword">Dim</span> oText <span class="keyword">As</span> DrawingText 
+      <span class="keyword">Set</span> oText = o2DComponentInNOA.GetModifiableObject( 1 ) 
+
+      <span class="comment">' Modify the modifiable text value </span>
+      <span class="keyword">Dim</span> ReturnValue <span class="keyword">As</span> String 
+      ReturnValue = InputBox( &quot;Enter operation name: &quot;, &quot;&quot;, &quot;New Value       <span class="keyword">For</span> Text&quot;) 
+         oText.Text = ReturnValue 
+
+         <span class="comment">' Modify the angle and the scale of this Drawing Component </span>
+         PI = 3.1415926535 
+         Angle90Clockwise = -PI 
+         o2DComponentInNOA.Angle = Angle90Clockwise 
+         o2DComponentInNOA.Scale2 = 0.5 
+
+         <span class="comment">' Create a new Weld feature </span>
+         <span class="keyword">Dim</span> oNewWeld <span class="keyword">As</span> Annotation2 
+         <span class="keyword">Set</span> oNewWeld = oFactory.CreateWeld( oUserSurface ) 
+
+         <span class="comment">' Change Weld content </span>
+         <span class="keyword">Dim</span> oWeldingVisu <span class="keyword">As</span> DrawingWelding 
+         <span class="keyword">Set</span> oWeldingVisu = oNewWeld.Weld.Get2DAnnot 
+         oWeldingVisu.GetTextRange( catWeldingFieldOne ).Text = &quot;Field 1&quot; 
+         oWeldingVisu.GetTextRange( catWeldingFieldTwo ).Text = &quot;Field 2&quot; 
+         oWeldingVisu.GetTextRange( catWeldingFieldThree ).Text = &quot;Field 3&quot; 
+         oWeldingVisu.GetTextRange( catWeldingFieldFour ).Text = &quot;Field 4&quot; 
+         oWeldingVisu.GetTextRange( catWeldingFieldFive ).Text = &quot;Field 5&quot; 
+         oWeldingVisu.GetTextRange( catWeldingFieldSix ).Text = &quot;Field 6&quot; 
+         oWeldingVisu.GetTextRange( catWeldingFieldSeven ).Text = &quot;Field 7&quot; 
+         oWeldingVisu.SetSymbol catHVGrooveWelding, catFirstWelding 
+         oWeldingVisu.SetSymbol catRechargWelding, catSecondWelding 
+         oWeldingVisu.SetAdditionalSymbol catConvexWelding, catFirstWelding 
+         oWeldingVisu.SetAdditionalSymbol catSmoothWelding, catSecondWelding 
+         oWeldingVisu.SetFinishSymbol catDftLetterCWelding, catFirstWelding 
+         oWeldingVisu.SetFinishSymbol catDftLetterHWelding, catSecondWelding 
+         oWeldingVisu.IdentificationLineSide = catWeldingDown 
+         oWeldingVisu.WeldingSide = catWeldingDown 
+         oWeldingVisu.WeldingTail = catDftWeldingTailYES 
+
+         <span class="comment">' Apply new position </span>
+         oWeldingVisu.x = -70. 
+         oWeldingVisu.y = -30. 
+
+         <span class="comment">' Finalize by updating the Part </span>
+         oPart.Update 
+
+      <span class="keyword">End Sub </span>
+
+		</pre>
+	</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creation Late Types for Design Exploration Scenario Features</title>
+<style type="text/css">
+    .padded td, .padded th {
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Creation Late Types for Design Exploration Scenario Features</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+			<h3>Abstract</h3>
+			<p>The following reference article documents the different late types 
+				that can be used to create Design Exploration Scenario features.</p>
+			<ul>
+				<li><a href="#Constraint">Constraints Late Types</a></li>
+				<li><a href="#Design Variable">Design Variable Late Types</a></li>
+				<li><a href="#Manufacturing Control">Manufacturing  Controls Features Late Types</a></li>
+				<li><a href="#Objective">Objective Late Types</a></li>
+				<li><a href="#Response Variable">Response Variable Late Types</a></li>
+				<li><a href="#Shape Control">Shape ControlsFeatures Late Types</a></li>
+			</ul>
+		</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdFeaObjDesignExplorationFeatures.htm">SimDesignExplorationFeatures Collection</a></td>
+					</tr>
+				</table>
+				</td>
+	</tr>
+</table>
+<h2><a name="Constraint"></a>Constraint Late Types</h2>
+	<p>Constraints creation is managed by the <strong>SimDesignExplorationFeatures</strong> collection by calling 
+		the <code>Add</code> method from it.</p>
+	<p>A &quot;late type&quot; must be given to indicate which type of constraint is to be created:</p>
+	<table class="padded">
+    	<tr>
+       		<th>Constraints</th>
+       		<th>Late type</th>
+    	</tr>
+   	 	<tr>
+     		<td>Center Of Gravity Constraint</td>
+      		<td>SimCenterOfGravityConstraint</td>
+   	 	</tr>
+		<tr>
+     		<td>Displacement Constraint</td>
+      		<td>SimDisplacementsConstraint</td>
+    	</tr>
+		<tr>
+     		<td>Fastener Force Constraint</td>
+      		<td>SimFastenerForceConstraint</td>
+    	</tr>
+    	<tr>
+     		<td>Frequency Constraint</td>
+      		<td>SimFrequencyConstraint</td>
+    	</tr>
+		<tr>
+     		<td>General Constraint</td>
+      		<td>SimGeneralConstraint</td>
+    	</tr>
+   	 	<tr>
+     		<td>Mass Constraint</td>
+      		<td>SimMassConstraint</td>
+   	 	</tr>
+    	<tr>
+     		<td>Stress Constraint</td>
+      		<td>SimStressConstraint</td>
+    	</tr>
+   		<tr>
+      	 	<td>Reaction Force Constraint</td>
+    	    <td>SimReactionForceConstraint</td>
+   	 	</tr>
+  	</table>
+	
+    <h2><a name="Design Variable"></a>Design Variable Features Late Types</h2>
+	<p>Design Variable features creation is managed by the <strong>SimDesignExplorationFeatures</strong> 
+		collection by calling the <code>Add</code> method from it.</p>
+	<p>A &quot;late type&quot; must be given to indicate which type of Setup feature is 
+		to be created:</p>
+	<table class="padded">
+    	<tr>
+        	<th>Design Variable feature</th>
+       		<th>Late type</th>
+    	</tr>
+		<tr>
+     		<td>Design Envelope</td>
+            <td>SimDesignEnvelope</td>
+   		</tr>
+	</table>
+
+    <h2><a name="Design Envelope Sub-Features"></a>Design Envelope Sub-Features Late Types</h2>
+	<p>Design envelope sub-features creation is managed by the <strong>SimDesignExplorationFeatures</strong> 
+		collection by calling the <code>AddSubFeature</code> method together with the parent <strong>SimDesignEnvelope </strong> or <strong>SimLocalOptimizationArea </strong>from it.</p>
+	<p>A &quot;late type&quot; must be given to indicate which type of Setup feature is 
+		to be created:</p>
+	<table class="padded">
+    	<tr>
+            <th>Design envelope sub-feature</th>
+       		<th>Late type</th>
+    	</tr>
+		<tr>
+     		<td>Local Optimization Area</td>
+      		<td>SimLocalOptimizationArea</td>
+   		</tr>
+   		<tr>
+     		<td>In-Plane Control</td>
+      		<td>SimInPlaneControl</td>
+   		</tr>
+		<tr>
+     		<td>Transition Control</td>
+      		<td>SimTransitionControl</td>
+   		</tr>
+   		<tr>
+     		<td>Preserved Region</td>
+      		<td>SimPreservedRegion</td>
+   		</tr>
+
+	</table>
+
+	
+	<h2><a name="Manufacturing Control"></a>Manufacturing Control Features Late Types</h2>
+	<p>Manufacturing Controls features creation is managed by the <strong>SimDesignExplorationFeatures</strong> 
+		collection by calling the <code>Add</code> method from it.</p>
+	<p>A &quot;late type&quot; must be given to indicate which type of Manufacturing Controls feature is 
+		to be created:</p>
+	<table class="padded">
+    	<tr>
+        	<th>Manufacturing Control feature</th>
+       		<th>Late type</th>
+    	</tr>
+		<tr>
+     		<td>ALM Overhang Control</td>
+      		<td>SimOverhangControl</td>
+   		</tr>
+		<tr>
+     		<td>Casting Control</td>
+      		<td>SimCastingControl</td>
+   		</tr>
+   		<tr>
+     		<td>Extrusion Control</td>
+      		<td>SimExtrusionControl</td>
+   		</tr>
+   		<tr>
+     		<td>Milling Control</td>
+      		<td>SimMillingControl</td>
+   		</tr>
+		<tr>
+     		<td>Rib Control</td>
+      		<td>SimRibControl</td>
+   		</tr>
+
+	</table>
+	
+<h2><a name="Response Variable"></a>Response Variable Features Late Types</h2>
+	<p>Response variable features creation is managed by the <strong>SimDesignExplorationFeatures</strong> 
+		collection by calling the <code>Add</code> method from it.</p>
+	<p>A &quot;late type&quot; must be given to indicate which type of load is 
+		to be created:</p>
+	<table class="padded">
+   		<tr>
+   			<th>Response variable</th>
+   			<th>Late type</th>
+    	</tr>
+		<tr>
+     		<td>Absolute Mass Response Variable</td>
+      		<td>SimAbsoluteMassResponseVariable</td>
+   		</tr>
+   		<tr>
+     		<td>Calculated Response Variable</td>
+      		<td>SimCalculatedResponseVariable</td>
+   		</tr>
+		<tr>
+     		<td>Center Of Gravity Response Variable</td>
+      		<td>SimCenterOfGravityResponseVariable</td>
+   		</tr>
+    	<tr>
+     		<td>Displacement Response Variable</td>
+      		<td>SimDisplacementResponseVariable</td>
+    	</tr>
+		<tr>
+     		<td>Fastener Force Response Variable</td>
+      		<td>SimFastenerForceResponseVariable</td>
+   		</tr>
+		<tr>
+     		<td>Frequency Response Variable</td>
+      		<td>SimFrequencyResponseVariable</td>
+   		</tr>
+   		<tr>
+      		<td>Reaction Force Response Variable</td>
+    		<td>SimReactionForceResponseVariable</td>
+   		</tr>
+   		<tr>
+      		<td>Reaction Moment Response Variable</td>
+    		<td>SimReactionMomentResponseVariable</td>
+   		</tr>
+   		<tr>
+      		<td>Relative Mass Response Variable</td>
+    		<td>SimRelativeMassResponseVariable</td>
+   		</tr>
+		<tr>
+      		<td>Moment Of Inertia Response Variable</td>
+    		<td>SimMomentOfInertiaResponseVariable</td>
+   		</tr>
+		<tr>
+      		<td>Rotation Response Variable</td>
+    		<td>SimRotationResponseVariable</td>
+   		</tr>
+		<tr>
+      		<td>Complaince Response Variable</td>
+    		<td>SimComplianceResponseVariable</td>
+   		</tr>
+		<tr>
+      		<td>Stress Response Variable</td>
+    		<td>SimStressResponseVariable</td>
+   		</tr>
+	</table>
+	
+<h2><a name="Objective"></a>Objective features late types</h2>
+	<p>Restraint features creation is managed by the <strong>SimDesignExplorationFeatures</strong> 
+		collection by calling the <code>Add</code> method from it.</p>
+	<p>A &quot;late type&quot; must be given to indicate which type of restraint is 
+		to be created:</p>
+	<table class="padded">
+   		<tr>
+   			<th>Objective</th>
+   			<th>Late type</th>
+    	</tr>
+   		<tr>
+     		<td>Objective</td>
+      		<td>SimNonParametricObjective</td>
+   		</tr>
+   	</table>
+
+<h2><a name="Shape Control"></a>Shape Control features late types</h2>
+	<p>Shape Control features creation is managed by the <strong>SimDesignExplorationFeatures</strong> 
+		collection by calling the <code>Add</code> method from it.</p>
+	<p>A &quot;late type&quot; must be given to indicate which type of shape control is 
+		to be created:</p>
+	<table class="padded">
+   		<tr>
+   			<th>Shape Control</th>
+   			<th>Late type</th>
+    	</tr>
+   		<tr>
+     		<td>Bead Width Control</td>
+      		<td>SimBeadWidthControl</td>
+   		</tr>
+    	<tr>
+     		<td>Cyclic Symmetry Control</td>
+      		<td>SimCyclicSymmetryControl</td>
+    	</tr>
+		<tr>
+      		<td>Penetration Check</td>
+    		<td>SimPenetrationCheck</td>
+   		</tr>
+   		<tr>
+      		<td>Symmetry Control</td>
+    		<td>SimSymmetryControl</td>
+   		</tr>
+		<tr>
+      		<td>Thickness Control</td>
+    		<td>SimThicknessControl</td>
+   		</tr>
+	</table>
+
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [Febraury 2023]</td>
+		<td>Document created</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

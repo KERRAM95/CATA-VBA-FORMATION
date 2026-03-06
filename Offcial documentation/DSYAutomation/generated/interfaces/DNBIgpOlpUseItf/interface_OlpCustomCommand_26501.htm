@@ -1,0 +1,106 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpCustomCommand (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpCustomCommand"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpCustomCommand<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpCustomCommand_26501','OlpCustomCommand','0');</script>
+<section id='maindesc'>
+<b><i> Native Robot Language(NRL) Teach command.</i></b><br>
+<BR>
+ <font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ NRL Teach command</font>.<BR>
+ This interface represents a command added to 
+ NRL teach which is activate by a user to perform
+ some customized action.  This interface is used
+ to control what happens when they click on that command.
+ <script type="text/javascript"> activateLinkAnchor('CATIABase','Name','CATIABase.Name') </script> is the label displayed in the UI for this command.  A new command is created with 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpTeachHelper','AddCustomCommand','DELMIAOlpTeachHelper.AddCustomCommand') </script>.
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#MainCommand"><b>MainCommand</b></a>
+</td><td  id='tdright'>  The ID of the custom command for the macro.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PostCommand"><b>PostCommand</b></a>
+</td><td  id='tdright'>  Built-in command that is executed after MacroRunCommand.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PreCommand"><b>PreCommand</b></a>
+</td><td  id='tdright'>  Built-in command that is executed before MacroRunCommand.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="MainCommand"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>MainCommand</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ The ID of the custom command for the macro.<BR>
+ If set to "" (empty string) then MacroRunCommand is not 
+ called.  Any other value is for use in MacroRunCommand
+ to identify which command is being executed.  There is nothing
+ to prevent two commands from having the same value for MainCommand
+ or to prevent two commands from having the same 
+<script type="text/javascript"> activateLinkAnchor('CATIABase','Name','CATIABase.Name') </script>.
+</dd>
+<a id="PostCommand"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>PostCommand</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpTeachCommand','DELOlpTeachCommand')</script> </span></dt>
+  <dd class='ddmethod'>
+ Built-in command that is executed after MacroRunCommand.<BR>
+ This can be changed during MacroRunCommand.  If MacroRunCommand
+ fails (does not set 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpTranslatorHelper','CallSucceeded','DELMIAOlpTranslatorHelper.CallSucceeded') </script> to True), the this command will not be executed.  delOlpCmdModify cannot be
+ set for the PostCommand.  This is because delOlpCmdModify will overwrite
+ any changes to the current instruction which have been done in the
+ MainCommand.
+</dd>
+<a id="PreCommand"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>PreCommand</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpTeachCommand','DELOlpTeachCommand')</script> </span></dt>
+  <dd class='ddmethod'>
+ Built-in command that is executed before MacroRunCommand.<BR>
+ If this command fails, then MacroRunCommand will not be executed.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

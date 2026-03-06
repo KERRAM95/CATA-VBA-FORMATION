@@ -1,0 +1,154 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATOpnsMeasureIDLItf MeasurableCone (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATOpnsMeasureIDLItf.htm" href="../CATOpnsMeasureIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATOpnsMeasureIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "MeasurableCone"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> MeasurableCone<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_MeasurableCone_30958','MeasurableCone','0');</script>
+<section id='maindesc'>
+<b><i> Interface representing the measurement on a cone.</i></b><br>
+
+
+ Get the area, the center of gravity and the perimeter by inheritance.
+ Get the angle, the axis vector of the cone and three points on this axis (the two limit ones more an other).
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetAngle"><b>GetAngle</b></a>
+</td><td  id='tdright'>  Retrieves the angle of the cone.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetAxis"><b>GetAxis</b></a>
+</td><td  id='tdright'>  Retrieves the axis vector of the cone.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPoint"><b>GetPoint</b></a>
+</td><td  id='tdright'>  Retrieves the position of a point on the axis of the cone.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPoints"><b>GetPoints</b></a>
+</td><td  id='tdright'>  Retrieves the position of the two limit points on the axis of the cone.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetAngle"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetAngle</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the angle of the cone.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example retrieves the Angle of <tt>theMeasurableCone</tt> measure.
+   <pre>
+     Set theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+     Dim theMeasurableCone As MeasurableCone
+     Set theMeasurableCone = theMeasureService.GetMeasurable(theSelection, CAAMeasurableCone)
+     Dim theAngle As Double
+     theAngle = theMeasurableCone<font color="red">.GetAngle</font>
+   </pre>
+</dl>
+</dd>
+<a id="GetAxis"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetAxis</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oXVector</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oYVector</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oZVector</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the axis vector of the cone.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example retrieves the axis vector of <tt>theMeasurableCone</tt> measure.
+   <pre>
+     Set theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+     Dim theMeasurableCone As MeasurableCone
+     Set theMeasurableCone = theMeasureService.GetMeasurable(theSelection, CAAMeasurableCone)
+     Dim theXVector As Double
+     Dim theYVector As Double
+     Dim theZVector As Double
+     theMeasurableCone.<font color="red">GetAxis</font> theXVector, theYVector, theZVector
+   </pre>
+</dl>
+</dd>
+<a id="GetPoint"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetPoint</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oXPoint</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oYPoint</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oZPoint</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the position of a point on the axis of the cone.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example retrieves the position of a point on the axis of <tt>theMeasurableCone</tt> measure.
+   <pre>
+     Set theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+     Dim theMeasurableCone As MeasurableCone
+     Set theMeasurableCone = theMeasureService.GetMeasurable(theSelection, CAAMeasurableCone)
+     Dim theXPoint As Double
+     Dim theYPoint As Double
+     Dim theZPoint As Double
+     theMeasurableCone.<font color="red">GetPoint</font> theXPoint, theYPoint, theZPoint
+   </pre>
+</dl>
+</dd>
+<a id="GetPoints"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetPoints</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oXStartPoint</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oYStartPoint</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oZStartPoint</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oXEndPoint</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oYEndPoint</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oZEndPoint</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the position of the two limit points on the axis of the cone.
+ The distance between these points fit with the height of the cone.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example retrieves the position the two limit points on the axis of <tt>theMeasurableCone</tt> measure.
+   <pre>
+     Set theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+     Dim theMeasurableCone As MeasurableCone
+     Set theMeasurableCone = theMeasureService.GetMeasurable(theSelection, CAAMeasurableCone)
+     Dim theXStartPoint As Double
+     Dim theYStartPoint As Double
+     Dim theZStartPoint As Double
+     Dim theXEndPoint As Double
+     Dim theYEndPoint As Double
+     Dim theZEndPoint As Double
+     theMeasurableCone.<font color="red">GetPoints</font> theXStartPoint, theYStartPoint, theZStartPoint, theXEndPoint, theYEndPoint, theZEndPoint
+   </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

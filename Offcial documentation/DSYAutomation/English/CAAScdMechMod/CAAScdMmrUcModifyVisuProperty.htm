@@ -1,0 +1,168 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Modifying Visualization Properties of Selected Mechanical Objects</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Modifying Visualization Properties of Selected Mechanical Objects</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case we 
+						change a Visualization Property (in this case, Color) of 
+						a selected Mechanical Object.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:
+						<ul>
+							<li>Launch CATIA</li>
+							<li>Create a New 3DShape with some Mechanical Object 
+							or Open an existing one</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro: </span>
+						<a href="CAAScdMmrUcModifyVisuPropertySource.htm">CAAScdMmrUcModifyVisuPropertySource.htm</a></p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjEditor.htm">Editor Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfTocApplication.htm">Foundation Object Model Map</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case is divided in four steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the Active Editor in CATIA</a></li>
+			<li><a href="#Step2">Retrieves Selection Object from Active Editor</a></li>
+			<li><a href="#Step3">Updates Selection Object with Selection Criteria</a></li>
+			<li><a href="#Step4">Changes the Visualization Property Color</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the Active Editor 
+			in CATIA</strong></p>
+			<pre class="code"> ... 
+<span class="keyword"> Dim </span> oActiveEditor <span class="keyword"> As  </span> Editor
+<span class="keyword"> Set </span> oActiveEditor = CATIA.<strong>ActiveEditor</strong>
+...</pre>
+			<p>This step returns an Editor object, <code>oActiveEditor </code>from 
+			CATIA using the <em>ActiveEditor</em> method. </p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object 
+			from Active Editor</strong></p>
+			<pre class="code">...
+<span class="keyword"> Dim </span> oSelection
+<span class="keyword"> Set  </span>oSelection = oActiveEditor.<strong>Selection</strong>
+...</pre>
+			<p>The <code>Selection</code> property of Editor object, <code>oActiveEditor
+			</code>returns Selection object, <code>oSelection</code></p>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Updates Selection Object 
+			with Selection Criteria</strong></p>
+			<p>In this use case we give no condition for selection. It means we 
+			provide &quot;AnyObject&quot; as a filter type. &quot;AnyObject&quot; is a base class 
+			for all Automation types of entities which could be selected in the 
+			spec tree within CATIA.</p>
+			<pre class="code">...
+<span class="keyword"> Dim </span> Status <span class="keyword"> As  </span> String
+<span class="keyword"> Dim </span> InputObjectType(0)
+ InputObjectType(0) = &quot;AnyObject&quot;
+ Status = oSelection.<strong>SelectElement</strong>(<strong>InputObjectType</strong>, &quot;<strong>Select a Element from spec tree</strong>&quot;, <strong>False</strong>)
+...</pre>
+			<p>A call to <em>SelectElement</em> method updates the filter 
+			criteria . Here we give any object type, as an input criteria. Since 
+			the last argument is false, the end user will always be invited to select 
+			something in the spec tree, or the 3D Viewer, though an entity (of the 
+			type set as filter in the selection criteria) has already been selected 
+			by the end-user.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Changes the Visualization 
+			Property Color</strong></p>
+			<p>Here we first retrieve Selection object's property set. We then set 
+			their color</p>
+			<pre class="code">...
+<span class="keyword"> Dim </span> VisPropertySet
+<span class="keyword"> Set  </span> VisPropertySet = oSelection.<strong>VisProperties</strong>
+ VisPropertySet.<strong>SetRealColor</strong> <strong>0</strong>, <strong>255</strong>, <strong>0</strong>, <strong>1</strong>
+...</pre>
+			<p><code>VisPropertySet </code>represents the visualization 
+			property set of the selected object. We change this property using
+			<em>SetRealColor</em> method. </p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

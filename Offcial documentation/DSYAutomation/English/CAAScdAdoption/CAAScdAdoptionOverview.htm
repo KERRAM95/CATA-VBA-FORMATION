@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+  <title>Overview of Adoption for Automation</title>
+  <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+  <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+  <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+  <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+  <tbody>
+    <tr>
+      <td class="DocHeader1"><h1><a name="Top"></a>Overview of Adoption for
+        Automation</h1>
+      </td>
+    </tr>
+    <tr>
+      <td class="tech">Technical Article</td>
+    </tr>
+  </tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+  <tbody>
+    <tr>
+      <td><h2>Abstract</h2>
+        <p>This article explains how to transform your V5 Automation macros to
+        take advantage of the <strong>3D</strong>EXPERIENCE platform.</p>
+        <p>This article describes or points to articles describing the main new
+        concepts and technologies you need to understand before looking at your
+        Automation macros. Then a change methodology is explained along with
+        where to find the appropriate information.</p>
+        <div id="toc">
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="10"></a>What Is New with 3DEXPERIENCE Platform Automation?</h2>
+<p>Automation reflects the changes brought to <strong>3D</strong>EXPERIENCE 
+platform compared to V5.</p>
+<p>The main change in the data model consists in replacing the document-centric
+model relying on files with a product/representation model relying on a
+database and a client/server architecture. Main characteristics are:</p>
+<ul>
+  <li>There are no Part, Product, Drawing, Material, or Analysis documents and
+    files any longer. They are replaced with product references and
+  instances.</li>
+  <li>All data models are specializations of the same PLM Core model that
+    enables an non-semantic server-layer code to perform robust query and save
+    operations on stateless servers, removing data mapping problems and data
+    loss.</li>
+  <li>The Product model, as well as the other data models, is a unique
+    entity-relation based model designed to reduce the storage size in the
+    database, to allow for large assemblies in sessions and for perfect
+    symmetry without data loss when back and forth loading and storing
+  data.</li>
+  <li>Parts support the multi-representation thanks to isolation between the
+    part reference and its shape.</li>
+  <li>Each PLM entity is assigned a unique identifier whatever its type
+    supporting any PLM operations, such as versioning, configuration, or
+    replication.</li>
+</ul>
+<p>Other changes are related to the user interface that offers the Bar and the
+Compass in addition to the 3D compass, for easy search, navigation, and
+real-time collaboration.</p>
+<script type="text/javascript">
+insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Ready"></a>How to Adopt 3DEXPERIENCE Platform Automation?</h2>
+<p>Before modifying macros to take advantage of <strong>3D</strong>EXPERIENCE 
+platform architecture, a minimal
+understanding of PLM concepts, PLM objects customization and products is
+required and can be found in the product documentation. The following steps
+should then be considered:</p>
+<ol>
+  <li>Choose target languages for <strong>3D</strong>EXPERIENCE platform macros.</li>
+  <li>Understand main modifications that will have to be performed.</li>
+  <li>Assess <strong>3D</strong>EXPERIENCE platform functional level to understand which macros will run on the
+    current level.</li>
+  <li>Define the structure of libraries that will allow <strong>macro
+    persistency</strong>, create any required library and macro, and initialize
+      macros with V5 content.</li>
+  <li>Review all macros. Modify what is required and test code using the
+    <em>Details of modifications on V5 modelers</em> part of the
+    <em>Adoption</em> section as a reference.</li>
+</ol>
+<p>Those steps are described below in more details.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Choose"></a>Choose Target Language for <strong>3D</strong>EXPERIENCE 
+Platform Macros</h3>
+<p>Of course CATScript, VBScript and VBA are still supported.</p>
+<p>Scripting languages supported in V5 are still supported: CATScript, Visual 
+Basic for Application and Visual Basic Scripting Edition (VBScript) can be used, 
+detailed levels are provided in the product Program Directory. <strong>3D</strong>EXPERIENCE 
+platform now
+integrates VSTA, meaning that C# and VB.NET are additional scripting languages
+to choose from. So it is possible either to keep the choices that were made in
+V5 or to take advantage of <strong>3D</strong>EXPERIENCE platform adoption to review those choices. </p>
+<p>For example CATScript files content is dynamically preprocessed into
+VBScript before being executed. This runtime cost could be avoided by removing
+any typing information from the V5 CATScript macros and storing the result in a catvbs macro. Migrating macros to C# of VB.NET could also be considered in
+the perspective of complying to a development language corporate strategy.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Understand"></a>Understand Main Modifications</h3>
+<p>This approach is based on main V5 scenarios commonly used when creating
+macros and aims to understand which are the main modifications that will be
+required. The articles provided in <em>Main Applications Patterns</em> part of
+the <em>Adoption</em> section should be read first, they address:</p>
+<ul>
+  <li>Automating Access to Settings.</li>
+  <li>Working with Objects.</li>
+  <li>Bringing Objects into Session and Saving objects.</li>
+  <li>Accessing Objects in Session.</li>
+  <li>Creating Objects.</li>
+  <li>Accessing Objects Through Generic Methods.</li>
+</ul>
+<p>It is also recommended to read the article <em>
+<a href="CAAScdProductAdoption.htm">Product Changes</a></em> in the
+<em>Details of modifications on V5 modelers</em> part of the <em>Adoption</em>
+section.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Assess"></a>Assess 3DEXPERIENCE Platform Functional Level</h3>
+<p>All V5 object and methods may not be available in the current <strong>3D</strong>EXPERIENCE 
+platform level. As
+there is no explicit compilation of macro code for languages available in V5,
+this cannot be fully performed before the code modification phase but high
+level hints can be found:</p>
+<ul>
+  <li>In the <em>Object Reference</em> part of the <em>Reference</em> section
+    that lists available <strong>3D</strong>EXPERIENCE platform objects</li>
+  <li>In the <em>Details of modifications on V5 modelers</em> part of the
+    <em>Adoption</em> section that described for V5 modelers available in the
+    current <strong>3D</strong>EXPERIENCE platform level, which thinner level functionality may not be
+  available.</li>
+</ul>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Define"></a>Define Macros Persistency</h3>
+<p>Macros are saved and accessed in macro libraries stored in the PLM server
+database. This allows easy access from any client seat to corporate macros.
+Macro libraries must so be created first, typically their number and names will
+reflect language used by stored macros and any kind of logical gathering
+(processes where they should be used, functional domains, etc.).</p>
+
+<p>For each V5 macro that will be processed, a <strong>3D</strong>EXPERIENCE 
+platform macro should be created in
+one of the libraries, and the code should copy/pasted from the V5 document they
+were saved in.</p>
+<ul>
+  <li>CATScript and catvbs files can be edited using any text editor.</li>
+  <li>CATVBA files must be read first using a V5 session and should be exported
+    as .bas files using the embedded VBA editor. This .bas file will then be
+    imported using the VBA editor associated with a <strong>3D</strong>EXPERIENCE 
+	  platform session.</li>
+  <li>Macros stored in non macro-specific V5 documents like CATPart or
+    CATDrawing files, cannot be saved in their hosting representations in <strong>3D</strong>EXPERIENCE 
+	  platform.
+    You can: 
+    <ul>
+      <li>Store them in the database: import the V5 file. A dedicated
+        representation is created to contain the macro. You can save this macro
+        in a PLM macro library corresponding to the macro language
+        (CATScript or VBScript). You can then recall the macro from its PLM
+        macro library using the Macros dialog box of the Macro command in the
+        Tools menu. Because the V5 automation model is not compliant with the
+          <strong>3D</strong>EXPERIENCE platform one, most of V5 macros cannot be used "As Is". To prevent
+        problems, the FBDI process adds a string at the beginning of all
+        imported macros to make them non-executable. Consult the article
+        <em>Macros File-based Design Import</em> in the product documentation
+        for more information.</li>
+      <li>Store them in files: extract them from the V5 documents using a V5
+        session first, and save them as text in text files. The content of this
+        text file can then be pasted in a <strong>3D</strong>EXPERIENCE platform macro edited in a <strong>3D</strong>EXPERIENCE 
+		  platform session.
+        V5 Documents do not need to be modified, the File Based Design Import
+        mechanism (FBDI), that allows you to import V5 documents into the PLM
+        server, will remove the macros code when the V5 document will be
+        imported in the PLM server database.</li>
+    </ul>
+  </li>
+</ul>
+<p><strong>Notes</strong>:</p>
+<ol>
+  <li>Documents that were dedicated to store macros in V5 (files with the
+    .CATBVA, .CATScript or .catvbs extension) are not handled by FBDI.</li>
+  <li>Macro code stored in Knowledgeware features is kept when importing the
+    document containing those features. A warning pop-up is however added.
+    Consult the article <em>Knowledgeware File-based Design Import</em> in the
+    product documentation for more information.</li>
+</ol>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Review"></a>Review, Modify, and Test Code</h3>
+<p>Once main modifications have been understood, persistency defined and <strong>3D</strong>EXPERIENCE 
+platform macro code initialized with V5 content, actual code modification and test can
+take place. Here again the <em>Details of modifications on V5 modelers</em>
+part of the <em>Adoption</em> section should be used. It describes, for each V5
+modeler available, which objects and methods have been changed and
+how.</p>
+<p>Each macro should at least be reviewed and any usage of Documents
+collection, Document object or any object whose types derives from Document
+should be replaced. </p>
+<p><strong>Note</strong><em>:</em> A V5 macro should never be considered as
+acceptable for <strong>3D</strong>EXPERIENCE platform if it has not at least been reviewed.</p>
+<script type="text/javascript">
+insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Steady"></a>What Is Not Possible in Current Level?</h2>
+<p>Functionality involving links from representations to PLM object are not
+supported:</p>
+<ul>
+  <li>Creation of contextual design.</li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,194 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAMpaStructuralModelIDLItf SimCompositeLaminate (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAMpaStructuralModelIDLItf.htm" href="../SMAMpaStructuralModelIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAMpaStructuralModelIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimCompositeLaminate"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimCompositeLaminate<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimCompositeLaminate_57337','SimCompositeLaminate','0');</script>
+<section id='maindesc'>
+<b><i> Represents the Composite Laminate object.</i></b><br>
+
+
+ <!-- @sample -->
+ Given a <code>SimCompositeShellSection</code> object, you can retrieve a <code>SimCompositeLaminate</code> as below:
+ Dim myCompShellSection As SimCompositeShellSection
+ ....
+ Refer SMAIAMpaCompositeShellSection.idl to see how a SimCompositeShellSection is created.
+ ....
+ Dim myCompositeParameters As SimCompositeParameters
+ Set myCompositeParameters = myCompShellSection.GetCompositeParameters
+ ....
+ Dim myCompositeLaminate As SimCompositeLaminate
+ Set myCompositeLaminate = myCompShellSection.CreateLaminate, "<Laminate_Name>"
+					or
+ Set myCompositeLaminate = myCompositeParameters.GetLaminateByIndex 1
+					or
+ Set myCompositeLaminate = myCompositeParameters.GetLaminateByName "Laminate.1"
+					or
+ Dim myCompositeLaminatelist
+ myCompositeLaminatelist = myCompositeParameters.GetListOfRosettes
+ ...Loop for listSize = UBound(myCompositeLaminatelist) - LBound(myCompositeLaminatelist) + 1 if needed..
+ myCompositeLaminate = myCompositeLaminatelist(0)<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetStackingType"><b>GetStackingType</b></a>
+</td><td  id='tdright'>  Gets the stacking type of the laminate i.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetSymmetryMode"><b>GetSymmetryMode</b></a>
+</td><td  id='tdright'>  Retrieves the Symmetry mode of stacking type in the laminate.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetStackingAsThicknessLaw"><b>SetStackingAsThicknessLaw</b></a>
+</td><td  id='tdright'>   Sets the stacking as thickness law.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetStackingSequence"><b>SetStackingSequence</b></a>
+</td><td  id='tdright'>   Set the stacking sequence in the laminate.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetStackingType"><b>SetStackingType</b></a>
+</td><td  id='tdright'>  Set the stacking type in the laminate i.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetSymmetryMode"><b>SetSymmetryMode</b></a>
+</td><td  id='tdright'>  Set the Symmetry mode of stacking type in the laminate.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetStackingType"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetStackingType</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SimLaminateStackingType','SimLaminateStackingType')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets the stacking type of the laminate i.e. thickness law or stacking sequence.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>   The stacking type of the laminate.
+ </ dd>
+</dl>
+</dd>
+<a id="GetSymmetryMode"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetSymmetryMode</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SimLaminateSymmetryMode','SimLaminateSymmetryMode')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the Symmetry mode of stacking type in the laminate. 
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>   The symmetry mode of the laminate.
+ </ dd>
+</dl>
+</dd>
+<a id="SetStackingAsThicknessLaw"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetStackingAsThicknessLaw</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iMaterials</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iLayers</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Sets the stacking as thickness law.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iMaterials</span></dt>
+   <dd> [in]   The list of materials used.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iLayers</span></dt>
+   <dd> [in]	The number of layers for each material and each orientation. Size must equals number of materials in thickness law x number of orientations in Composites Parameter.
+   e.g. {0,2,2,0,0,0,0,1} when materials are {carbon, kevlar} and orientations {0°,45°,-45°, 90°} for 2 layers of carbon 45°, 2 layers of carbon -45° and 1 layer of kevlar 90°.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetStackingSequence"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetStackingSequence</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iMaterials</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iOrientations</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Set the stacking sequence in the laminate.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iMaterials</span></dt>
+   <dd> [in]   The list of materials in the laminate.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iOrientations</span></dt>
+   <dd> [in]	The list of orientation of material in the laminate.
+	The material[i] with orientation[i]
+ Both the input lists must be of same size.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetStackingType"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetStackingType</span><span class='signature'>(<script type="text/javascript"> activateLink('SimLaminateStackingType','SimLaminateStackingType')</script> <span class='param'>iStackingType</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the stacking type in the laminate i.e. thickness law or stacking sequence.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iStackingType</span></dt>
+   <dd> [in]  The stacking type to be set in the laminate.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetSymmetryMode"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetSymmetryMode</span><span class='signature'>(<script type="text/javascript"> activateLink('SimLaminateSymmetryMode','SimLaminateSymmetryMode')</script> <span class='param'>iSymMode</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the Symmetry mode of stacking type in the laminate. 
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSymMode</span></dt>
+   <dd> [in]  The symmetry mode to be set in the laminate.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

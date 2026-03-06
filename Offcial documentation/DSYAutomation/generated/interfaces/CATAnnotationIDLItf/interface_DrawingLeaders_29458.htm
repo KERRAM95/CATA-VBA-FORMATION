@@ -1,0 +1,173 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATAnnotationIDLItf DrawingLeaders (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATAnnotationIDLItf.htm" href="../CATAnnotationIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATAnnotationIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "DrawingLeaders"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> DrawingLeaders<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_DrawingLeaders_29458','DrawingLeaders','0');</script>
+<section id='maindesc'>
+<b><i> A collection of all the drawing leaders currently managed by a
+ drawing view of drawing sheet in a drawing representation.</i></b><br>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#Add"><b>Add</b></a>
+</td><td  id='tdright'>  Creates a drawing leader and adds it to the DrawingLeaders collection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Item"><b>Item</b></a>
+</td><td  id='tdright'>  Returns a drawing leader using its index from the DrawingLeaders collection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Remove"><b>Remove</b></a>
+</td><td  id='tdright'>  Removes a drawing leader from the DrawingLeaders collection.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="Add"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Add</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iHeadPointX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iHeadPointY</span>)</span> As <script type="text/javascript"> activateLink('DrawingLeader','DrawingLeader')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a drawing leader and adds it to the DrawingLeaders collection.
+ <dd> Notice that an authoring product licence is required.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iHeadPointX,iHeadPointY</span></dt>
+   <dd>   The x and y coordinates of head side of drawing leader
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created drawing leader <!-- @sample -->
+ </dl>
+ <dt><b>Example:</b>
+ <dd>
+ The following example creates a drawing leader
+ and retrieved in <tt>MyLeader</tt> in the drawing text collection
+ of the <tt>MyText</tt> drawing text.
+ This text belongs to the drawing text collection of the drawing view
+ <pre>
+ Dim MyTexts As DrawingTexts
+ Set MyTexts = MySheet.Views.<font color="red">ActiveView</font>
+ Dim MyText As DrawingText
+ Set MyText = MyTexts.<font color="red">Item</font>(1)
+ Dim MyLeader As DrawingLeader
+ Set MyLeader = MyText.Leaders.<font color="red">Add</font>(20., 50)
+ </pre>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="Item"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Item</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('DrawingLeader','DrawingLeader')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns a drawing leader using its index from the DrawingLeaders collection.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd>   The index of the drawing leader to retrieve from the collection of drawing arows.
+   As a numerics, this index is the rank of the drawing leader in the collection.
+   The index of the first drawing leader in the collection is 1, and
+   the index of the last drawing leader is Count.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The retrieved drawing view <!-- @sample -->
+ <dt><b>Example:</b>
+ <dd>
+ This example retrieves in <tt>ThisDrawingLeader</tt> the second drawing leader,
+ in the drawing view collection of the active view
+ in the active sheet, in the active representation supposed to be a drawing representation.
+ <pre>
+ Dim MyView  As DrawingView
+ Set MyView  = MySheet.Views.ActiveView
+ Dim ThisDrawingLeader As DrawingLeader
+ Set ThisDrawingLeader = MyView.Leaders.<font color="red">Item</font>(2)
+ </pre>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="Remove"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Remove</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Removes a drawing leader from the DrawingLeaders collection.
+ <dd> Notice that an authoring product licence is required.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd>   The index of the drawing leader to remove from
+   the collection of drawing leaders.
+   As a numerics, this index is the rank of the drawing leader
+   in the collection.
+   The index of the first drawing leader in the collection is 1, and
+   the index of the last drawing leader is Count.
+ <!-- @sample -->
+ </dl>
+ <dt><b>Example:</b>
+ <dd>
+ The following example removes the third drawing leader 
+ in the drawing leader collection of the active view
+ of the active representation, supposed to be a drawing representation.
+ <pre>
+ Dim MyView As DrawingView
+ Set MyView  = MySheet.Views.ActiveView
+ MyView.DrawingLeaders.<font color="red">Remove</font>(3)
+ </pre>
+ </dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

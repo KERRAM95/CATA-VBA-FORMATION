@@ -1,0 +1,626 @@
+<html><head>             
+<meta http-equiv="Content-Language" content="en-us">             
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">             
+<meta name="Generator" content="CppGene v1.1">             
+<meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">             
+<meta name="topictype" content="Qr" />             
+<meta name="devlang" content="cpp" />             
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>             
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>             
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>             
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>             
+<title> SIM Results Writer (python)</title>            
+</head>            
+<body><hr> <h2>SIMResultsWriter</h2> <br>
+<dd>     This class is intended to make it as easy as possible to write results to SIM that will be compatible with HPViz. </dd>
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of SIMResultsWriter object
+ </dd></dl>
+ <dt> o <a href="#AddDisplayBodyConstraint"><b>AddDisplayBodyConstraint</b></a></dt><dd>   Creates a display body constraint for the specified set of elements.
+ </dd></dl>
+ <dt> o <a href="#AddElements"><b>AddElements</b></a></dt><dd>   Adds the element data for mesh to the document.
+ </dd></dl>
+ <dt> o <a href="#AddFieldType"><b>AddFieldType</b></a></dt><dd>   Adds a new user defined fieldType to document.
+ </dd></dl>
+ <dt> o <a href="#AddFrame"><b>AddFrame</b></a></dt><dd>   Adds a frame to the step.
+ </dd></dl>
+ <dt> o <a href="#AddLoadCase"><b>AddLoadCase</b></a></dt><dd>   Creates a loadcase for the step.
+ </dd></dl>
+ <dt> o <a href="#AddModifiedFieldType"><b>AddModifiedFieldType</b></a></dt><dd>   Copies a existing fieldType to a new user defined fieldType, adds to the document.
+ </dd></dl>
+ <dt> o <a href="#AddStep"><b>AddStep</b></a></dt><dd>   Creates a step.
+ </dd></dl>
+ <dt> o <a href="#AddUserElementLabels"><b>AddUserElementLabels</b></a></dt><dd>   Returns a list of flat element labels for the given vector of user element labels.
+ </dd></dl>
+ <dt> o <a href="#AddUserNodeLabels"><b>AddUserNodeLabels</b></a></dt><dd>   Returns a list of flat node labels for the given vector of user node labels..
+ </dd></dl>
+ <dt> o <a href="#CreateBeamSection"><b>CreateBeamSection</b></a></dt><dd>   Creates beam section, element class and assigns material to the section. It is expected that an element set here defines an element class; returns an error if element set contains elements of multiple element specs. </dd></dl>
+ <dt> o <a href="#CreateCompositeShellSection"><b>CreateCompositeShellSection</b></a></dt><dd>   Creates composite shell section, element class and assigns material to the section. It is expected that an element set here defines an element class; returns an error if element set contains elements of multiple element specs. </dd></dl>
+ <dt> o <a href="#CreateContinuumSection"><b>CreateContinuumSection</b></a></dt><dd>   Creates continuum section, element class and assigns material to the section. It is expected that an element set here defines an element class; returns an error if element set contains elements of multiple element specs. </dd></dl>
+ <dt> o <a href="#CreateDocument"><b>CreateDocument</b></a></dt><dd>   Creates a SIM document. If there is any existing document with same name, it will be overwritten.
+ </dd></dl>
+ <dt> o <a href="#CreateHomogeneousShellSection"><b>CreateHomogeneousShellSection</b></a></dt><dd>   Creates homogeneous shell section, element class and assigns material to the section. It is expected that an element set here defines an element class; returns an error if element set contains elements of multiple element specs. </dd></dl>
+ <dt> o <a href="#CreateMaterial"><b>CreateMaterial</b></a></dt><dd>   Creates material.
+ </dd></dl>
+ <dt> o <a href="#CreatePermutedElementSet"><b>CreatePermutedElementSet</b></a></dt><dd>   Creates permuted set of elements.
+ </dd></dl>
+ <dt> o <a href="#CreatePermutedNodeSet"><b>CreatePermutedNodeSet</b></a></dt><dd>   Creates permuted set of nodes.
+ </dd></dl>
+ <dt> o <a href="#Finalize"><b>Finalize</b></a></dt><dd>   Saves and closes the SIM document; must be called only once.
+ </dd></dl>
+ <dt> o <a href="#GetDocument"><b>GetDocument</b></a></dt><dd>   Returns the underlying SIMDocument object, for advanced usage with SIM API.
+ </dd></dl>
+ <dt> o <a href="#GetFieldTypeFromOutputVariable"><b>GetFieldTypeFromOutputVariable</b></a></dt><dd>   Gets a fieldType name for output variable.
+ </dd></dl>
+ <dt> o <a href="#InitFieldResult"><b>InitFieldResult</b></a></dt><dd>   Initializes a field result.
+ </dd></dl>
+ <dt> o <a href="#InitHistoryResult"><b>InitHistoryResult</b></a></dt><dd>   Initializes a history result.
+ </dd></dl>
+ <dt> o <a href="#InitOrientation"><b>InitOrientation</b></a></dt><dd>   Creates Orientation.
+ </dd></dl>
+ <dt> o <a href="#Initialize"><b>Initialize</b></a></dt><dd>   Initializes ResultsWriter, this method must be called before any other method.
+ </dd></dl>
+ <dt> o <a href="#LoadDocument"><b>LoadDocument</b></a></dt><dd>   Loads an existing SIM document. ResultsWriter expects certain state of the document, so this options should be used
+ with caution.
+ </dd></dl>
+ <dt> o <a href="#SetGeometricNonlinearityOption"><b>SetGeometricNonlinearityOption</b></a></dt><dd>   Sets the geometric nonlinearity option for the step.
+ </dd></dl>
+ <dt> o <a href="#SetUnitSystem"><b>SetUnitSystem</b></a></dt><dd>   Set the unit system.
+ </dd></dl>
+ <dt> o <a href="#SetUserElementLabelsMap"><b>SetUserElementLabelsMap</b></a></dt><dd>   Set the user element label to flat label mapping if it is known ahead of time.
+ </dd></dl>
+ <dt> o <a href="#SetUserNodeLabelsMap"><b>SetUserNodeLabelsMap</b></a></dt><dd>   Set the user node label to flat label mapping if it is known ahead of time.
+ </dd></dl>
+ <dt> o <a href="#WriteNodes"><b>WriteNodes</b></a></dt><dd>   Writes the node coordinate data for mesh (or part of mesh) to the document. Should give better performance if data for all nodes is written at once.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of SIMResultsWriter object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of SIMResultsWriter object
+    </tt> </dt></dl></dd></dl></dl><a name="AddDisplayBodyConstraint"></a><dt> o <b>AddDisplayBodyConstraint</b></dt><dl> <dd>Creates a display body constraint for the specified set of elements.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iConstraintName
+        </tt> </dt><dd>[in/required] A string specifying the constraint name for the display body constraint; must be a unique.
+        </dd><dt> <tt> iConstraintDescription
+        </tt> </dt><dd>[in/required] A string specifying the description.
+        </dd><dt> <tt> iElsetName
+        </tt> </dt><dd>[in/required] A string specifying the element set name to be constrained as a display body.
+        </dd><dt> <tt> iRefNodeSetName
+        </tt> </dt><dd>[in/required] A string specifying the reference node set to which the display body is connected to. There can be maximum of 3 nodes in the node set and the set must be permuted.
+        </dd></dl></dd></dl></dl><a name="AddElements"></a><dt> o <b>AddElements</b></dt><dl> <dd>Adds the element data for mesh to the document.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElementSpec
+        </tt> </dt><dd>[in/required] A string specifying the elementSpec. Refer to "SIM predefined string" section of "Writing SIM Results Using Python" user documentation.
+        </dd><dt> <tt> iElementIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the element indices.
+        </dd><dt> <tt> iConnectivity
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the connectivity for each element specified in iElementIndices; must be of length iNumElements </dd></dl></dd></dl></dl><a name="AddFieldType"></a><dt> o <b>AddFieldType</b></dt><dl> <dd>Adds a new user defined fieldType to document.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iFieldType
+        </tt> </dt><dd>[in/required] A string specifying the FieldType to be added to SIM document.
+        </dd><dt> <tt> iFieldTypeDescription
+        </tt> </dt><dd>[in/required] A string specifying the description.
+        </dd><dt> <tt> iAlgebraicType
+        </tt> </dt><dd>[in/required] A string specifying the AlgebraicType.
+        </dd><dt> <tt> iPhysicalDimension
+        </tt> </dt><dd>[in/required] A string specifying the PhysicalDimension e.g. MLT02; refer to "SIM predefined string" section of "Writing SIM Results Using Python" user documentation.
+        </dd><dt> <tt> iDsMagnitude
+        </tt> </dt><dd>[in/required] A string specyfing the dsMagnitude string to help HPViz process the field types e.g FORCE.
+        </dd><dt><tt>iNonNegative
+        </tt> </dt><dd>[in/optional] A boolean specifying if the field type can be negative or not. This can only be true for a SCALAR or TENSOR2_GENERAL. 
+        </dd></dl></dd></dl></dl><a name="AddFrame"></a><dt> o <b>AddFrame</b></dt><dl> <dd>Adds a frame to the step.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name for the frame; must be already created.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame Index to be added; must not be already defined.
+        </dd><dt> <tt> iFrameValues
+        </tt> </dt><dd>[in/required] A double specifying the frame value.
+        </dd></dl></dd></dl></dl><a name="AddLoadCase"></a><dt> o <b>AddLoadCase</b></dt><dl> <dd>Creates a loadcase for the step.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name for the load case; must be already created.
+        </dd><dt> <tt> iCaseName
+        </tt> </dt><dd>[in/required] A string specifying the loadcase name to be created; must be unique across all steps.
+        </dd></dl></dd></dl></dl><a name="AddModifiedFieldType"></a><dt> o <b>AddModifiedFieldType</b></dt><dl> <dd>Copies a existing fieldType to a new user defined fieldType, adds to the document.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iOriginalFieldType
+        </tt> </dt><dd>[in/required] A string specifying the original field type to be copied, must exist on SIM document.
+        </dd><dt> <tt> iFieldType
+        </tt> </dt><dd>[in/required] A string specifying the FieldType to be added to SIM document.
+        </dd><dt> <tt> iFieldTypeDescription
+        </tt> </dt><dd>[in/required] A string specifying the description.       
+        </dd></dl></dd></dl></dl><a name="AddStep"></a><dt> o <b>AddStep</b></dt><dl> <dd>Creates a step.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name to be created; must be unique.
+        </dd><dt> <tt> iStepTypeName
+        </tt> </dt><dd>[in/required] A string specifying the type name of the step to be created; all step type names are available in "SIM predefined string" section of "Writing SIM Results Using Python" user documentation.
+        </dd><dt> <tt> iStepDescription
+        </tt> </dt><dd>[in/required] A string specifying the description.
+        </dd><dt> <tt> iFrameValues
+        </tt> </dt><dd>[in/required] A sequence of doubles specifying the frame values.
+        </dd></dl></dd></dl></dl><a name="AddUserElementLabels"></a><dt> o <b>AddUserElementLabels</b></dt><dl> <dd>Returns a list of flat element labels for the given vector of user element labels.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iInstanceName
+        </tt> </dt><dd>[in/required] A string specifying the instance name.
+        </dd><dt> <tt> iUserLabels
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the user element labels.
+        </dd><dt><tt> [out] A sequence of integers specifying the flat element labels.
+        </tt> </dt></dl></dd></dl></dl><a name="AddUserNodeLabels"></a><dt> o <b>AddUserNodeLabels</b></dt><dl> <dd>Returns a list of flat node labels for the given vector of user node labels..
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iInstanceName
+        </tt> </dt><dd>[in/required] A string specifying the instance name.
+        </dd><dt> <tt> iUserLabels
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the user node labels.
+        </dd><dt><tt> [out] A sequence of integers specifying the flat node labels.
+        </tt> </dt></dl></dd></dl></dl><a name="CreateBeamSection"></a><dt> o <b>CreateBeamSection</b></dt><dl> <dd>Creates beam section, element class and assigns material to the section. It is expected that an element set here defines an element class; returns an error if element set contains elements of multiple element specs. <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElsetName
+        </tt> </dt><dd>[in/required] A string specifying the element set name; must be already created.
+        </dd><dt> <tt> iMaterialName
+        </tt> </dt><dd>[in/required] A string specifying the material name to be assigned to section; must be already created.
+        </dd><dt> <tt> iProfileType
+        </tt> </dt><dd>[in/required] A string specifying the beam Profile type.
+        </dd><dt> <tt> iNumDirSectionPoints
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the number of section points in each direction.
+        </dd></dl></dd></dl></dl><a name="CreateCompositeShellSection"></a><dt> o <b>CreateCompositeShellSection</b></dt><dl> <dd>Creates composite shell section, element class and assigns material to the section. It is expected that an element set here defines an element class; returns an error if element set contains elements of multiple element specs. <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElsetName
+        </tt> </dt><dd>[in/required] A string specifying the element set name; must be already created.
+        </dd><dt> <tt> iNumLayers
+        </tt> </dt><dd>[in/required] An integer specifying the number of layers.
+        </dd><dt> <tt> iMaterialNames
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the name of Materials to be assigned for each layer in section; must be already created.
+        </dd><dt> <tt> iPlyNames
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the ply name for each layer.
+        </dd><dt> <tt> iNumSectionPoints
+        </tt> </dt><dd>[in/required] An integer specifying the number of section points, same for all layers.
+        </dd><dt> <tt> iLayerThickness
+        </tt> </dt><dd>[in/required] A sequence of doubles specifying the thickness for each layer.
+        </dd></dl></dd></dl></dl><a name="CreateContinuumSection"></a><dt> o <b>CreateContinuumSection</b></dt><dl> <dd>Creates continuum section, element class and assigns material to the section. It is expected that an element set here defines an element class; returns an error if element set contains elements of multiple element specs. <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElsetName
+        </tt> </dt><dd>[in/required] A string specifying the element set name; must be already created.
+        </dd><dt> <tt> iMaterialName
+        </tt> </dt><dd>[in/required] A string specifying the material name to be assigned to section; must be already created.
+        </dd></dl></dd></dl></dl><a name="CreateDocument"></a><dt> o <b>CreateDocument</b></dt><dl> <dd>Creates a SIM document. If there is any existing document with same name, it will be overwritten.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDocName
+        </tt> </dt><dd>[in/required] A string specifying the document name.
+        </dd></dl></dd></dl></dl><a name="CreateHomogeneousShellSection"></a><dt> o <b>CreateHomogeneousShellSection</b></dt><dl> <dd>Creates homogeneous shell section, element class and assigns material to the section. It is expected that an element set here defines an element class; returns an error if element set contains elements of multiple element specs. <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElsetName
+        </tt> </dt><dd>[in/required] A string specifying the element set name; must be already created.
+        </dd><dt> <tt> iMaterialName
+        </tt> </dt><dd>[in/required] A string specifying the material name to be assigned to section; must be already created.
+        </dd><dt> <tt> iNumSectionPoints
+        </tt> </dt><dd>[in/required] An integer specifying the number of section points.
+        </dd><dt><tt>iThickness
+        </tt> </dt><dd>[in/optional] A double specifying the section thickness. The default value is 1.0.
+        </dd></dl></dd></dl></dl><a name="CreateMaterial"></a><dt> o <b>CreateMaterial</b></dt><dl> <dd>Creates material.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iMaterialName
+        </tt> </dt><dd>[in/required] A string specifying the material name; must be unique.
+        </dd></dl></dd></dl></dl><a name="CreatePermutedElementSet"></a><dt> o <b>CreatePermutedElementSet</b></dt><dl> <dd>Creates permuted set of elements.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iSetName
+        </tt> </dt><dd>[in/required] A string specifying the set name to be created; must be unique for both element and node sets.
+        </dd><dt> <tt> iMembers
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the members; order is maintained, no duplicates.
+        </dd></dl></dd></dl></dl><a name="CreatePermutedNodeSet"></a><dt> o <b>CreatePermutedNodeSet</b></dt><dl> <dd>Creates permuted set of nodes.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iSetName
+        </tt> </dt><dd>[in/required] A string specifying the set name to be created; must be unique for both node and element sets.
+        </dd><dt> <tt> iMembers
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the members; order is maintained, no duplicates.
+        </dd></dl></dd></dl></dl><a name="Finalize"></a><dt> o <b>Finalize</b></dt><dl> <dd>Saves and closes the SIM document; must be called only once.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt>None</dt></dl></dd></dl></dl><a name="GetDocument"></a><dt> o <b>GetDocument</b></dt><dl> <dd>Returns the underlying SIMDocument object, for advanced usage with SIM API.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A SIMDocument object specifying the SIMDocument object.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldTypeFromOutputVariable"></a><dt> o <b>GetFieldTypeFromOutputVariable</b></dt><dl> <dd>Gets a fieldType name for output variable.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iOutputVariable
+        </tt> </dt><dd>[in/required] A string specifying output variable name for which fieldType is needed.
+        </dd><dt><tt> [out] A string specifying the FieldType.
+        
+        </tt> </dt></dl></dd></dl></dl><a name="InitFieldResult"></a><dt> o <b>InitFieldResult</b></dt><dl> <dd>Initializes a field result.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name for the result; must be already created.
+        </dd><dt> <tt> iFieldType
+        </tt> </dt><dd>[in/required] A string specifying the fieldType name. Refer to "SIM predefined string" section of "Writing SIM Results Using Python" user documentation.
+        </dd><dt> <tt> ioField
+        </tt> </dt><dd>[in/required] A Field object specifying the field object which should be used to add data.
+        </dd></dl></dd></dl></dl><a name="InitHistoryResult"></a><dt> o <b>InitHistoryResult</b></dt><dl> <dd>Initializes a history result.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name for the result; must be already created.
+        </dd><dt> <tt> iFieldType
+        </tt> </dt><dd>[in/required] A string specifying the fieldType name; must be from "SIM predefined string" section of "Writing SIM Results Using Python" user documentation.
+        </dd><dt> <tt> ioField
+        </tt> </dt><dd>[in/required] A Field object specifying the field object which should be used to add data.
+        </dd></dl></dd></dl></dl><a name="InitOrientation"></a><dt> o <b>InitOrientation</b></dt><dl> <dd>Creates Orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iOrientationName
+        </tt> </dt><dd>[in/required] Orientation name to be created; must be unique.
+        </dd><dt> <tt> ioOrientation
+        </tt> </dt><dd>[in/required] Orientation object which should be used to add data.
+        </dd></dl></dd></dl></dl><a name="Initialize"></a><dt> o <b>Initialize</b></dt><dl> <dd>Initializes ResultsWriter, this method must be called before any other method.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt>iMaxChunkSizeInMB
+        </tt> </dt><dd>[in/optional] An integer specifying the max chunk size in MB. A chunk is the unit of I/O for bulk data. The default value is 1.
+        </dd></dl></dd></dl></dl><a name="LoadDocument"></a><dt> o <b>LoadDocument</b></dt><dl> <dd>Loads an existing SIM document. ResultsWriter expects certain state of the document, so this options should be used
+ with caution.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDocName
+        </tt> </dt><dd>[in/required] A string specifying the document name.
+        </dd></dl></dd></dl></dl><a name="SetGeometricNonlinearityOption"></a><dt> o <b>SetGeometricNonlinearityOption</b></dt><dl> <dd>Sets the geometric nonlinearity option for the step.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name for the option; must be already created.    
+        </dd></dl></dd></dl></dl><a name="SetUnitSystem"></a><dt> o <b>SetUnitSystem</b></dt><dl> <dd>Set the unit system.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iUnitSystemName
+        </tt> </dt><dd>[in/required] A string specifying the name of the unit system.
+        </dd><dt><tt>iLengthToSIConvFactor
+        </tt> </dt><dd>[in/optional] A double specifying the length to SI conversion factor (default = 1.0).
+        </dd><dt><tt>iMassToSIConvFactor
+        </tt> </dt><dd>[in/optional] A double specifying the mass to SI conversion factor (default = 1.0).
+        </dd><dt><tt>iTimeToSIConvFactor
+        </tt> </dt><dd>[in/optional] A double specifying the time to SI conversion factor (default = 1.0).
+        </dd><dt><tt>iElectricCurrentToSIConvFactor
+        </tt> </dt><dd>[in/optional] A double specifying the electric current to SI conversion factor (default = 1.0).
+        </dd><dt><tt>iTemperatureToSIConvFactor
+        </tt> </dt><dd>[in/optional] A double specifying the temperature to SI conversion factor (default = 1.0).
+        </dd><dt><tt>iTemperatureToSIOffset
+        </tt> </dt><dd>[in/optional] A double specifying the temperature to SI offset (default = 0.0).
+        </dd><dt><tt>iAmtOfSubToSIConvFactor
+        </tt> </dt><dd>[in/optional] A double specifying the amount of substance to SI conversion factor (default = 1.0).
+        </dd><dt><tt>iLumIntensityToSIConvFactor
+        </tt> </dt><dd>[in/optional] A double specifying the Luminous intensity to SI conversion factor (default = 1.0).
+        </dd><dt><tt>iAngleToSIConvFactor
+        </tt> </dt><dd>[in/optional] A double specifying the angle to SI conversion factor (default = 1.0).
+        </dd><dt><tt>iSolidAngleToSIConvFactor
+        </tt> </dt><dd>[in/optional] A double specifying the solid angle to SI conversion factor (default = 1.0).
+        </dd></dl></dd></dl></dl><a name="SetUserElementLabelsMap"></a><dt> o <b>SetUserElementLabelsMap</b></dt><dl> <dd>Set the user element label to flat label mapping if it is known ahead of time.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iInstanceName
+        </tt> </dt><dd>[in/required] A string specifying the instance name.
+        </dd><dt> <tt> iUserLabels
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the user element labels.
+        </dd><dt> <tt> iFlatLabels
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the flat element labels.
+        </dd></dl></dd></dl></dl><a name="SetUserNodeLabelsMap"></a><dt> o <b>SetUserNodeLabelsMap</b></dt><dl> <dd>Set the user node label to flat label mapping if it is known ahead of time.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iInstanceName
+        </tt> </dt><dd>[in/required] A string specifying the instance name.
+        </dd><dt> <tt> iUserLabels
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the user node labels.
+        </dd><dt> <tt> iFlatLabels
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the flat node labels.
+        </dd></dl></dd></dl></dl><a name="WriteNodes"></a><dt> o <b>WriteNodes</b></dt><dl> <dd>Writes the node coordinate data for mesh (or part of mesh) to the document. Should give better performance if data for all nodes is written at once.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iNumSpaceDims
+        </tt> </dt><dd>[in/required] An integer specifying the number of space dimension for model: 2 for 2D and 3 for 3D.
+        </dd><dt> <tt> iNodeIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the node indices.
+        </dd><dt> <tt> iCoords
+        </tt> </dt><dd>[in/required] A sequence of doubles specifying the coordinates; must be of length iNumNodes*iNumSpaceDims.
+        </dd></dl></dd></dl></dl>
+<hr> <h2>ElemCentroidField</h2> <br>
+<dd>    The ElemCentroidField object is derived from the FieldWriter object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of ElemCentroidField object
+ </dd></dl>
+ <dt> o <a href="#AddFrameData"><b>AddFrameData</b></a></dt><dd>   Adds float data for a frame for a results field, dimensions must be defined before this method call. 
+ </dd></dl>
+ <dt> o <a href="#DefineDimensions"><b>DefineDimensions</b></a></dt><dd>   Defines dimensions for ElemCentroidField. 
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of ElemCentroidField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of ElemCentroidField object
+    </tt> </dt></dl></dd></dl></dl><a name="AddFrameData"></a><dt> o <b>AddFrameData</b></dt><dl> <dd>Adds float data for a frame for a results field, dimensions must be defined before this method call. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point. 
+        </dd><dt> <tt> iElsetName
+        </tt> </dt><dd>[in/required] A string specifying the element set name; must be same as used in DefineDimensions or subset of it. 
+        </dd><dt><tt>iData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the real data; must be in the order #Elements *#Components. The default is an empty sequence.
+        </dd><dt><tt>iImaginaryData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the imaginary data, must be in the order #Elements *#Components. The default value is an empty sequence. 
+        </dd><dt><tt>iLoadCaseName
+        </tt> </dt><dd>[in/optional] A string specifying the load case name; must be used if a step has a load case. The default value is "".      
+        </dd></dl></dd></dl></dl><a name="DefineDimensions"></a><dt> o <b>DefineDimensions</b></dt><dl> <dd>Defines dimensions for ElemCentroidField. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElsetName   
+        </tt> </dt><dd>[in/required] A string specifying the element set for element dimension; all elements must be from same element class. 
+        </dd><dt> <tt> iSectionPoints
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the section points for section point dimension.
+        </dd><dt> <tt> iComponentSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the components for component dimension. 
+        </dd><dt> <tt> iInvariantSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the invariant symbols; must be from "SIM predefined string" section of "Writing SIM Results Using Python" user documentation.
+        </dd><dt> <tt> iComplex
+        </tt> </dt><dd>[in/required] A boolean specifying the complex - true if field has real and imaginary data. 
+        </dd><dt><tt>iDoublePrecision
+        </tt> </dt><dd>[in/optional] A boolean specifying the double precision data. The default value is false. 
+        </dd></dl></dd></dl></dl>
+<hr> <h2>ElemFaceField</h2> <br>
+<dd>    The ElemFaceField object is derived from the FieldWriter object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of ElemFaceField object
+ </dd></dl>
+ <dt> o <a href="#AddFrameData"><b>AddFrameData</b></a></dt><dd>   Adds float data for a frame for a results field; dimensions must be defined before this method call. 
+ </dd></dl>
+ <dt> o <a href="#AddHistoryData"><b>AddHistoryData</b></a></dt><dd>   Adds float data for frames for a history field, dimensions must be defined before this method call. 
+ </dd></dl>
+ <dt> o <a href="#DefineDimensions"><b>DefineDimensions</b></a></dt><dd>   Defines dimensions for ElemFaceField. 
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of ElemFaceField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of ElemFaceField object
+    </tt> </dt></dl></dd></dl></dl><a name="AddFrameData"></a><dt> o <b>AddFrameData</b></dt><dl> <dd>Adds float data for a frame for a results field; dimensions must be defined before this method call. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index.
+        </dd><dt> <tt> iElementSetName
+        </tt> </dt><dd>[in/required] A string specifying the element set name; must be same as used in DefineDimensions or subset of it. 
+        </dd><dt><tt>iData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the real data; must be in the order #Elements *#Components. The default is an empty sequence.
+        </dd><dt><tt>iImaginaryData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the imaginary data, must be in the order #Elements *#Components. The default value is an empty sequence. 
+        </dd><dt><tt>iLoadCaseName
+        </tt> </dt><dd>[in/optional] A string specifying the load case name; must be used if a step has a load case. The default value is "".
+        </dd></dl></dd></dl></dl><a name="AddHistoryData"></a><dt> o <b>AddHistoryData</b></dt><dl> <dd>Adds float data for frames for a history field, dimensions must be defined before this method call. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iFrameIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the frame indices. This sequence can be a subset of the 'iFrameValues' in AddStep method.
+        </dd><dt> <tt> iElementSetName
+        </tt> </dt><dd>[in/required] A string specifying the element set name; must be same as used in DefineDimensions or subset of it. 
+        </dd><dt><tt>iData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the real data; must be in the order #Elements *#Components. The default is an empty sequence.
+        </dd><dt><tt>iImaginaryData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the imaginary data, must be in the order #Elements *#Components. The default value is an empty sequence. 
+        </dd><dt><tt>iLoadCaseName
+        </tt> </dt><dd>[in/optional] A string specifying the load case name; must be used if a step has a load case. The default value is "".   
+        </dd></dl></dd></dl></dl><a name="DefineDimensions"></a><dt> o <b>DefineDimensions</b></dt><dl> <dd>Defines dimensions for ElemFaceField. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElementSetName
+        </tt> </dt><dd>[in/required] A string specifying the element set for element dimension.   
+        </dd><dt> <tt> iFaceID
+        </tt> </dt><dd>[in/required] Face index.   
+        </dd><dt> <tt> iComponentSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the components for component dimension. 
+        </dd><dt> <tt> iInvariantSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the invariant symbols; must be from "SIM predefined string" section of "Writing SIM Results Using Python" user documentation.
+        </dd><dt> <tt> iComplex
+        </tt> </dt><dd>[in/required] A boolean specifying the complex - true if field has real and imaginary data. 
+        </dd><dt><tt>iDoublePrecision
+        </tt> </dt><dd>[in/optional] A boolean specifying the double precision data. The default value is false.
+        </dd></dl></dd></dl></dl>
+<hr> <h2>ElemIntegrationPointField</h2> <br>
+<dd>    The ElemIntegrationPointField object is derived from the FieldWriter object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of ElemIntegrationPointField object
+ </dd></dl>
+ <dt> o <a href="#AddFrameData"><b>AddFrameData</b></a></dt><dd>   Adds float data for a frame for a results field, dimensions must be defined before this method call. 
+ </dd></dl>
+ <dt> o <a href="#DefineDimensions"><b>DefineDimensions</b></a></dt><dd>   Defines dimensions for ElemIntegrationPointField. 
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of ElemIntegrationPointField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of ElemIntegrationPointField object
+    </tt> </dt></dl></dd></dl></dl><a name="AddFrameData"></a><dt> o <b>AddFrameData</b></dt><dl> <dd>Adds float data for a frame for a results field, dimensions must be defined before this method call. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point. 
+        </dd><dt> <tt> iElsetName
+        </tt> </dt><dd>[in/required] A string specifying the element set name; must be same as used in DefineDimensions or subset of it. 
+        </dd><dt><tt>iData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the real data; must be in the order #Elements *#IntegrationPts *#Components. The default is an empty sequence.
+        </dd><dt><tt>iImaginaryData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the imaginary data, must be in the order #Elements *#IntegrationPts *#Components. The default value is an empty sequence. 
+        </dd><dt><tt>iLoadCaseName
+        </tt> </dt><dd>[in/optional] A string specifying the load case name; must be used if a step has a load case. The default value is "".   
+        </dd></dl></dd></dl></dl><a name="DefineDimensions"></a><dt> o <b>DefineDimensions</b></dt><dl> <dd>Defines dimensions for ElemIntegrationPointField. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElsetName   
+        </tt> </dt><dd>[in/required] A string specifying the element set for element dimension; all elements must be from same element class. 
+        </dd><dt> <tt> iSectionPoints
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the section points for section point dimension.
+        </dd><dt> <tt> iNumIntegrationPts
+        </tt> </dt><dd>[in/required] An integer specifying the number of integration points; must be greater than 0.  
+        </dd><dt> <tt> iComponentSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the components for component dimension.  
+        </dd><dt> <tt> iInvariantSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the invariant symbols; must be from "SIM predefined string" section of "Writing SIM Results Using Python" user documentation.
+        </dd><dt> <tt> iComplex
+        </tt> </dt><dd>[in/required] A boolean specifying the complex - true if field has real and imaginary data. 
+        </dd><dt><tt>iDoublePrecision
+        </tt> </dt><dd>[in/optional] A boolean specifying the double precision data. The default value is false. 
+        </dd></dl></dd></dl></dl>
+<hr> <h2>ElemNodalField</h2> <br>
+<dd>    The ElemNodalField object is derived from the FieldWriter object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of ElemNodalField object
+ </dd></dl>
+ <dt> o <a href="#AddFrameData"><b>AddFrameData</b></a></dt><dd>   Adds float data for a frame for a results field, dimensions must be defined before this method call. 
+ </dd></dl>
+ <dt> o <a href="#DefineDimensions"><b>DefineDimensions</b></a></dt><dd>   Defines dimensions for an element class of ElemNodalField.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of ElemNodalField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of ElemNodalField object
+    </tt> </dt></dl></dd></dl></dl><a name="AddFrameData"></a><dt> o <b>AddFrameData</b></dt><dl> <dd>Adds float data for a frame for a results field, dimensions must be defined before this method call. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point. Set it to -1 if there are no section points.
+        </dd><dt> <tt> iElsetName
+        </tt> </dt><dd>[in/required] A string specifying the element set name; must be same as used in DefineDimensions or subset of it. 
+        </dd><dt><tt>iData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the real data; must be in the order #Elements *#Nodes *#Components. The default is an empty sequence.
+        </dd><dt><tt>iImaginaryData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the imaginary data, must be in the order #Elements *#Nodes *#Components. The default value is an empty sequence. 
+        </dd><dt><tt>iLoadCaseName
+        </tt> </dt><dd>[in/optional] A string specifying the load case name; must be used if a step has a load case. The default value is "".
+        </dd></dl></dd></dl></dl><a name="DefineDimensions"></a><dt> o <b>DefineDimensions</b></dt><dl> <dd>Defines dimensions for an element class of ElemNodalField.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElsetName   
+        </tt> </dt><dd>[in/required] A string specifying the element set for element dimension; all elements must be from same element class. 
+        </dd><dt> <tt> iNodesPerElement
+        </tt> </dt><dd>[in/required] An integer specifying the number of nodes for nodal dimension; must be greater than 0.
+        </dd><dt> <tt> iSectionPoints
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the section points for section point dimension. Set it to empty sequence when there are no section points.
+        </dd><dt> <tt> iComponentSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the components for component dimension. 
+        </dd><dt> <tt> iInvariantSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the invariant symbols; must be from "SIM predefined string" section of "Writing SIM Results Using Python" user documentation.
+        </dd><dt> <tt> iComplex
+        </tt> </dt><dd>[in/required] A boolean specifying the complex - true if field has real and imaginary data. 
+        </dd><dt><tt>iDoublePrecision
+        </tt> </dt><dd>[in/optional] A boolean specifying the double precision data. The default value is false. 
+        </dd></dl></dd></dl></dl>
+<hr> <h2>UniqueNodalField</h2> <br>
+<dd>    The UniqueNodalField object is derived from the FieldWriter object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of UniqueNodalField object
+ </dd></dl>
+ <dt> o <a href="#AddFrameData"><b>AddFrameData</b></a></dt><dd>   Adds float data for a frame for a results field; dimensions must be defined before this method call. 
+ </dd></dl>
+ <dt> o <a href="#AddHistoryData"><b>AddHistoryData</b></a></dt><dd>   Adds float data for frames for a history field, dimensions must be defined before this method call. 
+ </dd></dl>
+ <dt> o <a href="#DefineDimensions"><b>DefineDimensions</b></a></dt><dd>   Defines dimensions for UniqueNodalField. 
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of UniqueNodalField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of UniqueNodalField object
+    </tt> </dt></dl></dd></dl></dl><a name="AddFrameData"></a><dt> o <b>AddFrameData</b></dt><dl> <dd>Adds float data for a frame for a results field; dimensions must be defined before this method call. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index.
+        </dd><dt> <tt> iNodeSetName
+        </tt> </dt><dd>[in/required] A string specifying the node set name; must be same as used in DefineDimensions or subset of it. 
+        </dd><dt><tt>iData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the real data; must be in the order #Nodes *#Components. The default is an empty sequence.
+        </dd><dt><tt>iImaginaryData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the imaginary data, must be in the order #Nodes *#Components. The default value is an empty sequence. 
+        </dd><dt><tt>iLoadCaseName
+        </tt> </dt><dd>[in/optional] A string specifying the load case name; must be used if a step has a load case. The default value is "".
+        </dd></dl></dd></dl></dl><a name="AddHistoryData"></a><dt> o <b>AddHistoryData</b></dt><dl> <dd>Adds float data for frames for a history field, dimensions must be defined before this method call. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iFrameIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the frame indices. This sequence can be a subset of the 'iFrameValues' in AddStep method.
+        </dd><dt> <tt> iNodeSetName
+        </tt> </dt><dd>[in/required] A string specifying the node set name; must be same as used in DefineDimensions or subset of it. 
+        </dd><dt><tt>iData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the real data; must be in the order #Nodes *#Components. The default is an empty sequence.
+        </dd><dt><tt>iImaginaryData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the imaginary data, must be in the order #Nodes *#Components. The default value is an empty sequence. 
+        </dd><dt><tt>iLoadCaseName
+        </tt> </dt><dd>[in/optional] A string specifying the load case name; must be used if a step has a load case. The default value is "".   
+        </dd></dl></dd></dl></dl><a name="DefineDimensions"></a><dt> o <b>DefineDimensions</b></dt><dl> <dd>Defines dimensions for UniqueNodalField. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iNodeSetName
+        </tt> </dt><dd>[in/required] A string specifying the node set for node dimension.   
+        </dd><dt> <tt> iComponentSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the components for component dimension. 
+        </dd><dt> <tt> iInvariantSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the invariant symbols; must be from "SIM predefined string" section of "Writing SIM Results Using Python" user documentation.
+        </dd><dt> <tt> iComplex
+        </tt> </dt><dd>[in/required] A boolean specifying the complex - true if field has real and imaginary data. 
+        </dd><dt><tt>iDoublePrecision
+        </tt> </dt><dd>[in/optional] A boolean specifying the double precision data. The default value is false.
+        </dd></dl></dd></dl></dl>
+<hr> <h2>WholeElemField</h2> <br>
+<dd>    The WholeElemField object is derived from the FieldWriter object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of WholeElemField object
+ </dd></dl>
+ <dt> o <a href="#AddFrameData"><b>AddFrameData</b></a></dt><dd>   Adds float data for a frame for a results field, dimensions must be defined before this method call. 
+ </dd></dl>
+ <dt> o <a href="#DefineDimensions"><b>DefineDimensions</b></a></dt><dd>   Defines dimensions for WholeElemField. 
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of WholeElemField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of WholeElemField object
+    </tt> </dt></dl></dd></dl></dl><a name="AddFrameData"></a><dt> o <b>AddFrameData</b></dt><dl> <dd>Adds float data for a frame for a results field, dimensions must be defined before this method call. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index.
+        </dd><dt> <tt> iElsetName
+        </tt> </dt><dd>[in/required] A string specifying the element set name; must be same as used in DefineDimensions or subset of it. 
+        </dd><dt><tt>iData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the real data; must be in the order #Elements *#Components. The default is an empty sequence.
+        </dd><dt><tt>iImaginaryData
+        </tt> </dt><dd>[in/optional] A sequence of floats specifying the imaginary data, must be in the order #Elements *#Components. The default value is an empty sequence. 
+        </dd><dt><tt>iLoadCaseName
+        </tt> </dt><dd>[in/optional] A string specifying the load case name; must be used if a step has a load case. The default value is "".  
+        </dd></dl></dd></dl></dl><a name="DefineDimensions"></a><dt> o <b>DefineDimensions</b></dt><dl> <dd>Defines dimensions for WholeElemField. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElsetName   
+        </tt> </dt><dd>[in/required] A string specifying the element set for element dimension; all elements must be from same element class.  
+        </dd><dt> <tt> iComponentSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the components for component dimension. 
+        </dd><dt> <tt> iInvariantSymbols
+        </tt> </dt><dd>[in/required] A sequence of strings specifying the invariant symbols; must be from "SIM predefined string" section of "Writing SIM Results Using Python" user documentation.
+        </dd><dt> <tt> iComplex
+        </tt> </dt><dd>[in/required] A boolean specifying the complex - true if field has real and imaginary data. 
+        </dd><dt><tt>iDoublePrecision
+        </tt> </dt><dd>[in/optional] A boolean specifying the double precision data. The default value is false. 
+        </dd></dl></dd></dl></dl>
+<hr> <h2>CartesianOrientation</h2> <br>
+<dd>    The CartesianOrientation object is derived from the FieldWriter object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of CartesianOrientation object
+ </dd></dl>
+ <dt> o <a href="#Define"><b>Define</b></a></dt><dd>   Define Cartesian Orientation.
+  </dd></dl>
+ <dt> o <a href="#Validate"><b>Validate</b></a></dt><dd>   Check if the Orientation is defined and valid
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of CartesianOrientation object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of CartesianOrientation object
+    </tt> </dt></dl></dd></dl></dl><a name="Define"></a><dt> o <b>Define</b></dt><dl> <dd>Define Cartesian Orientation.
+  <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iOrg
+		</tt> </dt><dd>[in/required] Origin coordinates [x,y,z]
+  </dd><dt> <tt> iQuaternion0
+		</tt> </dt><dd>[in/required] Quaternion component r
+  </dd><dt> <tt> iQuaternion1
+		</tt> </dt><dd>[in/required] Quaternion component u
+  </dd><dt> <tt> iQuaternion2
+		</tt> </dt><dd>[in/required] Quaternion component v
+  </dd><dt> <tt> iQuaternion3
+		</tt> </dt><dd>[in/required] Quaternion component w
+  </dd></dl></dd></dl></dl><a name="Validate"></a><dt> o <b>Validate</b></dt><dl> <dd>Check if the Orientation is defined and valid
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt>None</dt></dl></dd></dl></dl>
+<hr> <h2>CylindricalOrientation</h2> <br>
+<dd>    The CylindricalOrientation object is derived from the FieldWriter object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of CylindricalOrientation object
+ </dd></dl>
+ <dt> o <a href="#Define"><b>Define</b></a></dt><dd>   Define Cylindrical Orientation.
+  </dd></dl>
+ <dt> o <a href="#Validate"><b>Validate</b></a></dt><dd>   Check if the Orientation is defined and valid
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of CylindricalOrientation object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of CylindricalOrientation object
+    </tt> </dt></dl></dd></dl></dl><a name="Define"></a><dt> o <b>Define</b></dt><dl> <dd>Define Cylindrical Orientation.
+  <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iPointA
+		</tt> </dt><dd>[in/required] Coordinate of First Axis Point [x,y,z]
+  </dd><dt> <tt> iPointB
+		</tt> </dt><dd>[in/required] Coordinate of Second Axis Point [x,y,z]
+  </dd></dl></dd></dl></dl><a name="Validate"></a><dt> o <b>Validate</b></dt><dl> <dd>Check if the Orientation is defined and valid
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt>None</dt></dl></dd></dl></dl>
+<hr> <h2>FieldWriter</h2> <br>
+<dd>     The abstract base of all field classes. Fields in SIM are represented as multi-dimensional arrays.</dd>
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#SetOrientationField"><b>SetOrientationField</b></a></dt><dd>   Sets orientation field for this field object. 
+ </dd></dl><h2>Methods</h2> <br>
+<a name="SetOrientationField"></a><dt> o <b>SetOrientationField</b></dt><dl> <dd>Sets orientation field for this field object. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iOrientationField
+        </tt> </dt><dd>[in/required] Orientation field to be associated with this field.    
+        </dd></dl></dd></dl></dl>
+<hr> <h2>SIMDocument</h2> <br>
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of SIMDocument object
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of SIMDocument object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of SIMDocument object
+    </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>SimResultsWriterException</h2> <br>
+<dd>    The SimResultsWriterException object is derived from the Exception object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of SimResultsWriterException object
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of SimResultsWriterException object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of SimResultsWriterException object
+    </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>SphericalOrientation</h2> <br>
+<dd>    The SphericalOrientation object is derived from the FieldWriter object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of SphericalOrientation object
+ </dd></dl>
+ <dt> o <a href="#Define"><b>Define</b></a></dt><dd>   Define Spherical Orientation.
+  </dd></dl>
+ <dt> o <a href="#Validate"><b>Validate</b></a></dt><dd>   Check if the Orientation is defined and valid
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of SphericalOrientation object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of SphericalOrientation object
+    </tt> </dt></dl></dd></dl></dl><a name="Define"></a><dt> o <b>Define</b></dt><dl> <dd>Define Spherical Orientation.
+  <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iPointA
+		</tt> </dt><dd>[in/required] Coordinate of First Axis Point [x,y,z]
+  </dd><dt> <tt> iPointB
+		</tt> </dt><dd>[in/required] Coordinate of Second Axis Point [x,y,z]
+  </dd></dl></dd></dl></dl><a name="Validate"></a><dt> o <b>Validate</b></dt><dl> <dd>Check if the Orientation is defined and valid
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt>None</dt></dl></dd></dl></dl>
+<br>            
+<hr>            
+</body>            
+</html>            
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->            
+<script type="text/javascript">insertCopyright();</script>

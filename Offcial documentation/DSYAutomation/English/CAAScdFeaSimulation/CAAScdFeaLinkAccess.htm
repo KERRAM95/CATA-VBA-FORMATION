@@ -1,0 +1,223 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Managing Simulation Feature Support</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Managing Simulation Feature Support</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This article explains how to define and manage simulation feature support.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					<ul>
+						<li>Launch CATIA and then import and 
+						open the
+						<code><div class=vb_sample_data>CAAScdFeaPumpModel.3dxml</div></code> file supplied in 
+						the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaScenario\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder where 
+						the API CD-ROM is installed.</li>
+						<li>Make sure that you have all of the licenses required for launching execution and perform a solve operation in the interactive session for a similar simulation to confirm the licenses.</li>
+					</ul>
+					<p><span class="run-in">Where to find the macro: <a href="CAAScdFeaLinkAccessSource.htm">
+					CAAScdFeaLinkAccessSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided into seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieving the active Product</a></li>
+			<li><a href="#Step2">Creating the FEM Rep and Retrieving its Rep Manager</a></li>
+			<li><a href="#Step3">Creating Sections</a></li>
+			<li><a href="#Step4">Setting the Meshed Bolt support from Publication</a></li>
+			<li><a href="#Step5">Setting the Shell Section supports from Product structure</a></li>
+			<li><a href="#Step6">Replacing the first Shell Section support</a></li>
+			<li><a href="#Step7">Removing all supports of the Shell Section</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieving the active Product</strong></p>
+			<p>As a first step, the UC retrieves the active product. </p>
+<pre class="code">... 
+<span class="keyword">Dim </span>myEditor<span class="keyword"> As </span>Editor
+<span class="keyword">Set </span>myEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim </span>myProdService<span class="keyword"> As </span>PLMProductService
+<span class="keyword">Set </span>myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim </span>myEntities<span class="keyword"> As </span>PLMEntities
+<span class="keyword">Set </span>myEntities = myProdService.EditedContent
+
+<span class="keyword">Dim </span>myRootProduct<span class="keyword"> As </span>VPMReference
+<span class="keyword">Set </span>myRootProduct = myEntities.Item(1)
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Creating the FEM Rep and Retrieving its Rep Manager</strong></p>
+			<p>In this step UC creates a finite element representation model on the product that was just opened.</p>
+			<p>For further information about creating the FEM Rep and retrieving its Rep Manager, refer to the article
+				<a href="../CAAScdFeaModeling/CAAScdFeaCreateFEM.htm">
+					Creating FEM representation</a>.
+			</p>
+			</li>
+			<li>
+				<p><strong><a name="Step3"></a>Creating sections</strong></p>
+				<p>In this step UC creates a shell section and a meshed bolt on the part. </p>
+				<p>For further information about the creation and management of properties, refer to the article
+				<a href="../CAAScdFeaModeling/CAAScdFeaCreateSections.htm">
+					Managing FEM section features</a>.
+				</p>
+			</li>
+			<li>
+				<p><strong><a name="Step4"></a>Setting the Meshed Bolt support from the Publication</strong></p>
+				<p>In this step UC sets the meshed bolt support from the publication.</p>
+				<p>Note that setting support from publication does not require creations links. You can use the publication directly as an argument for the AddLink method.</p>
+<pre class="code">... 
+<span class="comment">'Retrieving the publication</span>
+	
+<span class="keyword">Dim </span>myPublications <span class="keyword"> As </span>VPMPublications
+<span class="keyword">Set </span>myPublications  = myModel.Publications
+	
+<span class="keyword">Dim </span>mySupport<span class="keyword"> As </span>VPMPublication
+<span class="keyword">Set </span>mySupport = myPublications.GetItem(&quot;Bolt-1&quot;)
+	
+<span class="comment">'Setting the meshed bolt support</span>
+	
+<span class="keyword">Dim </span>myLinkAccess<span class="keyword"> As </span>SimLinkAccess
+<span class="keyword">Set </span>myLinkAccess = myMeshedBolt.GetItem(&quot;SimLinkAccess&quot;)
+	
+	myLinkAccess.AddLink &quot;MainSupport&quot;, mySupport
+...
+</pre>
+				<p><b>Important :</b> Note that the &quot;MainSupport&quot; string is a default value. For connection features you will have to use &quot;PRD1&quot;, &quot;PRD2&quot;, etc... to set the different supports and &quot;Handler0D&quot; or &quot;Handler1D&quot; for fasteners placements.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step5"></a>Setting the shell section supports from the product structure</strong></p>
+				<p>In this step UC sets the shell section supports from the product structure. It first retrieves usefull data to compose the link to the support and then adds this created link to the feature.</p>
+<pre class="code">... 
+<span class="comment">'Retrieving the ws3_bolt_part.2 part occurrence</span>
+	
+<span class="keyword">Dim </span>myRootOccurrence<span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">Set </span>myRootOccurrence = myProdService.RootOccurrence
+	
+<span class="keyword">Dim </span>myPartOccurrence<span class="keyword"> As </span>PLMOccurrence
+<span class="keyword">For </span>i = 1<span class="keyword"> to </span>myRootOccurrence.Occurrences.Count
+	<span class="keyword">If </span>myRootOccurrence.Occurrences.Item(i).Name = "ws3_bolt_part.2"<span class="keyword"> Then</span>
+		<span class="keyword">Set </span>myPartOccurrence = myRootOccurrence.Occurrences.Item(i)
+	<span class="keyword">End If</span>
+<span class="keyword">Next</span>
+	
+<span class="comment">'Retrieving the ws3_bolt_part.2 part rep instance</span>
+	
+<span class="keyword">Dim </span>myPartInstance<span class="keyword"> As </span>VPMInstance
+<span class="keyword">Set </span>myPartInstance = myPartOccurrence.InstanceOccurrenceOf
+	
+<span class="keyword">Dim </span>myPartInstanceRef<span class="keyword"> As </span>VPMReference
+<span class="keyword">Set </span>myPartInstanceRef = myPartInstance.ReferenceInstanceOf
+	
+<span class="keyword">Dim </span>myPartRepInstance<span class="keyword"> As </span>VPMRepInstance
+<span class="keyword">Set </span>myPartRepInstance = myPartInstanceRef.RepInstances.Item(1)
+	
+<span class="comment">'Retrieving the ws3_bolt_part.2 part body</span>
+	
+<span class="keyword">Dim </span>myPartRepInstanceRef<span class="keyword"> As </span>VPMRepReference
+<span class="keyword">Set </span>myPartRepInstanceRef = myPartRepInstance.ReferenceInstanceOf
+	
+<span class="keyword">Dim </span>myPart<span class="keyword"> As </span>Part
+<span class="keyword">Set </span>myPart = myPartRepInstanceRef.GetItem(&quot;Part&quot;)
+	
+<span class="keyword">Dim </span>myPartBody<span class="keyword"> As </span>Body
+<span class="keyword">Set </span>myPartBody = myPart.MainBody
+	
+<span class="comment">'Composing link to the ws3_bolt_part.2 part body</span>
+	
+<span class="keyword">Dim </span>myReference<span class="keyword"> As </span>Reference
+<span class="keyword">Set </span>myReference = myPart.CreateReferenceFromObject(myPartBody)
+	
+<span class="keyword">Dim </span>myLinkToFirstSupport<span class="keyword"> As </span>AnyObject
+<span class="keyword">Set </span>myLinkToFirstSupport = myProdService.ComposeLink(myPartOccurrence, myPartRepInstance, myReference)
+	
+<span class="comment">'Setting the shell section first support</span>
+	
+<span class="keyword">Set </span>myLinkAccess = myShellSection.GetItem(&quot;SimLinkAccess&quot;)
+	
+myLinkAccess.AddLink &quot;MainSupport&quot;, myLinkToFirstSupport
+...
+</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step6"></a>Replacing the first Shell Section support</strong></p>
+				<p>In this step UC replaces the first shell section support. </p>
+<pre class="code">... 
+<span class="comment">'Retrieving the publication</span>
+	
+<span class="keyword">Dim </span>myNewSupport<span class="keyword"> As </span>VPMPublication
+<span class="keyword">Set </span>myNewSupport = myPublications.GetItem(&quot;Pipe&quot;)
+	
+<span class="comment">'Removing first support</span>
+	
+myLinkAccess.RemoveLink &quot;MainSupport&quot;, myLinkToFirstSupport
+	
+<span class="comment">'Setting the new support</span>
+	
+myLinkAccess.AddLink &quot;MainSupport&quot;, myNewSupport
+...
+</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step7"></a>Removing all supports of the Shell Section</strong></p>
+				<p>In this step UC removes all supports of the shell section. </p>
+<pre class="code">... 
+myLinkAccess.RemoveAllLinks &quot;MainSupport&quot;
+...
+</pre>
+			</li>
+	</ol>
+	</td>
+	</tr>
+</table>	
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,214 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>PLMValidationIDLItf Markers (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../PLMValidationIDLItf.htm" href="../PLMValidationIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "PLMValidationIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "Markers"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> Markers<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_Markers_22178','Markers','0');</script>
+<section id='maindesc'>
+<b><i> A collection of Markers.</i></b><br>
+
+ <p>The method <script type="text/javascript"> activateLinkAnchor('CATIAVALReview','GetFactory','CATIAVALReview.GetFactory') </script> <tt>("Markers")</tt> on the VALReview retrieves this collection.
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#Add"><b>Add</b></a>
+</td><td  id='tdright'>  Adds a Marker to the collection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AddShape"><b>AddShape</b></a>
+</td><td  id='tdright'>  Adds a Shape Marker to the collection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Item"><b>Item</b></a>
+</td><td  id='tdright'>  Returns a Marker using its index from the Markers collection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Remove"><b>Remove</b></a>
+</td><td  id='tdright'>  Removes a Marker from the Markers collection.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="Add"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Add</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iText</span>)</span> As <script type="text/javascript"> activateLink('Marker','Marker')</script> </span></dt>
+  <dd class='ddmethod'>
+ Adds a Marker to the collection.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iText</span></dt>
+   <dd>    The Marker type string
+    2DTEXT
+    2DPICTURE
+    2DHYPERLINK
+    2DAUDIO
+    3DTEXT
+    3DPICTURE
+    3DHYPERLINK
+    3DAUDIO
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     The created marker
+ 
+ </ dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example creates a new Marker in the <tt>cMarkers</tt> collection.
+ <pre>
+ Dim cMarkers As Markers 
+ Set cMarkers = TheVALReview.GetFactory("Markers")
+ Dim oNewMarkerPicture As Marker
+ Set oNewMarkerPicture = cMarkers.<font color="red">Add</font>("2DPICTURE")
+ </pre>
+</dl>
+</dd>
+<a id="AddShape"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>AddShape</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iCoordinates</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iText</span>)</span> As <script type="text/javascript"> activateLink('Marker','Marker')</script> </span></dt>
+  <dd class='ddmethod'>
+ Adds a Shape Marker to the collection.
+ The Marker drawing is defined using the coordinates of a series of points.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iCoordinates</span></dt>
+   <dd>	 
+ </ dd>
+</dl></dd>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('CATIAMarker','SetPositions method of the CATIAMarker object','CATIAMarker.SetPositions method of the CATIAMarker object') </script></dd>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iText</span></dt>
+   <dd>    The Marker type string
+    2DLINE
+    2DPEN
+    2DCIRCLE
+    2DRECTANGLE
+    2DARROW
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  oMarker    The created Marker
+ 
+ </ dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example creates a new Shape Marker in the <tt>cMarkers</tt> collection.
+ <pre>
+ Dim cMarkers As Markers 
+ Set cMarkers = TheVALReview.GetFactory("Markers")
+ Dim oNewMarkerCircle As Marker
+ Set oNewMarkerCircle = cMarkers.<font color="red">AddShape</font>(iCoordinates, "2DCIRCLE")
+ </pre>
+</dl>
+</dd>
+<a id="Item"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Item</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns a Marker using its index from the Markers collection.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd>    The index or the name of the Marker to retrieve from the collection of Markers.
+    As a numerics, this index is the rank of the Marker in the collection.
+    The index of the first Marker in the collection is 1, and
+    the index of the last Marker is Count.
+    As a string, it is the name you assigned to the Marker.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     The retrieved Marker
+ 
+ </ dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example retrieves in <tt>oMarker1</tt> the third Marker,
+ and in <tt>oMarker2</tt> the Marker named
+ <tt>Marker3</tt> from the <tt>cMarkers</tt> collection. 
+ <pre>
+ Dim oMarker1 As Marker
+ Set oMarker1 = cMarkers.<font color="red">Item</font>(3)
+ Dim oMarker2 As Marker
+ Set oMarker2 = cMarkers.<font color="red">Item</font>("Marker3")
+ </pre>
+</dl>
+</dd>
+<a id="Remove"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Remove</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Removes a Marker from the Markers collection.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd>    The index or the name of the Marker to retrieve from the collection of Markers.
+    As a numerics, this index is the rank of the Marker in the collection.
+    The index of the first Marker in the collection is 1, and
+    the index of the last Marker is Count.
+    As a string, it is the name you assigned to the Marker.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> The following example removes the second Marker and the Marker named
+ <tt>Marker2</tt> from the <tt>cMarkers</tt> collection.
+ <pre>
+ cMarkers.<font color="red">Remove</font>(2)
+ cMarkers.<font color="red">Remove</font>("Marker2")
+ </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

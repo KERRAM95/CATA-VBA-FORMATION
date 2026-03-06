@@ -1,0 +1,196 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELResourceBuilderIDLItf RscMotionProfile (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELResourceBuilderIDLItf.htm" href="../DELResourceBuilderIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELResourceBuilderIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RscMotionProfile"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RscMotionProfile<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RscMotionProfile_42608','RscMotionProfile','0');</script>
+<section id='maindesc'>
+<b><i> Interface to manage Generic Motion Profile of Robot controller.</i></b><br>
+
+
+ <strong>Role</strong>:
+  This interface provides methods to get/set data  related to Motion
+  Profile.
+ <dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example code shows how to retrieve the Motion profile interface.
+ <pre>
+ '1- Retrieve Selection object from active editor
+  Dim oCurrentActiveEditor As Editor
+  Set oCurrentActiveEditor = CATIA.ActiveEditor
+  Dim oObjSelection
+  Set oObjSelection = oCurrentActiveEditor.Selection
+
+ '2.1-Update selection object with the search criteria and prompt for selection
+ 'Selection Object updated with selection criteria (RscMotionProfile)
+  Dim oInputObjectType(0)
+  oInputObjectType(0) = "RscMotionProfile"
+
+ 'Application prompts for user selection from CATIA spec tree
+  Dim strStatus As String
+  strStatus = oObjSelection.SelectElement(oInputObjectType, "Select Motion Profile from spec tree", False)
+    
+ '2.2- Retrieve motion profile
+  Dim oSelectedElement As SelectedElement
+  Set oSelectedElement = oObjSelection.Item(1)
+ 
+  Dim oRscMotionProfile As RscMotionProfile
+  Set oRscMotionProfile = oSelectedElement.Value
+ </pre>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#AccelerationValue"><b>AccelerationValue</b></a>
+</td><td  id='tdright'>  Retrieves/Sets the Acceleration value of the profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AngularAccelerationValue"><b>AngularAccelerationValue</b></a>
+</td><td  id='tdright'>  Retrieves/Sets the Angular Acceleration value of the profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AngularSpeedValue"><b>AngularSpeedValue</b></a>
+</td><td  id='tdright'>  Retrieves/Sets the Angular Speed value of the profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#MotionBasis"><b>MotionBasis</b></a>
+</td><td  id='tdright'>  Retrieves/Sets the Motion basis of the profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SpeedValue"><b>SpeedValue</b></a>
+</td><td  id='tdright'>  Retrieves/Sets the Speed value of the profile.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="AccelerationValue"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>AccelerationValue</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves/Sets the Acceleration value of the profile.<br>
+ The value is based on the motion basis:<br>
+ &nbsp &nbsp  MOTION_ABSOLUTE : absolute acceleration value. <br>
+ &nbsp &nbsp  MOTION_PERCENT  : 0-1, percent of max acceleration of the device<br>
+ &nbsp &nbsp  MOTION_TIME     : percent of total move time used on acceleration/deceleration 
+ <dl>
+ <dt><b>Example:</b>
+ <pre>
+ 'Display AccelerationValue
+ MsgBox "Acceleration Value is" & oRscMotionProfile.<font color="red">AccelerationValue</font>
+
+ 'Set AccelerationValue to 11
+ oRscMotionProfile.<font color="red">AccelerationValue</font> = 11
+ </pre>
+ </dl>
+</dd>
+<a id="AngularAccelerationValue"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>AngularAccelerationValue</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves/Sets the Angular Acceleration value of the profile.
+ <dl>
+ <dt><b>Example:</b>
+ <pre>
+ 'Display Angular Acceleration Value
+ MsgBox "Angular Acceleration Value is" & oRscMotionProfile.<font color="red">AngularAccelerationValue</font> 
+
+ 'Set Angular Acceleration Value to 5
+ oRscMotionProfile.<font color="red">AngularAccelerationValue</font> = 5
+ </pre>
+ </dl>
+</dd>
+<a id="AngularSpeedValue"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>AngularSpeedValue</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves/Sets the Angular Speed value of the profile.
+ <dl>
+ <dt><b>Example:</b>
+ <pre>
+ 'Display AngularSpeedValue
+ MsgBox "Angular Speed Value is" & oRscMotionProfile.<font color="red">AngularSpeedValue</font> 
+
+ 'Set AngularSpeedValue to 9
+ oRscMotionProfile.<font color="red">AngularSpeedValue</font> = 9
+ </pre>
+ </dl>
+</dd>
+<a id="MotionBasis"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>MotionBasis</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('MotionBasis','MotionBasis')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves/Sets the Motion basis of the profile.
+ Motion basis could be MOTION_ABSOLUTE, MOTION_PERCENT, MOTION_TIME 
+ <dl>
+ <dt><b>Example:</b>
+ <pre>
+ 'Display Motion Basis
+ If (MOTION_ABSOLUTE = oRscMotionProfile.<font color="red">MotionBasis</font>) Then
+    MsgBox "MotionBasis =  MOTION_ABSOLUTE"
+ Else
+    MsgBox "MotionBasis !=  MOTION_ABSOLUTE"
+ End If 
+
+ 'Set Motion Basis to MOTION_PERCENT
+ oRscMotionProfile.<font color="red">MotionBasis</font> = MOTION_PERCENT
+ </pre>
+ </dl>
+</dd>
+<a id="SpeedValue"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SpeedValue</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves/Sets the Speed value of the profile.<br>
+ The value is based on the motion basis:<br>
+ &nbsp  &nbsp  MOTION_ABSOLUTE  : absolute speed value. <br>
+ &nbsp  &nbsp  MOTION_PERCENT   : 0-1, percent of max speed of the device<br>
+ &nbsp  &nbsp  MOTION_TIME      : in seconds
+ <dl>
+ <dt><b>Example:</b>
+ <pre>
+ 'Display SpeedValue
+ MsgBox "Speed Value is" & oRscMotionProfile.<font color="red">SpeedValue</font> 
+
+ 'Set SpeedValue to 99
+ oRscMotionProfile.<font color="red">SpeedValue</font> = 99
+ </pre>
+ </dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

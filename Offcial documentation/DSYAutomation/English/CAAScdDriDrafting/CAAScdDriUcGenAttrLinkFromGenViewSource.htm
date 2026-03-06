@@ -1,0 +1,187 @@
+<!DOCTYPE html 
+	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<head>
+		<meta http-equiv="Content-Language" content="en-us" />
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta name="topictype" content="Uc" />
+		<meta name="devlang" content="idl" />
+		<meta name="devlang" content="idl" />
+		<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+		<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+		<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+		<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+		<title>CAAScdDriUcGenAttrLinkFromGenViewSource</title>
+	</head>
+
+	<body onload="highlightSearchTerms();"> 
+		<pre>
+<span class="keyword">Sub</span> CATMain() 
+   <span class="comment">' Generation of Attribute Links Extracted from 3D Part Pointed by a Generative View in a Drawing Table</span>
+   <span class="comment">' ---------------------------------------------------------------------------------------------------- </span>
+
+   <span class="comment">' 1/ Gets the Product Reference </span>
+   <span class="comment">' 2/ Gets the Product Parameters </span>
+   <span class="comment">' 3/ Creates the Drawing Table and fills it </span>
+
+
+   <span class="comment">' 1/ Gets the Product Reference </span>
+   <span class="comment">' ----------------------------- </span>
+   <span class="comment">' Checks whether the View is Generative </span>
+   <span class="keyword">Dim</span> myDrawingRoot <span class="keyword">As</span> DrawingRoot 
+   <span class="keyword">Set</span> myDrawingRoot = CATIA.ActiveEditor.ActiveObject 
+
+   <span class="keyword">If</span> (myDrawingRoot.ActiveSheet.Views.ActiveView.IsGenerative) <span class="keyword">Then</span> 
+      <span class="comment">' Determines on what the Generative View Link is (an Occurence or a Part Body) </span>
+      <span class="keyword">Dim</span> myGenView <span class="comment">' As DrawingGenView </span>
+      <span class="keyword">Set</span> myGenView = myDrawingRoot.ActiveSheet.Views.ActiveView.DrawingGenView 
+
+      <span class="keyword">Dim</span> nbInfoOnLink <span class="keyword">As</span> Long 
+      nbInfoOnLink = myGenView.GetNumberOfInfoForLink(1) 
+
+      <span class="comment">' Gets the Generative View Link </span>
+      <span class="keyword">ReDim</span> oInfoOnViewLink(nbInfoOnLink - 1) <span class="keyword">As</span> Variant 
+      myGenView.GetLink 1, oInfoOnViewLink 
+
+      <span class="comment">' Gets the Product Reference if it's an Occurence </span>
+      <span class="keyword">If</span> (nbInfoOnLink = 1) <span class="keyword">Then</span> 
+         <span class="keyword">Dim</span> oProdOcc <span class="keyword">As</span> VPMOccurrence 
+         <span class="keyword">Dim</span> oProdRef <span class="keyword">As</span> VPMReference 
+
+         <span class="keyword">Set</span> oProdOcc = oInfoOnViewLink(0) 
+         <span class="keyword">Set</span> oProdRef = oProdOcc.InstanceOccurrenceOf.ReferenceInstanceOf 
+
+         <span class="comment">' Gets the Product Reference if it's a Part Body </span>
+      <span class="keyword">ElseIf</span> (nbInfoOnLink = 3) <span class="keyword">Then</span> 
+
+         <span class="keyword">Dim</span> oProdRepInst <span class="keyword">As</span> VPMRepInstance 
+         <span class="keyword">Set</span> oProdRepInst = oInfoOnViewLink(1) 
+	<span class="keyword">Set</span> oProdRef = oProdRepInst.ReferenceInstanceOf.Father
+	
+      <span class="keyword">Else</span> 
+         MsgBox &quot;Invalid Link&quot; 
+         Quit 
+      <span class="keyword">End If </span>
+
+      <span class="comment">' 2/ Gets the Product Parameters </span>
+      <span class="comment">' ------------------------------ </span>
+      <span class="comment">' Gets the SearchService object </span>
+      <span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> SearchService 
+      <span class="keyword">Set</span> oSearchService = CATIA.GetSessionService(&quot;Search&quot;) 
+
+      <span class="comment">' Creates a query using the DatabaseSearch object </span>
+      <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+      <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch 
+
+      <span class="comment">' Gets the Product Reference PLM_ExternalID </span>
+      <span class="keyword">Dim</span> oProdPLMID <span class="keyword">As</span> String 
+      oProdPLMID = oProdRef.GetAttributeValue(&quot;PLM_ExternalID&quot;) 
+
+      <span class="comment">' Sets the type of object to query, a criterion, and trigger the search </span>
+      oDBSearch.BaseType = &quot;VPMReference&quot; 
+      oDBSearch.AddEasyCriteria &quot;PLM_ExternalID&quot;, oProdPLMID 
+
+      <span class="comment">' Launches the search </span>
+      oSearchService.Search 
+
+      <span class="comment">' Retrieves the listed entities </span>
+      <span class="keyword">Dim</span> cPLMEntities <span class="keyword">As</span> PLMEntities 
+      <span class="keyword">Set</span> cPLMEntities = oDBSearch.Results 
+
+      <span class="keyword">Dim</span> oPLMOpenService <span class="comment">' As PLMOpenService </span>
+
+      <span class="comment">' Gets the PLMOpen service &amp; Open the first retrieved entity </span>
+      <span class="keyword">Set</span> oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;) 
+      <span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor 
+      oPLMOpenService.PLMOpen cPLMEntities.Item(1), oEditor 
+
+      <span class="comment">' Gets the Part Product Parameters </span>
+      <span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part 
+      <span class="keyword">Set</span> oPart = oEditor.ActiveObject 
+      <span class="keyword">Dim</span> myParameters <span class="keyword">As</span> Parameters 
+      <span class="keyword">Set</span> myParameters = oPart.Parameters 
+
+      <span class="comment">' Closes the Product Editor Window </span>
+      <span class="keyword">Dim</span> oWindow <span class="keyword">As</span> Window 
+      <span class="keyword">Set</span> oWindow = CATIA.ActiveWindow 
+      oWindow.Close 
+
+
+      <span class="comment">' 3/ Creates the Drawing Table and fills it </span>
+      <span class="comment">' ----------------------------------------- </span>
+      <span class="comment">' Gets the View </span>
+      <span class="keyword">Dim</span> myView <span class="keyword">As</span> DrawingView 
+      <span class="keyword">Set</span> myView = myDrawingRoot.ActiveSheet.Views.ActiveView 
+
+      <span class="comment">' Creates the Drawing Table </span>
+      <span class="keyword">Dim</span> myTable <span class="keyword">As</span> DrawingTable 
+      <span class="keyword">Set</span> myTable = myView.Tables.Add(100, 100, 1, 2, 20, 150) 
+
+      <span class="comment">' Disables display of the Drawing Table modifications. </span>
+      myTable.ComputeMode = CatTableComputeOFF 
+
+      <span class="keyword">Dim</span> nbColumns <span class="keyword">As</span> Integer 
+      nbColumns = 2 
+
+      <span class="keyword">Dim</span> cutParameterName() <span class="keyword">As</span> String 
+      <span class="keyword">Dim</span> parameterName <span class="keyword">As</span> String 
+      <span class="keyword">Dim</span> myText <span class="keyword">As</span> DrawingText 
+
+      <span class="comment">' The Drawing Table is filled from the bottom to the top </span>
+      <span class="keyword">For</span> i = myParameters.Count <span class="keyword">To</span> 1 Step -1 
+         <span class="comment">' Cuts the Parameter Name </span>
+         cutParameterName = Split(myParameters.Item(i).Name, &quot;\&quot;) 
+         <span class="comment">' Filters the Parameters </span>
+         <span class="keyword">If</span> (cutParameterName(UBound(cutParameterName)) &lt;&gt; &quot;Activity&quot; And cutParameterName(UBound(cutParameterName)) &lt;&gt; &quot;Mode&quot;) <span class="keyword">Then</span> 
+            <span class="comment">' Adds a row and columns if necessary </span>
+            myTable.AddRow 1 
+
+            <span class="keyword">If</span> (nbColumns - 1 &lt; (UBound(cutParameterName) - 2)) <span class="keyword">Then</span> 
+               <span class="keyword">For</span> k = nbColumns - 1 <span class="keyword">To</span> (UBound(cutParameterName) - 2) 
+                  myTable.AddColumn nbColumns 
+                  nbColumns = nbColumns + 1 
+               <span class="keyword">Next</span> 
+            <span class="keyword">End If </span>
+
+            <span class="comment">' Fills the Drawing Table with the Parameter Name </span>
+            <span class="keyword">For</span> j = 2 <span class="keyword">To</span> UBound(cutParameterName) 
+               myTable.SetCellString 2, (j - 1), cutParameterName(j) 
+               <span class="comment">' Changes the Cell Layout </span>
+               myTable.SetCellAlignment 2, (j - 1), CatTableMiddleCenter 
+               <span class="keyword">Set</span> myText = myTable.GetCellObject(2, j - 1) 
+               myText.SetFontSize 0, 0, 10 
+            <span class="keyword">Next</span> 
+
+            <span class="comment">' Fills the Drawing Table with the Parameter Value and changes the Cell Layout </span>
+            myTable.SetCellString 2, nbColumns, &quot;&quot; 
+            <span class="keyword">Set</span> myText = myTable.GetCellObject(2, nbColumns) 
+            myText.InsertVariable 0, 0, myParameters.Item(i) 
+            <span class="comment">' Changes the Cell Layout </span>
+            myTable.SetCellAlignment 2, nbColumns, CatTableMiddleCenter 
+            myText.SetFontSize 0, 0, 10 
+
+         <span class="keyword">End If </span>
+      <span class="keyword">Next</span> 
+
+      <span class="comment">' Drawing Table Title Initialisation </span>
+      myTable.SetCellString 1, 1, &quot;&quot; 
+      <span class="keyword">Set</span> myText = myTable.GetCellObject(1, 1) 
+      myText.InsertAttributeLink 0, 0, oProdRef, &quot;VPMReference&quot;, &quot;V_Name&quot; 
+      <span class="comment">' Changes the Cell Layout </span>
+      myText.SetFontSize 0, 0, 10 
+      myTable.MergeCells 1, 1, 1, nbColumns 
+      myTable.SetCellAlignment 1, 1, CatTableMiddleCenter 
+
+      <span class="comment">' Enables display of the Drawing Table modifications. </span>
+      myTable.ComputeMode = CatTableComputeON 
+
+   <span class="keyword">End If </span>
+
+<span class="keyword">End Sub </span>
+
+
+		</pre>
+	</body>
+</html>

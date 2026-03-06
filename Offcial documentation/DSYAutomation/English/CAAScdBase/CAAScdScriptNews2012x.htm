@@ -1,0 +1,1201 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>What&#39;s New with V6R2012x Automation</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>What's New with V6R2012x Automation</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article presents Automation objects, methods, and properties that 
+		are added since V6R2011x GA to enhance V6 Automation capabilities, support 
+		functional evolutions, and correct defects. Some of those modifications 
+		may already exist in V6R2011x maintenance fixes. A few properties and methods 
+		might have been modified or removed. VB and VBScripts code using those methods 
+		may have to be modified. VB projects using the corresponding objects must 
+		be recompiled.</p>
+		<p>Consult
+		<a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation 
+		Languages, Debug, and Compatibility</a> 
+		for details on manual adjustments 
+		that may be required for existing VBA and VSTA projects to be usable 
+		on a new release.</p>
+		<ul>
+			<li><a href="#NewArticles">New Articles</a></li>
+			<li><a href="#NewSetting">New Settings Repositories</a></li>
+			<li><a href="#NewObject">New Objects</a></li>
+			<li><a href="#NewMethod">New Methods</a></li>
+			<li><a href="#NewEnum">New Enums</a></li>
+			<li><a href="#Modif">Modified Methods and Properties</a></li>
+			<li><a href="#Suppress">Removed Objects, Collections, Methods and Properties</a></li>
+		</ul>
+		<p>Deprecated APIs can be found in
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Deprecated');return false;">
+		V6 IDL API Deprecated Index</a>.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p>You can also find news from previous V6 releases:</p>
+		<ul>
+			<li><a href="CAAScdScriptNews2012.htm">V6R2012 What's New?</a></li>
+			<li><a href="CAAScdScriptNews2011x.htm">V6R2011x What's New?</a></li>
+			<li><a href="CAAScdScriptNews2011.htm">V6R2011 What's New?</a></li>
+			<li><a href="CAAScdScriptNews2010x.htm">V6R2010x What's New?</a></li>
+			<li><a href="CAAScdScriptNews2010.htm">V6R2010 What's New?</a></li>
+			<li><a href="CAAScdScriptNews2009x.htm">V6R2009x What's New?</a></li>
+		</ul>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewArticles"></a>New Articles</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScdInfInfrastructure/CAAInfNavigation.htm">
+		Navigating the Automation Model</a></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScdProduct/CAAScdPstTaProductOverview.htm">
+		Product Modeler Overview</a></td>
+		<td></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th><a name="NewSetting"></a>New Settings Repositories</th>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewObject"></a>New Objects</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATEngConnectionIDLItf', 'interface', 'AssemblyConstraint');return false;">AssemblyConstraint</a>
+		</td>
+   <td>
+This interface is implemented by the Assembly Constraint.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATEngConnectionIDLItf', 'interface', 'AssemblyConstraints');return false;">AssemblyConstraints</a>
+		</td>
+   <td>
+Interface representing the collection of Assembly Constraint in an Engineering Connection.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATEngConnectionIDLItf', 'interface', 'EngConnection');return false;">EngConnection</a>
+		</td>
+   <td>
+Interface representing an Engineering Connection.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATEngConnectionIDLItf', 'interface', 'EngConnections');return false;">EngConnections</a>
+		</td>
+   <td>
+Collection to manage all the Engineering Connections of a Product Reference.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATEngRefGeomInterfaces', 'interface', 'RfgGridFace');return false;">RfgGridFace</a>
+		</td>
+   <td>
+Object to define reference plane .
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATEngRefGeomInterfaces', 'interface', 'RfgService');return false;">RfgService</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATKinMechanismIDLItf', 'interface', 'KinCommand');return false;">KinCommand</a>
+		</td>
+   <td>
+ The interface to access a CATIAKinCommand.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATKinMechanismIDLItf', 'interface', 'KinCommands');return false;">KinCommands</a>
+		</td>
+   <td>
+ The collection of mechanism commands.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATKinMechanismIDLItf', 'interface', 'KinJoints');return false;">KinJoints</a>
+		</td>
+   <td>
+ The collection of Joints.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATKinMechanismIDLItf', 'interface', 'KinMechanism');return false;">KinMechanism</a>
+		</td>
+   <td>
+ The interface to access the root feature of the Mechanism Representation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddFactory');return false;">SddFactory</a>
+		</td>
+   <td>
+Object to create Structure Detail Modeler Objects.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddMember');return false;">SddMember</a>
+		</td>
+   <td>
+Object to manage Structure detail Modeler Member.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddPlate');return false;">SddPlate</a>
+		</td>
+   <td>
+Object for representing Structure Detail Design Plate.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddPlates');return false;">SddPlates</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddProductMember');return false;">SddProductMember</a>
+		</td>
+   <td>
+Object for representing Structure Detail Design Product Member.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddProductPlate');return false;">SddProductPlate</a>
+		</td>
+   <td>
+Object for representing Structure Detail Design Product Plate.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddProductStiffener');return false;">SddProductStiffener</a>
+		</td>
+   <td>
+Object for representing Structure Detail Design Product Stiffener.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddStiffener');return false;">SddStiffener</a>
+		</td>
+   <td>
+Object to manage SDD Stiffener.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddStiffenerMngt');return false;">SddStiffenerMngt</a>
+		</td>
+   <td>
+Object to manage the SDD Stiffeners.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddSupportPlateMngt');return false;">SddSupportPlateMngt</a>
+		</td>
+   <td>
+Object managing the Plates on which this Stiffener/StiffenerOnFreeEdge is attached to.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SfdConnectionSet');return false;">SfdConnectionSet</a>
+		</td>
+   <td>
+Object to manage the structure object connectivities.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SfdFactory');return false;">SfdFactory</a>
+		</td>
+   <td>
+Object to create Structure Functional Modeler Objects.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SfdMember');return false;">SfdMember</a>
+		</td>
+   <td>
+Object to manage Structure Functional Modeler Member.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SfdNavigation');return false;">SfdNavigation</a>
+		</td>
+   <td>
+Object to manage to retrieve the SFD Panel/Profile from any object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SfdOpeningPlate');return false;">SfdOpeningPlate</a>
+		</td>
+   <td>
+Object to filter a Structure Functional Modeler Opening for Plate.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SfdOpeningPlateProfileSet');return false;">SfdOpeningPlateProfileSet</a>
+		</td>
+   <td>
+Object to filter a Structure Functional Modeler OpeningPlateProfileSet by adhesion.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SfdOpeningPlateSet');return false;">SfdOpeningPlateSet</a>
+		</td>
+   <td>
+ Object to filter a Structure Functional Modeler OpeningPlateSet by adhesion.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SfdOpeningProfile');return false;">SfdOpeningProfile</a>
+		</td>
+   <td>
+ Object to filter a Structure Functional Modeler Opening for Profile by adhesion.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SfdOpeningProfileSet');return false;">SfdOpeningProfileSet</a>
+		</td>
+   <td>
+Object to filter a Structure Functional Modeler OpeningProfileSet by adhesion.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SfdPanel');return false;">SfdPanel</a>
+		</td>
+   <td>
+Object to manage the Structure Functional Modeler SuperPlate object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SfdPart');return false;">SfdPart</a>
+		</td>
+   <td>
+Object to manage attributes on the Part.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'StrSfdPlate');return false;">StrSfdPlate</a>
+		</td>
+   <td>
+Object to filter Structure Functional Modeler functions Plate.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'StrSfdPlates');return false;">StrSfdPlates</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'StrSfdPlatesMngt');return false;">StrSfdPlatesMngt</a>
+		</td>
+   <td>
+Object to manage the Plates and the seams(cutting element) on SFD Panel.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'StrSfdProjectData');return false;">StrSfdProjectData</a>
+		</td>
+   <td>
+Object to define ProjectData.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'StrSfdStiffener');return false;">StrSfdStiffener</a>
+		</td>
+   <td>
+Object to manage Structure Functional Modeler Stiffener.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'StrSfdStiffenerOnFreeEdge');return false;">StrSfdStiffenerOnFreeEdge</a>
+		</td>
+   <td>
+Object to manage Structure Functional Modeler StiffenerOnFreeEdge.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'StrSfdStiffeners');return false;">StrSfdStiffeners</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrAdvPanel');return false;">StrAdvPanel</a>
+		</td>
+   <td>
+Object to filter the Structure Advanced Panel.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrBreak');return false;">StrBreak</a>
+		</td>
+   <td>
+Object to manage Structure Break of a SuperPlate or Profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrCategoryMngt');return false;">StrCategoryMngt</a>
+		</td>
+   <td>
+Object to manage Str functions category.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrConnections');return false;">StrConnections</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrDetailFeature');return false;">StrDetailFeature</a>
+		</td>
+   <td>
+Object to manage the Endcut / Slot.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrEndcut');return false;">StrEndcut</a>
+		</td>
+   <td>
+Object to manage Endcut of a Profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrEndcutMngt');return false;">StrEndcutMngt</a>
+		</td>
+   <td>
+Object to manage Structure Functional Modeler Endcuts on the Profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrMaterialMngt');return false;">StrMaterialMngt</a>
+		</td>
+   <td>
+Object to manage Structure Functional Modeler functions material.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrNavigate');return false;">StrNavigate</a>
+		</td>
+   <td>
+Object to navigate sfd/sdd objects.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrObjects');return false;">StrObjects</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpening');return false;">StrOpening</a>
+		</td>
+   <td>
+ Object to define a Structure Opening.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpening3DObject');return false;">StrOpening3DObject</a>
+		</td>
+   <td>
+Object to manage the Structure Opening created using 3DObject.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningExtrusionMngt');return false;">StrOpeningExtrusionMngt</a>
+		</td>
+   <td>
+ Object to manage Structure Opening&apos;s extrusion.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningLimitDimensionsMngt');return false;">StrOpeningLimitDimensionsMngt</a>
+		</td>
+   <td>
+Object to manage Structure limits of type &quot;Dimensions&quot; for Opening.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningOutputProfile');return false;">StrOpeningOutputProfile</a>
+		</td>
+   <td>
+Object to manage the Structure Opening in OutputProfile mode.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningStandard');return false;">StrOpeningStandard</a>
+		</td>
+   <td>
+Object representing a Standard Opening.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpenings');return false;">StrOpenings</a>
+		</td>
+   <td>
+Object for StrOpenings.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningsMgr');return false;">StrOpeningsMgr</a>
+		</td>
+   <td>
+Object representing the Structure Openings Manager.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrPanelLimitMngt');return false;">StrPanelLimitMngt</a>
+		</td>
+   <td>
+Object to manage Structure Functional Modeler limits for Panel.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrPanelSurf');return false;">StrPanelSurf</a>
+		</td>
+   <td>
+Object to manage an structure Panel created in surface mode.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrParameter');return false;">StrParameter</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrParameters');return false;">StrParameters</a>
+		</td>
+   <td>
+Object for collection of Parameters.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrPlateExtrusionMngt');return false;">StrPlateExtrusionMngt</a>
+		</td>
+   <td>
+Object to manage Structure Functional Modeler Plate/Panel Geometry.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrPosAxisAdjustment');return false;">StrPosAxisAdjustment</a>
+		</td>
+   <td>
+ Object to access a volatile parameter group for the positioning strategy axis adjustment This interface is used for Standard Opening Positioning Strategy specification data.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrPosDualRef');return false;">StrPosDualRef</a>
+		</td>
+   <td>
+ Object representing a parameter used in the Structures model elements.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrPosSupportFace');return false;">StrPosSupportFace</a>
+		</td>
+   <td>
+ Object to manage the specification of which face of an object to use for positioning.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrProfileCrv');return false;">StrProfileCrv</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrProfileLimitMngt');return false;">StrProfileLimitMngt</a>
+		</td>
+   <td>
+Object to manage limits of the Profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrProfileOnLimits');return false;">StrProfileOnLimits</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrProfileOnOpening');return false;">StrProfileOnOpening</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrProfilePtLength');return false;">StrProfilePtLength</a>
+		</td>
+   <td>
+Object to manage Member created with a point and a length.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrProfilePtLimit');return false;">StrProfilePtLimit</a>
+		</td>
+   <td>
+Object to manage Profile created with a point and a limit.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrProfilePtPt');return false;">StrProfilePtPt</a>
+		</td>
+   <td>
+Object to manage member created with 2 points &lt;b&gt;Role&lt;/b&gt;: To manage member created with 2 points.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrProfileSurf2Crvs');return false;">StrProfileSurf2Crvs</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrProfileSurfSurf');return false;">StrProfileSurfSurf</a>
+		</td>
+   <td>
+Object to manage Profile created by the intersection of two surfaces.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrRefOffset');return false;">StrRefOffset</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrReference');return false;">StrReference</a>
+		</td>
+   <td>
+Object representing a reference specification for a Structure object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrReferences');return false;">StrReferences</a>
+		</td>
+   <td>
+Object to Add cutting elements to the collection.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrSectionMngt');return false;">StrSectionMngt</a>
+		</td>
+   <td>
+Object to manage Structure Functional Modeler section applied to a Profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrService');return false;">StrService</a>
+		</td>
+   <td>
+Object services related to import.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrSlot');return false;">StrSlot</a>
+		</td>
+   <td>
+Object to manage Structure Functional Slot.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrSlots');return false;">StrSlots</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrStandardContourParameters');return false;">StrStandardContourParameters</a>
+		</td>
+   <td>
+Object for Standard Contour Parameters.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrStandardPosStrategyParameters');return false;">StrStandardPosStrategyParameters</a>
+		</td>
+   <td>
+Object for Standard positioning strategy Parameters.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrStiffener');return false;">StrStiffener</a>
+		</td>
+   <td>
+Object to manage Structure Functional Modeler Stiffener.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrUserConnection');return false;">StrUserConnection</a>
+		</td>
+   <td>
+ Object to manage UserConnection.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrUserConnections');return false;">StrUserConnections</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StructureMember');return false;">StructureMember</a>
+		</td>
+   <td>
+Object to manage Structure Member.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StructurePlate');return false;">StructurePlate</a>
+		</td>
+   <td>
+Object to manage the Structure Plate object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StructureProfile');return false;">StructureProfile</a>
+		</td>
+   <td>
+Object to manage Structure Functional Modeler Profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SrmDesignUnit');return false;">SrmDesignUnit</a>
+		</td>
+   <td>
+Object to manage volume under the design unit.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SrmPlanningBreak');return false;">SrmPlanningBreak</a>
+		</td>
+   <td>
+Object to manage the Planning Break the design unit.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SrmPlanningBreaks');return false;">SrmPlanningBreaks</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SrmProxies');return false;">SrmProxies</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SrmProxyMember');return false;">SrmProxyMember</a>
+		</td>
+   <td>
+Object to manage the Proxy Member.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SrmProxyPanel');return false;">SrmProxyPanel</a>
+		</td>
+   <td>
+Object to manage the Proxy Panel.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SrmProxyProfile');return false;">SrmProxyProfile</a>
+		</td>
+   <td>
+Object to manage the Proxy Profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrFunctionalInterfaces', 'interface', 'SrmProxyProfiles');return false;">SrmProxyProfiles</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingFeatureContainer');return false;">ManufacturingFeatureContainer</a>
+		</td>
+   <td>
+Interface to manage the feature container.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingMOLocalMachiningAxisSystem');return false;">ManufacturingMOLocalMachiningAxisSystem</a>
+		</td>
+   <td>
+Interface to set,retrieve and remove Local Machining Axis System from an operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingView');return false;">ManufacturingView</a>
+		</td>
+   <td>
+Interface to set,retrieve and remove Local Machining Axis System from an operation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'Shape3D');return false;">Shape3D</a>
+		</td>
+   <td>
+Represents the 3DShape Representation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'Shape3Ds');return false;">Shape3Ds</a>
+		</td>
+   <td>
+A collection of 3DShape Representations.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMPublication');return false;">VPMPublication</a>
+		</td>
+   <td>
+Represents the PLM Product Publication.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMPublications');return false;">VPMPublications</a>
+		</td>
+   <td>
+A collection of PLM Product Publications.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SystemTS', 'interface', 'IUnknown');return false;">IUnknown</a>
+		</td>
+   <td>
+Base interface for all interfaces.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'VPMEditorContextIDLItf', 'interface', 'ProductSessionService');return false;">ProductSessionService</a>
+		</td>
+   <td>
+Interface representing the session service related to Product data.
+	</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewMethod"></a>New method</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeTrim', 'AddPieceCutter');return false;">HybridShapeTrim::AddPieceCutter</a>
+		</td>
+   <td>
+Add piece Cutting element and its orientation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeTrim', 'GetPieceCutter');return false;">HybridShapeTrim::GetPieceCutter</a>
+		</td>
+   <td>
+Gets piece Cutting element and its orientation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeTrim', 'GetPieceNbCutters');return false;">HybridShapeTrim::GetPieceNbCutters</a>
+		</td>
+   <td>
+Gets the number of cutters of a piece.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeTrim', 'RemovePieceCutter');return false;">HybridShapeTrim::RemovePieceCutter</a>
+		</td>
+   <td>
+Remove piece Cutting element and its orientation.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'CircPattern', 'GetStaggerPatternChoice');return false;">CircPattern::GetStaggerPatternChoice</a>
+		</td>
+   <td>
+Returns if user wants to have stagger pattern configuration.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'CircPattern', 'GetStaggerStepValue');return false;">CircPattern::GetStaggerStepValue</a>
+		</td>
+   <td>
+Returns the value of the Stagger angle.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'CircPattern', 'SetStaggerPatternChoice');return false;">CircPattern::SetStaggerPatternChoice</a>
+		</td>
+   <td>
+Sets the choice of creation of stagger pattern configuration.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'CircPattern', 'SetStaggerStepValue');return false;">CircPattern::SetStaggerStepValue</a>
+		</td>
+   <td>
+Sets the value of the Stagger angle.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Dimension3D', 'MoveValue');return false;">Dimension3D::MoveValue</a>
+		</td>
+   <td>
+Move dimension value.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Application', 'UndoRedoLock');return false;">Application::UndoRedoLock</a>
+		</td>
+   <td>
+Returns or sets the application status about Undo/Redo.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'KnowHowIDLItf', 'interface', 'ExpertRuleBaseRuntime', 'SolveWithLoad');return false;">ExpertRuleBaseRuntime::SolveWithLoad</a>
+		</td>
+   <td>
+Launch a Forward chaining Solve on the current RuleBase.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'KnowHowIDLItf', 'interface', 'ExpertRuleBaseRuntime', 'WorkingMode');return false;">ExpertRuleBaseRuntime::WorkingMode</a>
+		</td>
+   <td>
+Returns or sets the WorkingMode option.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingFactories', 'GetManufacturingFeatureFactory');return false;">ManufacturingFactories::GetManufacturingFeatureFactory</a>
+		</td>
+   <td>
+Retrieves the manufacturing feature factory.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMReference', 'Publications');return false;">VPMReference::Publications</a>
+		</td>
+   <td>
+Returns the collection of PLM Product Publications.
+	</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewEnum"></a>New enum</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATEngConnectionIDLItf', 'enum', 'CatAssemblyConstraintMode');return false;">CatAssemblyConstraintMode</a>
+		</td>
+   <td>
+Assembly Constraint mode.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATEngConnectionIDLItf', 'enum', 'CatAssemblyConstraintOption');return false;">CatAssemblyConstraintOption</a>
+		</td>
+   <td>
+Assembly Constraint Option &lt;b&gt;Role&lt;/b&gt;: Define the constraint geometry option.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATEngConnectionIDLItf', 'enum', 'CatAssemblyConstraintType');return false;">CatAssemblyConstraintType</a>
+		</td>
+   <td>
+Assembly Constraint Type.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATEngConnectionIDLItf', 'enum', 'CatEngConnectionDirection');return false;">CatEngConnectionDirection</a>
+		</td>
+   <td>
+Engineering Connection direction.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATEngConnectionIDLItf', 'enum', 'CatEngConnectionType');return false;">CatEngConnectionType</a>
+		</td>
+   <td>
+Engineering Connection direction &lt;b&gt;Role&lt;/b&gt;: Defines the Engineering Connection direction.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATKinMechanismIDLItf', 'enum', 'CATKinMechanismCommandType');return false;">CATKinMechanismCommandType</a>
+		</td>
+   <td>
+ Definition of the kinematics commands&apos; type.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'enum', 'CATStrOpeningMode');return false;">CATStrOpeningMode</a>
+		</td>
+   <td>
+Creation mode for the Opening.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'enum', 'CATStrPanelMode');return false;">CATStrPanelMode</a>
+		</td>
+   <td>
+Creation mode for the panel.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'enum', 'CATStrProfileMode');return false;">CATStrProfileMode</a>
+		</td>
+   <td>
+Creation mode for profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'KnowHowIDLItf', 'enum', 'CatWorkingMode');return false;">CatWorkingMode</a>
+		</td>
+   <td>
+Protocole to retrieve the facts for the rulebase.
+	</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="Modif"></a>Modified Methods and Properties</th>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="Suppress"></a>Removed Objects, Collections, Methods, 
+		and Properties </th>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+
+</body>
+
+</html>

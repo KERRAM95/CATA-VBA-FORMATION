@@ -1,0 +1,166 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Exporting FE Data</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Exporting FE Data</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This use case primarily 
+						focuses on the methodology to export a FEM representation 
+						into a formatted inp file.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2" style="height: 125px"><span class="run-in">Before you begin:</span> 
+					Note that:<ul>
+						<li>You should first launch CATIA and import the
+						<code><div class=vb_sample_data>CAAScdFeaExportFEM.3dxml</div></code> file supplied in 
+						the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaSimulation\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder where 
+						the API CD-ROM is installed.</li>
+						<li>Then, you should open the &quot;CAAScdFeaExportFEM&quot; physical product. You should 
+						also check if all representations are loaded and if the FEM Representation is updated. 
+						The export will succeed only if the FEM is updated without errors.</li>
+						<li>Launch the structural scenario App and create a structural simulation.</li>
+						</ul>
+					<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdFeaExportFEMWithPythonSource.htm">CAAScdFeaExportFEMWithPythonSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in six steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the simulation and its product</a></li>
+			<li><a href="#Step2">Retrieves the FEM Root</a></li>
+			<li><a href="#Step3">Retrieves the simulation exporter</a></li>
+			<li><a href="#Step4">Retrieves the exporter arguments</a></li>
+			<li><a href="#Step5">Sets the export parameters</a></li>
+			<li><a href="#Step6">Executes the export</a></li>			
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the simulation and its product</strong></p>
+			<p>As a first step, the UC retrieves the active editor and retrieves the simulation model.</p>
+<pre class="code">... 
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+...</pre>
+<p>Then opens the simulation model and retrieves the product service associated to the product editor</p>
+<pre class="code">...
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+
+myProductEditor = CATIA.ActiveEditor
+MyProductService = myProductEditor.GetService("PLMProductService")
+
+myEntities = MyProductService.EditedContent
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieve the FEM Root</strong></p>
+			<p>In the next step, the UC retrieves the <code>SimFemRoot</code> object. We need to iterate 
+			on the Rep Instances to find the FEM Root object.</p>
+<pre class="code"> ...
+<span class="keyword">for</span> myEntity <span class="keyword">in</span> myEntities:
+    myRef = myEntity
+    myReps = myRef.RepInstances
+    <span class="keyword">for</span> myRep <span class="keyword">in</span> myReps:
+        myRepRef = myRep.ReferenceInstanceOf
+        attr = myRepRef.GetAttributeValue("V_discipline")
+        <span class="keyword">if</span> (attr == "FEM"):
+            myFEMRoot = myRepRef.GetItem("SimFemRoot")
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves the simulation exporter</strong></p>
+			<p>In the next step the UC retrieves the FEM representation exporter.</p>
+<pre class="code">...
+mySimManagerSIMExport = myFEMRoot.GetItem("SimManagerSIMExport")
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves the exporter arguments</strong></p>
+			<p>In this step the UC retrieves the arguments object that allow to define the units, the export path,
+			 and some other options.</p>
+			<pre class="code">...
+mySimExportArgs = mySimManagerSIMExport.Args
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Sets the export parameters</strong></p>
+			<p>In this step the UC defines the export path and the export file name. 
+			Then the UC sets a parameter to allow the exporter to overwrite
+			the export file if this one already exists.</p>
+<pre class="code">...
+myExportPath=CATIA.SystemService.Environ("TMP") + "\CAAScdFeaExportFEM.inp"
+mySimExportArgs.SetPath(myExportPath)
+
+myParameters = mySimExportArgs.Parameters
+
+myParameters.SetIntegerParameter ("AllowOverwrite", 1)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Executes the export</strong></p>
+			<p>In this step the UC executes the export.</p>
+<pre class="code">...
+mySimManagerSIMExport.Export("Model2Abaqus")
+...</pre>
+			</li>
+
+	</ol>
+	</td>
+	</tr>
+</table>		
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>
+
+

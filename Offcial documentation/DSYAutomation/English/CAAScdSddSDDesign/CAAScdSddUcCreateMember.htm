@@ -1,0 +1,657 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SDD Member</title>
+<style type="text/css">
+.style1 {
+	font-family: "Courier New", Courier;
+	font-size: 9pt;
+	color: #976970;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating a SDD Member</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SDD member.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSddUcCreateMember.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSddUcSteel_A42.3dxml</div></code>,
+							<code><div class=vb_sample_data>CAAScdSddUcWT18x179_5.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div></code> 
+							and <code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div></code> files supplied 
+							in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code><br />
+							where 
+							<code>InstallRootFolder</code> is the folder where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcCreateMemberSource.htm">CAAScdSddUcCreateMemberSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSddTocSDDesign.htm">Structure Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in 11 steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SddProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Part object</a></li>
+			<li><a href="#Step3">Retrieves Service Manger (RfgService)</a></li>
+			<li><a href="#Step4">Retrieves SddFactory for creating SDD objects</a></li>
+			<li><a href="#Step5">Creates a member using two surfaces</a></li>
+			<li><a href="#Step6">Creates a member using a point and a limit</a></li>
+			<li><a href="#Step7">Creates a member using a point and length</a></li>
+			<li><a href="#Step8">Creates a member using a curve</a></li>
+			<li><a href="#Step9">Creates a member using a surface and two members(crvs)</a></li>
+			<li><a href="#Step10">Creates a member using two points</a></li>
+			<li><a href="#Step11">Updates the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SddProduct&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SddProduct&quot; from DB and 
+			loads it and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim</span> SDDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SddProduct&quot;
+ OpenProduct prdName , SDDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SDDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SDD model from underlying database the current active 
+			editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>product1Service <span class="keyword"> As </span> PLMProductService
+  <span class="keyword">Set</span> product1Service = DDPrdEditor.GetService(&quot;PLMProductService&quot;)
+  <span class="keyword">Dim </span>ObjVPMRootOccurrence <span class="keyword"> As </span> VPMRootOccurrence
+  <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+  <span class="keyword">Dim </span>ObjVPMReference <span class="keyword"> As </span> VPMReference
+  <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+  <span class="keyword">Dim </span>ObjVPMRepInstances <span class="keyword"> As </span> VPMRepInstances
+  <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+  <span class="keyword">Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> ObjPart = ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Service manager (RfgService)</strong></p>
+			<p>In this step UC retrieves <code>RfgService</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.<strong>GetService</strong>(&quot;RfgService&quot;)
+...</pre>
+			<p><code>GetService</code> method returns <code>RfgService</code>. This 
+			service provides methods such GetReferencePlane, CreateProjectData, 
+			CreateRefSurfaceFeature.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieve SddFactory for creating SDD objects</strong></p>
+			<p>In this step Uc retrieves the SddFactory for creating SDD objects.</p>
+			<pre class="code">...
+  <span class="keyword">Dim </span>ObjSddFactory <span class="keyword"> As </span> SddFactory
+  SDDProdSel.Add ObjVPMRootOccurrence
+  <span class="keyword">Set</span> ObjSddFactory = SDDProdSel.<strong>FindObject</strong>(&quot;CATIASddFactory&quot;)
+...</pre>
+			<p>In this step Uc retrieves the SddFactory by calling<code>FindObject</code> 
+			method as shown above.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Creates a member using two surfaces</strong></p>
+			<p>Call <code>CreateMemberSurfSurf</code> method to create member using 
+			two surfaces. <code>CreateMemberSurfSurf</code> method takes SddFactory 
+			as input parameter and it returns created product member as output parameter 
+			in <code>ObjSddProdMemberSurfSurf</code>.</p>
+			<pre class="code">...
+	<span class="keyword">Dim</span> ObjSddProdMemberSurfSurf <span class="keyword">As</span> SddProductMember
+	<strong>CreateMemberSurfSurf</strong> ObjSddFactory, ObjSddProdMemberSurfSurf
+...</pre>
+			<p>The method <code>CreateMemberSurfSurf</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberSurfSurf</strong>(iObjSddFactory <span class="keyword">As</span> SddFactory, oObjProdMember <span class="keyword">As</span> SddProductMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iObjSddFactory, &quot;SddMember&quot;, catStrProfileModeSurfSurf, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjProdMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member and sets some of the properties of 
+				the member and return the created member in oObjProdMember. This 
+				method sets category, profile type, material, section name and anchor 
+				point of the member. Here iObjSddFactory is the SddFactory, catStrProfileModeSurfSurf 
+				is the profile type(catStrProfileModeSurfSurf means profile is created 
+				on intersection of two surfaces), &quot;Steel A42&quot; is material name, 
+				&quot;WT18x179.5&quot; is section name and &quot;catStrTopCenter&quot; is anchor point.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfileLimitMngt and sets profile limits</strong></p>
+				<pre class="code">...   
+    <span class="keyword">Dim</span> ObjStrProfileLimitMngt <span class="keyword">As</span> StrProfileLimitMngt
+    <span class="keyword">Set</span> ObjStrProfileLimitMngt = ObjSddMember.<strong>StrProfileLimitMngt</strong>
+    <span class="comment">&#39;set Start limit</span>
+    <span class="keyword">Set</span> ObjStartLimit = Manager.<strong>GetReferencePlane</strong>(ObjPart, 1, &quot;DECK.8&quot;)
+    <span class="keyword">Set</span> StartLimit = ObjPart.CreateReferenceFromObject(ObjStartLimit)
+    ObjStrProfileLimitMngt.<strong>SetLimitingObject</strong> 1, StartLimit
+    <span class="comment">&#39;set End limit</span>
+    <span class="keyword">Set</span> ObjEndLimit = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.3&quot;)
+    <span class="keyword">Set</span> EndLimit = ObjPart.CreateReferenceFromObject(ObjEndLimit)
+    ObjStrProfileLimitMngt.<strong>SetLimitingObject</strong> 2, EndLimit
+...</pre>
+				<p>In this step Uc retrieves object of type <code>StrProfileLimitMngt</code> 
+				in <code>ObjStrProfileLimitMngt</code>. Reference to the plane DECK.8 
+				is retrieved in <code>StartLimit</code> by using method <code>GetReferencePlane</code>. 
+				Method <code>GetReferencePlane</code> takes 3 input parameters. 
+				First parameter is the part from which plane is, second is the index 
+				of the plane system (DECK = 1, CROSS = 2, LONG = 3) and third is 
+				the name of the plane. To set start limit, <code>SetLimitingObject</code> 
+				method is called. It takes two inputs, <strong>1</strong> and
+				<strong>StartLimit</strong>. here 1 means the limit is for Start 
+				of profile. In the same manner another plane DECK.3 is set as the 
+				end limit for the profile. To set the End limit <code>SetLimitingObject</code> 
+				method takes first parameter as <strong>2</strong>.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfileSurfSurf and sets surfaces for member 
+				creation</strong></p>
+				<pre class="code">...    
+    <span class="comment">&#39;Get StrProfileSurfSurf object</span>
+    <span class="keyword">Dim</span> ObjStrProfileSurfSurf <span class="keyword">As</span> StrProfileSurfSurf
+    <span class="keyword">Set</span> ObjStrProfileSurfSurf = ObjSddMember.<strong>StrProfileSurfSurf</strong>
+    <span class="comment">&#39;Set FirstSurface</span>
+    <span class="keyword">Set</span> ObjRefFirstSurf = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.8&quot;)
+    <span class="keyword">Set</span> RefFirstSurf = ObjPart.CreateReferenceFromObject(ObjRefFirstSurf)
+    ObjStrProfileSurfSurf.<strong>FirstSurface</strong> = RefFirstSurf
+    <span class="comment">&#39;Set SecondSurface</span>
+    <span class="keyword">Set</span> ObjRefSecondSurf = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-4&quot;)
+    <span class="keyword">Set</span> RefSecondSurf = ObjPart.CreateReferenceFromObject(ObjRefSecondSurf)
+    ObjStrProfileSurfSurf.<strong>SecondSurface</strong> = RefSecondSurf
+...
+                </pre>
+				<p>This step sets two surfaces FirstSurface and SecondSurface. Member 
+				will be created at the intersection of these two surfaces. Uc first 
+				retrieves the object of type <code>StrProfileSurfSurf</code>.To 
+				set the FirstSurface, it retrieves the reference to the CROSS.8 
+				plane in <code>RefFirstSurf</code> and assign it to the <code>FirstSurface</code> 
+				property of the <code>ObjStrProfileSurfSurf</code> object. To set 
+				the SecondSurface, it retrieves the reference to the LONG.-4 plane 
+				in <code>RefSecondSurf</code> and assign it to the <code>SecondSurface</code> 
+				property of the <code>ObjStrProfileSurfSurf</code> object.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    oObjProdMember.<strong>Update</strong>
+<span class="keyword" style="background-color: #F9F9F9">  </span><span class="keyword">End Sub</span></pre>
+				<p>Method <code>Update</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Creates a member using a point and a limit</strong></p>
+			<p>Call <code>CreateMemberPtLimit</code> method to create member using 
+			a point and a limit. <code>CreateMemberPtLimit</code> method takes 
+			SddFactory as input parameter and it returns created 
+			member as output parameter in <code>ObjMemberPtLimit</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjSddProdMemberPtLimit <span class="keyword">As</span> SddProductMember
+  <strong>CreateMemberPtLimit</strong> ObjSddFactory, ObjSddProdMemberPtLimit
+...</pre>
+			<p>The method <code>CreateMemberPtLimit</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberPtLimit</strong>(iObjSddFactory <span class="keyword">As</span> SddFactory, oObjProdMember <span class="keyword">As</span> SddProductMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iObjSddFactory, &quot;SddMember&quot;, catStrProfileModePtLimit, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjProdMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member and sets some of the properties of 
+				the member and return the created member in oObjProdMember. Third 
+				parameter of this method is catStrProfileModePtLimit. Here catStrProfileModePtLimit 
+				means profile is created using a point and a limit.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves a point and reference to it for member creation</strong></p>
+				<pre class="code">...
+    <span class="keyword">Set</span> PointObj = ObjPart.FindObjectByName(&quot;Point.1&quot;)
+    <span class="keyword">Set</span> RefPoint = ObjPart.CreateReferenceFromObject(PointObj)
+...</pre>
+				<p>In this step Uc retrieves a point and reference to this point 
+				is stored in <code>RefPoint</code>.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfilePtLimit and sets point and limit 
+				and direction</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfilePtLimit object</span>
+    <span class="keyword">Dim</span> ObjStrProfilePtLimit <span class="keyword">As</span> StrProfilePtLimit
+    <span class="keyword">Set</span> ObjStrProfilePtLimit = ObjSddMember.<strong>StrProfilePtLimit</strong>
+    <span class="comment">&#39;set point</span>
+    ObjStrProfilePtLimit.<strong>StartPoint</strong> = RefPoint
+    <span class="comment">&#39;set limit</span>
+    <span class="keyword">Set</span> ObjMemberLimitRef = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.4&quot;)
+    <span class="keyword">Set</span> MemberLimitRef = ObjPart.CreateReferenceFromObject(ObjMemberLimitRef)
+    ObjStrProfilePtLimit.<strong>UpToLimit</strong> = MemberLimitRef
+    <span class="comment">&#39;set direction</span>
+    ObjStrProfilePtLimit.<strong>Direction</strong> = MemberLimitRef
+...</pre>
+				<p>In this step object of type <code>StrProfilePtLimit</code> is 
+				retrieved in <code>ObjStrProfilePtLimit</code>. Then <code>RefPoint</code>, 
+				which is created in the step above is assigned to the <code>StartPoint</code> 
+				property. Point is set, now Uc needs to set the limit. To set the 
+				limit it retrieves the reference to plane DECK.4 in <code>MemberLimitRef</code> 
+				and assigns it to the <code>UpToLimit</code> property. Same plane 
+				is assigned to the <code>Direction</code> property also.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    oObjProdMember.<strong>Update</strong> 
+<span class="keyword">  End Sub</span></pre>
+				<p>Method <code>Update</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Creates a member using a point and length</strong></p>
+			<p>Call <code>CreateMemberPtLength</code> method to create member using 
+			a point and length. <code>CreateMemberPtLength</code> method takes a 
+			SddFactory object as input parameter and it returns created member as 
+			output parameter in <code>ObjSddProdMemberPtLength</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjSddProdMemberPtLength <span class="keyword">As</span> SddProductMember
+  <strong>CreateMemberPtLength</strong> ObjSddFactory, ObjSddProdMemberPtLength
+...</pre>
+			<p>The method <code>CreateMemberPtLength</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberPtLength</strong>(iObjSddFactory <span class="keyword">As</span> SddFactory, oObjProdMember <span class="keyword">As</span> SddProductMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iObjSddFactory, &quot;SldMember&quot;, catStrProfileModePtLength, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjProdMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member and sets some of the properties of 
+				the member and return the created member in oObjMember. Third parameter 
+				of this method is catStrProfileModePtLength. Here catStrProfileModePtLength 
+				means profile is created using a point and length.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves a point and reference to it for member creation</strong></p>
+				<pre class="code">...
+    <span class="keyword">Set</span> PointObj = ObjPart.FindObjectByName(&quot;Point.2&quot;)
+    <span class="keyword">Set</span> RefPoint = ObjPart.CreateReferenceFromObject(PointObj)
+                    </pre>
+				<p>In this step Uc retrieves a point using method <code>FindObjectByName</code> 
+				and reference to this point is stored in <code>RefPoint</code>.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfilePtLength and sets point and direction 
+				and length</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfilePtLength object</span>
+    <span class="keyword">Dim</span> ObjStrProfilePtLength <span class="keyword">As</span> StrProfilePtLength
+    <span class="keyword">Set</span> ObjStrProfilePtLength = ObjSddMember.<strong>StrProfilePtLength</strong>
+    <span class="comment">&#39;set point</span>
+    ObjStrProfilePtLength.<strong>StartPoint</strong> = RefPoint
+    <span class="comment">&#39;set direction</span>
+    <span class="keyword">Set</span> RefMemberDirection = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.7&quot;)
+    ObjStrProfilePtLength.<strong>Direction</strong> = RefMemberDirection
+    <span class="comment">&#39;set length</span>
+    <span class="keyword">Set</span> LengthParm = ObjStrProfilePtLength.<strong>GetLength</strong>
+    LengthParm.<strong>ValuateFromString</strong> (&quot;20000mm&quot;)
+...
+                </pre>
+				<p>In this step object of type <code>StrProfilePtLength</code> is 
+				retrieved in <code>ObjStrProfilePtLength</code>. Then <code>RefPoint</code>, 
+				which is created in the step above is assigned to the <code>StartPoint</code> 
+				property. Then it creates reference to the plane DECK.7 and is assigned 
+				to the <code>Direction</code> property. To set the length it retrieves 
+				the <code>LengthParm</code> by using method <code>GetLength</code> 
+				and its value is set to 20000mm. To set the value <code>ValuateFromString</code> 
+				method is used.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    oObjProdMember.<strong>Update</strong> 
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>Update</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Creates a member using a curve</strong></p>
+			<p>Call <code>CreateMemberCrv</code> method to create member using a 
+			curve. <code>CreateMemberCrv</code> method takes a SddFactory object 
+			as input parameter and it returns created member as output parameter 
+			in <code>ObjSddProdMemberCrv</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjSddProdMemberCrv <span class="keyword">As</span> SddProductMember
+  <strong>CreateMemberCrv</strong> ObjSddFactory, ObjSddProdMemberCrv
+...</pre>
+			<p>The method <code>CreateMemberCrv</code> is detailed as in the below 
+			sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberCrv</strong>(iObjSddFactory <span class="keyword">As</span> SddFactory, oObjProdMember <span class="keyword">As</span> SddProductMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iObjSddFactory, &quot;SddMember&quot;, catStrProfileModeCrv, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjProdMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member and sets some of the properties of 
+				the member and return the created member in oObjProdMember. Third 
+				parameter of this method is catStrProfileModeCrv. Here catStrProfileModeCrv 
+				means profile is created using a curve.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves a line and reference to it for member creation</strong></p>
+				<pre class="code">...
+    <span class="keyword">Set</span> ObjHybridShapeLinePtPt = ObjPart.FindObjectByName(&quot;Line.1&quot;)
+    <span class="keyword">Set</span> RefLine = ObjPart.CreateReferenceFromObject(ObjHybridShapeLinePtPt)
+...</pre>
+				<p>In this step Uc retrieves a line using method <code>FindObjectByName</code> 
+				and reference to this line is stored in <code>RefL</code><span class="style1">ine</span>.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfileCrv and sets Curve</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfileCrv object</span>
+    <span class="keyword">Dim</span> ObjStrProfileCrv <span class="keyword">As</span> StrProfileCrv
+    <span class="keyword">Set</span> ObjStrProfileCrv = ObjSddMember.<strong>StrProfileCrv</strong>
+    <span class="comment">&#39;set the curve</span>
+    ObjStrProfileCrv.<strong>Curve</strong> = RefLine
+...</pre>
+				<p>In this step object of type <code>StrProfileCrv</code> is retrieved 
+				in <code>ObjStrProfileCrv</code>. Then <code>RefLine</code>, 
+				which is retrieved in the step above is assigned to the <code>Curve</code> 
+				property. Along the path of this curve member is created.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    oObjProdMember.<strong>Update</strong> 
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>Update</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step9"></a>Creates a member using a surface and two 
+			members(curves)</strong></p>
+			<p>Call <code>CreateMemberSurf2Crvs</code> method to create member using 
+			a surface and two curves. <code>CreateMemberSurf2Crvs</code> method 
+			takes a SddFactory object, and two members as input parameters 
+			and it returns created member as output parameter in <code>ObjMemberSurf2Crv</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjSddProdMemberSurf2Crv <span class="keyword">As</span> SddProductMember
+  <strong>CreateMemberSurf2Crvs</strong> ObjSddFactory, ObjSddProdMemberPtLimit, ObjSddProdMemberPtLength, ObjSddProdMemberSurf2Crv
+...</pre>
+			<p>The method <code>CreateMemberSurf2Crvs</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberSurf2Crvs</strong>(iObjSddFactory <span class="keyword">As</span> SddFactory, iFirstMember <span class="keyword">As</span> SddProductMember, iSecondMember <span class="keyword">As</span> SddProductMember, oObjProdMember <span class="keyword">As</span> SddProductMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iObjSddFactory, &quot;SddMember&quot;, catStrProfileModeSurf2Crvs, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjProdMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member under given GeometricalSet and sets 
+				some of the properties of the member and return the created member 
+				in oObjProdMember. Third parameter of this method is catStrProfileModeSurf2Crvs. 
+				Here catStrProfileModeSurf2Crvs means profile is created using a 
+				surface and two curves.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfileSurf2Crvs and sets a surface and 
+				two curves</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfileSurf2Crvs object</span>
+    <span class="keyword">Dim</span> ObjStrProfileSurf2Crvs <span class="keyword">As</span> StrProfileSurf2Crvs
+    <span class="keyword">Set</span> ObjStrProfileSurf2Crvs = ObjSddMember.<strong>StrProfileSurf2Crvs</strong>
+    <span class="comment">&#39;Set Surface</span>
+    <span class="keyword">Set</span> ObjRefSurface = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.3&quot;)
+    <span class="keyword">Set</span> RefSurface = ObjPart.CreateReferenceFromObject(ObjRefSurface)
+    ObjStrProfileSurf2Crvs.<strong>Surface</strong> = RefSurface
+    <span class="comment">&#39;Set FirstCurve</span>
+    <span class="keyword">Set</span> RefFirstCrv = iFirstMember.<strong>GetDelimitedSupport</strong>
+    ObjStrProfileSurf2Crvs.<strong>FirstCurve</strong> = RefFirstCrv
+    <span class="comment">&#39;Set SecondCurve</span>
+    <span class="keyword">Set</span> RefSecondCrv = iSecondMember.<strong>GetDelimitedSupport</strong>
+    ObjStrProfileSurf2Crvs.<strong>SecondCurve</strong> = RefSecondCrv
+...</pre>
+				<p>This step sets a surface and two curves. Member will be created 
+				on the surface and between two given curves. Uc first retrieves 
+				the object of type <code>StrProfileSurf2Crvs</code> in <code>ObjStrProfileSurf2Crvs</code>. 
+				To set the surface, it first retrieves the reference to the plane 
+				DECK.3 and assigns it to the <code>Surface</code> property. To set 
+				the FirstCurve, it retrieves the delimited support of the <code>
+				iFirstMember</code> by using method <code>GetDelimitedSupport</code> 
+				and assigns it to the <code>FirstCurve</code> property. In the same 
+				manner, it retrieves the delimited support of the <code>iSecondMember</code> 
+				and assigns it to the <code>SecondCurve</code> property.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    oObjProdMember.<strong>Update</strong>
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>Update</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step10"></a>Creates a member using two points</strong></p>
+			<p>Call <code>CreateMemberPtPt</code> method to create member using 
+			two points. <code>CreateMemberPtPt</code> method takes a SddFactory 
+			object as input parameter and it returns created member 
+			as output parameter in <code>ObjMemberPtPt</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjSddProdMemberPtPt <span class="keyword">As</span> SddProductMember
+  <strong>CreateMemberPtPt</strong> ObjSddFactory, ObjSddProdMemberPtPt
+...</pre>
+			<p>The method <code>CreateMemberPtPt</code> is detailed as in the below 
+			sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberPtPt</strong>(iObjSddFactory <span class="keyword">As</span> SddFactory, oObjProdMember <span class="keyword">As</span> SddProductMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iObjSddFactory, &quot;SddMember&quot;, catStrProfileModePts, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjProdMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member and sets some of the properties of 
+				the member and return the created member in oObjProdMember. Third 
+				parameter of this method is catStrProfileModePts. Here catStrProfileModePts 
+				means profile is created using two points.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves two points and references to these points for 
+				member creation.</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Create Start point</span>
+    <span class="keyword">Set</span> StartPoint = ObjPart.FindObjectByName(&quot;Point.3&quot;)
+    <span class="keyword">Set</span> RefStartPoint = ObjPart.CreateReferenceFromObject(StartPoint)
+    <span class="comment">&#39;Create End point</span>
+    <span class="keyword">Set</span> EndPoint = FindObjectByName(&quot;Point.4&quot;)
+    <span class="keyword">Set</span> RefEndPoint = ObjPart.CreateReferenceFromObject(EndPoint)
+...</pre>
+				<p>This retrieves two points and stores its references in <code>
+				RefStartPoint</code> and <code>RefEndPoint</code>. Member will be 
+				created between these two points.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfilePtPt object and sets StartPoint and 
+				EndPoint</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfilePtPt object</span>
+    <span class="keyword">Dim</span> ObjStrProfilePtPt As StrProfilePtPt
+    <span class="keyword">Set</span> ObjStrProfilePtPt = ObjSddMember.<strong>StrProfilePtPt</strong>
+    <span class="comment">&#39;Set StartPoint</span>
+    ObjStrProfilePtPt.<strong>StartPoint</strong> = RefStartPoint
+    <span class="comment">&#39;Set EndPoint</span>
+    ObjStrProfilePtPt.<strong>EndPoint</strong> = RefEndPoint
+...</pre>
+				<p>This step sets two points. Member will be created in between 
+				these two points. Uc first retrieves the object of type <code>StrProfilePtPt</code> 
+				in <code>ObjStrProfilePtPt</code>. To set the StartPoint, it assigns 
+				the <code>RefStartPoint</code>(reference to the point) to the
+				<code>StartPoint</code> property. To set the EndPoint, it assigns 
+				the <code>RefEndPoint</code>(refernce to the point) to the <code>
+				EndPoint</code> property.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    oObjProdMember.<strong>Update</strong> 
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>Update</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step11"></a>Updates the Part object</strong></p>
+			<pre class="code">...
+  ObjPart.<strong>Update</strong>
+<span class="keyword">End Sub</span></pre>
+			<p><code>Update</code> method updates the <code>ObjPart</code></p>
+			</li>
+		</ol>
+		<p><strong>Detailed steps of method CreateMemberAndSetData</strong></p>
+		<ul>
+			<li>
+			<p><strong><a name="CreateMemberAndSetData"></a>CreateMemberAndSetData method</strong></p>
+			<p>This method creates a new empty member, sets some properties of the 
+			member and returns the created member in <code>oObjMember</code> object. 
+			Properties which will set by this method are category, profile type, 
+			material, secion name and section&#39;s anchor point.</p>
+			<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberAndSetData</strong>(iObjSddFactory <span class="keyword">As</span> SddFactory, iCategory <span class="keyword">As</span> String, iProfileType <span class="keyword">As</span> CATStrProfileMode, iMaterial <span class="keyword">As</span> String,
+                           iSectionName <span class="keyword">As</span> String, iAnchorPoint <span class="keyword">As</span> String, oObjProdMember <span class="keyword">As</span> SddProductMember)
+
+<span class="comment">&#39;   1- creates a empty member</span>
+    <span class="keyword">Set</span> oObjProdMember = iObjSddFactory.<strong>AddProductMember</strong>
+    <span class="keyword">Dim</span> ObjSddMember <span class="keyword">As</span> SddMember
+    <span class="keyword">Set</span> ObjSddMember = oObjProdMember.<strong>SddMember</strong>
+
+<span class="comment">&#39;   2- Retrieves StrCategoryMngt object and sets category</span>
+    <span class="keyword">Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjStrCategoryMngt = ObjSddMember.<strong>StrCategoryMngt</strong>
+    ObjStrCategoryMngt.<strong>SetCategory</strong> iCategory
+
+<span class="comment">&#39;   3- Sets profile type</span>
+    ObjSddMember.<strong>ProfileType</strong> = iProfileType
+
+<span class="comment">&#39;   4- Retrieves StrMaterialMngt object and sets material</span>
+    <span class="keyword">Dim</span> ObjMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+    <span class="keyword">Set</span> ObjMaterialMngt = oObjProdMember.<strong>StrMaterialMngt</strong>
+    ObjMaterialMngt.<strong>SetMaterial</strong> iMaterial
+
+<span class="comment">&#39;   5- Retrieves StrSectionMngt object and sets section parameters</span>
+    <span class="keyword">Dim</span> ObjStrSectionMngt <span class="keyword">As</span> StrSectionMngt
+    <span class="keyword">Set</span> ObjStrSectionMngt = ObjSddMember.<strong>StrSectionMngt</strong>
+    ObjStrSectionMngt.<strong>SetSectionName</strong> iSectionName
+    ObjStrSectionMngt.<strong>AnchorPoint</strong> = iAnchorPoint
+
+<span class="keyword">End Sub</span></pre>
+			<p>In the first step of this method it calls method <code>AddProductMember</code> 
+			to create a new empty member and stores it in <code>oObjProductMember</code> 
+			which is a output parameter of this method. <br />
+			In the second step, it retrieves the object of type <code>StrCategoryMngt</code> 
+			in <code>ObjStrCategoryMngt</code> and calls <code>SetCategory</code> 
+			method to set the category. In the third step, it sets <code>ProfileType</code> 
+			property with <code>iProfileType</code>. In the fourth step, it retrieves 
+			the object of type <code>StrMaterialMngt</code> in <code>ObjStrMaterialMngt</code> 
+			and calls <code>SetMaterial</code> method to set the material. In the 
+			fifth step, it retrieves the object of type <code>StrSectionMngt</code> 
+			in <code>ObjStrSectionMngt</code> and calls <code>SetSectionName</code> 
+			method to set the secion name and sets the property <code>AnchorPoint</code> 
+			with <code>iAnchorPoint</code>. </p>
+			</li>
+			</ul>
+		</td>
+		</tr>
+		</table>
+		<table>
+			<caption><a name="Fig.1"></a>Fig.1: Member</caption>
+			<tr>
+				<td>
+				<img alt="Member" src="CAAScdSddUcCreateMember.png" width="812px" height="548px"/></td>
+			</tr>
+		</table>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

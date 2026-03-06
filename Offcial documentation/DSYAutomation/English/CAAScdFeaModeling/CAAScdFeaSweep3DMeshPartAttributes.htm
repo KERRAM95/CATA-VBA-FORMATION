@@ -1,0 +1,435 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+
+<head>
+  <meta http-equiv="Content-Language" content="en-us">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+  <link rel="Stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css">
+  <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js"></script>
+  <script type="text/javascript" src="../CAADocJavaScript/submit.js"></script>
+  <title>Sweep 3D Mesh Part Attributes</title>
+  <style type="text/css">
+    .fmt_table
+    {
+      width: 95%;
+    }
+    .fmt_table td
+    {
+      background-color: #C0C0C0;
+      padding: 5px;
+      border: 1px solid black;
+    }
+    .width40
+    {
+      width: 40%;
+    }
+    .width60
+    {
+      width: 60%;
+    }
+    .center
+    {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+  <!-- Header -->
+
+  <table class="DocHeader">
+    <tr>
+      <td class="DocHeader1">
+        <h1><a name="Top"></a>Sweep 3D Mesh Part Attributes</h1>
+      </td>
+    </tr>
+    <tr>
+      <td class="tech">Technical Article</td>
+    </tr>
+  </table>
+
+  <!-- Abstract and table of contents -->
+
+  <table class="abstract">
+    <tr>
+      <td>
+        <h3>Abstract</h3>
+        <p>This article presents an overview of the <b>Sweep 3D Mesh Part</b> attributes and its local specifications.</p>
+        <p><b><a href="#Mesh_Part_Creation">Sweep 3D Mesh Part Creation</a></b></p>
+        <p><b><a href="#Mesh_Part_Support_Definition">Sweep 3D Mesh Part Support Definition</a>:</b></p>
+        <ul>
+            <li><a href="#Source">Source</a></li>
+            <li><a href="#Target">Target</a></li>
+        </ul>
+        <p><b><a href="#Global_Mesh_Specifications">Global Mesh Specifications</a>:</b></p>
+        <ul>
+          <li><a href="#ElementOrder">ElementOrder</a></li>
+          <li><a href="#NbElementsValue">NbElementsValue</a></li>
+          <li><a href="#Type">Type</a></li>
+            <li><a href="#RatioValue">RatioValue</a></li>
+            <li><a href="#Symmetry">Symmetry</a></li>
+            <li><a href="#Automatic2DMeshCreation">Automatic2DMeshCreation</a></li>
+            <li><a href="#MeshSize">MeshSize</a></li>
+            <li><a href="#AutomaticMeshCaptureTolValue">AutomaticMeshCaptureTolValue</a></li>
+        </ul>
+          <p><b><a href="#Local_Specifications">Local Specifications</a></b></p>
+          <p><b><a href="#Local_Topology_Specifications">Local Topology Specifications</a>:</b></p>
+          <ul>
+              <li><a href="#CATFmtSweep3DGeometryImposedGuide">CATFmtSweep3DGeometryImposedGuide</a></li>
+              <li><a href="#CATFmtSweep3DGeometryExcludedGuide">CATFmtSweep3DGeometryExcludedGuide</a></li>
+          </ul>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Mesh part creation -->
+
+  <h2><a name="Mesh_Part_Creation">Sweep 3D Mesh Part Creation</a></h2>
+  <p>A &quot;late type&quot; must be given to indicate which type of mesh part is to be created.<br />
+    In the case of the sweep 3D mesh part, the late type is &quot;<b>CATFmtSweep3DMesher</b>&quot;.<br />
+    The sweep 3D mesh part can be created by using <b>Add</b> method of <b>SimMeshParts</b> collection object.</p>
+  <script type="text/javascript">insertLinkToTop();</script>
+
+  <!-- Support definition -->
+
+  <h2><a name="Mesh_Part_Support_Definition">Sweep 3D Mesh Part Support Definition</a></h2>
+  <p>The Sweep 3D Mesh Part support can be initialized and managed using the <b>AddSupport</b> method of <b>SimMeshPart</b> object:</p>
+  <ul>
+    <li>
+      <b>AddSupport</b> ( <i>iSupport <span class="keyword">As</span> AnyObject</i> ) to add a new support to the mesh part
+    </li>
+  </ul>
+
+    <p><b><a name="Source">Source</a></b></p>
+    <p>The Sweep 3D Mesh Part source support can be set or unset using following methods of the <b>SimMeshPart</b> object:</p>
+    <ul>
+        <li>
+            <b>SetExternalReference</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iSupport <span class="keyword">As</span> AnyObject</i>) to set the source face where:
+          <ul>
+              <li><b>iSetType=&quot;Topology&quot;</b></li>
+              <li><b>iAttribute=&quot;Source&quot;</b></li>
+              <li><b>iSupport</b> is a geometric face</li>
+          </ul>
+        </li>
+        <li>
+            <b>RemoveExternalReference</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iSupport <span class="keyword">As</span> AnyObject</i>) to unset the source face where:
+            <ul>
+             <li><b>iSetType=&quot;Topology&quot;</b></li>
+              <li><b>iAttribute=&quot;Source&quot;</b></li>
+              <li><b>iSupport</b> is a geometric face</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p><b><a name="Target">Target</a></b></p>
+    <p>The Sweep 3D Mesh Part target support can be set or unset using following methods of the <b>SimMeshPart</b> object:</p>
+    <ul>
+        <li>
+            <b>SetExternalReference</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iSupport <span class="keyword">As</span> AnyObject</i>) to set the target face where:
+          <ul>
+              <li><b>iSetType=&quot;Topology&quot;</b></li>
+              <li><b>iAttribute=&quot;Target&quot;</b></li>
+              <li><b>iSupport</b> is a geometric face</li>
+          </ul>
+        </li>
+        <li>
+            <b>RemoveExternalReference</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iSupport <span class="keyword">As</span> AnyObject</i>) to unset the target face where:
+            <ul>
+             <li><b>iSetType=&quot;Topology&quot;</b></li>
+              <li><b>iAttribute=&quot;Target&quot;</b></li>
+              <li><b>iSupport</b> is a geometric face</li>
+            </ul>
+        </li>
+    </ul>
+
+    <br /><br />
+    <b>WARNING</b>: If no <b>Source</b> and <b>Target</b> support are set they will be automatically computed at mesh update.
+
+  <script type="text/javascript">insertLinkToTop();</script>
+
+  <!-- Global Specifications introduction -->
+
+    <h2><a name="Global_Mesh_Specifications">Global Mesh Specifications</a></h2>
+    <p>Global mesh specifications can be set or retrieved using  following methods of the <b>SimMeshPart</b> object:</p>
+
+    <ul>
+        <li><b>SetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iValue</i>) to set a mesh attribute where:</li>
+        <ul>
+            <li><b>iSetType=&quot;Mesh&quot;</b></li>
+            <li><b>iAttribute</b> is the attribute's name</li>
+            <li><b>iValue</b> is the attribute's value</li>
+        </ul>
+        <li><b>GetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, oValue</i>) to get a mesh attribute where:</li>
+        <ul>
+            <li><b>iSetType=&quot;Mesh&quot;</b></li>
+            <li><b>iAttribute</b> is the attribute's name</li>
+            <li><b>oValue</b> is the attribute's value</li>
+        </ul>
+    </ul>
+
+  <!--Element Order -->
+
+  <p><b><a name="ElementOrder">ElementOrder</a></b></p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        <p><b>type</b>: <i><b>integer </b></i>valuated to:</p>
+        <ul>
+        <li><b>1</b>: to get a mesh with linear hexaedron (<i>HE8</i>)</li>
+        <li><b>2</b>: to get a mesh with quadratic hexaedron (<i>HE20</i>)</li>
+        </ul>
+        <p><b>default value: 1 </b></p>
+         
+      </td>
+      <td class="width60">
+         Attribute which specifies the number of intermediate nodes per element edge.
+      </td>
+    </tr>
+  </table>
+
+  <!--Number of layers -->
+
+  <p><b><a name="NbElementsValue">NbElementsValue</a></b></p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        <p><b>type</b>: <i><b>integer </b></i>valuated to the number of sweep layers.</p>
+      </td>
+      <td class="width60">
+        This attribute specifies the number of sweep layers.<br /><br />
+      </td>
+    </tr>
+  </table>
+
+  <!-- Layers distribution -->
+
+  <p><b><a name="Type">Type</a></b></p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        <p><b>type</b>: <i><b>integer </b></i>valuated to:</p>
+         <ul>
+         <li><b>1</b>: to get an uniform distribution</li>
+         <li><b>2</b>: to get an arithmetic distribution</li>
+         <li><b>3</b>: to get a geometric distribution</li>
+         </ul>
+         <p><b>default value: 1 </b></p>
+      </td>
+      <td class="width60">
+        This attribute specifies the sweep layers distribution.<br /><br />
+      </td>
+    </tr>
+  </table>
+
+  <!-- Layers ratio -->
+
+  <p><b><a name="RatioValue">RatioValue</a></b></p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        <p><b>type</b>: <i><b>double </b></i>valuated to the size ratio between the first and
+        last layer thicknesses.</p>
+        <p><b>default value: 1.0 </b></p>
+      </td>
+      <td class="width60">
+        This attribute specifies the size ratio <i>R</i> between the first layer thickness
+        <i>h1</i> and last layer thickness <i>h2</i>.<br /><br />
+         <b>WARNING</b>: It is taken into account only if the <b>Type</b>
+         attribute is equal to <b>2</b> or <b>3</b>.
+      </td>
+    </tr>
+  </table>
+
+  <!-- Layers Symmetry -->
+
+  <p><b><a name="Symmetry">Symmetry</a></b></p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        <p><b>type</b>: <i><b>integer </b></i>valuated to:</p>
+         <ul>
+         <li><b>1</b>: to keep the distribution unchanged</li>
+         <li><b>2</b>: to compute a symmetric distribution with current attributes </li>
+         </ul>
+         <p><b>default value: 1 </b></p>
+      </td>
+      <td class="width60">
+        This attribute specifies the sweep layers distribution as symmetric or not.<br /><br />
+        <b>WARNING</b>: It is taken into account only if the <b>Type</b>
+        attribute is equal to <b>2</b> or <b>3</b>.
+      </td>
+    </tr>
+  </table>
+
+  <!-- 2D Mesh Creation -->
+
+  <p><b><a name="Automatic2DMeshCreation">Automatic2DMeshCreation</a></b></p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        <p><b>type</b>: <i><b>integer </b></i>valuated to:</p>
+        <ul>
+          <li><b>1</b> to reuse existing mesh by capture</li>
+          <li><b>2</b> to generate an (intermediate) surface mesh on Source face(s)</li>
+        </ul>
+      </td>
+      <td class="width60">
+        This attribute specifies whether (intermediate) surface mesh should be generated on the Source face(s) (<b>2</b>) or not (<b>1</b>).
+      </td>
+    </tr>
+  </table>
+
+
+  <!--Mesh Size -->
+
+  <p><b><a name="MeshSize">MeshSize</a></b></p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        <p><b>type</b>: <i><b>double </b></i>valuated to mesh elements size.</p>
+      </td>
+      <td class="width60">
+         Attribute which specifies the mesh element target size that mesher tries to respect
+         on the Source face(s).<br /><br />
+      <b>WARNING</b>:  It is taken into account only if the <b>Automatic2DMeshCreation</b> is set to <b>2</b>.
+      </td>
+    </tr>
+  </table>
+
+
+  <!-- Automatic Mesh Capture -->
+
+  <p><b><a name="AutomaticMeshCaptureTolValue">AutomaticMeshCaptureTolValue</a></b></p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        <p><b>type</b>: <i><b>double </b></i>valuated to the maximum distance under which mesh is captured.</p>
+        <p><b>default value: 0. </b></p>
+      </td>
+      <td class="width60">
+         Attribute which specifies the maximum distance for mesh capture: if a mesh is farthest from the geometry
+         than this tolerance, it will not be captured.
+         <p>To precise exactly the list of mesh parts to capture the method <b>SetMeshPartsToCapture</b> of <b>SimMeshPart</b> 
+		 object can be used:</p>
+          <ul>
+              <li>SetMeshPartsToCapture ()</li>
+          </ul>
+          <p>
+              To retrieve the parents mesh parts another method of <b>SimMeshPart</b>
+              object can be used:
+          </p>
+          <ul>
+              <li>Parent ()</li>
+          </ul>
+      <b>WARNING</b>:  It is taken into account only if the <b>Automatic2DMeshCreation</b> is set to <b>1</b>.
+      </td>
+    </tr>
+  </table>
+
+  <script type="text/javascript">insertLinkToTop();</script>
+
+  <!-- Local Mesh Specifications introduction -->
+
+  <h2><a name="Local_Specifications">Local Specifications</a></h2>
+
+    <p>The local  specifications are managed by collection object:</p>
+    <ul>
+        <li><b>SimTopologySpecifications</b> is the collection of <b>SimTopologySpecification</b> object (local topology specification)</li>
+        <li><b>SimMeshSpecifications</b> is the collection of <b>SimMeshSpecification</b> object (local mesh specification)</li>
+    </ul>
+    <p>You should use the following methods of <b>SimMeshPart</b> object to retrieve this collection:</p>
+    <ul>
+        <li><b>GetTopologySpecification</b> to retrieve the local topology specification collection</li>
+        <li><b>GetMeshSpecification</b> to retrieve the local mesh specification collection</li>
+    </ul>
+    <p>Local specifications are managed from the collection object:</p>
+    <ul>
+        <li><b>Add</b> (<i>iType <span class="keyword">As String</span></i>, oSpec) to create a new local 
+	specification with:
+	<ul>
+        <li>iType is the late type of the specification to create</li>
+        <li>oSpec is a local specification ( <b>SimTopologySpecification</b> or <b>SimMeshSpecification</b> )</li>
+    </ul>
+        </li>
+        <li><b>Item</b> (<i>iIndex</i>, oSpec ) to retrieve a local specification with:
+	<ul>
+        <li>iIndex is the index of the local specification in its collection</li>
+        <li>oSpec is a local specification ( <b>SimTopologySpecification</b> or <b>SimMeshSpecification</b> )</li>
+    </ul>
+        </li>
+        <li><b>Remove</b> (<i>iIndex</i>) to delete a local specification with:
+	<ul>
+        <li>iIndex is the index of the local specification in its collection</li>
+    </ul>
+        </li>
+    </ul>
+    <p>Local specification attibutes are managed using the local specification object:</p>
+    <ul>
+        <li><b>SetAttributeValue</b> (<i>iAttribute <span class="keyword">As String</span>, iValue</i>) to set a local specification attribute where:</li>
+        <ul>
+            <li><b>iAttribute</b> is the attribute's name</li>
+            <li><b>iValue</b> is the attribute's value</li>
+        </ul>
+        <li><b>GetAttributeValue</b> (<i>iAttribute <span class="keyword">As String</span>, oValue</i>) to get a local specification attribute where:</li>
+         <ul>
+            <li><b>iAttribute</b> is the attribute's name</li>
+            <li><b>oValue</b> is the attribute's value</li>
+        </ul>
+    </ul>
+    <p>Geometric attribute of local specification (supports) are managed using <b>SimLinkAccess</b> object:</p>
+    <ul>
+        <li><b>AddLink</b> ( <i>iName <span class="keyword">As String</span>, iLink <span class="keyword">As</span> AnyObject</i> )</li>
+        <li><b>RemoveAllLinks</b> ( <i>iName <span class="keyword">As String</span></i> )</li>
+        <li><b>RemoveLink</b> ( <i>iName <span class="keyword">As String</span>, iLink <span class="keyword">As</span> AnyObject</i> )</li>
+        <ul>
+            <li><b>iName</b> is the name of the link container, here it's <b>&quot;ConnectorList&quot;</b></li>
+        </ul>
+    </ul>
+    <script type="text/javascript">insertLinkToTop();</script>
+  <h2><a name="Local_Topology_Specifications">Local Topology Specifications</a></h2>
+  <p><b><a name="CATFmtSweep3DGeometryImposedGuide">CATFmtSweep3DGeometryImposedGuide</a></b></p>
+  <table border="1" width="100%">
+    <tr>
+      <td bgcolor="#C0C0C0" style="width: 40%;">
+          <p>Specification attributes are managed using <b>SimTopologySpecification</b> object.</p>
+           <ul><li>Only geometric attribute (supports)</li></ul>
+      </td>
+      <td width="60%" bgcolor="#C0C0C0">
+        <blockquote>
+          <p><b>Description</b>: This specification is used to impose geometric edges as sweep guides.</p>
+        </blockquote>
+      </td>
+    </tr>
+  </table>
+
+  <p>
+    <b><a name="CATFmtSweep3DGeometryExcludedGuide">CATFmtSweep3DGeometryExcludedGuide</a></b>
+  </p>
+  <table border="1" width="100%">
+    <tr>
+      <td bgcolor="#C0C0C0" style="width: 40%;">
+          <p>Specification attributes are managed using <b>SimTopologySpecification</b> object.</p>
+           <ul><li>Only geometric attribute (supports)</li></ul>
+      </td>
+      <td width="60%" bgcolor="#C0C0C0">
+        <blockquote>
+          <p><b>Description</b>: This specification is used to exclude geometric edges from the sweep guides.</p>
+        </blockquote>
+      </td>
+    </tr>
+  </table>
+
+<script type="text/javascript">insertCopyright();</script>
+</body>
+</html>

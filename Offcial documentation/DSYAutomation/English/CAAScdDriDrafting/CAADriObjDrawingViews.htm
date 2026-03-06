@@ -1,0 +1,87 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>DrawingViews Collection Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>DrawingViews Collection Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingViews', 'PropertyIndex'); return false;">
+		Properties</a></td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingViews', 'MethodIndex'); return false;">
+		Methods</a></td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p class="auto"><a href="CAADriObjDrawingSheet.htm">
+<img src="../CAAScdImages/DrawingSheet.png" alt="DrawingSheet Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingViews');return false;"><img src="../CAAScdImages/DrawingViews.png" alt="DrawingViews Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="Space" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingDefineGenView');return false;"><img alt="DrawingDefineGenView Object" src="../CAAScdImages/DrawingDefineGenView.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="Space" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/propActiveView.png" alt="Returns the Active View in the Active Sheet" width="80" height="24"/><a href="CAADriObjDrawingView.htm"><img src="../CAAScdImages/DrawingView.png" alt="DrawingView Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="Space" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAADriObjDrawingView.htm"><img src="../CAAScdImages/DrawingView.png" alt="DrawingView Object" width="252" height="22"/></a></p>
+<p>A collection of all the <strong>DrawingView</strong> objects that are in a
+<strong>DrawingSheet</strong> object.</p>
+<h2>Retrieving the DrawingViews Collection Object</h2>
+<p>Use the <strong>Views</strong> property to return the <strong>DrawingViews</strong> 
+collection object.</p>
+<pre class="code"><span class="keyword">Dim</span> cDrawingViews <span class="keyword">As</span> DrawingViews
+<span class="keyword">Set</span> cDrawingViews = CATIA.ActiveEditor.ActiveObject.ActiveSheet.Views</pre>
+<h2>Using the DrawingViews Collection Object</h2>
+<p>Use the <strong>Add</strong> method to create a new, empty drawing view and to 
+add it to the collection. The following example adds a new, empty drawing view to 
+the active drawing sheet. This drawing view is an interactive view.</p>
+<pre class="code"><span class="keyword">Dim</span> cDrawingViews <span class="keyword">As</span> DrawingViews
+...
+cDrawingViews.Add(&quot;Front View&quot;)</pre>
+<p>Use the <strong>Item</strong> method to retrieve a drawing view from the collection.</p>
+<pre class="code"><span class="keyword">Dim</span> cDrawingViews <span class="keyword">As</span> DrawingViews
+...
+cDrawingViews.Item(index)</pre>
+<p>where index is the drawing view name or index number in the <strong>DrawingViews</strong> 
+collection object.</p>
+<p>Use the <strong>DrawingDefineGenView</strong> property to return the generative 
+view factory.</p>
+<pre class="code"><span class="keyword">Dim</span> cDrawingViews <span class="keyword">As</span> DrawingViews
+...<span class="keyword">
+Dim</span> oGenViewFactory <span class="keyword">As</span> DrawingDefineGenView
+<span class="keyword">Set</span> oGenViewFactory = cDrawingViews.DrawingDefineGenView</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

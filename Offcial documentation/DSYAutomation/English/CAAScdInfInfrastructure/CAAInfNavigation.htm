@@ -1,0 +1,662 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocScript.js">/* */</script>
+<title>Navigating the Automation Model</title>
+</head>
+
+<body onload="createToc();initCode();highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Navigating the Automation Model</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>Retrieving an object from another object is the way the Automation model
+		can be navigated. The most common navigation mechanism is jumping from 
+						an object to the object it aggregates thanks to the 
+						object properties, starting from the Application object 
+						up to the lowest objects in the aggregation tree. If 
+						this mechanism generally fulfills the navigation needs 
+						of a standalone application, this is not always 
+						convenient for a complex system that can be extended 
+						using 3rd-party or in-house developed applications. To 
+						match this need, several protocols are available, depending on the object
+		you are starting with.</p>
+						<div id="toc">
+						</div>
+						<p class="header">Navigating collections is not 
+						described here. Refer to the related topics.</p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAInfCollections.htm">About Collections</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAInfObjService.htm">Service Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAInfObjSelection.htm">Selection Object</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Properties"></a>Properties</h2>
+<p>The most common navigation mechanism Automation brings thanks to its 
+aggregation model is using the properties of an object that retrieves its 
+aggregated objects. For example, the <strong>Application</strong> object 
+aggregates, among other objects, an <strong>Editor</strong> object that 
+represents the active editor, that is the one that manages the root object of 
+the object currently being edited, also named the active object, and an <strong>
+Editors</strong> collection object that contains a reference to all the <strong>
+Editor</strong> objects currently existing in the session. The partial 
+Application object aggregation model is as follows:</p>
+<p class="auto">
+<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Application');return false;"><img alt="Application Object" src="../CAAScdImages/Application.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAAInfObjEditor.htm"><img src="../CAAScdImages/Editor.png" alt="Editor Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAAInfObjEditors.htm"><img src="../CAAScdImages/Editors.png" alt="Editors Collection Object" width="252" height="22"/></a><br />
+</p>
+<p>To retrieve these objects, the <strong>Application</strong> object features 
+two properties:</p>
+<ol>
+	<li>An <strong>ActiveEditor</strong> property that returns the active
+	<strong>Editor</strong> 
+	object.</li>
+	<li>An <strong>Editors</strong> property that returns the active <strong>
+	Editors</strong> collection object.</li>
+</ol>
+<p>Use the <strong>ActiveEditor</strong> property to return the active <strong>Editor</strong> 
+object from the <strong>Application</strong> object.</p>
+
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> oEditor
+<span class="keyword">Set</span> oEditor = CATIA.<strong>ActiveEditor</strong></pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor
+<span class="keyword">Set</span> oEditor = CATIA.<strong>ActiveEditor</strong></pre>
+</div>
+<div>
+<!-- C# -->
+<pre>oEditor = CATIA.<strong>ActiveEditor</strong></pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> oEditor <span class="keyword">As</span> INFITF.Editor
+<span class="keyword">Set</span> oEditor = CATIA.<strong>ActiveEditor</strong></pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oEditor = CATIA.<strong>ActiveEditor</strong></pre>
+</div>
+</div>
+
+
+<p>Use the <strong>Editors</strong> property to return the <strong>Editors</strong> 
+collection object from the <strong>Application</strong> object.</p>
+
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> cEditors
+<span class="keyword">Set</span> cEditors = CATIA.<strong>Editors</strong></pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> cEditors <span class="keyword">As</span> Editors
+<span class="keyword">Set</span> cEditors = CATIA.<strong>Editors</strong></pre>
+</div>
+<div>
+<!-- C# -->
+<pre>cEditors = CATIA.<strong>Editors</strong></pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> cEditors <span class="keyword">As</span> INFITF.Editors
+<span class="keyword">Set</span> cEditors = CATIA.<strong>Editors</strong></pre>
+</div>
+<div>
+<!-- Python -->
+<pre>cEditors = CATIA.<strong>Editors</strong></pre>
+</div>
+</div>
+
+<p>Once you have retrieved such an object, you can use its own properties in 
+turn to retrieve its own aggregated objects. For example, the
+	<strong>Editor</strong> 
+	object aggregates a <strong>Selection</strong> object and features a 
+<strong>Selection</strong> property to return it.</p>
+<p class="auto"><a href="CAAInfObjEditor.htm"><img src="../CAAScdImages/Editor.png" alt="Editor Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Selection');return false;"><img src="../CAAScdImages/Selection.png" alt="Selection Object" width="252" height="22"/></a><br /></p>
+<p>Use the <strong>Selection</strong> property to return the <strong>Selection</strong> 
+object from the <strong>Editor</strong> object.</p>
+
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> oSelection 
+<span class="keyword">Set</span> oSelection = CATIA.<strong>Selection</strong> </pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> oSelection <span class="keyword">As</span> Selection 
+<span class="keyword">Set</span> oSelection = CATIA.<strong>Selection</strong> </pre>
+</div>
+<div>
+<!-- C# -->
+<pre>oSelection = CATIA.<strong>Selection</strong> </pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> oSelection <span class="keyword">As</span> INFITF.Selection 
+<span class="keyword">Set</span> oSelection = CATIA.<strong>Selection</strong> </pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oSelection = CATIA.<strong>Selection</strong> </pre>
+</div>
+</div>
+
+
+<p>You can also retrieve the <strong>Selection</strong> object from the <strong>Application</strong> object in one 
+shot.</p>
+<p class="auto">
+<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Application');return false;"><img alt="Application Object" src="../CAAScdImages/Application.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAAInfObjEditor.htm"><img src="../CAAScdImages/Editor.png" alt="Editor Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Selection');return false;"><img src="../CAAScdImages/Selection.png" alt="Selection Object" width="252" height="22"/></a></p>
+<p>
+Use the the <strong>ActiveEditor</strong> property to return the active <strong>Editor</strong> 
+object from the <strong>Application</strong> object combined to the <strong>Selection</strong> property to return the <strong>Selection</strong> 
+object from the active <strong>Editor</strong> object.</p>
+
+
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> oSelection
+<span class="keyword">Set</span> oSelection = CATIA.<strong>ActiveEditor.Selection</strong></pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> oSelection <span class="keyword">As</span> Selection
+<span class="keyword">Set</span> oSelection = CATIA.<strong>ActiveEditor.Selection</strong></pre>
+</div>
+<div>
+<!-- C# -->
+<pre>oSelection = CATIA.<strong>ActiveEditor.Selection</strong></pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> oSelection <span class="keyword">As</span> INFITF.Selection
+<span class="keyword">Set</span> oSelection = CATIA.<strong>ActiveEditor.Selection</strong></pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oSelection = CATIA.<strong>ActiveEditor.Selection</strong></pre>
+</div>
+</div>
+
+<p>You can so go deeper an deeper in the aggregation model.</p>
+<p>Conversely, any objects have a <strong>Parent</strong> property that enables 
+you navigate upwards in the Automation model. For example, if you want to 
+retrieve the
+	<strong>Editor</strong> object that aggregates the <strong>Selection</strong> object you 
+handle in a variable such as <code>oSelection</code>, use its <strong>Parent</strong> property.</p>
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> oEditor
+<span class="keyword">Set</span> oEditor = oSelection.<strong>Parent</strong> </pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor
+<span class="keyword">Set</span> oEditor = oSelection.<strong>Parent</strong> </pre>
+</div>
+<div>
+<!-- C# -->
+<pre>oEditor = oSelection.<strong>Parent</strong> </pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> oEditor <span class="keyword">As</span> INFITF.Editor
+<span class="keyword">Set</span> oEditor = oSelection.<strong>Parent</strong> </pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oEditor = oSelection.<strong>Parent</strong> </pre>
+</div>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Service"></a>Service</h2>
+<p>The <strong>Service</strong> abstract object can be retrieved under one its 
+numerous flavors from the <strong>Application</strong> object of from the
+<strong>Editor</strong> object, depending on the chosen flavor, since some 
+services are nor related to the active editor. For example, the <strong>PLMOpenService</strong> 
+object that opens in the session the objects resulting from a query in the 
+database can be retrieved from the <strong>Application</strong> object, and application related services, such as the 
+<strong>MeasurableService</strong> object that can be retrieved from the <strong>
+Editor</strong> object.</p>
+<p>Many services objects enable you:</p>
+<ul>
+	<li>To retrieve objects, such as the <strong>VisuServices</strong> object 
+	that retrieves the <strong>Cameras</strong> collection object.</li>
+	<li>To create objects, such as the <strong>PLMNewService</strong> object 
+	that creates a new PLM entity.</li>
+	<li>To execute an action, such as the <strong>DrawingGenService</strong> object that checks the objects integrity pointed by a generative view.</li>
+</ul>
+<p>Refer to the <a href="CAAInfObjService.htm">Service Object</a> for detailed 
+information.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="GetItem"></a>GetItem</h2>
+<p>Objects than can be extended use the <strong>GetItem</strong> method to 
+navigate these extensions. For example, the <strong>Part</strong> object can be 
+extended by Knowledge, 2D layout, and Automated Design Process. From the <strong>
+Part</strong> object, and provided these applications are installed, use the
+<strong>GetItem</strong> method to retrieve the root object of these 
+applications, form which you can then navigate or create their own objects.</p>
+<p>Assume that you currently hold a <strong>Part</strong> object suing the <code>
+oPart</code> variable. You can retrieve the root objects of these applications 
+as follows:</p>
+<ul class="wide">
+<li>For Knowledge, the root object is the <strong>KnowledgeObjects</strong> object:
+
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> oKnowledgeObjects
+<span class="keyword">Set</span> oKnowledgeObjects = oPart.<strong>GetItem</strong>(&quot;KnowledgeObjects&quot;)</pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> oKnowledgeObjects <span class="keyword">As</span> KnowledgeObjects
+<span class="keyword">Set</span> oKnowledgeObjects = oPart.<strong>GetItem</strong>(&quot;KnowledgeObjects&quot;)</pre>
+</div>
+<div>
+<!-- C# -->
+<pre>oKnowledgeObjects = oPart.<strong>GetItem</strong>(&quot;KnowledgeObjects&quot;)</pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> oKnowledgeObjects <span class="keyword">As</span> KnowledgewareTypeLib.KnowledgeObjects
+<span class="keyword">Set</span> oKnowledgeObjects = oPart.<strong>GetItem</strong>(&quot;KnowledgeObjects&quot;)</pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oKnowledgeObjects = oPart.<strong>GetItem</strong>(&quot;KnowledgeObjects&quot;)</pre>
+</div>
+</div>
+
+
+</li>
+<li>For 2D Layout, the root object is the <strong>Layout2DRoot</strong> object:
+
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> oLayRoot
+<span class="keyword">Set</span> oLayRoot = oPart.<strong>GetItem</strong>(&quot;CATLayoutRoot&quot;)</pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> oLayRoot <span class="keyword">As</span> Layout2DRoot
+<span class="keyword">Set</span> oLayRoot = oPart.<strong>GetItem</strong>(&quot;CATLayoutRoot&quot;)</pre>
+</div>
+<div>
+<!-- C# -->
+<pre>oLayRoot = oPart.<strong>GetItem</strong>(&quot;CATLayoutRoot&quot;)</pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> oLayRoot <span class="keyword">As</span> LAYOUT2DITF.Layout2DRoot
+<span class="keyword">Set</span> oLayRoot = oPart.<strong>GetItem</strong>(&quot;CATLayoutRoot&quot;)</pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oLayRoot = oPart.<strong>GetItem</strong>(&quot;CATLayoutRoot&quot;)</pre>
+</div>
+</div>
+
+
+</li>
+<li>For Automated Design Process, the root object is the <strong>DPCOperations</strong> 
+collection object:
+
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> cOperations
+<span class="keyword">Set</span> cOperations = oPart.<strong>GetItem</strong>(&quot;CATGetDPCOperations&quot;)</pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> cOperations <span class="keyword">As</span> DPCOperations
+<span class="keyword">Set</span> cOperations = oPart.<strong>GetItem</strong>(&quot;CATGetDPCOperations&quot;)</pre>
+</div>
+<div>
+<!-- C# -->
+<pre>cOperations = oPart.<strong>GetItem</strong>(&quot;CATGetDPCOperations&quot;)</pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> cOperations <span class="keyword">As</span> DPCOperationsTypeLib.DPCOperations
+<span class="keyword">Set</span> cOperations = oPart.<strong>GetItem</strong>(&quot;CATGetDPCOperations&quot;)</pre>
+</div>
+<div>
+<!-- Python -->
+<pre>cOperations = oPart.<strong>GetItem</strong>(&quot;CATGetDPCOperations&quot;)</pre>
+</div>
+</div>
+
+
+</li>
+</ul>
+<p>The <strong>GetItem</strong> method is called with a parameter that depends 
+on the application, such as <strong>KnowledgeObjects</strong> for Knowledge,
+<strong>CATLayoutRoot</strong> for 2D Layout, and <strong>CATGetDPCOperations</strong> 
+for Automated Design Process. Refer to each application to know which objects 
+you can retrieve and the appropriate 
+parameter to pass to the <strong>GetItem</strong> call.</p>
+<p>Once you have retrieved the application root object, the Automation object 
+model of this application can be navigated using the object's properties and/or 
+some of the other mechanisms described here.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Selection"></a>Selection</h2>
+<p>The <strong>Selection</strong> object contains the objects currently 
+selected. Thanks to methods of the <strong>Selection</strong> object, navigating 
+this set of objects can be done in several ways:</p>
+<ul>
+	<li>You can retrieve an object from its type using the <strong>FindObject</strong> 
+	method.</li>
+	<li>You can retrieve an object from its rank in the selection using the
+	<strong>Item</strong> method.</li>
+	<li>You can search for an object managed by the current <strong>Editor</strong> 
+	object and if it is found, put it in the selection using the <strong>Search</strong> 
+	method.</li>
+</ul>
+<p>Refer to the <a href="CAAInfObjSelection.htm">Selection Object</a> for detailed 
+information.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Part"></a>Navigating a Part</h2>
+<p>The <strong>Part</strong> object enables you to scan the object model aggregated to it using 
+its <strong>FindObjectByName</strong> method.</p>
+<p><img alt="Part Object" src="wnPart01.png" width="653" height="479"/></p>
+<p>For example, to retrieve the sketch, you can use the properties to navigate 
+the <strong>Part</strong> object to the <strong>Sketch</strong> object.</p>
+
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> oPart
+<span class="keyword">Set</span> oPart<span class="keyword"> </span>= CATIA.ActiveEditor.ActiveObject
+<span class="keyword">Dim</span> oBody
+<span class="keyword">Set</span> oBody = oPart.Bodies.Item(1)
+<span class="keyword">Dim</span> oSketch
+<span class="keyword">Set</span> oSketch = oBody.Sketches.Item(1)</pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> oPart<span class="keyword"> As</span> Part
+<span class="keyword">Set</span> oPart<span class="keyword"> </span>= CATIA.ActiveEditor.ActiveObject
+<span class="keyword">Dim</span> oBody <span class="keyword">As</span> Body
+<span class="keyword">Set</span> oBody = oPart.Bodies.Item(1)
+<span class="keyword">Dim</span> oSketch <span class="keyword">As</span> Sketch
+<span class="keyword">Set</span> oSketch = oBody.Sketches.Item(1)</pre>
+</div>
+<div>
+<!-- C# -->
+<pre>oPart<span class="keyword"> </span>= CATIA.ActiveEditor.ActiveObject
+oBody = oPart.Bodies.Item(1)
+oSketch = oBody.Sketches.Item(1)</pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> oPart<span class="keyword"> As</span> MECMOD.Part
+<span class="keyword">Set</span> oPart<span class="keyword"> </span>= CATIA.ActiveEditor.ActiveObject
+<span class="keyword">Dim</span> oBody <span class="keyword">As</span> MECMOD.Body
+<span class="keyword">Set</span> oBody = oPart.Bodies.Item(1)
+<span class="keyword">Dim</span> oSketch <span class="keyword">As</span> MECMOD.Sketch
+<span class="keyword">Set</span> oSketch = oBody.Sketches.Item(1)</pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oPart<span class="keyword"> </span>= CATIA.ActiveEditor.ActiveObject
+oBody = oPart.Bodies.Item(1)
+oSketch = oBody.Sketches.Item(1)</pre>
+</div>
+</div>
+
+
+<p>This example first retrieves the <strong>Part</strong> object from the active 
+editor, then <strong>Body</strong> object from the <strong>Bodies</strong> collection object 
+aggregated to the the <strong>Part</strong> 
+object, and then the <strong>Sketch</strong> object from the <strong>Sketches</strong> 
+collection object aggregated to the <strong>Body</strong> object.</p>
+<p>But you can also use the <strong>FindObjectByName</strong> method.</p>
+
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> oPart
+<span class="keyword">Set</span> oPart<span class="keyword"> </span>= CATIA.ActiveEditor.ActiveObject
+<span class="keyword">Dim</span> oSketch
+<span class="keyword">Set</span> oSketch = oPart.FindObjectByName(&quot;Sketch.1&quot;)</pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> oPart<span class="keyword"> As</span> Part
+<span class="keyword">Set</span> oPart<span class="keyword"> </span>= CATIA.ActiveEditor.ActiveObject
+<span class="keyword">Dim</span> oSketch <span class="keyword">As</span> Sketch
+<span class="keyword">Set</span> oSketch = oPart.FindObjectByName(&quot;Sketch.1&quot;)</pre>
+</div>
+<div>
+<!-- C# -->
+<pre>oPart<span class="keyword"> </span>= CATIA.ActiveEditor.ActiveObject
+oSketch = oPart.FindObjectByName(&quot;Sketch.1&quot;)</pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> oPart<span class="keyword"> As</span> MECMOD.Part
+<span class="keyword">Set</span> oPart<span class="keyword"> </span>= CATIA.ActiveEditor.ActiveObject
+<span class="keyword">Dim</span> oSketch <span class="keyword">As</span> MECMOD.Sketch
+<span class="keyword">Set</span> oSketch = oPart.FindObjectByName(&quot;Sketch.1&quot;)</pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oPart<span class="keyword"> </span>= CATIA.ActiveEditor.ActiveObject
+oSketch = oPart.FindObjectByName(&quot;Sketch.1&quot;)</pre>
+</div>
+</div>
+
+
+<p>This example also first retrieves the <strong>Part</strong> object from the 
+active editor, and then uses the <strong>FindObjectByName</strong> method to 
+retrieve the <strong>Sketch</strong> object using its name Sketch.1. You can n 
+the same way retrieve the sketch geometry object Point.- using this method.</p>
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> oPoint
+<span class="keyword">Set</span> oPoint = oPart.FindObjectByName(&quot;Point.6&quot;)</pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> oPoint <span class="keyword">As</span> Point2D
+<span class="keyword">Set</span> oPoint = oPart.FindObjectByName(&quot;Point.6&quot;)</pre>
+</div>
+<div>
+<!-- C# -->
+<pre>oPoint = oPart.FindObjectByName(&quot;Point.6&quot;)</pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> oPoint <span class="keyword">As</span> MECMOD.Point2D
+<span class="keyword">Set</span> oPoint = oPart.FindObjectByName(&quot;Point.6&quot;)</pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oPoint = oPart.FindObjectByName(&quot;Point.6&quot;)</pre>
+</div>
+</div>
+
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

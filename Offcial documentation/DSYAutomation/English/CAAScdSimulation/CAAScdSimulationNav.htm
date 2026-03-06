@@ -1,0 +1,187 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Navigation on a Simulation</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Navigation on a Simulation</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1"><span class="run-in">Before you begin:</span> 
+						<ul>
+						<li>You should first launch 3DEXPERIENCE and import the file
+							<br/><code>InstallRootFolder\CAADoc\CAAScdSimulation\samples\<div class=vb_sample_data>ghaSimulationMultyLabA.1.3dxml</div></code> 
+						<br/>where <code>InstallRootFolder</code> is the folder where the CAA CD-ROM is 
+                        installed.</li>
+						<li>Then, select one of the Physics Simulation apps.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:</span>
+						<a href="CAAScdSimulationNavSource.htm">CAAScdSimulationNavSource.htm</a></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSimTocSimulation.htm">Simulation Platform Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the current Editor</a></li>
+			<li><a href="#Step2">Retrieves the Simulation Service</a></li>
+			<li><a href="#Step3">Gets the Simulation Specs Representation manager from the Editor</a></li>
+			<li><a href="#Step4">Retrieves the Simulation Reference from the Simulation Specs Representation manager</a></li>
+			<li><a href="#Step5">Retrieves the Simulated Model</a></li>
+			<li><a href="#Step6">Retrieving the Specifications Collection </a></li>
+			<li><a href="#Step7">Retrieving the Scenario Representation under the Scenarios Category</a></li>
+			<li><a href="#Step8">Retrieving the Root Feature of the Rep Scenario</a></li>
+			<li><a href="#Step9">Retrieving the Results Collection</a></li>
+			<li><a href="#Step10">Retrieving the Result Representation under the Results Category</a></li>
+			<li><a href="#Step11">Retrieving the Root Feature of the Rep Result</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the current Editor</strong></p>
+			<pre class="code">... 
+           <span class="keyword"> Dim </span>oSimulationEditor <span class="keyword">As </span>Editor
+           <span class="keyword"> Set </span>oSimulationEditor = CATIA.ActiveEditor
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves the Simulation Service</strong></p>
+			<pre class="code">... 
+           <span class="keyword"> Dim </span>oSimulationService <span class="keyword">As </span>SimSimulationService
+           <span class="keyword"> Set </span>oSimulationService = oSimulationEditor.GetService(&quot;SimSimulationService&quot;)
+...</pre>
+			</li>
+            <li>
+			<p><strong><a name="Step3"></a>Gets the Simulation Specs Representation manager from the Editor</strong></p>
+			<pre class="code">... 
+           <span class="keyword"> Dim </span>oSimulationSpecsRepManager <span class="keyword">As </span>SimSpecsRepManager
+           <span class="keyword"> Set </span>oSimulationSpecsRepManager = oSimulationEditor.ActiveObject
+...</pre>
+			</li>
+
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves the Simulation Reference from the Simulation Specs Representation manager</strong></p>
+			<pre class="code">... 
+            <span class="keyword"> Dim </span>oSimulationRoot <span class="keyword">As </span>SimulationReference
+            <span class="keyword"> Set </span>oSimulationRoot = oSimulationService.GetSimulationReferenceFromObject(oSimulationSpecsRepManager)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieves the Simulated Model</strong></p>
+			<p>In this step, we retrieve the Simulated Model.</p>
+			<pre class="code">...
+            <span class="keyword">Dim </span>oPLMModel <span class="keyword"> As </span>AnyObject
+            <span class="keyword">Set </span>oPLMModel = oSimulationRoot.Model
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Retrieving the Specifications Collection </strong></p>
+			<p>In this step, we retrieve the Simulation Category Scenario.</p>
+			<pre class="code">...					
+            <span class="keyword">Dim </span>oSpecifications <span class="keyword"> As  </span>SimulationSpecifications
+            <span class="keyword">Set </span>oSpecifications = oSimulationRoot.Specifications
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Retrieving the Scenario Representation under the Scenarios Category</strong></p>
+<pre class="code">...
+             <span class="keyword">Dim </span>oSimulationRepSpec <span class="keyword"> As </span>SimulationRepresentation
+             <span class="keyword">Set </span>oSimulationRepSpec = oSpecifications.Item(1)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Retrieving the Root Feature of the Rep Scenario</strong></p>
+<pre class="code">...			
+             <span class="keyword">Dim </span>oRootRepSpec <span class="keyword"> As</span> AnyObject 
+             <span class="keyword">Set </span>oRootRepSpec = oSimulationRepSpec.Root 
+...</pre>		
+			</li>
+			<li>
+			<p><strong><a name="Step9"></a>Retrieving the Results Collection</strong></p>
+<pre class="code">...			
+            <span class="keyword">Dim </span>oResults  <span class="keyword"> As  </span>SimulationResults
+            <span class="keyword">Set </span>oResults  = oSimulationRoot.Results
+...</pre>			
+			</li>
+			<li>
+			<p><strong><a name="Step10"></a>Retrieving the Result Representation under the Results Category</strong></p>
+<pre class="code">...
+           <span class="keyword"> Dim </span>oSimulationRepRes <span class="keyword"> As </span>SimulationRepresentation
+           <span class="keyword"> Set </span>oSimulationRepRes = oResults.Item(1)	
+...</pre>	
+</li>
+			<li>
+			<p><strong><a name="Step11"></a>Retrieving the Root Feature of the Rep Result</strong></p>		  
+<pre class="code">...
+             <span class="keyword">Dim </span>oRooRepRest <span class="keyword"> As</span> AnyObject 
+             <span class="keyword">Set </span>oRootRepRes = oSimulationRepRes.Root
+...</pre>			
+		
+			</li>
+
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

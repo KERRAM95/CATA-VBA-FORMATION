@@ -1,0 +1,124 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaResultsNativeResultantSensorSourcePython.py</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+<pre>
+<span class="comment">#---------------------------- Sample script written in Python ---------------------------------</span>
+<span class="comment">#This sample creates a resultant sensor using a .3dxml file. First launch 3DExperience and import 
+ #the <div class=vb_sample_data>CAAScdFeaResults.3dxml</div> provided in the samples folder.</span>
+
+<span class="comment">#Steps:</span>
+<span class="comment">#    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">#    2- Retrieves the results analysis case</span>
+<span class="comment">#    3- Creates a resultant sensor</span>
+<span class="comment">#    4- Sets the step frame and load case to the sensor</span>
+<span class="comment">#    5- Retrieves the analysis case</span>
+<span class="comment">#    6- Retrieves the clamp feature for support</span>
+<span class="comment">#    7- Sets the support for the sensor</span>
+<span class="comment">#    8- Updates the sensor</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+ENUM = win32com.client.constants
+
+oEditor = CATIA.ActiveEditor
+
+oProdService = oEditor.GetService("PLMProductService")
+
+oEntities = oProdService.EditedContent
+
+oEntity = oEntities.Item(1)
+
+oSimulationRoot = oEntity 
+    
+oResults = oSimulationRoot.Results
+
+oSimulationRepRes = oResults.Item(1)  
+
+oRootRepRes = oSimulationRepRes.Root    
+
+oResultsManager = oRootRepRes.GetItem("SimResultsManager") 
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    2- Retrieves the results analysis case</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oResultsAnalysisCases = oResultsManager.ResultsAnalysisCases
+
+oResultsAnalysisCase = oResultsAnalysisCases.Item(1)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    3- Creates a resultant sensor</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oResultantSensor = oResultsAnalysisCase.CreateResultantSensor()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    4- Sets the step, frame and load case to the sensor</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oSteps = oResultsAnalysisCase.ResultsSteps
+oStep = oSteps.Item(1)
+
+stepId, stepName, stepDescription = oStep.GetIdentifier ((),(),())
+
+oResultantSensor.SetStepAndFrame (stepId, 1, 0)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    5- Retrieves the analysis case</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oScenarioManager = oSimulationRoot.GetItem("SimScenarioManager")
+oAnalysisCases = oScenarioManager.AnalysisCases
+oAnalysisCase = oAnalysisCases.Item(1)
+
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    6- Retrieves the clamp feature for support</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oFeatures = oAnalysisCase.Features
+oPressure = oFeatures.Item("Pressure.1")
+
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    7- Sets the support for the sensor</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oDispatch = oPressure
+oSupports = [oDispatch]
+
+oResultantSensor.Support = (oSupports)
+
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    8- Updates the sensor</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oResultantSensor.Update()
+
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

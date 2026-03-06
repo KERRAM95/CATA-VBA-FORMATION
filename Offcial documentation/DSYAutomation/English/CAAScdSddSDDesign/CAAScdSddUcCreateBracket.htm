@@ -1,0 +1,331 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SDD Bracket</title>
+<style type="text/css">
+.style1 {
+	color: #800000;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SDD Bracket</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SDD bracket.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSddUcCreateBracket.3dxml</div></code>, 
+							<code class="style1">CAAScdSddUcSteel_A90.3dxml</code>,<span class="style1">Bracket_KN6.3dxm</span><code class="style1">l</code><span class="style1"></span>,
+							<code><div class=vb_sample_data>CAAScdSddUcWT18x179_5.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div></code> 
+							and <code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div></code> files supplied 
+							in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code><br />
+							where 
+							<code>InstallRootFolder</code> is the folder where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcCreateBracketSource.htm">CAAScdSddUcCreateBracketSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSddTocSDDesign.htm">Structure Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table>
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SddProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Part object</a></li>
+			<li><a href="#Step3">Retrieves Service Manger (RfgService)</a></li>
+			<li><a href="#Step4">Retrieves two Product Stiffener objects</a></li>
+			<li><a href="#Step5">Get SddFactory</a></li>
+			<li><a href="#Step6">Create Contour Based</a></li>
+			<li><a href="#Step7">Update the product bracket</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SddProduct&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SddProduct&quot; from DB and 
+			loads it and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim</span> SFDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SddProduct&quot;
+ OpenProduct prdName , SFDPrdEditor
+</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SDD model from underlying database the current active 
+			editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> SFDProdSel = SFDPrdEditor.Selection 
+  <span class="keyword">Dim </span>product1Service <span class="keyword"> As </span> PLMProductService
+  <span class="keyword">Set</span> product1Service = DDPrdEditor.GetService(&quot;PLMProductService&quot;)
+  <span class="keyword">Dim </span>ObjVPMRootOccurrence <span class="keyword"> As </span> VPMRootOccurrence
+  <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+  <span class="keyword">Dim </span>ObjVPMReference <span class="keyword"> As </span> VPMReference
+  <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+  <span class="keyword">Dim </span>ObjVPMRepInstances <span class="keyword"> As </span> VPMRepInstances
+  <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+  <span class="keyword">Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> ObjPart = ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Service manager (RfgService)</strong></p>
+			<p>In this step UC retrieves <code>RfgService</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.<strong>GetService</strong>(&quot;RfgService&quot;)
+...</pre>
+			<p><code>GetService</code> method returns <code>RfgService</code>. This 
+			service provides methods such GetReferencePlane, CreateProjectData, 
+			CreateRefSurfaceFeature.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves two Product Stiffener objects</strong></p>
+			<p>In this step Uc retrieves the Sdd Product Stiffener objects.</p>
+			<pre class="code">...
+<span class="comment">  'Get Product Stiffener-1(Stiffener-476667114)</span>
+<span class="keyword">  Set</span> ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">  Set</span> StiffenerRef_1 = ListOfInstances.Item(3).ReferenceInstanceOf
+<span class="keyword">  Set</span> StiffenerRepInstances = StiffenerRef_1.RepInstances
+<span class="keyword">  Set</span> StiffenerRepInstReference = StiffenerRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">  Set</span> StiffenerPart_1 = StiffenerRepInstReference.GetItem("Part")
+<span class="comment">  'get Sdd product stiffener</span>
+<span class="keyword">  Dim</span> ObjSddProductStiffener_1 <span class="keyword">As</span> SddProductStiffener
+  SFDProdSel.Add StiffenerRef_1
+<span class="keyword">  Set</span> ObjSddProductStiffener_1 = SFDProdSel.FindObject("CATIASddProductStiffener")
+<span class="keyword">  Dim</span> ObjSddStiffener_1 <span class="keyword">As</span> SddStiffener
+<span class="keyword">  Set</span> ObjSddStiffener_1 = ObjSddProductStiffener_1.SddStiffener
+<span class="comment">  'get reference of Stiffener </span>
+<span class="keyword">  Dim</span> RefObjSddStiffener_1 <span class="keyword">As</span> Reference
+<span class="keyword">  Set</span> RefObjSddStiffener_1 = StiffenerPart_1.CreateReferenceFromObject(ObjSddStiffener_1)
+    
+<span class="comment">  'Get Product Stiffener-2(Stiffener-476667115)</span>
+<span class="keyword">  Set</span> ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">  Set</span> StiffenerRef_2 = ListOfInstances.Item(4).ReferenceInstanceOf
+<span class="keyword">  Set</span> StiffenerRepInstances = StiffenerRef_2.RepInstances
+<span class="keyword">  Set</span> StiffenerRepInstReference = StiffenerRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">  Set</span> StiffenerPart_2 = StiffenerRepInstReference.GetItem("Part")
+<span class="comment">  'get Sdd product stiffener</span>
+<span class="keyword">  Dim</span> ObjSddProductStiffener_2 <span class="keyword">As</span> SddProductStiffener
+  SFDProdSel.Add StiffenerRef_2
+<span class="keyword">  Set</span> ObjSddProductStiffener_2 = SFDProdSel.FindObject("CATIASddProductStiffener")
+<span class="keyword">  Dim</span> ObjSddStiffener_2 <span class="keyword">As</span> SddStiffener
+<span class="keyword">  Set</span> ObjSddStiffener_2 = ObjSddProductStiffener_2.SddStiffener
+<span class="comment">  'get reference of Stiffener </span>
+<span class="keyword">  Dim </span>RefObjSddStiffener_2 <span class="keyword">As</span> Reference
+<span class="keyword">  Set</span> RefObjSddStiffener_2 = StiffenerPart_2.CreateReferenceFromObject(ObjSddStiffener_2)
+...</pre>
+			<p>In this step Uc retrieves the SddProduct Stiffeners as shown above.</p>
+			</li>
+			
+			<li>
+			<p><strong><a name="Step5"></a>Get SddFactory</strong></p>
+			<p>In this step UC retrieves <code>SddFactory </code>object.</p>
+			<pre class="code">...
+<span class="comment">  'Get SddFactory for creating SDD objects</span>
+<span class="keyword">  Dim</span> ObjSddFactory <span class="keyword">As</span> SddFactory
+  'Set ObjSddFactory = ObjVPMRootOccurrence.GetItem("SddFactory")
+  SFDProdSel.Add ObjVPMRootOccurrence
+<span class="keyword">  Set</span> ObjSddFactory = SFDProdSel.FindObject("CATIASddFactory")
+...</pre>
+			</li>
+
+			
+			<li>
+			<p><strong><a name="Step6"></a>Create Contour Based</strong></p>
+			<p class="task">Call
+			<code>CreateContourBased</code> method to create contour based plate.</p>
+			<pre class="code">... 
+<span class="keyword">  Dim</span> ObjSddProdBracket <span class="keyword">As</span> SddProductBracket
+<strong>  CreateContourBased</strong> ObjSddFactory, ObjSddProdBracket, RefObjSddStiffener_1, RefObjSddStiffener_2 
+...</pre>
+			
+<p class="task"><code>oObjProdBracket</code> object is retreived from <code>
+AddBracket</code>.</p>
+
+<pre class="code"><span class="keyword">Sub</span> <strong>AddBracket</strong>(iObjSddFactory <span class="keyword">As</span> SddFactory, oObjProductbracket <span class="keyword">As</span> SddProductBracket)
+  <span class="keyword">Set</span> oObjProductBracket = iObjSddFactory.<strong>AddProductBracket</strong>(5)
+<span class="keyword">End Sub</span></pre>
+<p class="task"><code>SddProductBracket</code> object is retrieved in <code>oObjProductBracket</code> variable from <code>iObjSddFactory</code> object. On <code>ObjProdBracket</code> object <code><strong>SddContourBased</strong></code> method is called to create the empty Contour Based Plate. Now Uc needs to set the different properties of the parametric plate like Material, Material Extrusion, Support, Category,  Sketch, Thickness and Limits.</p>
+
+<pre class="code">... 
+<span class="keyword">Sub</span> <strong>CreateContourBased</strong>(iObjSddFactory <span class="keyword">As</span> SddFactory, oObjProdBracket <span class="keyword">As</span> SddProductBracket, iRefObjSddStiffener_1 <span class="keyword">As</span> Reference, iRefObjSddStiffener_2 <span class="keyword">As</span> Reference)
+
+  <span class="comment">'Call subroutine AddBracket to add a contour based using the SDD Factory</span>
+  <strong>AddBracket</strong> iObjSddFactory, oObjProdBracket
+<span class="keyword">  Dim</span> ObjSddContourBased <span class="keyword">As</span> SddContourBased
+<span class="keyword">  Set</span> ObjSddContourBased = oObjProdBracket.SddContourBased
+
+<span class="comment">  'Set material</span>
+  <strong>SetMaterial</strong> oObjProdBracket, "Steel A42"
+
+<span class="comment">  'Set material orientation</span>
+<span class="keyword">  Dim</span> ExtrusionManager <span class="keyword">As</span> StrPlateExtrusionMngt
+<span class="keyword">  Set</span> ExtrusionManager = ObjSddContourBased.StrPlateExtrusionMngt
+  ExtrusionManager.ThrowOrientation = 1
+
+<span class="comment">  'Set category</span>
+<strong>  SetCategory</strong> ObjSddContourBased, "Panel"
+
+<span class="comment">  'Browse to "LONG.9" reference plane and set it as the support</span>
+<span class="keyword">  Dim</span> PlateSupport <span class="keyword">As</span> Reference
+<span class="keyword">  Set</span> PlateSupport = Manager.GetReferencePlane(ObjPart, 3, "LONG.0")
+<strong>  SetContourBasedPlateSupport</strong> ObjSddContourBased, PlateSupport
+
+<span class="comment">  'Set the DMS</span>
+<span class="keyword">  Dim</span> PlateDMS <span class="keyword">As</span> StrSketchBasedDMSMngt
+<span class="keyword">  Dim</span> RefSddContourBased <span class="keyword">As</span> Reference
+<span class="keyword">  Set</span> RefSddContourBased = ObjSddContourBased.Reference
+ <span class="keyword"> Set</span> PlateDMS = ObjSddContourBased.StrSketchBasedDMSMngt
+  PlateDMS.SetStrSketch2 "SAMPLE_RCO_2LIMITS_CURVED", RefSddContourBased
+
+<span class="comment">  'Set thickness</span>
+ <strong> SetPlateGeometryMngtData</strong> ObjSddContourBased, "10mm", 0
+    
+<span class="comment">  'Set Plate limits</span>
+<strong>  SetContourBasedPlateLimits </strong>ObjSddContourBased, iRefObjSddStiffener_1, iRefObjSddStiffener_2
+   
+<span class="comment">  'Reverse the ThrowOrientation.</span>
+<span class="keyword">  Dim</span> ObjSfdPlateGeometryMngt <span class="keyword">As</span> StrPlateExtrusionMngt
+<span class="keyword">  Set</span> ObjSfdPlateGeometryMngt = ObjSddContourBased.StrPlateExtrusionMngt
+  ObjSfdPlateGeometryMngt.ReverseThrowOrientation 
+    
+<span class="keyword">End Sub</span>
+...</pre>
+<p class="task">Above used methods are elaborated below.</p>
+<pre class="code">...
+<span class="keyword">Sub</span> <strong>SetMaterial</strong>(iObjSddProdBracket <span class="keyword">As</span> SddProductBracket, iStrMaterial <span class="keyword">As</span> String)
+<span class="keyword">  Dim</span> ObjMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+<span class="keyword">  Set</span> ObjMaterialMngt = iObjSddProdBracket.StrMaterialMngt
+  ObjMaterialMngt.SetMaterial (iStrMaterial)
+<span class="keyword">End Sub</span>
+...</pre>
+<pre class="code">...
+<span class="keyword">Sub</span> <strong>SetCategory</strong>(iObjSddContourBased <span class="keyword">As</span> SddContourBased, iCategory <span class="keyword">As</span> String)
+<span class="keyword">  Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+<span class="keyword">  Set</span> ObjStrCategoryMngt = iObjSddContourBased.StrCategoryMngt
+  ObjStrCategoryMngt.SetCategory iCategory
+<span class="keyword">End Sub</span>
+...
+<span class="keyword">Sub</span> <strong>SetContourBasedPlateSupport</strong>(iObjSddContourBased <span class="keyword">As</span> SddContourBased, iSupport <span class="keyword">As</span> Reference)
+<span class="keyword">  Dim</span> ObjSfdPlateSupport <span class="keyword">As</span> StrPanelSurf
+<span class="keyword">  Set</span> ObjSfdPlateSupport = iObjSddContourBased.StrPanelSurf
+  ObjSfdPlateSupport.Support = iSupport
+<span class="keyword">End Sub</span>
+...</pre>
+<pre class="code">...
+<span class="keyword">Sub</span> <strong>SetPlateGeometryMngtData</strong>(iObjSddContourBased <span class="keyword">As</span> SddContourBased, iThickness <span class="keyword">As</span> String, iThrowOrientation <span class="keyword">As</span> Long)
+<span class="keyword">  Dim</span> ObjSfdPlateGeometryMngt <span class="keyword">As</span> StrPlateExtrusionMngt
+<span class="keyword">  Set</span> ObjSfdPlateGeometryMngt = iObjSddContourBased.StrPlateExtrusionMngt
+  ObjSfdPlateGeometryMngt.ThrowOrientation = iThrowOrientation
+<span class="keyword">  Dim</span> Thickness <span class="keyword">As</span> Parameter
+<span class="keyword">  Set</span> Thickness = ObjSfdPlateGeometryMngt.GetThickness
+  Thickness.ValuateFromString iThickness
+<span class="keyword">End Sub</span>
+...</pre>
+<pre class="code">...
+<span class="keyword">Sub</span> <strong>SetContourBasedPlateLimits</strong>(iObjSddContourBased <span class="keyword">As</span> SddContourBased, iRefObjSddStiffener_1 <span class="keyword">As</span> Reference, iRefObjSddStiffener_2 <span class="keyword">As</span> Reference)
+<span class="comment">  'Obtain the StrPanelLimitMngt</span>
+<span class="keyword">  Dim</span> ObjSfdPlateLimitMngt <span class="keyword">As</span> StrPanelLimitMngt
+<span class="keyword">  Set</span> ObjSfdPlateLimitMngt = iObjSddContourBased.StrPanelLimitMngt
+    
+<span class="comment">  'Apply the References to the 2 SDD stiffeners as limits to the Contour Based</span>
+  ObjSfdPlateLimitMngt.SetLimitingObject2 iRefObjSddStiffener_1, 2, 0, -1, "22"
+  ObjSfdPlateLimitMngt.SetLimitingObject2 iRefObjSddStiffener_2, 3, 0, -1, "22"
+<span class="keyword">End Sub</span>
+...</pre>
+			</li>
+			
+			<li>
+			<p><strong><a name="Step7"></a>Update the product bracket</strong></p>
+<pre class="code">...
+  ObjSddProdBracket.<strong>Update</strong> 
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>Update</code> updates the Product Bracket.</p>
+				</li>
+			</ol>
+		
+		</td>
+		</tr>
+		</table>
+    <table>
+        <caption><a name="Fig.1"></a>Fig.1: Stiffener with Limits</caption>
+        <tr>
+            <td>
+                <img alt="Bracket" src="CAAScdSddUcCreateBracket.png"/></td>
+        </tr>
+    </table>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

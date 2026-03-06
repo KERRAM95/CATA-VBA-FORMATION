@@ -1,0 +1,273 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Retrieving Product Reference from Mono-instantiable Representation Reference</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Retrieving Product Reference from Mono-instantiable Representation 
+				Reference</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header">The Use Case fundamentally retrieves the 
+						parent of a MonoInstantiable Representation Reference. A 
+						MonoInstantiable Representation Reference can be instantiated 
+						only once across all Product contexts. As a result, the 
+						Product Reference which aggregates its only Instance, is 
+						considered the parent of the Mono Representation Reference 
+						too.</p>
+						<p class="header">In contrast, the Use Case illustrates 
+						the failure to retrieve the parent of a Multi Instantiable 
+						Representation Reference, since it has several Representation 
+						Instances each aggregated by its own parent. So we cannot 
+						associate a unique parent with a Multi Instantiable Representation 
+						Reference.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:
+						<ul>
+							<li>Launch CATIA </li>
+							<li>Load a Product (which contains at least one mono-instantiable 
+							Representation Instance beneath it) from database or 
+							create one before launching the macro
+							<ul>
+								<li>Input Model scenario
+								<ul>
+									<li>Create Product Reference (Root)</li>
+									<li>Insert 3Dshape object beneath Root (By default 
+									it will be Mono-Instanciable). Similarly create 
+									2 instances </li>
+									<li>&#8226; From contextual menu of 3DShape instance 
+									click on &quot; Share this representation&quot; command, 
+									this will make 3DShape Multi-Instantiable Representation 
+									Reference from Mono-Instantiable Representation 
+									Reference. Switch one of the Mono-Instantiable 
+									Representation Reference to Multi-Instantiable 
+									Representation Reference so that we will have 
+									both cases. </li>
+								</ul>
+								</li>
+							</ul>
+							</li>
+							<li>Keep Product editor active before launching the 
+							macro </li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:<a href="CAAScdPstUcDisplayAndModifyProductAttrFromSelectionSource.htm">
+						</a></span>
+						<a href="CAAScdPstUcRetrieveProductReferenceFromMonoInstantiableRepRefSource.htm">
+						CAAScdPstUcRetrieveProductReferenceFromMonoInstantiableRepRefSource.htm</a></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdPstTocProductStructure.htm">Product Object Model Map </a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in three steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieve Selected Representation Instance As VPMRepInstance 
+			from from spec tree or 3D Viewer</a></li>
+			<li><a href="#Step2">Retrieve Product Representation Reference from 
+			selected Representation Instance</a></li>
+			<li><a href="#Step3">Retrieve Product Reference aggregating the Product 
+			Representation Reference</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"></a>Select and Retrieve Product Representation Instance 
+			As VPMRepInstance from spec tree or 3D Viewer</p>
+			<p>The PLM object that you can select in this Use Case (if the current 
+			editor is VPM Editor) is <strong>VPMRepInstance</strong> type (Since 
+			this is selection criteria). The more information about selection is 
+			explained in &quot;Modifying Attributes (PLM and Visualization) of a Selected 
+			Product Object&quot; Use Case[<a href="#References">1</a>]. </p>
+			<p>Use Case initially prompts an end user to select the mono-instantiable 
+			Representation Instance from spec tree or the 3D Viewer within an active 
+			editor of CATIA. </p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oVPMRepInstance <span class="keyword">As</span> VPMRepInstance
+<span class="keyword">Set</span> oVPMRepInstance = <strong>SelectAndRetrieveRepInst</strong>
+...</pre>
+			<p>The function <em>SelectAndRetrieveRepInst</em>, returns <code>oVPMRepInstance</code>, 
+			a <code>VPMRepInstance </code>type</p>
+			<p>It is important to note here that inspite of that restriction to 
+			select only a <em>VPMRepInstance</em> type from the spec tree or the 
+			3D Viewer, user still has the liberty to atleast click on (if not select) 
+			the features aggregated beneath a Representation Instance. In this case, 
+			the focus shifts to the aggregating Representation Instance, which is 
+			infact considered to be the selected entity.</p>
+			<p>Following is the sample example to demonstrate this use case.</p>
+			<table>
+				<caption><a name="Fig.1"></a>Fig.1 Sample Model for Selection</caption>
+				<tr>
+					<td>
+					<img alt="Sample Model for Selection" src="CAAScdPstUcRetrieveProductReferenceFromMonoInstantiableRepRef_image3.jpg"/></td>
+				</tr>
+			</table>
+			<p>For a model as depicted in [<a href="#Fig.1">Fig. 1</a>] we have 
+			a Product1 as Root Reference. It has an instance of a Mono-Instantiable 
+			Representation Reference (MonoRepresentation1---, represented by icon
+			<img alt="Icon" src="CAAScdPstUcRetrieveProductReferenceFromMonoInstantiableRepRef_image4_icon1.jpg" width="22" height="23"/> 
+			in the spec tree) and two instances of a MultiInstantiable Representation 
+			Reference (MultiRepresentation2.1--- and MultiRepresentation2.2---, 
+			represented by icon
+			<img alt="Icon" src="CAAScdPstUcRetrieveProductReferenceFromMonoInstantiableRepRef_image5_icon2.jpg" width="22" height="23"/> 
+			in the spec tree) under the root. The explanations provided for the 
+			code extract in the steps ahead are based on the execution of this macro 
+			on this input model.</p>
+			</li>
+			<li>
+			<p><a name="Step2"></a>Retrieve Product Representation Reference from 
+			selected Representation Instance</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oVPMRepRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">Set</span> oVPMRepRef = oVPMRepInstance.<strong>ReferenceInstanceOf</strong>
+...</pre>
+			<p>The call to <em>ReferenceInstanceOf</em> property of <code>VPMRepInstance 
+			, oVPMRepInstance</code> returns the Product Representation Reference
+			<code>oVPMRepRef</code>, <code>VPMRepReference</code> object associated 
+			with it.</p>
+			<table>
+				<caption><a name="Fig.2"></a>Fig.2 Message box showing success in 
+				retrieving Representation Reference</caption>
+				<tr>
+					<td>
+					<img alt="Message Box" src="CAAScdPstUcRetrieveProductReferenceFromMonoInstantiableRepRef_image1.jpg"/></td>
+				</tr>
+			</table>
+			<p>his output is depicted in [<a href="#Fig.2">Fig. 2</a>] above, which 
+			corresponds to an end-user selecting the Mono Representation Instance 
+			(MonoRepresentation1) under the Product1 Reference, depicted in [<a href="#Fig.1">Fig. 
+			1</a>] above. The Message box displays the PLM_ExternalID of the Mono 
+			Instantiable Representation Reference.</p>
+			</li>
+			<li>
+			<p><a name="Step3"></a>Retrieve Product Reference aggregating the Product 
+			Representation Reference</p>
+			<p>Now that we have retrieved the Representation Reference, we proceed 
+			to seek its parent, the Product Reference that aggregates it. For reasons 
+			mentioned earlier, the concept of a parent is valid only for a MonoInstantiable 
+			Representation Reference exists, for the simple reason, that it has 
+			a single Instance, whose parent could be treated as the parent of the 
+			Mono-Instantiable Representation Reference, as well. </p>
+			<p>The concept of a parent, is non-existent for a Multi-Instantiable 
+			Representation Reference, for reasons mentioned later.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oProdReference <span class="keyword">As</span> VPMReference
+<span class="keyword">Set</span> oProdReference = oVPMRepRef.<strong>Father</strong>
+    
+MsgBox (&quot;Success in retrieving aggregating Product Reference from Representation Reference. Product Reference Id = &quot;) + oProdReference.GetAttributeValue(&quot;PLM_ExternalID&quot;)
+...</pre>
+			<p>The call to <em>Father</em> property of <code>VPMRepReference, oVPMRepRef
+			</code>returns a aggregating Product reference of Product Representation 
+			Reference, as a <code>VPMReference </code>type <code>oProdReference</code>.
+			</p>
+			<p>Note: The call to <em>Father</em> is likely to fail under two circumstances</p>
+			<ul class="task">
+				<li>
+				<p>If the Representation Reference is MultiInstantiable, each Representation 
+				Instance would have its own parent. The concept of parent is irrelevant 
+				for multi-instantiable Representation Reference </p>
+				</li>
+				<li>
+				<p>If the aggregating Product Reference is not loaded in session.</p>
+				</li>
+			</ul>
+			<table>
+				<caption><a name="Fig.3"></a>Fig.3 Message box which showing success 
+				in retrieving Product Reference</caption>
+				<tr>
+					<td>
+					<img alt="Message Box" src="CAAScdPstUcRetrieveProductReferenceFromMonoInstantiableRepRef_image2.jpg"/></td>
+				</tr>
+			</table>
+			<p>The output is depicted in [<a href="#Fig.3">Fig. 3</a>] above. It 
+			represents a Message Box, which displays the PLM_ExternalID of the Root 
+			Reference (Product1), a Product Reference aggregating the Mono-Instantiable 
+			Representation Instance (MonoRepresentation1), as depicted in the Product 
+			hierarchy in [<a href="#Fig.1">Fig. 1</a>] above.</p>
+			<table>
+				<caption><a name="Fig.4"></a>Fig.4 Message box showing failure
+				</caption>
+				<tr>
+					<td>
+					<img alt="Message Box" src="CAAScdPstUcRetrieveProductReferenceFromMonoInstantiableRepRef_image6.jpg" width="749" height="120"/></td>
+				</tr>
+			</table>
+			<p>The error, depicted in [<a href="#Fig.4">Fig. 4</a>] above, is typically 
+			generated if the user selects a MultiInstantiable Representation Instance 
+			(e.g. if we select MultiRepresentation2.1 or MultiRepresentation2.2 
+			from product hierarchy represented by <a href="#Fig.1">Fig.1</a>) or 
+			if the parent is not loaded in session, though the latter scenario is 
+			unlikely to occur (beyond the scope of the current UC, to discuss)</p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<h2><a name="References"></a>References</h2>
+<table>
+	<tr>
+		<td valign="top">[1]</td>
+		<td><a href="CAAScdPstUcDisplayAndModifyProductAttrFromSelection.htm">Modifying 
+		PLM Attributes of a Selected Product Object</a></td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SDD Opening Using a Sketch Profile</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SDD Opening Using a Sketch Profile</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SDD Opening using 
+						sketch profile.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSddUcCreateOpeningSketch.3dxml</div></code>,
+							<code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div></code> and <code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div></code> 
+							files supplied in the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code> 
+							where <code>InstallRootFolder</code> is the folder 
+							where the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcCreateOpeningSketchSource.htm">CAAScdSddUcCreateOpeningSketchSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic1</em>&gt;</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic2</em>&gt;</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in nine steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SddProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves Services Manager</a></li>
+			<li><a href="#Step5">Retrieves Product Plate</a></li>
+			<li><a href="#Step6">Retrieves Sdd Plate</a></li>
+			<li><a href="#Step7">Retrieves profile for creating opening</a></li>
+			<li><a href="#Step8">Create Opening</a></li>
+			<li><a href="#Step9">Updates the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SddProduct&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SddProduct&quot; from DB and 
+			loads it and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SDDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SddProduct&quot;
+ OpenProduct prdName , SDDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SDDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SDD model from underlying database the current active 
+			editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+			<p>As a next step, the UC retrieves Selection object in SDDProdSel variable. 
+			To retrieve the Selection object <strong><code>SDDPrdEditor </code>
+			</strong>is used.</p>
+			<pre class="code"> ...
+<span class="keyword">    Set</span> SFDProdSel = SDDPrdEditor<strong>.Selection </strong>
+ ...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves part object.</p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> product1Service <span class="keyword">As</span> PLMProductService
+    <span class="keyword">Set</span> product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+    <span class="keyword">Dim</span> ObjVPMRootOccurrence <span class="keyword">As</span> VPMRootOccurrence
+    <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+    <span class="keyword">Dim</span> ObjVPMReference <span class="keyword">As</span> VPMReference
+    <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+    <span class="keyword">Dim</span> ObjVPMRepInstances <span class="keyword">As</span> VPMRepInstances
+    <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+    <span class="keyword">Set</span> ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+    <span class="keyword">Set</span> ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves Service manager</strong></p>
+			<p>In this step UC retrieves Service manager variable.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+...</pre>
+			<p><code>GetService</code> method returns <code>RfgService</code>. This 
+			service provides methods such GetReferencePlane, CreateProjectData, 
+			CreateRefSurfaceFeature.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieves Product Plate</strong></p>
+			<p>In this step UC retrieves a Product Plate. </p>
+			<pre class="code">...
+  <span class="keyword">Set </span>ListOfInstances = ObjVPMReference.Instances
+  <span class="keyword">Set</span> PlateRef = ListOfInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set </span>PlateRepInstances = PlateRef.RepInstances
+  <span class="keyword">Set</span> PlateRepInstReference = PlateRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set </span>PlatePart = PlateRepInstReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Retrieves Sdd Plate</strong></p>
+			<p>In this step UC retrieves a Sdd Plate.</p>
+			<pre class="code">...
+  <span class="keyword">Dim </span>ObjSddProductPlate <span class="keyword"> As </span> SddProductPlate
+  SDDProdSel.Add PlateRef
+  <span class="keyword">Set </span>ObjSddProductPlate = SDDProdSel.FindObject(&quot;CATIASddProductPlate&quot;)
+  <span class="keyword">Dim </span>ObjSddPlate <span class="keyword"> As </span> SddPlate
+  <span class="keyword">Set </span>ObjSddPlate = ObjSddProductPlate.SddPlate
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Retrieves profile for creating opening</strong></p>
+			<pre class="code">...
+  <span class="keyword">Set</span> ProfileSketchOpeningUpToLast = PlatePart.FindObjectByName(&quot;Profile.1&quot;)
+  <span class="keyword">Dim </span>RefProfileSketchOpeningUpToLast <span class="keyword"> As </span> Reference 
+ <span class="keyword">Set</span> RefProfileSketchOpeningUpToLast = PlatePart.CreateReferenceFromObject(ProfileSketchOpeningUpToLast)
+...</pre>
+			<p><code>FindObjectByName</code> method finds object whose name is &quot;Profile.1&quot; 
+			and returns reference to it. Here <code>RefProfileSketchOpeningUpToLast</code> 
+			is of type <code>Reference</code>. To retrieve the <code>RefProfileSketchOpeningUpToLast</code> 
+			object from <code>ProfileSketchOpeningUpToLast</code> object <code>CreateReferenceFromObject</code> 
+			method is used.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Create Opening</strong></p>
+			<p>Call <code>CreateOpeningSketchUpToLast</code> method to create opening 
+			on panel using sketch profile. <code>CreateOpeningSketchDimensions</code> 
+			method takes a SddPlate and a sketch profile as input parameters and 
+			it returns created opening as output parameter in <code>ObjStrOpeningWtLtMdUpToLast</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjStrOpeningWtLtMdUpToLast <span class="keyword">As</span> StrOpening
+  <strong>CreateOpeningSketchUpToLast</strong> ObjSddPlate, RefProfileSketchOpeningUpToLast, ObjStrOpeningWtLtMdUpToLast
+...</pre>
+			<p>The method <code>CreateOpeningSketchDimensions</code> is detailed 
+			as in the below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a opening with no properties set</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateOpeningSketchUpToLast</strong>(iObjSddPlate <span class="keyword">As</span> SddPlate, RefProfileSketch <span class="keyword">As</span> Reference, oObjStrOpening <span class="keyword">As</span> StrOpening)
+  <strong><a href="#AddOpening">AddOpening</a></strong> iObjSddPlate, oObjStrOpening
+...</pre>
+				<p>In this step Uc calls a method <code>AddOpening</code> which 
+				creates a opening with no properties set and returns it in output 
+				parameter <code>oObjStrOpening</code>. Uc sets different properties 
+				like catgory, type of opening, etc. of the opening in the subsequent 
+				steps.</p>
+				</li>
+				<li>
+				<p><strong>Sets opening type to catStrOpeningModeOutputProfile for sketch opening</strong></p>
+				<pre class="code">...
+  <strong><a href="#SetOpeningType">SetOpeningType</a></strong> oObjStrOpening, catStrOpeningModeOutputProfile
+...</pre>
+				<p>In this step Uc calls a method <code>SetOpeningType</code>. This 
+				method takes a opening (oObjStrOpening) and opening type value (catStrOpeningModeOutputProfile) 
+				as input parameters. Here catStrOpeningModeOutputProfile is means the opening is sketch opening.</p>
+				</li>
+				<li>
+				<p><strong>Sets category</strong></p>
+				<pre class="code">...
+  <strong><a href="#SetCategory">SetCategory</a></strong> oObjStrOpening
+...</pre>
+				<p>In this step Uc calls a method <code>SetCategory</code>, it sets 
+				the category of the opening. This method takes the opening oObjStrOpening 
+				as input parameters.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrOpeningExtrusionMngt and sets forming extrusion 
+				mode</strong></p>
+				<pre class="code">...
+    <span class="keyword">Set</span> ObjStrOpeningExtrusionMngt = oObjStrOpening.<strong>StrOpeningExtrusionMngt</strong>
+    ObjStrOpeningExtrusionMngt.<strong>ExtrusionMode</strong> = 1
+...</pre>
+				<p>In this step object forming mode is set. To set the forming mode, 
+				forming mode value is assigned to property <code>ExtrusionMode</code>. 
+				Here 1 defines Before Forming Extrusion Mode..</p>
+				</li>
+				<li>
+				<p><strong>Sets output profile</strong></p>
+				<pre class="code">...
+  <span class="comment">&#39;set LimitMode to 1 for Dimensions</span>
+  <strong><a href="#SetOutPutProfile">SetOutPutProfile</a></strong> oObjStrOpening, RefProfileSketch, 0
+...</pre>
+				<p>In this step Uc calls a method <code>SetOutPutProfile</code>. 
+				It sets the output profile, direction and limit mode for the opening. 
+				This method takes a opening(oObjStrOpening), reference to sketch 
+				profile(RefProfileSketch) and limit mode value(0) as input parameters. 
+				Here 1 means limit mode is upto last.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step9"></a>Updates the Part object</strong></p>
+			<pre class="code">...
+  ObjPart.<strong>Update</strong>
+<span class="keyword">End Sub</span>
+</pre>
+			<p><code>Update</code> method updates the <code>ObjPart</code></p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<p><strong>Detailed steps of methods called in the use case</strong></p>
+<ul class="task">
+	<li>
+	<p><strong><a name="AddOpening"></a>AddOpening method</strong></p>
+	<pre class="code"><span class="keyword">Sub</span> AddOpening(iObjSddPlate <span class="keyword">As</span> SddPlate, oObjStrOpening <span class="keyword">As</span> StrOpening)
+    <span class="comment">&#39;Get StrOpenings object</span>
+    <span class="keyword">Dim</span> ObjStrOpenings <span class="keyword">As</span> StrOpenings
+    <span class="keyword">Set</span> ObjStrOpenings = iObjSddPlate.<strong>GetOpenings(0)</strong>
+    <span class="comment">&#39;Add opening</span>
+    <span class="keyword">Set</span> oObjStrOpening = ObjStrOpenings.<strong>Add</strong>
+<span class="keyword">End Sub</span></pre>
+	<p>Method <code>AddOpening</code>takes a plate object <code>iObjSddPlate</code> 
+	as input parameter and it returns created opening as output parameter in
+	<code>oObjStrOpening</code>. In this method object of type <code>StrOpenings</code> 
+	is retrieved in <code>ObjStrOpenings</code>. Then on this object <code>Add</code> 
+	method is called to create an opening with no properties set.</p>
+	</li>
+	<li>
+	<p><strong><a name="SetOpeningType"></a>SetOpeningType method</strong></p>
+	<pre class="code"><span class="keyword">Sub</span> SetOpeningType(iObjStrOpening <span class="keyword">As</span> StrOpening, iOpeningType <span class="keyword">As Long</span>)
+    <span class="comment">&#39;set opening type</span>
+    iObjStrOpening.<strong>OpeningType</strong> = iOpeningType
+<span class="keyword">End Sub</span></pre>
+	<p>Method <code>SetOpeningType</code> takes a opening object <code>iObjStrOpening</code> 
+	and opening type <code>iOpeningType</code> as input parameters. In this method,
+	<code>iOpeningType</code> which is input to this method is assigned to <code>
+	OpeningType</code> property.</p>
+	</li>
+	<li>
+	<p><strong><a name="SetCategory"></a>SetCategory method</strong></p>
+	<pre class="code"><span class="keyword">Sub</span> SetCategory(iObjStrOpening <span class="keyword">As</span> StrOpening)
+    <span class="comment">&#39;Get StrCategoryMngt object</span>
+    <span class="keyword">Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjStrCategoryMngt = iObjStrOpening.<strong>StrCategoryMngt</strong>
+    <span class="comment">&#39;set catgory</span>
+    ObjStrCategoryMngt.<strong>SetCategory</strong> iCategory
+<span class="keyword">End Sub</span></pre>
+	<p>Method <code>SetCategory</code> takes opening object(iObjStrOpening) and 
+	category(iCategory) as input parameters. In this method object of type <code>
+	StrCategoryMngt</code> is retrieved in <code>ObjStrCategoryMngt</code>. Then 
+	method <code>SetCategory</code> is called to set the catgory.</p>
+	</li>
+	<li>
+	<p><strong><a name="SetOutPutProfile"></a>SetOutPutProfile method</strong></p>
+	<pre class="code"><span class="keyword">Sub</span> SetOutPutProfile(iObjStrOpening <span class="keyword">As</span> StrOpening, iOutputProfile <span class="keyword">As</span> Reference, iLimitMode <span class="keyword">As Long</span>)
+<span class="comment">&#39;   1- Retrieves StrOpeningOutputProfile</span>
+    <span class="keyword">Dim</span> ObjStrOpeningOutputProfile <span class="keyword">As</span> StrOpeningOutputProfile
+    <span class="keyword">Set</span> ObjStrOpeningOutputProfile = iObjStrOpening.<strong>StrOpeningOutputProfile</strong>
+<span class="comment">&#39;   2- Sets OutputProfile for sketch opening</span>
+    ObjStrOpeningOutputProfile.<strong>OutputProfile</strong> = iOutputProfile
+<span class="comment">&#39;   3- Sets direction</span>
+    <span class="keyword">Set</span> ObjRefDirection = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.1&quot;)
+    <span class="keyword">Set</span> RefDirection = ObjPart.CreateReferenceFromObject(ObjRefDirection)
+    ObjStrOpeningOutputProfile.<strong>Direction</strong> = RefDirection
+<span class="comment">&#39;   4- Sets LimitMode</span>
+    ObjStrOpeningOutputProfile.<strong>LimitMode</strong> = iLimitMode
+<span class="keyword">End Sub</span></pre>
+	<p>Method <code>SetOutPutProfile</code> takes opening object(iObjStrOpening), 
+	output profile(iOutputProfile) and limit mode(iLimitMode) as input parameters. 
+	In the first step of this method object of type <code>StrOpeningOutputProfile</code> 
+	is retrieved in <code>ObjStrOpeningOutputProfile</code>. In the second step
+	<code>OutputProfile</code> property is set to <code>iOutputProfile</code>. In 
+	the third step reference to the plane &quot;DECK.1&quot; is retrieved using <code>GetReferencePlane</code> 
+	method from <code>RfgService</code> and then it set as the Direction. In the 
+	fourth step it sets <code>LimitMode</code> property to iLimitMode. </p>
+	</li>
+</ul>
+<table>
+	<caption><a name="Fig.1"></a>Fig.1: Opening on Sketch</caption>
+	<tr>
+		<td>
+		<img alt="Member" src="CAAScdSddUcCreateOpeningSketch.png"/></td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

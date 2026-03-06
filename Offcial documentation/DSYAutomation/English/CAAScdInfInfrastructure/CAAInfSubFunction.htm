@@ -1,0 +1,60 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>About Subs and Functions</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>About Subs and Functions</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>A method exposed by an objects is called by Visual Basic:</p>
+<ul>
+  <li>a <strong>Sub</strong> if it doesn&#39;t return any value</li>
+  <li>a <strong>Function</strong> if its does.</li>
+</ul>
+<p>Be careful when the methods requests arguments. To pass arguments to a <strong>Sub</strong>
+with Visual Basic Script, do not use parentheses as follows:</p>
+<pre class="code">Object.Sub arg1, arg2, arg3</pre>
+<p>But use parentheses with a <strong>Function</strong>:</p>
+<pre class="code"><span class="keyword">Dim</span> ReturnedObject <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> ReturnedObject = Object.Function (arg1, arg2, arg3)</pre>
+<p>You must use <strong>Set</strong> only if the returned value is an object, but not if
+it is a character string or a number. Nevertheless, character string and number
+defined as CATIA literals are objects and <strong>Set</strong> must be used if a <strong>Function</strong>
+returns a literal object.</p>
+<p>Finally, you don&#39;t have to use <strong>Set</strong> if you store your return value in a
+<strong>Property</strong>:</p>
+<pre class="code">myObject.aggregatedObject = Object.Function (arg1, arg2, arg3)</pre>
+<p>because there is no actual aggregatedObject variable, a property is a
+syntactical shortcut for accessor methods, here get_aggregatedObject
+and set_aggregatedObject, allowing to present those methods as an
+attribute of the object. The previous syntax is so equivalent to:</p>
+<pre class="code">myObject.set_aggregatedObject( Object.Function (arg1, arg2, arg3) )</pre>
+<p>and no <strong>Set</strong> is required.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

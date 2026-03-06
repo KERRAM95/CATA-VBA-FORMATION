@@ -1,0 +1,91 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaResultsGetOutputVariablesSourcePython.py</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+<pre>
+<span class="comment">#---------------------------- Sample script written in Python ---------------------------------</span>
+<span class="comment">#This sample retrieves history output variables and history regions.</span>
+
+<span class="comment">#Steps:</span>
+<span class="comment">#    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">#    2- Retrieves the results analysis case</span>
+<span class="comment">#    3- Retrieves the history variables</span>
+<span class="comment">#    4- Retrieves the history region and sub region information</span>
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+ENUM = win32com.client.constants
+
+oEditor = CATIA.ActiveEditor
+
+oProdService = oEditor.GetService("PLMProductService")
+
+oEntities = oProdService.EditedContent
+
+oEntity = oEntities.Item(1)
+
+oSimulationRoot = oEntity 
+    
+oResults = oSimulationRoot.Results
+
+oSimulationRepRes = oResults.Item(1)  
+
+oRootRepRes = oSimulationRepRes.Root    
+
+oResultsManager = oRootRepRes.GetItem("SimResultsManager") 
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    2- Retrieves the results analysis case</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oResultsAnalysisCases = oResultsManager.ResultsAnalysisCases
+
+oResultsAnalysisCase = oResultsAnalysisCases.Item(1)
+
+oSteps = oResultsAnalysisCase.ResultsSteps
+oResultsStep = oSteps.Item(2)
+
+stepId, stepName, stepDescription = oResultsStep.GetIdentifier ("", "", "")
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    3- Retrieves the history variables</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+odFrame = 0
+eSource = ENUM.SimFieldSourceHistory
+oFieldNames = oResultsStep.GetAvailableFields (odFrame, eSource, ())
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#   4- Retrieves the history region and sub region information</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+iVariableString = oFieldNames[17]
+oRegionNames, oSubRegionIndex, oSubRegionNames = oResultsStep.GetHistoryRegionsAndSubRegions (iVariableString, (), (), ())
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

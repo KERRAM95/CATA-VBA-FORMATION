@@ -1,0 +1,122 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>MOTSimulationIDLItf MOTExecutionServices (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../MOTSimulationIDLItf.htm" href="../MOTSimulationIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "MOTSimulationIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "MOTExecutionServices"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> MOTExecutionServices<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_MOTExecutionServices_40127','MOTExecutionServices','0');</script>
+<section id='maindesc'>
+<b><i> Automation interface for the MOTExecutionServices object.</i></b><br>
+
+ <br>
+ Interface representing services for the execution of a motion simulation.
+
+ <!-- @sample -->
+ <dl>
+ <dt><strong>Example:</strong></dt>
+ <dd> Given a <code>CATIAEditor</code> object, you can retrieve a <code>MOTExecutionServices</code> object as following:
+ <pre>
+  Dim oEditor As Editor
+  Set oEditor = CATIA.ActiveEditor
+  
+  Dim oMOTExecutionServices As MOTExecutionServices
+  Set oMOTExecutionServices = oEditor.GetService("MOTExecutionServices")
+ </pre>
+ </dd>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#RunAllAnalysisCases"><b>RunAllAnalysisCases</b></a>
+</td><td  id='tdright'>  Run all the motion analysis cases within a motion simulation reference.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RunAnalysisCase"><b>RunAnalysisCase</b></a>
+</td><td  id='tdright'>  Run a specific motion analysis case within a motion simulation reference.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="RunAllAnalysisCases"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>RunAllAnalysisCases</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>iSimulationRoot</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oExecutionInfosList</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Run all the motion analysis cases within a motion simulation reference.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSimulationRoot[in]</span></dt>
+   <dd>   The simulation object.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oExecutionInfosList[out]</span></dt>
+   <dd>   The list of MOTAnalysisCaseExecutionInfos class retrieved after the run of each analysis case.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="RunAnalysisCase"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>RunAnalysisCase</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>iSimulationRoot</span>,<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iAnalysisCase</span>,<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>oExecutionInfos</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Run a specific motion analysis case within a motion simulation reference.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSimulationRoot[in]</span></dt>
+   <dd>	  The simulation object.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAnalysisCase[in]</span></dt>
+   <dd>	  The name of the analysis case to run. Use a character string.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oExecutionInfos[out]</span></dt>
+   <dd>	  The MOTAnalysisCaseExecutionInfos class retrieved after the run of the analysis case.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

@@ -1,0 +1,408 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>AssemblyDesign Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>AssemblyDesign Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>AssemblyDesign</h2>
+<p><strong>Role:</strong> Setting to manage Assembly Design options</p>
+<p><strong>Detailed role:</strong> Assembly Design setting contains all options necessary to Assembly Design commands</p>
+<p>The AssemblyDesign repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /Mechanical Design/Assembly Design/General</li>
+  <li><strong>Repository File</strong>: AssemblyDesign</li>
+  <li><strong>Version</strong>: 1</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+<li><strong>Root tab page</strong> /Mechanical Design/Assembly Design/General reused as /Mechanical Design/Assembly Design/Constraints</li>
+</ul>
+<p>AssemblyDesign setting repository attributes:</p>
+<ul>
+  <li><a name="AsmPatternRepairMode"></a><strong>AsmPatternRepairMode</strong>
+    <br /><strong>Role</strong>: Attribute to manage AsmPatternRepair mode (automatic or manual)
+    <br /><strong>Detailed role</strong>: Automatically repairs assembly pattern, or displays update error whenever a input pattern modification is performed<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default assembly pattern is automatically repaired during PLM Update, without configuration management.</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Update error pops up during PLM Update forcing manual assembly pattern repair with or without configuration management.</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Automatically repairs assembly pattern during PLM Update, without configuration management.</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="BrokenCstsFbdiMode"></a><strong>BrokenCstsFbdiMode</strong>
+    <br /><strong>Role</strong>: [Deprecated 2019x, use AssemblyDesignImport repository]File based design import of broken Constraints mode
+    <br /><strong>Detailed role</strong>: According to this attribute's value, the file based design import of broken Constraints can be managed in three differents ways<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default Broken Constraints are imported and deactivated</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Broken Constraints are imported and deactivated</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Broken Constraints are imported</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Broken Constraints are not imported</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ConstraintCreationMode"></a><strong>ConstraintCreationMode</strong>
+    <br /><strong>Role</strong>: [Deprecated 2018x, use EngineeringConnection repository]Constraint creation mode
+    <br /><strong>Detailed role</strong>: According to this attribute's value, constraints can be created on any geometry or only on published geometry<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default constraint can be created on any geometry</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>The constraint can be created on any kind of geometry</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>The constraint can only be created on geometry published on the direct child level</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>The constraint can only be created on geometry published on any assembly level</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="EastCompassDuringUpdate"></a><strong>EastCompassDuringUpdate</strong>
+    <br /><strong>Role</strong>: Attribute to manage East Compass activation during Update
+    <br /><strong>Detailed role</strong>: The East Compass is activated during Update according to this attribute's value<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default East Compass is deactivated during Update</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>The East Compass is deactivated during Update</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>The East Compass is activated during Update (potential bad performances)</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="EnggConnectionAnimateSolve"></a><strong>EnggConnectionAnimateSolve</strong>
+    <br /><strong>Role</strong>: [Deprecated 2018x, use EngineeringConnection repository]Animates the update solve of consraints
+    <br /><strong>Detailed role</strong>: According to this attribute's value, the animation of solve of constriant is done or not.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default animation is to be done on solve of constraints</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>No animation is done on solve of constraints</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Animation of products is done during solve of constraints</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="EnggConnectionOrientation"></a><strong>EnggConnectionOrientation</strong>
+    <br /><strong>Role</strong>: [Deprecated 2018x, use EngineeringConnection repository]Sets the orientation of engineering connection to all instances can move
+    <br /><strong>Detailed role</strong>: According to this attribute's value, the default orientation of engineering connection is set to all instances can move.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default Engineering Connection orientation is not defined</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Orientation is not defined by default</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Engineering Connection orientation is set to all instances can move</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="EnggConnectionType"></a><strong>EnggConnectionType</strong>
+    <br /><strong>Role</strong>: [Deprecated 2018x, use EngineeringConnection repository]Controls the type of Engineering Connection by default
+    <br /><strong>Detailed role</strong>: According to this attribute's value, the type of Engineering Connection is set to the most equivalent.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default Engineering Connection type is set to the equivalent type when ok is pressed</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>The type of engineering conneciton is not set to the equivalent on pressing ok in the panel</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Engineering Connection type is set to the equivalent type when ok is pressed</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="EnggConnectionVisualizationStatus"></a><strong>EnggConnectionVisualizationStatus</strong>
+    <br /><strong>Role</strong>: [Deprecated 2018x, use EngineeringConnection repository]Controls the visualization display of Engineering Connection in 3D view
+    <br /><strong>Detailed role</strong>: According to this attribute's value, the visualization of Engineering Connection is displayed in the 3D view.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default no Engineering Connection visualization is shown</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>No Engineering Connection visualization is shown</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Engineering Connection visualization is shown on appropriate selections</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="InterferenceWarningMode"></a><strong>InterferenceWarningMode</strong>
+    <br /><strong>Role</strong>: [Deprecated 2018x, use EngineeringConnection repository]Interferance Warning when leaving Engineering Connection panel
+    <br /><strong>Detailed role</strong>: According to this attribute's value, a warning can be shown when exiting the Engineering Connection panel if no interference specification have been made or if current interference status does not match current specifications.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default warning are shown</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>No warning is shown</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Warning are shown</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="IsUpToDateAutoMode"></a><strong>IsUpToDateAutoMode</strong>
+    <br /><strong>Role</strong>: Attribute to manage IsUpToDate mode (automatic or manual)
+    <br /><strong>Detailed role</strong>: Automatically computes real update status, or highlight update icon whenever a modification is performed<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default update icon gets highlighted whenever a modification is performed</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Update icon gets highlighted whenever a modification is performed</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Automatically computes real update status</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="MRXOrderedList"></a><strong>MRXOrderedList</strong>
+    <br /><strong>Role</strong>: [Deprecated 2018x, use EngineeringConnection repository]Constraints ordered list for Engineering connection creation
+    <br /><strong>Detailed role</strong>: This attribute is the ordered list, used by commands such as Engineering connection creation, and specifies the constraint creation priority. Note that this array of 11 values must not contain any duplicates<br />
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: Slide</li>
+<li><strong>Default Value Role</strong>: Default order is Contact, FixTogetherTransfo, FixTogether, Coincidence, Offset, Angle, Parallelism, Perpendicularity, Length, Roll, Slide</li>
+    </ul>
+  </li>
+  <li><a name="MoveWithFixTExtendMode"></a><strong>MoveWithFixTExtendMode</strong>
+    <br /><strong>Role</strong>: [Deprecated 2018x]Attribute managing the extension of a move to the components involved in a FixTogether
+    <br /><strong>Detailed role</strong>: When a component involved in a FixTogether is moved, same move may be applied to all other components involved in the same FixTogether, according to this attribute's value<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default Move is never extended</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Never extend move to all components involved in a FixTogether</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Ask question to extend move to all component involved in a FixTogether</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>always extend move to all component involved in a FixTogether</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="NewExperienceInAssemblyApp"></a><strong>NewExperienceInAssemblyApp</strong>
+    <br /><strong>Role</strong>: [Deprecated 2018x]Attribute to manage Assembly Design user experience
+    <br /><strong>Detailed role</strong>: The new user experience is available in Assembly Design according to this attribute's value<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default the new user experience is deactivated in Assembly Design</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>The new user experience is deactivated in Assembly Design</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>The new user experience is activated in Assembly Design</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="QuickConstraintMode"></a><strong>QuickConstraintMode</strong>
+    <br /><strong>Role</strong>: [Deprecated 2018x, use EngineeringConnection repository]Quick constraint mode
+    <br /><strong>Detailed role</strong>: This attribute is used by commands such as Quick Constraint, which create the most accurate constraint from the context. The priority order may be determined by a predefined list or by the constraints solver<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default constraint is created according to the specified order</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Use the specified order</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Create verified constraint first</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="UpdateAskedAtSaveMode"></a><strong>UpdateAskedAtSaveMode</strong>
+    <br /><strong>Role</strong>: Attribute to manage the update panel at save (display when saved data is out of date or not)
+    <br /><strong>Detailed role</strong>: Depending on this attribute, a PLM Update panel will appear at Save if the data is out of date to ask for update, or not<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default the panel never appears at Save</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>The panel never appears at Save</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>The panel appears at Save if the data is out of date</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="UpdateBehaviorOnErrorsMode"></a><strong>UpdateBehaviorOnErrorsMode</strong>
+    <br /><strong>Role</strong>: Attribute to manage PLM Update behaviour on errors mode (stop or continue)
+    <br /><strong>Detailed role</strong>: Depending to this attribute, the PLM Update will stop on the first error encountered or will update all that is possible to update (all that is not impacted by encountered errors)<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default the PLM Update is stoped on first error</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>The PLM Update is stoped on first error</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>The PLM Update updates all that is possible to update</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="UpdateBehaviorOnWarningsMode"></a><strong>UpdateBehaviorOnWarningsMode</strong>
+    <br /><strong>Role</strong>: Attribute to manage PLM Update behaviour on warnings mode (display on the report or not)
+    <br /><strong>Detailed role</strong>: Depending on this attribute, the PLM Update report will display the encountered warnings or not<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default the PLM Update report displays the warnings</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>The PLM Update report displays the warnings</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>The PLM Update report hides the warnings</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

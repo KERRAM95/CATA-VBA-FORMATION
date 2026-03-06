@@ -1,0 +1,282 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Managing FEM Section Features</title>
+<style type="text/css">
+    .padded td, .padded th {
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Managing FEM Section Features</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This use case primarily focuses on the 
+					methodology to create/delete FEM sections.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					<ul>
+						<li>Launch CATIA and then import and open the
+						<code><div class=vb_sample_data>CAAScdFeaPumpModel.3dxml</div></code> file supplied in 
+						the folder <code>
+						InstallRootFolder\CAADoc\Doc\English\CAAScdFeaScenario\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder 
+						where the API CD-ROM is installed.</li>
+            <li>Note: Creation of new PLM objects via scripting, as in this 
+                use case, requires an enabling license in addition to the
+                interactive Roles needed to access the functionality.</li>            
+            </ul>
+					<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdFeaSectionsSource.htm">
+					CAAScdFeaSectionsSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in eight steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieving the active product</a></li>
+			<li><a href="#Step2">Retrieving the parts</a></li>
+			<li><a href="#Step3">Retrieving the publications</a></li>
+			<li><a href="#Step4">Creating the FEM representation and retrieving its root object</a></li>
+			<li><a href="#Step5">Retrieving the properties set</a></li>
+			<li><a href="#Step6">Creating individual properties</a></li>
+			<li><a href="#Step7">Setting individual attributes</a></li>
+			<li><a href="#Step8">Retrieving/Remove individual properties</a></li>
+			<li><a href="#Step9">Retrieving Shell Section attributes : Thickness, Integration Method...</a></li>					
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieving the active product</strong></p>
+			<p>As a first step, the UC retrieves the active product. </p>
+<pre class="code">... 
+<span class="keyword">Dim </span>myEditor<span class="keyword"> As </span>Editor
+<span class="keyword">Set </span>myEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim </span>myProdService<span class="keyword"> As </span>PLMProductService
+<span class="keyword">Set </span>myProdService = myEditor.GetService("PLMProductService")
+
+<span class="keyword">Dim </span>myEntities<span class="keyword"> As </span>PLMEntities
+<span class="keyword">Set </span>myEntities = myProdService.EditedContent
+
+<span class="keyword">Dim </span>myRootProduct<span class="keyword"> As </span>VPMReference
+<span class="keyword">Set </span>myRootProduct = myEntities.Item(1)
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieving the Parts</strong></p>
+			<p>In this step UC retrieves the 3D shapes 
+			aggregated by the root product.</p>
+<pre class="code">... 
+<span class="keyword">Dim </span>myProductInstance<span class="keyword"> As </span>VPMInstance
+<span class="keyword">Dim </span>myPartInstance<span class="keyword"> as </span>VPMRepInstance
+<span class="keyword">Dim </span>myPart<span class="keyword"> as </span>Part
+<span class="keyword">For Each </span>myProductInstance<span class="keyword"> in </span>myRootProduct.Instances
+<span class="keyword">    Dim </span>myProductInstanceRef<span class="keyword"> as </span>VPMReference
+<span class="keyword">    Set </span>myProductInstanceRef = myProductInstance.ReferenceInstanceOf
+
+<span class="keyword">    For Each </span>myPartInstance<span class="keyword"> in </span>myProductInstanceRef.RepInstances
+<span class="keyword">        Dim </span>myPartInstanceRef<span class="keyword"> as </span>VPMRepReference
+<span class="keyword">        Set </span>myPartInstanceRef = myPartInstance.ReferenceInstanceOf
+
+<span class="keyword">        If</span> (myPartInstanceRef.GetAttributeValue(&quot;V_discipline&quot;) = &quot;Design&quot;) <span class="keyword">Then</span>
+<span class="keyword">            Set </span>myPart = myPartInstanceRef.GetItem("Part")
+<span class="keyword">        End If</span>
+<span class="keyword">    Next</span>
+<span class="keyword">Next</span>
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieving the publications</strong></p>
+			<p>In this step UC retrieves the publications aggregated by the root product.</p>
+<pre class="code"> ...
+<span class="keyword">Dim </span>myPublications <span class="keyword"> As </span>VPMPublications
+<span class="keyword">Set </span>myPublications  = myRootProduct.Publications
+	
+<span class="keyword">Dim </span>myPublication<span class="keyword"> as </span>VPMPublication
+<span class="keyword">Set </span>myPublication = myPublications.GetItem("Pipe")
+ ...
+ </pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Creating the FEM representation and retrieving its root object</strong></p>
+			<p>In this step UC creates a new FEM representation object. To 
+			perform the creation, a simulation representation factory have to be 
+			retrieved on the reference object on which the FEM rep will be 
+			aggregated.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> myPrdRepFactory <span class="keyword">As</span> SimPrdRepFactory
+<span class="keyword">Set</span> myPrdRepFactory = myRootProduct.GetItem(&quot;SimPrdRepFactory&quot;)
+
+<span class="keyword">Dim</span> myFemRepRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">Set</span> myFemRepRef = myPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+
+<span class="keyword">Dim</span> myFemRepRoot <span class="keyword">As</span> SimFemRoot
+<span class="keyword">Set</span> myFemRepRoot = myFemRepRef.GetItem(&quot;SimFemRoot&quot;)
+</pre>
+			<p>The 3D Shapes are linked to the FEM representation as associated 
+			shapes.</p>
+<pre class="code">
+<span class="keyword">Dim </span>myRootOccurrence<span class="keyword"> as </span>VPMRootOccurrence
+<span class="keyword">Set </span>myRootOccurrence = myProdService.RootOccurrence
+	
+<span class="keyword">Dim </span>myRepInstance<span class="keyword"> As </span>VPMRepInstance
+<span class="keyword">Set </span>myRepInstance = Nothing <span class="comment">' Because we use publications</span>
+	
+<span class="keyword">Dim</span> myLink <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> myLink = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myPublication)
+MyFemRepRoot.AddAssociatedRep myLink
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieving the properties set</strong></p>
+			<p>In this step UC retrieves the properties set. </p>
+<pre class="code">...
+<span class="keyword">Dim</span> myPropertiesSet <span class="keyword">As</span> SimProperties
+<span class="keyword">Set</span> myPropertiesSet = myFemRepRoot.GetSet(&quot;SimProperties&quot;)
+...
+</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step6"></a>Creating individual properties</strong></p>
+				<p>In this step UC creates a solid section and a shell section feature.</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> mySolidSection <span class="keyword">As</span> SimSolidSection
+<span class="keyword">Set</span> mySolidSection = myPropertiesSet.Add(&quot;SimSolidSection&quot;)
+
+<span class="keyword">Dim</span> myShellSection <span class="keyword">As</span> SimShellSection
+<span class="keyword">Set</span> myShellSection = myPropertiesSet.Add(&quot;SimShellSection&quot;)
+...
+				</pre>
+				<p>You can find the available late types for properties creation in the <a href="CAAScdFeaModelLateTypes.htm">
+					Creation Late Types for Model Features</a> article.
+				</p>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Setting individual attributes</strong></p>
+			<p>In this step UC sets individual attributes of the sections.</p>
+<pre class="code">...
+<span class="comment">' Sets the section support</span>
+<span class="keyword">Dim</span> myLinkAccess <span class="keyword">As</span> SimLinkAccess
+<span class="keyword">Set</span> myLinkAccess = myShellSection.GetItem(&quot;SimLinkAccess&quot;)
+myLinkAccess.AddLink &quot;MainSupport&quot;, myLink
+
+<span class="comment">' Sets the material behavior</span>
+myShellSection.MaterialBehaviorByName = "Behavior.1"
+
+<span class="comment">' Sets the orientation</span>
+<span class="keyword">Dim</span> myOrientation <span class="keyword">As</span> SimOrientation
+<span class="keyword">Set</span> myOrientation = myShellSection.Orientation
+
+<span class="keyword">Dim</span> myAxisSystem <span class="keyword">As</span> SimAxisSystem
+<span class="keyword">Set</span> myAxisSystem = myOrientation.AxisSystem
+myAxisSystem.CoordinateType = SimAxisSystemCartesian
+
+myOrientation.OrientationFlag = True
+myOrientation.AxisOfRotation = SimOrientationAxis2
+myOrientation.AngleOfRotation = 90
+	
+<span class="comment">' Sets others attributes</span>
+myShellSection.IntegrationScheme = SimShellSectionSimpsonIntegration
+myShellSection.PoissonMethod = SimShellSectionPoissonDefault
+myShellSection.UniformThickness = 0.002
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Retrieving/Remove individual properties</strong></p>
+			<p>In this step UC retrieves the created properties and remove the solid section.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> myRetrievedSolidSection<span class="keyword"> As</span> SimSolidSection
+<span class="keyword">Set</span> myRetrievedSolidSection = myPropertiesSet.Item(1)
+
+<span class="keyword">Dim</span> myRetrievedShellSection<span class="keyword"> As</span> SimShellSection
+<span class="keyword">Set</span> myRetrievedShellSection = myPropertiesSet.Item(2)
+
+myPropertiesSet.Remove(1)
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step9"></a>Retrieving Shell Section attributes : Thickness, Integration Method...</strong></p>
+			<p>In this step UC retrieves the properties attributes.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> myIntegrationScheme<span class="keyword"> As</span> SimShellSectionIntegrationScheme
+myIntegrationScheme = myRetrievedShellSection.IntegrationScheme
+
+<span class="keyword">Dim</span> myNumberOfIntegrationPoints<span class="keyword"> As</span> Long
+myNumberOfIntegrationPoints = myRetrievedShellSection.NumIntPoints
+
+<span class="keyword">If</span> myRetrievedShellSection.UniformThicknessFlag <span class="keyword">Then</span>
+<span class="keyword">    Dim</span> myUniformThickness<span class="keyword"> As</span> Double
+    myUniformThickness = myRetrievedShellSection.UniformThickness
+<span class="keyword">End If</span>
+
+<span class="keyword">Dim</span> myMaterialBehavior<span class="keyword"> As</span> MaterialBehavior
+<span class="keyword">Set</span> myMaterialBehavior = myRetrievedShellSection.MaterialBehavior
+
+<span class="keyword">Set</span> myOrientation = myRetrievedShellSection.Orientation
+
+<span class="keyword">If</span> myOrientation.OrientationFlag <span class="keyword">Then</span>
+<span class="keyword">    Dim</span> myRotationAxis <span class="keyword"> As</span> SimOrientationAxisOfRotation
+    myRotationAxis= myOrientation.AxisOfRotation
+    
+<span class="keyword">    Dim</span> myAngleOfRotation<span class="keyword"> As</span> Double
+    myAngleOfRotation= myOrientation.AngleOfRotation
+<span class="keyword">End If</span>
+...
+</pre>
+			</li>
+			
+	</ol>
+	</td>
+	</tr>
+</table>	
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

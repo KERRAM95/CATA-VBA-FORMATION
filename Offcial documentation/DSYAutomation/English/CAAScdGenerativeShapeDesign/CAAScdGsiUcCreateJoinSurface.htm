@@ -1,0 +1,235 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a Join Surface</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating a Join Surface</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates creating a Join surface using the geometry created
+						(Fill and Extrude).</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA </li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdGsiUcCreateJoinSurfaceSource.htm">CAAScdGsiUcCreateJoinSurfaceSource.htm</a></span></p>
+						<span class="run-in"></span></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic1</em>&gt;</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic2</em>&gt;</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>This use case can be divided in six steps:</p>
+<ol>
+	<li><a href="#Step1">Creates 3DShape with Geometries</a></li>
+	<li><a href="#Step2">Retrieves Geometrical Set containing input Geometries</a></li>
+	<li><a href="#Step3">Creates Join Surface</a></li>
+	<li><a href="#Step4">Inserts Join in the </a><a href="#Step2">Geometrical Set</a></li>
+	<li><a href="#Step5">Sets Join as Current Object</a></li>
+	<li><a href="#Step6">Updates Part Object</a></li>
+</ol>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Creates 3DShape with Geometries</strong></p>
+			<pre class="code"><span class="keyword">...</span>
+    <span class="keyword">Dim</span> Part1 <span class="keyword">As</span> Part
+    <strong>CreateFillnExtrude</strong> Part1
+...</pre>
+			<p>The CreateFillnExtrude sub routine creates a new 3DShape with geometry 
+			as shown in the following picture.</p>
+			<table>
+				<caption>Fig. 1 Creating Geometry with Fill and Extrude</caption>
+				<tr>
+					<td>
+					<img alt="Geometry with Fill and Extrude" src="CAAScdGsiUcCreateJoinSurface_in.jpg"/>
+					</td>
+				</tr>
+			</table>
+			<p><code>Part1</code> is the Part Object of the 3D Shape, 
+			the object aggregating all the objects making up the 3D shape, whose
+			<code>Fill.1</code> and <code>Extrude.1</code> are used to create the 
+			join.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Geometrical Set 
+			containing input Geometries</strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oHybridBodies <span class="keyword">As</span> HybridBodies
+    <span class="keyword">Set</span> oHybridBodies =  Part1.<strong>HybridBodies</strong>
+
+    <span class="keyword">Dim</span> oHybridBody <span class="keyword">As</span> HybridBody
+    <span class="keyword">Set</span> oHybridBody =  oHybridBodies.<strong>Item</strong>(&quot;Geometrical Set.1&quot;)    
+...</pre>
+			<p>The first line retrieves the <code>HybridBodies</code> collection 
+			object. From this collection, <code>oHybridBodies</code>, we 
+			further retrieve the <code>HybridBody </code>object whose external name 
+			is &quot;<code>Geometrical Set.1</code>&quot;.</p>
+			</li>
+			<li>
+			<p><a name="Step3"></a><strong>Creates Join Surface</strong></p>
+			<p>The Join surface is created between two surfaces,
+			<code>Fill.1 </code>and <code>Extrude.1, </code>contained inside
+			<code>Geometrical Set.1 </code>retrieved in the previous step. Once 
+			each input is retrieved, they are converted into <code>Reference</code> 
+			object. This operation is required in order to use the <code>Reference</code> 
+			objects as input for the Join operation. </p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Retrieves Fill.1, and creates a reference for it</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oHybridShapeFill1 <span class="keyword">As</span> HybridShape
+    <span class="keyword">Set</span> oHybridShapeFill1 = oHybridBody.<strong>HybridShapes</strong>.<strong>Item</strong>(&quot;Fill.1&quot;)
+
+    <span class="keyword">Dim </span> Reference1 <span class="keyword">As</span> Reference
+    <span class="keyword">Set</span> Reference1 = Part1.<strong>CreateReferenceFromObject</strong>(oHybridShapeFill1)
+...</pre>
+				<p>Reference1 is an object Reference of <code>Fill.1</code> 
+				retrieved in the <code>Geometrical Set.1</code> represented by
+				<code>HybridBody </code>object<code>. </code></p>
+				</li>
+				<li>
+				<p>Retrieves Extrude.1 and creates a reference for 
+				it </p>
+				<pre class="code">...
+<span class="keyword">    Dim</span> oHybridShapeExtrude1 <span class="keyword">As</span> HybridShape
+<span class="keyword">    Set</span> oHybridShapeExtrude1 = oHybridBody.<strong>HybridShapes</strong>.<strong>Item</strong>(&quot;Extrude.1&quot;)
+
+<span class="keyword">    Dim </span> Reference2 <span class="keyword">As</span> Reference
+<span class="keyword">    Set</span> Reference2 = Part1.<strong>CreateReferenceFromObject</strong>(oHybridShapeExtrude1)
+...</pre>
+				<p>Reference2 is an object Reference of <code>Extrude.1</code> 
+				retrieved in the <code>Geometrical Set.1</code> represented by
+				<code>oHybridBody </code>object<code>. </code></p>
+				</li>
+				<li>
+				<p>Creates a Join (also named assemble) between Fill.1 
+				and Extrude.1</p>
+				<pre class="code">...
+<span class="keyword">    Dim</span> oHybridShapeFactory <span class="keyword">As</span> Factory
+<span class="keyword">    Set</span> oHybridShapeFactory = Part1.<strong>HybridShapeFactory</strong>
+
+<span class="keyword">    Dim</span> oJoin.1 <span class="keyword">As</span> HybridShapeAssemble
+<span class="keyword">    Set</span> oJoin.1 = oHybridShapeFactory.<strong>AddNewJoin</strong>(Reference1, Reference2)
+... </pre>
+				<p>The join object is created thanks to a <code>Factory</code> 
+				object, that you retrieve from the <code>Part</code> object. Its
+				<strong>HybridShapeFactory</strong> property retrieves the hybrid shape factory, 
+				named here <code>oHybridShapeFactory</code>. The join object,
+				<code>oJoin.1, </code>is created using the reference objects of 
+				both surfaces, retrieved in the above steps to join.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><a name="Step4"></a><strong>Inserts Join in the Geometrical 
+			Set</strong></p>
+			<p>Once created the join object must be aggregated in the 
+			Part object, in other words aggregated to one of its own set object.</p>
+			<pre class="code">...
+    oHybridBody.<strong>AppendHybridShape</strong> oJoin.1    
+...</pre>
+			<p>The newly created join, <code>oJoin.1</code>, [<a href="#Fig._2">Fig.2</a>] 
+			is inserted inside &quot;Geometrical Set.1&quot; represented by <code>oHybridBody</code> 
+			object ( See step [<a href="#Step2">2</a>] ) using the
+			<strong>AppendHybridShape</strong> method.</p>
+			</li>
+			<li>
+			<p><a name="Step5"></a><strong>Sets Join as Current Object</strong></p>
+			<p>Sets the join, <code>oJoin.1</code>, as the in work 
+			object of the Part object.</p>
+			<pre class="code">...
+    Part1.<strong>InWorkObject</strong> = oJoin.1 
+...</pre>
+			<p>Just below you can see Join.1 is highlighted. </p>
+			<table>
+				<caption><a name="Fig._2">Fig. 2</a> Join Selected as Current Object</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Join Selected as Current Object" src="CAAScdGsiUcCreateJoinSurface_imageOut.jpg"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p><a name="Step6"></a><strong>Updates Part Object</strong></p>
+			<pre class="code">...
+    Part1.<strong>Update</strong>
+<span class="keyword">...</span></pre>
+			<p>Updates the Part Object, <code>Part1</code>, result 
+			with respect to its specifications.</p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Browsing Occurrence Model</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Browsing Occurrence Model</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates navigation of the Product Occurrence Model. 
+						Use case navigates down the hierarchy of an Occurrence Model 
+						associated with a Product Root Reference loaded in session. 
+						It retrieves the Occurrences aggregated under the Root Occurrence, 
+						and displays the entire hierarchy in a tree format, as viewed 
+						in the Specification Tree within CATIA, but without the 
+						Representation Instances/References.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:<a href="CAAScdPstUcBrowseOccurrenceModelSource.htm"> 
+						CAAScdPstUcBrowseOccurrenceModelSource.htm</a></span></p>
+						<p>Attention the macro can request a slight change to 
+						take into account your own Product types. First read
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a> 
+						before using it.</p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+					<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td></tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 3 steps</p>
+		<ol>
+			<li><a href="#Step1">Searches for a Product in database</a></li>
+			<li><a href="#Step2">Opens the Product and retrieves its Editor</a></li>
+			<li><a href="#Step3">Navigates the Product Occurrence Recursively</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches for a Product in database</strong></p>
+			<p>As a first step, the UC retrieves a Product from database</p>
+			<p>It begins with a call to <strong>SearchProduct</strong> function. 
+			This function searches for a list of PLM Components from the underlying 
+			database based on an input search criteria. This list is output in the 
+			PLM Search Result window in CATIA.</p>
+			<pre class="code"> ... 
+ <span class="keyword">    Dim </span>oDBSearch <span class="keyword"> As </span> DatabaseSearch
+ <span class="keyword">    Set </span>oDBSearch = <strong>SearchProduct(oSearchService)</strong>
+...</pre>
+			<p>The function <em>SearchProduct</em> returns the <code>oDBSearch</code> 
+			object, a<code> DatabaseSearch</code>.</p>
+			<p>We build up the search criteria, with a Product Reference type , 
+			and PLM_ExternalID and revision as an input [<a href="#References">1</a>].</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Opens the Product and retrieves 
+			its Editor</strong></p>
+			<p>As a next step, the UC essentially loads in session first PLM Entity 
+			output by search collection occurring in the new tab page within Search 
+			Editor retrieved in the last step [<a href="#References">1</a>]. </p>
+			<pre class="code">...
+ <span class="keyword">   Dim</span> oProductEditor <span class="keyword">As</span> Editor
+ <span class="keyword">   Set </span>oProductEditor = <strong>OpenProductAndGetEditor</strong>(oDBSearch)
+...</pre>
+			<p>The function <em>OpenProductAndGetEditor</em> takes a <code>DatabaseSearch</code>,
+			<code>oDBSearch</code>, as its input and returns an Editor which contains 
+			opened Product. This argument was output by the Search on the underlying 
+			database, which occurred in the previous step</p>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Navigates the Product Occurrence 
+			Recursively</strong></p>
+			<p>Now Use case retrieves the Product Occurrence (Root) associated with 
+			its Occurrence Model and then navigates down its product hierarchy to 
+			display its contents, precisely in the same way, as seen in the specification 
+			tree within CATIA, except that the Representation Instances/ References 
+			are not displayed as shown in the <a href="#Fig.3">Fig.3</a> below.</p>
+			<pre class="code">...
+ <strong>   NavigateProductOccurrence</strong> oProductEditor
+...</pre>
+			<p>The function <em>NavigateProductOccurrence</em> takes an <code>Editor</code>,
+			<code>oProductEditor</code>, as an input.</p>
+			<table>
+				<caption><a name="Fig.3"></a>Fig.3: Occurrence Product model sample 
+				output </caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Browsing Occurrence Model" src="CAAScdPstUcBrowsingOccurrenceModel_image3.jpg" width="177" height="159"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>The function <em>NavigateProductOccurrence</em> details are as in 
+			the below sub steps.</p>
+			<ol class="task" style="list-style-type: upper-roman">
+				<li>
+				<p>Retrieves the Root Product Occurrence from the current VPM Editor 
+				to navigate</p>
+				<pre class="code">Sub <strong>NavigateProductOccurrence</strong>(oProductEditor)
+ 
+ <span class="keyword">   Dim  </span>oProductService <span class="keyword"> As  </span> PLMProductService
+ <span class="keyword">   Set  </span>oProductService= oProductEditor.GetService(&quot;<strong>PLMProductService</strong>&quot;)
+ 
+  <span class="keyword">  Dim  </span>oVPMRootOccOnRoot <span class="keyword"> As  </span> VPMRootOccurrence
+ <span class="keyword">   Set  </span>oVPMRootOccOnRoot = oProductService.<strong>RootOccurrence</strong>
+...</pre>
+				<p>The <code>PLMProductService</code>, <code>oProductService</code> 
+				is retrieved from the <code>Editor</code>, <code>oProductEditor</code>, 
+				thanks to the <em>GetService</em> method with the string &quot;<em>PLMProductService</em>&quot; 
+				as input</p>
+				<p>Then a call to <em>RootOccurrence</em> Property of the <code>
+				PLMProductService</code>, <code>oProductService</code>, returns 
+				a <code>VPMRootOccurrence</code>, <code>oVPMRootOccOnRoot</code> 
+				.</p>
+				</li>
+				<li>
+				<p>Navigates the Product Occurrence</p>
+				<p>Here we navigate through occurrence model recursively. We will 
+				start navigation from root occurrence which is retrieved in last 
+				step.</p>
+				<pre class="code">...
+ <strong>   NavigateProdOccurrences</strong> oVPMRootOccOnRoot, 0
+...</pre>
+				<p>The function <em>NavigateProdOccurrences</em> takes a <code>VPMRootOccurrence</code>,
+				<code>oVPMRootOccOnRoot</code>, as an input. last argument 0 is 
+				depth which will further used for display purpose.</p>
+				<p>The function <em>NavigateProdOccurrences</em> details are as 
+				in the below sub steps</p>
+				<ol class="task" style="list-style-type: lower-roman">
+					<li>
+					<p>Retrieves the list of Occurrences within the input Occurrence</p>
+					<pre class="code">Sub <strong>NavigateProdOccurrences</strong>(oOccurrence, depth)
+ 
+ <span class="keyword">  Dim  </span>oListChildrenOccurrences <span class="keyword"> As  </span> VPMOccurrences
+ <span class="keyword">  Set  </span>oListChildrenOccurrences = oOccurrence.<strong>Occurrences</strong>
+    
+   strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + oOccurrence.<strong>Name</strong> + vbCrLf
+...</pre>
+					<p>A call to Occurrences Property of the <code>VPMOccurrence</code>, 
+					retrieves the <code>VPMOccurrences </code>a collection object,<code> 
+					oListChildrenOccurrences</code> </p>
+					<p>Then a call to Name Property returns the name of Occurrence 
+					further we append this name into string <code>strBrowsedPLMCompIDAttr</code> 
+					for display with tab value <code>vbCrLf</code>.</p>
+					</li>
+					<li>
+					<p>Navigates through each child Occurrence recursively</p>
+					<pre class="code">...   
+ For i = 1 To oListChildrenOccurrences.Count
+    
+     <span class="keyword">Dim  </span>oChildOcc <span class="keyword">As  </span> VPMOccurrence
+ <span class="keyword">    Set  </span>oChildOcc =  oListChildrenOccurrences.<strong>Item</strong>(i)
+       
+     <strong>NavigateProdOccurrences</strong> oChildOcc, depth + 1
+ Next
+...</pre>
+					<p>We parse through the <em>VPMOccurrences</em> collect object, 
+					a <code>oListChildrenOccurrences</code> and retrieves PLM Product 
+					Occurrence <code>oChildOcc</code> from its index, thanks <em>
+					Item </em>method of <em>VPMOccurrences</em> </p>
+					<p>A recursive call to <em>NavigateProdOccurrences</em> with 
+					the <code>VPMOccurrence</code> object, <code>a oChildOcc</code> 
+					as one of its arguments. The second argument (depth + 1) represents 
+					the offset at which the child occurrence will be displayed in 
+					the output, implying it is output at &quot;+1 tab&quot; offset relative 
+					to its parent occurrence. </p>
+					</li>
+				</ol>
+				</li>
+			</ol>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<table>
+	<tbody>
+	<tr>
+		<td valign="top">[1]</td>
+		<td><a href="CAAScdPstUcOpenProductReference.htm">Opening Product Reference</a></td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample retrieves the Root Feature of Scenario or Result Representations and the simulated Model </span>
+<span class="comment">'Before starting this macro, opens a simulation structure containing a Scenario or Result rep. </span>
+<span class="comment">'Steps:</span>
+<span class="comment">'   1- Retrieves the current Editor</span>
+<span class="comment">'   2- Retrieves the Simulation Service</span>
+<span class="comment">'   3- Gets the Simulation Specs Representation manager from the Editor</span>
+<span class="comment">'   4- Gets the Simulation Reference from the Simulation Specs Representation manager</span>
+<span class="comment">'   5- Retrieves the Simulated Model </span>
+<span class="comment">'   6- Retrieving the Specifications Collection  </span>
+<span class="comment">'   7- Retrieving the Scenario Representation under the Scenarios Category </span>
+<span class="comment">'   8- Retrieving the Root Feature of the Rep Scenario</span>
+<span class="comment">'   9- Retrieving the Results Collection  </span>
+<span class="comment">'   10- Retrieving the Result Representation under the Results Category </span>
+<span class="comment">'   11- Retrieving the Root Feature of the Rep Result</span>
+
+</pre>
+<pre>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Sub </span>CATMain()
+
+
+<span class="comment">'   1- Gets the current Editor </span>
+<span class="keyword">       Dim </span>oSimulationEditor <span class="keyword">As</span> Editor
+<span class="keyword">       Set </span>oSimulationEditor = CATIA.ActiveEditor
+
+<span class="comment">'   2- Retrieves the Simulation Service </span>
+<span class="keyword">       Dim </span>oSimulationService <span class="keyword">As</span> SimSimulationService
+<span class="keyword">       Set </span>oSimulationService = oSimulationEditor.GetService("SimSimulationService")
+
+<span class="comment">'   3- Gets the Simulation Specs Representation manager from the Editor</span>
+<span class="keyword">       Dim </span>oSimulationSpecsRepManager <span class="keyword">As</span> SimSpecsRepManager
+<span class="keyword">       Set </span>oSimulationSpecsRepManager = oSimulationEditor.ActiveObject
+
+<span class="comment">'   4- Gets the Simulation Reference from the Simulation Specs Representation manager </span>
+<span class="keyword">       Dim </span>oSimulationRoot <span class="keyword">As</span> SimulationReference
+<span class="keyword">       Set </span>oSimulationRoot = oSimulationService.GetSimulationReferenceFromObject(oSimulationSpecsRepManager)
+
+<span class="comment">'   5- Retrieves the Simulated Model </span>
+<span class="keyword">       Dim </span>oPLMModel <span class="keyword">As</span> AnyObject
+<span class="keyword">       Set </span>oPLMModel = oSimulationRoot.Model
+
+<span class="comment">'   6- Retrieving the Specifications Collection </span>
+<span class="keyword">       Dim </span>oSpecifications <span class="keyword">As</span> SimulationSpecifications
+<span class="keyword">       Set </span>oSpecifications = oSimulationRoot.Specifications
+
+<span class="comment">'   7- Retrieving the Scenario Representation under the Scenarios Category</span>
+<span class="keyword">       Dim </span>oSimulationRepSpec <span class="keyword">As</span> SimulationRepresentation
+<span class="keyword">       Set </span>oSimulationRepSpec = oSpecifications.Item(1)
+ 
+<span class="comment">'   8- Retrieving the Root Feature of the Rep</span>
+<span class="keyword">       Dim </span>oRootRepSpec <span class="keyword">As</span> AnyObject
+<span class="keyword">       Set </span>oRootRepSpec = oSimulationRepSpec.Root
+ 
+<span class="comment">'   9- Retrieving the Results Collection </span>
+<span class="keyword">       Dim </span>oResults <span class="keyword">As</span> SimulationResults
+<span class="keyword">       Set </span>oResults  = oSimulationRoot.Results
+
+<span class="comment">'   10- Retrieving the Result Representation under the Results Category</span>
+<span class="keyword">       Dim </span>oSimulationRepRes <span class="keyword">As</span> SimulationRepresentation
+<span class="keyword">       Set </span>oSimulationRepRes = oResults.Item(1)
+ 
+<span class="comment">'   11- Retrieving the Root Feature of the Rep</span>
+<span class="keyword">       Dim </span>oRootRepRes <span class="keyword">As</span> AnyObject
+<span class="keyword">       Set </span>oRootRepRes = oSimulationRepRes.Root
+
+<span class="keyword">End Sub</span>
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating Ordered Geometrical Sets in 3DShape - Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Creating Ordered Geometrical Sets in 3DShape
+'
+'Mission: This use case creates a 3DShape with Ordered Geometrical Sets.
+'
+'Steps:
+'
+'  1. Creates a 3DShape
+'  2. Retrieves its Part Object
+'  3. Retrieves its Ordered Geometrical Set collection
+'  4. Creates an Ordered Geometrical Set 
+'  5. Retrieves its own Ordered Geometrical Set Collection
+'  6. Creates an Ordered Geometrical Set beneath the New One
+'  7. Updates Part Object
+'--------------------------------------------------------------------------------------------------------------------
+
+
+Sub CreatingOrderedGeometricalSets()
+  
+
+    '1. Creates a 3DShape
+    Dim oPLMNewService As PLMNewService
+    Set oPLMNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+ 
+    Dim oEditor3DShape as Editor
+    oPLMNewService.PLMCreate &quot;3DShape&quot;, oEditor3DShape
+ 
+    '2. Retrieves its Part Object
+    Dim oPart As Part
+    Set oPart = oEditor3DShape.ActiveObject
+ 
+    MsgBox (&quot;Part Name :&quot;) + oPart.Name
+    
+    '3. Retrieves its Ordered Geometrical Set collection
+    Dim oOrderedGeometricalSets As OrderedGeometricalSets
+    Set oOrderedGeometricalSets = oPart.OrderedGeometricalSets
+        
+    '4. Creates an Ordered Geometrical Set
+    Dim oOrderedGeometricalSet As OrderedGeometricalSet
+    Set oOrderedGeometricalSet = oOrderedGeometricalSets.Add
+       
+    '5. Retrieves its own Ordered Geometrical Set Collection
+    Dim oOrderedGeometricalSetsBeneathOtherOGS As OrderedGeometricalSets
+    Set oOrderedGeometricalSetsBeneathOtherOGS = oOrderedGeometricalSet.OrderedGeometricalSets
+        
+    '6. Creates an Ordered Geometrical Set beneath the New One
+    Dim oOrderedGeometricalSetBeneathOtherOGS As OrderedGeometricalSet
+    Set oOrderedGeometricalSetBeneathOtherOGS = oOrderedGeometricalSetsBeneathOtherOGS.Add
+    
+    '7. Updates Part Object
+    oPart.Update
+    
+End Sub
+</pre>
+
+</body>
+
+</html>

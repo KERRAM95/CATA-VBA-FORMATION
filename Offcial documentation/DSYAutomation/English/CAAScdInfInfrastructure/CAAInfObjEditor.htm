@@ -1,0 +1,86 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/xref.js">/* */</script>
+<title>Editor Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Editor Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+  <tbody>
+  <tr>
+    <td class="ofvbanavunused">See Also</td>
+    <td class="ofvbanavreuse"><a href="CAAInfArchitectureOverview.htm">Legend</a></td>
+    <td class="ofvbanavunused">Use Cases</td>
+    <td class="ofvbanavreuse"><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Editor', 'PropertyIndex'); return false;">Properties</a></td>
+    <td class="ofvbanavreuse"><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Editor', 'MethodIndex'); return false;">Methods</a></td>
+  </tr>
+</tbody>
+</table>
+<p class="auto"><a href="CAAInfObjEditors.htm"><img src="../CAAScdImages/Editors.png" alt="Editors Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Editor');return false;"><img src="../CAAScdImages/Editor.png" alt="Editor Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:xrefToc(this, 'Editor');return false;"><img src="../CAAScdImages/AnyObject.png" alt="Multiple Objects" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAAInfObjSelection.htm"><img src="../CAAScdImages/Selection.png" alt="Selection Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/propGetService.png" alt="Method to Return the Service Object" width="80" height="24"/><a href="CAAInfObjService.htm"><img src="../CAAScdImages/Service.png" alt="Service Abstract Object" width="252" height="22"/></a>
+</p>
+<p>Represents an editor.</p>
+<p>In the Model View Controller paradigm, the editor plays the Controller role. 
+The editor federates all the objects that can be interactively edited in the 
+same window. It holds the current workbench and thus maintains the list of all 
+the commands that can be launched from menus and toolbars when this window is 
+active to edit the objects it controls according to the root object PLM type.</p>
+<p>The active editor is the editor associated with the current window, whatever
+the active object in that window.</p>
+<h2>Retrieving the Editor Object</h2>
+<p>Use the <strong>ActiveEditor</strong> property of the <strong>Application</strong> object to 
+return the active editor.</p>
+<pre class="code"><span class="keyword">Dim</span> oActiveEditor <span class="keyword">As</span> Editor
+<span class="keyword">Set</span> oActiveEditor = CATIA.ActiveEditor</pre>
+<p>Use the <strong>Item</strong> method of the <strong>Editors</strong> collection to return an 
+editor among the ones hold by the <strong>Application</strong> object.</p>
+<pre class="code"><span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor
+<span class="keyword">Set</span> oEditor = CATIA.Editors.Item(2)</pre>
+<h2>Using the Editor Object</h2>
+<p>Use the <strong>ActiveObject</strong> property to return the active object 
+associated with the active <strong>Editor</strong> object. The active object is 
+the root of the data being currently edited. Depending on this data, it can be a
+<strong>Part</strong> object, a <strong>DrawingRoot</strong> object, or a
+<strong>VPMReference</strong> object.</p>
+<pre class="code"><span class="keyword">Dim</span> oActiveObject <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> oActiveObject = CATIA.ActiveEditor.ActiveObject</pre>
+<p>Use the <strong>Selection</strong> property to return the <strong>Selection</strong> object 
+associated with the active <strong>Editor</strong> object.</p>
+<pre class="code"><span class="keyword">Dim</span> oSelection <span class="keyword">As</span> Selection
+<span class="keyword">Set</span> oSelection = CATIA.ActiveEditor.Selection</pre>
+<p>Use the <strong>GetService</strong> method to return a <strong>Service</strong> object applying 
+to the Editor. Refer to the <a href="CAAInfObjService.htm">Service Object</a>.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Initializing a Simulation Object</title>
+<style type="text/css">
+    .padded td, .padded th {
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Initializing a Simulation Object</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+			<h3>Abstract</h3>
+			<p>The following reference section documents the required licensing for initializing various types of simulations.</p>
+			<ul>
+				<li><a href="#Initializing a Simulation Object">Initializing a Simulation Object</a></li>
+			</ul>
+		</td>
+	</tr>
+</table>
+<h2><a name="Initializing a Simulation Object"></a>Initializing a Simulation Object</h2>
+	<p>The first step in creating a new simulation is to call the <code>SetSimulationInitialization</code> method of <strong>SimInitializationService</strong>.</p>
+				<pre class="code">...
+<span class="comment">' Initializing the simulation PLM Object</span>
+
+<span class="keyword">Dim</span> myInitService <span class="keyword">As</span> SimInitializationService
+<span class="keyword">Set</span> myInitService = CATIA.GetSessionService(&quot;SimInitializationService&quot;)
+
+myInitService.SetSimulationInitialization "SimMechanicalScenarioCreation", "SimStructural"
+...
+				</pre>
+	<p>The argument strings into the <code>SetSimulationInitialization</code> method maps to the App and Analysis Case of the Simulation as per the table below.</p>
+
+	<table class="padded">
+		<tr>
+			<th>App</th>
+			<th>AppName Argument</th>
+			<th>Analysis Case</th>
+			<th>TypeName Argument</th>
+			<th>Recommended Roles</th>
+		</tr>
+		<tr valign="top">
+			<td rowspan="4">SIMULIA Mechanical Scenario Creation</td>
+			<td rowspan="4">SimMechanicalScenarioCreation</td>
+			<td>General</td>
+			<td>SimGeneral</td>
+			<td rowspan="4">
+			    SYE - Structural Analysis Engineer<br />
+                SSU - Structural Mechanics Engineer
+			</td>
+		</tr>
+		<tr valign="top">
+			<td>Structural</td>
+			<td>SimStructural</td>
+		</tr>
+		<tr>
+			<td>Thermal</td>
+			<td>SimThermal</td>
+		</tr>
+		<tr>
+			<td>Thermal Structural</td>
+			<td>SimThermalStructural</td>
+		</tr>
+		<tr valign="top">
+			<td rowspan="3">SIMULIA Structural Scenario Creation</td>
+			<td rowspan="3">SimStructuralScenarioCreation</td>
+			<td>Structural</td>
+			<td>SimStructural</td>
+			<td rowspan="3">
+				SFO - Structural Performance Engineer
+			</td>
+		</tr>
+		<tr>
+			<td>Thermal</td>
+			<td>SimThermal</td>
+		</tr>
+		<tr>
+			<td>Thermal Structural</td>
+			<td>SimThermalStructural</td>
+		</tr>
+		<tr valign="top">
+			<td rowspan="2">SIMULIA Linear Structural Scenario Creation</td>
+			<td rowspan="2">SimLinearStructuralScenarioCreation</td>
+			<td>Structural</td>
+			<td>SimStructural</td>
+			<td rowspan="2">SLL - Structural Engineer</td>
+		</tr>
+		<tr>
+			<td>Thermal</td>
+			<td>SimThermal</td>
+		</tr>
+		<tr valign="top">
+			<td rowspan="4">SIMULIA Linear Structural Validation</td>
+			<td rowspan="4">SimLinearStructuralValidation</td>
+			<td>Structural</td>
+			<td>SimStructural</td>
+			<td rowspan="4">SRD - Structural Designer</td>
+		</tr>
+		<tr>
+			<td>Thermal</td>
+			<td>SimThermal</td>
+		</tr>
+		<tr>
+			<td>Frequency</td>
+			<td>SimFrequency</td>
+		</tr>
+		<tr>
+			<td>Buckle</td>
+			<td>SimBuckle</td>
+		</tr>
+	</table>
+
+	<p>Once the SetSimulationInitialization has been called, a new simulation can be created by calling <code>PLMCreate</code> method of <strong>SIMPLMService</strong>.</p>
+	
+	<pre class="code">...
+<span class="comment">' Creating the simulation PLM Object</span>
+
+<span class="keyword">Dim</span> mySimPLMService <span class="keyword">As</span> SIMPLMService
+<span class="keyword">Set</span> mySimPLMService = CATIA.GetSessionService(&quot;SIMPLMService&quot;)
+
+<span class="keyword">Dim</span> mySimulationReference <span class="keyword">As</span> SimulationReference
+mySimPLMService.PLMCreate &quot;NewSimObject&quot;, &quot;SMAFeaPLMNewSimu&quot;, myModel, mySimulationReference, myEditor
+...
+	</pre>
+	
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [Dec 2015]</td>
+		<td>Document created</td>
+	</tr>
+	<tr>
+		<td>Version: <strong>2</strong> [Apr 2022]</td>
+		<td>Document updated to remove deprecated method</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

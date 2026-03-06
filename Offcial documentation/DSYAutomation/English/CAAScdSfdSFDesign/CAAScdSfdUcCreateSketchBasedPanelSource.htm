@@ -1,0 +1,420 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSfdUcCreatePanel.CATScript</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------
+' This sample creates a SFD Parametric Panel.
+' It requires a sfd model which contains reference planes, two intersecting sfd panels and two intersecting
+'  stiffeners on these panels.
+'
+'  Steps
+'     1- Searches and opens a model which is named as &quot;SFDProduct&quot;
+'     2- Navigates to the part object of the SFD System and obtains a Reference to the part object
+'     3- Retrieves the service manager (RfgService) from CATIA's active editor
+'     4- Retrieves the SFD Factory from the part. This is later used to create the sketch based panel
+'     5- Retrieves a SFD panels and create stiffeners
+'     5- Adds a geometrical set under the SFD System's part. Though not necessary, the sketch based panel will
+'        be created under this geometric set
+'        5.1- Obtains HybridBodies from part
+'        5.2- Adds a new hybrid body
+'        5.3- Obtains a Reference to the newly created HybridBody
+'     6- Creates a parametric panel useing LONG.9 as the support
+'        6.1- Creates an empty SfdSketchBasedPanel by using the method AddSketchBasedPanel on SfdFactory
+'        6.2- Sets the category by obtaining the StrCategoryMngt object on SfdSketchBasedPanel object
+'        6.3- Obtains the StrPanelSurf object on SfdSketchBasedPanel and sets &quot;LONG.9&quot; as support by calling the Support method
+'        6.4- Through the StrSketchBasedDMSMngt object obtained from SfdSketchBasedPanel, it sets the Reference Sketch based on
+'             which the parametric panel is created.
+'        6.5- After setting the reference sketch for creation of the parametric panel, the StrReferenceSketchPublicParameters is
+'             obtained from SfdSketchBasedPanel and the public parameter at index 2 is modified to &quot;2000mm&quot;
+'        6.6- The material for the sketch based panel is set through the StrMaterialMngt object obtained from SfdSketchBasedPanel
+'        6.7- The two limits for creation of the panel are set. These are two stiffeners present in the data model. For each
+'             stiffener, a reference is obtained and set as limit to sketch based panel through object StrPanelLimitMngt on
+'             SfdSketchBasedPanel
+'        6.8- All necessary inputs have been assigned by now. So, we call the Run method on the sketch based panel to complete
+'             the creation
+'     7- Updates the part
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+</span>
+<span class="comment">'Variables used in more than on subroutines below</span>
+<span class="keyword">Dim</span> Manager <span class="keyword">As</span> RfgService
+<span class="keyword">Dim</span> ObjPart <span class="keyword">As</span> Part
+<span class="keyword">Dim</span> SFDProdSel <span class="keyword">As</span> Selection
+<span class="keyword">Dim</span> ObjSfdTransvStiffener <span class="keyword">As</span> StrSfdStiffener
+<span class="keyword">Dim</span> ObjSfdLongStiffener <span class="keyword">As</span> StrSfdStiffener
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">' The CATMain subroutine</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> CATMain()
+    
+    <span class="comment">' 1- Search and open a model which is named as &quot;SFDProduct&quot;</span>
+    <span class="keyword">Dim</span> SFDPrdEditor <span class="keyword">As</span> Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SFD_Product&quot;
+    OpenProduct prdName , SFDPrdEditor
+    
+    <span class="comment">' 2- Navigates to the part object of the SFD System and obtains a Reference to the part object</span>
+    <span class="keyword">Set</span> SFDProdSel = SFDPrdEditor.Selection
+    <span class="keyword">Dim</span> product1Service   <span class="keyword">As</span> PLMProductService
+    <span class="keyword">Set</span> product1Service = SFDPrdEditor.GetService(&quot;PLMProductService&quot;)
+    <span class="keyword">Dim</span> ObjVPMRootOccurrence   <span class="keyword">As</span> VPMRootOccurrence
+    <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+    <span class="keyword">Dim</span> ObjVPMReference <span class="keyword">As</span> VPMReference
+    <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+    <span class="keyword">Dim</span> ObjVPMRepInstances <span class="keyword">As </span>VPMRepInstances
+    <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+    <span class="keyword">Set</span> ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+    <span class="keyword">Set</span> ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+    <span class="keyword">If</span> ObjPart <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve part&quot;
+        <span class="keyword">Exit Sub
+    End If</span>
+    
+    <span class="comment">' 3- Retrieves the service manager (RfgService) from CATIA's active editor</span>
+    <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+    <span class="keyword">If </span>Manager <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve Service Manager&quot;
+        <span class="keyword">Exit Sub
+    End If   </span> 
+   
+    <span class="comment">' 4- Retrieves the SFD Factory from the part. This is later used to create the sketch based panel</span>
+    <span class="keyword">Dim</span> ObjSfdFactory <span class="keyword">As</span> SfdFactory
+    <span class="keyword">Set</span> ObjSfdFactory = ObjPart.GetCustomerFactory(&quot;SfdFactory&quot;)
+    <span class="keyword">If</span> ObjSfdFactory <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve SfdFactory&quot;
+        <span class="keyword">Exit Sub
+    End If</span>
+
+    <span class="comment">' 5- Retrieves a SFD panels and create stiffeners</span>
+    <span class="keyword">Set</span> RefSfdPanel = ObjPart.FindObjectByName("Transverse Bulkhead_3")
+    <span class="keyword">Dim</span> ObjSfdTransvPanel <span class="keyword">As</span> SfdPanel
+    SFDProdSel.Add RefSfdPanel
+    <span class="keyword">Set</span> ObjSfdTransvPanel = SFDProdSel.FindObject("CATIASfdPanel")
+    CreateStiffener ObjSfdTransvPanel, ObjSfdTransvStiffener
+    <span class="keyword">Set</span> RefSfdPanel = ObjPart.FindObjectByName("Deck_1")
+    <span class="keyword">Dim</span> ObjSfdDeckPanel <span class="keyword">As</span> SfdPanel
+    SFDProdSel.Add RefSfdPanel
+    <span class="keyword">Set</span> ObjSfdDeckPanel = SFDProdSel.FindObject("CATIASfdPanel")
+    CreateStiffener ObjSfdDeckPanel, ObjSfdLongStiffener
+    
+    <span class="comment">' 5- Adds a geometrical set under the SFD System's part. Though not necessary, the sketch based panel will
+    '    be created under this geometric set</span>
+    <span class="keyword">Dim</span> RefGeometricalSet<span class="keyword"> As</span> Reference
+    AddGeometricalSet ObjPart, RefGeometricalSet
+    
+    <span class="comment">' 6- Creates a parametric panel useing LONG.9 as the support</span>
+    <span class="keyword">Dim</span> ObjSfdSketchBasedPanel<span class="keyword"> As</span> SfdSketchBasedPanel
+    CreateSketchBasedPanel RefGeometricalSet, ObjSfdFactory, ObjSfdSketchBasedPanel
+	
+    <span class="comment">' 7- Updates the part</span>
+    ObjPart.Update
+	
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">' Method: Create Sketch Based Panel
+'
+'  Steps
+'     6- Creates a parametric panel useing LONG.9 as the support
+'        6.1- Creates an empty SfdSketchBasedPanel by using the method AddSketchBasedPanel on SfdFactory
+'        6.2- Sets the category by obtaining the StrCategoryMngt object on SfdSketchBasedPanel object
+'        6.3- Obtains the StrPanelSurf object on SfdSketchBasedPanel and sets &quot;LONG.9&quot; as support by calling the Support method
+'        6.4- Through the StrSketchBasedDMSMngt object obtained from SfdSketchBasedPanel, it sets the Reference Sketch based on
+'             which the parametric panel is created.
+'        6.5- After setting the reference sketch for creation of the parametric panel, the StrReferenceSketchPublicParameters is
+'             obtained from SfdSketchBasedPanel and the public parameter at index 2 is modified to &quot;2000mm&quot;
+'        6.6- The material for the sketch based panel is set through the StrMaterialMngt object obtained from SfdSketchBasedPanel
+'        6.7- The two limits for creation of the panel are set. These are two stiffeners present in the data model. For each
+'             stiffener, a reference is obtained and set as limit to sketch based panel through object StrPanelLimitMngt on
+'             SfdSketchBasedPanel
+'        6.8- All necessary inputs have been assigned by now. So, we call the Run method on the sketch based panel to complete
+'             the creation</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> CreateSketchBasedPanel(iDestPart <span class="keyword">As</span> Reference, iObjSfdFactory <span class="keyword">As</span> SfdFactory, oObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel)
+    
+    <span class="comment">' 6.1- Creates an empty SfdSketchBasedPanel by using the method AddSketchBasedPanel on SfdFactory</span>
+    AddSketchBasedPanel iDestPart, iObjSfdFactory, oObjSfdSketchBasedPanel
+    
+    <span class="comment">' 6.2- Sets the category by obtaining the StrCategoryMngt object on SfdSketchBasedPanel object</span>
+    SetCategory oObjSfdSketchBasedPanel, &quot;ParametricPanel&quot;
+        
+    <span class="comment">' 6.3- Obtains the StrPanelSurf object on SfdSketchBasedPanel and sets &quot;LONG.9&quot; as support by calling the Support method</span>
+    <span class="keyword">Dim</span> PanelSupport <span class="keyword">As</span> Reference
+    <span class="keyword">Set</span> PanelSupport = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.9&quot;)
+    SetSketchBasedPanelSupport oObjSfdSketchBasedPanel, PanelSupport
+    
+    <span class="comment">' 6.4- Through the StrSketchBasedDMSMngt object obtained from SfdSketchBasedPanel, it sets the Reference Sketch based on
+    ' which the parametric panel is created.</span>
+    <span class="keyword">Dim</span> PanelDMS <span class="keyword">As</span> StrSketchBasedDMSMngt
+    <span class="keyword">Set</span> PanelDMS = oObjSfdSketchBasedPanel.StrSketchBasedDMSMngt
+    PanelDMS.SetStrSketch (&quot;KN6&quot;)
+    
+    <span class="comment">' 6.5- After setting the reference sketch for creation of the parametric panel, the StrReferenceSketchPublicParameters is
+    ' obtained from SfdSketchBasedPanel and the public parameter at index 2 is modified to &quot;2000mm&quot;</span>
+    <span class="comment">' The reference sketch &quot;SAMPLE_RCO_2LIMITS_KB&quot; contains only 2 public parameters. We modify only the second one.</span>
+    <span class="comment">' Other public parameters may be edited if desired</span>
+    <span class="keyword">Dim</span> ObjStrReferenceSketchPublicParms <span class="keyword">As</span> StrReferenceSketchPublicParameters
+    <span class="keyword">Set</span> ObjStrReferenceSketchPublicParms = oObjSfdSketchBasedPanel.StrReferenceSketchPublicParameters
+    <span class="keyword">Dim</span> NSize <span class="keyword">As Long</span>
+    NSize = ObjStrReferenceSketchPublicParms.Count
+    <span class="keyword">Dim</span> ObjPublicParm <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> ObjPublicParm = ObjStrReferenceSketchPublicParms.Item(2)
+    ObjPublicParm.ValuateFromString (&quot;2000mm&quot;)
+	
+    <span class="comment">' 6.6- The material for the sketch based panel is set through the StrMaterialMngt object obtained from SfdSketchBasedPanel</span>
+    <span class="comment">'      Set material</span>
+    SetMaterial oObjSfdSketchBasedPanel, &quot;Steel A42&quot;
+    <span class="comment">'      Set Material Orientation</span>
+    <span class="keyword">Dim</span> ExtrusionManager <span class="keyword">As</span> StrPlateExtrusionMngt
+    <span class="keyword">Set</span> ExtrusionManager = oObjSfdSketchBasedPanel.StrPlateExtrusionMngt
+    ExtrusionManager.ThrowOrientation = 1	
+    <span class="comment">'      Set thickness of the parametric panel</span>
+    <span class="keyword">Dim</span> Thickness <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> Thickness = ExtrusionManager.GetThickness
+    Thickness.ValuateFromString &quot;12mm&quot;
+    
+    <span class="comment">' 6.7-</span>
+    SetSketchBasedPanelLimits oObjSfdSketchBasedPanel
+
+    PanelDMS.ActivateSketchContour
+    
+    <span class="comment">' 6.8-</span>
+    Run oObjSfdSketchBasedPanel
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">' Set Sketch Based Panel limits
+' This subroutine accepts a SfdSkecthBasedPanel object as input. It then searches for two stiffeners
+' &quot;Transverse Bulkhead Vertical Stiffener_2&quot; and &quot;Deck Longitudinal Stiffener_1&quot; and using the
+' SetLimitingObject method on StrPanelLimitMngt object obtained from SfdSketchBasedPanel it sets
+' the two stiffeners as the limits</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> SetSketchBasedPanelLimits(iObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel)
+    <span class="comment">' Obtain the StrPanelLimitMngt</span>
+    <span class="keyword">Dim</span> ObjSfdPanelLimitMngt <span class="keyword">As</span> StrPanelLimitMngt
+    <span class="keyword">Set</span> ObjSfdPanelLimitMngt = iObjSfdSketchBasedPanel.StrPanelLimitMngt
+    <span class="keyword">If</span> ObjSfdPanelLimitMngt <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve StrPanelLimitMngt object&quot;
+        <span class="keyword">Exit Sub
+    End If</span>
+    
+    <span class="comment">' Get Reference to an existing SFD Stiffener</span>
+    <span class="keyword">Set</span> Limit1 = ObjPart.CreateReferenceFromObject(ObjSfdTransvStiffener)
+    
+    <span class="comment">' Get Reference to another existing SFD Stiffener</span>
+    <span class="keyword">Set</span> Limit2 = ObjPart.CreateReferenceFromObject(ObjSfdLongStiffener)
+	
+    <span class="comment">' Apply the References to the 2 SFD stiffeners as limits to the Skecth Based Panel</span>
+    ObjSfdPanelLimitMngt.SetLimitingObject Limit1, 2, 0, -1
+    ObjSfdPanelLimitMngt.SetLimitingObject Limit2, 3, 0, -1        
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">' Input to the Run subroutine is a SfdSketchBasedPanel object. This subroutine
+' simply obtaines StrSfdPlatesMngt object from the input and calls the Run method on it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> Run(iObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel)
+    <span class="comment">' Obtain the StrSfdPlatesMngt</span>
+    <span class="keyword">Dim</span> ObjSfdPlatesMngt <span class="keyword">As</span> StrSfdPlatesMngt
+    <span class="keyword">Set</span> ObjSfdPlatesMngt = iObjSfdSketchBasedPanel.StrSfdPlatesMngt
+    <span class="keyword">If</span> ObjSfdPlatesMngt <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve StrSfdPlatesMngt object&quot;
+        <span class="keyword">Exit Sub
+    End If</span>
+    
+    ObjSfdPlatesMngt.Run
+    <span class="comment">'Panel is Created</span>
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">' SetSketchBasedPanelSupport accepts two inputs. One is SfdSketchBasedPanel object
+' and the second is a Reference to the object to be used as support. The subroutine obtains
+' StrPanelSurf object from SfdSketchBasedPanel object and calls Support method on it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> SetSketchBasedPanelSupport(iObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel, iSupport <span class="keyword">As</span> Reference)
+    <span class="keyword">Dim</span> ObjSfdPanelSupport <span class="keyword">As</span> StrPanelSurf
+    <span class="keyword">Set</span> ObjSfdPanelSupport = iObjSfdSketchBasedPanel.StrPanelSurf
+    <span class="keyword">If</span> ObjSfdPanelSupport <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve StrPanelSupport object&quot;
+        <span class="keyword">Exit Sub
+    End If</span>
+    
+    ObjSfdPanelSupport.Support = iSupport
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">' SetCategory subroutine takes two parameters as input. One is SfdSketchBasedPanel object
+' and the second is a string referring to the category to be set. The category is set
+' by calling SetCategory method on StrCategoryMngt object.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> SetCategory(iObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel, iStrCategory <span class="keyword">As String</span>)
+    <span class="keyword">Dim</span> ObjSfdCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjSfdCategoryMngt = iObjSfdSketchBasedPanel.StrCategoryMngt
+    <span class="keyword">If</span> ObjSfdCategoryMngt <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve StrCategoryMngt object&quot;
+        <span class="keyword">Exit Sub
+    End If</span>
+    
+    ObjSfdCategoryMngt.AutomaticName = True
+    ObjSfdCategoryMngt.SetCategory iStrCategory
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">' Similar to the SetCategory subroutine is the SetMaterial subroutine. It obtains
+' StrMaterialMngt instead and calls SetMaterial method on it to set the material.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> SetMaterial(iObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel, iStrMaterial <span class="keyword">As String</span>)
+    <span class="keyword">Dim</span> ObjMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+    <span class="keyword">Set</span> ObjMaterialMngt = iObjSfdSketchBasedPanel.StrMaterialMngt
+    <span class="keyword">If</span> ObjMaterialMngt <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve StrMaterial object&quot;
+        <span class="keyword">Exit Sub
+    End If</span>
+    ObjMaterialMngt.SetMaterial iStrMaterial
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">' The AddSketchBasedPanel creates a new empty sketch based panel under the specified
+' destination using the input SFD Factory.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> AddSketchBasedPanel(iDestPart <span class="keyword">As</span> Reference, iObjSfdFactory <span class="keyword">As</span> SfdFactory, oObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel)
+    <span class="keyword">Set</span> oObjSfdSketchBasedPanel = iObjSfdFactory.AddSketchBasedPanel(iDestPart, 5)
+    <span class="keyword">If</span> oObjSfdSketchBasedPanel <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot Create SfdSketchBasedPanel&quot;
+        <span class="keyword">Exit Sub
+    End If
+End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">' OpenProduct subroutine searches for a product by name and opens it</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SFDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SFDPrdEditor
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">' AddGeometricalSet adds a new Geometrical Set under the current PartBody</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> AddGeometricalSet(iObjPart <span class="keyword">As</span> Part, oRefGeometricalSet <span class="keyword">As</span> Reference)
+    <span class="comment">' Add a Geometrical Set in Part for creating Sketch Based Panel</span>
+    <span class="keyword">Dim</span> oHybridBodies <span class="keyword">As</span> HybridBodies
+    <span class="keyword">Set</span> oHybridBodies = iObjPart.HybridBodies
+    <span class="keyword">Dim</span> oGeometricalSet <span class="keyword">As</span> HybridBody
+    <span class="keyword">Set</span> oGeometricalSet = oHybridBodies.Add()
+    <span class="keyword">Set</span> oRefGeometricalSet = iObjPart.CreateReferenceFromObject(oGeometricalSet)
+    <span class="keyword">If</span> oRefGeometricalSet <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot Create GeometricalSet&quot;
+        <span class="keyword">Exit Sub
+    End If
+End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">' CreateStiffener creates stiffener</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> CreateStiffener(iObjSfdPanel <span class="keyword">As</span> SfdPanel, oObjSfdStiffener <span class="keyword">As</span> StrSfdStiffener)
+    
+<span class="comment">'   5.1- Retrieves the StrSfdStiffeners object from panel. Then AddStiffener method from object StrSfdStiffeners</span>
+<span class="comment">'        will create a new empty stiffener.</span>
+    <span class="comment">'Get StrSfdStiffeners object</span>
+    <span class="keyword">Dim</span> ObjSfdStiffeners <span class="keyword">As</span> StrSfdStiffeners
+    <span class="keyword">Set</span> ObjSfdStiffeners = iObjSfdPanel.StrSfdStiffeners
+    <span class="comment">'Add stiffener</span>
+    <span class="keyword">Set</span> oObjSfdStiffener = ObjSfdStiffeners.AddStiffener
+    
+<span class="comment">'   5.2- Set different properties of the stiffener like material. Retrieve the StrMaterialMngt object from StrSfdStiffener</span>
+<span class="comment">'        object and set the material for the stiffener using SetMaterial method.</span>
+    <span class="comment">'Get StrMaterialMngt object</span>
+    <span class="keyword">Dim</span> ObjMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+    <span class="keyword">Set</span> ObjMaterialMngt = oObjSfdStiffener.StrMaterialMngt
+    <span class="comment">'Set material of the stiffener</span>
+    ObjMaterialMngt.SetMaterial ("Steel A42")
+    
+<span class="comment">'   5.3- To set the category retrieve the StrCategoryMngt object from StrSfdStiffener object and set category using</span>
+<span class="comment">'        SetCategory method.</span>
+    <span class="comment">'Get StrCategoryMngt object</span>
+    <span class="keyword">Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjStrCategoryMngt = oObjSfdStiffener.StrCategoryMngt
+    <span class="comment">'Set category of the stiffener</span>
+    ObjStrCategoryMngt.SetCategory "SldStiffener"
+
+<span class="comment">'   5.4- Sets the ProfileType property of the stiffener to 5 (here 5</span>
+<span class="comment">'        means profile is created with the intersection of two surfaces).</span>
+    <span class="comment">'Set type of the stiffener</span>
+    oObjSfdStiffener.ProfileType = catStrProfileModeSurfSurf
+    
+<span class="comment">'   5.5- Retrieves the StrSectionMngt object from the created stiffener object and sets the different section</span>
+<span class="comment">'        parameters like section name, anchor point, web orientation, flange orientation.</span>
+    <span class="comment">'Get StrSectionMngt object</span>
+    <span class="keyword">Dim</span> ObjStrSectionMngt <span class="keyword">As</span> StrSectionMngt
+    <span class="keyword">Set</span> ObjStrSectionMngt = oObjSfdStiffener.StrSectionMngt
+    <span class="comment">'Set different section parameters</span>
+    ObjStrSectionMngt.SetSectionName ("WT18x179.5")
+    ObjStrSectionMngt.AnchorPoint = "catStrTopCenter"
+    ObjStrSectionMngt.WebOrientation = 1
+    ObjStrSectionMngt.FlangeOrientation = 1
+    ObjStrSectionMngt.AngleMode = 0
+    
+<span class="comment">'   5.7- Retrieves the StrProfileSurSurf object from the created stiffener object and sets two surfaces which are</span>
+<span class="comment">'        intersecting with each other. At the intersection of these two surfaces stiffener will be created.</span>
+    <span class="comment">'Get StrProfileSurfSurf object</span>
+    <span class="keyword">Dim</span> ObjStrProfileSurfSurf <span class="keyword">As</span> StrProfileSurfSurf
+    <span class="keyword">Set</span> ObjStrProfileSurfSurf = oObjSfdStiffener.StrProfileSurfSurf
+    
+    <span class="keyword">Dim</span> DMS <span class="keyword">As</span> Reference
+    <span class="keyword">Set</span> DMS = iObjSfdPanel.GetDelimitedSupport
+    ObjStrProfileSurfSurf.FirstSurface = DMS
+    <span class="keyword">Set</span> ObjWebSupport = Manager.GetReferencePlane(ObjPart, 3, "LONG.9")
+    <span class="keyword">Set</span> WebSupport = ObjPart.CreateReferenceFromObject(ObjWebSupport)
+    ObjStrProfileSurfSurf.SecondSurface = WebSupport
+   
+<span class="comment">'   5.8- Updates the created stiffener.</span>
+    ObjPart.UpdateObject oObjSfdStiffener
+    
+<span class="keyword">End Sub</span>
+
+
+
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

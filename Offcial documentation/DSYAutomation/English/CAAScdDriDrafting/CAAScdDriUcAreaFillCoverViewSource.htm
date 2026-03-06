@@ -1,0 +1,97 @@
+<!DOCTYPE html 
+	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<head>
+		<meta http-equiv="Content-Language" content="en-us" />
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta name="topictype" content="Uc" />
+		<meta name="devlang" content="idl" />
+		<meta name="devlang" content="idl" />
+		<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+		<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+		<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+		<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+		<title>CAAScdDriUcAreaFillCoverViewSource</title>
+	</head>
+
+	<body onload="highlightSearchTerms();"> 
+		<pre>
+<span class="keyword">Sub</span> CATMain() 
+   <span class="comment">' Creation of an AreaFill Covering a Drawing View </span>
+   <span class="comment">' ----------------------------------------------- </span>
+
+   <span class="comment">' 1/ Selects a Drawing View </span>
+   <span class="comment">' 2/ Gets the Drawing View Position </span>
+   <span class="comment">' 3/ Creates the AreaFill covering the Drawing View </span>
+
+   <span class="comment">' 1/ Selects a Drawing View </span>
+   <span class="comment">' ------------------------- </span>
+   <span class="keyword">Dim</span> drwRoot <span class="keyword">As</span> DrawingRoot 
+   <span class="keyword">Set</span> drwRoot = CATIA.ActiveEditor.ActiveObject 
+
+   <span class="keyword">Dim</span> drwSheet <span class="keyword">As</span> DrawingSheet 
+   <span class="keyword">Set</span> drwSheet = drwRoot.ActiveSheet 
+
+   <span class="keyword">Dim</span> drwView <span class="comment">' As DrawingView </span>
+
+   <span class="keyword">Dim</span> mySel <span class="comment">' As Selection </span>
+   <span class="keyword">Set</span> mySel = CATIA.ActiveEditor.Selection 
+
+   mySel.Clear 
+
+   <span class="keyword">Dim</span> InputObjectType(0), Status 
+   InputObjectType(0) = &quot;DrawingView&quot; 
+
+   Status = mySel.SelectElement2(InputObjectType, &quot;Select a view&quot;, True) 
+   <span class="keyword">If</span> Status = &quot;Cancel&quot; Or Status = &quot;Undo&quot; <span class="keyword">Then</span> 
+      <span class="keyword">Exit</span> <span class="keyword">Sub</span> 
+   <span class="keyword">End If </span>
+
+   <span class="keyword">Set</span> drwView = mySel.Item(1).Value 
+
+   mySel.Clear 
+
+   <span class="comment">' 2/ Gets the Drawing View Position </span>
+   <span class="comment">' --------------------------------- </span>
+   <span class="keyword">Dim</span> viewSize(3) <span class="keyword">As</span> Variant 
+   drwView.Size viewSize 
+
+   <span class="comment">' 3/ Creates the AreaFill covering the Drawing View </span>
+   <span class="comment">' ------------------------------------------------- </span>
+   <span class="comment">' Sets the number of points of the AreaFill Contour </span>
+   <span class="keyword">Dim</span> nbPoints(0) <span class="keyword">As</span> Variant 
+   nbPoints(0) = 4 
+
+   <span class="comment">' Sets the points of the AreaFill Contour </span>
+   <span class="keyword">Dim</span> areafillContour(7) <span class="keyword">As</span> Variant 
+   <span class="keyword">Dim</span> delta <span class="keyword">As Double</span>
+   delta = 20
+   areafillContour(0) = viewSize(0) - delta 
+   areafillContour(1) = viewSize(3) + delta  
+   areafillContour(2) = viewSize(1) + delta 
+   areafillContour(3) = viewSize(3) + delta 
+   areafillContour(4) = viewSize(1) + delta 
+   areafillContour(5) = viewSize(2) - delta 
+   areafillContour(6) = viewSize(0) - delta 
+   areafillContour(7) = viewSize(2) - delta 
+
+   <span class="comment">' Creates the AreaFill </span>
+   <span class="keyword">Dim</span> myAreaFills <span class="comment">' As DrawingAreaFills </span>
+   <span class="keyword">Set</span> myAreaFills = drwSheet.Views.Item(1).AreaFills 
+
+   <span class="keyword">Dim</span> myAreaFill <span class="keyword">As</span> DrawingAreaFill 
+   <span class="keyword">Set</span> myAreaFill = myAreaFills.Add(nbPoints, areafillContour) 
+
+   myAreaFill.SetPattern &quot;Yellow&quot; 
+
+
+<span class="keyword">End Sub </span>
+
+
+
+
+		</pre>
+	</body>
+</html>

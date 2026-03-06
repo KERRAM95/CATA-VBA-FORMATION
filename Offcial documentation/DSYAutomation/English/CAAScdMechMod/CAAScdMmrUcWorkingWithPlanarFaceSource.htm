@@ -1,0 +1,142 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Working With PlanarFace Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Working with PlanarFace
+'
+'Mission: This use case fundamentally illustrates about working with PlanarFace. In this UC we learn how to retrieve PlanerFace and use it.
+'
+'Steps:  1- Retrieve Part Object from Selection
+'        2- Create draft
+'           2.1 - Select and retrieve the face to draft
+'           2.2 - Select the neutral face (PlanarFace object)
+'           2.3 - Select the parting element (PlanarFace object)
+'           2.4 - Create new draft
+
+Sub WorkingWithPlanarFace()
+
+'Error Handling
+On Error GoTo ErrorSub
+ 
+        'Retrieve active editor
+        Dim oCurrentActiveEditor As Editor
+        Set oCurrentActiveEditor = CATIA.ActiveEditor
+    
+        'Retrieve Selection object from active editor
+        Dim oObjSelection
+        Set oObjSelection = CATIA.ActiveEditor.Selection
+    
+        'Selection Object updated with selection criteria (Part type)
+        Dim strStatus As String
+        Dim oInputObjectType(0)
+    
+        oInputObjectType(0) = &quot;Part&quot;
+        strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select a Part Element from spec tree or the 3D Viewer&quot;, False)
+    
+        'Retrieve Selected Element
+        Dim oSelectedElement As SelectedElement
+        Set oSelectedElement = oObjSelection.Item(1)
+        
+        'Retrieve Part object from Selected Element
+        Dim oPart As Part
+        Set oPart = oSelectedElement.Value
+              
+        MsgBox (&quot;Selected Part Name :&quot;) + oPart.Name
+        
+        'Clear the selection object
+        oObjSelection.Clear
+        
+        'Select the face to draft
+        oInputObjectType(0) = &quot;Face&quot;
+        strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the face to draft&quot;, False)
+    
+        'Retrieve Selected Element
+        Dim oFaceToDraft As Face
+        Set oFaceToDraft = oObjSelection.Item(1).Value
+              
+        MsgBox (&quot;Selected Face Name :&quot;) + oFaceToDraft.Name
+        
+        'Clear the selection object
+        oObjSelection.Clear
+        
+        'Select the neutral face (PlanarFace object)
+        oInputObjectType(0) = &quot;PlanarFace&quot;
+        strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the neutral face&quot;, False)
+    
+        'Retrieve Selected Element
+        Dim oNeutralFace As PlanarFace
+        Set oNeutralFace = oObjSelection.Item(1).Value
+              
+        MsgBox (&quot;Selected NeutralFace Name :&quot;) + oNeutralFace.Name
+        
+        'Clear the selection object
+        oObjSelection.Clear
+        
+        'Select the parting element (PlanarFace object)
+        strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the parting element&quot;, False)
+    
+        'Retrieve Selected Element
+        Dim oPartingElement As PlanarFace
+        Set oPartingElement = oObjSelection.Item(1).Value
+              
+        MsgBox (&quot;Selected PartingElement Name :&quot;) + oPartingElement.Name
+    
+        'Create new draft
+        Dim oDraft As Draft
+        Set oDraft = oPart.ShapeFactory.AddNewDraft(oFaceToDraft, oNeutralFace, 0, oPartingElement, 0#, 0#, 1#, 0, 5#, 0)
+        
+        'Retrieve DraftDomains from newly created draft
+        Dim oDraftDomains As DraftDomains
+        Set oDraftDomains = oDraft.DraftDomains
+        
+        'retrieve first DraftDomain from list
+        Dim oDraftDomain As DraftDomain
+        Set oDraftDomain = oDraftDomains.Item(1)
+        
+        'Set pulling direction
+        oDraftDomain.SetPullingDirection 0#, 0#, 1#
+   
+        'Update Part
+        oPart.Update
+        
+        'Saving All data in Session
+         CATIA.GetSessionService(&quot;PLMPropagateService&quot;).Save
+
+         MsgBox &quot;All data in CATIA Session are saved&quot;
+
+
+'Error Handling
+   GoTo EndSub
+
+ErrorSub:
+          MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+          GoTo EndSub
+EndSub:
+End Sub</pre>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

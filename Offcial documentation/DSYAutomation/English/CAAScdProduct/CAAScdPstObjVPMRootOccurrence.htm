@@ -1,0 +1,114 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>VPMRootOccurrence Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>VPMRootOccurrence Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavreuse"><a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMRootOccurrence', 'PropertyIndex');return false;">Properties</a></td>
+		<td class="ofvbanavunused">Methods</td>
+	</tr>
+</tbody>
+</table>
+<table>
+	<tbody>
+	<tr>
+		<td class="auto">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMModelerBaseIDLItf', 'interface', 'PLMOccurrence');return false;">
+		<img src="../CAAScdImages/PLMOccurrence.png" alt="PLMOccurrence Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/parderil.png" alt="Inheritance Symbol" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="../CAAScdInfInfrastructure/CAAInfObjPLMEntity.htm"><img src="../CAAScdImages/PLMEntity.png" alt="PLMEntity Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/parlower.png" alt="Inheritance Symbol" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'PLMModelerBaseIDLItf', 'interface', 'PLMOccurrences');return false;"><img src="../CAAScdImages/PLMOccurrences.png" alt="PLMOccurrences Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMRootOccurrence');return false;"><img src="../CAAScdImages/VPMRootOccurrence.png" alt="VPMRootOccurrence Object" width="252" height="22"/></a>
+		<br />
+		<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMOccurrences');return false;"><img src="../CAAScdImages/VPMOccurrences.png" alt="VPMOccurrences Collection Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMReference');return false;"><img src="../CAAScdImages/VPMReference.png" alt="VPMReference Object" width="252" height="22"/></a><br />
+		</td>
+			</tr>
+</tbody>
+</table>
+<p>Represents the root object of the product structure occurrence model object.</p>
+<p>The <strong>VPMRootOccurrence</strong> object enables you to manipulate the 
+product structure occurrence 
+model. See <a href="../CAAScdProduct/CAAScdPstTaProductOverview.htm">Product Modeler Overview</a>.</p>
+<h2>Retrieving a VPMRootOccurrence Object</h2>
+<p>Use the <strong>RootOccurrence</strong> property of the <strong>PLMProductService</strong> object, 
+itself retrieved from the <strong>Editor</strong> object (see
+<a href="../CAAScdInfInfrastructure/CAAInfObjService.htm">Service 
+Object</a>), to return the 
+root occurrence object of a product model already opened in session.</p>
+<pre class="code"><span class="keyword">Dim</span> oPLMProductService <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> oPLMProductService = oEditor.<strong>GetService</strong>(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> oRootOcc <span class="keyword">As</span> VPMRootOccurrence
+<span class="keyword">Set</span> oRootOcc = oPLMProductService.<strong>RootOccurrence</strong></pre>
+
+<h2>Using a VPMRootOccurrence Object</h2>
+<p>Use the <strong>Occurrences</strong> property of the <strong>
+VPMRootOccurrence</strong> object to return the <strong>
+VPMOccurrences</strong> collection object containing the <strong>VPMOccurrence</strong> 
+objects children of the root occurrence object.</p>
+<pre class="code"><span class="keyword">Dim</span> cOccs <span class="keyword">As</span> VPMOccurrences
+<span class="keyword">Set</span> cOccs = oRootOcc.<strong>Occurrences</strong>
+
+<span class="keyword">For</span> i = 1 <span class="keyword">To</span> cOccs.Count
+  <span class="keyword">Dim</span> oVPMOcc <span class="keyword">As</span> VPMOccurrence
+  <span class="keyword">Set</span> oVPMOcc = cOccs.Item(i)
+  MsgBox &quot;This occurrence object is an occurrence of the reference object: &quot; _
+         &amp; oVPMOcc.InstanceOccurrenceOf.ReferenceInstanceOf.GetAttributeValue("PLM_ExternalID")
+<span class="keyword">Next</span></pre>
+<p>This example shows you how to navigate from the occurrence to the instance, a
+<strong>VPMInstance</strong> object, it 
+is related to thanks to the&nbsp;<strong>InstanceOccurrenceOf</strong> property 
+of the <strong>VPMOccurrence</strong> object, and then to the reference, a
+<strong>VPMReference</strong> object, this object is an instance of thanks to 
+the <strong>ReferenceInstanceOf</strong> property of the <strong>
+VPMInstance</strong> object. The Name attribute of this reference is displayed 
+using the <strong>GetAttributeValue</strong> func of the <strong>VPMReference</strong> 
+object inherited from its parent <strong>PLMEntity</strong> object.</p>
+<p>Use the <strong>ReferenceRootOccurrenceOf</strong> property of the <strong>
+VPMRootOccurrence</strong> object to return the <strong>VPMReference</strong> object associated 
+with the root occurrence object.</p>
+<pre class="code"><span class="keyword">Dim</span> oRootRef <span class="keyword">As</span> VPMReference
+<span class="keyword">Set</span> oRootRef = oRootOcc.<strong>ReferenceRootOccurrenceOf</strong>
+
+MsgBox &quot;The root occurrence object is associated with the reference object: &quot; _
+       &amp; oRootRef.GetAttributeValue("PLM_ExternalID")</pre>
+<p>This example shows you how to retrieve the root product reference and display 
+its Name attribute.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="topictype" content="Uc" />
+    <meta name="devlang" content="idl" />
+    <meta name="devlang" content="idl" />
+    <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+    <title>Sensor API's</title>
+    <style type="text/css">
+        .padded td, .padded th
+        {
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+    <table class="table1">
+        <tr>
+            <td class="DocHeader1">
+                <h1>API's to create the various sensor attributes</h1>
+            </td>
+        </tr>
+        <tr>
+            <td class="DocHeader3" style="width: 1807px">
+                <table class="DocHeaderIntro">
+                    <tr>
+                        <td class="Intro1">
+                            <p class="header">Following are the list of Sensor API':</p>
+                            
+
+    <table class="indented">
+        <tr>
+            <td>
+                <p>Following in the list of various sensor files along with the API's:</p>
+                <ol>
+                    <li><a href="#File1">Sensor Base</a></li>
+                    <li><a href="#File2">Sensor</a></li>
+                    <li><a href="#File3">Resultant sensor</a></li>
+                    <li><a href="#File4">Frequency sensor</a></li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+<li>
+    <p><strong><a name="File1"></a>Sensor Base Interface</strong></p>
+    <p>
+        <span class="keyword">interface </span>SMAIAMpaSensorBase:CATIABase</p>
+</li>
+
+<p>1) <span style="color:red"> PROPERTY Support</span></p>
+<p class="header">put_Support ( in CATSafeArrayVariant ilsSupport )</p>
+<br />
+
+<p>2) <span style="color:red"> PROPERTY SimSupport</span></p>
+<p class="header">put_SimSupport ( in CATSafeArrayVariant icusSupport )</p>
+
+<br />
+<p>3) <span style="color:red"> PROPERTY FrameSelector</span></p>
+<p class="header">put_FrameSelector ( in SMAIAMpaFramesSelection ispFrameSelector )</p>
+
+<br />
+<p class="header">4) Update()</p>
+
+<br />
+<li>
+    <p><strong><a name="File2"></a>Sensor Interface</strong></p>
+    <p>
+        <span class="keyword">interface </span> SMAIAMpaSensor:SMAIAMpaSensorBase</p>
+</li>
+
+<p>1) <span style="color:red"> PROPERTY ProcessingType</span></p>
+<p class="header">put_ProcessingType ( in SimProcessingTypes ieProcessingType )</p>
+<p> The following enum values are available for <strong>SimProcessingTypes</strong>: </p>
+
+<pre class="header">   a) SimScalars 
+   b) SimQuantity
+   c) SimTensors
+   d) SimVectors</pre>
+
+<p><br>2) <span style="color:red"> PROPERTY VariableType</span></p> </>
+<p class="header">put_VariableType( in CATBSTR icsVariableType )</p>
+
+<p><br />3) <span style="color:red"> PROPERTY PlyType</span></p>
+<p class="header">put_PlyType( in CATBSTR icsPlyType )</p>
+
+<p><br />4) <span style="color:red"> PROPERTY Location</span></p>
+<p class="header">put_Location( in SimLocation ieLocation )</p>
+
+<p> The following enum values are available for <strong>SimLocation</strong>: </p>
+
+                            
+<pre class="header">   a) SimNodes
+   b) SimCentroids
+   c) SimFaceElements
+</pre>
+
+<p><br />5) <span style="color:red"> PROPERTY Averaging</span></p>
+<p class="header">put_Averaging( in SimAveraging ieAveraging )</p>
+<p> The following enum values are available for <strong>SimAveraging</strong>: </p>
+
+<pre class="header">   a) SimSectionBoundaries 
+   b) SimNoBoundaries</pre>
+
+<p><br />6) <span style="color:red"> PROPERTY PrincipalDirection</span></p>
+<p class="header">put_PrincipalDirection(in boolean ibPrincipleDirection )</p>
+
+<p><br />7) <span style="color:red"> PROPERTY ComplexValue</span></p>
+<p class="header">put_ComplexValue( in SimComplexValues ieComplexValue)</p>
+<p> The following enum values are available for <strong>SimComplexValues</strong>: </p>
+
+<pre class="header">   a) SimValueAtAngle 
+   b) SimEnvelopeMaxAbsolute
+   c) SimEnvelopeMax 
+   d) SimEnvelopeMin
+   e) SimPhaseAngle 
+</pre>
+
+<p><br />8) <span style="color:red"> PROPERTY ComplexValueAtAngle</span></p>
+<p class="header">put_ComplexValueAtAngle( in double iValueAtAngle )</p>
+
+<p><br />9) <span style="color:red"> PROPERTY QuantityType</span></p>
+<p class="header">put_QuantityType( in CATBSTR icsQuantity )</p>
+
+<p><br />10) <span style="color:red"> PROPERTY ComputeQuantityBeforeAveraging</span></p>
+<p class="header">put_ComputeQuantityBeforeAveraging( in boolean ibQuantityBeforeAveraging )</p>
+
+<p><br />11) <span style="color:red"> PROPERTY TransformType</span></p>
+<p class="header">put_TransformType( in SimTransformTypes ieTransfromType )</p>
+<p> The following enum values are available for <strong>SimTransformTypes</strong>: </p>
+
+<pre class="header">   a) SimNone 
+   b) SimNodal
+   c) SimUserDefined 
+</pre>
+
+<p><br />12) <span style="color:red"> PROPERTY CoordinateSystem</span></p>
+<p class="header">put_CoordinateSystem( in CATBSTR icsCoordinateSystem )</p>
+
+<p><br />13) <span style="color:red"> PROPERTY DeformationEffects</span></p>
+<p class="header">put_DeformationEffects( in boolean ibDeformationEffects )</p>
+
+<br />
+<p class="header">14) SetParameters (in boolean ibMaxFlag, in boolean ibMinFlag, 
+        in boolean ibAbsoluteMaxFlag, in boolean ibParameterForEachStepFlag, 
+        in boolean ibParameterForEachFrameOrLoadCaseFlag )</p>
+
+<br />
+<li>
+    <p><strong><a name="File3"></a>Resultant Sensor Interface</strong></p>
+    <p>
+        <span class="keyword">interface </span>SMAIAMpaResultantSensor : SMAIAMpaSensorBase</p>
+<p class="header">This interface does not contain any methods. It is derived from SMAIAMpaSensorBase, thus the
+    <a href="#File1">Sensor Base</a> methods can be used to set the support, frame selector and update the sensor.
+</p>
+</li>
+
+<br />
+<li>
+    <p><strong><a name="File4"></a>Frequency Sensor Interface</strong></p>
+    <p>
+        <span class="keyword">interface </span>SMAIAMpaFrequencySensor : SMAIAMpaSensorBase</p>
+<p class="header">This interface does not contain any methods. It is derived from SMAIAMpaSensorBase, thus the
+    <a href="#File1">Sensor Base</a> methods can be used to set the support, frame selector and update the sensor.
+</p>
+</li>
+
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

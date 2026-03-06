@@ -1,0 +1,175 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment"># -------------- Sample SCRIPT written in Python ------------------------------------------</span>
+<span class="comment"># This sample manages a connection property.</span>
+
+<span class="comment"># Steps :</span>
+
+<span class="comment"># 1 - Retrieves the simulation and its product</span>
+<span class="comment"># 2 - Creates the FEM representation and retrieves its root object</span>
+<span class="comment"># 3 - Creates a spring property connection</span>
+<span class="comment"># 4 - Checks the connection property inclusion</span>
+<span class="comment"># 5 - Updates the FEM representation</span>
+<span class="comment"># 6 - Excludes the connection property</span>
+<span class="comment"># 7 - Includes the connection property again</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  1 - Retrieves the simulation and its product</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># As a first step, retrieves the simulation editor which is the actived one</span>
+myEditor = CATIA.ActiveEditor
+
+<span class="comment"># Then retrieves the product service</span>
+myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="comment"># Retrieves the PLMEntities</span>
+myEntities = myProdService.EditedContent
+
+<span class="comment"># Now retrieves the PLMEntity</span>
+myEntity = myEntities.Item(1)
+
+<span class="comment"># Gets the simulation Root</span>
+MySimulationRoot = myEntity
+
+<span class="comment"># Now retrieves the Model</span>
+myModel = MySimulationRoot.Model
+
+<span class="comment"># Opens the simulation model</span>
+oOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+oOpenService.PLMOpen (myModel)
+
+<span class="comment"># Retrieves the product root product and the root occurrence</span>
+myProductEditor = CATIA.ActiveEditor
+myProductService = myProductEditor.GetService(&quot;PLMProductService&quot;)
+
+myProductEntities = myProductService.EditedContent
+MyRootProduct = myProductEntities.Item(1)
+
+myRootOccurrence = myProductService.RootOccurrence
+
+<span class="comment">#----------------------------------------------------------------------------------------------------</span>
+<span class="comment">#  2 - Creates the FEM representation and retrieves its root object</span>
+<span class="comment">#----------------------------------------------------------------------------------------------------</span>
+
+MyPrdRepFactory = MyRootProduct.GetItem(&quot;SimPrdRepFactory&quot;)
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+MyFemRepRoot = MyFemRepRef.GetItem(&quot;SimFemRoot&quot;)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  3 - Creates a spring property connection</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Retrieves the publications and composing links</span>
+myPublications  = MyRootProduct.Publications
+myCoverContactFace= myPublications.GetItem("Cover_Contact_Face")
+myPumpHousingContactFace = myPublications.GetItem("Pump_Housing_Contact_Face")
+
+<span class="comment"># Composing link to the publication</span>
+myLinkToCoverContactFace = myProductService.ComposeLink(myRootOccurrence, None, myCoverContactFace)
+myLinkToPumpHousingContactFace = myProductService.ComposeLink(myRootOccurrence, None, myPumpHousingContactFace)
+
+<span class="comment"># Retrieve the engineering connection manager</span>
+myEngineeringConnections = MyRootProduct.GetItem("CATEngConnections")
+
+<span class="comment"># Create the list of impacted product</span>
+myImpacted = []
+myImpacted.append("ws3_cover_part.1")
+myImpacted.append("ws3_pump_housing_part.1")
+
+<span class="comment"># Create a rigid engineering connection</span>
+myNewRigidEngineeringConnection = myEngineeringConnections.Add(win32com.client.constants.catRigid, myImpacted)
+
+<span class="comment"># Retrieve the assembly constraint manager</span>
+myAssemblyConstraints = myNewRigidEngineeringConnection.AssemblyConstraints
+
+<span class="comment"># Create coincidence constraint between two hole axis</span>
+myGeometries = []
+myGeometries.append("Cover_Hole2_Axis")
+myGeometries.append("Pump_Housing_Hole2_Axis")
+
+myCoincidenceConstraint1 = myAssemblyConstraints.Add(win32com.client.constants.catCoincidenceLineLine, myGeometries)
+
+<span class="comment"># Create coincidence constraint between two other hole axis</span>
+myGeometries = []
+myGeometries.append("Cover_Hole4_Axis")
+myGeometries.append("Pump_Housing_Hole4_Axis")
+
+myCoincidenceConstraint2 = myAssemblyConstraints.Add(win32com.client.constants.catCoincidenceLineLine, myGeometries)
+
+<span class="comment"># Create distance plan/plan constraint</span>
+myGeometries = []
+myGeometries.append("Cover_Contact_Face")
+myGeometries.append("Pump_Housing_Contact_Face")
+
+myDistanceConstraint = myAssemblyConstraints.Add(win32com.client.constants.catDistancePlanePlane, myGeometries)
+
+<span class="comment"># Retrieve the MCX Property Manage</span>
+myMCXProperties = myNewRigidEngineeringConnection.GetItem("SimMCXProperties")
+
+<span class="comment"># Create a spring connection property</span>
+<span class="comment"># connection property is included upon addition</span>
+mySpringConnection = myMCXProperties.Add("SimSpring", MyFemRepRoot)
+
+<span class="comment"># Setting of the Tie connection property supports</span>
+myLinkAccess = mySpringConnection.GetItem("SimLinkAccess")
+
+<span class="comment"># PRD1 attribute is for master surface</span>
+myLinkAccess.AddLink ("PRD1", myLinkToCoverContactFace)
+
+<span class="comment"># PRD2 attribute is for slave surface</span>
+myLinkAccess.AddLink ("PRD2", myLinkToPumpHousingContactFace)
+
+MyFemRepRoot.IncludePropertyConnection (myRootOccurrence, mySpringConnection)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  4 - Checks the connection property inclusion</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+MyFemRepRoot.IsIncludedPropertyConnection (myRootOccurrence, mySpringConnection)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  5 - Updates the FEM representation</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+MyFemRepRoot.Update
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  6 - Excludes the connection property</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+MyFemRepRoot.ExcludePropertyConnection (myRootOccurrence, mySpringConnection)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  7 - Includes the connection property again</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+MyFemRepRoot.IncludePropertyConnection (myRootOccurrence, mySpringConnection)
+
+</pre>
+  </body>
+</html>
+

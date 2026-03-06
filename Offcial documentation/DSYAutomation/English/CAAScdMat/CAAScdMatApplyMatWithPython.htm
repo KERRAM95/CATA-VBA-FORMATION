@@ -1,0 +1,246 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Applying a Material with Domains on a 3D Part</title>
+<style type="text/css">
+
+.auto-style1 {
+	font-family: "Courier New", Courier;
+	font-size: 9pt;
+	color: #976970;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Applying a Material with Domains on a 3D Part</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA.</li>
+							<li>import the
+						<code><div class=vb_sample_data>CAAScdFeaPumpModel.3dxml</div></code> file supplied in 
+						the folder <code>
+						InstallRootFolder\CAADoc\Doc\English\CAAScdFeaScenario\samples\</code> 
+						where <code>InstallRootFolder</code><span class="auto-style1">
+						</span>is the folder 
+						where the API CD-ROM is installed.</li>
+							<li>Open any part of the PumpModel </li>
+							<li>Launch the structural scenario App and create a structural simulation.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdMatApplyMatWithPythonSource.htm">CAAScdMatApplyMatWithPythonSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdMatTocMaterial.htm">Material Definition Object Model Map</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in twelve steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the simulation, its model and creates the different links</a></li>
+			<li><a href="#Step2">Retrieves the Material Service</a></li>
+			<li><a href="#Step3">Create Covering and Core Material</a></li>
+			<li><a href="#Step4">Apply Covering and Core Material </a></li>
+			<li><a href="#Step5">Retrieve Covering and Core Material </a></li>
+			<li><a href="#Step6">Remove Applied Material</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the simulation, its model and creates the different links</strong></p>
+			<p>As a first step, the UC retrieves the active editor and retrieves the simulation model.</p>
+			<pre class="code">...
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+...</pre>
+<p>Then opens the simulation model and retrieves the root occurence.</p>
+<pre class="code">...
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+
+myProductEditor = CATIA.ActiveEditor
+MyProductService = myProductEditor.GetService("PLMProductService")
+
+myEntities = MyProductService.EditedContent
+myRootProduct = myEntities.Item(1)
+
+myRootOccurrence = MyProductService.RootOccurrence
+...</pre>
+<p>The apply material can be done on Root Occurrence, RepInstance or PartBody. For each case, you need to compose a link that points a target.</p>
+<p> As next step, the UC compose the needed links</p>
+<pre class="code">...
+MyActiveObject = myProductEditor.ActiveObject
+MyVPMRepRef = MyActiveObject.Parent
+MyPartBody = MyActiveObject.MainBody
+MyRootRef = MyVPMRepRef.Father
+ListInstance = MyRootRef.RepInstances
+MyRepInstance = ListInstance.Item(1)
+...</pre>
+<p>Root Occurrence :  the RepInstance and Reference have to be NULL</p>
+<pre class="code">...
+myLinkOnRootOcc = MyProductService.ComposeLink(myRootOccurrence, None, None)
+...</pre>
+<p>RepInstance :  the VPMReference and Reference have to be NULL</p>
+<pre class="code">...
+myLinkOnRepInst = MyProductService.ComposeLink(None, MyRepInstance, None)
+...</pre>
+<p>Feature (PartBody, ...) : the VPMReference has to be NULL, but not the RepInstance. </p>
+<p>In automation, the feature is a CATIAReference, you have to not confuse it with VPMReference.</p>
+<pre class="code">...
+MyReference     = MyActiveObject.CreateReferenceFromObject(MyPartBody)
+myLinkOnFeature = MyProductService.ComposeLink(None, MyRepInstance, MyReference)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves the Material Service</strong></p>
+			<pre class="code">... 
+MyMaterialService = CATIA.GetSessionService("MATPLMService")
+...</pre>
+			</li>					
+			<li>
+			<p><strong><a name="Step3"></a>Create Covering and Core Material</strong></p>
+			<p>In this step UC creates a core and covering material</p>
+			<p>First it Creates a Covering Material</p>
+			<pre class="code">... 
+MyCoveringMatRef, MyMaterialEditor = MyMaterialService.PLMCreate ("dsc_matref_ref_Covering", <span class="keyword">None</span>, <span class="keyword">None</span>)
+...</pre>
+<p>Then it Adds Domain to coverin Material</p>
+<pre class="code">...
+MyListCovMatDomains = MyCoveringMatRef.GetDomains(<span class="keyword">None</span>)
+MyDomain = MyListCovMatDomains.Add ("dsc_matref_rep_Rendering", <span class="keyword">None</span>)
+...</pre>
+<p>it Creates a core Material</p>
+<pre class="code">...
+MyCoreMatRef, MyMaterialEditor = MyMaterialService.PLMCreate ("dsc_matref_ref_Core", <span class="keyword">None</span>, <span class="keyword">None</span>)
+</pre>
+<p>Then Adds Domain to Core Material</p>
+<p>It is described in <a href="CAAScdMatCreateMatWithPython.htm#Step2">CAAScdMatCreateMatWithPython.htm.</a></p>
+<pre class="code">
+MyListCoreMatDomains = MyCoreMatRef.GetDomains (<span class="keyword">None</span>)
+MyDomain = MyListCoreMatDomains.Add ("dsc_matref_rep_Rendering",  <span class="keyword">None</span>)
+MyDomain = MyListCoreMatDomains.Add ("dsc_matref_rep_Composite",  <span class="keyword">None</span>)
+MyDomain = MyListCoreMatDomains.Add ("dsc_matref_rep_Drafting",   <span class="keyword">None</span>)
+MyDomain = MyListCoreMatDomains.Add ("dsc_matref_rep_SmaOptions", <span class="keyword">None</span>)
+<span class="keyword">return</span> MyCoveringMatRef, MyCoreMatRef
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Apply Covering and Core Material </strong></p>
+			<p>It first Applies a Core and Covering Material on Root Occurrence</p>
+			<pre class="code">... 
+MyCoveringAppliedMat = MyMaterialService.SetMaterialCovering (myLinkOnRootOcc, iMyCoveringMatRef, <span class="keyword">None</span>)
+MyCoreAppliedMat = MyMaterialService.SetMaterialCore (myLinkOnRootOcc, iMyCoreMatRef, <span class="keyword">None</span>)
+...</pre>
+<p>then Applies a Core and Covering Material on RepInstance</p>
+<pre class="code">...
+MyCoveringAppliedMat = MyMaterialService.SetMaterialCovering (myLinkOnRepInst, iMyCoveringMatRef, <span class="keyword">None</span>)
+MyCoreAppliedMat = MyMaterialService.SetMaterialCore (myLinkOnRepInst, iMyCoreMatRef, <span class="keyword">None</span>)
+...</pre>
+<p> Finally Applies a Core and Covering Material on Feature</p>
+<pre class="code">...
+MyCoveringAppliedMat = MyMaterialService.SetMaterialCovering (myLinkOnFeature, iMyCoveringMatRef, <span class="keyword">None</span>)
+MyCoreAppliedMat = MyMaterialService.SetMaterialCore (myLinkOnFeature, iMyCoreMatRef, <span class="keyword">None</span>) 
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieve Covering and Core Material </strong></p>
+			<p>First UC retrieves Applied Material on Root Occurrence </p>
+			<pre class="code">... 
+MyCoreMatRef, MyCoreAppliedMat = MyMaterialService.GetMaterialCore (myLinkOnRootOcc, None, None)
+MyCoveringMatRefList, MyCoveringAppliedMatList = MyMaterialService.GetMaterialCovering (myLinkOnRootOcc, None, None)
+...</pre>
+<p>Then Retrieves Applied Material on RepInstance</p>
+<pre class="code">...
+MyCoreMatRef, MyCoreAppliedMat = MyMaterialService.GetMaterialCore (myLinkOnRepInst, None, None)
+MyCoveringMatRefList, MyCoveringAppliedMatList = MyMaterialService.GetMaterialCovering (myLinkOnRepInst, None, None)
+</pre>
+<p>Finally Retrieves Applied Material on Feature</p>
+<pre class="code">...
+MyCoreMatRef, MyCoreAppliedMat = MyMaterialService.GetMaterialCore (myLinkOnFeature, None, None)
+MyCoveringMatRefList, MyCoveringAppliedMatList = MyMaterialService.GetMaterialCovering (myLinkOnFeature, None, None)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Remove Applied Material</strong></p>
+<p>First, UC retrieves Applied Material on Root Occurrence</p>
+<pre class="code">...
+MyCoreMatRef, MyCoreAppliedMat = MyMaterialService.GetMaterialCore (myLinkOnRootOcc, None, None) 
+MyCoveringMatRefList, MyCoveringAppliedMatList = MyMaterialService.GetMaterialCovering (myLinkOnRootOcc, None, None)
+...</pre>
+<p>Then, remove Applied Core Material on Root Occurrence</p>
+<pre class="code">...
+MyMaterialService.RemoveAppliedMaterial (MyCoreAppliedMat)
+...</pre>
+<p> Finally Removes Applied Covering Material on Root Occurrence </p>
+<pre class="code">...
+iMaxCnx = MyCoveringAppliedMatList.Count
+
+<span class="keyword">for</span> index <span class="keyword">in</span> <span class="keyword">range</span>(1, iMaxCnx+1):
+    MyCoveringAppliedMat = MyCoveringAppliedMatList.Item(index)
+    MyMaterialService.RemoveAppliedMaterial (MyCoveringAppliedMat)
+...</pre>			
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

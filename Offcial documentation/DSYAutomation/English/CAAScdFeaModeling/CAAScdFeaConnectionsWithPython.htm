@@ -1,0 +1,262 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a Connection Property</title>
+<style type="text/css">
+    .padded td, .padded th {
+        padding: 5px;
+        border: 1px solid black;
+    }
+.auto-style1 {
+	font-family: "Courier New", Courier;
+	font-size: 9pt;
+	color: #976970;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Creating a Connection Property</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This use case primarily focuses on the 
+					methodology to create a connection property.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					<ul>
+						<li>Launch CATIA and then import and 
+						open the
+						<code><div class=vb_sample_data>CAAScdFeaPumpModel.3dxml</div></code> file supplied in 
+						the folder <code>
+						InstallRootFolder\CAADoc\Doc\English\CAAScdFeaScenario\samples\,</code> 
+						where <code>InstallRootFolder</code><span class="auto-style1">
+						</span>is the folder 
+						where the API CD-ROM is installed.</li>
+						<li>Launch the structural scenario App and create a 
+						structural simulation.</li>
+            <li>Note: Creation of new PLM objects via scripting, as in this 
+                use case, requires an enabling license in addition to the
+                interactive Roles needed to access the functionality.</li>            
+					</ul>
+					<p><span class="run-in">Where to find the macro: 						<a href="CAAScdFeaConnectionsWithPythonSource.htm">
+					CAAScdFeaConnectionsWithPythonSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided into seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the simulation and its product</a></li>
+			<li><a href="#Step2">Retrieves the publications and composes links</a></li>
+			<li><a href="#Step3">Creates a rigid engineering connection</a></li>
+			<li><a href="#Step4">Creates constraints</a></li>
+			<li><a href="#Step5">Creates the FEM representation and retrieves its root object</a></li>
+			<li><a href="#Step6">Retrieves the MCX property manager</a></li>
+			<li><a href="#Step7">Creates a spring connection property</a></li>		
+			<li><a href="#Step8">Sets the spring connection attributes</a></li>			
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the simulation and its product</strong></p>
+			<p>As a first step, the UC retrieves the simulation and its product from the simulation editor. </p>
+<pre class="code">... 
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+...
+</pre>
+<p>Then, opens the simulation model and retrieves the root occurence and the root product</p>
+<pre class="code">...
+oOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+oOpenService.PLMOpen (myModel)
+
+myProductEditor = CATIA.ActiveEditor
+myProductService = myProductEditor.GetService(&quot;PLMProductService&quot;)
+
+myProductEntities = myProductService.EditedContent
+MyRootProduct = myProductEntities.Item(1)
+
+myRootOccurrence = myProductService.RootOccurrence
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves the publications and composing links</strong></p>
+			<p>In this step UC retrieves the publications aggregated by the root 
+			product and composes links.</p>
+<pre class="code">...
+myPublications = MyRootProduct.Publications
+myCoverContactFace= myPublications.GetItem(&quot;Cover_Contact_Face&quot;)
+...
+</pre>
+<p>then, composes link to the publication	</p>
+<pre class="code">...
+myLinkToCoverContactFace = myProductService.ComposeLink(myRootOccurrence, <span class="keyword">None</span>, myCoverContactFace)
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Creates a rigid engineering connection 
+			and creates constraints</strong></p>
+			<p>In this step UC creates a rigid engineering connection.</p>
+			<p>First, Retrieve the engineering connection manager</p>
+<pre class="code">...
+myEngineeringConnections = MyRootProduct.GetItem("CATEngConnections")
+...</pre>
+<p>Create the list of impacted product</p>
+<pre class="code">...
+myImpacted = []
+myImpacted.append("ws3_cover_part.1")
+myImpacted.append("ws3_pump_housing_part.1")
+...</pre>
+<p>Create a rigid engineering connection</p>
+<pre class="code">...
+myNewRigidEngineeringConnection = myEngineeringConnections.Add(win32com.client.constants.catRigid, myImpacted)
+...</pre>
+<li><p><strong><a name="Step4"></a>Creates constraints</strong></p>
+<p>In this step UC creates constraints.</p>
+<p>First, retrieve the assembly constraint manager</p>
+<pre class="code">...
+myAssemblyConstraints = myNewRigidEngineeringConnection.AssemblyConstraints
+...
+</pre>
+<p>Create coincidence constraint between two hole axis</p>
+<pre class="code">...
+myGeometries = []
+myGeometries.append("Cover_Hole2_Axis")
+myGeometries.append("Pump_Housing_Hole2_Axis&quot;)
+
+myCoincidenceConstraint1 = myAssemblyConstraints.Add(win32com.client.constants.catCoincidenceLineLine, myGeometries)
+...</pre>
+</li>	
+		</li>
+			<li>
+			<p><strong><a name="Step5"></a>Creates the FEM representation and 
+			retrieves its root object</strong></p>
+			<p>In this step UC creates a new FEM representation object. To 
+			perform the creation, a simulation representation factory has to be 
+			retrieved on the reference object on which the FEM rep will be 
+			aggregated.</p>
+			<pre class="code">...
+MyPrdRepFactory = MyRootProduct.GetItem("SimPrdRepFactory")
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep("FEM")
+MyFemRepRoot = MyFemRepRef.GetItem("SimFemRoot")
+...</pre>
+
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Retrieves the MCX property manager</strong></p>
+			<p>In this step UC retrieves the MCX property manager. </p>
+<pre class="code">...
+myMCXProperties = myNewRigidEngineeringConnection.GetItem(&quot;SimMCXProperties&quot;)
+...
+</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step7"></a>Creates a spring connection property</strong></p>
+				<p>In this step UC creates a spring connection property.</p>
+				<pre class="code">...
+mySpringConnection = myMCXProperties.Add(&quot;SimSpring&quot;, MyFemRepRoot)
+...</pre>
+<p>Setting of the Tie connection property supports</p>
+<pre class="code">...
+myLinkAccess = mySpringConnection.GetItem("SimLinkAccess")
+...
+</pre>
+<p> Adding links for master and slave surface</p>
+<pre class="code">
+...
+<span class="comment"># PRD1 attribute is for master surface </span>
+myLinkAccess.AddLink ("PRD1", myLinkToCoverContactFace)
+
+<span class="comment"># PRD2 attribute is for slave surface </span>
+myLinkAccess.AddLink ("PRD2", myLinkToPumpHousingContactFace)
+...
+				</pre>
+				<p>You can find the available late types for connection properties creation in the <a href="CAAScdFeaModelLateTypes.htm">
+					Creation Late Types for Model Features</a> article.
+				</p>
+				<p><b>Important :</b> For connection features you will have to use &quot;PRD1&quot;, &quot;PRD2&quot;, etc... to set the different supports and &quot;Handler0D&quot; or &quot;Handler1D&quot; for fastener placements.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step8"></a>Sets the spring connection attributes</strong></p>
+				<p>In this step UC retrieves the connector section of the spring and sets its elasticities.</p>
+				<pre class="code">...
+<span class="comment"># Retrieving the connector section</span>
+mySpringConnection.SpringType = win32com.client.constants.SimGeneralSpring
+
+myConnectionSection = mySpringConnection.ConnectorSection
+
+<span class="comment"># Retrieving the behavior</span>
+myConnectionBehavior = myConnectionSection.ConnectorBehavior
+
+<span class="comment"># Retrieving the elasticities</span>
+myConnectorElasticities = myConnectionBehavior.ConnectorElasticities
+
+<span class="comment"># Retrieving the first elasticity</span>
+myConnectorElasticity1 = myConnectorElasticities.Item(1)
+
+myConnectorElasticity1.ElasticityOrder = win32com.client.constants.SimConnectorElasticityNonLinear
+
+<span class="comment"># Retrieving the stiffness column</span>
+myStiffnessColumn1 = myConnectorElasticity1.GetTableColumn(win32com.client.constants.SimConnectorElasticityStiffness)
+
+<span class="comment"># Retrieving the position column</span>
+myPositionColumn1 = myConnectorElasticity1.GetTableColumn(win32com.client.constants.SimConnectorElasticityPosition)
+
+<span class="comment"># Setting data</span>
+
+myStiffnessColumn1.SetCellData (1, 0.17)
+myPositionColumn1.SetCellData (1, 0.008)
+...
+				</pre>
+			</li>			
+	</ol>
+	</td>
+	</tr>
+</table>	
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,488 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpToolProfile (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpToolProfile"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpToolProfile<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpToolProfile_23545','OlpToolProfile','0');</script>
+<section id='maindesc'>
+<b><i>   The tool profile interface used for translating robot programs.</i></b><br>
+<BR>
+ <font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ Download or Upload command</font>.
+ 
+ <P>The behavior of this object depends on where it was retrieved from.
+ If the object was retrieved from an <script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotion','','DELMIAOlpRobotMotion') </script> or  
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotionTarget','','DELMIAOlpRobotMotionTarget') </script> then this object is used to configure the tool properties of that motion.  The parameters specified with 
+ the iMatch input equal to TRUE will be used to find an existing profile 
+ to reuse for this motion.  If no matching profile is found a new one will be created.  
+ If the object was retrieved from 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpController','ToolProfileList','DELMIAOlpController.ToolProfileList') </script> then any modifications to this object will change an existing or new
+ profile's values directly.</P>
+ 
+ <P>You cannot call Get methods for profiles retrieved from a new
+ 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotion','','DELMIAOlpRobotMotion') </script> or 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotionTarget','','DELMIAOlpRobotMotionTarget') </script> until values have been set.</P>   
+ 
+ <P>Any set methods which don't have the iMatch input and the writable properties
+ assume iMatch=FALSE.</P>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#FixedTCP"><b>FixedTCP</b></a>
+</td><td  id='tdright'>  Get/Set whether this tool profile is a fixed TCP tool profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Mass"><b>Mass</b></a>
+</td><td  id='tdright'>  Tool mass in kilograms.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetAttachedDevice"><b>GetAttachedDevice</b></a>
+</td><td  id='tdright'>  Gets the associated controlling device for this tool profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetCentroid"><b>GetCentroid</b></a>
+</td><td  id='tdright'>  Gets the centroid of the tool.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetInertia"><b>GetInertia</b></a>
+</td><td  id='tdright'>  Gets the underlying coefficient of tool inertia
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTransform"><b>GetTransform</b></a>
+</td><td  id='tdright'>  Get the transform that represents the TCP location.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetAttachedDevice"><b>SetAttachedDevice</b></a>
+</td><td  id='tdright'>  Sets the associated controlling device for this tool profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetCentroid"><b>SetCentroid</b></a>
+</td><td  id='tdright'>  Sets the centroid of the tool.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetCentroidMatch"><b>SetCentroidMatch</b></a>
+</td><td  id='tdright'>  Sets the centroid of the tool.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetFixedTCPMatch"><b>SetFixedTCPMatch</b></a>
+</td><td  id='tdright'>  Set whether this tool profile is a fixed TCP tool profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetInertia"><b>SetInertia</b></a>
+</td><td  id='tdright'>  Sets the underlying coefficient of tool inertia
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetInertiaMatch"><b>SetInertiaMatch</b></a>
+</td><td  id='tdright'>  Sets the underlying coefficient of tool inertia
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetMassMatch"><b>SetMassMatch</b></a>
+</td><td  id='tdright'>  Set the tool mass in kilograms.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTransform"><b>SetTransform</b></a>
+</td><td  id='tdright'>  Set the transform that represents the TCP location.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTransformMatch"><b>SetTransformMatch</b></a>
+</td><td  id='tdright'>  Set the transform that represents the TCP location.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="FixedTCP"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FixedTCP</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set whether this tool profile is a fixed TCP tool profile.
+</dd>
+<a id="Mass"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Mass</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Tool mass in kilograms.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetAttachedDevice"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetAttachedDevice</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpController','OlpController')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets the associated controlling device for this tool profile.<BR>
+ This controlling device might not exist if the tool device does
+ not contain any mechanisms. In this case, this property will be NULL
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The attached device controller. It might be nothing if there is no device attached.
+ </ dd>
+</dl>
+</dd>
+<a id="GetCentroid"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetCentroid</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oZ</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Gets the centroid of the tool.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oX</span></dt>
+   <dd>  The X Coordinate in m.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oY</span></dt>
+   <dd>   The Y Coordinate in m.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oZ</span></dt>
+   <dd>   The Z Coordinate in m.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetInertia"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetInertia</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oXX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oYY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oZZ</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oXY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oYZ</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oZX</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Gets the underlying coefficient of tool inertia
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oXX</span></dt>
+   <dd>  The XX coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oYY</span></dt>
+   <dd>  The YY coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oZZ</span></dt>
+   <dd>  The ZZ coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oXY</span></dt>
+   <dd>  The XY coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oYZ</span></dt>
+   <dd>  The YZ coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oZX</span></dt>
+   <dd>  The ZX coefficient.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetTransform"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTransform</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpPositionRef','DELOlpPositionRef')</script> <span class='param'>iOrigin</span>)</span> As <script type="text/javascript"> activateLink('OlpTransform','OlpTransform')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the transform that represents the TCP location.<BR>
+ For normal (mobile) tool profiles, this is the offset from the 
+ robot mount plate to the TCP.  For fixed 
+ TCP tool profiles, this is the transform from the iOrigin
+ location to the TCP.  
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iOrigin</span></dt>
+   <dd>	The location that the transform is relative to.<BR>
+  For normal (mobile) tool profiles this must be delOlpMount.
+  For fixed TCP tool profiles it can be any other value except
+  delOlpRobotBase since that would mean that the fixed TCP moves
+  with the rail position (when the robot is on a rail).  
+  Instead of delOlpRobotBase you should use delOlpRailOrigin.  
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The TCP transform.
+ </ dd>
+</dl>
+</dd>
+<a id="SetAttachedDevice"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetAttachedDevice</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpController','OlpController')</script> <span class='param'>iAttachedDevice</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the associated controlling device for this tool profile.<BR>
+ The device is of type DELMIAOlpController, and it must have a valid attachment to the main MCA.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'>	The</span></dt>
+   <dd> target device controller.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetCentroid"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetCentroid</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iZ</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the centroid of the tool.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iX</span></dt>
+   <dd>  The X Coordinate in m.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iY</span></dt>
+   <dd>   The Y Coordinate in m.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iZ</span></dt>
+   <dd>   The Z Coordinate in m.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetCentroidMatch"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetCentroidMatch</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iZ</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the centroid of the tool.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iX</span></dt>
+   <dd>  The X Coordinate in m.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iY</span></dt>
+   <dd>   The Y Coordinate in m.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iZ</span></dt>
+   <dd>   The Z Coordinate in m.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>  Should the parameter be used to find a controller profile match?
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetFixedTCPMatch"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetFixedTCPMatch</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iIsFixedTCP</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set whether this tool profile is a fixed TCP tool profile.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIsFixedTCP</span></dt>
+   <dd>	Tool profile is for a fixed tool.<BR>
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>  Should the parameter be used to find a controller profile match?
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetInertia"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetInertia</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iXX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iYY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iZZ</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iXY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iYZ</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iZX</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the underlying coefficient of tool inertia
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iXX</span></dt>
+   <dd>  The XX coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iYY</span></dt>
+   <dd>  The YY coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iZZ</span></dt>
+   <dd>  The ZZ coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iXY</span></dt>
+   <dd>  The XY coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iYZ</span></dt>
+   <dd>  The YZ coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iZX</span></dt>
+   <dd>  The ZX coefficient.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetInertiaMatch"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetInertiaMatch</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iXX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iYY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iZZ</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iXY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iYZ</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iZX</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the underlying coefficient of tool inertia
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iXX</span></dt>
+   <dd>  The XX coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iYY</span></dt>
+   <dd>  The YY coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iZZ</span></dt>
+   <dd>  The ZZ coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iXY</span></dt>
+   <dd>  The XY coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iYZ</span></dt>
+   <dd>  The YZ coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iZX</span></dt>
+   <dd>  The ZX coefficient.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>  Should the parameter be used to find a controller profile match?
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetMassMatch"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetMassMatch</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iMass</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the tool mass in kilograms.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iMass</span></dt>
+   <dd>	Tool profile mass.<BR>
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>  Should the parameter be used to find a controller profile match?
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTransform"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTransform</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpPositionRef','DELOlpPositionRef')</script> <span class='param'>iOrigin</span>,<script type="text/javascript"> activateLink('OlpTransform','OlpTransform')</script> <span class='param'>iTCP</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the transform that represents the TCP location.<BR>
+ For normal (mobile) tool profiles, this is the offset from the 
+ transform from the robot mount plate to the TCP.  For fixed 
+ TCP tool profiles, this is the transform from the robot base, 
+ world, etc.  to the TCP, depending on the value
+ of the parameter iOrigin.  
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iOrigin</span></dt>
+   <dd>	The location that the transform is relative to.<BR>
+  For normal (mobile) tool profiles this must be delOlpMount.
+  For fixed TCP tool profiles it can be any other value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCP</span></dt>
+   <dd>	The TCP transform.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTransformMatch"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTransformMatch</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpPositionRef','DELOlpPositionRef')</script> <span class='param'>iOrigin</span>,<script type="text/javascript"> activateLink('OlpTransform','OlpTransform')</script> <span class='param'>iTCP</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the transform that represents the TCP location.<BR>
+ For normal (mobile) tool profiles, this is the offset from the 
+ transform from the robot mount plate to the TCP.  For fixed 
+ TCP tool profiles, this is the transform from the robot base, 
+ world, etc. to the TCP, depending on the value
+ of the parameter iOrigin.  
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iOrigin</span></dt>
+   <dd>	The location that the transform is relative to.<BR>
+  For normal (mobile) tool profiles this must be delOlpMount.
+  For fixed TCP tool profiles it can be any other value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCP</span></dt>
+   <dd>	The TCP transform.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>  Should the parameter be used to find a controller profile match?
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

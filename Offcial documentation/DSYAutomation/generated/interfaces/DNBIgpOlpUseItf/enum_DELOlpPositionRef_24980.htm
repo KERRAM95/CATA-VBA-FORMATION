@@ -1,0 +1,112 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf DELOlpPositionRefEnumeration </title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "DELOlpPositionRef"; } 
+	function getCurrentType() { 
+ 	return "enum"; }  
+ </script><h1 class='title1'>DELOlpPositionRef <font style='font-size:small;'>(Enumeration)</font></h1></header><main id='main'> 
+ 
+<section id='maindesc'><section id='objdef'><dl>
+<dt class='dt1'>
+enum <b>DELOlpPositionRef</b> {<pre class='light'>
+  delOlpWorld,
+  delOlpStation,
+  delOlpRailOrigin,
+  delOlpRobotBase,
+  delOlpMount,
+  delOlpUserDefined,
+  delOlpRobotOrigin,
+  delOlpUnknown
+</pre>}
+</dt><dd class='dd1'>
+<b><i> Reference locations that positions are relative to.</i></b><br>
+<BR>
+ <P>
+ All Cartesian positions are relative to some origin 
+ location.  These are the options for the origin of
+ an OLP upload or download.
+ </P>
+ <dl>
+   <dt><tt>delOlpWorld</tt></dt>
+   <dd>
+       The origin is the DELMIA world origin.  The world 
+       is the origin of the root object in the current window.
+   </dd>
+   <dt><tt>delOlpStation</tt></dt>
+   <dd>
+       The origin is the station origin.  The station is the organizational
+       resource that the robot is in.  If the robot is not
+       inside an organizational resource or if the robot 
+       reference is open then the station origin defaults to the 
+       robot product origin.
+   </dd>
+   <dt><tt>delOlpRailOrigin</tt></dt>
+   <dd>
+       The origin is the robot base with the rail at zero.  
+       If the robot is not on a rail, track, or gantry, then
+       the origin is the same as robot base.  This is commonly 
+       used for an integrated rail axis.
+   </dd>
+   <dt><tt>delOlpRobotBase</tt></dt>
+   <dd>
+       The origin is the robot base.  The robot base
+       location may be different from the robot's product 
+       origin.  This location was set when the robot model 
+       was created.  If the robot is mounted on a rail, track,
+       or gantry, then the robot base is not fixed.  As a result
+       there are limitations when using this coordinate frame.
+       See <script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotionTarget','GetTransform','DELMIAOlpRobotMotionTarget.GetTransform') </script>,        
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpObjectFrameProfile','GetTransform','DELMIAOlpObjectFrameProfile.GetTransform') </script>, and       
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpToolProfile','GetTransform','DELMIAOlpToolProfile.GetTransform') </script>.   </dd>
+   <dt><tt>delOlpMount</tt></dt>
+   <dd>
+       The origin is the robot mount plate.  This is the origin for 
+       fixed TCP target locations, object frames used in fixed TCP 
+       and for mobile tool profiles.
+   </dd>
+   <dt><tt>delOlpUserDefined</tt></dt>
+   <dd>
+       The origin is defined by the user in the robot origin command.
+       It can be attached to an object so it could move if the robot is mobile.
+   </dd>
+   <dt><tt>delOlpRobotOrigin</tt></dt>
+   <dd>
+       The origin stored with the robot model using the Robot Origin command. 
+       This automatically resolves to one of the other options.  Its a shortcut 
+       that can be passed to APIs instead of calling 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpResourceControlDevice','','DELMIAOlpResourceControlDevice') </script>.OriginType   </dd>
+   <dt><tt>delOlpUnknown</tt></dt>
+   <dd>
+       The origin is unknown.  In general this should not be used.
+   </dd>
+ </dl>
+</dd></dl></section></section >
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

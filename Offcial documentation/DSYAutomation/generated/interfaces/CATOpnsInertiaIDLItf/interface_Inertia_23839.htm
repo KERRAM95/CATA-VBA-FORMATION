@@ -1,0 +1,279 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATOpnsInertiaIDLItf Inertia (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATOpnsInertiaIDLItf.htm" href="../CATOpnsInertiaIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATOpnsInertiaIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "Inertia"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> Inertia<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_Inertia_23839','Inertia','0');</script>
+<section id='maindesc'>
+<b><i> Interface representing the inertia of an element.</i></b><br>
+
+
+ Get the computation mode of the results.
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetArea"><b>GetArea</b></a>
+</td><td  id='tdright'>  Retrieves the area.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetCOGPosition"><b>GetCOGPosition</b></a>
+</td><td  id='tdright'>  Retrieves the position of the center of gravity.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetInertiaMatrix"><b>GetInertiaMatrix</b></a>
+</td><td  id='tdright'>  Retrieves the matrix of inertia.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetMass"><b>GetMass</b></a>
+</td><td  id='tdright'>  Retrieves the mass.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPrincipalAxes"><b>GetPrincipalAxes</b></a>
+</td><td  id='tdright'>  Retrieves the principal axes of inertia.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPrincipalMoments"><b>GetPrincipalMoments</b></a>
+</td><td  id='tdright'>  Retrieves the principal moments of inertia.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetVolume"><b>GetVolume</b></a>
+</td><td  id='tdright'>  Retrieves the volume.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#OnlyMainBody"><b>OnlyMainBody</b></a>
+</td><td  id='tdright'>  Inertia is only computed for the main body of the part if this method is called before Get methods.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetArea"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetArea</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the area.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example retrieves the area of <tt>theInertiaElement</tt>.
+   <pre>
+     Set theInertiaService = CATIA.ActiveEditor.GetService("InertiaService")
+     Dim theInertiaElement As Inertia
+     Set theInertiaElement = theInertiaService.GetInertiaElement(theSelection)
+     Dim theArea As Double
+     theArea = theInertiaElement.<font color="red">GetArea</font>
+   </pre>
+</dl>
+</dd>
+<a id="GetCOGPosition"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetCOGPosition</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oXCOG</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oYCOG</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oZCOG</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the position of the center of gravity.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example retrieves the position of the center of gravity of <tt>theInertiaElement</tt>.
+   <pre>
+     Set theInertiaService = CATIA.ActiveEditor.GetService("InertiaService")
+     Dim theInertiaElement As Inertia
+     Set theInertiaElement = theInertiaService.GetInertiaElement(theSelection)
+     Dim theXCOG As Double
+     Dim theYCOG As Double
+     Dim theZCOG As Double
+     theInertiaElement.<font color="red">GetCOGPosition</font> theXCOG, theYCOG, theZCOG
+   </pre>
+</dl>
+</dd>
+<a id="GetInertiaMatrix"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetInertiaMatrix</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oMatrix</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the matrix of inertia.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oMatrix</span></dt>
+   <dd>    The matrix of inertia array:
+    <ul>
+    <li>oMatrix(0) is the Ixx component
+    <li>oMatrix(1) is the Ixy component
+    <li>oMatrix(2) is the Ixz component
+    <li>oMatrix(3) is the Iyx component
+    <li>oMatrix(4) is the Iyy component
+    <li>oMatrix(5) is the Iyz component
+    <li>oMatrix(6) is the Izx component
+    <li>oMatrix(7) is the Izy component
+    <li>oMatrix(8) is the Izz component
+    </ul>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example retrieves the inertia matrix of <tt>theInertiaElement</tt>.
+   <pre>
+     Set theInertiaService = CATIA.ActiveEditor.GetService("InertiaService")
+     Dim theInertiaElement As Inertia
+     Set theInertiaElement = theInertiaService.GetInertiaElement(theSelection)
+     Dim theMatrix(8)
+     theInertiaElement.<font color="red">GetInertiaMatrix</font> theMatrix
+   </pre>
+</dl>
+</dd>
+<a id="GetMass"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetMass</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the mass.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example retrieves the mass of <tt>theInertiaElement</tt>.
+   <pre>
+     Set theInertiaService = CATIA.ActiveEditor.GetService("InertiaService")
+     Dim theInertiaElement As Inertia
+     Set theInertiaElement = theInertiaService.GetInertiaElement(theSelection)
+     Dim theMass As Double
+     theMass = theInertiaElement.<font color="red">GetMass</font>
+   </pre>
+</dl>
+</dd>
+<a id="GetPrincipalAxes"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetPrincipalAxes</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oAxes</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the principal axes of inertia.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oAxes</span></dt>
+   <dd>    The principal axes of inertia array (A1, A2 and A3 are the principal axes of inertia):
+    <ul>
+    <li>oAxes(0) is the A1x component
+    <li>oAxes(1) is the A2x component
+    <li>oAxes(2) is the A3x component
+    <li>oAxes(3) is the A1y component
+    <li>oAxes(4) is the A2y component
+    <li>oAxes(5) is the A3y component
+    <li>oAxes(6) is the A1z component
+    <li>oAxes(7) is the A2z component
+    <li>oAxes(8) is the A3z component
+    </ul>
+  
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">    This example retrieves the principal axes of <tt>theInertiaElement</tt>.
+    <pre>
+      Set theInertiaService = CATIA.ActiveEditor.GetService("InertiaService")
+      Dim theInertiaElement As Inertia
+      Set theInertiaElement = theInertiaService.GetInertiaElement(theSelection)
+      Dim theAxes(8)
+      theInertiaElement.<font color="red">GetPrincipalAxes</font> theAxes
+    </pre>
+</dl>
+</dd>
+<a id="GetPrincipalMoments"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetPrincipalMoments</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oMoments</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the principal moments of inertia.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oMoments</span></dt>
+   <dd>    The principal moments of inertia array:
+    <ul>
+    <li>oMoments(0) is the M1 value with respect to the first principal axes of inertia
+    <li>oMoments(1) is the M2 value with respect to the second principal axes of inertia
+    <li>oMoments(2) is the M3 value with respect to the third principal axes of inertia
+    </ul>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">    This  example  retrieves  principal  moments  of  inertia  of <tt>theInertiaElement</tt>.
+    <pre>
+      Set theInertiaService = CATIA.ActiveEditor.GetService("InertiaService")
+      Dim theInertiaElement As Inertia
+      Set theInertiaElement = theInertiaService.GetInertiaElement(theSelection)
+      Dim theMoments(2)
+      theInertiaElement.<font color="red">GetPrincipalMoments</font> theMoments
+    </pre>
+</dl>
+</dd>
+<a id="GetVolume"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetVolume</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the volume.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example retrieves the volume of <tt>theInertiaElement</tt>.
+   <pre>
+     Set theInertiaService = CATIA.ActiveEditor.GetService("InertiaService")
+     Dim theInertiaElement As Inertia
+     Set theInertiaElement = theInertiaService.GetInertiaElement(theSelection)
+     Dim theVolume As Double
+     theVolume = theInertiaElement.<font color="red">GetVolume</font>
+   </pre>
+</dl>
+</dd>
+<a id="OnlyMainBody"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>OnlyMainBody</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Inertia is only computed for the main body of the part if this method is called before Get methods.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">    This  example  retrieves  principal  moments  of  inertia  of <tt>theInertiaElement</tt>.
+    <pre>
+      Set theInertiaService = CATIA.ActiveEditor.GetService("InertiaService")
+      Dim theInertiaElement As Inertia
+      Set theInertiaElement = theInertiaService.GetInertiaElement(theSelection)
+      theInertiaElement.<font color="red">OnlyMainBody</font> 
+    </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

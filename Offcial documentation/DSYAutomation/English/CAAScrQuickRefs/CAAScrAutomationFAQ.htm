@@ -1,0 +1,123 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<title>Frequently Asked Questions About Automation</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+      <h1><a name="Top"></a>Automation</h1>
+    </td>
+  </tr>
+  <tr>
+    <td class="quick" colspan="2">Quick Reference</td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+  <tbody>
+  <tr>
+    <td>
+      <h3>Abstract</h3>
+      <p>The questions below come either from CAA partners or customers, or from
+      the Dassault Syst&#232;mes group.</p>
+      <ul>
+        <li><a href="#Q1">Why can&#39;t I get the coordinates of my point?</a></li>
+        <li><a href="#Q3">How do I know to which document belongs a product?</a></li>
+        <li><a href="#Q4">How do I know which subproducts of a product are
+          parts?</a></li>
+        <li><a href="#Q5">How to delete objects?</a></li>
+        <li><a href="#Q6">How do I modify the extremity point of an HybridShape
+          line?</a></li>
+        <li><a href="#Q7">My macro that creates components does not works any
+          more from V5R4</a></li>
+      </ul>
+    </td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Q1"></a>Why can&#39;t I get the coordinates of my point?</h2>
+<p>First beware to the syntax:</p>
+<pre><span class="keyword">Redim</span> aCoord(2)
+oPoint.GetCoordinates aCoord</pre>
+<p>Then, if the point has just been created, as the coordinates are the result of
+the evaluation of the point, they might not be available so compute it first
+either directly using the Compute method or using <code>Part::Update</code>:</p>
+<pre><span class="keyword">Set</span> oPoint = oHSFactory.AddNewPointOnCurveFromPercent (...) 
+oHBody1.AppendHybridShape oPoint
+oPart.InWorkObject = oPoint
+
+oPart.Update                     <span class="comment">&#39; --&gt; MANDATORY TO HAVE COORDINATES</span>
+oPoint.GetCoordinates coord1     <span class="comment">&#39; --&gt; OK now ...</span></pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Q3"></a>How do I know to which document belongs a product?</h2>
+<p>It&#39;s the parent of the reference product:</p>
+<pre><span class="comment">&#39; Print the name of the document containing my product</span>
+<span class="keyword">MsgBox</span> myProduct.ReferenceProduct.Parent.Name</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Q4"></a>How do I know which subproducts of a product are parts?</h2>
+<p>Fetch the document to which the product belongs and test its type.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Q5"></a>How to delete objects?</h2>
+<p>Except when directly available in the aggregating collection, you generally
+have to put it in the selection (it has to be part of the active document) and
+use the <code>Selection::Delete</code> method:</p>
+<pre><span class="keyword">Dim</span> oSel <span class="keyword">As</span> Selection
+<span class="keyword">Set</span> oSel = CATIA.ActiveEditor.Selection
+
+oSel.Clear
+oSel.Add(myElement)
+oSel.Delete</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Q6"></a>How do I modify the extremity point of an HybridShape line?</h2>
+<p>Get a reference from the target Point and use it to valuate the Origin
+property of the Line</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Q7"></a>My Macro that creates Components does not works any more
+from V5R4</h2>
+<p>Reference products are nom clearly identified as such. The <code>Products::AddComponent</code>
+methods now needs a reference product that can be obtained from a Product using
+its ReferenceProduct property:</p>
+<pre><span class="keyword">Dim</span> refProduct <span class="keyword">As</span> Product
+<span class="keyword">Set</span> refProduct=Funnel1.ReferenceProduct 
+
+<span class="keyword">Dim</span> Funnel2 <span class="keyword">As</span> Product 
+<span class="keyword">Set</span> Funnel2 = TitanicProducts.AddComponent(refProduct)</pre>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="History"></a>History</h3>
+<table class="history">
+  <tbody>
+  <tr>
+    <td>Version: <strong>1</strong> [Dec 2001]</td>
+    <td>Document created</td>
+  </tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

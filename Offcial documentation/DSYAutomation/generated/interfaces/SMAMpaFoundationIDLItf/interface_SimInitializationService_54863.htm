@@ -1,0 +1,143 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAMpaFoundationIDLItf SimInitializationService (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAMpaFoundationIDLItf.htm" href="../SMAMpaFoundationIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAMpaFoundationIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimInitializationService"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimInitializationService<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimInitializationService_54863','SimInitializationService','0');</script>
+<section id='maindesc'>
+<b><i> Represents the Service to initialize simulation.</i></b><br>
+
+ 
+ <!-- @sample -->
+ <dl>
+ <dt><strong>Example:</strong></dt>
+ <dd>
+ 
+ Given a <code>CATIA</code> application object you can retrieve a <code>SimInitializationService</code> object as following:
+ <pre>
+ Dim MyInitializationService As SimInitializationService
+ Set MyInitializationService = CATIA.GetSessionService("SimInitializationService")
+ </pre>
+ </dd>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#SetSimulationInitialization"><b>SetSimulationInitialization</b></a>
+</td><td  id='tdright'>  Initializes the simulation object for the specified simulation app and type.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetSimulationMethod"><b>SetSimulationMethod</b></a>
+</td><td  id='tdright'>  
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="SetSimulationInitialization"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetSimulationInitialization</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iAppName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTypeName</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Initializes the simulation object for the specified simulation app and type.
+ This method must be called prior to the creation of the simulation.
+ This method will fail if the simulation object already contains an analysis case.
+ The simulation cannot be opened interactively if a product is not assigned. The product must be assigned
+ directly during the simulation creation.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAppName</span></dt>
+   <dd>    The simulation app expected to open the simulation.
+ 
+ <br /><b>Valid App Names</b><br />
+ <ul>
+ <li>"SimMechanicalScenarioCreation"</li>
+ <li>"SimStructuralScenarioCreation"</li>
+ <li>"SimLinearStructuralScenarioCreation"</li>
+ <li>"SimLinearStructuralValidation"</li>
+ </ul>
+
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTypeName</span></dt>
+   <dd>    The simulation type expected.
+
+ <br /><b>Valid Simulation Type Names</b><br />
+ <ul>
+ <li>"SimGeneral"</li>
+ <li>"SimStructural"</li>
+ <li>"SimThermal"</li>
+ <li>"SimThermalStructural"</li>
+ </ul>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetSimulationMethod"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetSimulationMethod</span><span class='signature'>(<script type="text/javascript"> activateLink('SimInitializationServiceSimulationMethod','SimInitializationServiceSimulationMethod')</script> <span class='param'>ipSimulationMethod</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ 
+<dl  class='desclist'>
+  <dt class='deprecated'> <b>Deprecated:</b></dt> 
+  <dd>  R422
+    See 
+<script type="text/javascript"> activateLinkAnchor('','SetSimulationInitialization','SetSimulationInitialization') </script> <br /><br /> Initializes the simulation object per the specified simulation method.
+ This method must be called prior to the creation of the simulation.
+ This involves the modification of simulation object so that it opens up in the corresponding App
+ as well as creation of an analysis case corresponding to the simulation method.
+ This method will fail if the simulation object already contains an analysis case.
+ The simulation cannot be opened interactively if a product is not assigned. The product must be assigned
+ directly during the simulation creation.
+ 
+ </ dd>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ipSimulationMethod</span></dt>
+   <dd>    The simulation method used for initialization.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

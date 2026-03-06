@@ -1,0 +1,221 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Overloading Occurrence Position</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Overloading Occurrence Position</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>The use case 
+						mainly deals with overloading of the occurrence of 
+						'Skate' Model objects.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA</li>
+							<li>Create Positioned Skate model as described in the 
+							[<a href="#References">1</a>] Use Case</li>
+							<li>Position the Skate Model using the previous macro CAAScdPstUcPositionProductModelSource.htm</li>
+							<li>Enable the Flexibility options of the listed elements 
+							in the [<a href="#References">4</a>] article</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:<a href="CAAScdPstUcOverloadingOccurrenceModelSource.htm"> 
+						CAAScdPstUcOverloadingOccurrenceModelSource.htm</a></span></p>
+						<p>Attention the macro can request a slight change to 
+						take into account your own Product types. First read
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a> 
+						before using it.</p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+						<tr>
+					<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td></tr>
+					 
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in five steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieve the Product Reference (Skate) from underlying 
+			database</a></li>
+			<li><a href="#Step2">Overload the Skate Occurrence Model Objects</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"></a>Retrieves the Product Reference 
+			(Skate) from underlying database</p>
+			<pre class="code"> ...
+ <span class="keyword"> Dim</span> oVPMRootOccOnSkateRef <span class="keyword">As</span> VPMRootOccurrence
+  <span class="keyword">Set</span> oVPMRootOccOnSkateRef = <strong>RetrieveProdRootOcc</strong>
+...</pre>
+			<p>The function <em>RetrieveProdRootOcc</em>, returns <code>oVPMRootOccOnSkateRef
+			</code>, a <em>VPMRootOccurrence</em> type [<a href="#References">2</a>]. 
+			The PLM_ExternalID and V_version values are sought as input from an 
+			end-user. A search criteria is built with those inputs and the PLM 
+			type as a Product Reference type. When this query is run on an underlying 
+			database, it typically returns a list of entities listed within a search 
+			editor. We retrieve the first element in this list, load it in the current 
+			session and retrieve the associated Product Reference.</p>
+			<table>
+				<caption><a name="Fig.1"></a>Fig.1 The Positioned Skate Model</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Skate Model" src="CAAScdPstUcPositionProductModel_PositionedSkateModelWith3DPart.jpg"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>The Input model imported from database which has &quot;CAAPrdSkate&quot; as PLM_ExternalID 
+			of root and &quot;A.1&quot; version value as shown in [<a href="#Fig.1">Fig.1</a>]</p>
+			
+			<p>The input&nbsp;data is retrieved by importing <code><b><a>CAAPstBrowsingProductModel</a></b></code><a><code><b>.</b></code></a><code><b>3dxml</b></code>
+			   file for  Root product from the <a><code><b> CAAProductStructure.edu</b></code></a> fwk.</p>
+			<table>
+    			<tr>
+      				<td><code>InstallRootDirectory\CAAProductStructure.edu\InputData\</code></td>
+    			</tr>
+			</table>
+			<p>where <code>InstallRootDirectory</code> is the directory where the CAA CD-ROM is installed.</p>
+
+			
+			</li>
+			<li>
+			<p><a name="Step2"></a>Overload the skate Occurrence model objects</p>
+			<p>The objects to be overloaded from the Skate Occurrence model are 
+			as follows</p>
+			<ul>
+				<li>AxleAssembly.Front-&gt;BigWheel.Left (125,0,0)</li>
+				<li>AxleAssembly.Front-&gt;BigWheel.Right (-125,0,0)</li>
+			</ul>
+			<p>Before overloading the Occurrence model we need to enable Flexibility/Repostionable 
+			options of the objects. 
+			The process of enabling Flexibility/Repositionable detailed in the [<a href="#References">4</a>] 
+			article.</p>
+			<p>Next we set the relative positions of the occurrence objects mentioned 
+			above with the values mentioned in the bracket. The value are just an 
+			example to get desired object after overloading. </p>
+			<pre class="code"> ....
+    <strong>OverloadSkateOccurrencesPosition</strong> oVPMRootOccOnSkateRef, 0
+ ....</pre>
+			<p>A call to <em>OverloadSkateOccurrencesPosition </em>overloads the 
+			positions of the Skate model occurrences described above. The 
+			process of setting positions explained in the [<a href="#References">1</a>] 
+			article. </p>
+			<p>The browsing and retrieving occurrence object are not detailed here 
+			those details are mentioned in the [<a href="#References">3</a>] Use 
+			Case. </p>
+			<p>After overloading the Skate model will look like as shown in [Fig.2].</p>
+			<table>
+				<caption><a name="Fig.2"></a>Fig.2 Overloaded Skate Model</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Overloaded Skate Model" src="CAAScdPstUcOverloadingOccurrenceModel_OverlodedSkeModel.jpg"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>In the [Fig.2] we can observe that the two Wheel instances are moved 
+			outward from the center of the Skate model compared with front wheel 
+			instances.</p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<table class="refernce">
+	<tbody>
+	<tr>
+		<td>[1]</td>
+		<td><a href="CAAScdPstUcPositionProductModel.htm">Positioning Product Model</a></td>
+	</tr>
+	<tr>
+		<td>[2]</td>
+		<td><a href="CAAScdPstUcOpenProductReference.htm">Opening Product Reference</a></td>
+	</tr>
+	<tr>
+		<td>[3]</td>
+		<td><a href="CAAScdPstUcBrowseOccurrenceModel.htm">Browsing Occurrence Model
+		</a></td>
+	</tr>
+	<tr>
+		<td>[4]</td>
+		<td><a href="CAAScdPstUcSettingFlexibilityRepostionableSkateModel.htm">Setting 
+		Flexibility/Repositionable for Skate Product Model Interactively </a>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Code Presentation Rules</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Code Presentation Rules</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="abstract">
+  <tbody>
+  <tr>
+    <td>
+      <h3>Abstract</h3>
+      <p>This article defines presentation conventions to be used in scripts 
+		using Dassault Syst&egrave;mes product lines scripting capabilities as 
+		regards the Automation code layout to improve its readability.</p>
+      <ul>
+        <li><a href="#General">General Considerations</a></li>
+        <li><a href="#Layout">Layout</a> </li>
+        <li><a href="#Naming">Naming Conventions</a></li>
+        <li><a href="#Example">Example</a></li>
+      </ul>
+    </td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="General"></a>General Considerations</h2>
+<p>Dassault Syst&#232;mes Native Client supports creation of macros in multiples languages. This document globally targets creation of scripting code but its examples 
+and detailed syntaxes are mainly provided for VBScript and Visual Basic for Application languages.
+Detail of supported levels and languages can be found in the Native Client section of the Program 
+Directory. This document does not cover all topics needed to develop a complex application 
+using for example Visual Basic but most of the rules still apply to this kind of 
+application.</p>
+<p>As a general rule, unless overridden by the present document,
+apply conventions specified by the language vendor like <cite>Microsoft (R) VBScript Coding Conventions</cite> <a href="#References">[1]</a> or <cie>Style Guide for Python Code</cite> <a href="#References">[2]</a>.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Layout"></a>Layout</h2>
+<p><strong>[l1]</strong> A copyright is mandatory for scripts to be delivered within any 
+Dassault Syst&egrave;mes product.</p>
+<p><strong>[l2]</strong> A global header is mandatory, it must contain:</p>
+<table class="fill">
+  <tbody>
+  <tr>
+    <th>Section</th>
+    <th>Description</th>
+    <th>Comment</th>
+  </tr>
+  <tr>
+    <td>Purpose</td>
+    <td>Description of what this sample does.</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>Assumptions</td>
+    <td>List of external elements impacting the behavior of this macro, such as 
+	state of the session, selected objects.</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>Author</td>
+    <td>For customer provided scripts, empty for samples delivered within a 
+	Dassault Syst&egrave;mes product.</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>Languages</td>
+    <td>Supported development languages.</td>
+    <td>Valid values are: CATScript, VBScript, VBA, VB.Net, Python and C#</td>
+  </tr>
+  <tr>
+    <td>Version</td>
+    <td>Original version.
+      Available objects may change from one version to the other.</td>
+    <td>Ex: 3DEXPERIENCER2017x.</td>
+  </tr>
+  <tr>
+    <td>Regional Settings</td>
+    <td>Macros recorded or written for a specific locale may not work for 
+	another one. Use language names described in the interactive product 
+	documentation.</td>
+    <td>Ex: English (United States, French (France).</td>
+  </tr>
+</tbody>
+</table>
+<p><strong>[l3]</strong> Indentation should be 4 spaces</p>
+<p><strong>[l4]</strong> Comment important variables on the same line</p>
+<p><strong>[l5]</strong> Prefer the &#39; syntax to the REM keyword for comments
+</p>
+<p><strong>[l6]</strong> Align comments concerning a nested block with its indentation
+</p>
+<p><strong>[l7]</strong> Insert a header for each internal function or procedure containing 
+purpose, description of parameters and return values.
+</p>
+<p><strong>[l8]</strong> Keep lines length shorter than 80 characters</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Naming"></a>Naming Conventions for VBA and VBScript</h2>
+<p><strong>[n1]</strong> Use verbs or verb phrases for Sub names, in mixed case with 
+the first letter of any word capitalized:</p>
+<pre class="code"><span class="keyword">Sub</span> DoItBetter()
+  ...
+<span class="keyword">End Sub</span></pre>
+<p><strong>[n2]</strong> Use a one lowercase letter prefix for variable names describing 
+the variable type. You may also use your own prefix system (as for example the
+<cite>Microsoft (R) VBScript Coding Conventions</cite> <a href="#References">[1]</a>). 
+Otherwise, the following minimal prefixes are 
+required:</p>
+<table class="fill">
+  <tbody>
+  <tr>
+    <th>Prefix</th>
+    <th>Type</th>
+    <th>Example</th>
+  </tr>
+  <tr>
+    <td>b</td>
+    <td>boolean</td>
+    <td>bIsUpToDate</td>
+  </tr>
+  <tr>
+    <td>d</td>
+    <td>double</td>
+    <td>dLength</td>
+  </tr>
+  <tr>
+    <td>s</td>
+    <td>string</td>
+    <td>sName</td>
+  </tr>
+  <tr>
+    <td>i</td>
+    <td>int</td>
+    <td>iNumberOfElements</td>
+  </tr>
+  <tr>
+    <td>o</td>
+    <td>objects</td>
+    <td>oSketch1</td>
+  </tr>
+  <tr>
+    <td>c</td>
+    <td>collections</td>
+    <td>cDrwViews</td>
+  </tr>
+</tbody>
+</table>
+<p><strong>[n3]</strong> Constant names should be a sequence of one or more words, 
+acronyms, or abbreviations, in uppercase letters, with components separated by 
+underscore &quot;_&quot; characters. For example:</p>
+<pre class="code">MAX_VALUE.</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Example"></a>Example</h2>
+<p><img alt="Code Presentation Rules" src="CAAScdScriptPresRules.png" width="535" height="599"/></p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+<tbody>
+<tr>
+<td>[1]</td>
+<td><a href="#" onclick="javascript:CAAlinkUrl('http://msdn.microsoft.com/library/default.asp?url=/library/en-us/script56/html/vbsCodingConventions.asp');return false;">
+Microsoft (R) VBScript Coding Conventions</a></td>
+</tr>
+<tr>
+<td>[2]</td>
+<td><a href="#" onclick="javascript:CAAlinkUrl('https://www.python.org/dev/peps/pep-0008/');return false;">
+Style Guide for Python Code</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="History"></a>History</h2>
+<table class="history">
+    <tbody>
+    <tr>
+      <td>Version: <strong>4.0</strong> [Oct 2016]</td>
+      <td>Document updated</td>
+    </tr>
+    <tr>
+      <td>Version: <strong>3.0</strong> [Apr 2009]</td>
+      <td>Document updated</td>
+    </tr>
+		<tr>
+      <td>Version: <strong>2.0</strong> [Jul 2007]</td>
+      <td>Document updated</td>
+    </tr>
+    <tr>
+      <td>Version: <strong>1.0</strong> [Sep 2000]</td>
+      <td>Document created</td>
+    </tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

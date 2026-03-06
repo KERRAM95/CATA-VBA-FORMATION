@@ -1,0 +1,323 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a Join Surface Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Creating a Join Surface
+'
+'Mission: This use case creates a Part with fill and extrude and then Joins them.
+'
+'Steps:
+'
+'  1. Creates 3DShape with Geometries 
+'  2. Retrieves Geometrical Set containing input Geometries
+'  3. Creates Join Surface
+'       3.1- Creates a reference for Fill.1 object
+'       3.2- Creates a reference for Extrude.1 object
+'       3.3- Creates a Join between Fill.1 and Extrude.1
+'  4. Inserts Join in the Geometrical Set
+'  5. Sets Join as Current Object
+'  6. Updates Part
+'--------------------------------------------------------------------------------------------------------------------
+
+Sub CreatingJoinSurface()
+  'Error handling
+  On Error GoTo ErrorSub
+    
+    '1- Creates 3DShape with Geometries
+    Dim Part1 As Part
+    CreateFillnExtrude Part1
+    
+    '2- Retrieves Geometrical Set containing input Geometries
+    Dim oHybridBodies As HybridBodies
+    Set oHybridBodies = Part1.HybridBodies
+                  
+    Dim oHybridBody As HybridBody
+    Set oHybridBody = oHybridBodies.Item(&quot;Geometrical Set.1&quot;)
+            
+    '3.1- Creates a reference for Fill.1 object
+    Dim oHybridShapeFill1 As HybridShape
+    Set oHybridShapeFill1 = oHybridBody.HybridShapes.Item(&quot;Fill.1&quot;)
+      
+    Dim Reference1 As Reference
+    Set Reference1 = Part1.CreateReferenceFromObject(oHybridShapeFill1)
+            
+    '3.2- Creates a reference for Extrude.1 object
+    Dim oHybridShapeExtrude1 As HybridShape
+    Set oHybridShapeExtrude1 = oHybridBody.HybridShapes.Item(&quot;Extrude.1&quot;)
+            
+    Dim Reference2 As Reference
+    Set Reference2 = Part1.CreateReferenceFromObject(oHybridShapeExtrude1)
+            
+   ' Retrieves Wireframe and Shape Design Factory
+    Dim hybridShapeFactory1 As Factory
+    Set hybridShapeFactory1 = Part1.HybridShapeFactory
+            
+   '3.3- Creates a Join (also named assemble)   between Fill.1 and Extrude.1
+    Dim oJoin1 As HybridShapeAssemble
+    Set oJoin1 = hybridShapeFactory1.AddNewJoin(Reference1, Reference2)
+             
+    '4- Inserts Join in the Geometrical Set
+    oHybridBody.AppendHybridShape oJoin1
+           
+    '5- Sets Join as Current Object
+    Part1.InWorkObject = oJoin1
+            
+    '6- Updates Part
+    Part1.Update
+        
+    'Error Handling
+    GoTo EndSub
+
+ErrorSub:
+        MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+        GoTo EndSub
+EndSub:
+ End Sub
+
+'--------------------------------------------------------------------------------------------------------------------
+'Creates Part with geometries
+'
+'Steps:
+'
+'  1. Creates a Part
+'  2. Adds Geometrical Elements under the new Part
+'       2.1 - Retrieves the part from the Active Editor
+'       2.2 - Retrieves the sketch from the Hybrid body
+'       2.3 - Retrieves handle to the Sketch 2DFactory as Factory2D type
+'       2.4 - Creates with 2D Factory, three 2DPoints
+'       2.5 - Creates with 2D Factory,  three lines passing through these three Points, which outputs a triangle
+'       2.6 - Creates the Fill within the bounded triangle area
+'       2.7 - Retrieves the YZ plane for extrusion of a line with normal to it.
+'       2.8 - Creates the extrude
+'--------------------------------------------------------------------------------------------------------------------
+
+Sub CreateFillnExtrude(oPart)
+  'Error handling
+  On Error GoTo ErrorSub
+    
+  
+    '1. Creates a Part
+    'Creates a new 3DShape Rep Ref
+    Dim oNewService as PLMNewService
+    Set oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+ 
+    Dim oEditor3DShape As Editor
+    oNewService.PLMCreate &quot;3DShape&quot;, oEditor3DShape
+
+    '2.1 - Retrieves the part from the Active Editor
+    Set oPart = oEditor3DShape.ActiveObject
+
+    MsgBox (&quot;Part Name :&quot;) + oPart.Name
+     
+    'Retrieves Hybrid Bodies from the part
+    Set hybridBodies1 = oPart.HybridBodies
+
+    Set hybridBody1 = hybridBodies1.Add()
+
+    oPart.Update
+
+    '2.2 - Retrieves the sketch from the Hybrid body
+    Set sketches1 = hybridBody1.HybridSketches
+
+    'Retrieves the Axis
+    Set originElements1 = oPart.OriginElements
+
+    'Retrieves the YZ plane
+    Set reference1 = originElements1.PlaneYZ
+
+    Set sketch1 = sketches1.Add(reference1)
+
+    Dim arrayOfVariantOfDouble1(8)
+    arrayOfVariantOfDouble1(0) = 0#
+    arrayOfVariantOfDouble1(1) = 0#
+    arrayOfVariantOfDouble1(2) = 0#
+    arrayOfVariantOfDouble1(3) = 0#
+    arrayOfVariantOfDouble1(4) = 1#
+    arrayOfVariantOfDouble1(5) = 0#
+    arrayOfVariantOfDouble1(6) = 0#
+    arrayOfVariantOfDouble1(7) = 0#
+    arrayOfVariantOfDouble1(8) = 1#
+
+    'Sets the absolute axis of the sketch in 3D space
+    sketch1.SetAbsoluteAxisData arrayOfVariantOfDouble1
+
+    'Sets the in work object of the part as the newly created sketch.
+    oPart.InWorkObject = sketch1
+
+    '2.3 - Retrieves handle to the Sketch 2DFactory as CATIAFactory2D type
+    Set factory2D1 = sketch1.OpenEdition()
+
+    'Returns the list of geometrical elements included in the sketch
+    Set geometricElements1 = sketch1.GeometricElements
+
+    'Returns the &quot;AbsoluteAxis&quot; item from the GeometricElements collection
+    Set axis2D1 = geometricElements1.Item(&quot;AbsoluteAxis&quot;)
+
+    '2.4 - Creates with 2D Factory, three 2DPoints
+    'Creates and returns a 2D point at (-30,70). We refer to it as Point.1 hereafter
+    Set point2D1 = factory2D1.CreatePoint(-30#, 70#)
+
+    'Sets the report name of the 2D geometry
+    point2D1.ReportName = 3
+
+    point2D1.Construction = False
+
+    'Creates and returns a 2D point at (-30, -40). We refer to it as Point.2 hereafter
+    Set point2D2 = factory2D1.CreatePoint(-30#, -40#)
+
+    'Sets the report name of the 2D geometry
+    point2D2.ReportName = 4
+
+    point2D2.Construction = False
+
+    'Creates and returns a 2D point at (50, 70). We refer to it as Point.3 hereafter
+    Set point2D3 = factory2D1.CreatePoint(50#, 70#)
+
+    'Sets the report name of the 2D geometry
+    point2D3.ReportName = 5
+
+    point2D3.Construction = False
+
+    'Closes the Sketch Edition
+    sketch1.CloseEdition
+
+    oPart.InWorkObject = hybridBody1
+
+    oPart.Update
+
+    'Returns the part hybrid shape factory
+    Set hybridShapeFactory1 = oPart.HybridShapeFactory
+
+    '2.5 - Creates with 2D Factory,  three lines passing through these three Points, which outputs a triangle
+    'Creates a reference from a GenericNaming label
+    Set reference2 = oPart.CreateReferenceFromBRepName(&quot;BorderFVertex:(BEdge:(Brp:(Sketch.1;3);None:(Limits1:();Limits2:();+1);Cf11:());WithPermanentBody;WithoutBuildError;WithSelectingFeatureSupport;MFBRepVersion_CXR15)&quot;, sketch1)
+
+    'Creates a reference from a GenericNaming label
+    Set reference3 = oPart.CreateReferenceFromBRepName(&quot;BorderFVertex:(BEdge:(Brp:(Sketch.1;4);None:(Limits1:();Limits2:();+1);Cf11:());WithPermanentBody;WithoutBuildError;WithSelectingFeatureSupport;MFBRepVersion_CXR15)&quot;, sketch1)
+
+    'Creates a new point-point line within the current body, we refer to it as Line.1 hereafter
+    Set hybridShapeLinePtPt1 = hybridShapeFactory1.AddNewLinePtPt(reference2, reference3)
+ 
+    'Appends a hybrid shape (Line.1) to the hybrid body.
+    hybridBody1.AppendHybridShape hybridShapeLinePtPt1
+
+    oPart.InWorkObject = hybridShapeLinePtPt1
+
+    oPart.Update
+
+    'Creates a reference from a GenericNaming label
+    Set reference4 = oPart.CreateReferenceFromBRepName(&quot;BorderFVertex:(BEdge:(Brp:(Sketch.1;4);None:(Limits1:();Limits2:();+1);Cf11:());WithPermanentBody;WithoutBuildError;WithSelectingFeatureSupport;MFBRepVersion_CXR15)&quot;, sketch1)
+ 
+    'Creates a reference from a GenericNaming label
+    Set reference5 = oPart.CreateReferenceFromBRepName(&quot;BorderFVertex:(BEdge:(Brp:(Sketch.1;5);None:(Limits1:();Limits2:();+1);Cf11:());WithPermanentBody;WithoutBuildError;WithSelectingFeatureSupport;MFBRepVersion_CXR15)&quot;, sketch1)
+
+    'Creates a new point-point line within the current body. We refer to it as Line.2 hereafter.
+    Set hybridShapeLinePtPt2 = hybridShapeFactory1.AddNewLinePtPt(reference4, reference5)
+
+    'Appends a hybrid shape (Line.2)to the hybrid body
+    hybridBody1.AppendHybridShape hybridShapeLinePtPt2
+
+    oPart.InWorkObject = hybridShapeLinePtPt2
+
+    oPart.Update
+
+    'Creates a reference from a GenericNaming label
+    Set reference6 = oPart.CreateReferenceFromBRepName(&quot;BorderFVertex:(BEdge:(Brp:(Sketch.1;5);None:(Limits1:();Limits2:();+1);Cf11:());WithPermanentBody;WithoutBuildError;WithSelectingFeatureSupport;MFBRepVersion_CXR15)&quot;, sketch1)
+
+    'Creates a reference from a GenericNaming label
+    Set reference7 = oPart.CreateReferenceFromBRepName(&quot;BorderFVertex:(BEdge:(Brp:(Sketch.1;3);None:(Limits1:();Limits2:();+1);Cf11:());WithPermanentBody;WithoutBuildError;WithSelectingFeatureSupport;MFBRepVersion_CXR15)&quot;, sketch1)
+
+    'Creates a new point-point line within the current body. We refer to it as Line.3 hereafter.
+    Set hybridShapeLinePtPt3 = hybridShapeFactory1.AddNewLinePtPt(reference6, reference7)
+
+    'Appends a hybrid shape (Line.3) to the hybrid body
+    hybridBody1.AppendHybridShape hybridShapeLinePtPt3
+
+    oPart.InWorkObject = hybridShapeLinePtPt3
+
+    oPart.Update
+
+    '2.6 - Creates the Fill within the bounded triangle area
+    Set hybridShapeFill1 = hybridShapeFactory1.AddNewFill()
+
+    'Creates a reference from a operator, selected the line Line.3
+    Set reference8 = oPart.CreateReferenceFromObject(hybridShapeLinePtPt3)
+
+    'Adds an boundary to the hybrid shape fill feature object
+    hybridShapeFill1.AddBound reference8
+
+    'Creates a reference from a operator, selected the line, Line.1
+    Set reference9 = oPart.CreateReferenceFromObject(hybridShapeLinePtPt1)
+
+    'Adds an boundary to the hybrid shape fill feature object
+    hybridShapeFill1.AddBound reference9
+
+    'Creates a reference from a operator, selected the line, Line.3
+    Set reference10 = oPart.CreateReferenceFromObject(hybridShapeLinePtPt2)
+
+    'Adds an boundary to the hybrid shape fill feature object. The Fill is applied to the triangle formrd by the lines, Line.1, Line.2 and Line.3.
+    hybridShapeFill1.AddBound reference10
+
+    'Sets the continuity between the support and fill
+    hybridShapeFill1.Continuity = 0
+
+    'Appends a hybrid shape (Fill.1) to the hybrid body
+    hybridBody1.AppendHybridShape hybridShapeFill1
+
+    oPart.InWorkObject = hybridShapeFill1
+
+    oPart.Update
+
+    '2.7 - Retrieves the YZ plane for extrusion of a line with normal to it.
+    Set hybridShapePlaneExplicit1 = originElements1.PlaneYZ
+
+    'Creates a reference from a operator
+    Set reference11 = oPart.CreateReferenceFromObject(hybridShapePlaneExplicit1)
+
+    'Creates a direction normal to the YZ Plane. Extursion occurs along this direction
+    Set hybridShapeDirection1 = hybridShapeFactory1.AddNewDirection(reference11)
+
+    'Creates a reference from a operator
+    Set reference12 = oPart.CreateReferenceFromObject(hybridShapeLinePtPt1)
+
+    '2.8 - Creates the extrude
+    'Creates a new extrude within the current body. Line.1 is extruded normal to YZ Plane by 20mm, we refer to the extrude as Extrude.1 hereafter.
+    Set hybridShapeExtrude1 = hybridShapeFactory1.AddNewExtrude(reference12, 20#, 0#, hybridShapeDirection1)
+
+    'Appends a hybrid shape (Extrude.1) to the hybrid body
+    hybridBody1.AppendHybridShape hybridShapeExtrude1
+
+    oPart.InWorkObject = hybridShapeExtrude1
+
+    oPart.Update
+    GoTo EndSub
+
+ErrorSub:
+        MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+        GoTo EndSub
+EndSub:
+End Sub
+</pre>
+
+</body>
+
+</html>

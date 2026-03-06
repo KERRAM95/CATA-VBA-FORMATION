@@ -1,0 +1,370 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcThermalStructural.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+
+<pre class=>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample creates and executes a thermal structural simulation.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'          1- Retrieving the active Product 										</span>
+<span class="comment">'          2- Retrieving the Publications and Composing Links 								</span>
+<span class="comment">'          3- Creating the FEM Rep and retrieving its Rep Manager 		</span>
+<span class="comment">'          4- Creating a Mesh on a Part								</span>
+<span class="comment">'          5- Creating a Property 					</span>
+<span class="comment">'          6- Initializing and Creating the Simulation PLM Object				</span>
+<span class="comment">'          7- Retrieving the Scenario Manager					</span>
+<span class="comment">'          8- Associating the Thermal and Structural Analysis Cases with the FEM Rep					</span>
+<span class="comment">'          9- Creating and Initializing the Steady State Heat Transfer Step							</span>
+<span class="comment">'          10- Associating the thermal and structural analysis cases with the FEM rep</span>
+<span class="comment">'          11- Retrieving the thermal features and features states sets		</span>
+<span class="comment">'          12- Creating thermal features									</span>
+<span class="comment">'          13- Retrieving the structural features and features states sets		</span>
+<span class="comment">'          14- Creating structural features									</span>
+<span class="comment">'          15- Launching the simulation									</span>
+<span class="comment">'============================================================================================</span>
+
+<span class="keyword">Sub </span>CATMain()
+	
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 1- Retrieving the active Product</span>
+    <span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myEditor<span class="keyword"> As </span>Editor
+<span class="keyword">	Set </span>myEditor = CATIA.ActiveEditor
+	
+<span class="keyword">	Dim </span>myProdService<span class="keyword"> As </span>PLMProductService
+<span class="keyword">	Set </span>myProdService = myEditor.GetService("PLMProductService")
+	
+<span class="keyword">	Dim </span>myEntities<span class="keyword"> As </span>PLMEntities
+<span class="keyword">	Set </span>myEntities = myProdService.EditedContent
+	
+<span class="keyword">	Dim </span>myModel<span class="keyword"> As </span>VPMReference
+<span class="keyword">	Set </span>myModel = myEntities.Item(1)
+	
+	<span class="comment">'Retrieving the parts</span>
+	<span class="comment">'--------------------</span>
+	
+<span class="keyword">	Dim </span>myProductInstance<span class="keyword"> As </span>VPMInstance
+<span class="keyword">	Dim </span>myProductInstanceRef<span class="keyword"> as </span>VPMReference
+<span class="keyword">	Dim </span>myPartInstance<span class="keyword"> as </span>VPMRepInstance
+<span class="keyword">	Dim </span>myPartInstanceRef<span class="keyword"> as </span>VPMRepReference
+<span class="keyword">	Dim </span>myPart<span class="keyword"> as </span>Part
+<span class="keyword">	For </span>Each myProductInstance<span class="keyword"> in </span>myModel.Instances
+<span class="keyword">		Set </span>myProductInstanceRef = myProductInstance.ReferenceInstanceOf
+<span class="keyword">		For </span>Each myPartInstance<span class="keyword"> in </span>myProductInstanceRef.RepInstances
+<span class="keyword">			Set </span>myPartInstanceRef = myPartInstance.ReferenceInstanceOf
+<span class="keyword">			Set </span>myPart = myPartInstanceRef.GetItem("Part")
+<span class="keyword">		Next</span>
+<span class="keyword">	Next</span>
+	
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 2- Retrieving the Publications and Composing Links</span>
+    <span class="comment">'=====================================================================</span>
+	
+<span class="keyword">	Dim </span>myPublications <span class="keyword"> As </span>VPMPublications
+<span class="keyword">	Set </span>myPublications  = myModel.Publications
+	
+<span class="keyword">	Dim </span>mySupport<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>mySupport = myPublications.GetItem("Pump_Housing")
+	
+<span class="keyword">	Dim </span>myTemperatureSupport1<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myTemperatureSupport1 = myPublications.GetItem("Pump_Housing_Contact_Face")
+		
+<span class="keyword">	Dim </span>myTemperatureSupport2<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myTemperatureSupport2 = myPublications.GetItem("Pump_Housing_Internal_Surfaces")
+	
+<span class="keyword">	Dim </span>myClampSupport<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myClampSupport = myPublications.GetItem("Pump_Housing_Contact_Face")
+	
+<span class="keyword">	Dim </span>myDisplacementRestraintSupport1<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myDisplacementRestraintSupport1 = myPublications.GetItem("Pump_Housing_Sym_Face")
+	
+<span class="keyword">	Dim </span>myDisplacementRestraintSupport2<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myDisplacementRestraintSupport2 = myPublications.GetItem("Pump_Housing_Sym_Face_2")
+	
+<span class="keyword">	Dim </span>myDisplacementRestraintSupport3<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myDisplacementRestraintSupport3 = myPublications.GetItem("Pump_Housing_Sym_Face_3")
+	
+<span class="keyword">	Dim </span>myPressureSupport<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myPressureSupport = myPublications.GetItem("Pump_Housing_Internal_Surfaces")
+
+	<span class="comment">'Composing links</span>
+	<span class="comment">'---------------</span>
+	
+<span class="keyword">	Dim </span>myRootOccurrence<span class="keyword"> as </span>VPMRootOccurrence
+<span class="keyword">	Set </span>myRootOccurrence = myProdService.RootOccurrence
+	
+<span class="keyword">	Dim </span>myRepInstance<span class="keyword"> As </span>VPMRepInstance
+<span class="keyword">	Set </span>myRepInstance = Nothing <span class="comment">' Because we use publications</span>
+	
+<span class="keyword">	Dim </span>myLinkToSupport<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToSupport = myProdService.ComposeLink(myRootOccurrence, myRepInstance, mySupport)
+	
+<span class="keyword">	Dim </span>myLinkToTemperatureSupport1<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToTemperatureSupport1 = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myTemperatureSupport1)
+	
+<span class="keyword">	Dim </span>myLinkToTemperatureSupport2<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToTemperatureSupport2 = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myTemperatureSupport2)
+	
+<span class="keyword">	Dim </span>myLinkToClampSupport<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToClampSupport = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myClampSupport)
+	
+<span class="keyword">	Dim </span>myLinkToDisplacementRestraintSupport1<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToDisplacementRestraintSupport1 = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myDisplacementRestraintSupport1)
+	
+<span class="keyword">	Dim </span>myLinkToDisplacementRestraintSupport2<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToDisplacementRestraintSupport2 = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myDisplacementRestraintSupport2)
+	
+<span class="keyword">	Dim </span>myLinkToDisplacementRestraintSupport3<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToDisplacementRestraintSupport3 = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myDisplacementRestraintSupport3)
+	
+<span class="keyword">	Dim </span>myLinkToPressureSupport<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToPressureSupport = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myPressureSupport)
+	
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 3- Creating the FEM Rep and retrieving its Rep Manager</span>
+    <span class="comment">'=====================================================================</span>
+	
+<span class="keyword">	Dim </span>myPrdRepFactory<span class="keyword"> as </span>SimPrdRepFactory
+<span class="keyword">	Set </span>myPrdRepFactory =myModel.GetItem("SimPrdRepFactory")
+	
+<span class="keyword">	Dim </span>myRepRef<span class="keyword"> As </span>VPMRepReference
+<span class="keyword">	Set </span>myRepRef = myPrdRepFactory.CreatePrdRep("FEM")
+	
+<span class="keyword">	Dim </span>myFEMRoot<span class="keyword"> As </span>SimFemRoot
+<span class="keyword">	Set </span>myFEMRoot = myRepRef.GetItem("SimFemRoot")
+	
+	myFEMRoot.AddAssociatedRep mySupport
+  
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 4- Creating a Mesh on a Part</span>
+    <span class="comment">'=====================================================================</span>
+	
+<span class="keyword">	Dim </span>myMeshSet<span class="keyword"> As </span>SimMeshSet
+<span class="keyword">	Set </span>myMeshSet = myFEMRoot.GetSet("SimNodesElements")
+	
+<span class="keyword">	Dim </span>myMeshParts<span class="keyword"> As </span>SimMeshParts
+<span class="keyword">	Set </span>myMeshParts = myMeshSet.MeshParts
+	
+<span class="keyword">	Dim </span>myMeshPart<span class="keyword"> As </span>SimMeshPart
+<span class="keyword">	Set </span>myMeshPart = myMeshParts.Add("CATFmtOctree3DMesher")
+	
+	myMeshPart.AddSupport mySupport
+	
+	myMeshPart.SetAttributeValue "Mesh", "ElementOrder", 1
+	myMeshPart.SetAttributeValue "Mesh", "SizeValue", 4.0
+	
+	myMeshSet.Update
+	
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 5- Creating a Property</span>
+    <span class="comment">'=====================================================================</span>
+	
+<span class="keyword">	Dim </span>myPropertiesSet<span class="keyword"> as </span>SimProperties
+<span class="keyword">	Set </span>myPropertiesSet = myFEMRoot.GetSet("SimProperties")
+
+<span class="keyword">	Dim </span>mySolidSection<span class="keyword"> As </span>SimSolidSection
+<span class="keyword">	Set </span>mySolidSection = myPropertiesSet.Add("SimSolidSection")
+
+<span class="keyword">	Dim </span>myLinkAccess<span class="keyword"> As </span>SimLinkAccess
+<span class="keyword">	Set </span>myLinkAccess = mySolidSection.GetItem("SimLinkAccess")
+	myLinkAccess.AddLink "MainSupport", myLinkToSupport
+	
+	mySolidSection.MaterialBehaviorByName = "Behavior.1" 
+
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 6- Initializing and Creating the Simulation PLM Object</span>
+    <span class="comment">'=====================================================================</span>
+	
+<span class="keyword">	Dim </span>myInitService<span class="keyword"> As </span>SimInitializationService
+<span class="keyword">	Set </span>myInitService = CATIA.GetSessionService("SimInitializationService")
+	
+	myInitService.SetSimulationInitialization "SimMechanicalScenarioCreation", "SimThermalStructural"
+
+<span class="keyword">	Dim </span>mySimPLMService<span class="keyword"> as </span>SIMPLMService
+<span class="keyword">	Set </span>mySimPLMService = CATIA.GetSessionService("SIMPLMService")
+	
+<span class="keyword">	Dim </span>mySimulationReference<span class="keyword"> As </span>SimulationReference
+	mySimPLMService.PLMCreate "NewSimObject", "SMAFeaPLMNewSimu", myModel, mySimulationReference, myEditor
+	
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 7- Retrieving the Scenario Manager</span>
+    <span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myScenarioManager<span class="keyword"> As </span>SimScenarioManager
+<span class="keyword">	Set </span>myScenarioManager = mySimulationReference.GetItem("SimScenarioManager")
+
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">'8- Associating the thermal and structural analysis case with the FEM rep</span>
+    <span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myAnalysisCases<span class="keyword"> As </span>SimAnalysisCases
+<span class="keyword">	Set </span>myAnalysisCases = myScenarioManager.AnalysisCases
+
+<span class="keyword">	Dim </span>myThermalAnalysisCase<span class="keyword"> As </span>SimAnalysisCase
+<span class="keyword">	Set </span>myThermalAnalysisCase = myAnalysisCases.Item(1)
+
+	myThermalAnalysisCase.FEMRep = myFEMRoot 
+
+<span class="keyword">	Dim </span>myStructuralAnalysisCase<span class="keyword"> As </span>SimAnalysisCase
+<span class="keyword">	Set </span>myStructuralAnalysisCase = myAnalysisCases.Item(2)
+
+	myStructuralAnalysisCase.FEMRep = myFEMRoot 
+
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 9- Creating and initializing the steady state heat transfer step</span>
+    <span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myThermalSteps<span class="keyword"> As </span>SimSteps
+<span class="keyword">	Set </span>myThermalSteps = myThermalAnalysisCase.Steps
+	
+<span class="keyword">	Dim </span>mySteadyStateHeatTransferStep<span class="keyword"> As </span>SimSteadyStateHeatTransferStep
+<span class="keyword">	Set </span>mySteadyStateHeatTransferStep = myThermalSteps.Add("SimSteadyStateHeatTransferStep")
+	
+	myThermalAnalysisCase.CreateDefaultElementTypeAssignment
+	
+	mySteadyStateHeatTransferStep.CreateAnalysisDefaultOutputRequests
+	mySteadyStateHeatTransferStep.TotalTime = 1.0
+	mySteadyStateHeatTransferStep.TimeIncrementationScheme = SimTimeIncrementation_Automatic
+	mySteadyStateHeatTransferStep.InitialTimeStep = 0.12
+	mySteadyStateHeatTransferStep.MinimumTimeStep = 0.013
+	mySteadyStateHeatTransferStep.MaximumTimeStep = 0.98
+	mySteadyStateHeatTransferStep.MaximumNumberOfIncrements = 60
+
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 10- Retrieving the thermal features and features states sets</span>
+    <span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myThermalFeatures<span class="keyword"> As </span>SimFeatures
+<span class="keyword">	Set </span>myThermalFeatures = myThermalAnalysisCase.Features
+
+<span class="keyword">	Dim </span>myThermalFeatureStates<span class="keyword"> As </span>SimFeatureStates
+<span class="keyword">	Set </span>myThermalFeatureStates = mySteadyStateHeatTransferStep.FeatureStates
+
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 11- Creating thermal features</span>
+    <span class="comment">'=====================================================================</span>
+	
+<span class="keyword">	Dim </span>myTemperature1<span class="keyword"> As </span>SimTemperature
+<span class="keyword">	Set </span>myTemperature1 = myThermalFeatures.Add("SimTemperature")
+	
+<span class="keyword">	Set </span>myLinkAccess =myTemperature1.GetItem("SimLinkAccess")
+	myLinkAccess.AddLink "MainSupport", myLinkToTemperatureSupport1
+	
+	myTemperature1.UniformMagnitude = 320.0
+	
+	myThermalFeatureStates.CreateFeatureState myTemperature1
+	
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 12- Creating and initializing the static step</span>
+    <span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myStructuralSteps<span class="keyword"> As </span>SimSteps
+<span class="keyword">	Set </span>myStructuralSteps = myStructuralAnalysisCase.Steps
+	
+<span class="keyword">	Dim </span>myStaticStep<span class="keyword"> As </span>SimStaticStep
+<span class="keyword">	Set </span>myStaticStep = myStructuralSteps.Add("SimStaticStep")
+	
+	myStructuralAnalysisCase.CreateDefaultElementTypeAssignment
+	
+	myStaticStep.CreateAnalysisDefaultOutputRequests
+	myStaticStep.MaximumIncrements = 1000
+
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 13- Retrieving the structural features and features states sets</span>
+    <span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myStructuralFeatures<span class="keyword"> As </span>SimFeatures
+<span class="keyword">	Set </span>myStructuralFeatures = myStructuralAnalysisCase.Features
+
+<span class="keyword">	Dim </span>myStructuralFeatureStates<span class="keyword"> As </span>SimFeatureStates
+<span class="keyword">	Set </span>myStructuralFeatureStates = myStaticStep.FeatureStates
+
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 14- Creating structural features</span>
+    <span class="comment">'=====================================================================</span>
+	
+	<span class="comment">' Creating a Clamp feature</span>
+	<span class="comment">'-------------------------</span>
+	
+<span class="keyword">	Dim </span>myClamp<span class="keyword"> As </span>SimClamp
+<span class="keyword">	Set </span>myClamp = myStructuralFeatures.Add("SimClamp")
+	
+<span class="keyword">	Set </span>myLinkAccess =myClamp.GetItem("SimLinkAccess")
+	myLinkAccess.AddLink "MainSupport", myLinkToClampSupport
+	
+	myStructuralFeatureStates.CreateFeatureState myClamp
+	
+	<span class="comment">' Creating a displacement restraint feature</span>
+	<span class="comment">'------------------------------------------</span>
+	
+<span class="keyword">	Dim </span>myDisplacementRestraint<span class="keyword"> As </span>SimDisplacementRestraint
+<span class="keyword">	Set </span>myDisplacementRestraint = myStructuralFeatures.Add("SimDisplacementRestraint")
+	
+<span class="keyword">	Set </span>myLinkAccess = myDisplacementRestraint.GetItem("SimLinkAccess")
+	myLinkAccess.AddLink "MainSupport", myLinkToDisplacementRestraintSupport1
+	myLinkAccess.AddLink "MainSupport", myLinkToDisplacementRestraintSupport2
+	myLinkAccess.AddLink "MainSupport", myLinkToDisplacementRestraintSupport3
+	
+	myDisplacementRestraint.SetDofRestraint SimTranslation1, False
+	myDisplacementRestraint.SetDofRestraint SimTranslation2, True
+	myDisplacementRestraint.SetDofRestraint SimTranslation3, False
+	myDisplacementRestraint.SetDofRestraint SimRotation1, True
+	myDisplacementRestraint.SetDofRestraint SimRotation2, False
+	myDisplacementRestraint.SetDofRestraint SimRotation3, True
+	
+	myStructuralFeatureStates.CreateFeatureState myDisplacementRestraint
+	
+	<span class="comment">' Creating a pressure feature</span>
+	<span class="comment">'----------------------------</span>
+	
+<span class="keyword">	Dim </span>myPressure<span class="keyword"> As </span>SimPressure
+<span class="keyword">	Set </span>myPressure = myStructuralFeatures.Add("SimPressure")
+	
+<span class="keyword">	Set </span>myLinkAccess = myPressure.GetItem("SimLinkAccess")
+	myLinkAccess.AddLink "MainSupport", myLinkToPressureSupport
+	
+	myPressure.UniformMagnitude = 500.0
+	
+	myStructuralFeatureStates.CreateFeatureState myPressure
+
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 15- Launching the simulation</span>
+    <span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myExecutionService<span class="keyword"> As </span>SimExecutionService
+<span class="keyword">	Set </span>myExecutionService = myEditor.GetService("SimExecutionService")
+	
+	myExecutionService.BasicExecuteAll mySimulationReference
+	
+	<span class="comment">' Switching to the results visualization workbench</span>
+	<span class="comment">'-------------------------------------------------</span>
+	
+	CATIA.StartWorkbench "SMAHvcResultsVisualizationWorkbench"
+
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

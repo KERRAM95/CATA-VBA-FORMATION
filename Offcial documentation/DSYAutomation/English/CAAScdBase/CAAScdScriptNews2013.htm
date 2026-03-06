@@ -1,0 +1,895 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>What&#39;s New with V6R2013 Automation</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>What's New with V6R2013 Automation</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article presents Automation objects, methods, and properties that 
+		are added since V6R2012x GA to enhance V6 Automation capabilities, support 
+		functional evolutions, and correct defects. Some of those modifications 
+		may already exist in V6R2012x maintenance fixes. A few properties and methods 
+		might have been modified or removed. VB and VBScripts code using those methods 
+		may have to be modified. VB projects using the corresponding objects must 
+		be recompiled.</p>
+		<p>Consult
+		<a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation 
+		Languages, Debug, and Compatibility</a> for details on manual adjustments 
+		that may be required for existing VBA and VSTA projects to be usable on 
+		a new release.</p>
+		<ul>
+			<li><a href="#NewModelers">New Modelers</a></li>
+			<li><a href="#NewArticles">New Articles</a></li>
+			<li><a href="#NewSetting">New Settings Repositories</a></li>
+			<li><a href="#NewObject">New Objects</a></li>
+			<li><a href="#NewMethod">New Methods</a></li>
+			<li><a href="#NewEnum">New Enums</a></li>
+			<li><a href="#Modif">Modified Methods and Properties</a></li>
+			<li><a href="#Suppress">Removed Objects, Collections, Methods, and Properties</a></li>
+		</ul>
+		<p>Deprecated APIs can be found in
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Deprecated');return false;">
+		V6 IDL API Deprecated Index</a>.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p>You can also find news from previous V6 releases:</p>
+		<ul>
+			<li><a href="CAAScdScriptNews2012x.htm">V6R2012x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2012.htm">V6R2012 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2011x.htm">V6R2011x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2011.htm">V6R2011 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2010x.htm">V6R2010x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2010.htm">V6R2010 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2009x.htm">V6R2009x What&#39;s New?</a></li>
+		</ul>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewModelers"></a>New Modelers</th>
+	</tr>
+	<tr>
+		<td><a href="../CAAScdOlpOfflineProg/CAAScdOlpToc.htm">Robot Programming</a></td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewArticles"></a>New Articles</th>
+	</tr>
+<tr>
+<td><a href="../CAAScdProduct/CAAScdPstTaNavigatingProduct.htm">Navigating Product Model</a></td>
+</tr>
+	<tr>
+		<td><a href="../CAAScdKin/CAAScdKinTocKinematics.htm">Mechanical Systems Design / Experience Object Model Map</a></td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewSetting"></a>New Settings Repositories</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/3DShapeInfrastructureCompatibility.htm');return false;">
+		3DShapeInfrastructureCompatibility</a></td>
+		<td>Settings to manage 3D shape infrastructure compatibility options</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATCrDToolsOptionsRepository.htm');return false;">
+		CATCrDToolsOptionsRepository</a></td>
+		<td>Settings customizing NTS workbench and commands</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATDMUCommon.htm');return false;">
+		CATDMUCommon</a></td>
+		<td>Setting to handle the Interference parameters</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/HvcServantOptions.htm');return false;">
+		HvcServantOptions</a></td>
+		<td>Manage options for visualization servant</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/SMAModelEditor.htm');return false;">
+		SMAModelEditor</a></td>
+		<td>Settings for SIMULIA Model Editor</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewObject"></a>New Objects</th>
+	</tr>
+		<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATMaterialIDLItf', 'interface', 'DrawingDomain');return false;">DrawingDomain</a>
+		</td>
+   <td>
+Manages Drafting Material Domain.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'TPSParallelOnScreen');return false;">TPSParallelOnScreen</a>
+		</td>
+   <td>
+Interface for Parallel On Screen.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscAccuracyProfile');return false;">RscAccuracyProfile</a>
+		</td>
+   <td>
+Interface to manage Generic Accuracy Profile of Robot controller.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscMotionProfile');return false;">RscMotionProfile</a>
+		</td>
+   <td>
+Interface to manage Generic Motion Profile of Robot controller.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscObjFrameProfile');return false;">RscObjFrameProfile</a>
+		</td>
+   <td>
+Interface to manage Generic ObjFrame Profile of Robot controller.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscToolProfile');return false;">RscToolProfile</a>
+		</td>
+   <td>
+Interface to manage Generic Tool Profile of Robot controller.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAssign');return false;">OlpAssign</a>
+		</td>
+   <td>
+An instruction used to assigning a value to a variable or IO.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAstBranch');return false;">OlpAstBranch</a>
+		</td>
+   <td>
+Represents a branch node of the Abstract Syntax Tree (AST).
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAstLeaf');return false;">OlpAstLeaf</a>
+		</td>
+   <td>
+Represents a leaf node of the Abstract Syntax Tree (AST).
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAstNode');return false;">OlpAstNode</a>
+		</td>
+   <td>
+Represents a node of the Abstract Syntax Tree (AST).
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpBehavior');return false;">OlpBehavior</a>
+		</td>
+   <td>
+Interface for accessing a resource&apos;s behavior.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpController');return false;">OlpController</a>
+		</td>
+   <td>
+Interface for accessing a device (or controller&apos;s) properties.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpErrorReporter');return false;">OlpErrorReporter</a>
+		</td>
+   <td>
+Interface for reporting translation warnings and errors.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpExpressionFixer');return false;">OlpExpressionFixer</a>
+		</td>
+   <td>
+The common functionality used to translate expressions.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpExpressionFixerDownload');return false;">OlpExpressionFixerDownload</a>
+		</td>
+   <td>
+An object for translating expressions from DELMIA expressions in the native robot language.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpExpressionFixerUpload');return false;">OlpExpressionFixerUpload</a>
+		</td>
+   <td>
+An object for translating expressions from the native robot language into DELMIA expressions.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpFor');return false;">OlpFor</a>
+		</td>
+   <td>
+A for loop instruction.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpGoto');return false;">OlpGoto</a>
+		</td>
+   <td>
+A goto instruction.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpGrab');return false;">OlpGrab</a>
+		</td>
+   <td>
+An instruction for grabbing a part.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpIDFixer');return false;">OlpIDFixer</a>
+		</td>
+   <td>
+Represents an interface that handles fixing object names to conform to the robot language requirements.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpIf');return false;">OlpIf</a>
+		</td>
+   <td>
+A conditional instruction.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpInstruction');return false;">OlpInstruction</a>
+		</td>
+   <td>
+Represents a single instruction in a task.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpInstructions');return false;">OlpInstructions</a>
+		</td>
+   <td>
+Represents a list of instructions.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpJavaArgs');return false;">OlpJavaArgs</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpLoop');return false;">OlpLoop</a>
+		</td>
+   <td>
+A do while OR while do instruction.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpMotionGroup');return false;">OlpMotionGroup</a>
+		</td>
+   <td>
+A motion group.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpMotionGroups');return false;">OlpMotionGroups</a>
+		</td>
+   <td>
+A list of motion groups.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpObjectFrameProfile');return false;">OlpObjectFrameProfile</a>
+		</td>
+   <td>
+An object frame profile used for translating a robot program.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpParser');return false;">OlpParser</a>
+		</td>
+   <td>
+Parser for compiling a Native Robot Language program using Flex and Bison.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpProcedure');return false;">OlpProcedure</a>
+		</td>
+   <td>
+Represents a robot task or other procedure.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpProcedures');return false;">OlpProcedures</a>
+		</td>
+   <td>
+A list of procedures.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpProfile');return false;">OlpProfile</a>
+		</td>
+   <td>
+A profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpProfiles');return false;">OlpProfiles</a>
+		</td>
+   <td>
+A collection of 1 type of profile.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRelease');return false;">OlpRelease</a>
+		</td>
+   <td>
+An instruction that releases a grabbed part.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotConfigGeneric');return false;">OlpRobotConfigGeneric</a>
+		</td>
+   <td>
+ A robot configuration.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotion');return false;">OlpRobotMotion</a>
+		</td>
+   <td>
+Represents a robot motion instruction in a task&lt;BR&gt; &lt;font color=&quot;red&quot;&gt;This interface can only be used by a translator within the Robotics Off-line Programming (OLP) Download or Upload command.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotionTarget');return false;">OlpRobotMotionTarget</a>
+		</td>
+   <td>
+Represents a target position of a robot motion&lt;BR&gt; &lt;P&gt; Each motion group has a target position.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRun');return false;">OlpRun</a>
+		</td>
+   <td>
+ An instruction that calls another procedure.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTag');return false;">OlpTag</a>
+		</td>
+   <td>
+A tag.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpToolProfile');return false;">OlpToolProfile</a>
+		</td>
+   <td>
+ The tool profile interface used for translating robot programs.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTransform');return false;">OlpTransform</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTranslatorHelper');return false;">OlpTranslatorHelper</a>
+		</td>
+   <td>
+ Service used to get access to OLP data objects.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpVariable');return false;">OlpVariable</a>
+		</td>
+   <td>
+ A variable.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpVariables');return false;">OlpVariables</a>
+		</td>
+   <td>
+ A list of variables.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpWait');return false;">OlpWait</a>
+		</td>
+   <td>
+ A wait instruction.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingAPTGenerator');return false;">ManufacturingAPTGenerator</a>
+		</td>
+   <td>
+Generator of APT output machining code.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingGeneratorData');return false;">ManufacturingGeneratorData</a>
+		</td>
+   <td>
+Represents the manufacturing output stream object.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingOutput');return false;">ManufacturingOutput</a>
+		</td>
+   <td>
+Object that represents the output machining code.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingOutputGenerator');return false;">ManufacturingOutputGenerator</a>
+		</td>
+   <td>
+Father object to generate output machining code.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMInterferenceIDLItf', 'interface', 'InterferenceResult');return false;">InterferenceResult</a>
+		</td>
+   <td>
+Interface representing an Interference Result.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMInterferenceIDLItf', 'interface', 'InterferenceResults');return false;">InterferenceResults</a>
+		</td>
+   <td>
+Interface representing InterferenceResult object collection.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMInterferenceIDLItf', 'interface', 'InterferenceSimulation');return false;">InterferenceSimulation</a>
+		</td>
+   <td>
+Interface representing Interference Simulation Object.
+	</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewMethod"></a>New Methods</th>
+	</tr>
+		<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'interface', 'Section', 'ExportTo');return false;">Section::ExportTo</a>
+		</td>
+   <td>
+Exports the section into dxf/dwg formats.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'interface', 'Section', 'Height');return false;">Section::Height</a>
+		</td>
+   <td>
+Returns or sets the height of the section.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'interface', 'Section', 'IsEmpty');return false;">Section::IsEmpty</a>
+		</td>
+   <td>
+Indicates whether the section is empty.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'interface', 'Section', 'Thickness');return false;">Section::Thickness</a>
+		</td>
+   <td>
+Returns or sets the Thickness of the section for type slice &amp; box.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'interface', 'Section', 'Type');return false;">Section::Type</a>
+		</td>
+   <td>
+Returns or sets the type of the section.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'interface', 'Section', 'Width');return false;">Section::Width</a>
+		</td>
+   <td>
+Returns or sets the width of the section.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'Mirror', 'DesignIntent');return false;">Mirror::DesignIntent</a>
+		</td>
+   <td>
+Returns or sets the Design Intent attribute of the mirror feature.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMInterferenceIDLItf', 'interface', 'InterferenceGroupObjects', 'Add2');return false;">InterferenceGroupObjects::Add2</a>
+		</td>
+   <td>
+Adds a VPMOccurrence in the InterferenceGroupObjects collection.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMInterferenceIDLItf', 'interface', 'InterferenceServices', 'CreateInterferenceSimulation2');return false;">InterferenceServices::CreateInterferenceSimulation2</a>
+		</td>
+   <td>
+Creates an InterferenceSimulation on a reference entity.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMInterferenceIDLItf', 'interface', 'InterferenceGroupObjects', 'Remove2');return false;">InterferenceGroupObjects::Remove2</a>
+		</td>
+   <td>
+Removes an occurrence from the InterferenceGroupObjects collection.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'SystemService', 'PrintToStdout');return false;">SystemService::PrintToStdout</a>
+		</td>
+   <td>
+Prints a string on stdout.
+	</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewEnum"></a>New enum</th>
+	</tr>
+		<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'enum', 'CatSectionType');return false;">CatSectionType</a>
+		</td>
+   <td>
+&lt;p&gt; This enum CatSectionType defines the 3 types of section plane.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpAstNodeType');return false;">DELOlpAstNodeType</a>
+		</td>
+   <td>
+Classifies the language element stored in a node.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpDataType');return false;">DELOlpDataType</a>
+		</td>
+   <td>
+Defines the types of target locations in DELMIA.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpDeviceType');return false;">DELOlpDeviceType</a>
+		</td>
+   <td>
+Defines the types devices.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpIODirection');return false;">DELOlpIODirection</a>
+		</td>
+   <td>
+Defines the types of target locations in DELMIA.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpInstructionType');return false;">DELOlpInstructionType</a>
+		</td>
+   <td>
+Classifies the instruction type.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpJointType');return false;">DELOlpJointType</a>
+		</td>
+   <td>
+Defines the types device joints.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpMessageType');return false;">DELOlpMessageType</a>
+		</td>
+   <td>
+List of the possible OLP translation message types.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpMotionType');return false;">DELOlpMotionType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpOrientationMode');return false;">DELOlpOrientationMode</a>
+		</td>
+   <td>
+The orientation mode used by the motion planner to create the robot trajectory for a robot motion activity.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpPositionRef');return false;">DELOlpPositionRef</a>
+		</td>
+   <td>
+Reference locations that positions are relative to.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpProcessType');return false;">DELOlpProcessType</a>
+		</td>
+   <td>
+Defines the purpose of a target location in a process.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpTargetType');return false;">DELOlpTargetType</a>
+		</td>
+   <td>
+Defines the types of target locations in DELMIA.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpTraceLevel');return false;">DELOlpTraceLevel</a>
+		</td>
+   <td>
+List of the possible OLP trace levels.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpTurnMode');return false;">DELOlpTurnMode</a>
+		</td>
+   <td>
+The turn modes used in the config.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpTurnSignType');return false;">DELOlpTurnSignType</a>
+		</td>
+   <td>
+The turn sign values.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpVariableType');return false;">DELOlpVariableType</a>
+		</td>
+   <td>
+Defines the types of target locations in DELMIA.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMInterferenceIDLItf', 'enum', 'CatInterferenceGroupComputationType2');return false;">CatInterferenceGroupComputationType2</a>
+		</td>
+   <td>
+Interference Specification groups.
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMInterferenceIDLItf', 'enum', 'CatInterferenceResultType');return false;">CatInterferenceResultType</a>
+		</td>
+   <td>
+Interference Type.
+	</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="Modif"></a>Modified Methods and Properties</th>
+	</tr>
+	<tr>
+		<td>DrawingAreFills::Item</td>
+		<td rowspan="12">Type of the index Argument has been changed from long to variant to allow to retrieve objects from their names.</td>
+	</tr>
+	<tr>	<td>DrawingAreaFills::Remove</td></tr>
+	<tr>	<td>DrawingThreads::Item</td></tr>
+	<tr>	<td>DrawingThreads::Remove</td></tr>
+	<tr>	<td>DrawingArrows::Item</td></tr>
+	<tr>	<td>DrawingArrows::Remove</td></tr>
+	<tr>	<td>DrawingTables::Item</td></tr>
+	<tr>	<td>DrawingTables::Remove</td></tr>
+	<tr>	<td>DrawingTexts::Item</td></tr>
+	<tr>	<td>DrawingTexts::Remove</td></tr>
+	<tr>	<td>DrawingWeldings::Item</td></tr>
+	<tr>	<td>DrawingWeldings::Remove</td></tr>
+	<tr>
+		<td>DrawingArrow</td>
+		<td rowspan="16">Class Definition have been moved from Drafting type library to Annotation type library.</td>
+	</tr>
+	<tr>	<td>DrawingArrows</td></tr>
+	<tr><td>DrawingDimensions</td></tr>
+	<tr><td>DrawingDimExtLine</td></tr>
+	<tr><td>DrawingDimLine</td></tr>
+	<tr><td>DrawingDimValue</td></tr>
+	<tr><td>DrawingLeader</td></tr>
+	<tr><td>DrawingLeaders</td></tr>
+	<tr><td>DrawingTable</td></tr>
+	<tr><td>DrawingTables</td></tr>
+	<tr><td>DrawingText</td></tr>
+	<tr><td>DrawingTextProperties</td></tr>
+	<tr><td>DrawingTextRange</td></tr>
+	<tr><td>DrawingTexts</td></tr>
+	<tr><td>DrawingWelding</td></tr>
+	<tr><td>DrawingWeldings</td></tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="Suppress"></a>Removed Objects, Collections, Methods, 
+		and Properties </th>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

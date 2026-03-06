@@ -1,0 +1,315 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATMultiLayerIDLItf MLPSimuLayerServices (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATMultiLayerIDLItf.htm" href="../CATMultiLayerIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATMultiLayerIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "MLPSimuLayerServices"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> MLPSimuLayerServices<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_MLPSimuLayerServices_39638','MLPSimuLayerServices','0');</script>
+<section id='maindesc'>
+<b><i> CATIAMLPSimuLayerServices
+ <b>Role</b>:Represents CATIAMLPSimuLayerServices that allow to query simulation geometries from layers.</i></b><br>
+
+ <dl>
+ <dt>Example:</dt>
+ <dd>
+ This example illustrates how to call CATIAMLPSimuLayerServices interfaces .
+ </dd>
+ <dd>
+ <pre>
+
+'FIND THE STACKING
+	Set Stacking = myPart.FindObjectByName("Stacking")
+	Dim StackingSimu As MLPStackingSimu
+	Set StackingSimu = Stacking.GetItem("CATMLPVBStackingSimu")
+
+'CREATE MLP SERVICES
+	Dim StackingSimuService As MLPSimuLayerServices
+	Set StackingSimuService = Stacking.GetItem("CATMLPVBStackingSimu")
+
+'CREATE SURFACE
+	Dim Surface As Reference
+	Set Surface = StackingSimuService.CreateSurfaceOfLayer(Layer, DestinationGeom)
+	Debug.Print "Name Surface : " & Surface.Name
+
+'GLUE INFORMATION
+	Dim ListGluedLayer As MLPSimuLayers
+	Set ListGluedLayer = StackingSimuService.GetGluedLayers(Layer)
+	For J = 1 To ListGluedLayer.Count
+		Dim LayerIsGlued As MLPSimuLayer
+		Set LayerIsGlued = ListGluedLayer.Item(J)
+		Debug.Print "  - GluedLayers : " & LayerIsGlued.Name
+	Next
+
+   Dim LayerForComputation1 As MLPSimuLayer
+	Set LayerForComputation1 = listOfLayers.Item("TopSheetLotion")
+	Dim LayerForComputation2 As MLPSimuLayer
+	Set LayerForComputation2 = listOfLayers.Item("TopSheet")
+
+'TEST INTERSECTION
+	Dim Intersect As Reference
+	Set Intersect = StackingSimuService.CreateIntersectSurfacesOfLayers(LayerForComputation1, LayerForComputation2, DestinationGeom)
+	Debug.Print "Name Intersect : " & Intersect.Name
+
+'TEST JOIN
+	Dim Join As Reference
+	Set Join = StackingSimuService.CreateJoinSurfacesOfLayers(LayerForComputation1, LayerForComputation2, DestinationGeom)
+	Debug.Print "Name Join : " & Join.Name
+
+'TEST SUBSTRACT
+	Dim Subtract As Reference
+	Set Subtract = StackingSimuService.CreateSubstractSurfacesOfLayers(LayerForComputation2, LayerForComputation1, DestinationGeom)
+	Debug.Print "Name Subtract : " & Subtract.Name
+ </pre>
+ </dd>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#CreateGeometryOfLayer"><b>CreateGeometryOfLayer</b></a>
+</td><td  id='tdright'>  Creates geometry of one layer (shell or solid according to the type of layer).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateIntersectSurfacesOfLayers"><b>CreateIntersectSurfacesOfLayers</b></a>
+</td><td  id='tdright'>  Creates intersection of 2 layers.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateJoinSurfacesOfLayers"><b>CreateJoinSurfacesOfLayers</b></a>
+</td><td  id='tdright'>  Creates join of 2 layers.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateSubstractSurfacesOfLayers"><b>CreateSubstractSurfacesOfLayers</b></a>
+</td><td  id='tdright'>  Creates substraction of 2 layers.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateSurfaceOfLayer"><b>CreateSurfaceOfLayer</b></a>
+</td><td  id='tdright'>  Creates surface of one layer.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetGluedLayers"><b>GetGluedLayers</b></a>
+</td><td  id='tdright'>  Retrieves Layer impacted by a glue layer at a specific position.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetGluedLayersAtPoint"><b>GetGluedLayersAtPoint</b></a>
+</td><td  id='tdright'>  Retrieves Layer impacted by a glue layer at a specific position.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="CreateGeometryOfLayer"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateGeometryOfLayer</span><span class='signature'>(<script type="text/javascript"> activateLink('MLPSimuLayer','MLPSimuLayer')</script> <span class='param'>iLayerSimu</span>,<script type="text/javascript"> activateLink('CATIAHybridBody','CATIAHybridBody')</script> <span class='param'>iDatumDestination</span>)</span> As <script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates geometry of one layer (shell or solid according to the type of layer).
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLayerSimu</span></dt>
+   <dd>   The input layer
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDatumDestination</span></dt>
+   <dd>   The geometrical set destination where the surface will be created
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDatumGeometry</span></dt>
+   <dd>   New layer surface
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="CreateIntersectSurfacesOfLayers"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateIntersectSurfacesOfLayers</span><span class='signature'>(<script type="text/javascript"> activateLink('MLPSimuLayer','MLPSimuLayer')</script> <span class='param'>iLayerSimu1</span>,<script type="text/javascript"> activateLink('MLPSimuLayer','MLPSimuLayer')</script> <span class='param'>iLayerSimu2</span>,<script type="text/javascript"> activateLink('CATIAHybridBody','CATIAHybridBody')</script> <span class='param'>iDatumDestination</span>)</span> As <script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates intersection of 2 layers.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLayerSimu1</span></dt>
+   <dd>   The input layer1
+ 
+ </ dd>
+    <dt><span class='paramitem'> iLayerSimu2</span></dt>
+   <dd>   The input layer2
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDatumDestination</span></dt>
+   <dd>   The geometrical set destination where the surface will be created
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDatumGeometry</span></dt>
+   <dd>   The created intersection geometry
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="CreateJoinSurfacesOfLayers"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateJoinSurfacesOfLayers</span><span class='signature'>(<script type="text/javascript"> activateLink('MLPSimuLayer','MLPSimuLayer')</script> <span class='param'>iLayerSimu1</span>,<script type="text/javascript"> activateLink('MLPSimuLayer','MLPSimuLayer')</script> <span class='param'>iLayerSimu2</span>,<script type="text/javascript"> activateLink('CATIAHybridBody','CATIAHybridBody')</script> <span class='param'>iDatumDestination</span>)</span> As <script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates join of 2 layers.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLayerSimu1</span></dt>
+   <dd>   The input layer1
+ 
+ </ dd>
+    <dt><span class='paramitem'> iLayerSimu2</span></dt>
+   <dd>   The input layer2
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDatumDestination</span></dt>
+   <dd>   The geometrical set destination where the surface will be created
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDatumGeometry</span></dt>
+   <dd>   The created join geometry
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="CreateSubstractSurfacesOfLayers"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateSubstractSurfacesOfLayers</span><span class='signature'>(<script type="text/javascript"> activateLink('MLPSimuLayer','MLPSimuLayer')</script> <span class='param'>iLayerSimu1</span>,<script type="text/javascript"> activateLink('MLPSimuLayer','MLPSimuLayer')</script> <span class='param'>iLayerSimu2</span>,<script type="text/javascript"> activateLink('CATIAHybridBody','CATIAHybridBody')</script> <span class='param'>iDatumDestination</span>)</span> As <script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates substraction of 2 layers.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLayerSimu1</span></dt>
+   <dd>   The input layer1
+ 
+ </ dd>
+    <dt><span class='paramitem'> iLayerSimu2</span></dt>
+   <dd>   The input substract layer2
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDatumDestination</span></dt>
+   <dd>   The geometrical set destination where the surface will be created
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDatumGeometry</span></dt>
+   <dd>   The created substract geometry
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="CreateSurfaceOfLayer"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateSurfaceOfLayer</span><span class='signature'>(<script type="text/javascript"> activateLink('MLPSimuLayer','MLPSimuLayer')</script> <span class='param'>iLayerSimu</span>,<script type="text/javascript"> activateLink('CATIAHybridBody','CATIAHybridBody')</script> <span class='param'>iDatumDestination</span>)</span> As <script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates surface of one layer.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLayerSimu</span></dt>
+   <dd>   The input layer
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDatumDestination</span></dt>
+   <dd>   The geometrical set destination where the surface will be created
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDatumGeometry</span></dt>
+   <dd>   New layer surface
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetGluedLayers"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetGluedLayers</span><span class='signature'>(<script type="text/javascript"> activateLink('MLPSimuLayer','MLPSimuLayer')</script> <span class='param'>iGlueLAyerSimu</span>)</span> As <script type="text/javascript"> activateLink('MLPSimuLayers','MLPSimuLayers')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves Layer impacted by a glue layer at a specific position.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGlueLAyerSimu</span></dt>
+   <dd>   The glue layer
+ 
+ </ dd>
+    <dt><span class='paramitem'> oListOfGluedLayers</span></dt>
+   <dd>   return the list of glued layers
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetGluedLayersAtPoint"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetGluedLayersAtPoint</span><span class='signature'>(<script type="text/javascript"> activateLink('MLPSimuLayer','MLPSimuLayer')</script> <span class='param'>iGlueLAyerSimu</span>,<script type="text/javascript"> activateLink('float','float')</script> <span class='param'>iX</span>,<script type="text/javascript"> activateLink('float','float')</script> <span class='param'>iY</span>,<script type="text/javascript"> activateLink('float','float')</script> <span class='param'>iZ</span>)</span> As <script type="text/javascript"> activateLink('MLPSimuLayers','MLPSimuLayers')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves Layer impacted by a glue layer at a specific position.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGlueLAyerSimu</span></dt>
+   <dd>   The glue layer
+ 
+ </ dd>
+    <dt><span class='paramitem'> iX</span></dt>
+   <dd>   Position X
+ 
+ </ dd>
+    <dt><span class='paramitem'> iY</span></dt>
+   <dd>   Position Y
+ 
+ </ dd>
+    <dt><span class='paramitem'> iZ</span></dt>
+   <dd>   Position Z
+ 
+ </ dd>
+    <dt><span class='paramitem'> oListOfGluedLayers</span></dt>
+   <dd>   return the list of glued layers at position (X,Y,Z)
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

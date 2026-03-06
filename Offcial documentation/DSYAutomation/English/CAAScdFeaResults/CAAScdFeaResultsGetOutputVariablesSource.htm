@@ -1,0 +1,119 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcCreatefrequencySensor.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+    '--------------------------------------------------------------------------
+<pre>
+<span class="comment">'---------------------------- Sample MACRO written in Basic Script ---------------------------------</span>
+<span class="comment">'This sample retrieves history output variables and history regions.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">'    2- Retrieves the results analysis case</span>
+<span class="comment">'    3- Retrieves the history variables</span>
+<span class="comment">'    4- Retrieves the history region and sub region information</span>
+
+Sub CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+Dim oEditor As Editor
+Set oEditor = CATIA.ActiveEditor
+Dim oProdService As PLMProductService
+Set oProdService = oEditor.GetService("PLMProductService")
+Dim oEntities As PLMEntities
+If Not oProdService.EditedContent Is Nothing Then
+Set oEntities = oProdService.EditedContent
+Dim oEntity As PLMEntity
+Dim oSimObjEntity As PLMEntity
+For Each oEntity In oEntities
+    If oEntity.GetCustomType = "SIMObjSimulationObjectGenericDS" Or oEntity.GetCustomType = "DesignSight" Then 
+        Set oSimObjEntity = oEntity
+    End If
+Next
+Dim oSimulationRoot As SimulationReference
+Set oSimulationRoot = oSimObjEntity
+    
+Dim oResults As SimulationResults
+Set oResults = oSimulationRoot.Results
+Dim oSimulationRepRes As SimulationRepresentation
+Set oSimulationRepRes = oResults.Item(1)  
+Dim oRootRepRes As SimResultRepManager
+Set oRootRepRes = oSimulationRepRes.Root    
+Dim oResultsManager As SimResultsManager
+Set oResultsManager = oRootRepRes.GetItem("SimResultsManager")   
+End If
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    2- Retrieves the results analysis case</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+Dim oResultsAnalysisCases As SimResultsAnalysisCases
+Set oResultsAnalysisCases = oResultsManager.ResultsAnalysisCases
+Dim oResultsAnalysisCase As SimResultsAnalysisCase
+Set oResultsAnalysisCase = oResultsAnalysisCases.Item(1)
+
+Dim oSteps
+Set oSteps = oResultsAnalysisCase.ResultsSteps
+Dim oResultsStep As SimResultsStep
+Set oResultsStep = oSteps.Item(1)
+Dim stepId As String
+Dim stepName As String
+Dim stepDescription As String
+oResultsStep.GetIdentifier stepId, stepName, stepDescription
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    3- Retrieves the history variables</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+Dim odFrame As Double
+odFrame = 0
+Dim eSource As SimResultsSource
+eSource = SimFieldSourceHistory
+Dim oFieldNames() As Variant
+oResultsStep.GetAvailableFields odFrame, eSource, oFieldNames
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'   4- Retrieves the history region and sub region information</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+Dim oVariableString As String
+oVariableString = oFieldNames(0)
+Dim oRegionNames() As Variant
+Dim oSubRegionIndex() As Variant
+Dim oSubRegionNames() As Variant
+oResultsStep.GetHistoryRegionsAndSubRegions oVariableString, oRegionNames, oSubRegionIndex, oSubRegionNames
+
+Dim nbSubregion As Integer
+nbSubregion = oSubRegionIndex(0)
+
+Dim HistRegionOutput
+HistRegionOutput = MsgBox("Variable name = " + oVariableString & vbCrLf & "Region Name = " + oRegionNames(0) & vbCrLf & "Sub-regions = " + oSubRegionNames(0) + ", " + oSubRegionNames(1) + ", " + oSubRegionNames(2) + ", " + oSubRegionNames(3), 0, "Region Information")
+ 
+End Sub
+
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

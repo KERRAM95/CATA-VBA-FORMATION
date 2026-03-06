@@ -1,0 +1,74 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Modifying visu Properties of selected mechanical features</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+' Modifying Visualization Properties of Mechanical Objects
+'
+' Mission : Change the color of selected mechanical object
+'
+' Steps :  1- Retrieves the active editor in CATIA
+'          2- Retrieves Selection object from active editor
+'          3- Updates Selection Object with selection criteria
+'          4- Changes the visualization<strong> </strong>property Color
+'--------------------------------------------------------------------------
+Sub ModifyVisuProperty()
+'Error Handling
+On Error GoTo ErrorSub
+    
+    '1- Retrieves the active editor in CATIA
+    Dim oActiveEditor As Editor
+    Set oActiveEditor = CATIA.ActiveEditor
+    
+    '2- Retrieves Selection object from active editor
+    Dim oSelection
+    Set oSelection = oActiveEditor.Selection
+    
+    '3- Updates Selection Object with selection criteria (AnyObject type i.e. without any filter)
+    Dim Status As String
+    Dim InputObjectType(0)
+    InputObjectType(0) = &quot;AnyObject&quot;
+    Status = oSelection.SelectElement(InputObjectType, &quot;Select a Element from spec tree&quot;, False)
+   
+   '4- Changes the visualization<strong> </strong> property Color
+    Dim VisPropertySet
+    Set VisPropertySet = oSelection.VisProperties
+    VisPropertySet.SetRealColor 0, 255, 0, 1
+    
+    'Error Handling
+          GoTo EndSub
+          
+ErrorSub:
+          MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+          GoTo EndSub
+EndSub:
+   
+  
+ End Sub
+</pre>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Product Changes</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>Product Changes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 automation macros to take 
+		advantage of the Open <strong>3D</strong>EXPERIENCE platform PLM infrastructure. If focuses on how the API has 
+		been modified to comply to the new <strong>3D</strong>EXPERIENCE platform product model.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="10"></a>The ProductDocument Object</h2>
+<p>In V5, the repository for Product objects and composition of Product objects 
+is the product document. In <strong>3D</strong>EXPERIENCE platform, this information is stored in the PLM server. Products 
+are PLM objects that must be retrieved and brought in memory through by Search, 
+Explore and Open operations like described in
+<a href="CAAScdBringingObjectsInSession.htm">Bringing Objects into Session And Saving 
+Objects</a>. </p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre>
+<span class="comment">' A Product document is known by its path</span>
+sIdentifier=&quot;E:/myDocument.CATProduct&quot;</pre>
+		<pre>
+<span class="comment">' Its content is loaded through the Documents collection</span></pre>
+		<pre>
+<span class="keyword">Set </span>oProductDocument = CATIA.Documents.Open(&quot;sIdentifier')</pre>
+		</td>
+		<td>
+		<pre>
+<span class="comment">' Get the Search Service</span>
+<span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> SearchService
+<span class="keyword">Set</span> oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+<span class="comment">
+' Instantiate a DatabaseSearch object</span></pre>
+		<pre>
+<span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+<span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+
+<span class="comment">' Set the type of object to query and criteria &amp; triggers the search</span>
+oDBSearch.BaseType = &quot;VPMReference&quot;
+oDBSearch.AddEasyCriteria &quot;PLM_ExternalID&quot;, &quot;Product*&quot;
+oSearchService.Search</pre>
+		<pre>
+
+<span class="comment">' Retrieve the listed entities</span>
+<span class="keyword">Dim</span> cPLMEntities <span class="keyword">As</span> PLMEntities 
+<span class="keyword">Set</span> cPLMEntities = oDBSearch.Results
+
+<span class="comment">' Get the PLMOpen service &amp; Open the first retrieved entity</span>
+<span class="keyword">Set</span> oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;) 
+Set oEditor = oPLMOpenService.PLMOpen(cPLMEntities.Item(1)) 		</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>To access product objects in memory, a specific service has been provided on 
+the Editor object: the <strong>PLMProductService</strong> service object. Here is a typical 
+example of how to retrieve the root product of a product structure.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre>
+<span class="comment">' Retrieving the root Product object of the edited product document</span>
+<span class="keyword">Dim </span>oProduct <span class="keyword">As</span> Product
+<span class="keyword">Set </span>oProduct = oProductDocument.Product</pre>
+		</td>
+		<td>
+		<pre>
+<span class="comment">' Retrieving the PLMProductService object as a service associated with the editor
+</span><span class="keyword">Dim</span> oPLMProductService <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> oPLMProductService = oEditor.GetService(&quot;PLMProductService&quot;) 
+
+<span class="comment">' Retrieving the collection of root entities edited in the editor</span>
+<span class="keyword">Dim</span> cPLMEntities2 <span class="keyword">As</span> PLMEntities 
+<span class="keyword">Set</span> cPLMEntities2 = oPLMProductService.EditedContent 
+
+<span class="comment">' Retrieving the root product from the Editor
+' as the first edited PLMEntity</span>
+<span class="keyword">Dim</span> oVPMReference <span class="keyword">As</span> VPMReference
+<span class="keyword">Set</span> oVPMReference = cPLMEntities2.Item(1) 		</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="11"></a>The Product Object and the Products Collection</h2>
+<h4>Instance and References</h4>
+<p>The V5 <strong>Product</strong> object, that represents both concepts of instance 
+and reference of a product, is split in <strong>3D</strong>EXPERIENCE platform into a <strong>VPMReference</strong> object, 
+retrieved in the previous sample, and a <strong>VPMInstance</strong> object. The collection 
+of <strong>Product</strong> objects that allowed to retrieved the instances aggregated 
+by a product reference is so replaced in <strong>3D</strong>EXPERIENCE platform by a collection of <strong>VPMInstance</strong> 
+objects that contains the position information and points on its reference:</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre>
+<span class="comment">' Loop on instances of the previously retrieved product</span>
+<span class="keyword">Dim </span>oPosition <span class="keyword">As</span> Position<span class="keyword">
+Dim </span>oReferenceOfInstance <span class="keyword">As</span> Product<span class="keyword">
+
+Dim </span>oInstance <span class="keyword">As</span> Product
+<span class="keyword">For each </span>oInstance <span class="keyword">In</span> oProduct.Products
+  <span class="comment">' Retrieve the position of the instance</span>
+  <span class="keyword">Set</span> oPosition = oInstance.Position
+
+  <span class="comment">' Retrieve the reference of this instance</span>
+  <span class="keyword">Set</span> oReferenceOfInstance = oInstance.ReferenceProduct  
+<span class="keyword">Next</span></pre>
+		</td>
+		<td>
+		<pre>
+<span class="comment">' Loop on instances of the previously retrieved product</span>
+<span class="keyword">Dim </span>oPosition <span class="keyword">As</span> Position<span class="keyword">
+Dim </span>oReferenceOfInstance <span class="keyword">As</span> VPMReference<span class="keyword">
+
+Dim </span>oInstance <span class="keyword">As</span> VPMInstance
+<span class="keyword">For each </span>oInstance <span class="keyword">In</span> oVPMReference.Instances
+  <span class="comment">' Retrieve the position of the instance</span>
+  <span class="keyword">Set</span> oPosition = oInstance.Position
+
+  <span class="comment">' Retrieve the reference of this instance</span>
+  <span class="keyword">Set</span> oReferenceOfInstance = oInstance.ReferenceInstanceOf  
+<span class="keyword">Next</span></pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>The <strong>Position</strong> object allows you to retrieve and modify the position of 
+the instance.</p>
+<h4>Representations</h4>
+<p>As the V5 <code>Product</code> object, the <strong>3D</strong>EXPERIENCE platform <strong>VPMReference</strong> object 
+has representations that are instances of representation object, represented by 
+the <strong>VPMRepInstance</strong> and <strong>VPMRepReference</strong> objects.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre>
+<span class="comment">' Retrieve the Part representation of the previously retrieved product</span>
+<span class="keyword">Dim </span>oReferenceOfInstance <span class="keyword">As</span> Product<span class="keyword">
+
+Dim </span>oPartDocument <span class="keyword">As</span> PartDocument
+<span class="keyword">Set </span>oPartDocument = oReferenceOfInstance.GetMasterShapeRepresentation(<span class="keyword">False</span>)</pre>
+		</td>
+		<td>
+		<pre>
+<span class="comment">' Loop on representations of the previously retrieved product</span>
+<span class="keyword">Dim </span>oReferenceOfRepInstance <span class="keyword">As</span> VPMReference<span class="keyword">
+
+Dim </span>oRepInstance <span class="keyword">As</span> VPMRepInstance
+<span class="keyword">For each </span>oRepInstance <span class="keyword">In</span> oReferenceOfInstance.RepInstances
+  <span class="comment">' Retrieve the reference of this instance</span>
+  <span class="keyword">Set</span> oReferenceOfRepInstance = oRepInstance.ReferenceInstanceOf  
+<span class="keyword">Next</span></pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h4>User Properties</h4>
+<p>Properties that can be associated to a V5 Product reference are in <strong>3D</strong>EXPERIENCE platform attributes 
+of the <strong>PLMEntity</strong> objects, parent class of all PLM objects. In V5 properties can 
+be dynamically added to any reference while in <strong>3D</strong>EXPERIENCE platform&nbsp; attributes must be declared, 
+for a specific type of product, during the customization stage of the installation 
+of the PLM server.&nbsp; Their values can then be accessed or modified:</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre>
+<span class="comment">' Acces the supplier property of a product reference</span>
+<span class="keyword">Dim </span>oReference <span class="keyword">As</span> Product<span class="keyword">
+Set </span>oReference = <span class="keyword">...
+
+</span><span class="comment">' Properties are accessed as a collection of Parameter objects</span>
+<span class="keyword">Dim </span>oProperties <span class="keyword">As</span> Parameters
+<span class="keyword">Set </span>oProperties = oReference.Parameters<span class="keyword">
+Dim </span>oProperty <span class="keyword">As</span> Parameter
+<span class="keyword">Set </span>oProperty = oParameters.Item(&quot;V_Supplier&quot;)
+sStringSupplier = oProperty.ValueAsString</pre>
+		</td>
+		<td>
+		<pre>
+<span class="comment">' Acces the supplier attribute of a product reference</span>
+<span class="keyword">Dim </span>oReference <span class="keyword">As</span> VPMReference<span class="keyword">
+Set </span>oReference = <span class="keyword">...
+
+
+
+
+</span><span class="comment">' Attributes are accessed through the GetAttributeValue
+' method inherited from the PLMEntity object</span>
+sStringSupplier = oReference.GetAttributeValue(&quot;V_Supplier&quot;)</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<h4>Publications and Connection</h4>
+<p>There is currently no access to the equivalent <strong>3D</strong>EXPERIENCE platform functionality.</p>
+<h4>References</h4>
+<p>There is currently no access to the equivalent <strong>3D</strong>EXPERIENCE platform functionality.</p>
+<h4>Access to Knowledgeware Parameters and Relations</h4>
+<p>In V5 the <strong>Product</strong> object offers two collections to access parameters 
+and relations. In <strong>3D</strong>EXPERIENCE platform, the <strong>KnowledgeServices</strong> service object should be retrieved 
+from 
+the <strong>Editor</strong> object.</p>
+<h4>The GetTechnologicalObject Method</h4>
+<p>The V5 <code>GetTechnologicalObject</code> method provides access to a variety of objects 
+linked to a product. For details on availability and name of the <strong>3D</strong>EXPERIENCE platform object equivalent 
+to such a V5 object, consult either the <a href="CAAScdGenericMethods.htm">Accessing 
+Objects Through Generic Methods</a> article or the <em>Details of modifications on 
+V5 modelers</em> part of this <em>Adoption</em> section dedicated to the V5 modeler 
+corresponding to the object.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

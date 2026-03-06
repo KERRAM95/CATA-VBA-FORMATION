@@ -1,0 +1,118 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample creates a FEM Rep and links it with child FEMs.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'    1- Retrieves the active editor</span>
+<span class="comment">'    2- Retrieves the root product</span>
+<span class="comment">'    3- Creates a FEM Rep and retrieve its root object</span>
+<span class="comment">'    4- Creates a link between the created FEM and the first occurrence FEM</span>
+<span class="comment">'    5- Creates a link between the created FEM and the second occurrence FEM</span>
+
+<span class="keyword">Sub</span> CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 1- Retrieves the active editor</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyEditor <span class="keyword">As</span> Editor
+<span class="keyword">Set</span> MyEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim</span> MyProductService <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> MyProductService = MyEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 2- Retrieves the root product</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyRootOcc <span class="keyword">As</span> VPMRootOccurrence
+<span class="keyword">Set</span> MyRootOcc = MyEditor.ActiveObject
+
+<span class="keyword">Dim</span> MyRootProduct <span class="keyword">As</span> VPMReference
+<span class="keyword">Set</span> MyRootProduct = MyRootOcc.PLMEntity
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 3- Creates a FEM Rep and retrieve its root object</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyPrdRepFactory <span class="keyword">As</span> SimPrdRepFactory
+<span class="keyword">Set</span> MyPrdRepFactory = MyRootProduct.GetItem(&quot;SimPrdRepFactory&quot;)
+<span class="keyword">Dim</span> MyFemRepRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">Set</span> MyFemRepRef = MyPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+<span class="keyword">Dim</span> MyFemRepRoot <span class="keyword">As</span> SimFemRoot
+<span class="keyword">Set</span> MyFemRepRoot = MyFemRepRef.GetItem(&quot;SimFemRoot&quot;)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 4- Creates a link between the created FEM and the first occurrence FEM</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'Retrieve the first product occurrence</span>
+<span class="keyword">Dim</span> myRootOccurrences <span class="keyword">As</span> VPMOccurrences
+<span class="keyword">Set</span> myRootOccurrences = MyRootOcc.Occurrences
+<span class="keyword">Dim</span> myOccurrence <span class="keyword">As</span> VPMOccurrence
+<span class="keyword">Set</span> myOccurrence = myRootOccurrences.Item(1)
+
+<span class="comment">'Retrieve the occurrence representation instance</span>
+<span class="keyword">Dim</span> MyRepInstances <span class="keyword">As</span> VPMRepInstances
+<span class="keyword">Set</span> MyRepInstances = myOccurrence.InstanceOccurrenceOf.ReferenceInstanceOf.RepInstances
+
+<span class="comment">'Retrieve the FEM Rep</span>
+<span class="keyword">Dim</span> attr <span class="keyword">As</span> String
+<span class="keyword">Dim</span> myRepRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">Dim</span> MyLink <span class="keyword">As</span> AnyObject
+<span class="keyword">For Each</span> myRep <span class="keyword">In</span> MyRepInstances
+  <span class="keyword">Set</span> myRepRef = myRep.ReferenceInstanceOf
+  attr = myRepRef.GetAttributeValue(&quot;V_discipline&quot;)
+  <span class="keyword">If</span> (attr = &quot;FEM&quot;) <span class="keyword">Then</span>
+    <span class="comment">'Create a path object from the root occurrence to the FEM Rep</span>
+    <span class="keyword">Set</span> MyLink = MyProductService.ComposeLink(myOccurrence, myRep, <span class="keyword">Nothing</span>)
+  <span class="keyword">End If</span>
+<span class="keyword">Next</span>
+
+<span class="comment">'Create the link between the assembly FEM Rep and the retrieved FEM Rep</span>
+MyFemRepRoot.AddChild MyLink
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 5- Creates a link between the created FEM and the second occurrence FEM</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'Retrieve the FEM Rep of the second product occurrence</span>
+<span class="keyword">Set</span> myOccurrence = myRootOccurrences.Item(2)
+<span class="keyword">Set</span> MyRepInstances = myOccurrence.InstanceOccurrenceOf.ReferenceInstanceOf.RepInstances
+<span class="keyword">For Each</span> myRep <span class="keyword">In</span> MyRepInstances
+  <span class="keyword">Set</span> myRepRef = myRep.ReferenceInstanceOf
+  attr = myRepRef.GetAttributeValue(&quot;V_discipline&quot;)
+  <span class="keyword">If</span> (attr = &quot;FEM&quot;) <span class="keyword">Then</span>
+    <span class="comment">'Create a path object from the root occurrence to the FEM Rep</span>
+    Set MyLink = MyProductService.ComposeLink(myOccurrence, myRep, <span class="keyword">Nothing</span>)
+  <span class="keyword">End If</span>
+<span class="keyword">Next</span>
+
+<span class="comment">'Create the link between the assembly FEM Rep and the retrieved FEM Rep</span>
+MyFemRepRoot.AddChild MyLink
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 6- Updates the assembly FEM Rep</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+MyFemRepRoot.Update
+
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

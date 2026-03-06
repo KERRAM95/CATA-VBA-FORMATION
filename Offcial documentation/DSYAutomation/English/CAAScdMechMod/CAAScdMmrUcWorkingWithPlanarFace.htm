@@ -1,0 +1,431 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Working with PlanarFace</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Working with PlanarFace</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates about working with PlanarFace. In this UC we 
+						learn how to retrieve PlanerFace and use it.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA.</li>
+							<li>The macro should essentially be launched from a 
+							Part Editor (meaning input data is always a PLM Product 
+							Representation Reference).</li>
+							<li>Product/Part editor must be active before launching 
+							the macro.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdMmrUcWorkingWithPlanarFaceSource.htm">CAAScdMmrUcWorkingWithPlanarFaceSource.htm</a></span></p><span class="run-in">
+						</span></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjEditor.htm">Editor Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjSelection.htm">Selection Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrTocPart.htm">Part Object Model Map</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p>Prolog</p>
+			<p>The macro begins with the <strong>WorkingWithPlanarFace</strong> 
+			main subroutine. It typically begins with the following extract of code, 
+			which serves as a built-in &quot;error handling&quot; mechanism.</p>
+			<pre class="code"><span class="keyword">Sub</span><strong> WorkingWithPlanarFace</strong>()
+
+<span class="keyword">On Error GoTo </span>ErrorSub
+...</pre>
+			<p>The first instruction means that when a method will throw an error, 
+			the macro will skip to the line named, <strong>ErrorSub</strong>. See the step
+			<a href="#Epilog">Epilog</a>.</p>
+			<p><code>WorkingWithPlanarFace</code> subroutine firstly retrieves Part 
+			object from selection. Then we select the Face for creation of Draft. 
+			Then we select and retrieve the neutral face it is PlanerFace type object. 
+			Then we select and retrieve parting element this is also Planer face 
+			type object. Then we create Draft using all these inputs (Face , neutral 
+			face, parting element).</p>
+			</li>
+			<li>
+			<p>Here, we retrieve the current active Editor object to 
+			select PLM object:</p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> oCurrentActiveEditor <span class="keyword">As</span> <strong>Editor</strong>
+<span class="keyword">Set</span> oCurrentActiveEditor = CATIA.<strong>ActiveEditor</strong>
+...</pre>
+			<p>Return a <strong>Editor</strong> object from the Application object (CATIA) 
+			using the <strong>ActiveEditor </strong>method.</p>
+			</li>
+			<li>
+			<p>We then retrieve Selection object from active editor:</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oObjSelection
+<span class="keyword">Set</span> oObjSelection = oCurrentActiveEditor.<strong>Selection</strong>
+...</pre>
+			<p>Return a <strong>Selection</strong> object from the Active Editor using <strong>
+			Selection</strong> method. It is significant to note here that we haven't 
+			declared a type for <code>oObjSelection</code> (as for several other 
+			variables, further ahead in this macro). The section &quot;Tips about VB 
+			and VBA&quot; in the technical article &quot;About VB, VBA, Debug, and Compatibility&quot; 
+			[] provides an explanation for why these variables are not typed.
+			</p>
+			</li>
+			<li>
+			<p>The selection object retrieved above is now updated 
+			with the selection criteria (&quot;Part&quot;). The following image shows 
+			sample Object from which user could select Part object (Representation).</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Part to Draft" src="CAAScdMmrUcWorkingWithPlanarFace_in.jpg" width="422" height="285"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<pre class="code">...
+<span class="keyword">Dim</span> strStatus<strong> </strong><span class="keyword">As</span> String
+<span class="keyword">Dim</span> oInputObjectType(0)
+
+oInputObjectType(0) = &quot;Part&quot;
+strStatus = oObjSelection.<strong>SelectElement</strong>(<strong>oInputObjectType</strong>, &quot;Select a Part Element from spec tree or the 3D Viewer&quot;, False)
+...</pre>
+			<p>&quot;<strong><em>Part</em></strong>&quot; type is appended to 
+			an array (<code>oInputObjectType</code>), which now represents the select 
+			criteria. The selection object (<code>oObjSelection</code>) is then 
+			updated with this select criteria, with a call to <code>SelectElement</code> 
+			method.</p>
+			<p>At this stage, the application prompts an end user to 
+			select a <em>Part</em> from the spec tree or the 3D Viewer (second argument 
+			of the <code>SelectElement</code> method, represents the prompt message)</p>
+			<p>The last argument is false, indicating the end user 
+			will always be invited to select something in the spec tree or the 3D 
+			Viewer, though an entity (of the type set as filter in the selection 
+			criteria) has already been selected by the end-user.</p>
+			<p>Once the user does the selection, the application proceeds 
+			further.</p>
+			</li>
+			<li>
+			<p>Now that the user has made a selection in the spec tree 
+			or the 3D Viewer, the current step retrieves it (a <em><strong>Part</strong></em>) 
+			from the Selection Object which contains it.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oSelectedElement <span class="keyword">As</span> SelectedElement
+<span class="keyword">Set</span> oSelectedElement<strong> </strong> =  oObjSelection.<strong>Item</strong>(1)
+
+<span class="keyword">Dim</span> oPart <span class="keyword">As</span> <strong>Part</strong>
+<span class="keyword">Set</span> oPart = oSelectedElement<strong>.Value</strong>
+
+MsgBox (&quot;Selected Part Name :&quot;) + oPart.<strong>Name</strong>
+...</pre>
+			<p>A call to <code>SelectionObject::Item</code> at index 
+			1, on <code>oObjSelection</code> returns the selected entity, as a
+			<em>SelectedElement</em> type (<code>oSelectedElement</code>). </p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns <code>oPart</code>, a <em>Part</em> type representing the selection.</p>
+			<p>Then we display the <em>Part</em> object name using
+			<code>Part::Name</code>.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdMmrUcWorkingWithPlanarFace_1.jpg" width="203" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>We select and retrieve <em>Face</em> object to create draft.</p>
+			<p>Before new selection we need to clear the selection object. </p>
+			<pre class="code">...
+oObjSelection.Clear		
+..</pre>
+			<p>A call to <code>Selection::Clear</code> , on <code>oObjSelection</code> 
+			clears the previously selected object (Part) from this Selection object.</p>
+			<p>Then prompt the user to select the Face, a <em>Face</em> 
+			type object:</p>
+			<pre class="code">...
+oInputObjectType(0) = &quot;Face&quot;
+Status = oObjSelection.<strong>SelectElement</strong>(oInputObjectType, &quot;Select the face to draft&quot;, False)
+...</pre>
+			<p>&quot;Face&quot; type is appended to an array (<code>oInputObjectType</code>), 
+			which now represents the select criteria. The selection object (<code>oObjSelection</code>) 
+			is then updated with this select criteria, with a call to <code>SelectElement</code> 
+			method.</p>
+			<p>At this stage, the application waits for an end user to select a 
+			face to draft from the spec tree or the 3D Viewer (second argument of 
+			the <code>SelectElement</code> method, represents the prompt message)</p>
+			<p>Now that the user has made a selection in the spec tree or the 3D 
+			Viewer, the current step retrieves it (a face) from the Selection Object 
+			which contains it.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oFaceToDraft <span class="keyword">As</span> Face
+<span class="keyword">Set</span> oFaceToDraft = oObjSelection.Item(1).Value
+
+MsgBox (&quot;Selected Face Name :&quot;) + oFaceToDraft.Name
+...</pre>
+			<p>A call to <code>SelectionObject::Item</code> at index 
+			1, on <code>oObjSelection</code> returns the selected entity, as a
+			<em>SelectedElement</em> type (<code>oSelectedElement</code>). </p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns <code>oFaceToDraft</code>, a <em>Face</em> type representing 
+			the selection. </p>
+			<p>Then we display the <em>face</em> object name using
+			<code>Face::Name</code>.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdMmrUcWorkingWithPlanarFace_2.jpg" width="629" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Next we select the neutral face.</p>
+			<p>Before new selection we need to clear the selection object.</p>
+			<pre class="code">...
+oObjSelection.Clear		
+..</pre>
+			<p>A call to <code>Selection::Clear</code> , on <code>oObjSelection</code> 
+			clears the previously selected object (Face object) from this Selection 
+			object.</p>
+			<p>Then prompt the user to select the neutral face, a
+			<em><strong>PlanarFace</strong></em> type object</p>
+			<pre class="code">...
+oInputObjectType(0) = &quot;PlanarFace&quot;
+Status = oObjSelection.<strong>SelectElement</strong>(oInputObjectType, &quot;Select the neutral face&quot;, False)
+...</pre>
+			<p>&quot;PlanarFace&quot; type is appended to an array (<code>oInputObjectType</code>), 
+			which now represents the select criteria. The selection object (<code>oObjSelection</code>) 
+			is then updated with this select criteria, with a call to <code>SelectElement</code> 
+			method.</p>
+			<p>At this stage, the application prompts an end user to select a
+			<em>neutral face</em> from the spec tree or the 3D Viewer (second argument 
+			of the <code>SelectElement</code> method, represents the prompt message)</p>
+			<p>Now that the user has made a selection in the spec tree or the 3D 
+			Viewer, the current step retrieves it (a neutral face) from the Selection 
+			Object which contains it.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oNeutralFace <span class="keyword">As</span> PlanarFace
+<span class="keyword">Set</span> oNeutralFace = oObjSelection.Item(1).Value
+
+MsgBox (&quot;Selected PartingElement Name :&quot;) + oPartingElement.Name
+...</pre>
+			<p>A call to <code>SelectionObject::Item</code> at index 
+			1, on <code>oObjSelection</code> returns the selected entity, as a
+			<em>SelectedElement</em> type (<code>oSelectedElement</code>).</p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns <code>oNeutralFace</code>, a <em>PlanarFace</em> type representing 
+			the selection.</p>
+			<p>Then we display the <em>PlanarFace</em> object name 
+			using <code>PlanarFace::Name</code>.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdMmrUcWorkingWithPlanarFace_3.jpg" width="572" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Next we select the parting element.</p>
+			<p>Before new selection we need to clear the selection 
+			object.</p>
+			<pre class="code">...
+oObjSelection.Clear		
+..</pre>
+			<p>A call to <code>Selection::Clear</code>, on <code>oObjSelection</code> 
+			clears the previously selected object (neutral face) from this Selection 
+			object.</p>
+			<p>Then prompt the user to select the parting element, 
+			a <em><strong>PlanarFace</strong></em> type object</p>
+			<pre class="code">...
+Status = oObjSelection.<strong>SelectElement</strong>(oInputObjectType, &quot;Select the parting element&quot;, False)
+...</pre>
+			<p>At this stage, the application prompts an end user to select a
+			<em>parting element</em> from the spec tree or the 3D Viewer (second 
+			argument of the <code>SelectElement</code> method, represents the prompt 
+			message)</p>
+			<p>Now that the user has made a selection in the spec tree or the 3D 
+			Viewer, the current step retrieves it (a parting element) from the Selection 
+			Object which contains it.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oPartingElement <span class="keyword">As</span> PlanarFace
+<span class="keyword">Set</span> oPartingElement = oObjSelection.Item(1).Value
+...</pre>
+			<p>A call to <code>SelectionObject::Item</code> at index 
+			1, on <code>oObjSelection</code> returns the selected entity, as a
+			<em>SelectedElement</em> type (<code>oSelectedElement</code>).</p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns <code>oPartingElement</code>, a <em>PlanarFace</em> type representing 
+			the selection.</p>
+			<p>Then we display the <em>PlanarFace</em> object name 
+			using <code>PlanarFace::Name</code>.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdMmrUcWorkingWithPlanarFace_4.jpg" width="578" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Then we create Draft with selected elements:</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oDraft <span class="keyword">As</span> Draft
+<span class="keyword">Set</span> oDraft = oPart.ShapeFactory.AddNewDraft(oFaceToDraft, oNeutralFace, 0, oPartingElement, 0#, 0#, 1#, 0, 5#, 0)
+...</pre>
+			<p>A call to <code>Part::ShapeFactory</code> , on <code>
+			oPart </code>returns the Factory object.</p>
+			<p>Next a call to <code>Factory::AddNewDraft </code>create 
+			a draft as per input (<code>oFaceToDraft</code>, <code>oNeutralFace, 
+			oPartingElement</code>).</p>
+			<p>Next we retrieve DraftDomains from the newly created 
+			draft. Then retrieve first DraftDomain and set the pulling direction.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oDraftDomains <span class="keyword">As</span> DraftDomains
+<span class="keyword">Set</span> oDraftDomains = oDraft.DraftDomains
+
+<span class="keyword">Dim</span> oDraftDomain <span class="keyword">As</span> DraftDomain
+<span class="keyword">Set</span> oDraftDomain = oDraftDomains.Item(1)
+        
+oDraftDomain.SetPullingDirection 0#, 0#, 1#
+
+oPart.Update
+...</pre>
+			<p>A call to <code>Draft::DraftDomains</code> returns
+			<code>oDraftDomains</code> (a <em>DraftDomains</em> type object) from 
+			newly created draft <code>oDraft</code> (a Draft type).</p>
+			<p>then a call to <code>DraftDomains::Item </code>on
+			<code>oDraftDomains </code>with index 1 as input returns first DraftDomain 
+			object (<code>oDraftDomain</code>).</p>
+			<p>then call to <code>DraftDomain::SetPullingDirection</code> 
+			sets the pulling direction.</p>
+			<p>Then we update the Part object (<code>oPart</code>) 
+			using call <code>Part::Update</code>. After this call we can see the 
+			created draft as shown in below image.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Part Updated" src="CAAScdMmrUcWorkingWithPlanarFace_out.jpg" width="435" height="285"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>We then save the changes.</p>
+			<pre class="code">...
+CATIA.GetSessionService(&quot;PLMPropagateService&quot;).<strong>Save</strong>
+...</pre>
+			<p>We next save this product/ Representation in the database. 
+			It is done with calls which occur in the following sequence</p>
+			<ul>
+				<li>
+				A call to <code>Application::GetSessionService</code> 
+				on CATIA (an Application object, defined internally by VB) returns 
+				a <em>PLMPropagateService</em> object.
+				</li>
+				<li>
+				The next call to <code>PLMPropagateService::Save</code> 
+				eventually saves this representation in the database.
+				</li>
+			</ul>
+			</li>
+			<li>
+			<p><a name="Epilog"></a>Epilog</p>
+			<p>The following extract of code is primarily meant for 
+			error-handling purpose. Any run time error that the macro encounters 
+			results in the execution flow reaching this part of the code, and then 
+			terminating with a normal exit from subroutine scope.</p>
+			<pre class="code">...
+    <span class="keyword">GoTo</span> EndSub
+    
+ErrorSub:
+    MsgBox Err.Description
+
+EndSub:
+<span class="keyword">End Sub</span></pre>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="topictype" content="Uc" />
+    <meta name="devlang" content="idl" />
+    <meta name="devlang" content="idl" />
+    <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+    <title>Strain Gauge Sensor</title>
+    <style type="text/css">
+        .padded td, .padded th {
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+    <table class="table1">
+        <tr>
+            <td class="DocHeader1">
+                <h1>Creating a strain gauge sensor</h1>
+            </td>
+        </tr>
+        <tr>
+            <td class="DocHeader3" style="width: 1807px">
+                <table class="DocHeaderIntro">
+                    <tr>
+                        <td class="Intro1">
+                            <p class="header">This article explains how to open the results and create a strain gauge sensor.</p>
+                            <hr class="header" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span class="run-in">Where to find the macro: <a href="CAAScdFeaResultsStrainGaugeSensorSource.htm">CAAScdFeaResultsStrainGaugeSensorSource.htm</a></span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="indented">
+        <tr>
+            <td>
+                <p>This use case can be divided in 9 steps:</p>
+                <ol>
+                    <li><a href="#Step1">Opens the document and retrieves the results analysis case</a></li>
+                    <li><a href="#Step2">Creates the strain gauge sensor</a></li>
+                    <li><a href="#Step3">Get the step Id ,name and step description</a></li>
+                    <li><a href="#Step4">Sets step, frame and load case information</a></li>
+                    <li><a href="#Step5">Sets the attributes to the sensor</a></li>
+                    <li><a href="#Step6">Sets the gauge attributes</a></li>
+                    <li><a href="#Step7">Updates the sensor</a></li>
+                    <li><a href="#Step8">Retrieves the sensor parameter values</a></li>
+                    <li><a href="#Step9">Exports the sensor gauge definition</a></li>
+
+                </ol>
+            </td>
+        </tr>
+    </table>
+    <table class="table1">
+
+        <tr>
+            <td>
+                <ol class="task">
+                    <li>
+                        <p><strong><a name="Step1"></a>Opens the document and retrieves the results analysis case</strong></p>
+                        <p>
+                            As a first step, the following code will show how to open the simulation document and retrieve the
+                            results analysis case. You can use <code><div class=vb_sample_data>CAAScdFeaSimResults.SMASim</div></code>
+                            file supplied in the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaResults\samples\</code>
+                            where <code>InstallRootFolder</code> is the folder where the
+                            API CD-ROM is installed.
+                        </p>
+                        <p>Import the SMASim file. Click on the link below for details about how to retrieve the analysis case. </p>
+                        <a href="CAAScdFeaResultsOpenDocument.htm">Retrieve the analysis case</a>
+                    </li>
+                    <ul></ul>
+
+                    <li>
+
+                        <p><strong><a name="Step2"></a>Creates the strain gauge sensor</strong></p>
+                        <p>This step shows how to create a strain gauge sensor factory and strain gauge sensor from the results analysis case retrieved from the earlier step.</p>
+<pre class="code">...
+
+<span class="keyword">Dim </span>oStrainGaugeSensorFactory<span class="keyword"> As </span>SimStrainGaugeSensorFactory
+<span class="keyword">Set </span>oStrainGaugeSensorFactory = oResultsAnalysisCase.GetItem("SimStrainGaugeSensorFactory")
+
+<span class="keyword">Dim </span>oStrainGaugeSensor<span class="keyword"> As </span>SimStrainGaugeSensor
+<span class="keyword">Set </span>oStrainGaugeSensor = oStrainGaugeSensorFactory.CreateSensor
+
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step3"></a>Get the step Id ,name and step description</strong></p>
+                        <p>This step shows how to get the step Id,name and step description.</p>
+<pre class="code">...
+<span class="keyword">dim </span>oSteps <span class="keyword"> As </span>SimResultsSteps
+<span class="keyword">Set </span> oSteps = oResultsAnalysisCase.ResultsSteps
+
+<span class="keyword">dim </span>oResultsStep<span class="keyword"> As </span>SimResultsStep
+<span class="keyword">Set </span>oResultsStep = oSteps.Item(1)
+
+<span class="keyword">dim </span>stepId<span class="keyword"> As </span>String
+<span class="keyword">dim </span>stepName<span class="keyword"> As </span>String
+<span class="keyword">dim </span>stepDescription<span class="keyword"> As </span>String
+
+oResultsStep.GetIdentifier stepId, stepName, stepDescription
+
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step4"></a>Sets the step, frame and load case information</strong></p>
+                        <p>Following code  sets the step,frame and load case information.</p>
+
+                        <p>stepId is the persistent ID of the step.</p>
+                        <p>The Frame index starts from 1. This option is needed only in case of multiple load cases.In the following code we have used 0 as the frame index.</p>
+                        <p>The load case index starts from 1. It is needed if a load case is present in the step.In the following code we have used 0 as the load case index. </p>
+
+                        <pre class="code">...
+
+oStrainGaugeSensor.SetStepAndFrame stepId, 2, 0
+
+...
+</pre>
+
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step5"></a>Sets the attributes to the sensor.</strong></p>
+                        <p>
+                            The following code sets the variable type. The available type are SimStress, SimStrainFromStrain and
+                            SimStrainFromDisplacement
+                        </p>
+                        <pre class="code">...
+
+oStrainGaugeSensor.VariableType = SimStress
+ 
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step6"></a>Sets the gauge attributes</strong></p>
+                        <p>Following code sets the size, origin and orientation of gauges. We are creating 2 gauges here.</p>
+
+                        <pre class="code">...
+
+Note:The length, width and tolerance must be specified in MKS.
+    oStrainGaugeSensor.SetSize True, 0.01, 0.008
+    oStrainGaugeSensor.GaugeTolerance = 0.005
+
+
+Note:The origin location must be specified in mm. The axis direction is unitless.
+For SetOriginLocations, the first parameter is an unique index. The other parameters are the X,Y and Z values of origin.
+For SetAxisDirections, the first 3 parameters are the X directions(gauge) and the other 3 parameters are the Z directions(set).
+
+    oStrainGaugeSensor.SetOriginLocations 1, 20, 70, 50
+    oStrainGaugeSensor.SetAxisDirections 0.12, 0.99, 0, 0, -0, 1
+    oStrainGaugeSensor.SetOriginLocations 2, 20, -80, 50
+    oStrainGaugeSensor.SetAxisDirections 0.273, -0.96, 0, 0, -0, 1
+    oStrainGaugeSensor.ShowGlyph = True
+
+...
+
+                    </pre>
+
+                    </li>
+
+
+                    <li>
+                        <p><strong><a name="Step7"></a>Updates the sensor</strong></p>
+                        <p>
+                            Following code updates the sensor. This method needs to be called at the end after
+                            setting the attributes.
+                        </p>
+                        <pre class="code">...
+
+oStrainGaugeSensor.Update
+
+...
+
+</pre>
+                    </li>
+
+                    <li>
+                        <p>
+                            <strong>
+                                <a name="Step8"></a>Retrieves the sensor gauge values.
+                            </strong>
+                        </p>
+                        <p>
+                            This step retrieves the gauge values.
+                        </p>
+                        <pre class="code">...
+
+Dim oKnowServices As KnowledgeServices
+Set oKnowServices = CATIA.GetSessionService("KnowledgeServices")
+
+Dim oKnowCollection
+Set oKnowCollection = oKnowServices.GetKnowledgeCollection(oStrainGaugeSensor, kweParametersType )
+
+Dim oValue1 As String
+oValue1 = oKnowCollection.Item(1).Value
+
+Dim oValue2 As String
+oValue2 = oKnowCollection.Item(2).Value
+
+...
+</pre>
+                    </li>
+
+                    </li>
+
+                    <li>
+                        <p>
+                            <strong>
+                                <a name="Step9"></a>Exports the sensor gauge definition.
+                            </strong>
+                        </p>
+                        <p>
+                            This step Exports the sensor gauge definition to csv file.
+                        </p>
+                        <pre class="code">...
+
+oStrainGaugeSensor.Export "VSG_Export", "C:\temp", SimCsv
+
+...
+</pre>
+                    </li>
+                </ol>
+
+            </td>
+        </tr>
+    </table>
+
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

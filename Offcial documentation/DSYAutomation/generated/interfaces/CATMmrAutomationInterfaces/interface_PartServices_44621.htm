@@ -1,0 +1,160 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATMmrAutomationInterfaces PartServices (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATMmrAutomationInterfaces.htm" href="../CATMmrAutomationInterfaces.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATMmrAutomationInterfaces";	}
+		function getCurrentObjectName() { 
+ 	return "PartServices"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> PartServices<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_PartServices_44621','PartServices','0');</script>
+<section id='maindesc'>
+<b><i> The object exposes services for the part.</i></b><br>
+
+<br>
+ This object is available thanks to <script type="text/javascript"> activateLinkAnchor('CATIAPart','','CATIAPart') </script>    Set myPart = CATIA.ActiveEditor.ActiveObject
+   ' Get Service Object by querying on part - extension of CATIA Base
+   Set partServices = myPart.GetItem("CATPartServices")
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <pre>
+   Set part1 = CATIA.ActiveDocument.Part
+   Set partServices1 = myPart.GetItem("CATPartServices")
+ </pre>
+ </dl>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetNearSubElements"><b>GetNearSubElements</b></a>
+</td><td  id='tdright'>  Get the sub elements of a geometric object or a body that are the closest to a geometric object or a body.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetSubElements"><b>GetSubElements</b></a>
+</td><td  id='tdright'>  Get the sub elements of a geometric object or a body.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetNearSubElements"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetNearSubElements</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iObject</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iSubElementDimension</span>,<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iNearObject</span>)</span> As <script type="text/javascript"> activateLink('CATIAReferences','CATIAReferences')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the sub elements of a geometric object or a body that are the closest to a geometric object or a body.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iObject</span></dt>
+   <dd>   A geometric object or a body
+ 
+ </ dd>
+    <dt><span class='paramitem'> iSubElementDimension</span></dt>
+   <dd>   The dimension of sub elements wanted: 0 for vertex, 1 for edge, 2 for face.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iNearObject</span></dt>
+   <dd>   A geometric object or a body to be close to
+ 
+ </ dd>
+    <dt><span class='paramitem'> oSubElements</span></dt>
+   <dd>   List of the sub elements of iObject (without duplicates) closest to iNearObject.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example returns the vertices of a pad that are the closest to a point.
+ <pre>
+  Set part1 = CATIA.ActiveEditor.ActiveObject
+  Set bodies1 = part1.Bodies
+  Set body1 = bodies1.Item("PartBody")
+  Set shapes1 = body1.Shapes
+  Set pad1 = shapes1.Item("Pad.1")
+  Set point1 = shapes1.Item("Point.1")
+  Set partServices1 = myPart.GetItem("CATPartServices")
+  Set references1 = partServices1.GetSubNearElements(pad1, 0, point1)
+ </pre>
+ </dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetSubElements"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetSubElements</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iObject</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iSubElementDimension</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iDuplicates</span>)</span> As <script type="text/javascript"> activateLink('CATIAReferences','CATIAReferences')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the sub elements of a geometric object or a body.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iObject</span></dt>
+   <dd>   A geometric object or a body
+ 
+ </ dd>
+    <dt><span class='paramitem'> iSubElementDimension</span></dt>
+   <dd>   The dimension of sub elements wanted: 0 for vertex, 1 for edge, 2 for face.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDuplicates</span></dt>
+   <dd>   Allow duplicate sub elements in the list. FALSE will remove duplicates (same label and selecting feature).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oSubElements</span></dt>
+   <dd>   List of the sub elements 
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example returns the vertices of a pad
+ <pre>
+  Set part1 = CATIA.ActiveEditor.ActiveObject
+  Set bodies1 = part1.Bodies
+  Set body1 = bodies1.Item("PartBody")
+  Set shapes1 = body1.Shapes
+  Set pad1 = shapes1.Item("Pad.1")
+  Set partServices1 = myPart.GetItem("CATPartServices")
+  Set references1 = partServices1.GetSubElements(pad1, 0, True)
+ </pre>
+ </dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

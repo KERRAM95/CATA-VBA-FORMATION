@@ -1,0 +1,270 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="topictype" content="Uc" />
+    <meta name="devlang" content="idl" />
+    <meta name="devlang" content="idl" />
+    <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+    <title>Sensor</title>
+    <style type="text/css">
+        .padded td, .padded th
+        {
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+    <table class="table1">
+        <tr>
+            <td class="DocHeader1">
+                <h1>Creating a sensor</h1>
+            </td>
+        </tr>
+        <tr>
+            <td class="DocHeader3" style="width: 1807px">
+                <table class="DocHeaderIntro">
+                    <tr>
+                        <td class="Intro1">
+                            <p class="header">This article explains how to open the results and create a sensor.</p>
+                            <hr class="header" />
+                        </td>
+                    </tr>
+                    <td class="Intro2"><span class="run-in">Before you begin:</span> 
+				Note that:
+				<ul>
+					<li><strong>Opening .3dxml file:</strong> You should first launch 
+					CATIA and then import the <code><div class=vb_sample_data>CAAScdFeaResultsMultiLoadCase.3dxml</div></code> 
+					file supplied in the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaResults\samples\</code> 
+					where <code>InstallRootFolder</code> is the folder where the 
+					API CD-ROM is installed.</li>
+				</ul>
+				</td>
+                    <tr>
+                        <td>
+                            <p>
+                                <span class="run-in">Where to find the macro: <a href="CAAScdFeaResultsSensorSourcePython.htm">CAAScdFeaResultsSensorSource.htm</a></span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="indented">
+        <tr>
+            <td>
+                <p>This use case can be divided in 11 steps:</p>
+                <ol>
+                    <li><a href="#Step1">Opens the document and retrieves the results analysis case</a></li>
+                    <li><a href="#Step2">Creates the sensor</a></li>                                     
+                    <li><a href="#Step3">Sets the attributes to the sensor</a></li>
+                    <li><a href="#Step4">Sets the axis to the sensor</a></li>
+                    <li><a href="#Step5">Creates the frame selection</a></li>
+                    <li><a href="#Step6">Sets the frame selection in the sensor</a></li>
+                    <li><a href="#Step7">Sets the sensor parameters</a></li>
+                    <li><a href="#Step8">Updates the sensor</a></li>
+                    <li><a href="#Step9">Show annotation on the sensor</a></li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+    <table class="table1">
+
+        <tr>
+            <td>
+                <ol class="task">
+                    <li>
+                        <p><strong><a name="Step1"></a>Opens the document and retrieves the results analysis case</strong></p>
+                        <p>As a first step, the following code will show how to open the simulation document and retrieve the 
+                            results analysis case. </p>
+                        <a href="CAAScdFeaResultsOpenDocumentPython.htm">Retrieve the analysis case</a>
+                    </li>
+                    <ul></ul>
+                    <li>
+
+                        <p><strong><a name="Step2"></a>Creates the sensor</strong></p>
+                        <p>This step shows how to create a sensor from the results analysis case retrieved from the earlier step.</p>
+                        <pre class="code">...
+oLocalSensor = oResultsAnalysisCase.CreateSensor()
+...
+</pre>
+                        <p><strong>Creates the sensor by Id</strong></p>
+                        <p>Creates a sensor using field plot definition defined in XML description library files. 
+                            It takes input  as the ID of the Field Plot as specified in the XML file as sensor ID.</p>
+                        <p>if this method is used no need to set the sensor attributes mentioned in Step 3. </p>                       
+
+                        <p>we can use the GetListOfFieldPlotIDs of ResultsAnalysisCase to get the list of plot ids.This plot ids can be used to create the sensor.</p>
+
+                        <pre class="code">...
+oLocalSensor = oResultsAnalysisCase.CreateSensorByID (csSensorID)
+...
+</pre>
+
+                    </li>
+                    <li>
+
+                        <p><strong><a name="Step3"></a>Sets the attributes to the sensor</strong></p>
+                        <p>The following code sets the sensor attributes.</p>
+
+                        <pre class="code">...
+oLocalSensor.VariableType = ("S")
+oLocalSensor.ProcessingType = ENUM.SimQuantity
+oLocalSensor.Location = ENUM.SimCentroids
+oLocalSensor.TransformType = ENUM.SimUserModelAxis
+oLocalSensor.QuantityType = ("Tensor Component 11")
+...
+</pre>
+
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step4"></a>Sets the axis to the sensor</strong></p>
+                        <p>There are three ways in which we can set the axis as a transformation. </p>
+
+                        <pre class="code">
+a) Using the axes available in the SIM: The exact name of the coordinate system needs to be specified.
+...
+oLocalSensor.TransformType = SimUserDefined
+oLocalSensor.CoordinateSystem = "Orientation-Rib02--1-1"
+...
+
+b) The User Csys created in Physics results:
+...
+oResultsCsysSet = oResultsAnalysisCase.GetSet("UserCsysSet")
+oUserCsys = oResultsCsysSet.Item(1)
+
+oLocalSensor.TransformType = SimUserDefined
+oAxisSystemAxis = oLocalSensor.GetItem("SimResultsAxisSystemAccess")
+
+oAxisSystemAxis.Axis = oUserCsys
+...
+
+c) The model axes created at the product level: First the axis needs to be retrieved from the product, 
+then set it to the sensor as below. Refer the sample script to see how to retrieve axis from the product.
+...
+oLocalSensor.TransformType = SimUserModelAxis
+
+AxisSystems = MyPart.AxisSystems
+AxisSystem = AxisSystems.Item(2)
+
+oAxisSystemAxis = oLocalSensor.GetItem("SimResultsAxisSystemAccess")
+oAxisSystemAxis.Axis = AxisSystem
+...
+
+Note: For setting the axis call the "TransformType" and "QuantityType" in the same order as specified in Step 3. The TransformType must be called before the QuantityType
+                        </pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step5"></a>Creates the frame selection</strong></p>
+                        <p>Here we create a frame selection object. </p>
+                        <pre class="code">...
+oFrameSelector = oResultsAnalysisCase.CreateFrameSelector()
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step6"></a>Sets the frame selection attributes</strong></p>
+                        <p>In this step we set the frame selection attributes. More options for frames selection can be found at <a href="CAAScdFeaResultsFrameSelectionAPI.htm"> Frames Selection</a></p>
+                        <pre class="code">...
+<p>a) Setting pre defined frame selection enumns in the sensor:</p>
+    oFrameSelector.SymbolicFrameRange = SimAllFrames
+
+<p>b) Setting custom frame selection to the sensor:</p>
+1) Retrieving the Step ID and setting it to the frame selector 
+oResultsSteps = ResultsAnalysisCase.ResultsSteps
+
+oResultsStep = oResultsSteps.Item(2)
+
+sID, sStepName, sDescription = oResultsStep.GetIdentifier ("", "", "")
+lsStepID = [sID]
+	
+FrameSelector.StepList = lsStepID
+
+2) Retrieving the Load case ID and setting it to the frame selector
+Note: It is mandatory to set the Load Case, if the selected step has one.
+
+The following method returns all the Load case ID avaialble in the case. The order of the list is the same as the user has created the
+load case. One can get the indices of the Load case available in that step using GetLoadCases() method as shown below
+oResultsManager.GetLoadCaseIdentifier oGlobalLoadCaseIDList, oGlobalLoadCaseIDNames
+oResultsStep.GetLoadCases oLoadCaseIDListInStep
+
+iLCItendifierString = oGlobalLoadCaseIDList[0]
+iLCInSteps = [1]
+oFrameSelector.SetLoadCases (iLCInSteps, iLCItendifierString)
+
+3) Setting the frames to the frame selector
+Note: One can use the SimResultsStep::GetFramesData() method to get the frames data for the step
+
+iFramesInLC = [2]
+iFrameIndex = [0,1]
+oFrameSelector.SetFrames iFramesInLC, iFrameIndex
+
+The following method must be called at the end after setting the Step, LC and Frame information.
+
+oLocalSensor.FrameSelector = oFrameSelector
+
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step7"></a>Sets the frame selection in the sensor</strong></p>
+                        <p>Following code sets the frame selection in the sensor.</p>
+                        <pre class="code">...
+oLocalSensor.FrameSelector = oFrameSelector
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step8"></a>Sets the sensor parameters</strong></p>
+                        <p>Here we set the sensor parameters such as Max, Min, Absolute Max, Parameter for each step and Parameter for each frame or load case.</p>
+                        <pre class="code">...
+oLocalSensor.SetParameters (True,True,True,False,False)
+
+The following steps shows how to set the Sum and Average parameters:
+
+oSensorOption = GetItem("SimSensorOptions")
+
+oSensorOption.SetSumParameter (True)
+oSensorOption.SetAverageParameter (True)
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step9"></a>Updates the sensor</strong></p>
+                        <p>Following code updates the sensor.</p>
+                        <pre class="code">...
+oLocalSensor.Update()
+...
+</pre>
+
+                            <li>
+                            <p><strong><a name="Step10"></a>Show annotation on the sensor</strong></p>
+                            <p>Following shows annotation on the sensor. The annotation contains information regarding the step, frame and parameter values</p>
+                            <pre class="code">...
+oLocalSensor.Annotation = True
+...
+</pre>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

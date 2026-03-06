@@ -1,0 +1,1849 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>InfInterfaces Selection (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../InfInterfaces.htm" href="../InfInterfaces.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "InfInterfaces";	}
+		function getCurrentObjectName() { 
+ 	return "Selection"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> Selection<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_Selection_15704','Selection','0');</script>
+<section id='maindesc'>
+<b><i> Represents the selection.</i></b><br>
+
+ The Selection allows to manipulate the objects selected by the end user, usually with the mouse, and which are
+ candidates for the next script action.</br></br>
+ A feature possesses parent objects in the specification tree (hierarchy). For example, the Pad below possesses
+ several parents:
+ <pre>
+  +------------+ 
+  !Product55228!                                                  <- VPMReference
+  +------------+
+      !
+      +- Representation55228 (instance hidden)
+      !
+      +- Product55227 (Product55227.1)                            <- VPMReference (VPMInstance)
+            !
+            +- Product55226 (Product55226.1)                      <- VPMReference (VPMInstance)
+                  !
+                  +- Representation55226 (instance hidden)        <- Part/VPMRepReference (VPMRepInstance)
+                            !
+                            +- PartBody
+                                  !
+                                  +- Pad.1                        <- Selected feature
+ </pre>
+ For a given selected feature, its parents which are exposed to Automation can be accessed through
+ recursive calls to the <script type="text/javascript"> activateLinkAnchor('CATIABase','Parent','CATIABase.Parent') </script> property. Automation exposition is an important thing to consider: <ul>
+ <li>If the feature is exposed to Automation (such as 
+<script type="text/javascript"> activateLinkAnchor('CATIAPad','','CATIAPad') </script> ), it can be accessed by all Selection methods</li> <li>If the feature is not exposed to Automation, but at least one of its parents is exposed to Automation, several cases apply.
+ For example, let's consider a DMU Navigator URL: the Hyperlink itself is not exposed to Automation, but the root Product, which
+ contains the Hyperlink, is exposed to Automation. Then:
+ <ul>
+ <li>no access is given to the feature through the 
+<script type="text/javascript"> activateLinkAnchor('','Count','Count') </script> and 
+<script type="text/javascript"> activateLinkAnchor('','Item','Item') </script> methods</li> <li>the first parent which is exposed to Automation (the root Product in our
+ example) can be accessed through the 
+<script type="text/javascript"> activateLinkAnchor('','Item','Item') </script> and 
+<script type="text/javascript"> activateLinkAnchor('','Count','Count') </script> methods</li> <li>The 
+<script type="text/javascript"> activateLinkAnchor('','Search','Search') </script>, 
+<script type="text/javascript"> activateLinkAnchor('','Delete','Delete') </script>, 
+<script type="text/javascript"> activateLinkAnchor('','VisProperties','VisProperties') </script>, 
+<script type="text/javascript"> activateLinkAnchor('','Copy','Copy') </script>, 
+<script type="text/javascript"> activateLinkAnchor('','Cut','Cut') </script>, 
+<script type="text/javascript"> activateLinkAnchor('','Paste','Paste') </script> and 
+<script type="text/javascript"> activateLinkAnchor('','PasteSpecial','PasteSpecial') </script> methods take the feature into account.<br> For example, if the user:
+ <ul>
+ <li>Puts a DMU Navigator URL in the clipboard</li>
+ <li>Runs a script calling the PasteSpecial method</li>
+ </ul>
+ then, during the paste, the DMU Navigator URL will be pasted properly.</li></ul>
+ </li>
+ <li>If neither the feature nor any of its parents are exposed to Automation (such as a ResourcesList object of a .CATProcess), the following cases apply:
+ <ul>
+ <li>no access is given to the feature through the 
+<script type="text/javascript"> activateLinkAnchor('','Count','Count') </script> and 
+<script type="text/javascript"> activateLinkAnchor('','Item','Item') </script> methods</li> <li>no access either is given to any parent object of the feature</li>
+ <li>However, 
+<script type="text/javascript"> activateLinkAnchor('','Search','Search') </script>, 
+<script type="text/javascript"> activateLinkAnchor('','Delete','Delete') </script>, 
+<script type="text/javascript"> activateLinkAnchor('','VisProperties','VisProperties') </script>, 
+<script type="text/javascript"> activateLinkAnchor('','Copy','Copy') </script>, 
+<script type="text/javascript"> activateLinkAnchor('','Cut','Cut') </script>, 
+<script type="text/javascript"> activateLinkAnchor('','Paste','Paste') </script> and 
+<script type="text/javascript"> activateLinkAnchor('','PasteSpecial','PasteSpecial') </script> methods do take the feature into account.<br> For example, if the user:
+ <ul>
+ <li>Loads the "DPM - Process and Resource Definition" workshop</li>
+ <li>Puts a ResourcesList object in the clipboard</li>
+ <li>Runs a script calling the Selection.PasteSpecial method</li>
+ </ul>
+ then, during the paste, the ResourcesList object will be pasted properly.</li>
+ </ul></li>
+ </ul>
+ <b>Note</b>: The simplest way to access the 
+<script type="text/javascript"> activateLinkAnchor('CATIASelection','','CATIASelection') </script> object is to call:  <tt>CATIA.ActiveEditor.Selection</tt>.<br><br>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Count"><b>Count</b></a>
+</td><td  id='tdright'>  Returns the number of SelectedElement objects contained by the current selection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Count2"><b>Count2</b></a>
+</td><td  id='tdright'>  
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#VisProperties"><b>VisProperties</b></a>
+</td><td  id='tdright'>  Manages graphic properties on current selection.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#Add"><b>Add</b></a>
+</td><td  id='tdright'>  Creates a SelectedElement object whose Value property is the given Automation object, and adds it to the selection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Clear"><b>Clear</b></a>
+</td><td  id='tdright'>  Clears the selection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Copy"><b>Copy</b></a>
+</td><td  id='tdright'>  Copies, in a copy and paste operation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Cut"><b>Cut</b></a>
+</td><td  id='tdright'>  Cuts, in a cut and paste operation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Delete"><b>Delete</b></a>
+</td><td  id='tdright'>  Deletes all selected objects.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#FilterCorrespondence"><b>FilterCorrespondence</b></a>
+</td><td  id='tdright'>  Specifies if the Automation objects appearing as Value property of SelectedElement objects fit a given filter.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#FindObject"><b>FindObject</b></a>
+</td><td  id='tdright'>  Finds an object in the current selection and deletes it from the selection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IndicateOrSelectElement2D"><b>IndicateOrSelectElement2D</b></a>
+</td><td  id='tdright'>  Runs an interactive command enabling both indication and selection, 2D version.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IndicateOrSelectElement3D"><b>IndicateOrSelectElement3D</b></a>
+</td><td  id='tdright'>  Runs an interactive command enabling both indication and selection, 3D version.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Item"><b>Item</b></a>
+</td><td  id='tdright'>  Returns the iIndex-th SelectedElement object contained by the current selection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Item2"><b>Item2</b></a>
+</td><td  id='tdright'>  
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Paste"><b>Paste</b></a>
+</td><td  id='tdright'>  Puts the contents of the clipboard in the Editor at the indicated location.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PasteFrom"><b>PasteFrom</b></a>
+</td><td  id='tdright'>  Pastes an array of elements in the Editor at the indicated location.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PasteSpecial"><b>PasteSpecial</b></a>
+</td><td  id='tdright'>  Puts the contents of the clipboard in the Editor at the indicated location, according to the specified format.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Remove"><b>Remove</b></a>
+</td><td  id='tdright'>  Removes the iIndex-th SelectedElement object contained by the current selection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Remove2"><b>Remove2</b></a>
+</td><td  id='tdright'>  
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Search"><b>Search</b></a>
+</td><td  id='tdright'>  Finds an object in the Editor using the Edit/Search grammar, and fills the selection with the results.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SelectElement"><b>SelectElement</b></a>
+</td><td  id='tdright'>  Runs an interactive selection command.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SelectElement2"><b>SelectElement2</b></a>
+</td><td  id='tdright'>  
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SelectElement3"><b>SelectElement3</b></a>
+</td><td  id='tdright'>  
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SelectElementOtherEditor"><b>SelectElementOtherEditor</b></a>
+</td><td  id='tdright'>  Runs an interactive selection command, enabling the selection in a non-active editor.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SelectMultipleElements"><b>SelectMultipleElements</b></a>
+</td><td  id='tdright'>  Runs an interactive multiselection command.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Count"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Count</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the number of SelectedElement objects contained by the current selection.
+</dd>
+<a id="Count2"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Count2</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ 
+<dl  class='desclist'>
+  <dt class='deprecated'> <b>Deprecated:</b></dt> 
+  <dd>  R207 
+<script type="text/javascript"> activateLinkAnchor('','Count','Count') </script>
+ </ dd>
+</dl>
+</dd>
+<a id="VisProperties"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>VisProperties</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('VisPropertySet','VisPropertySet')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Manages graphic properties on current selection.
+ <br><b>Role</b>: Returns a VisPropertySet object so that graphic properties of the selected objects can
+ be read or modified.<br>
+ <b>Note:</b> After the execution of the VisProperties methods which update graphic properties of the features,
+ selected features which are not exposed to Automation will be updated. After the execution of the VisProperties
+ methods which consult the selection to give the graphic properties, selected features which are not exposed to
+ Automation will be consulted.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example hides all elements of the current selection:
+ <pre>
+ Dim Selection, VisPropertySet
+ Set Selection = CATIA.ActiveEditor.Selection
+ Set VisPropertySet = Selection.<font color="red">VisProperties</font>
+ VisPropertySet.SetShow catVisPropertiesNoShowAttr
+ </pre>
+ </dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="Add"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Add</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iObject</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Creates a SelectedElement object whose Value property is the given Automation object, and adds it to the selection.
+ <br><b>Role</b>: Creates a 
+<script type="text/javascript"> activateLinkAnchor('CATIASelectedElement','','CATIASelectedElement') </script> object, whose Value property is the given Automation object, and whose LeafProduct property is the first (when scanning the specification tree) which contains the
+ Automation object. The SelectedElement is added to the current selection.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example creates a SelectedElement object, whose Value property is the <tt>ObjectToAdd</tt>
+ Automation object, the SelectedElement being added to the current selection.  
+ 
+ <pre>
+ CATIA.ActiveEditor.Selection.<font color="red">Add</font>(ObjectToAdd)
+ </pre>
+ </dl>
+ <b>Note:</b> If an element is passed to the selection in a context of multi-instances, the selected element could be
+ in another instance than the initial one. To avoid retriving bad instances, you can keep a reference on the selected element :
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example retrieve the selection, and we save a reference of <tt>mysel.Item2(1).Value</tt> in sel1 
+ and one reference of the selected object <tt>mysel.Item2(1)</tt> in sel1so
+ Then some treatments are done on sel1.
+ In order to retrieve the good element in the right instance, we then pass the sel1so to the selection.
+
+ <pre>
+ Set mysel = CATIA.ActiveEditor.Selection
+ Set sel1 = mysel.Item2(1).Value
+ <font color="red">Set sel1so = mysel.Item2(1) </font>'SelectedObject save to retrieve the good instance
+ mysel.Clear
+ 'Perform intermediate task usig selection object sel1
+ mysel.Add (sel1so)
+ </pre>
+ </dl>
+</dd>
+<a id="Clear"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Clear</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Clears the selection.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example clears the selection. The selection is then empty.
+ <pre>
+ CATIA.ActiveEditor.Selection.<font color="red">Clear</font>
+ </pre>
+ </dl>
+</dd>
+<a id="Copy"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Copy</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Copies, in a copy and paste operation.
+ <br><b>Role</b>: Puts the contents of the selection in the clipboard,
+ but leaves the selected elements in the 
+<script type="text/javascript"> activateLinkAnchor('CATIAEditor','','CATIAEditor') </script>, and clears the selection.
+ This is the programming equivalent of the Copy command from the
+ Edit menu.<br>
+ <b>Note:</b> If a selected feature is not exposed to Automation, it will be copied into the clipboard anyway.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ <pre>
+ CATIA.ActiveEditor.Selection.<font color="red">Copy</font>
+ </pre>
+ </dl>
+</dd>
+<a id="Cut"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Cut</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Cuts, in a cut and paste operation.
+ <br><b>Role</b>: Puts the contents of the selection in the clipboard, and removes the selected elements from the
+ 
+<script type="text/javascript"> activateLinkAnchor('CATIAEditor','','CATIAEditor') </script>, and clears the selection.
+ This is the programming equivalent of the Cut command from the
+ Edit menu.<br>
+ <b>Note:</b> If a selected feature is not exposed to Automation, it will be copied into the clipboard and removed
+ from the 
+<script type="text/javascript"> activateLinkAnchor('CATIAEditor','','CATIAEditor') </script> anyway. <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ <pre>
+ CATIA.ActiveEditor.Selection.<font color="red">Cut</font>
+ </pre>
+ </dl>
+</dd>
+<a id="Delete"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Delete</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Deletes all selected objects.
+ <br><b>Role</b>: For all 
+<script type="text/javascript"> activateLinkAnchor('CATIASelectedElement','','CATIASelectedElement') </script> objects contained by the selection, the  
+<script type="text/javascript"> activateLinkAnchor('CATIASelectedElement','Value','CATIASelectedElement.Value') </script> Automation object is deleted from the 
+<script type="text/javascript"> activateLinkAnchor('CATIAEditor','','CATIAEditor') </script>.<br>  <b>Note:</b> If a selected feature is not exposed to Automation, it will be deleted anyway.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ <pre>
+ CATIA.ActiveEditor.Selection.<font color="red">Delete</font>
+ </pre>
+ </dl>
+</dd>
+<a id="FilterCorrespondence"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>FilterCorrespondence</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iFilterType</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Specifies if the Automation objects appearing as Value property of SelectedElement objects fit a given filter.
+ <br><b>Role</b>: <tt>FilterCorrespondence</tt> filters the selection with respect to provided Automation 
+ types. The use of this method coupled with the use of 
+<script type="text/javascript"> activateLinkAnchor('','SelectElement','SelectElement') </script> method offers a way to  script multi-selection.<br>
+ It will enable, for example, to write a script reproducing the functionalities of the "Fillet" command of the
+ "Part Design" workbench.</br>
+ This method, called before a loop of SelectElement calls, will enable to take into account all objects
+ corresponding to the filter (which will be the same one as given to SelectElement).
+ Otherwise, it will clear the selection.</br>
+ This scripted multi-selection allows to keep already selected elements while adding new ones into the selection.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFilterType</span></dt>
+   <dd> An array of string constants to be used as a filter for the current selection. Same as iFilterType parameter of the 
+<script type="text/javascript"> activateLinkAnchor('','SelectElement','SelectElement') </script> method. 
+ </ dd>
+    <dt><span class='paramitem'> oAllFit</span></dt>
+   <dd> All current selection objects fit the iFilterType filter, i.e. regarding each of the current selection objects, 
+ they all fit one of the iFilterType string constant.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> The following example scripts an edge fillet creation command. It supposes that a part is currently edited, 
+ containing a Pad. It loops onto the following:
+ <ul>
+ <li>it asks the end user to select an edge (see 
+<script type="text/javascript"> activateLinkAnchor('CATIATriDimFeatEdge','','CATIATriDimFeatEdge') </script> ). If the selected edge has not already been selected, the selected edge is added to the selection, otherwise it is removed from the selection</li>
+ <li>it asks the end user if another edge has to be selected</li>
+ </ul>
+ until the answer of the user to the preceding question is no.<br>
+ Then, it creates an edge fillet (see 
+<script type="text/javascript"> activateLinkAnchor('CATIAConstRadEdgeFillet','','CATIAConstRadEdgeFillet') </script> ) taking into account all the selected edges as fillet specifications.<br>
+ <br><b>Note</b>: The edges which were selected before the script execution are taken into account. However,
+ if, before the script execution, the selection contained an object which was not a 
+<script type="text/javascript"> activateLinkAnchor('CATIATriDimFeatEdge','','CATIATriDimFeatEdge') </script> element, the selection is cleared before the first selection proposal.
+ <br><b>Note</b>: During the selection of a given edge, the edges already selected remain highlighted.</br>
+ <pre>
+ Option Explicit
+ 
+ Sub CATMain()
+   
+   If TypeName(CATIA.ActiveEditor.ActiveObject) &lt;&gt; "Part" Then Exit Sub
+   Dim Part
+   Set Part = CATIA.ActiveEditor.ActiveObject
+   
+   CATIA.ScriptCommand = CatScriptCommandStart
+   CATIA.HSOSynchronized = False
+   
+   ReDim InputObjectType(0)
+   InputObjectType(0)="TriDimFeatEdge"
+   Dim EdgeSaveCount
+   EdgeSaveCount = 0
+ 
+   'We determine if the selection contains an object which is not a TriDimFeatEdge element
+   Dim Selection
+   Set Selection = CATIA.ActiveEditor.Selection
+   Dim AllFit
+   AllFit = Selection.FilterCorrespondence(InputObjectType)
+   
+   'If the selection contains an object which is not a TriDimFeatEdge element, we clear the selection
+   If (Not AllFit) Then Selection.Clear
+   Dim EdgeSaveAllocatedCount
+   EdgeSaveAllocatedCount = Selection.Count + 10
+   ReDim EdgeSave(EdgeSaveAllocatedCount - 1)
+ 
+   'We loop onto interactive selections
+   Dim AllEdgesHaveBeenSelected
+   AllEdgesHaveBeenSelected = False
+   Do While (Not AllEdgesHaveBeenSelected)
+     'We save the selection content in save variables.
+     'This corresponds to the fact that:
+     '  - we want that, during the following call to SelectElement, the TriDimFeatEdge elements previously selected
+     '    remain highlighted
+     '  - this is done using the False value for the iMaySkipInteractiveSelection 
+     '    parameter of the SelectElement method, the selection containing the TriDimFeatEdge elements. It requires that
+     '    the selection content be saved
+     If (EdgeSaveAllocatedCount < Selection.Count) Then
+         EdgeSaveAllocatedCount = EdgeSaveAllocatedCount + 10
+         ReDim EdgeSave(EdgeSaveAllocatedCount - 1)
+     End If
+     Dim EdgeIndex
+     For EdgeIndex = 0 To Selection.Count - 1
+         Set EdgeSave(EdgeIndex) = Selection.Item(EdgeIndex + 1).Value
+     Next 
+     EdgeSaveCount = Selection.Count
+     
+     'We ask the user to select an edge
+     Dim Status
+     Status = Selection.SelectElement(InputObjectType, "Select an edge", False)
+     If Status = "Cancel" Then
+         Selection.Clear
+         CATIA.HSOSynchronized = True
+         CATIA.ScriptCommand = CatScriptCommandStop
+         Exit Sub
+     End If
+     
+     'We save the selected edge in a dedicated variable
+     Dim SelectedEdge
+     Set SelectedEdge = Selection.Item(1).Value
+     
+     'We merge the selected element with the save variables, and put the result in the selection.
+     'At first, we determine If the selected edge already belongs to the EdgeSave array
+     EdgeIndex = 0
+     Dim SelectedElementBelongsToSaveVariables, AlreadySelectedEdgeIndex
+     SelectedElementBelongsToSaveVariables = False
+     
+     Do While ((EdgeIndex < EdgeSaveCount) And (Not SelectedElementBelongsToSaveVariables))
+         If EdgeSave(EdgeIndex).Name = SelectedEdge.Name Then
+             SelectedElementBelongsToSaveVariables = True
+             AlreadySelectedEdgeIndex = EdgeIndex
+         End If
+         EdgeIndex = EdgeIndex + 1
+     Loop
+     
+     'Effective merge
+     If (Not SelectedElementBelongsToSaveVariables) Then
+       'The selected element does not belong to the save variables. We add the save variables to the selection
+       For EdgeIndex = 0 To EdgeSaveCount - 1
+         Selection.Add EdgeSave(EdgeIndex)
+       Next 
+     Else
+       'We remove the selected element from the save variables
+       For EdgeIndex = AlreadySelectedEdgeIndex To EdgeSaveCount - 2
+         Set EdgeSave(EdgeIndex) = EdgeSave(EdgeIndex + 1)
+       Next
+       EdgeSaveCount = EdgeSaveCount - 1
+       Selection.Clear
+       'We add the save variables to the selection
+       For EdgeIndex = 0 To EdgeSaveCount - 1
+         Selection.Add EdgeSave(EdgeIndex)
+       Next
+     End If
+     'We ask the end user if another edge has to be selected
+     CATIA.HSOSynchronized = True
+     Dim OtherEdgeAnswer
+     OtherEdgeAnswer = MsgBox ("Do you want to select another edge?", 3, "Edge Fillet Definition")
+     CATIA.HSOSynchronized = False
+     If (OtherEdgeAnswer = 2) Then 
+       CATIA.HSOSynchronized = True
+       CATIA.ScriptCommand = CatScriptCommandStop
+       Exit Sub
+     End If
+     If (OtherEdgeAnswer = 7) Then AllEdgesHaveBeenSelected = True
+   Loop
+   
+   'We create an edge fillet taking into account all the selected edges as fillet specifications
+   If (Selection.Count > 0) Then
+     Dim Fillet
+     Set Fillet = Part.ShapeFactory.AddNewEdgeFilletWithConstantRadius(Selection.Item(1).Value, 1, 5.0)
+     Fillet.EdgePropagation = 1
+     For EdgeIndex = 2 To Selection.Count
+       Fillet.AddObjectToFillet Selection.Item(EdgeIndex).Value
+     Next
+     Part.Update
+     Selection.Clear
+     Selection.Add Fillet
+   End If
+   
+   CATIA.HSOSynchronized = True
+   CATIA.ScriptCommand = CatScriptCommandStop
+    
+ End Sub
+ 
+ </pre>
+</dl>
+</dd>
+<a id="FindObject"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>FindObject</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iObjectType</span>)</span> As <script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> </span></dt>
+  <dd class='ddmethod'>
+ Finds an object in the current selection and deletes it from the selection.
+ <br><b>Role</b>: Determines the first object or parent of object whose type is
+ equal to the specified input type. It returns directly the object and deletes the corresponding
+ 
+<script type="text/javascript"> activateLinkAnchor('CATIASelectedElement','','CATIASelectedElement') </script> object from the current selection.<br> <b>Note:</b> If the string specified in input is "CATIAProduct", the possible object
+ specified in 
+<script type="text/javascript"> activateLinkAnchor('CATIASelectedElement','LeafProduct','CATIASelectedElement.LeafProduct') </script> is also looked for. <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example searches a Pad object in the
+ current selection and puts it into <tt>FoundObject</tt>.
+ <pre>
+ Dim FoundObject As AnyObject
+ Set FoundObject = CATIA.ActiveEditor.Selection.<font color="red">FindObject</font>("CATIAPad")
+ </pre>
+ </dl>
+</dd>
+<a id="IndicateOrSelectElement2D"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>IndicateOrSelectElement2D</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iMessage</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iFilterType</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMaySkipInteractiveSelection</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iTooltip</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iTriggeringOnMouseMove</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>oObjectSelected</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oWindowLocation</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Runs an interactive command enabling both indication and selection, 2D version.
+ <br><b>Role</b>: <tt>IndicateOrSelectElement2D</tt> asks the end user to select either a location into the window,
+ or a feature (in the geometry or in the specification tree).<br>
+ During execution, when entering this method, the active editor must be in 2D.</br>
+ <b>Note</b>: The method (and script execution) fails if one of the following error occurs:
+ <ul>
+ <li>CATIA.ScriptCommand is equal to CatScriptCommandDefault. Selection.IndicateOrSelectElement2D cannot be called.</li>
+ <li>CATIA.ScriptCommand is equal to CatScriptCommandStop. Selection.IndicateOrSelectElement2D cannot be called.</li>
+ </ul></br>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iMessage</span></dt>
+   <dd> A string displayed in the status bar which tells the user what he/she should select (location, object...).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iFilterType</span></dt>
+   <dd> An array of string constants defining the Automation object types with which the selection will be filtered.</br>
+ <b>Note</b>: If iFilterType contains only an empty string, the 
+ interactive command will only enable indication.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMaySkipInteractiveSelection</span></dt>
+   <dd> If true and if the user has selected something before running the script, the interactive step of this method will be skipped.
+ See 
+<script type="text/javascript"> activateLinkAnchor('','SelectElement','SelectElement') </script> . 
+ </ dd>
+    <dt><span class='paramitem'> iTooltip</span></dt>
+   <dd> Displays a tooltip as soon as an object is located under the mouse without being selected. 
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTriggeringOnMouseMove</span></dt>
+   <dd> Triggers as soon as a mouse move event is detected. This option beeing set, oOutputState may be valued to
+ "MouseMove".
+ 
+ </ dd>
+    <dt><span class='paramitem'> oObjectSelected</span></dt>
+   <dd>  Flag precising if the user choosed selection or indication. 
+ 
+ </ dd>
+    <dt><span class='paramitem'> oWindowLocation</span></dt>
+   <dd>  An array made of 2 doubles: X, Y - coordinates array of the location that the user specified in the window.
+ This parameter is valuated only if oObjectSelected equals to False.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oOutputState</span></dt>
+   <dd> The state of the interactive command once IndicateOrSelectElement2D  returns. The possible values are the same than
+ the values described regarding the oOutputState parameter of the 
+<script type="text/javascript"> activateLinkAnchor('','SelectElement','SelectElement') </script> method, except that  "MouseMove" value can also be returned.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> The following example supposes that a drawing is currently edited. It creates a point (see 
+<script type="text/javascript"> activateLinkAnchor('CATIAPoint2D','','CATIAPoint2D') </script> ), and asks the end user to click to define the circle center.</br>
+ When it is done, as the mouse moves without clicking the left button, the script determines the location into
+ the drawing window, and creates a temporary circle as feedback.</br>
+ A click into the window or the selection of a point definitively creates the circle 
+ (see 
+<script type="text/javascript"> activateLinkAnchor('CATIACircle2D','','CATIACircle2D') </script> ) located at the specified location (whether the location is into the drawing window or whether it is the existing point location).</br>
+ <pre>
+ Option Explicit
+ 
+ Sub CATMain()
+   
+   If TypeName(CATIA.ActiveEditor.ActiveObject) &lt;&gt; "DrawingRoot" Then Exit Sub
+   Dim DrawingSheets
+   Set DrawingSheets  = CATIA.ActiveEditor.ActiveObject.Sheets
+   
+   Dim Selection
+   Set Selection = CATIA.ActiveEditor.Selection
+  
+   CATIA.ScriptCommand = CatScriptCommandStart
+   CATIA.HSOSynchronized = False
+  
+   Dim DrawingSheet, DrawingViews, DrawingView, Factory2D
+   Set DrawingSheet = DrawingSheets.ActiveSheet
+   Set DrawingViews = DrawingSheet.Views
+   Set DrawingView = DrawingViews.ActiveView
+   Set Factory2D = DrawingView.Factory2D
+ 
+   'We create a point
+   Dim HardCodedPoint 
+   Set HardCodedPoint = Factory2D.CreatePoint(700.,400.)
+   HardCodedPoint.ReportName = 1
+   HardCodedPoint.Construction = False
+ 
+   'We ask the user to define the circle center
+   Dim InputObjectType(0), Status, WindowLocation(1), ObjectSelected
+   InputObjectType(0) = ""
+   Status = Selection.IndicateOrSelectElement2D("click to define the circle center", InputObjectType, False, False, False, ObjectSelected, WindowLocation)
+   If Status = "Cancel" Or Status = "Undo" Or Status = "Redo" Then
+     CATIA.HSOSynchronized = True
+     CATIA.ScriptCommand = CatScriptCommandStop
+     Exit Sub
+   End If
+   
+   Dim XCenter, YCenter, TempCircleHasBeenCreatedAtLeastOnce, Radius, Circle2D
+   XCenter = WindowLocation(0)
+   YCenter = WindowLocation(1)
+ 
+   'We ask the user to specify a location into the drawing window or a point
+   InputObjectType(0) = "Point2D"
+   Status = "MouseMove"
+   TempCircleHasBeenCreatedAtLeastOnce = 0
+   Status = Selection.IndicateOrSelectElement2D("Select a point or click to locate the circle radius point", InputObjectType, False, False, True, ObjectSelected, WindowLocation)
+ 
+   'We loop onto mouse moves without click
+   Do While Status = "MouseMove"
+     If TempCircleHasBeenCreatedAtLeastOnce Then 
+       Selection.Add Circle2D
+       Selection.Delete
+     End If
+      
+     Radius = Sqr( ( (WindowLocation(0) - XCenter) * (WindowLocation(0) - XCenter) )+ _ 
+                   ( (WindowLocation(1) - YCenter) * (WindowLocation(1) - YCenter) ) )
+                    
+     Set Circle2D = Factory2D.CreateClosedCircle(XCenter, YCenter, Radius)
+     TempCircleHasBeenCreatedAtLeastOnce = 1
+ 
+     Status = Selection.IndicateOrSelectElement2D("Select a point or click to locate the circle radius point", InputObjectType, False, False, True, ObjectSelected, WindowLocation)
+   Loop
+   
+   'We go out if necessary
+   If Status = "Cancel" Or Status = "Undo" Or Status = "Redo" Then 
+      If TempCircleHasBeenCreatedAtLeastOnce Then 
+       Selection.Add Circle2D
+       Selection.Add HardCodedPoint
+       Selection.Delete
+      End if
+      CATIA.HSOSynchronized = True
+      CATIA.ScriptCommand = CatScriptCommandStop
+      Exit Sub
+   End If
+   
+   'We determine the possible selected point coordinates
+   Dim ExistingPoint
+   If ObjectSelected Then
+     Set ExistingPoint = Selection.Item(1).Value
+     ExistingPoint.GetCoordinates WindowLocation
+     Selection.Clear
+   End If
+ 
+   'We clean up the temporary circle
+   If TempCircleHasBeenCreatedAtLeastOnce Then 
+     Selection.Add Circle2D
+     Selection.Delete
+   End If
+   
+   'We create the definitive circle
+   Radius = Sqr( ( (WindowLocation(0) - XCenter) * (WindowLocation(0) - XCenter) )+ _ 
+                 ( (WindowLocation(1) - YCenter) * (WindowLocation(1) - YCenter) ) )
+                  
+   Set Circle2D = Factory2D.CreateClosedCircle(XCenter, YCenter, Radius)
+   Selection.Add Circle2D
+   
+   CATIA.HSOSynchronized=True
+     
+ End Sub
+ </pre>
+</dl>
+</dd>
+<a id="IndicateOrSelectElement3D"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>IndicateOrSelectElement3D</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iPlanarGeometricObject</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iMessage</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iFilterType</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMaySkipInteractiveSelection</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iTooltip</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iTriggeringOnMouseMove</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>oObjectSelected</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oWindowLocation2D</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oWindowLocation3D</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Runs an interactive command enabling both indication and selection, 3D version.
+ <br><b>Role</b>: <tt>IndicateOrSelectElement3D</tt> asks the end user to select either a location into the window,
+ or a feature (in the geometry or in the specification tree).<br>
+ During execution, when entering this method, the active editor must be in 3D.</br>
+ <b>Note</b>: The method (and script execution) fails if one of the following error occurs:
+ <ul>
+ <li>CATIA.ScriptCommand is equal to CatScriptCommandDefault. Selection.IndicateOrSelectElement3D cannot be called.</li>
+ <li>CATIA.ScriptCommand is equal to CatScriptCommandStop. Selection.IndicateOrSelectElement3D cannot be called.</li>
+ </ul></br>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iPlanarGeometricObject</span></dt>
+   <dd> A planar geometric object.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMessage</span></dt>
+   <dd> A string displayed in the status bar which tells the user what he/she should select (location, object...).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iFilterType</span></dt>
+   <dd> An array of string constants defining the Automation object types with which the selection will be filtered.</br>
+ <b>Note</b>: If iFilterType contains only an empty string, the 
+ interactive command will only enable indication.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMaySkipInteractiveSelection</span></dt>
+   <dd> If true and if the user has selected something before running the script, the interactive step of this method will be skipped.
+ See 
+<script type="text/javascript"> activateLinkAnchor('','SelectElement','SelectElement') </script> .  
+ </ dd>
+    <dt><span class='paramitem'> iTooltip</span></dt>
+   <dd> Displays a tooltip as soon as an object is located under the mouse without being selected. 
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTriggeringOnMouseMove</span></dt>
+   <dd> Triggers as soon as a mouse move event is detected. This option beeing set, oOutputState may be valued to
+ "MouseMove".
+ 
+ </ dd>
+    <dt><span class='paramitem'> oObjectSelected</span></dt>
+   <dd>  Flag precising if the user choosed selection or indication. 
+ 
+ </ dd>
+    <dt><span class='paramitem'> oWindowLocation2D</span></dt>
+   <dd> X, Y - coordinates array of the location that the user specified into the window.
+ This parameter is valuated only if oObjectSelected equals to False.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oWindowLocation3D</span></dt>
+   <dd> X, Y, Z - coordinates array of the location that the user specified in the window.
+ This parameter is valuated only if oObjectSelected equals to False.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oOutputState</span></dt>
+   <dd> The state of the interactive command once IndicateOrSelectElement3D  returns. The possible values are the same than
+ the values described regarding the oOutputState parameter of the 
+<script type="text/javascript"> activateLinkAnchor('','SelectElement','SelectElement') </script> method, except that  "MouseMove" value can also be returned.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> The following example supposes that a part is currently edited, containing a plane. It creates a point 
+ (see 
+<script type="text/javascript"> activateLinkAnchor('CATIAHybridShapePointOnPlane','','CATIAHybridShapePointOnPlane') </script> ), asks the end user to select a location into the part window, onto the Plane.1 plane, or to select a point.</br>
+ As the mouse moves without clicking the left button, the location into the drawing window is determined, and the
+ script creates a temporary point as feedback.</br>
+ A click into the window or the selection of a point definitively creates the point
+ (see 
+<script type="text/javascript"> activateLinkAnchor('CATIAHybridShapePointOnPlane','','CATIAHybridShapePointOnPlane') </script> ) located at the specified location (whether the location is a location into the part window or whether it is the existing point location).</br>
+ <pre>
+ Option Explicit
+ 
+ Sub CATMain()
+   
+   If TypeName(CATIA.ActiveEditor.ActiveObject) &lt;&gt; "Part" Then Exit Sub
+   Dim Part
+   Set Part = CATIA.ActiveEditor.ActiveObject
+   
+   Dim Selection
+   Set Selection = CATIA.ActiveEditor.Selection
+   
+   CATIA.ScriptCommand = CatScriptCommandStart
+   CATIA.HSOSynchronized = False
+  
+   Dim HybridShapeFactory, Body, HybridShapePlane, PlaneReference
+   Set HybridShapeFactory = Part.HybridShapeFactory
+   Set Body = Part.Bodies.Item("PartBody")
+   Set HybridShapePlane = Body.HybridShapes.Item("Plane.1")
+   Set PlaneReference = Part.CreateReferenceFromObject(HybridShapePlane)
+ 
+   'We create a point
+   Dim HardCodedPoint
+   Set HardCodedPoint = HybridShapeFactory.AddNewPointOnPlane(PlaneReference,30.,30.)
+   Body.InsertHybridShape HardCodedPoint
+   Part.InWorkObject = HardCodedPoint
+   Part.Update 
+ 
+   'We ask the user to specify a location into the part window or a point
+   Dim InputObjectType(0), Status, WindowLocation2D(1), WindowLocation3D(2), TempPointHasBeenCreatedAtLeastOnce, ObjectSelected
+   InputObjectType(0) = "HybridShapePointOnPlane"
+   Status = "MouseMove"
+   TempPointHasBeenCreatedAtLeastOnce = 0
+   Selection.Clear
+   Status = Selection.IndicateOrSelectElement3D(HybridShapePlane, "Select a point or click to locate the point", InputObjectType, False, False, True, ObjectSelected, WindowLocation2D, WindowLocation3D)
+ 
+   'We loop onto mouse moves without click
+   Dim Point
+   Do While Status = "MouseMove"
+     If TempPointHasBeenCreatedAtLeastOnce Then 
+       Selection.Add Point
+       Selection.Delete
+     End If
+     Set Point = HybridShapeFactory.AddNewPointOnPlane(PlaneReference, WindowLocation2D(0), WindowLocation2D(1))
+     Body.InsertHybridShape Point
+     Part.InWorkObject = Point
+     Part.Update 
+     TempPointHasBeenCreatedAtLeastOnce = 1
+     
+     Status = Selection.IndicateOrSelectElement3D(HybridShapePlane, "Select a point or click to locate the point", InputObjectType, False, False, True, ObjectSelected, WindowLocation2D, WindowLocation3D)
+   Loop
+  
+   'We go out if necessary
+   If Status = "Cancel" Or Status = "Undo" Or Status = "Redo" Then 
+     If TempPointHasBeenCreatedAtLeastOnce Then 
+       Selection.Add Point
+       Selection.Add HardCodedPoint
+       Selection.Delete
+       Part.Update
+     End If
+     CATIA.HSOSynchronized = True
+     CATIA.ScriptCommand = CatScriptCommandStop
+     Exit Sub
+   End If
+   
+   'We determine the possible selected point coordinates
+   If ObjectSelected Then
+     Dim ExistingPoint
+     Set ExistingPoint = Selection.Item(1).Value
+     WindowLocation2D(0) = ExistingPoint.XOffset.Value
+     WindowLocation2D(1) = ExistingPoint.YOffset.Value
+     Selection.Clear
+   End If
+ 
+   'We cleanup the temporary point
+   If TempPointHasBeenCreatedAtLeastOnce Then 
+     Selection.Add Point
+     Selection.Delete
+   End If
+   
+   'We create the definitive point
+   Set Point = HybridShapeFactory.AddNewPointOnPlane(PlaneReference, WindowLocation2D(0), WindowLocation2D(1))
+   Body.InsertHybridShape Point 
+   Part.InWorkObject = Point 
+   Part.Update
+   
+   CATIA.HSOSynchronized = True
+   CATIA.ScriptCommand = CatScriptCommandStop
+  
+ End Sub
+ </pre>
+</dl>
+</dd>
+<a id="Item"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Item</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('SelectedElement','SelectedElement')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the iIndex-th SelectedElement object contained by the current selection. 
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd> The index of the SelectedElement object to return, 1&le;iIndex&le;Selection.Count .
+ 
+ </ dd>
+    <dt><span class='paramitem'> oSelectedElement</span></dt>
+   <dd> The SelectedElement object
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> See the 
+<script type="text/javascript"> activateLinkAnchor('','SelectMultipleElements','SelectMultipleElements') </script> method first example.
+</dl>
+</dd>
+<a id="Item2"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Item2</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('SelectedElement','SelectedElement')</script> </span></dt>
+  <dd class='ddmethod'>
+ 
+<dl  class='desclist'>
+  <dt class='deprecated'> <b>Deprecated:</b></dt> 
+  <dd>  R207 
+<script type="text/javascript"> activateLinkAnchor('','Item','Item') </script>
+ </ dd>
+</dl>
+</dd>
+<a id="Paste"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Paste</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Puts the contents of the clipboard in the Editor at the indicated location.
+ <br><b>Role</b>: After the execution of the Paste method, there may be, among the pasted features, some which are
+ not exposed to Automation. If so, the Paste operation will be performed anyway.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ <pre>
+ CATIA.ActiveEditor.Selection.<font color="red">Paste</font>
+ </pre>
+ </dl>
+</dd>
+<a id="PasteFrom"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>PasteFrom</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iObjects</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Pastes an array of elements in the Editor at the indicated location.
+ <br><b>Role</b>: After the execution of the Paste method, there may be, among the pasted features, some which are
+ not exposed to Automation. If so, the Paste operation will be performed anyway.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ <pre>
+ ReDim Object(0)
+ Object(0)=WhateverObject
+ CATIA.ActiveEditor.Selection.<font color="red">PasteFrom</font>(Object)
+ </pre>
+ </dl>
+</dd>
+<a id="PasteSpecial"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>PasteSpecial</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFormat</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Puts the contents of the clipboard in the Editor at the indicated location, according to the specified format. 
+ <br><b>Role</b>: After the execution of the PasteSpecial method, there may be, among the pasted features, some which are
+ not exposed to Automation. If so, the PasteSpecial operation will be performed anyway.
+ <br><br>
+ Formats are: 
+ <br><ul>
+ <b>In all containers</b>
+ <li><tt>"CATIA_LINK_FORMAT"</tt> to paste "Catia Link Source",</li>
+ <li><tt>"OLE_LINK_FORMAT"</tt>   to paste "Ole Link Source",</li>
+ <li><tt>"OLE_EMBED_FORMAT"</tt>  to paste "Ole Embed Source".</li>
+ </ul> 
+ <br><ul>
+ <b>In a Part container</b>
+ <li><tt>"CATPrtCont"</tt>              to paste "As Specified In Part representation",</li>
+ <li><tt>"CATPrtResultWithOutLink"</tt> to paste "AsResult",</li>
+ <li><tt>"CATPrtResult"</tt>            to paste "AsResultWithLink",</li>
+ <li><tt>"CATMaterialCont"</tt>         to paste "As material",</li>
+ <li><tt>"AsMaterialLink"</tt>          to paste "As material link",</li>
+ <li><tt>"CATMechProdCont"</tt>         to paste "As specified in Assembly",</li>
+ <li><tt>"CATProdCont"</tt>             to paste "As specified in Product Structure",</li>
+ <li><tt>"CATIA_SPEC"</tt>              to paste "CATIA_SPEC",</li>
+ <li><tt>"CATIA_RESULT"</tt>            to paste "CATIA_RESULT".</li>
+ <dl>
+ <dt><b>Warning:</b>
+ <dd>
+ <pre>
+ Using PasteSpecial with <font color="red">CATPrtResult</font> will not copy links between several Part containers. This API does not support it.
+ It will copy links only for copy paste operations inside the same Part Container.
+ This is a different behavior from the interactive one.
+ To perform copy paste operation as result with link between several Part Containers, it must be done interactively.
+ 
+ </pre>
+ </dl>
+ </ul> 
+ <br><ul>
+ <b>In a Product container</b>
+ <li><tt>"CATProdCont"</tt>      to paste "As specified in Product Structure",</li>
+ </ul> 
+ <br><ul>
+ <b>In a Process container</b>
+ <li><tt>"SPPProcessCont"</tt> to paste "Simple paste",</li>
+ <li><tt>"SPP_I"</tt>          to paste "Paste with Items",</li>
+ <li><tt>"SPP_R"</tt>          to paste "Paste with Resources",</li>
+ <li><tt>"SPP_IR"</tt>         to paste "Paste with Items and Resources",</li>
+ <li><tt>"SPPI_I"</tt>         to paste "Paste with Items and entire hierarchy",</li>
+ <li><tt>"SPPI_R"</tt>         to paste "Paste with Resources and entire hierarchy",</li>
+ <li><tt>"SPPI_IR"</tt>        to paste "Paste with Items and Resources and entire hierarchy".</li>
+ </ul> 
+ <br><ul>
+ <b>In a Material container</b>
+ <li><tt>"CATMaterialCont"</tt> to paste "As material",</li>
+ <li><tt>"AsMaterialLink"</tt>  to paste "As material link".</li>
+ </ul> 
+ <br><ul>
+ <b>In a Rendering Scene container</b>
+ <li><tt>"CATRscLightContainer"</tt>       to paste "As light",</li>
+ <li><tt>"CATRscEnvironmentContainer"</tt> to paste "As environment",</li>
+ <li><tt>"CATRscShootingContainer"</tt>    to paste "As shooting",</li>
+ <li><tt>"CATRscTurntableContainer"</tt>   to paste "As turntable".</li>
+ </ul> 
+ <br><ul>
+ <b>In a Deneb Resource Program container</b>
+ <li><tt>"DNBProgCont"</tt> to paste "Resource Program".</li>
+ </ul> 
+ <br><ul>
+ <b>In a Behavior container</b>
+ <li><tt>"Behaviors"</tt> to paste "Behaviors".</li>
+ </ul> 
+ <br><ul>
+ <b>In a CATCamera container</b>
+ <li><tt>"CATCameraContainer"</tt> to paste "Camera".</li>
+ </ul> 
+ <br>
+ To learn more about these formats, refer to the equivalent interactive command.
+ <br><br>
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ <pre>
+ CATIA.ActiveEditor.Selection.<font color="red">PasteSpecial</font> "CATPrtResultWithOutLink"
+ </pre>
+ </dl>
+</dd>
+<a id="Remove"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Remove</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Removes the iIndex-th SelectedElement object contained by the current selection. 
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd> The index of the 
+<script type="text/javascript"> activateLinkAnchor('CATIASelectedElement','','CATIASelectedElement') </script> object to remove, 1&le;iIndex&le;Selection.Count . <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example removes the second SelectedElement object contained by the current selection.
+ <pre>
+ CATIA.ActiveEditor.Selection.<font color="red">Remove</font>(2)
+ </pre>
+ </dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="Remove2"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Remove2</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ 
+<dl  class='desclist'>
+  <dt class='deprecated'> <b>Deprecated:</b></dt> 
+  <dd>  R207 
+<script type="text/javascript"> activateLinkAnchor('','Remove','Remove') </script>
+ </ dd>
+</dl>
+</dd>
+<a id="Search"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Search</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iStringBSTR</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Finds an object in the Editor using the Edit/Search grammar, and fills the selection with the results.
+ <br>A criterium is created, based on the Search grammar, which also defines the investigation field depth.<br>
+ <b>Note:</b> After the execution of the Search method, there may be, among the selected features, some which
+ are not exposed to Automation. 
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ The following example searches the objects matching the following criterium in the whole 
+<script type="text/javascript"> activateLinkAnchor('CATIAEditor:','','CATIAEditor:') </script> <tt>Part.Sketcher.Color='White'</tt> .
+ <pre>
+ CATIA.ActiveEditor.Selection.<font color="red">Search</font>("Part.Sketcher.Color='White',all")
+ </pre>
+ </dl>
+</dd>
+<a id="SelectElement"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>SelectElement</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iFilterType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iMessage</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMaySkipInteractiveSelection</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Runs an interactive selection command.
+ <br><b>Role</b>: <tt>SelectElement</tt> asks the end user to select a feature (in the geometry or in the
+ specification tree). During the selection, when the end user moves the mouse above a feature which fits in the
+ given filter, the mouse pointer turns into the "hand" cursor; otherwise into the "no entry" cursor.<br>
+ <ul>
+ <li>If iMaySkipInteractiveSelection is equal to False: 
+ <br>The end user is asked to interactively select an appropriate element. When this is done, the Selection 
+ object is cleared, and filled with the selected element.</li>
+ <br><li> If iMaySkipInteractiveSelection is equal to True: 
+ <br><tt>SelectElement</tt> determines whether the already selected objects ( 
+<script type="text/javascript"> activateLinkAnchor('CATIASelectedElement','Value','CATIASelectedElement.Value') </script> ) are appropriate: <ul>
+ <li>If it is the case, the interaction step is skipped, the Selection object is cleared, 
+ and filled with the appropriate element.</li>
+ <li>Otherwise, the Selection object is cleared, and the end user is asked to interactively select an 
+ appropriate element.</li>
+ </ul>
+ <b>Note:</b> During the selection scan to find an Automation object, a "Product" string constant specified in
+ iFilterType will imply that SelectElement will also look for the possible Automation object specified
+ in 
+<script type="text/javascript"> activateLinkAnchor('CATIASelectedElement','LeafProduct','CATIASelectedElement.LeafProduct') </script> .</li></ul> <b>Note</b>: The method (and script execution) fails if one of the following error occurs:
+ <ul>
+ <li>CATIA.ScriptCommand is equal to CatScriptCommandDefault. Selection.SelectElement cannot be called.</li>
+ <li>CATIA.ScriptCommand is equal to CatScriptCommandStop. Selection.SelectElement cannot be called.</li>
+ </ul>
+ <b>Note:</b> After a call to <tt>SelectElement</tt>, if the return value is "Normal", a call to the 
+ 
+<script type="text/javascript"> activateLinkAnchor('','Count','Count') </script> method will return one, and a call to Item(1) will return the selected element.<p> <b>Note: </b>If the scripting language is VBA or VSTA, the use of an interactive selection method (such as this one) from within a user form 
+ is unadvised.<br>
+ Indeed, interactive selection methods are blocking commands inside CATIA, but non-blocking inside VBA/VSTA user forms.
+ This means that the end user can continue interacting with the user form, and potentially execute additional CATIA Automation methods.
+ This could lead to unpredictable results.<br>
+ The code should be written in the following way:<pre>
+  - macro module main variables:
+    Dim AFormMethodIsBeingExecuted As Boolean<br>
+  - form method calling SelectElement:
+    Private Sub FormPossessingOneMethodCallingSelectElement_Click()
+        Dim InputObjectType(0), Status
+        AFormMethodIsBeingExecuted = True
+        InputObjectType(0) = "TriDimFeatEdge" 
+        Status = Selection.SelectElement(InputObjectType, "Select an edge", False)
+        AFormMethodIsBeingExecuted = False
+    End Sub<br>
+  - sample form method:
+    Private Sub SampleForm_Click()
+        If (AFormMethodIsBeingExecuted) Then
+          'we go out of the method
+          CATIA.HSOSynchronized = True
+          Exit Sub
+        End If
+        . . .
+        'content of the form method itself
+        . . .   
+    End Sub</pre>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFilterType</span></dt>
+   <dd> An array of string constants defining the Automation object types with which the selection will be filtered.
+ The resulting filter is a logical OR of the supplied string constants. For instance, if the array contains two
+ elements <tt>"Point"</tt> and <tt>"Line"</tt>, moving the mouse over a feature of 
+<script type="text/javascript"> activateLinkAnchor('CATIAHybridShapePointCoord','','CATIAHybridShapePointCoord') </script> type will show a "hand" cursor. Contrarily, if the feature under the mouse is neither a
+ 
+<script type="text/javascript"> activateLinkAnchor('CATIAHybridShapePoint','','CATIAHybridShapePoint') </script> nor a 
+<script type="text/javascript"> activateLinkAnchor('CATIAHybridShapeLine','','CATIAHybridShapeLine') </script>, the cursor will be a "no entry" cursor.<p> Beside the regular Automation object names, 
+<script type="text/javascript"> activateLinkAnchor('CATSelectionFilter','','CATSelectionFilter') </script> value names are also supported. 
+ </ dd>
+    <dt><span class='paramitem'> iMessage</span></dt>
+   <dd> A string displayed in the status bar which tells the user what he/she should select (location, object...).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMaySkipInteractiveSelection</span></dt>
+   <dd> If true and if the user has selected something before running the script, the interactive step of this method will be skipped.
+ <b>Note:</b> If any of the previously selected elements is not part of the input filter, SelectElement will be interactive.
+ Also note that iMaySkipInteractiveSelection can be False even if the selection
+ is not empty before entering the method. This keeps the previously selected elements highlighted during the selection,
+ but also requires the user to re-select them if he/she wants so. Otherwise, when SelectElement ends, they will not be
+ selected anymore.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oOutputState</span></dt>
+   <dd> The state of the selection command after SelectElement returns. It can either be "Normal", "Cancel", "Undo" or "Redo".<br>
+ <b>Note:</b> "Cancel" value is returned if any of the following cases occured:
+ <ul>
+ <li>the user started another command</li>
+ <li>ESCAPE key was pressed</li>
+ <li>another window was selected</li>
+ </ul>
+ <b>Caution:</b> The script should exit properly (after the necessary clean-up) when "Cancel" value is returned.</br>
+ If not, an error message may be displayed when running the following selection methods.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> The following example asks the end user to select a sketch (see 
+<script type="text/javascript"> activateLinkAnchor('CATIASketch','','CATIASketch') </script> ) in the current  window, and creates a Pad (see 
+<script type="text/javascript"> activateLinkAnchor('CATIAShapeFactory','AddNewPad','CATIAShapeFactory.AddNewPad') </script> ). If, before the script execution, a sketch was already selected, it will be taken into account.<br>
+ Then, it asks the end user to select an edge of the pad, and creates an edge fillet. The end user 
+ is asked to select a 1-D entity whose geometry is rectilinear (see 
+<script type="text/javascript"> activateLinkAnchor('CATSelectionFilter','','CATSelectionFilter') </script> ), such as an edge of the Pad.<br> Next, the end user should select a pad face which is perpendicular to the 1-D entity previously selected. Finally, it
+ creates a hole at the face selected point, the hole direction being the direction of the 1-D selected entity.<br>
+ During the face selection, the 1-D entity previously selected is highlighted.</br>
+ <pre>
+ Option Explicit
+ 
+ Sub CATMain()
+   
+   If TypeName(CATIA.ActiveEditor.ActiveObject) &lt;&gt; "Part" Then
+     CATIA.SystemService.Print "Not in Part context"
+     Exit Sub
+   End If
+   Dim Part
+   Set Part = CATIA.ActiveEditor.ActiveObject
+   
+   Dim Selection
+   Set Selection = CATIA.ActiveEditor.Selection
+   
+   Dim ShapeFactory, SketchHasBeenAcquiredAtLeastOnce, EdgeHasBeenAcquiredAtLeastOnce, FaceHasBeenAcquiredAtLeastOnce,MonoDimEntityHasBeenAcquiredAtLeastOnce, FirstExtrudeNotFinished
+   Set ShapeFactory = Part.ShapeFactory  
+   SketchHasBeenAcquiredAtLeastOnce = False
+   EdgeHasBeenAcquiredAtLeastOnce = False
+   FaceHasBeenAcquiredAtLeastOnce = False
+   MonoDimEntityHasBeenAcquiredAtLeastOnce = False 
+   FirstExtrudeNotFinished = True
+ 
+   CATIA.ScriptCommand = CatScriptCommandStart
+   CATIA.HSOSynchronized = False
+ 
+   'We save the current selection content
+   ReDim SelectionAtBeginning(1)
+   ReDim SelectionAtBeginning(Selection.Count)
+   Dim SelectionObjectIndex
+   For SelectionObjectIndex = 0 To Selection.Count - 1
+     Set SelectionAtBeginning(SelectionObjectIndex) = Selection.Item(1).Value
+   Next
+   Dim SelectionAtBeginningLength 
+   SelectionAtBeginningLength = Selection.Count
+  
+   'Feature creation
+   Dim PadNotFinished, Status, SketchForPadPartBody, SelectedElement, MonoDimEntity
+   PadNotFinished = True
+   
+   Do While PadNotFinished
+     'We ask the user to select a sketch
+     Dim InputObjectType(0)
+     InputObjectType(0) = "Sketch" 
+     Status = Selection.SelectElement(InputObjectType, "Select a sketch", True)
+     
+     If Status = "Cancel" Or Status = "Undo" Then 
+       'We restore the selection to its initial content
+       Selection.Clear
+       For SelectionObjectIndex = 0 To SelectionAtBeginningLength - 1
+              Selection.Add SelectionAtBeginning(SelectionObjectIndex)
+       Next
+       CATIA.HSOSynchronized = True
+       CATIA.ScriptCommand = CatScriptCommandStop
+       Exit Sub
+       
+     ElseIf Status = "Redo" And Not SketchHasBeenAcquiredAtLeastOnce then
+       'We do nothing: Redo has no meaning in this context
+       
+     Else
+       Dim SketchForPad
+       If Status &lt;&gt; "Redo" Then Set SketchForPad = Selection.Item(1).Value
+       SketchHasBeenAcquiredAtLeastOnce = True
+ 
+       'We determine the PartBody corresponding to the Sketch
+       Set SketchForPadPartBody = SketchForPad.Parent.Parent
+ 
+       'We create the Pad
+       Dim Pad
+       Set Pad = ShapeFactory.AddNewPad(SketchForPad, 20.0)
+       Pad.SecondLimit.Dimension.Value = 0.0
+       Part.Update
+       PadNotFinished = False
+       Selection.Clear
+ 
+       'We create the fillet and the hole
+       Dim FilletNotFinished 
+       FilletNotFinished = True
+ 
+       Do While (FilletNotFinished And Not PadNotFinished)
+         'We ask the user to select an edge
+         InputObjectType(0) = "TriDimFeatEdge" 
+         Status = Selection.SelectElement(InputObjectType, "Select an edge of the Pad", False)     
+            
+         If Status = "Cancel" Then 
+           'We remove the pad, restore the selection to its initial content and go out
+           Selection.Clear
+           Selection.Add(Pad)
+           Selection.Delete
+           Part.Update
+           Selection.Clear
+           For SelectionObjectIndex = 0 To SelectionAtBeginningLength - 1
+             Selection.Add SelectionAtBeginning(SelectionObjectIndex)
+           Next
+           CATIA.HSOSynchronized = True
+           CATIA.ScriptCommand = CatScriptCommandStop
+           Exit Sub
+           
+         ElseIf Status = "Redo" And Not EdgeHasBeenAcquiredAtLeastOnce Then
+           'We do nothing: Redo has no meaning in this context
+           
+         ElseIf Status = "Undo" then
+           'We copy the sketch to the clipboard
+           Selection.Clear
+           Selection.Add(SketchForPad)
+ 
+           'We remove the pad
+           Selection.Clear
+           Selection.Add(Pad)
+           Selection.Delete
+           Part.Update
+ 
+           'We re-create the sketch
+           Selection.Clear
+           Selection.Add(SketchForPadPartBody)
+           Selection.Paste
+ 
+           PadNotFinished = True
+           
+         Else
+           Dim FilletEdge
+           If Status &lt;&gt; "Redo" then Set FilletEdge = Selection.Item(1).Value
+           EdgeHasBeenAcquiredAtLeastOnce = True
+ 
+           'Create the Fillet
+           Dim Fillet
+           Set Fillet = ShapeFactory.AddNewSolidEdgeFilletWithConstantRadius(FilletEdge, catTangencyFilletEdgePropagation, 5.0)
+           Part.Update
+           FilletNotFinished = False
+           Selection.Clear
+ 
+           'Determine the 1-D entity
+           Dim MonoDimEntityDeterminationNotFinished
+           MonoDimEntityDeterminationNotFinished = True
+           
+           Do While MonoDimEntityDeterminationNotFinished And Not FilletNotFinished
+             'We ask the user to select a 1-D entity whose geometry is rectilinear
+             InputObjectType(0) = "RectilinearMonoDim" 
+             Status=Selection.SelectElement(InputObjectType, "Select a 1-D entity whose geometry is rectilinear", False)   
+                      
+             If Status = "Cancel" Then
+               'We remove the fillet, the pad, restore the selection to its initial content and go out
+               Selection.Clear
+               Selection.Add(Fillet)
+               Selection.Delete
+               Selection.Clear
+               Selection.Add(Pad)
+               Selection.Delete
+               Part.Update
+               Selection.Clear
+               For SelectionObjectIndex = 0 To SelectionAtBeginningLength - 1
+                 Selection.Add SelectionAtBeginning(SelectionObjectIndex)
+               Next
+               CATIA.HSOSynchronized = True
+               CATIA.ScriptCommand = CatScriptCommandStop
+               Exit Sub
+               
+             ElseIf Status = "Redo" And Not MonoDimEntityHasBeenAcquiredAtLeastOnce Then
+               'We do nothing: Redo has no meaning in this context
+               
+             ElseIf Status = "Undo" then 
+               'We remove the fillet
+               Selection.Clear
+               Selection.Add(Fillet)
+               Selection.Delete
+               Part.Update
+               FilletNotFinished = True
+               
+             Else
+               If Status = "Redo" Then 
+                 Selection.Clear
+                 Selection.Add(MonoDimEntity)
+               Else
+                 Set SelectedElement = Selection.Item(1)
+                 Set MonoDimEntity = SelectedElement.Value
+               End If
+ 
+               MonoDimEntityHasBeenAcquiredAtLeastOnce = True
+               MonoDimEntityDeterminationNotFinished = False  
+ 
+               'Create the Hole
+               Dim HoleNotFinished, MonoDimEntitySave 
+               HoleNotFinished = True
+               
+               Do While HoleNotFinished And Not MonoDimEntityDeterminationNotFinished
+                 'We save the selection content in save variables.
+                 'This corresponds to the fact that:
+                 '  - we want that, during the following call to SelectElement, the 1-D entity previously
+                 '    selected remains highlighted
+                 '  - this is done using the False value of the iMaySkipInteractiveSelection
+                 '    parameter, the selection containing the 1-D entity. It requires that the selection
+                 '    content be saved
+                 Set MonoDimEntitySave = Selection.Item(1).Value
+ 
+                 'We ask the user to select a face
+                 InputObjectType(0) = "Face" 
+                 Status = Selection.SelectElement(InputObjectType, "Select a face perpendicular to the 1-D entity", False)   
+                              
+                 If Status = "Cancel" Then 
+                   'We remove the fillet, the pad, restore the selection of the editor which was active before the selection to its initial content and go out
+                   Selection.Clear
+                   Selection.Add(Fillet)
+                   Selection.Delete
+                   Selection.Clear
+                   Selection.Add(Pad)
+                   Selection.Delete
+                   Selection.Clear
+                   For SelectionObjectIndex = 0 to SelectionAtBeginningLength - 1
+                        Selection.Add SelectionAtBeginning(SelectionObjectIndex)
+                   Next
+                   Part.Update
+                   CATIA.HSOSynchronized = True
+                   CATIA.ScriptCommand = CatScriptCommandStop
+                   Exit Sub
+                   
+                 ElseIf Status = "Redo" And Not FaceHasBeenAcquiredAtLeastOnce Then
+                   'We do nothing: Redo has no meaning in this context
+                   
+                 ElseIf Status = "Undo" Then
+                   Selection.Clear
+                   'The 1-D entity must be re-selected
+                   MonoDimEntityDeterminationNotFinished = True
+ 
+                 Else
+                   Dim PadFace, HoleLocation(2)
+                   
+                   If Status &lt;&gt; "Redo" Then 
+                     Set SelectedElement = Selection.Item(1)
+                     Set PadFace = SelectedElement.Value
+                     SelectedElement.GetCoordinates HoleLocation
+ 
+                     'We merge the selected element with the save variables, and put the result in the selection
+                     Selection.Add MonoDimEntitySave
+                   End If
+ 
+                   FaceHasBeenAcquiredAtLeastOnce = True
+ 
+                   'We create the Hole
+                   Dim Hole
+                   Set Hole = Part.ShapeFactory.AddNewHoleFromPoint(HoleLocation(0), HoleLocation(1), HoleLocation(2), PadFace, 10.0)
+                   Hole.ThreadingMode = 1
+                   Hole.ThreadSide = 0
+                   Hole.Diameter.Value = 5.0
+                   Hole.SetDirection FilletEdge
+                   Part.Update 
+                   HoleNotFinished = False
+                   
+                   'We clear the selection
+                   Selection.Clear
+                 End If  'Face selected
+               Loop    'Hole created
+             End If  'Monodim entity selected
+           Loop    'Monodim entity determined
+         End If  'Edge selected
+       Loop    'Fillet created
+     End If  'Sketch selected  
+   Loop    'Pad creation
+   
+   CATIA.HSOSynchronized = True
+   CATIA.ScriptCommand = CatScriptCommandStop
+  
+ End Sub
+ </pre>
+</dl>
+</dd>
+<a id="SelectElement2"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>SelectElement2</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iFilterType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iMessage</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iObjectSelectionBeforeCommandUsePossibility</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ 
+<dl  class='desclist'>
+  <dt class='deprecated'> <b>Deprecated:</b></dt> 
+  <dd>  R207 
+<script type="text/javascript"> activateLinkAnchor('','SelectElement','SelectElement') </script>
+ </ dd>
+</dl>
+</dd>
+<a id="SelectElement3"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>SelectElement3</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iFilterType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iMessage</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iObjectSelectionBeforeCommandUsePossibility</span>,<script type="text/javascript"> activateLink('CATMultiSelectionMode','CATMultiSelectionMode')</script> <span class='param'>iMultiSelectionMode</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iTooltip</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ 
+<dl  class='desclist'>
+  <dt class='deprecated'> <b>Deprecated:</b></dt> 
+  <dd>  R207 
+<script type="text/javascript"> activateLinkAnchor('','SelectMultipleElements','SelectMultipleElements') </script>
+ </ dd>
+</dl>
+</dd>
+<a id="SelectElementOtherEditor"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>SelectElementOtherEditor</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iFilterType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iActiveEditorMessage</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iNonActiveEditorMessage</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iTooltip</span>,<script type="text/javascript"> activateLink('Editor','Editor')</script> <span class='param'>oEditor</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Runs an interactive selection command, enabling the selection in a non-active editor.
+ <br><b>Role</b>: <tt>SelectElementOtherEditor</tt> asks the end user to select a feature (in the geometry or in the
+ specification tree) of a non-active editor. During the selection, when the end user moves the mouse above a feature (in a non-active editor) which fits in the given filter, the mouse pointer turns into the "hand" cursor. Otherwise, into the "no entry" cursor.<br> 
+ This method may be used, for example, to write a script which does the following: 
+ <ul>
+ <li>a drawing is currently edited</li>
+ <li>the user is asked to select a reference plane in the 3D geometry (a part)</li>
+ <li>a front view is created in the drawing, projecting the 3D geometry onto the selected reference plane</li>
+ </ul><br>
+ Compared to the 
+<script type="text/javascript"> activateLinkAnchor('','SelectElement','SelectElement') </script> , the result of the selection will not be accessed through the 
+<script type="text/javascript"> activateLinkAnchor('','Count','Count') </script> and 
+<script type="text/javascript"> activateLinkAnchor('','Item','Item') </script> methods of the current selection object, but through the 
+<script type="text/javascript"> activateLinkAnchor('','Count','Count') </script> and 
+<script type="text/javascript"> activateLinkAnchor('','Item','Item') </script> methods of the Selection object aggregated by the 
+<script type="text/javascript"> activateLinkAnchor('CATIAEditor','','CATIAEditor') </script> object returned through the oEditor parameter.</br> <b>Note:</b> the Selection object aggregated by the 
+<script type="text/javascript"> activateLinkAnchor('CATIAEditor','','CATIAEditor') </script> object returned through the oEditor parameter is emptied by before the effective interactive selection.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFilterType</span></dt>
+   <dd> An array of string constants defining the Automation object types with which the selection will be filtered. 
+ 
+ </ dd>
+    <dt><span class='paramitem'> iActiveEditorMessage</span></dt>
+   <dd> A string displayed in the status bar when the current editor is active, and which tells the user what he/she should select (location, object...).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iNonActiveEditorMessage</span></dt>
+   <dd> A string displayed in the status bar when another editor is active, and which tells the user what he/she should select (location, object...).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTooltip</span></dt>
+   <dd> Displays a tooltip as soon as an object is located under the mouse without being selected.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oOutputState</span></dt>
+   <dd> The state of the selection command after SelectElementOtherEditor returns. It can either be "Normal", "Cancel", "Undo" or "Redo".
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> The following example supposes that a part, containing a pad, and drawing are currently edited, the drawing
+ window being the current window. It asks the end user to select a 2-D topological entity, such as a 
+ 
+<script type="text/javascript"> activateLinkAnchor('CATIAHybridShapePlane','','CATIAHybridShapePlane') </script> , in a part. Then it creates a front view in the drawing, projecting the 3D geometry onto the selected 2-D topological entity.
+ <pre>
+ Option Explicit
+ 
+ Sub CATMain()
+ 
+   If TypeName(CATIA.ActiveEditor.ActiveObject) &lt;&gt; "DrawingRoot" Then
+     CATIA.SystemService.Print "Not in Drawing context"
+     Exit Sub
+   End If
+ 
+   Dim DrawingSheets
+   Set DrawingSheets  = CATIA.ActiveEditor.ActiveObject.Sheets
+   
+   Dim DrawingSelection
+   Set DrawingSelection = CATIA.ActiveEditor.Selection
+  
+   CATIA.ScriptCommand = CatScriptCommandStart
+   CATIA.HSOSynchronized = False
+  
+   Dim DrawingSheet
+   Set DrawingSheet = DrawingSheets.ActiveSheet
+ 
+   'We save the current selection content
+   ReDim DrawingSelectionAtBeginning(DrawingSelection.Count)
+   Dim SelectionObjectIndex 
+   For SelectionObjectIndex = 0 To DrawingSelection.Count - 1
+      Set DrawingSelectionAtBeginning(SelectionObjectIndex) = DrawingSelection.Item(1).Value
+   Next
+   Dim SelectionAtBeginningLength 
+   SelectionAtBeginningLength = DrawingSelection.Count
+  
+   'Feature creation
+   Dim Status, InputObjectType(0), oOtherEditor
+   InputObjectType(0) = "BiDimInfinite" 
+ 
+   Status = DrawingSelection.SelectElementOtherEditor( InputObjectType, "Select a 2-D topological entity in a 3-D geometry", "Select a 2-D topological entity", False, oOtherEditor)
+   If Status = "Cancel" Or Status = "Undo" Or Status = "Redo" Then 
+     'We restore the selection to its initial content
+     oOtherEditor.Selection.Clear
+     For SelectionObjectIndex = 0 to SelectionAtBeginningLength - 1
+       DrawingSelection.Add DrawingSelectionAtBeginning(SelectionObjectIndex)
+     Next
+     Exit Sub
+     
+   Else
+     Dim BiDimFeature, V1(2), V2(2)
+     Set BiDimFeature = oOtherEditor.Selection.Item(1).Value
+     If TypeName(BiDimFeature) = "Plane" Or TypeName(BiDimFeature) = "PlanarFace" Then
+       BiDimFeature.GetFirstAxis V1
+       BiDimFeature.GetSecondAxis V2
+     Else
+       Exit Sub
+     End If
+      
+     'We create a view called "Front View" in the current sheet, using the Plane as projection plane, and whose origin coordinates are (300,150)
+     Dim DrawingFrontView
+     Set DrawingFrontView = DrawingSheet.Views.AddFrontView(300., 150., "Front View", V1(0), V1(1), V1(2), V2(0), V2(1), V2(2))
+ 
+     oOtherEditor.Selection.Clear
+   End If
+ 
+   CATIA.HSOSynchronized = True
+   CATIA.ScriptCommand = CatScriptCommandStop
+  
+ End Sub
+ </pre>
+</dl>
+</dd>
+<a id="SelectMultipleElements"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>SelectMultipleElements</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iFilterType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iMessage</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMaySkipInteractiveSelection</span>,<script type="text/javascript"> activateLink('CATMultiSelectionMode','CATMultiSelectionMode')</script> <span class='param'>iMultiSelectionMode</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iTooltip</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Runs an interactive multiselection command.
+ <br><b>Role</b>: <tt>SelectMultipleElements</tt> asks the end user to select a feature (in the geometry or in the
+ specification tree). It is identical to the 
+<script type="text/javascript"> activateLinkAnchor('','SelectElement','SelectElement') </script> method except that it manages complex uses through the specification of two additional parameters.<br>
+ <b>Note</b>: The method (and script execution) fails if one of the following error occurs:
+ <ul>
+ <li>CATIA.ScriptCommand is equal to CatScriptCommandDefault. Selection.SelectMultipleElements cannot be called.</li>
+ <li>CATIA.ScriptCommand is equal to CatScriptCommandStop. Selection.SelectMultipleElements cannot be called.</li>
+ </ul>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFilterType</span></dt>
+   <dd> An array of string constants defining the Automation object types with which the selection will be filtered.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMessage</span></dt>
+   <dd> A string displayed in the status bar which tells the user what he/she should select (location, object...).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMaySkipInteractiveSelection</span></dt>
+   <dd> If true and if the user has selected something before running the script, the interactive step of this method will be skipped.
+ See 
+<script type="text/javascript"> activateLinkAnchor('','SelectElement','SelectElement') </script> . 
+ </ dd>
+    <dt><span class='paramitem'> iMultiSelectionMode</span></dt>
+   <dd> The type of multi-selection which will be offered to the user.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTooltip</span></dt>
+   <dd> Displays a tooltip as soon as an object is located under the mouse without being selected.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oOutputState</span></dt>
+   <dd> The state of the selection command after SelectMultipleElements returns. It can either be "Normal", "Cancel", "Undo"
+ or "Redo". See 
+<script type="text/javascript"> activateLinkAnchor('','SelectElement','SelectElement') </script> . 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This first example asks the end user to select several points (see 
+<script type="text/javascript"> activateLinkAnchor('CATIAHybridShapePoint','','CATIAHybridShapePoint') </script> ) into the current Part window, drawing a trap, and performs a symmetry with respect to the XZ plane on the selected points 
+ (see 
+<script type="text/javascript"> activateLinkAnchor('CATIAHybridShapeSymmetry','','CATIAHybridShapeSymmetry') </script> ). The points can be selected before running the script.</br> <pre>
+ Option Explicit
+ 
+ Sub CATMain()
+   
+   If TypeName(CATIA.ActiveEditor.ActiveObject) &lt;&gt; "Part" Then Exit Sub
+   Dim Part
+   Set Part = CATIA.ActiveEditor.ActiveObject
+   
+   Dim Selection
+   Set Selection = CATIA.ActiveEditor.Selection
+ 
+   CATIA.ScriptCommand = CatScriptCommandStart
+   CATIA.HSOSynchronized = False
+   
+   Dim HybridShapeFactory, Bodies, Body, OriginElements, Plane, PlaneReference
+   Set HybridShapeFactory = Part.HybridShapeFactory  
+   Set Bodies = Part.Bodies
+   Set Body = Bodies.Item("PartBody")
+   Set OriginElements = Part.OriginElements
+   Set Plane = OriginElements.PlaneZX
+   Set PlaneReference = Part.CreateReferenceFromObject(Plane)
+   
+   'We ask the user to select several points, drawing a trap
+   Dim InputObjectType(0), Status
+   InputObjectType(0) = "Point" 
+   Status = Selection.SelectMultipleElements(InputObjectType, "Select points", True, CATMultiSelTriggWhenSelPerf, False)
+  
+   If Status = "Cancel" Then
+     CATIA.HSOSynchronized = True
+     CATIA.ScriptCommand = CatScriptCommandStop
+     Exit Sub
+   End If
+  
+   Dim PointIndex, PointReference, HybridShapeSymmetry
+   For PointIndex = 1 To Selection.Count
+      Set PointReference = Part.CreateReferenceFromObject(Selection.Item(PointIndex).Value)
+      Set HybridShapeSymmetry = HybridShapeFactory.AddNewSymmetry(PointReference, PlaneReference)
+      HybridShapeSymmetry.VolumeResult = False
+      Body.InsertHybridShape HybridShapeSymmetry
+      Part.InWorkObject = HybridShapeSymmetry
+      Part.Update 
+   Next
+   
+   Selection.Clear
+   CATIA.HSOSynchronized = True
+    
+ End Sub
+ </pre>
+ 
+ </pre></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This second example illustrates the use of the CATMultiSelTriggWhenUserValidatesSelection value for the 
+ iMultiSelectionMode parameter.<br>
+ It creates a drawing containing a line and three points, and guides the user through:
+ <ul>
+ <li>the selection of points</li>
+ <li>the selection of the symmetry axis</li>
+ </ul>
+ the selected points being moved by symmetry according to the selected axis. This example will not work for the origin or other specific points.
+ <pre>
+ Option Explicit
+ 
+ Sub CATMain()
+   
+   'We create a drawing
+   Dim oNewService, newEditor 
+   Set oNewService = CATIA.GetSessionService("PLMNewService")
+   oNewService.PLMCreate("Drawing"), newEditor
+   
+   'Get the drawing root from the Editor 
+   Dim myDrwRoot
+   Set myDrwRoot = newEditor.ActiveObject
+ 
+   'Set the drawing standard 
+   myDrwRoot.Standard = catISO
+ 
+   Dim DrawingSheets, DrawingSheet 
+   Set DrawingSheets = myDrwRoot.Sheets
+   Set DrawingSheet = DrawingSheets.Item("Sheet.1")
+   
+   DrawingSheet.PaperSize = catPaperA0
+   DrawingSheet.Scale = 1.000000
+   DrawingSheet.Orientation = catPaperLandscape
+   
+   CATIA.ScriptCommand = CatScriptCommandStart
+   CATIA.HSOSynchronized = False
+   
+   Dim DrawingViews, DrawingView
+   Set DrawingViews = DrawingSheet.Views
+   Set DrawingView = DrawingViews.ActiveView
+  
+   Dim Factory2D
+   Set Factory2D = DrawingView.Factory2D
+   
+   'We create a horizontal line with a zero ordinate
+   Dim LineLeftExtremity, LineRightExtremity, Line2D 
+   Set LineLeftExtremity = Factory2D.CreatePoint(-100.0, 0.0)
+   LineLeftExtremity.ReportName = 3
+   Set LineRightExtremity = Factory2D.CreatePoint(100.0, 0.0)
+   LineRightExtremity.ReportName = 4
+   Set Line2D = Factory2D.CreateLine(-100.0, 0.0, 100.0, 0.0) 
+   Line2D.ReportName = 5
+   Line2D.StartPoint = LineLeftExtremity 
+   Line2D.EndPoint = LineRightExtremity
+ 
+   'We create three points
+   Dim Point2D1, Point2D2, Point2D3
+   Set Point2D1 = Factory2D.CreatePoint(-50.0, 50.0) 
+   Point2D1.ReportName = 6 
+   Point2D1.Construction = False
+   Set Point2D2 = Factory2D.CreatePoint(0.0, 70.0) 
+   Point2D2.ReportName = 7 
+   Point2D1.Construction = False
+   Set Point2D3 = Factory2D.CreatePoint(50.0, 50.0) 
+   Point2D3.ReportName = 8 
+   Point2D3.Construction = False
+ 
+   CATIA.HSOSynchronized = True
+   MsgBox "First select several points to be symmetrized."
+   CATIA.HSOSynchronized = False
+ 
+   'We ask the user to select several points
+   Dim Selection
+   Set Selection = CATIA.ActiveEditor.Selection
+   Dim InputObjectType(0), Status
+   InputObjectType(0) = "Point2D" 
+   Status = Selection.SelectMultipleElements(InputObjectType, "Select the set of elements to be symmetrized", True, CATMultiSelTriggWhenUserValidatesSelection, False)
+   
+   If Status = "Cancel" Then
+     CATIA.HSOSynchronized = True
+     CATIA.ScriptCommand = CatScriptCommandStop
+     Exit Sub
+   End If
+   
+   'We add the selected points to SelectedPoint
+   Dim SelectedPoint(10), SelectedPointCount, PointIndex
+   SelectedPointCount = 0
+   For PointIndex = 0 To Selection.Count - 1
+     Set SelectedPoint(PointIndex) = Selection.Item(PointIndex + 1).Value
+     SelectedPointCount = SelectedPointCount + 1
+   Next   
+   
+   CATIA.HSOSynchronized = True
+   MsgBox "Then select the line from which the elements will remain equidistant"
+   CATIA.HSOSynchronized = False
+   
+   'We ask the user to select the line
+   InputObjectType(0) = "Line2D" 
+   Status = Selection.SelectElement(InputObjectType, "Select the line or axis from which the elements will remain equidistant", False)
+  
+   If Status = "Cancel" Then
+     CATIA.HSOSynchronized = True
+     CATIA.ScriptCommand = CatScriptCommandStop
+     Exit Sub
+   End If
+   
+   'We move the selected points by symmetry according to the selected line
+   Dim Coordinates(2), CurrentPoint2D
+   For PointIndex = 0 To SelectedPointCount - 1
+     Set CurrentPoint2D = SelectedPoint(PointIndex)
+     CurrentPoint2D.GetCoordinates Coordinates
+     CurrentPoint2D.SetData Coordinates(0), -Coordinates(1)
+   Next   
+   
+   Selection.Clear
+   CATIA.HSOSynchronized = True
+   CATIA.ScriptCommand = CatScriptCommandStop
+   MsgBox "The points have successfully been moved."
+ 
+ End Sub
+ </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

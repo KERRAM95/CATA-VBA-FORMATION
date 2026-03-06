@@ -1,0 +1,74 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>MeasureService Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>MeasureService Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavunused">Properties</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableService', 'MethodIndex'); return false;">
+		Methods</a></td>
+	</tr>
+</tbody>
+</table>
+<p class="auto"><a href="../CAAScdInfInfrastructure/CAAInfObjService.htm">
+<img src="../CAAScdImages/Service.png" alt="Service Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasureService');return false;"><img alt="MeasureService Object" src="../CAAScdImages/MeasureService.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="space" width="17" height="25"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasureBetween');return false;"><img alt="MeasureBetween Object" src="../CAAScdImages/MeasureBetween.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="space" width="17" height="25"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasureItem');return false;"><img alt="MeasureItem Object" src="../CAAScdImages/MeasureItem.png" width="252" height="22"/></a><br />
+</p>
+<p>Represents a service for measuring purposes.</p>
+<p>The <strong>MeasureService</strong> object lets you retrieve a <strong>MeasureBetween</strong> 
+object to measure between two sets of selected objects, or the <strong>MeasureItem</strong> 
+object to measure a set of selected objects.</p>
+<h2>Retrieving the MeasureService Object</h2>
+<p>Refer to the
+<a href="../CAAScdInfInfrastructure/CAAInfObjService.htm">Service Object</a>.</p>
+<h2>Using the MeasureService Object</h2>
+<p>Use the <strong>MeasureService</strong> object to retrieve the <strong>MeasureBetween</strong> 
+object:</p>
+<pre class="code"><span class="keyword">Dim</span> oMeasureService <span class="keyword">As</span> MeasureService
+<span class="keyword">Set</span> oMeasureService = CATIA.ActiveEditor.GetService(&quot;MeasureService&quot;)
+<span class="keyword">Dim</span> oMeasureBetween <span class="keyword">As</span> MeasureBetween
+<span class="keyword">Set</span> oMeasureBetween = oMeasureService.GetMeasureBetween(oSelection1, oSelection2)
+...
+oMeasureBetween.Compute</pre>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

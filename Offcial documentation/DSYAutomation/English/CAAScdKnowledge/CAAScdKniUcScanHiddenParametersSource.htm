@@ -1,0 +1,205 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdKniUcScanHiddenParametersSource</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Scanning the Root Parameter Set
+'
+'Mission: This use case scans the hidden Boolean Parameters throughout a Parameter Set for a given 3DShape.
+'
+'Steps:
+'
+'  1. Creates 3DShape with a Parameter Set
+'  2. Retrieves the Knowledge Service
+'  3. Retrieves the Part Knowledge Collection
+'  4. Retrieves the Created Parameter Set
+'  5. Retrieves its Parameter Collection
+'  6. Scans the Parameter list for the hidden Boolean Parameters 
+'  7. Displays the list of the hidden Boolean Parameters 
+'--------------------------------------------------------------------------------------------------------------------
+Sub ScanningHiddenParameters()
+
+  'Error Handling
+  'On Error GoTo ErrorSub
+
+    '1 - Creates 3DShape with a Parameter Set with hidden/shown Parameters
+    Dim MyNewPart As Part
+    Create3DShape MyNewPart
+    
+    '2 - Retrieves the Knowledge Service
+    Dim oKnowledgeServices As KnowledgeServices
+    Set oKnowledgeServices = CATIA.GetSessionService(&quot;KnowledgeServices&quot;)
+    
+    '3 - Retrieves the Part Knowledge Collection
+    Dim oKnowledgeCollectionForPart As KnowledgeCollection
+    Set oKnowledgeCollectionForPart = oKnowledgeServices.GetKnowledgeCollection(MyNewPart, kweParametersType)
+    
+    '4 -  Retrieves the Created Parameter Set
+    Dim oParmsSetForMyParameterSet As ParmsSet
+    Set oParmsSetForMyParameterSet = oKnowledgeCollectionForPart.Item(1)
+    
+    '5 - Retrieves its Parameter Collection
+    Dim oKnowledgeCollection As KnowledgeCollection
+    Set oKnowledgeCollection = oParmsSetForMyParameterSet.Collection
+    
+    Dim oParamCollection As KnowledgeCollection
+    Set oParamCollection = oKnowledgeCollection.Find(kweParameterObjectType, True)
+        
+    Dim oParamString0 As String
+    oParamString0 = &quot;                            Name                                           Value                           Comment&quot;
+    Dim oParamString1 As String
+    oParamString1 = &quot;Here is the list of hidden parameters of type Boolean are&quot; &amp; vbCrLf &amp; oParamString0
+        
+    '6 - Scans the Parameter list for the hidden Boolean Parameters
+    ' Here we are scanning the hidden parameter list only for Boolean type of parameters.
+    ' Tests whether the value returned by the hidden property of the Parameter is &quot;True&quot;
+    ' Checks whether the type of the parameter belongs to &quot;BoolParam&quot; class object.
+    ' Then increments the HiddenNumber variable.
+    Dim i As Integer
+    For i = 1 To oParamCollection.Count
+        Dim oParam As Parameter
+        Set oParam = oParamCollection.Item(i)
+        Dim HiddenNumber As Integer
+        If (oParam.Hidden) Then
+            If TypeName(oParam) = &quot;BoolParam&quot; Then
+                oParamString1 = oParamString1 &amp; vbCrLf &amp; oParam.Name &amp; &quot;                     &quot; &amp; oParam.Value &amp; &quot;                       &quot; &amp; &quot;'&quot; &amp; oParam.Comment &amp; &quot;'&quot;: HiddenNumber = HiddenNumber + 1
+            End If
+        End If
+    
+    Next
+    
+    '7 - Displays the list of the hidden Boolean Parameters
+    If (HiddenNumber &gt; 0) Then
+        MsgBox oParamString1
+    End If
+    
+GoTo EndSub
+    
+Error Handeling
+ErrorSub:
+        MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+        GoTo EndSub
+EndSub:
+
+End Sub
+
+'--------------------------------------------------------------------------------------------------------------------
+'Creates 3DShape with Parameters
+'
+'Steps:
+'
+'  1. Creates a 3DShape
+'  2. Creates Part with Parameters
+'       2.1 - Retrieves the part from the Active Editor
+'       2.2 - Retrieves KnowledgeObjects Object from Part
+'       2.3 - Creates Parameters Set
+'       2.4 - Creates Parameters beneath the Parameters feature
+'       2.5 - Creates another Parameter Set beneath the Parameter Set
+'       2.6 - Adds Parameters below newly created sub Parameter Set
+'  3. Updates Part
+'--------------------------------------------------------------------------------------------------------------------
+
+Sub Create3DShape(oPart)
+
+  'Error handling
+  'On Error GoTo ErrorSub
+
+    '1. Creates a 3DShape
+    'Creates a new 3DShape Rep Ref
+    Dim oNewService As PLMNewService
+    Set oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+    
+    Dim oEditor3DShape As Editor
+    oNewService.PLMCreate &quot;3DShape&quot;, oEditor3DShape
+    
+    '2. Creates Pad
+    '2.1 - Retrieves the part from the Active Editor
+    Set oPart = oEditor3DShape.ActiveObject
+    
+    '2.2 - Retrieve KnowledgeObjects Object from Part
+    Dim oKnowledgeObjects As KnowledgeObjects
+    Set oKnowledgeObjects = oPart.GetItem(&quot;KnowledgeObjects&quot;)
+    
+    '2.3 - Creates Parameters Set
+    Dim oParams As ParmsSet
+    Set oParams = oKnowledgeObjects.GetKnowledgeRootSet(True, kweParametersType)
+    
+    '2.4 - Creates parameters beneath the Parameters feature
+    'Creates the parameters of type Boolean
+    Dim oParamString1 As Parameter
+    Set oParamString1 = oParams.Factory.CreateBoolean(&quot;TaskAsBoolean1&quot;, &quot;True&quot;)
+    
+    Dim oParamString2 As Parameter
+    Set oParamString2 = oParams.Factory.CreateBoolean(&quot;TaskAsBoolean2&quot;, &quot;True&quot;)
+    oParamString2.Hidden = True
+    oParamString2.Comment = &quot;HiddenParameter1&quot;
+    
+    Dim oParamString3 As Parameter
+    Set oParamString3 = oParams.Factory.CreateBoolean(&quot;TaskAsBoolean3&quot;, &quot;False&quot;)
+    oParamString3.Hidden = True
+    oParamString3.Comment = &quot;HiddenParameter2&quot;
+    
+    'Creates the parameters of type String
+    Dim oParamString4 As Parameter
+    Set oParamString4 = oParams.Factory.CreateString(&quot;TaskAsString1&quot;, &quot;String1&quot;)
+    oParamString4.Hidden = True
+    oParamString4.Comment = &quot;HiddenParameter3&quot;
+    
+    Dim oParamString5 As Parameter
+    Set oParamString5 = oParams.Factory.CreateString(&quot;TaskAsString2&quot;, &quot;String2&quot;)
+    
+    'Creates the parameter of type Integer
+    Dim oParamString6 As Parameter
+    Set oParamString6 = oParams.Factory.CreateInteger(&quot;TaskAsInteger1&quot;, 25)
+    oParamString6.Hidden = True
+    oParamString6.Comment = &quot;HiddenParameter4&quot;
+    
+    'Creates another Parameter Set beneath the Parameter Set
+    Dim oSubParamSet As ParmsSet
+    Set oSubParamSet = oParams.Factory.CreateParametersSet(&quot;Sub-ParameterSet&quot;)
+    
+    ' Adds Parameters below newly created sub Parameter Set
+    'Creates the parameter of type Boolean
+    Dim oParamString7 As Parameter
+    Set oParamString7 = oSubParamSet.Factory.CreateBoolean(&quot;TaskAsBoolean4&quot;, &quot;True&quot;)
+    oParamString7.Hidden = True
+    oParamString7.Comment = &quot;HiddenParameter5&quot;
+      
+    'Creates the parameter of type Integer
+    Dim oParamString8 As Parameter
+    Set oParamString8 = oSubParamSet.Factory.CreateString(&quot;TaskAsInteger2&quot;, 50)
+    
+    '3 - Updates Part
+    oPart.Update
+    
+    GoTo EndSub
+    
+ErrorSub:
+        MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+        GoTo EndSub
+EndSub:
+
+End Sub
+</pre>
+
+</body>
+
+</html>

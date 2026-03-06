@@ -1,0 +1,486 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample demonstrates the methodology to create/edit composite features.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">	Setting up the Model</span>
+<span class="comment">	Managing the Composite Parameters</span>
+<span class="comment">	Adding materials to the Composite Parameters</span>
+<span class="comment">	Managing Rosettes in the Composite Parameters</span>
+<span class="comment">	Add Orientation in the Composite Parameters</span>
+<span class="comment">	Managing Laminates in the Composite Parameters</span>
+<span class="comment">	Creation of Grid using reference geometries and Rosette</span>
+<span class="comment">	Assigning laminate to Grid Cells</span>
+<span class="comment">	Renaming the Grid Cells</span>
+<span class="comment">	Exporting the Grid to a file</span>
+
+
+<span class="keyword">Sub</span> CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 1- Setting up the model</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+    <span class="keyword">Dim</span> matSearchService <span class="keyword">As</span> SearchService
+    <span class="keyword">Set</span> matSearchService = CATIA.GetSessionService("Search")
+    <span class="keyword">Dim</span> oDatabaseSearch1 <span class="keyword">As</span> DatabaseSearch
+    <span class="keyword">Set</span> oDatabaseSearch1 = matSearchService.DatabaseSearch
+    oDatabaseSearch1.BaseType = "PLMEntity"
+    oDatabaseSearch1.Mode = SearchMode_Predefined
+    oDatabaseSearch1.AddPredefinedCriteria "mat:*Com*VB*"
+    matSearchService.Search
+    <span class="keyword">Dim</span> matPLMEntities <span class="keyword">As</span> PLMEntities
+    <span class="keyword">Set</span> matPLMEntities = oDatabaseSearch1.Results
+    <span class="keyword">Dim</span> matPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set</span> matPLMOpenService = CATIA.GetSessionService("PLMOpenService")
+    <span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor
+    For Each i In matPLMEntities
+        matPLMOpenService.PLMOpen i, oEditor
+    Next
+
+    <span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> SearchService
+    <span class="keyword">Set</span> oSearchService = CATIA.GetSessionService("Search")
+    <span class="keyword">Dim</span> oDatabaseSearch <span class="keyword">As</span> DatabaseSearch
+    <span class="keyword">Set</span> oDatabaseSearch = oSearchService.DatabaseSearch
+    oDatabaseSearch.BaseType = "VPMReference"
+    oDatabaseSearch.AddEasyCriteria "V_Name", "VB*"
+    oSearchService.Search
+    <span class="keyword">Dim</span> cPLMEntities <span class="keyword">As</span> PLMEntities
+    <span class="keyword">Set</span> cPLMEntities = oDatabaseSearch.Results
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set</span> oPLMOpenService = CATIA.GetSessionService("PLMOpenService")
+    <span class="keyword">Dim</span> Editor <span class="keyword">As</span> Editor
+    <span class="keyword">Set</span> i = cPLMEntities.Item(1)
+    oPLMOpenService.PLMOpen i, Editor
+    
+    <span class="keyword">Dim</span> myActiveObject <span class="keyword">As</span> Part
+    <span class="keyword">Set</span> myActiveObject = Editor.ActiveObject
+    
+    <span class="keyword">Dim</span> oProductService   <span class="keyword">As</span> PLMProductService
+    <span class="keyword">Set</span> oProductService = Editor.GetService("PLMProductService")
+    
+    <span class="keyword">Dim</span> myEntities <span class="keyword">As</span> PLMEntities
+    <span class="keyword">Set</span> myEntities = oProductService.EditedContent
+    
+    <span class="keyword">Dim</span> myModel <span class="keyword">As</span> VPMReference
+    <span class="keyword">Set</span> myModel = myEntities.Item(1)
+    
+    ' Retrieve the root occurrence
+    <span class="keyword">Dim</span> myRootOcc <span class="keyword">As</span> VPMRootOccurrence
+    <span class="keyword">Set</span> myRootOcc = oProductService.RootOccurrence
+    ' retrieve the publications set
+    <span class="keyword">Dim</span> myPublications <span class="keyword">As</span> VPMPublications
+    <span class="keyword">Set</span> myPublications = myRootOcc.ReferenceRootOccurrenceOf.Publications
+    'Main supports
+    <span class="keyword">Dim</span> Rib01 <span class="keyword">As</span> VPMPublication
+    <span class="keyword">Set</span> Rib01 = myPublications.GetItem("Rib01")
+    <span class="keyword">Dim</span> Rib02 <span class="keyword">As</span> VPMPublication
+    <span class="keyword">Set</span> Rib02 = myPublications.GetItem("Rib02")
+    <span class="keyword">Dim</span> Rib03 <span class="keyword">As</span> VPMPublication
+    <span class="keyword">Set</span> Rib03 = myPublications.GetItem("Rib03")
+    <span class="keyword">Dim</span> Rib04 <span class="keyword">As</span> VPMPublication
+    <span class="keyword">Set</span> Rib04 = myPublications.GetItem("Rib04")
+    <span class="keyword">Dim</span> Rib05 <span class="keyword">As</span> VPMPublication
+    <span class="keyword">Set</span> Rib05 = myPublications.GetItem("Rib05")
+    <span class="keyword">Dim</span> Skin <span class="keyword">As</span> VPMPublication
+    <span class="keyword">Set</span> Skin = myPublications.GetItem("Skin")
+    
+
+    <span class="keyword">Dim</span> myRootOccurrence <span class="keyword">As</span> VPMRootOccurrence
+    <span class="keyword">Set</span> myRootOccurrence = oProductService.RootOccurrence
+    
+    <span class="keyword">Dim</span> myRepInstance <span class="keyword">As</span> VPMRepInstance
+    <span class="keyword">Set</span> myRepInstance = Nothing ' Because we use publications
+    
+    <span class="keyword">Dim</span> myLinkToSupport1 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToSupport1 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Rib01)
+    <span class="keyword">Dim</span> myLinkToSupport2 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToSupport2 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Rib02)
+    <span class="keyword">Dim</span> myLinkToSupport3 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToSupport3 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Rib03)
+    <span class="keyword">Dim</span> myLinkToSupport4 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToSupport4 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Rib04)
+    <span class="keyword">Dim</span> myLinkToSupport5 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToSupport5 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Rib05)
+    <span class="keyword">Dim</span> myLinkToSupport6 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToSupport6 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Skin)
+    
+    'Creating the FEM Rep and retrieving its Rep Manager
+    
+    <span class="keyword">Dim</span> myPrdRepFactory <span class="keyword">As</span> SimPrdRepFactory
+    <span class="keyword">Set</span> myPrdRepFactory = myModel.GetItem("SimPrdRepFactory")
+    
+    <span class="keyword">Dim</span> myRepRef <span class="keyword">As</span> VPMRepReference
+    <span class="keyword">Set</span> myRepRef = myPrdRepFactory.CreatePrdRep("FEM")
+    
+    <span class="keyword">Dim</span> myFEMRoot <span class="keyword">As</span> SimFemRoot
+    <span class="keyword">Set</span> myFEMRoot = myRepRef.GetItem("SimFemRoot")
+    
+    myFEMRoot.AddAssociatedRep myLinkToSupport1
+    
+    
+    'Creating a Mesh on a Part
+    
+    <span class="keyword">Dim</span> myMeshSet <span class="keyword">As</span> SimMeshSet
+    <span class="keyword">Set</span> myMeshSet = myFEMRoot.GetSet("SimNodesElements")
+    
+    <span class="keyword">Dim</span> myMeshParts <span class="keyword">As</span> SimMeshParts
+    <span class="keyword">Set</span> myMeshParts = myMeshSet.MeshParts
+    
+    <span class="keyword">Dim</span> myMeshPart1 <span class="keyword">As</span> SimMeshPart
+    <span class="keyword">Set</span> myMeshPart1 = myMeshParts.Add("CATFmtSurfaceMesher")
+    myMeshPart1.AddSupport myLinkToSupport1
+    myMeshPart1.SetAttributeValue "Mesh", "ElementOrder", 1
+    myMeshPart1.SetAttributeValue "Mesh", "MeshSizeValue", 40#
+    
+    <span class="keyword">Dim</span> myMeshPart2 <span class="keyword">As</span> SimMeshPart
+    <span class="keyword">Set</span> myMeshPart2 = myMeshParts.Add("CATFmtSurfaceMesher")
+    myMeshPart2.AddSupport myLinkToSupport2
+    myMeshPart2.SetAttributeValue "Mesh", "ElementOrder", 1
+    myMeshPart2.SetAttributeValue "Mesh", "MeshSizeValue", 40#
+     
+    <span class="keyword">Dim</span> myMeshPart3 <span class="keyword">As</span> SimMeshPart
+    <span class="keyword">Set</span> myMeshPart3 = myMeshParts.Add("CATFmtSurfaceMesher")
+    myMeshPart3.AddSupport myLinkToSupport3
+    myMeshPart3.SetAttributeValue "Mesh", "ElementOrder", 1
+    myMeshPart3.SetAttributeValue "Mesh", "MeshSizeValue", 40#
+     
+    <span class="keyword">Dim</span> myMeshPart4 <span class="keyword">As</span> SimMeshPart
+    <span class="keyword">Set</span> myMeshPart4 = myMeshParts.Add("CATFmtSurfaceMesher")
+    myMeshPart4.AddSupport myLinkToSupport4
+    myMeshPart4.SetAttributeValue "Mesh", "ElementOrder", 1
+    myMeshPart4.SetAttributeValue "Mesh", "MeshSizeValue", 40#
+     
+    <span class="keyword">Dim</span> myMeshPart5 <span class="keyword">As</span> SimMeshPart
+    <span class="keyword">Set</span> myMeshPart5 = myMeshParts.Add("CATFmtSurfaceMesher")
+    myMeshPart5.AddSupport myLinkToSupport5
+    myMeshPart5.SetAttributeValue "Mesh", "ElementOrder", 1
+    myMeshPart5.SetAttributeValue "Mesh", "MeshSizeValue", 40#
+    myMeshSet.Update
+     
+    <span class="keyword">Dim</span> myMeshPart6 <span class="keyword">As</span> SimMeshPart
+    <span class="keyword">Set</span> myMeshPart6 = myMeshParts.Add("CATFmtSurfaceMesher")
+    myMeshPart6.AddSupport myLinkToSupport6
+    myMeshPart6.SetAttributeValue "Mesh", "ElementOrder", 1
+    myMeshPart6.SetAttributeValue "Mesh", "MeshSizeValue", 40#
+    myMeshSet.Update
+	
+    'Creating a Property
+    
+    <span class="keyword">Dim</span> myPropertiesSet <span class="keyword">As</span> SimProperties
+    <span class="keyword">Set</span> myPropertiesSet = myFEMRoot.GetSet("SimProperties")
+
+    <span class="keyword">Dim</span> myCompositeShellSection1 '<span class="keyword">As</span> SimCompositeShellSection
+    <span class="keyword">Set</span> myCompositeShellSection1 = myPropertiesSet.Add("SimCompositeShellSection")
+    <span class="keyword">Dim</span> myLinkAccess1 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> myLinkAccess1 = myCompositeShellSection1.GetItem("SimLinkAccess")
+    myLinkAccess1.AddLink "MainSupport", myLinkToSupport1
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 2- Managing the Composite Parameters</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+    
+    <span class="keyword">Dim</span> myCompParams <span class="keyword">As</span> SimCompositeParameters
+    <span class="keyword">Set</span> myCompParams = myCompositeShellSection1.GetCompositeParameters
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 3- Adding materials to the Composite Parameters</span>
+<span class="comment">'--------------------------------------------------------------------------</span> 
+    <span class="keyword">Dim</span> MatService <span class="keyword">As</span> MATPLMService
+    <span class="keyword">Set</span> MatService = CATIA.GetSessionService("MATPLMService")
+    <span class="keyword">Dim</span> ListMaterialInSession <span class="keyword">As</span> ListObject
+    MatService.GetMaterialsInSession ListMaterialInSession
+    <span class="keyword">Dim</span> mat <span class="keyword">As</span> Material
+    <span class="keyword">Dim</span> j
+    For j = 1 To ListMaterialInSession.Count
+        <span class="keyword">Set</span> mat = ListMaterialInSession.Item(j)
+        myCompParams.AddMaterial mat
+    Next
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 4- Managing Rosette in the Composite Parameters </span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+    
+    <span class="keyword">Dim</span> myRosette1 <span class="keyword">As</span> SimCompositeRosette
+    <span class="keyword">Set</span> myRosette1 = myCompParams.CreateRosette
+    <span class="keyword">Set</span> myAxisSystem1 = myActiveObject.FindObjectByName("Axis System.1")
+    <span class="keyword">Set</span> myAxisSystem3 = myActiveObject.FindObjectByName("Axis System.5")
+    myRosette1.SetMainAxis myAxisSystem1
+    myRosette1.SetRosetteTransferType SimCompositeRosetteTypeCartesian
+    <span class="keyword">Dim</span> myRosette2 <span class="keyword">As</span> SimCompositeRosette
+    <span class="keyword">Set</span> myRosette2 = myCompParams.CreateRosette
+    <span class="keyword">Set</span> myAxisSystem2 = myActiveObject.FindObjectByName("Axis System.2")
+    myRosette2.SetMainAxis myAxisSystem2
+	
+    'Geometry for Guided by curve Rosette Transfer Type
+	
+    myRosette2.SetRosetteTransferType SimCompositeRosetteTypeGuidedCurve
+    <span class="keyword">Dim</span> MyRosette2Cyl '<span class="keyword">As</span> SimCompositeRosetteType
+    <span class="keyword">Set</span> MyRosette2Cyl = myRosette2.GetRosetteCylindericalTransfer
+    MyRosette2Cyl.SetCylindricalType SimCompositeCylindericalZero
+    <span class="keyword">Set</span> GeomSetRib01 = myActiveObject.FindObjectByName("Rib01")
+    <span class="keyword">Dim</span> GeomSetRib01Elems '  <span class="keyword">As</span> HybridShapes
+    <span class="keyword">Set</span> GeomSetRib01Elems = GeomSetRib01.HybridShapes
+    <span class="keyword">Dim</span> Val ' <span class="keyword">As</span> HybridShapeExtract
+    <span class="keyword">Set</span> Val = GeomSetRib01Elems.Item(1)
+    MyRosette2Cyl.SetCylindricalType SimCompositeCylindericalZero
+    MyRosette2Cyl.SetCylindricalRosetteTranferCurve Val
+    <span class="keyword">Dim</span> myRosette3 <span class="keyword">As</span> SimCompositeRosette
+    <span class="keyword">Set</span> myRosette3 = myCompParams.CreateRosette
+    myRosette3.SetMainAxis myAxisSystem3
+    myRosette3.SetRosetteTransferType SimCompositeRosetteTypeCartesian
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 5- Add Orientation in the Composite Parameters</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+    myCompParams.CreateOrientation "Simulia", 37.5, 1, 2, 3
+    
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 6- Managing Laminates in the Composite Parameters</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+    <span class="keyword">Dim</span> mats
+    mats = myCompParams.GetMaterialList
+    <span class="keyword">Dim</span> listSize <span class="keyword">As</span> Long
+    listSize = UBound(mats) - LBound(mats) + 1
+    ReDim MyParam(LBound(mats) To UBound(mats))
+    For h = LBound(mats) To UBound(mats)
+        MyParam(h) = 45
+    Next
+    <span class="keyword">Dim</span> lamina '<span class="keyword">As</span> SimCompositeLaminate
+    <span class="keyword">Set</span> lamina = myCompParams.CreateLaminate("Lamina1")
+    lamina.SetStackingSequence mats, MyParam
+	
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 7- Creation of Grid using reference geometries and Rosette</span>
+<span class="comment">'--------------------------------------------------------------------------</span>   
+    <span class="keyword">Set</span> GeomSetRib01 = myActiveObject.FindObjectByName("Rib01")
+    <span class="keyword">Dim</span> size <span class="keyword">As</span> Long
+    size = GeomSetRib01Elems.Count
+    ReDim myGeomRefSetForGridRib01(size - 1) '<span class="keyword">As</span> ListObject
+    '<span class="keyword">Dim</span> Val <span class="keyword">As</span> HybridShapeExtract
+    For hh = 0 To size - 1
+        <span class="keyword">Set</span> Val = GeomSetRib01Elems.Item(hh + 1)
+        <span class="keyword">Set</span> myGeomRefSetForGridRib01(hh) = Val
+    Next
+
+    <span class="keyword">Set</span> Grid1 = myCompositeShellSection1.CreateGrid(myGeomRefSetForGridRib01, myRosette1)
+	
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 8- Assigning Laminate to Grid Cells</span>
+<span class="comment">'--------------------------------------------------------------------------</span>   	
+    <span class="keyword">Dim</span> GriedCells1
+    GriedCells1 = Grid1.GetCells
+    For Each C In GriedCells1
+        C.SetLaminateOnCell lamina
+    Next
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 9- Renaming the Grid Cells</span>
+<span class="comment">'--------------------------------------------------------------------------</span> 
+    <span class="keyword">Dim</span> names
+    For Each C In GriedCells1
+        names = C.GetCellName
+        names = "1" + names
+        C.SetCellName names
+    Next
+	
+	'Similarly Composite Grid feature can be created for rest of the geometries
+    <span class="keyword">Dim</span> myLinkToCPDSupport1 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToCPDSupport1 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Grid1)
+    <span class="keyword">Dim</span> myCPDSupport1 <span class="keyword">As</span> SimCompositeSupportDefinition
+    <span class="keyword">Set</span> myCPDSupport1 = myCompositeShellSection1.CompositeSupport
+    <span class="keyword">Dim</span> mycpdLinkAccess1 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> mycpdLinkAccess1 = myCPDSupport1.GetItem("SimLinkAccess")
+    mycpdLinkAccess1.AddLink "ConnectorList", myLinkToCPDSupport1
+        
+    <span class="keyword">Dim</span> myCompositeShellSection2 '<span class="keyword">As</span> SimCompositeShellSection
+    <span class="keyword">Set</span> myCompositeShellSection2 = myPropertiesSet.Add("SimCompositeShellSection")
+    <span class="keyword">Dim</span> myLinkAccess2 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> myLinkAccess2 = myCompositeShellSection2.GetItem("SimLinkAccess")
+    myLinkAccess2.AddLink "MainSupport", myLinkToSupport2
+    
+    <span class="keyword">Set</span> GeomSetRib02 = myActiveObject.FindObjectByName("Rib02")
+    <span class="keyword">Dim</span> GeomSetRib02Elems  <span class="keyword">As</span> HybridShapes
+    <span class="keyword">Set</span> GeomSetRib02Elems = GeomSetRib02.HybridShapes
+    size = GeomSetRib02Elems.Count
+    ReDim myGeomRefSetForGridRib02(size - 1) '<span class="keyword">As</span> ListObject
+    For hh = 0 To size - 1
+        <span class="keyword">Set</span> Val = GeomSetRib02Elems.Item(hh + 1)
+        <span class="keyword">Set</span> myGeomRefSetForGridRib02(hh) = Val
+    Next
+    
+    <span class="keyword">Set</span> Grid2 = myCompositeShellSection2.CreateGrid(myGeomRefSetForGridRib02, myRosette1)
+    <span class="keyword">Dim</span> GriedCells2
+    GriedCells2 = Grid2.GetCells
+    For Each C In GriedCells2
+        C.SetLaminateOnCell lamina
+        names = C.GetCellName
+        names = "2" + names
+        C.SetCellName names
+    Next
+    <span class="keyword">Dim</span> myLinkToCPDSupport2 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToCPDSupport2 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Grid2)
+    <span class="keyword">Dim</span> myCPDSupport2 <span class="keyword">As</span> SimCompositeSupportDefinition
+    <span class="keyword">Set</span> myCPDSupport2 = myCompositeShellSection2.CompositeSupport
+    <span class="keyword">Dim</span> mycpdLinkAccess2 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> mycpdLinkAccess2 = myCPDSupport2.GetItem("SimLinkAccess")
+    mycpdLinkAccess2.AddLink "ConnectorList", myLinkToCPDSupport2
+    
+    <span class="keyword">Dim</span> myCompositeShellSection3 '<span class="keyword">As</span> SimCompositeShellSection
+    <span class="keyword">Set</span> myCompositeShellSection3 = myPropertiesSet.Add("SimCompositeShellSection")
+    <span class="keyword">Dim</span> myLinkAccess3 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> myLinkAccess3 = myCompositeShellSection3.GetItem("SimLinkAccess")
+    myLinkAccess3.AddLink "MainSupport", myLinkToSupport3
+    
+    <span class="keyword">Set</span> GeomSetRib03 = myActiveObject.FindObjectByName("Rib03")
+    <span class="keyword">Dim</span> GeomSetRib03Elems  <span class="keyword">As</span> HybridShapes
+    <span class="keyword">Set</span> GeomSetRib03Elems = GeomSetRib03.HybridShapes
+    size = GeomSetRib03Elems.Count
+    ReDim myGeomRefSetForGridRib03(size - 1) '<span class="keyword">As</span> ListObject
+    For hh = 0 To size - 1
+        <span class="keyword">Set</span> Val = GeomSetRib03Elems.Item(hh + 1)
+        <span class="keyword">Set</span> myGeomRefSetForGridRib03(hh) = Val
+    Next
+    <span class="keyword">Set</span> Grid3 = myCompositeShellSection3.CreateGrid(myGeomRefSetForGridRib03, myRosette1)
+    <span class="keyword">Dim</span> GriedCells3
+    GriedCells3 = Grid3.GetCells
+    For Each C In GriedCells3
+        C.SetLaminateOnCell lamina
+        names = C.GetCellName
+        names = "3" + names
+        C.SetCellName names
+    Next
+    <span class="keyword">Dim</span> myLinkToCPDSupport3 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToCPDSupport3 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Grid3)
+    <span class="keyword">Dim</span> myCPDSupport3 <span class="keyword">As</span> SimCompositeSupportDefinition
+    <span class="keyword">Set</span> myCPDSupport3 = myCompositeShellSection3.CompositeSupport
+    <span class="keyword">Dim</span> mycpdLinkAccess3 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> mycpdLinkAccess3 = myCPDSupport3.GetItem("SimLinkAccess")
+    mycpdLinkAccess3.AddLink "ConnectorList", myLinkToCPDSupport3
+        
+    <span class="keyword">Dim</span> myCompositeShellSection4 '<span class="keyword">As</span> SimCompositeShellSection
+    <span class="keyword">Set</span> myCompositeShellSection4 = myPropertiesSet.Add("SimCompositeShellSection")
+    <span class="keyword">Dim</span> myLinkAccess4 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> myLinkAccess4 = myCompositeShellSection4.GetItem("SimLinkAccess")
+    myLinkAccess4.AddLink "MainSupport", myLinkToSupport4
+    
+    <span class="keyword">Set</span> GeomSetRib04 = myActiveObject.FindObjectByName("Rib04")
+    <span class="keyword">Dim</span> GeomSetRib04Elems  <span class="keyword">As</span> HybridShapes
+    <span class="keyword">Set</span> GeomSetRib04Elems = GeomSetRib04.HybridShapes
+    size = GeomSetRib04Elems.Count
+    ReDim myGeomRefSetForGridRib04(size - 1) '<span class="keyword">As</span> ListObject
+    For hh = 0 To size - 1
+        <span class="keyword">Set</span> Val = GeomSetRib04Elems.Item(hh + 1)
+        <span class="keyword">Set</span> myGeomRefSetForGridRib04(hh) = Val
+    Next
+    <span class="keyword">Set</span> Grid4 = myCompositeShellSection4.CreateGrid(myGeomRefSetForGridRib04, myRosette1)
+    <span class="keyword">Dim</span> GriedCells4
+    GriedCells4 = Grid4.GetCells
+    For Each C In GriedCells4
+        C.SetLaminateOnCell lamina
+        names = C.GetCellName
+        names = "4" + names
+        C.SetCellName names
+    Next
+    <span class="keyword">Dim</span> myLinkToCPDSupport4 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToCPDSupport4 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Grid4)
+    <span class="keyword">Dim</span> myCPDSupport4 <span class="keyword">As</span> SimCompositeSupportDefinition
+    <span class="keyword">Set</span> myCPDSupport4 = myCompositeShellSection4.CompositeSupport
+    <span class="keyword">Dim</span> mycpdLinkAccess4 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> mycpdLinkAccess4 = myCPDSupport4.GetItem("SimLinkAccess")
+    mycpdLinkAccess4.AddLink "ConnectorList", myLinkToCPDSupport4
+        
+    <span class="keyword">Dim</span> myCompositeShellSection5 '<span class="keyword">As</span> SimCompositeShellSection
+    <span class="keyword">Set</span> myCompositeShellSection5 = myPropertiesSet.Add("SimCompositeShellSection")
+    <span class="keyword">Dim</span> myLinkAccess5 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> myLinkAccess5 = myCompositeShellSection5.GetItem("SimLinkAccess")
+    myLinkAccess5.AddLink "MainSupport", myLinkToSupport5
+    
+    <span class="keyword">Set</span> GeomSetRib05 = myActiveObject.FindObjectByName("Rib05")
+    <span class="keyword">Dim</span> GeomSetRib05Elems  <span class="keyword">As</span> HybridShapes
+    <span class="keyword">Set</span> GeomSetRib05Elems = GeomSetRib05.HybridShapes
+    size = GeomSetRib05Elems.Count
+    ReDim myGeomRefSetForGridRib05(size - 1) '<span class="keyword">As</span> ListObject
+    For hh = 0 To size - 1
+        <span class="keyword">Set</span> Val = GeomSetRib05Elems.Item(hh + 1)
+        <span class="keyword">Set</span> myGeomRefSetForGridRib05(hh) = Val
+    Next
+    <span class="keyword">Set</span> Grid5 = myCompositeShellSection5.CreateGrid(myGeomRefSetForGridRib05, myRosette1)
+    <span class="keyword">Dim</span> GriedCells5
+    GriedCells5 = Grid5.GetCells
+    For Each C In GriedCells5
+        C.SetLaminateOnCell lamina
+        names = C.GetCellName
+        names = "5" + names
+        C.SetCellName names
+    Next
+    <span class="keyword">Dim</span> myLinkToCPDSupport5 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToCPDSupport5 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Grid5)
+    <span class="keyword">Dim</span> myCPDSupport5 <span class="keyword">As</span> SimCompositeSupportDefinition
+    <span class="keyword">Set</span> myCPDSupport5 = myCompositeShellSection5.CompositeSupport
+    <span class="keyword">Dim</span> mycpdLinkAccess5 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> mycpdLinkAccess5 = myCPDSupport5.GetItem("SimLinkAccess")
+    mycpdLinkAccess5.AddLink "ConnectorList", myLinkToCPDSupport5
+    
+    <span class="keyword">Dim</span> myCompositeShellSection6 '<span class="keyword">As</span> SimCompositeShellSection
+    <span class="keyword">Set</span> myCompositeShellSection6 = myPropertiesSet.Add("SimCompositeShellSection")
+    <span class="keyword">Dim</span> myLinkAccess6 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> myLinkAccess6 = myCompositeShellSection6.GetItem("SimLinkAccess")
+    myLinkAccess6.AddLink "MainSupport", myLinkToSupport6
+    
+    <span class="keyword">Set</span> GeomSetSkin = myActiveObject.FindObjectByName("Skin")
+    <span class="keyword">Dim</span> GeomSetSkinElems  <span class="keyword">As</span> HybridShapes
+    <span class="keyword">Set</span> GeomSetSkinElems = GeomSetSkin.HybridShapes
+    size = GeomSetSkinElems.Count
+    ReDim myGeomRefSetForGridSkin(size - 1) '<span class="keyword">As</span> ListObject
+    For hh = 0 To size - 1
+        <span class="keyword">Set</span> Val = GeomSetSkinElems.Item(hh + 1)
+        <span class="keyword">Set</span> myGeomRefSetForGridSkin(hh) = Val
+    Next
+    <span class="keyword">Set</span> Grid6 = myCompositeShellSection6.CreateGrid(myGeomRefSetForGridSkin, myRosette1)
+    <span class="keyword">Dim</span> GriedCells6
+    GriedCells6 = Grid6.GetCells
+    For Each C In GriedCells6
+        C.SetLaminateOnCell lamina
+        names = C.GetCellName
+        names = "6" + names
+        C.SetCellName names
+    Next
+    <span class="keyword">Dim</span> myLinkToCPDSupport6 <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> myLinkToCPDSupport6 = oProductService.ComposeLink(myRootOccurrence, myRepInstance, Grid6)
+    <span class="keyword">Dim</span> myCPDSupport6 <span class="keyword">As</span> SimCompositeSupportDefinition
+    <span class="keyword">Set</span> myCPDSupport6 = myCompositeShellSection6.CompositeSupport
+    <span class="keyword">Dim</span> mycpdLinkAccess6 <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> mycpdLinkAccess6 = myCPDSupport6.GetItem("SimLinkAccess")
+    mycpdLinkAccess6.AddLink "ConnectorList", myLinkToCPDSupport6
+    
+    <span class="comment">'--------------------------------------------------------------------------</span>
+    <span class="comment">' 10- Exporting the Grid to a file</span>
+    <span class="comment">'--------------------------------------------------------------------------</span> 
+    Grid1.CreateFileFromCells("C:\ExportedGrid.xls")
+
+End Sub
+
+
+
+
+
+
+
+
+

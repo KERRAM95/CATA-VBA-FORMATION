@@ -1,0 +1,471 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<style type="text/css">
+    table.fill1 {
+    	width: 95%;
+    	background-color: #C0C0C0;
+	}
+	td.fill1 {
+		width: 33%;
+		padding: 30px;
+	}
+	td.fill2 {
+		padding: 30px;
+	}
+	td.fill3 {
+		width: 35%;
+		padding: 30px;
+	}
+	.padded td, .padded th {
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>
+
+<title>Automated FEM Procedures</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Automated FEM Procedures</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+		<h3>Abstract</h3>
+		<p> This article is in addition to the one about Automated FEM tool in the product documentation. <b>See</b> <code>Simulation\Physics Simulation\Model Assembly Design\Automated Modeling </code></p>
+		<p> It describes the available Automated FEM procedures to create mesh parts and it gives you some explanations to create your own user procedure.</p> 
+		<p><strong><a href="#How_to_test_out_of_the_box_procedures">How to test out of the box procedures</a></strong> </p>
+		<p><strong><a href="#Out_of_the_box_procedures">Out of the box procedures</a></strong> </p>
+		<p><strong><a href="#User_procedures">User procedures</a></strong></p>
+		<ul>
+			<li><a href="#Procedure_type">Procedure type</a></li>
+            <li><a href="#Global_variable">Global variable</a></li>
+            <li><a href="#Inputs">Inputs</a></li>
+			<li><a href="#Procedure_syntax">Procedure syntax</a></li>		
+		</ul>
+		<p><strong><a href="#Example_:_Generate_3D_mesh_procedure">Example : Generate 3D mesh procedure</a></strong>
+		</p>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="How_to_test_out_of_the_box_procedures">How to test out of the box procedures</a></h2>
+
+<p> <b>For 3D procedures :</b> 
+		</p>
+	<ul>
+		<li>Launch CATIA and import the
+			<code><div class="vb_sample_data"><div class=vb_sample_data>CAAScdFeaSample3DForAutomatedModeling.3dxml</div></div>
+			</code> 
+				file supplied in the folder 
+			<code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaModeling\samples\
+			</code> 
+				where 
+			<code>InstallRootFolder
+			</code> is the folder 
+				where the API CD-ROM is installed.<br />
+		</li>
+		<li>	Open the <code>&quot;CAAScdFeaSample3DForAutomatedModeling&quot;</code> and launch the Model Assembly Design apps.
+		</li>
+		<li>Launch the Automated FEM tool in the Automated FEM section.
+		</li>
+	</ul>
+		<p> <b>For 2D procedures :</b> 
+		</p>
+	<ul>	
+		<li>Launch CATIA and import the
+			<code><div class="vb_sample_data"><div class=vb_sample_data>CAAScdFeaSample2DForAutomatedModeling.3dxml</div></div></code> file supplied in 
+						the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaModeling\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder 
+						where the API CD-ROM is installed.<br />
+		</li>
+		<li>Open the <code>&quot;CAAScdFeaSample2DForAutomatedModeling&quot;</code> and launch the Model Assembly Design apps.
+		</li>
+		<li>Launch the Automated FEM tool in the Automated FEM section.
+		</li>
+	</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Out_of_the_box_procedures">Out of the box procedures</a></h2>
+
+<p>The table below describes the existing procedures that you can use.</p>
+<p>There are two types of procedures : </p>
+		<ul>
+			<li>Rule based
+			</li>
+		</ul>
+		<table class="padded">
+    		<tr>
+    			<th>Procedure name</th>
+    			<th>Used Mesh part</th>
+    			<th style="width: 216px">Late type </th>
+    			<th>Procedure </th>
+    		</tr>
+			<tr>
+				<td>Generate3DMesh</td>
+				<td>Tetrahedron</td>
+				<td>CATFmtTetRulesMesher</td>
+				<td> 
+					<span class="run-in"> 
+						<a href="CAAScdFeaGenerate3DMesh.htm">CAAScdFeaGenerate3DMesh</a>
+					</span> 
+				</td>
+			</tr>
+			<tr>
+				<td> Generate3DOctreeMesh </td>
+				<td> Octree 3D </td>
+				<td> CATFmtOctree3DRulesMesher </td>
+				<td> 
+					<span class="run-in">
+						<a href="CAAScdFeaGenerate3DOctreeMesh.htm"> CAAScdFeaGenerate3DOctreeMesh</a>
+					</span> 
+				</td>
+			</tr>
+			<tr>
+				<td> Generate3DSweepMesh </td>
+				<td> Sweep 3D </td>
+				<td> CATFmtSweep3DRulesMesher </td>
+				<td> 
+					<span class="run-in">
+						<a href="CAAScdFeaGenerate3DSweepMesh.htm"> CAAScdFeaGenerate3DSweepMesh</a>
+					</span>
+				</td>
+			</tr>
+					<tr>
+						<td> GenerateMidSurfWithAbsShape 
+						</td>
+						<td> Quadrangle Surface 
+						</td>
+						<td> CATFmtSurfQuadMesher 
+						</td>
+						<td> 
+							<span class="run-in">
+								<a href="CAAScdFeaGenerateMidSurfWithAbsShape.htm"> CAAScdFeaGenerateMidSurfWithAbsShape</a>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td> GenerateSurfQuadMesh 
+						</td>
+						<td> Quadrangle Surface
+						</td>
+						<td> CATFmtSurfQuadMesher
+						</td>
+						<td> 
+							<span class="run-in">
+								<a href="CAAScdFeaGenerateSurfQuadMesh.htm"> CAAScdFeaGenerateSurfQuadMesh</a>
+							</span>  
+						</td>
+					</tr>
+
+					<tr>
+						<td> GenerateSurfTriaMesh 
+						</td>
+						<td> Triangle Surface 
+						</td>
+						<td> CATFmtSurfTriaMesher 
+						</td>
+						<td> 
+							<span class="run-in">
+								<a href="CAAScdFeaGenerateSurfTriaMesh.htm"> CAAScdFeaGenerateSurfTriaMesh</a>
+							</span>
+						</td>
+					</tr>
+		</table>
+			<ul>
+			<li>Parameter based</li>
+			</ul>
+			<table class="padded"> 
+    				<tr>
+    					<th>Procedure name
+    					</th>
+				        <th>Used Mesh part</th>
+				    	<th>Late type </th>
+				    	<th>Procedure </th>
+   					 	</tr>
+					<tr>
+						<td> Generate3DOctreeMeshParameters </td>
+						<td> Octree 3D </td>
+						<td> CATFmtOctree3DRulesMesher </td>
+						<td> 
+							<span class="run-in">
+								<a href="CAAScdFeaGenerate3DOctreeMeshParameters.htm"> CAAScdFeaGenerate3DOctreeMeshParameters</a>
+							</span>  
+						</td>
+					</tr>
+					<tr>
+						<td> Generate3DSweepMeshParameters </td>
+						<td> Sweep 3D </td>
+						<td> CATFmtSweep3DMesher</td>
+						<td> 
+							<span class="run-in">
+								<a href="CAAScdFeaGenerate3DSweepMeshParameters.htm"> CAAScdFeaGenerate3DSweepMeshParameters</a>
+							</span>
+						</td>
+					</tr>
+					<tr>
+						<td> Generate3DTetMeshParameters </td>
+						<td> Tetrahedron</td>
+						<td> CATFmtTetRulesMesher</td>
+						<td> 
+							<span class="run-in">
+								<a href="CAAScdFeaGenerate3DTetMeshParameters.htm"> CAAScdFeaGenerate3DTetMeshParameters</a>
+							</span>  
+						</td>
+					</tr>
+					<tr>
+						<td> GenerateMidSurfWithAbsShapeParameters </td>
+						<td> Quadrangle Surface</td>
+						<td> CATFmtSurfQuadMesher</td>
+						<td> 
+							<span class="run-in">
+								<a href="CAAScdFeaGenerateMidSurfWithAbsShapeParameters.htm"> CAAScdFeaGenerateMidSurfWithAbsShapeParameters</a>
+							</span> 
+						</td>
+					</tr>
+					<tr>
+						<td> GenerateSurfQuadMeshParameters </td>
+						<td> Quadrangle Surface</td>
+						<td> CATFmtSurfQuadMesher</td>
+						<td> <span class="run-in"><a href="CAAScdFeaGenerateSurfQuadMeshParameters.htm">
+									CAAScdFeaGenerateSurfQuadMeshParameters</a></span>  </td>
+					</tr>
+
+					<tr>
+						<td> GenerateSurfTriaMeshParameters </td>
+						<td> Triangle Surface </td>
+						<td> CATFmtSurfTriaMesher</td>
+						<td> <span class="run-in"><a href="CAAScdFeaGenerateSurfTriaMeshParameters.htm">
+									CAAScdFeaGenerateSurfTriaMeshParameters</a></span>  </td>
+					</tr>
+				</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="User_procedures">User procedures</a></h2>
+<p>This section explains how to create User procedures.</p>
+<p> The Automated FEM tool allows to mesh assemblies using 
+existing procedures or created user procedures.&nbsp; When using user procedures you can automate many tasks in addition to the predefined meshing procedures. </p>
+<p>User procedures must follow a specific format to be used within the automated fem application.</p>
+		<p><strong><a name="Procedure_type">Procedure type</a></strong> </p>
+		<p>All the procedures are in VB scripts. The extension is ".catvbs"</p>
+		<p><strong><a name="Global_variable">Global variable</a></strong> </p>
+		<p>Two global variables definition, SHAPE and FEM, are available and can be used.</p>
+		<p>The global variable SHAPE refers to the 3D Shape selection in the Batch Modeling dialog box. It is used for scripting geometry operations, such as defeaturing or midsurface extraction.</p> 
+		<p>The global variable FEM refers to the finite element model representation associated with a 3D Shape. It is used for finite element operations, such as creating meshes or property assignments for use in simulations.</p>
+		<p><strong><a name="Inputs">Inputs</a></strong> </p>
+		<p>The input definition is used to create an UI with the described 
+		parameters and let the user set interactively the required parameters. These must be entered before the procedure can be run.</p>
+		<p>Inputs are written in HTML as a comment in vb script to let the Automated FEM tool generates each requested UI. And then, during the script execution, these information are given as input arguments to the VB script </p>
+		<p> Input definition is optional for user procedures. You can 
+		directly give the needed information on the VB script to run 
+		directly without setting interactively the required parameters.</p>
+		<p><strong><a name="Procedure_syntax">Procedure syntax</a></strong> </p>
+		<p> The syntax is the standard 
+		VB scripting one. All the steps must be in between <span class="keyword">Sub main</span> and  
+		<span class="keyword">end sub</span>.</p>
+		<p> When using Inputs definitions, you have to give the same number of argument as input to the <span class="keyword">Sub main ( iInput_1, iInput_2, ... , iInput_n)</span></p> 
+		<p>Otherwise, there is no input argument for the <span class="keyword">Sub main</span>.</p>
+		
+<p><b>For more information see <code>"About the Automated FEM Application"</code> and <code>" "About User Procedures"</code> in the product documentation</b> ( Simulation / Physics Simulation / Model Assembly Design / Automated Modeling )</p>  
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Example_:_Generate_3D_mesh_procedure">Example : Generate 3D mesh procedure</a></h2>
+<table class="indented">
+	<tr>
+		<td>
+		<p> This procedure can be divided in 2 parts</p>
+		<ol> 
+			<li><a href="#Step1">Inputs definition </a></li>
+			<li><a href="#Step2">VB Script&nbsp; </a></li>
+			<p>The script can be divided in six steps </p>
+			<ol>
+			<li><a href="#Stepa">Retrieve created FEM Rep</a></li>
+			<li><a href="#Stepb">Create Mesh Part</a></li>
+			<li><a href="#Stepc">Create Solid Property</a></li>
+			<li><a href="#Stepd">Retrieve Mesh Part Support if it is not given as argument </a></li>
+			<li><a href="#Stepe">Add support to Mesh part </a></li>
+			<li><a href="#Stepf">Set Rule to Mesh part </a></li>
+			</ol>
+		</ol>
+		</td>
+	</tr>
+</table>
+
+
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1">Inputs definition</a></strong></p>
+	<p>In this example, three inputs are defined 
+	: Support, Meshing Rule and Property.</p>
+	<p>Automated FEM tool generates a specific dialog box and lets the user valuate each input. 
+	</p>
+			
+<pre class="code">
+'&lt;<span class="keyword">Inputs</span>&gt;
+  '&lt;<span class="keyword">Input</span> <span class="keyword">Name</span> = "Support" <span class="keyword">Type</span> ="Port" <span class="keyword">Mand</span> ="false" <span class="keyword">Nls</span> ="Support"/&gt;
+  '&lt;<span class="keyword">Input</span> <span class="keyword">Name</span> = "MeshingRule" <span class="keyword">Type</span> ="DmtDocument" SubType ="CATFmtTetRule" <span class="keyword">Mand</span> ="true" <span class="keyword">Nls</span> ="Rule"/&gt;
+  '&lt;<span class="keyword">Input</span> <span class="keyword">Name</span> = "Property" <span class="keyword">Type</span> ="Boolean" <span class="keyword">Mand</span> ="true" <span class="keyword">Nls</span> ="CreateSolid"/&gt;
+'&lt;/<span class="keyword">Inputs</span>&gt;
+</pre>
+<p>For each input four arguments have to been given.</p> 
+	
+<table class="padded"> 
+	<tr>
+		<td> Name </td>
+		<td> The name of the input </td>
+	</tr>
+	<tr>
+		<td> Type</td>
+		<td> The Type of the input</td>
+	</tr>
+	<tr>
+		<td> Mand </td>
+		<td> This argument is a boolean. It has to be setted as True if this input is mandatory. False in the other case </td>
+	</tr>
+	<tr>
+		<td> Nls</td>
+		<td> Description name of the input</td>
+	</tr>
+</table>
+<span class="remark">Important: This part does not set the inputs value. It just 
+			defines requested inputs.</span>
+	
+			</li>
+		<li>		 
+			<p><strong><a name="Step2">VB Script </a></strong></p>
+			<ol class="task2"> 
+			<li>
+			<p><Strong> <a name="Stepa">Retrieve created FEM Rep</a></Strong></p> 
+		<p>The Fem rep is created before the script execution and stored on the FEM global variable.</p>
+		<p>We retrieve in this step the SimFemRoot object on the created FEM</p>
+		<pre class="code">...
+<span class="keyword">Dim</span> FEMRoot <span class="keyword">As</span> CATIAFmtFemRoot
+<span class="keyword">Set</span> FEMRoot = FEM.GetItem("SimFemRoot")
+...</pre>
+		</li>		
+		<li>
+			<p><Strong> <a name="Stepb">Create Mesh Part</a></Strong></p>
+		<p>Then we create the rule based 3D Mesh</p>
+		<pre class="code"> ...
+<span class="comment">' Retrieve the mesh set</span>
+<span class="keyword">Dim</span> MeshSet <span class="keyword">As</span> CATIAFmtMeshSet
+<span class="keyword">Set</span> MeshSet = FEMRoot.GetSet("SimNodesElements")
+
+<span class="comment">' Retrieve the mesh parts collection</span>
+<span class="keyword">Dim</span> MeshParts <span class="keyword">As</span> CATIAFmtMeshParts
+<span class="keyword">Set</span> MeshParts = MeshSet.MeshParts
+
+<span class="comment">' Add a new Mesh part to the collection of mesh parts</span>
+<span class="keyword">Dim</span> MeshPart <span class="keyword">As</span> CATIAFmtMeshPart
+<span class="keyword">Set</span> MeshPart = MeshParts.Add("CATFmtTetRulesMesher")
+...</pre>
+		</li>
+
+	<li>
+			<p><Strong> <a name="Stepc">Create a Solid Property</a></Strong></p>
+	<p> If requested, we then create a Solid property</p>
+	<pre class="code"> ...
+<span class="comment">' Retrieve the property set object SimProperties </span>
+<span class="keyword">Dim</span> PropertySet <span class="keyword">As</span> SimProperties
+<span class="keyword">Set</span> PropertySet = FEMRoot.GetSet("SimProperties")
+
+<span class="comment">' Add a Solid section to the property set</span>
+<span class="keyword">Dim</span> SolidSection <span class="keyword">As</span> SimSolidSection
+<span class="keyword">Set</span> SolidSection = PropertySet.Add("SMAMpaSolidProperty")
+...</pre>
+	</li>
+
+			<li>
+			<p><Strong> <a name="Stepd">Retrieve Mesh Part Support</a></Strong></p>
+			<p>Then we retrieve the mesh part support if it is not given.</p>
+			<p>For that, we use the SHAPE global variable valuated before script execution.</p>
+			<pre class="code"> ...
+<span class="comment">' Retrieve the shape reference from the global variable SHAPE </span>
+<span class="keyword">Dim</span> ShapeRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">Set</span> ShapeRef = SHAPE.ReferenceInstanceOf
+
+<span class="comment">' Retrieve the part associated to the shape reference</span>
+<span class="keyword">Dim</span> ThePart <span class="keyword">As</span> Part
+<span class="keyword">Set</span> ThePart = ShapeRef.GetItem("Part")
+
+<span class="comment">' Retrieve the main body of the part</span>
+<span class="keyword">Dim</span> PartBody <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> PartBody = ThePart.MainBody
+...</pre>
+			</li>
+			<li>
+			<p><Strong> <a name="Stepe">Add support to Mesh part</a></Strong></p> 
+			<p>when  the support is explicitely defined, it has to been given directly as argument to the AddSupport method.</p>
+			<p> Otherwise create the link to add to the mesh part using the composeLink(iOccurence, 
+			iShape, iRef) method of te SimComposeLinkServices object.</p>
+			<pre class="code"> ...		
+<span class="comment">' Create the reference of the part body for the third argument</span>
+<span class="keyword">Dim</span> Ref <span class="keyword">As</span> Reference
+<span class="keyword">Set</span> Ref = ThePart.CreateReferenceFromObject(PartBody)
+
+<span class="comment">' First argument is not needed</span>
+<span class="keyword">Dim</span> EmptyOcc <span class="keyword">As</span> PLMOccurrence
+<span class="keyword">Set</span> EmptyOcc = Nothing
+
+<span class="comment">' Retrieve the SimComposeLinkServices and create the link associated to the part body</span>
+<span class="keyword">Dim</span> FEMService <span class="keyword">As</span> SimComposeLinkServices
+<span class="keyword">Set</span> FEMService = FEM.GetItem("SimComposeLinkServices")
+<span class="keyword">Set</span> Link = FEMService.ComposeLink(EmptyOcc, SHAPE, Ref)
+
+<span class="comment">' Add link to mesh part </span>
+MeshPart.AddSupport (Link)
+
+<span class="comment">' Add the link to the solid section if requested </span>
+<span class="keyword">Dim</span> LinkAccess <span class="keyword">As</span> SimLinkAccess
+<span class="keyword">Set</span> LinkAccess = SolidSection.GetItem("SimLinkAccess")
+LinkAccess.AddLink "MainSupport", Link
+...</pre>
+			</li>
+			<li>
+			<p><Strong> <a name="Stepf">&nbsp;Set Rule to Mesh part</a></Strong></p> 
+			<p>Then set the rule to the mesh part</p>
+			<pre class="code">...
+MeshPart.SetRule iRule,&quot;CATFmtTetRule&quot;
+...</pre>
+
+			</li>
+	</ol>
+</li>
+</ol>
+</td>
+</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>
+
+

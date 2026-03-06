@@ -1,0 +1,111 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>VOCSilhouette Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>VOCSilhouetteService Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavunused">Properties</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableService', 'MethodIndex'); return false;">
+		Methods</a></td>
+	</tr>
+</tbody>
+</table>
+<p class="auto"><a href="../CAAScdInfInfrastructure/CAAInfObjService.htm">
+<img src="../CAAScdImages/Service.png" alt="Service Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsVocIDLItf', 'interface', 'VOCSilhouetteService');return false;"><img alt="VOCSilhouetteService Object" src="../CAAScdImages/VOCSilhouetteService.png" width="252" height="22"/></a><br />
+</p>
+<p>The <strong>VOCSilhouetteService</strong> object lets you create a Silhouette from a 
+Reference.</p>
+<h2>Retrieving the VOCSilhouetteService Object</h2>
+<p>To retrieve the VOCSilhouetteService Object, you need to call the Service from the 
+Representation Reference of a Part.</p>
+<pre class="code">
+<span class="keyword">Dim</span> myPart <span class="keyword">As</span> Part 
+<span class="keyword">Set</span> myPart = oEditor.ActiveObject 
+<span class="keyword">Dim</span> MyVPMRepRef <span class="keyword">As</span> VPMRepReference 
+<span class="keyword">Set</span> MyVPMRepRef = myPart.Parent 
+
+<span class="keyword">Dim</span> myVOCServices <span class="comment">' As VOCSilhouetteService </span>
+<span class="keyword">Set</span> myVOCServices = MyVPMRepRef.GetItem(&quot;VOCSilhouetteService&quot;) 
+</pre>
+<p>&nbsp;</p>
+<h2>Using the VOCSilhouetteService Object</h2>
+<p>Use the <strong>VOCSilhouetteService </strong>object to create Silhouette 
+Volumes. 
+To create an Silhouette Volume of the Root Occurence of an Assembly :</p>
+<pre class="code">
+<span class="keyword">Dim</span> oRootOcc <span class="keyword">As</span> VPMRootOccurrence 
+<span class="keyword">Set</span> oRootOcc = ...
+
+<span class="keyword">Dim</span> oObjVPMReference <span class="keyword">As</span> VPMReference 
+<span class="keyword">Set</span> oObjVPMReference = oRootOcc.ReferenceRootOccurrenceOf 
+
+<span class="keyword">ReDim</span> MyInputProducts(0) 
+MyInputProducts = Array(oRootOcc) 
+
+<span class="comment">' Gets the current View Point</span> 
+<span class="keyword">Dim</span> oViewer <span class="keyword">As</span> Viewer3D 
+<span class="keyword">Set</span> oViewer = CATIA.ActiveWindow.ActiveViewer 
+<span class="keyword">Dim</span> viewPoint(0) 
+<span class="keyword">Set</span> viewPoint(0) = oViewer.Viewpoint3D
+
+<span class="comment">' Creates a new 3DShape</span>
+<span class="keyword">Dim</span> oNewService <span class="keyword">As</span> PLMNewService 
+<span class="keyword">Set</span> oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;) 
+<span class="comment"> </span>
+<span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor 
+oNewService.PLMCreate &quot;3DShape&quot;, oEditor 
+
+<span class="comment">' Gets the Part </span>
+<span class="keyword">Dim</span> myPart <span class="keyword">As</span> Part 
+<span class="keyword">Set</span> myPart = oEditor.ActiveObject 
+<span class="keyword">Dim</span> MyVPMRepRef <span class="keyword">As</span> VPMRepReference 
+<span class="keyword">Set</span> MyVPMRepRef = myPart.Parent
+
+<span class="comment">' Gets the VOC Silhouette Service</span>
+<span class="keyword">Dim</span> myVOCServices <span class="comment">' As VOCServices </span>
+<span class="keyword">Set</span> myVOCServices = MyVPMRepRef.GetItem(&quot;VOCSilhouetteService&quot;) 
+
+<span class="comment">' Creates the Silhouette Volume</span>
+myVOCServices.CreateASilhouette MyInputProducts, ObjVPMReference, viewPoint, 2, 1 
+</pre>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

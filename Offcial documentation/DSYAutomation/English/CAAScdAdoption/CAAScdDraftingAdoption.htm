@@ -1,0 +1,994 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Drafting Changes</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Drafting Changes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 Automation macros to take 
+		advantage of the Open <strong>3D</strong>EXPERIENCE platform PLM 2.0 infrastructure. It focuses on how Drawing 
+		objects can be accessed.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="10"></a>Opening a DrawingDocument Object</h2>
+<p>The <strong>DrawingDocument</strong> object is the V5 key object to access Drawing 
+objects. In <strong>3D</strong>EXPERIENCE platform, those objects persist in the Drawing representation of the Product 
+modeler. In the following example, such a representation, whose type will always 
+derive from <strong>VPMRepReference</strong><code>,</code> is retrieved through 
+a set of attributes. Any kind of representation can be retrieved this way. No predefined 
+attribute shows that the retrieved object is a Drawing. Generally, company processes 
+allow Drawings to be identified by defining standard values for specific attributes. 
+Content can also be tested using the <code>GetItem</code> method of the retrieved
+<strong>PLMEntity</strong> object. </p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre>
+<span class="comment">' The Drawing document is known by its path</span>
+sDrawing = &quot;myDrawing.CATDrawing&quot;
+		</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Use a SearchService object to retrieve a VPMRepReference</span>
+<span class="comment">' object from its identification attributes</span>
+<span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> SearchService
+<span class="keyword">Set</span> oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+<span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+<span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+oDBSearch.BaseType = &quot;VPMRepReference&quot;
+<span class="comment">' To retrieve the Drawing by its Title, use V_Name attribute</span>
+<span class="comment">' To retrieve the Drawing by its Name, use PLM_ExternalID attribute</span>
+oDBSearch.AddEasyCriteria &quot;V_Name&quot;, &quot;myDrawing&quot; 
+oSearchService.Search
+
+<span class="comment">' Get, for example, the first found PLM entity</span>
+<span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity
+<span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Open the file: a Drawing document</span>
+<span class="keyword">Dim</span> oDrawingDocument <span class="keyword">As</span> DrawingDocument
+<span class="keyword">Set </span>oDrawingDocument = CATIA.Documents.Open(sDrawing)</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Open the entity: the Editor object has no specific type</span>
+<span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor
+CATIA.GetSessionService(&quot;PLMOpenService&quot;).PLMOpen oEntity,oEditor</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Retrieve the DrawingRoot object</span>
+<span class="keyword">Dim</span> oDrawingRoot <span class="keyword">As </span>DrawingRoot
+<span class="keyword">Set</span> oDrawingRoot = oDrawingDocument.DrawingRoot</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Retrieve the DrawingRoot object</span>
+<span class="keyword">Dim</span> oDrawingRoot <span class="keyword">As </span>DrawingRoot
+<span class="keyword">Set</span> oDrawingRoot = oEditor.ActiveObject</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>If the Drawing representation is retrieved from navigating a product structure 
+in session, its content can be directly accessed using the <code>GetItem</code> 
+method:</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+		<pre><span class="keyword">Dim </span>oVPMReference <span class="keyword">As </span>VPMReference
+<span class="keyword">Set </span>oVPMReference = ...</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' ---- Not a V5 scenario ----</span></pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Loop on instances attached to this reference</span>
+<span class="keyword">Dim</span> oInstance <span class="keyword">As</span> VPMInstance
+<span class="keyword">For each</span> oInstance <span class="keyword">In</span> oVPMReference.Instances</pre>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+		<pre>  <span class="comment">' Retrieve the reference of the considered instance</span>
+  <span class="keyword">Dim </span>oRefOfInstance <span class="keyword">As</span> VPMReference
+  <span class="keyword">Set </span>oRefOfInstance = oInstance.ReferenceInstanceOf</pre>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+		<pre>  <span class="comment">' Retrieve the first associated representation</span>
+  <span class="keyword">Dim </span>oRepInstance <span class="keyword">As</span> VPMRepInstance
+  <span class="keyword">Set</span> oRepInstance = oRefOfInstance.RepInstances.Item(1)
+  <span class="comment">' Retrieve the RepReference of the RepInstance </span>
+  <span class="keyword">Dim </span>oRefOfRepInstance <span class="keyword">As</span> VPMRepReference
+  <span class="keyword">Set</span> oRefOfRepInstance = oRepInstance.ReferenceInstanceOf</pre>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+		<pre>  <span class="comment">' Identify if it is a Drawing representation: see above</span>
+  <span class="keyword">Dim</span> oDrawingRoot <span class="keyword">As </span>DrawingRoot
+  <span class="keyword">If</span> (...) <span class="keyword"> Then </span>
+    <span class="comment">' Use the VPMRepReference object to retrieve</span> <span class="comment">the Drawing Root reference</span>
+    <span class="keyword">Set</span> oDrawingRoot = oRefOfRepInstance.GetItem(&quot;CATDrawingAccess&quot;)
+  <span class="keyword">End If</span></pre>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+		<pre><span class="keyword">Next</span></pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>More information on how to replace the usage of the V5 <strong>Document</strong> 
+object is described in <a href="CAAScdAccessingObjectsInSession.htm">Accessing and 
+Editing Objects in Session</a>.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="11"></a>Creating a DrawingDocument Object</h2>
+<p>In V5, Drawing documents are created through the collection of documents. In 
+<strong>3D</strong>EXPERIENCE platform, a <strong>PLMNewService</strong> object should be used as explained in the
+<a href="CAAScdCreatingObjects.htm">Creating Objects</a> article. For drawing representations, 
+the standard and Sheet style are set with a default value when creating the representation, 
+and if required can be re-set after creation:</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Create a new DrawingDocument object in memory</span>
+<span class="keyword">Dim</span> newDoc <span class="keyword">As</span> DrawingDocument
+<span class="keyword">Set</span> newDoc = CATIA.Documents.Add(&quot;Drawing&quot;)</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Get the PLMNewService</span></pre>
+		<pre><span class="keyword">Dim</span> oNewService <span class="keyword">As </span>PLMNewService
+<span class="keyword">Set </span>oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+
+<span class="comment">' Create a drawing representation</span>
+<span class="keyword">Dim</span> oEditor <span class="keyword">As </span>Editor
+oNewService.PLMCreate &quot;Drawing&quot;, oEditor
+
+<span class="comment">' Get the drawing root from the Editor </span>
+<span class="keyword">Dim</span> oDrawingRoot <span class="keyword">As </span>DrawingRoot
+<span class="keyword">Set </span>oDrawingRoot = oEditor.ActiveObject
+
+<span class="comment">' Set the drawing standard </span>
+oDrawingRoot.Standard = &quot;myStandard&quot;
+
+<span class="comment">' Set the sheet style to the automatically created sheet </span>
+oDrawingRoot.ActiveSheet.SheetStyle = &quot;mySheetStyle&quot;</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Standard"></a>Setting the Drawing Standard</h2>
+<p>In V5, the drawing standard is represented by values of an enum, allowing to 
+set only a predefined set of standards. In <strong>3D</strong>EXPERIENCE platform, corporate standards can be defined 
+and the VB APIs allows to reference such standards by name. The type of the <strong>3D</strong>EXPERIENCE platform Standard 
+property is so now a string and the <strong>DrawingService</strong> service allows you to get the 
+list of available standards.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="keyword">Dim</span> oDrawingRoot <span class="keyword">As</span> DrawingRoot
+<span class="keyword">Set</span> oDrawingRoot = ...
+<span class="comment">' V5 way</span></pre>
+		</td>
+		<td>
+		<pre><span class="keyword">Dim</span> oDrawingRoot <span class="keyword">As</span> DrawingRoot
+<span class="keyword">Set</span> oDrawingRoot = ...
+<span class="comment">' <strong>3D</strong>EXPERIENCE platform way</span></pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Possible standard values are described by an enum</span>
+<span class="keyword">Dim</span> enumStd <span class="keyword">As</span> catDrawingStandard
+enumStd = catISO</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Standards can be defined by customers and referred to by a name</span>
+<span class="keyword">Dim</span> stdName <span class="keyword">As</span> String
+
+<span class="comment">' Get a standard name from the list of available standards</span>
+<span class="keyword">Dim</span> oDrawingService <span class="keyword">As</span> DrawingService
+<span class="keyword">Set</span> oDrawingService = CATIA.ActiveEditor.GetService(&quot;CATDrawingService&quot;)
+
+<span class="keyword">Dim</span> iNbStd <span class="keyword">As</span> Integer
+iNbStd = myDrawingService.NumberOfStandards
+<span class="keyword">ReDim</span> arrayOfStdNames(iNbStd - 1)
+oDrawingService.StandardNamesList arrayOfStdNames
+
+stdName = arrayOfStdNamestd(1)
+
+<span class="comment">' Set the standard to the Drawing</span>
+myDrwRoot.Standard = stdName</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Style"></a>Setting the Drawing Sheet Style</h2>
+<p>In V5, a sheet style can be set using interactive commands but Automation only 
+allows you to set values of each part of the style individually. In <strong>3D</strong>EXPERIENCE platform, it is still 
+possible to individually set each part of a sheet style, like the paper orientation,&nbsp; 
+but it is also possible to globally set predefined or customer defined styles associated 
+with a standard.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="keyword">Dim</span> oDrawingSheet <span class="keyword">As </span>DrawingSheet
+<span class="keyword">Set </span>oDrawingSheet = ... 
+<span class="comment">' V5 way</span></pre>
+		</td>
+		<td>
+		<pre><span class="keyword">Dim</span> oDrawingSheet <span class="keyword">As </span>DrawingSheet
+<span class="keyword">Set </span>oDrawingSheet = ... 
+<span class="comment">' <strong>3D</strong>EXPERIENCE platform way</span></pre>
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>
+		<pre><span class="comment">' Possible styles can be defined by customer and referred by name</span>
+<span class="keyword">Dim</span> styleName <span class="keyword">As </span>String
+
+<span class="comment">' Getting a standard name from the list of available standards</span>
+<span class="keyword">Dim</span> oDrawingService <span class="keyword">As</span> DrawingService
+<span class="keyword">Set</span> oDrawingService = CATIA.ActiveEditor.GetService(&quot;CATDrawingService&quot;)
+
+<span class="keyword">Dim</span> iNbStyles <span class="keyword">As</span> Integer
+iNbStyles = oDrawingService.NumberOfSheetStyles
+<span class="keyword">ReDim</span> arrayOfStyleNames(iNbStyles - 1)
+oDrawingService.SheetStyleNamesList &quot;myStandard&quot;, arrayOfStyleNames
+
+styleName = arrayOfStyleNames(1)</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Set paper orientation using
+the PageSetup object linked to the Sheet</span>
+oDrawingSheet.PageSetup.Orientation catPaperLandscape
+
+<span class="comment">' Set paper size using a property of the sheet</span>
+oDrawingSheet.PaperSize = catPaperA4</pre>
+		</td>
+		<td>
+		<pre><span class="comment">
+' Set the sheet style as a whole</span>
+oDrawingSheet.SheetStyle = stringStyle
+
+<span class="comment">' Overriding values is still possible through the Sheet object properties</span>
+oDrawingSheet.PaperSize = catPaperA4</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Interactive"></a>Creating Interactive Views</h2>
+<p>New objects and methods to create interactive views are proposed to replace no 
+more accessible methods of the <strong>GenerativeViewBehavior</strong> object.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Front"></a>Creating a Front View</h3>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Get a DrawingViews collection</span>
+<span class="keyword">Dim</span> cViews <span class="keyword">As</span> DrawingViews
+<span class="keyword">Set </span>cViews = ...</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Get a DrawingViews collection</span>
+<span class="keyword">Dim</span> cViews <span class="keyword">As</span> DrawingViews
+<span class="keyword">Set</span> cViews = ...</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Create the DrawingView object first</span>
+<span class="keyword">Dim</span> oFrontView <span class="keyword">As</span> DrawingView
+<span class="keyword">Set </span>oFrontView = cViews.Add(&quot;Front View&quot;)
+
+<span class="comment">' Get a DrawingViewGenerativeBehavior object</span>
+<span class="comment">' from the DrawingView object</span>
+<span class="comment">' even if the View is not generative</span>
+<span class="keyword">Dim </span>oViewGenB <span class="keyword">As</span> DrawingViewGenerativeBehavior
+<span class="keyword">Set </span>oViewGenB = oFrontView.GenerativeBehavior</pre>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' View Anchor point</span>
+
+oFrontView.x = 10.
+oFrontView.y = 10.<span class="comment">
+
+' Vectors defining the view projection plane</span>
+<span class="keyword">Dim</span> iX1, iY1, iZ1, iX2, iY2, iZ2 <span class="keyword">As</span> double
+iX1 = 1.
+iY1 = 0.
+iZ1 = 0.
+iX2 = 0.
+iY2 = 1.
+iZ2 = 0.
+
+<span class="comment">' Define it a a front view
+</span>
+oViewGenB.DefineFrontView _
+           iX1, iX2, iX3, iY1, iY2, iY3
+ </pre>
+		</td>
+		<td>
+		<pre>
+<span class="comment">' View Anchor point</span>
+<span class="keyword">Dim</span> xPos, yPos <span class="keyword">As </span>double
+xPos = 10.
+yPos = 10.
+
+<span class="comment">' Vectors defining the view projection plane</span>
+<span class="keyword">Dim</span> iX1, iY1, iZ1, iX2, iY2, iZ2 <span class="keyword">As</span> double
+iX1 = 1.
+iY1 = 0.
+iZ1 = 0.
+iX2 = 0.
+iY2 = 1.
+iZ2 = 0.
+
+<span class="comment">' Directly create the front view with all required data</span>
+<span class="keyword">Dim</span> oFrontView <span class="keyword">As</span> DrawingView
+<span class="keyword">Set</span> oFrontView = cViews.AddFrontView( _
+        iX, iY, &quot;MyViewName&quot;, _
+        iX1, iY1, iZ1, iX2, iY2, iZ2)</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Projection"></a>Creating a Projection View</h3>
+<p>The same way, the <code>AddProjectionView</code> method of the <strong>DrawingViews</strong> 
+collection object should be used.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Isometric"></a>Creating an Isometric View</h3>
+<p>The same way, the <code>AddIsometricView</code> method of the <strong>DrawingViews</strong> 
+collection object should be used.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Projection"></a>Accessing the View Projection Plane</h2>
+<p>In V5, methods of the <strong>GenerativeViewBehavior</strong> object allow you 
+to retrieve or set the view projection plane. In <strong>3D</strong>EXPERIENCE platform, they are available with the
+<strong>DrawingView</strong> object.</p>
+<p>In V5, methods of the <strong>GenerativeViewLinks</strong> object allow you to 
+add a link or to retrieve the 3D link from the Generative View. In <strong>3D</strong>EXPERIENCE platform, they are available 
+with the <strong>DrawingGenView</strong> object.</p>
+<p>So, both methods to retrieve <strong>GenerativeViewLinks</strong> (<code>get_GenerativeLinks</code>) 
+or <strong>GenerativeViewBehavior</strong> (<strong><code>get_GenerativeBehavior</code></strong>) from the 
+<strong>DrawingView</strong> 
+are useless.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Get a DrawingView object</span>
+<span class="keyword">Dim</span> oView <span class="keyword">As</span> DrawingView
+<span class="keyword">Set </span>oView = ...</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Get a DrawingView object</span>
+<span class="keyword">Dim</span> oView <span class="keyword">As</span> DrawingView
+<span class="keyword">Set</span> oView = ...</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Get a GenerativeViewBehavior object</span>
+<span class="comment">' from the DrawingView object</span>
+<span class="keyword">Dim </span>oViewGenB <span class="keyword">As</span> DrawingViewGenerativeBehavior
+<span class="keyword">Set </span>oViewGenB = oView.GenerativeBehavior</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' No need of the GenerativeViewBehavior object</span></pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Get the View Projection Plane</span>
+<span class="keyword">Dim </span> iX1, iY1, iZ1, iX2, iY2, iZ2 <span class="keyword">As</span> double
+oViewGenB.GetProjectionPlane _
+               iX1, iY1 ,iZ1, iX2, iY2, iZ2
+
+<span class="comment">' Set the View Projection Plane</span>
+oViewGenB.SetProjectionPlane _
+               iX1, iY1 ,iZ1, iX2, iY2, iZ2</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Get the View Projection Plane</span>
+<span class="keyword">Dim </span> iX1, iY1, iZ1, iX2, iY2, iZ2 <span class="keyword">As</span> double
+oView.GetProjectionPlane _
+               iX1, iY1 ,iZ1, iX2, iY2, iZ2
+
+<span class="comment">' Set the View Projection Plane</span>
+oView.SetProjectionPlane _
+               iX1, iY1 ,iZ1, iX2, iY2, iZ2</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Generative"></a>Creating, Managing and Modifying a Generative View</h2>
+<p>In V5 generative views are accessed through the <strong>GenerativeViewBehavior</strong> 
+object. In <strong>3D</strong>EXPERIENCE platform, this object is replaced with several objects. The different usage 
+scenarios are described below.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="CreatingGenerative"></a>Creating Generative Views</h3>
+<p>The <strong>DrawingDefineGenView</strong> object contains all methods to create 
+generative views. It can be retrieved from the <strong>3D</strong>EXPERIENCE platform <strong><code>DrawingDefineGenView</code></strong> 
+property of the <strong>DrawingViews</strong> object. The following examples show 
+the creation of a generative view in V5 and in <strong>3D</strong>EXPERIENCE platform.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="ManagingGenerative"></a>Managing Generative View Properties</h3>
+<p>The <strong>DrawingGenViewProperties</strong><code> </code>object should be used. 
+It can be retrieved from the <strong>3D</strong>EXPERIENCE platform <code>DrawingGenViewProp</code> property if the
+<strong>DrawingService</strong> object. Default values are initialized from generative 
+view settings.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="ModifyingGenerative"></a>Modifying the Generative View</h3>
+<p>The <strong>DrawingGenView</strong><code> </code>object should be used. This 
+object proposes methods to add a breakout, create a break view, etc. It can be retrieved 
+from the <strong>3D</strong>EXPERIENCE platform <code>DrawingGenView</code> property of the <strong>DrawingView</strong> 
+object.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="ExampleGenerative"></a>Example</h3>
+<p>The following example shows how to create a generative front view where hidden 
+lines are drawn.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Create a view</span>
+<span class="keyword">Dim</span> cViews <span class="keyword">As</span> DrawingViews
+<span class="keyword">Set</span> cViews = ...
+
+<span class="keyword">Dim</span> oView <span class="keyword">as</span> DrawingView
+<span class="keyword">Set </span>oView = cViews.Add(&quot;FrontView&quot;)</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Create a view</span>
+<span class="keyword">Dim</span> cViews <span class="keyword">As</span> DrawingViews
+<span class="keyword">Set</span> cViews = ...
+
+<span class="keyword">Dim</span> oView <span class="keyword">as</span> DrawingView
+ </pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Get a DrawingViweGenerativeBehavior object</span>
+<span class="comment">' from the DrawingView object</span>
+<span class="keyword">Dim </span>oViewGenB <span class="keyword">As</span> DrawingViewGenerativeBehavior
+<span class="keyword">Set </span>oViewGenB = oView.GenerativeBehavior</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Get the DefineGenView object from</span>
+<span class="comment">' the DrawingViews collection object</span>
+<span class="keyword">Dim</span> oDefGenView <span class="keyword">A</span>s DrawingDefineGenView
+<span class="keyword">Set</span> oDefGenView = cViews.DrawingDefineGenView</pre>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+		<pre><span class="comment">' Retrieve the drawing generative service object from</span>
+<span class="comment">' the CATIA service</span>
+<span class="keyword">Dim</span> oDrwGenServ <span class="keyword">As</span> DrawingGenService
+<span class="keyword">Set</span> oDrwGenServ = _
+  CATIA.ActiveEditor.GetService(&quot;CATDrawingGenService&quot;)
+		
+<span class="comment">' Retrieve a Generative View Properties</span>
+<span class="keyword">Dim</span> oGenViewProp <span class="keyword">As</span> DrawingGenViewProperties
+<span class="keyword">Set</span> oGenViewProp = oDrwGenServ.DrawingGenViewProp</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Activate the hidden line mode</span>
+oViewGenB.HiddenLineMode = catHLRModeOn</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Activate the hidden line mode</span>
+oGenViewProp.HiddenLineMode = catHLRModeOn</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Get the part to draw a Part document</span>
+<span class="keyword">Dim</span> oPartToDraw <span class="keyword">As</span> PartDocument
+<span class="keyword">Set </span>oPartToDraw = ...</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Get the 3D to draw: </span></pre>
+		<pre>
+<span class="comment">' - To draw the complete product structure get a VPMRootOccurrence
+'   from the root product.</span>
+<span class="comment">'   For example, suppose the window containing the 3D is the first
+'   opened window in the CATIA.</span>
+<span class="keyword">Dim</span> o3DPLMToDraw <span class="keyword">As</span> VPMRootOccurrence
+<span class="keyword">Set</span> o3DPLMToDraw = CATIA.Editors.Item(1).ActiveObject
+</pre>
+<span class="comment">'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OR ...</span>
+		<pre><span class="comment">' - To draw a sub part number numinst of the product structure
+'   get a VPMInstance to identify the sub product.</span>
+<span class="keyword">Dim</span> oPLMRootOcc<span class="keyword"> As</span> VPMRootOccurrence
+<span class="keyword">Set</span> oPLMRootOcc<span class="keyword"> </span>= CATIA.Editors.Item(1).ActiveObject
+<span class="keyword">Dim</span> oPLMRef<span class="keyword"> As</span> VPMReference
+<span class="keyword">Set</span> oPLMRef<span class="keyword"> </span>= oPLMRootOcc.ReferenceRootOccurrenceOf
+<span class="keyword">Dim</span> o3DPLMToDraw <span class="keyword">As</span> VPMInstance
+<span class="keyword">Set</span> o3DPLMToDraw = oPLMRef.Instances.item(numInst)</pre>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+		<pre>&nbsp;</pre>
+		<pre><span class="comment">' Assign it as an item of a list</span>
+<span class="keyword">Dim</span> myListOfPLMInst(0) <span class="keyword">As</span> CATSafeArrayVariant
+myListOfPLMInst(0) = o3DPLMToDraw</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Define the View anchor point
+</span>
+oViewGenB.x = 10.
+oViewGenB.y = 10.</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Define the View anchor point</span>
+<span class="keyword">Dim</span> xPos, yPos a<span class="keyword">s</span> double
+xPos = 10.
+yPos = 10.</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Define this view as a front view, with the</span>
+<span class="comment">' XY plane (in oPartToDraw) as projection plane</span> 
+oViewGenB.DefineFrontView 1, _
+                          0, _
+                          0, _
+                          0, _
+                          1, _
+                          0</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Define the View projection plane</span>
+<span class="keyword">Dim</span> myProjPlane(5)
+myProjPlane(0) = 1
+myProjPlane(1) = 0
+myProjPlane(2) = 0
+myProjPlane(3) = 0
+myProjPlane(4) = 1
+myProjPlane(5) = 0</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Declare the part to draw in this front view</span>
+oViewGenB.Document = oPartToDraw
+</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Define this view as a front view</span>
+<span class="keyword">Set</span> oView = oDefGenView.DefineFrontView xPos, yPos, _
+   myListOfPLMInst, myProjPlane, &#8243;&#8243;, True, oGenViewProp </pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Mapping1"></a>Mapping Table between the V5 GenerativeViewLinks Object 
+and the <strong>3D</strong>EXPERIENCE platform DrawingGenView Object</h3>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 IDL interfaces</th>
+		<th>Methods/Properties</th>
+		<th><strong>3D</strong>EXPERIENCE platform IDL interfaces</th>
+		<th>Methods/Properties</th>
+	</tr>
+	<tr>
+		<td>GenerativeViewLinks</td>
+		<td>AddLink</td>
+		<td>DrawingGenView</td>
+		<td>PutLinks (Write)</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewLinks</td>
+		<td>FirstLink</td>
+		<td>DrawingGenView</td>
+		<td>GetLink (Read)</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewLinks</td>
+		<td>NextLink</td>
+		<td>DrawingGenView</td>
+		<td>GetLink (Read)</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewLinks</td>
+		<td>RemoveAllLinks</td>
+		<td>DrawingGenView</td>
+		<td>RemoveLink (Write)</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewLinks</td>
+		<td>CopyLinksTo</td>
+		<td>DrawingGenView</td>
+		<td>PutLinks (R/W)</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Mapping2"></a>Mapping Table between the V5 GenerativeViewBehavior Object 
+and <strong>3D</strong>EXPERIENCE platform Objects</h3>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 IDL interfaces</th>
+		<th>Methods/Properties</th>
+		<th><strong>3D</strong>EXPERIENCE platform IDL interfaces</th>
+		<th>Methods/Properties</th>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>Document (Read)</td>
+		<td>DrawingGenView</td>
+		<td>GetAssociatedRootProduct</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>Document (Write)</td>
+		<td><strong>Not Replaced</strong></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>SetProjectionPlane</td>
+		<td>DrawingGenView</td>
+		<td>ModifyViewPlane</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>GetProjectionPlane</td>
+		<td>DrawingView</td>
+		<td>GetProjectionPlane</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>GetProjectionPlaneNormal</td>
+		<td><strong>Not replaced</strong></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineFrontView</td>
+		<td>DrawingDefineGenView</td>
+		<td>DefineFrontView</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineIsometricView</td>
+		<td>DrawingDefineGenView</td>
+		<td>DefineIsometricView</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineProjectionView</td>
+		<td>DrawingDefineGenView</td>
+		<td>DefineProjectionView</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineSectionView</td>
+		<td>DrawingDefineGenView</td>
+		<td>DefineSectionView</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineCircularDetailView</td>
+		<td>DrawingDefineGenView</td>
+		<td>DefineCircularDetailView</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefinePolygonalDetailView</td>
+		<td>DrawingDefineGenView</td>
+		<td>DefinePolygonalDetailView</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineAuxiliaryView</td>
+		<td>DrawingDefineGenView</td>
+		<td>DefineAuxiliaryView</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineUnfoldedView</td>
+		<td>DrawingDefineGenView</td>
+		<td>DefineUnfoldedView</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineStandAloneSection</td>
+		<td>DrawingDefineGenView</td>
+		<td>DefineStandAloneSection</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineTPSSectionView</td>
+		<td><strong>Not Replaced</strong></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineBrokenView</td>
+		<td>DrawingGenView</td>
+		<td>AddBrokenView</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineBox3DView</td>
+		<td>DrawingGenView</td>
+		<td>AddClippingBox</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>UnBreak</td>
+		<td>DrawingGenView</td>
+		<td>UnBreak</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>UnClip</td>
+		<td>DrawingGenView</td>
+		<td>UnClip</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>UnBreakout</td>
+		<td>DrawingGenView</td>
+		<td>UnBreakout</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>UnBreakoutNum</td>
+		<td><strong>Not replaced</strong></td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>ApplyBreakoutTo</td>
+		<td>DrawingGenView</td>
+		<td>ApplyBreakoutTo</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineBreakout</td>
+		<td>DrawingGenView</td>
+		<td>AddBreakout</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineCircularClippingView</td>
+		<td>DrawingGenView</td>
+		<td>AddClippingWithCircle</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefineCircularExactClipping</td>
+		<td>DrawingGenView</td>
+		<td>AddClippingWithCircle</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefinePolygonalClippingView</td>
+		<td>DrawingGenView</td>
+		<td>AddClippingWithProfile</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>DefinePolygonalExactClipping</td>
+		<td>DrawingGenView</td>
+		<td>AddClippingWithProfile</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>Update</td>
+		<td>DrawingGenView</td>
+		<td>Updade</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>ForceUpdate</td>
+		<td>DrawingGenView</td>
+		<td>ForceUpdate</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>get_ParentView</td>
+		<td>DrawingGenView</td>
+		<td>get_ParentView</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>SetAxisSysteme</td>
+		<td>DrawingGenView</td>
+		<td>SetAxisSysteme</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>GetAxisSysteme</td>
+		<td>DrawingGenView</td>
+		<td>GetAxisSysteme</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>ColorInheritanceMode</td>
+		<td>DrawingGenViewProperties</td>
+		<td>ColorInheritanceMode</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>PointsProjectionMode</td>
+		<td>DrawingGenViewProperties</td>
+		<td>PointsProjectionMode</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>PointsSymbol</td>
+		<td>DrawingGenViewProperties</td>
+		<td>PointsSymbol</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>RepresentationMode</td>
+		<td>DrawingGenViewProperties</td>
+		<td>RepresentationMode</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>SetGPSName</td>
+		<td><strong>Not replaced.</strong><br />
+		This information is mentioned<br />
+		during the view creation</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>GetGPSName</td>
+		<td><strong>Not replaced.</strong><br />
+		This information is mentioned<br />
+		during the view creation</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>ImageViewMode</td>
+		<td>DrawingGenViewProperties</td>
+		<td>ImageViewMode</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>LimitBoundingBox</td>
+		<td>DrawingGenViewProperties</td>
+		<td>LimitBoundingBox</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>HiddenLineMode</td>
+		<td>DrawingGenViewProperties</td>
+		<td>HiddenLineMode</td>
+	</tr>
+	<tr>
+		<td>GenerativeViewBehavior</td>
+		<td>FilletRepresentation</td>
+		<td>DrawingGenViewProperties</td>
+		<td>FilletRepresentation</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

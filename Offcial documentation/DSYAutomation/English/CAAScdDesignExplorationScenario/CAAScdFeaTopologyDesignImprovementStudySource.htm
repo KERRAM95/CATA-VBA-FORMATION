@@ -1,0 +1,358 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdTopologyDesignImprovementStudy.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+
+<pre class=class>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample creates and executes a Topology Design Improvement Study.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'          1- Retrieving the active Product 										</span>
+<span class="comment">'          2- Retrieving the Publications and Composing Links 								</span>
+<span class="comment">'          3- Creating the FEM Rep and retrieving its Rep Manager 		</span>
+<span class="comment">'          4- Creating a Mesh on a Part								</span>
+<span class="comment">'          5- Creating a Property 					</span>
+<span class="comment">'          6- Initializing and Creating the Simulation PLM Object						</span>
+<span class="comment">'          7- Retrieving the Scenario Manager							</span>
+<span class="comment">'          8- Creating the Structural Analysis Case with the FEM rep</span>
+<span class="comment">'          9- Creating and initializing the static step				</span>
+<span class="comment">'          10- Retrieving the structural analysis case features and features states sets		</span>
+<span class="comment">'          11- Creating the structural analysis case features								</span>
+<span class="comment">'          12- Creating the Topology Design Improvement Study with the Structural Analysis Case</span>
+<span class="comment">'          13- Retrieving the Topology Design Improvement Study  features</span>
+<span class="comment">'          14- Creating the Topology Design Improvement Study  features</span>
+<span class="comment">'          15- Launching the simulation									</span>
+<span class="comment">'============================================================================================</span>
+
+<span class="keyword">Sub </span>CATMain()
+	
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 1- Retrieving the active Product</span>
+<span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myEditor<span class="keyword"> As </span>Editor
+<span class="keyword">	Set </span>myEditor = CATIA.ActiveEditor
+	
+<span class="keyword">	Dim </span>myProdService<span class="keyword"> As </span>PLMProductService
+<span class="keyword">	Set </span>myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">	Dim </span>myRootOccurrence<span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">	Set </span>myRootOccurrence= myProdService.RootOccurrence
+	
+<span class="comment">'Retrieving the reference of root occurence</span>
+<span class="comment">'------------------------------------------</span>
+	
+<span class="keyword">	Dim </span>myModel<span class="keyword"> As </span>VPMReference
+<span class="keyword">	Set </span>myModel= myRootOccurrence.ReferenceRootOccurrenceOf
+	
+	
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 2- Retrieving the Publications and Composing Links</span>
+<span class="comment">'=====================================================================</span>
+	
+<span class="keyword">	Dim </span>myPublications <span class="keyword"> As </span>VPMPublications
+<span class="keyword">	Set </span>myPublications  = myModel.Publications
+	
+<span class="keyword">	Dim </span>myLoadSupport<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myLoadSupport= myPublications.GetItem(&quot;Loading_Support&quot;)
+	
+<span class="keyword">	Dim </span>myClampSupport<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myClampSupport = myPublications.GetItem(&quot;Clamp_Support&quot;)
+	
+<span class="keyword">	Dim </span>myDesignSpaceSupport<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myDesignSpaceSupport = myPublications.GetItem(&quot;Design_Space_Support&quot;)
+	
+<span class="keyword">	Dim </span>myPreservedRegionSupport1<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myPreservedRegionSupport1= myPublications.GetItem(&quot;Preserved_Region_Support_1&quot;)
+	
+<span class="keyword">	Dim </span>myPreservedRegionSupport2<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myPreservedRegionSupport2 = myPublications.GetItem(&quot;Preserved_Region_Support_2&quot;)
+	
+<span class="keyword">	Dim </span>myPlane<span class="keyword"> as </span>VPMPublication
+<span class="keyword">	Set </span>myPlane = myPublications.GetItem(&quot;Symmetry_Control_Support&quot;)
+	
+<span class="comment">'Composing links</span>
+<span class="comment">'---------------</span>
+	
+<span class="keyword">	Dim </span>myRepInstance<span class="keyword"> As </span>VPMRepInstance
+<span class="keyword">	Set </span>myRepInstance = Nothing <span class="comment">' Because we use publications</span>
+	
+<span class="keyword">	Dim </span>myLinkToLoadSupport<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToLoadSupport = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myLoadSupport)
+	
+<span class="keyword">	Dim </span>myLinkToClampSupport<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToClampSupport = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myClampSupport)
+	
+<span class="keyword">	Dim </span>myLinkToPartitionSupport<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToPartitionSupport = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myDesignSpaceSupport)
+	
+<span class="keyword">	Dim </span>myLinkToPreservedRegionSupport1<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToPreservedRegionSupport1= myProdService.ComposeLink(myRootOccurrence, myRepInstance, myPreservedRegionSupport1)
+	
+<span class="keyword">	Dim </span>myLinkToPreservedRegionSupport2<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToPreservedRegionSupport2 = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myPreservedRegionSupport2)
+	
+<span class="keyword">	Dim </span>myLinkToSymmetryPlaneSupport<span class="keyword"> as </span>AnyObject
+<span class="keyword">	Set </span>myLinkToSymmetryPlaneSupport = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myPlane)
+	
+	
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 3- Creating the FEM Rep and retrieving its Rep Manager</span>
+<span class="comment">'=====================================================================</span>
+	
+<span class="keyword">	Dim </span>myPrdRepFactory<span class="keyword"> as </span>SimPrdRepFactory
+<span class="keyword">	Set </span>myPrdRepFactory =myModel.GetItem(&quot;SimPrdRepFactory&quot;)
+	
+<span class="keyword">	Dim </span>myRepRef<span class="keyword"> As </span>VPMRepReference
+<span class="keyword">	Set </span>myRepRef = myPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+
+<span class="keyword">	Dim </span>myRepInstances<span class="keyword"> As </span>VPMRepInstances
+<span class="keyword">	Set </span>myRepInstances= myModel.RepInstances
+	
+<span class="keyword">	Dim </span>myFEMRoot<span class="keyword"> As </span>SimFemRoot
+
+<span class="keyword"> For </span>i = 1<span class="keyword"> To </span>myRepInstances.Count
+<span class="keyword"> Dim </span>oRepInstance<span class="keyword"> As </span>VPMRepInstance
+<span class="keyword"> Set </span>oRepInstance = myRepInstances.Item(i)
+
+<span class="keyword"> Dim </span>oRepReference<span class="keyword"> As </span>VPMRepReference
+<span class="keyword"> Set </span>oRepReference = oRepInstance.ReferenceInstanceOf
+
+<span class="keyword"> If </span>oRepReference.GetAttributeValue("V_discipline") = "FEM" <span class="keyword">Then</span>
+<span class="keyword"> Set </span>myRepRef  = oRepReference
+<span class="keyword"> Set </span>myFEMRoot = oRepReference.GetItem("SimFemRoot")
+<span class="keyword"> End If </span>
+<span class="keyword"> Next </span>
+	
+         myFEMRoot.AddAssociatedRep myDesignSpaceSupport
+  
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 4- Creating a Mesh on a Part</span>
+<span class="comment">'=====================================================================</span>
+	
+<span class="keyword">	Dim </span>myMeshSet<span class="keyword"> As </span>SimMeshSet
+<span class="keyword">	Set </span>myMeshSet = myFEMRoot.GetSet(&quot;SimNodesElements&quot;)
+	
+<span class="keyword">	Dim </span>myMeshParts<span class="keyword"> As </span>SimMeshParts
+<span class="keyword">	Set </span>myMeshParts = myMeshSet.MeshParts
+
+<span class="keyword">	Dim </span>myMeshPart<span class="keyword"> As </span>SimMeshPart
+<span class="keyword">	Set </span>myMeshPart = myMeshParts.Add(&quot;CATFmt3DRulesMesher&quot;)
+
+	myMeshPart.AddSupport myDesignSpaceSupport
+	
+	myMeshPart.SetAttributeValue &quot;Mesh&quot;, &quot;MeshSizeValue&quot;, &quot;3.3mm&quot;
+	myMeshPart.SetAttributeValue &quot;Mesh&quot;, &quot;ElementOrder&quot;, &quot;1&quot;	
+	myMeshSet.Update
+	
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 5- Creating a Property</span>
+<span class="comment">'=====================================================================</span>
+	
+<span class="keyword">	Dim </span>myPropertiesSet<span class="keyword"> as </span>SimProperties
+<span class="keyword">	Set </span>myPropertiesSet = myFEMRoot.GetSet(&quot;SimProperties&quot;)
+
+<span class="keyword">	Dim </span>mySolidSection<span class="keyword"> As </span>SimSolidSection
+<span class="keyword">	Set </span>mySolidSection = myPropertiesSet.Add(&quot;SimSolidSection&quot;)
+
+<span class="keyword">	Dim </span>myLinkAccess<span class="keyword"> As </span>SimLinkAccess
+<span class="keyword">	Set </span>myLinkAccess = mySolidSection.GetItem(&quot;SimLinkAccess&quot;)
+	myLinkAccess.AddLink &quot;MainSupport&quot;, myLinkToPartitionSupport 
+	
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 6- Initializing and Creating the Simulation PLM Object</span>
+<span class="comment">'=====================================================================</span>
+	
+<span class="keyword">	Dim </span>myInitService<span class="keyword"> As </span>SimInitializationService
+<span class="keyword">	Set </span>myInitService = CATIA.GetSessionService(&quot;SimInitializationService&quot;)
+	
+	myInitService.SetSimulationInitialization "SimDesignExplorationCreation", &quot;SimOptimization"
+
+<span class="keyword">	Dim </span>mySimPLMService<span class="keyword"> as </span>SIMPLMService
+<span class="keyword">	Set </span>mySimPLMService = CATIA.GetSessionService(&quot;SIMPLMService&quot;)
+	
+<span class="keyword">	Dim </span>mySimulationReference<span class="keyword"> As </span>SimulationReference
+	mySimPLMService.PLMCreate &quot;NewTopologyDesignImprovementStudy&quot;, &quot;SMAFeaPLMNewSimu&quot;, myModel, mySimulationReference, myEditor
+	
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 7- Retrieving the Scenario Manager</span>
+<span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myScenarioManager<span class="keyword"> As </span>SimScenarioManager
+<span class="keyword">	Set </span>myScenarioManager = mySimulationReference.GetItem(&quot;SimScenarioManager&quot;)
+
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 8- Creating the Structural Analysis Case with the FEM rep</span>
+<span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myAnalysisCases<span class="keyword"> As </span>SimAnalysisCases
+<span class="keyword">	Set </span>myAnalysisCases = myScenarioManager.AnalysisCases
+	
+<span class="keyword">	Dim </span>myAnalysisCase<span class="keyword"> As </span>SimAnalysisCase
+<span class="keyword">	Set </span>myAnalysisCase = myAnalysisCases.AddAnalysisCase("SimStructuralAnalysisCase")	
+	myAnalysisCase.FEMRep = myFEMRoot 
+	
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 9- Creating and initializing the static step</span>
+<span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>mySteps<span class="keyword"> As </span>SimSteps
+<span class="keyword">	Set </span>mySteps = myAnalysisCase.Steps
+	
+<span class="keyword">	Dim </span>myStaticStep<span class="keyword"> As </span>SimStaticStep
+<span class="keyword">	Set </span>myStaticStep = mySteps.Add(&quot;SimStaticStep&quot;)
+	
+	myAnalysisCase.CreateDefaultElementTypeAssignment
+	
+	myStaticStep.CreateAnalysisDefaultOutputRequests
+	myStaticStep.MaximumIncrements = 1000
+
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 10- Retrieving the features and features states sets</span>
+<span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myAnalysisCaseFeatures<span class="keyword"> As </span>SimFeatures
+<span class="keyword">	Set </span>myAnalysisCaseFeatures = myAnalysisCase.Features
+
+<span class="keyword">	Dim </span>myAnalysisCaseFeatureStates<span class="keyword"> As </span>SimFeatureStates
+<span class="keyword">	Set </span>myAnalysisCaseFeatureStates = myStaticStep.FeatureStates
+
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 11- Creating features</span>
+<span class="comment">'=====================================================================</span>
+	
+<span class="comment">' Creating a displacement restraint feature</span>
+<span class="comment">'------------------------------------------</span>
+	
+<span class="keyword">	Dim </span>myDisplacementRestraint<span class="keyword"> As </span>SimDisplacementRestraint
+<span class="keyword">	Set </span>myDisplacementRestraint = myAnalysisCaseFeatures.Add(&quot;SimDisplacementRestraint&quot;)
+	
+<span class="keyword">	Set </span>myLinkAccess = myDisplacementRestraint.GetItem(&quot;SimLinkAccess&quot;)
+	myLinkAccess.AddLink &quot;MainSupport&quot;, myLinkToClampSupport
+	
+	myDisplacementRestraint.SetDofRestraint SimTranslation1, True
+	myDisplacementRestraint.SetDofRestraint SimTranslation2, True
+	myDisplacementRestraint.SetDofRestraint SimTranslation3, True
+	
+	myAnalysisCaseFeatureStates.CreateFeatureState myDisplacementRestraint
+	
+<span class="comment">' Creating a bearing load feature</span>
+<span class="comment">'----------------------------</span>
+	
+<span class="keyword">	Dim </span>myBearingLoad<span class="keyword"> As </span>SimBearingLoad
+<span class="keyword">	Set </span>myBearingLoad= myAnalysisCaseFeatures.Add(&quot;SimBearingLoad&quot;)
+	
+<span class="keyword">	Set </span>myLinkAccess = myBearingLoad.GetItem(&quot;SimLinkAccess&quot;)
+	myLinkAccess.AddLink &quot;MainSupport&quot;, myLinkToLoadSupport
+	
+	myBearingLoad.XMagnitude = 40980
+	myBearingLoad.YMagnitude = 40980
+	
+	myAnalysisCaseFeatureStates.CreateFeatureState myBearingLoad
+	
+<span class="comment">'================================================================================================</span>
+<span class="comment">'12- Creating the Topology Design Improvement Study with the structural analysis case</span>
+<span class="comment">'================================================================================================</span>
+    	
+<span class="keyword">	Dim </span>myTopologyStudy<span class="keyword"> As </span>SimTopologyDesignImprovementStudy
+<span class="keyword">	Set </span>myTopologyStudy= myAnalysisCases.AddAnalysisCase("SimTopologyDesignImprovementStudy")	
+	myTopologyStudy.AnalysisCase = myAnalysisCase
+
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 13- Retrieving the topology design improvement study features</span>
+<span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myTopologyFeatures<span class="keyword"> As </span>SimDesignImprovementFeatures
+<span class="keyword">	Set </span>myTopologyFeatures= myTopologyStudy.Features
+	
+	
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 14- Creating topology design improvement study features</span>
+<span class="comment">'=====================================================================</span>
+	
+<span class="comment">' Creating a design space feature</span>
+<span class="comment">'-------------------------</span>
+	
+<span class="keyword">	Dim </span>myDesignSpace<span class="keyword"> As </span>SimDesignEnvelope
+<span class="keyword">	Set </span>myDesignSpace= myTopologyFeatures.Add(&quot;SimDesignEnvelope&quot;)
+	
+<span class="keyword">	Set </span>myLinkAccess =myDesignSpace.GetItem(&quot;SimLinkAccess&quot;)
+	myLinkAccess.AddLink &quot;MainSupport&quot;, myLinkToPartitionSupport
+
+<span class="comment">' Creating a preserved region feature</span>
+<span class="comment">'-------------------------</span>
+	
+<span class="keyword">	Dim </span>myPreservedRegion1<span class="keyword"> As </span>SimPreservedRegion
+<span class="keyword">	Set </span>myPreservedRegion1= myTopologyFeatures.AddSubFeature(&quot;SimPreservedRegion&quot;, myDesignSpace)
+	
+<span class="keyword">	Set </span>myLinkAccess =myPreservedRegion1.GetItem(&quot;SimLinkAccess&quot;)
+	myLinkAccess.AddLink &quot;MainSupport&quot;, myLinkToPreservedRegionSupport1
+
+<span class="keyword">	Dim </span>myPreservedRegion2<span class="keyword"> As </span>SimPreservedRegion
+<span class="keyword">	Set </span>myPreservedRegion2 = myTopologyFeatures.AddSubFeature(&quot;SimPreservedRegion&quot;, myDesignSpace)
+	
+<span class="keyword">	Set </span>myLinkAccess = myPreservedRegion2.GetItem(&quot;SimLinkAccess&quot;)
+	myLinkAccess.AddLink &quot;MainSupport&quot;, myLinkToPreservedRegionSupport2
+
+
+<span class="comment">' Creating a nonparametric objective feature</span>
+<span class="comment">'-------------------------</span>
+	
+<span class="keyword">	Dim </span>myObjective<span class="keyword"> As </span>SimNonParametricObjective
+<span class="keyword">	Set </span>myObjective= myTopologyFeatures.Add(&quot;SimNonParametricObjective&quot;)
+	
+	myObjective.Type = SimMaximizeStiffness
+	myObjective.TargetMassType = SimRatio
+	myObjective.SetTargetMassRatio (0.60)
+	
+<span class="comment">          ' Creating a symmetry control feature</span>
+<span class="comment"> '-------------------------</span>
+	
+<span class="keyword">	Dim </span>mySymmetryControl<span class="keyword"> As </span>SimSymmetryControl
+<span class="keyword">	Set </span>mySymmetryControl= myTopologyFeatures.Add(&quot;SimSymmetryControl&quot;)
+	
+<span class="keyword">	Set </span>myLinkAccess =mySymmetryControl.GetItem(&quot;SimLinkAccess&quot;)
+	myLinkAccess.AddLink &quot;MainSupport&quot;, myDesignSpace
+	
+<span class="keyword">	Set </span>myLinkAccess = mySymmetryControl.Plane
+	myLinkAccess.AddLink &quot;MainSupport&quot;, myLinkToSymmetryPlaneSupport
+
+<span class="comment">'=====================================================================</span>
+<span class="comment">' 15- Launching the simulation</span>
+<span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myExecutionService<span class="keyword"> As </span>SimExecutionService
+<span class="keyword">	Set </span>myExecutionService = myEditor.GetService(&quot;SimExecutionService&quot;)
+	
+	myExecutionService.BasicExecuteAll mySimulationReference
+	
+<span class="comment">' Switching to the results visualization workbench</span>
+<span class="comment">'-------------------------------------------------</span>
+	
+	CATIA.StartWorkbench &quot;SMAHvcStructureResultsWorkbench&quot;
+
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,334 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="topictype" content="Qr">
+<meta name="devlang" content="idl">
+<meta name="devlang" content="idl">
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css">
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Groups and Their Attributes</title>
+<style type="text/css">
+    .padded td, .padded th {
+        padding: 5px;
+        border: 1px solid black;
+    }
+    table.fill1 {
+    	width: 95%;
+    	background-color: #C0C0C0;
+	}
+	td.fill1 {
+		width: 33%;
+		padding: 35px;
+	}
+	td.fill2 {
+		text-align: center;
+}
+.fmt_table {
+  width: 95%;
+}
+.fmt_table td {
+  background-color: #C0C0C0;
+  padding: 5px;
+  border: 1px solid black;
+}
+.width45 {
+  width: 45%;
+}
+.width55 {
+  width: 55%;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Groups and Their Attributes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+				<h3>Abstract</h3>
+				<p>The following reference article describes the different types 
+				of groups, their attributes and usage.</p>
+				<p>This paper describes how to access to:</p>
+				<ul>
+					<li><a href="#Group_Creation"><strong>Group Creation</strong></a></li>
+					<li><a href="#Group_Type"><strong>Group Type Definition</strong></a></li>
+				</ul>
+				<p>This paper explains attributes of seven type of groups:</p>
+				<ul>
+				    <li>The Geometric Group. See <a href="#GeometricGroup">Geometric Group Attributes</a>. <em>The description of all attributes of the Geometry Group.</em></li>
+					<li>The Proximity Group. See <a href="#ProximityGroup">Proximity Group Attributes</a>. <em>The description of all attributes of the Proximity Group.</em></li>
+                    <li>The Spatial Group. See <a href="#SpatialGroup">Spatial Group Attributes</a>. <em>The description of all attributes of the Spatial Group.</em></li>
+                    <li>The Boundary Group. See <a href="#BoundaryGroup">Boundary Group Attributes</a>. <em>The description of all attributes of the Boundary Group.</em></li>
+                    <li>The Union Group. See <a href="#UnionGroup">Union Group Attributes</a>. <em>The description of all attributes of the Union Group.</em></li>
+                    <li>The Intersection Group. See <a href="#IntersectionGroup">Intersection Group Attributes</a>. <em>The description of all attributes of the Intersection Group.</em></li>
+                    <li>The Difference Group. See <a href="#DifferenceGroup">Difference Group Attributes</a>. <em>The description of all attributes of the Difference Group.</em></li>
+
+				</ul>
+				</td>
+			</tr>
+		</table>
+<h2><a name="Group_Creation">Group creation</a></h2>
+<p>Group creation can be managed the <code>SimGroupSet</code> object by calling 
+the <code>Add</code> method from it.</p>
+<p>A &quot;late type&quot; must be given to indicate which type of group is to be 
+created:</p>
+<table class="padded">
+    <tr>
+        <th>Group</th>
+        <th>Late type</th>
+    </tr>
+    <tr>
+        <td>Geometric Group</td>
+        <td>CATFmtGroupByAssociativity</td>
+    </tr>
+    <tr>
+        <td>Proximity Group</td>
+        <td>CATFmtGroupByProximity</td>
+    </tr>
+    <tr>
+        <td>Spatial Group</td>
+        <td>CATFmtGroupSpatial</td>
+    </tr>
+    <tr>
+        <td>Boundary Group</td>
+        <td>CATFmtGroupByBoundary</td>
+    </tr>
+    <tr>
+        <td>Union Group</td>
+        <td>CATFmtGroupUnion</td>
+    </tr>
+    <tr>
+        <td>Intersection Group</td>
+        <td>CATFmtGroupIntersection</td>
+    </tr>
+    <tr>
+        <td>Difference Group</td>
+        <td>CATFmtGroupDifference</td>
+    </tr>
+
+</table>
+
+<h2><a name="Group_Type">Group Type</a></h2>
+<p>Group type can be set by the <code>SetGroupType</code> method of 
+the <code>SimGroup</code> object.</p>
+<p>A string must be given to indicate which kind of elements 
+the group will contain:</p>
+<table class="padded">
+    <tr>
+        <th>String</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>CATFmtGroupTypeNode</td>
+        <td>The group contains only the nodes of the support</td>
+    </tr>
+    <tr>
+        <td>CATFmtGroupTypeEdge</td>
+        <td>The group contains only edges</td>
+    </tr>
+    <tr>
+        <td>CATFmtGroupTypeFace</td>
+        <td>The group contains only <b>3D elements</b> faces of the support</td>
+    </tr>
+	<tr>
+        <td>CATFmtGroupTypeElement</td>
+        <td>The group contains only elements of the support</td>
+    </tr>
+</table>
+<h2><a name="Group_Support">Group Support</a></h2>
+<p>The support of the groups is managed by the <b>SimLinkAccess</b> object:</p>
+<ul>
+	<li><b>AddLink</b> ( <i>iName As String, iLink As AnyObject</i> )</li>
+	<li><b>RemoveAllLinks</b> ( <i>iName As String</i> )</li>
+	<li><b>RemoveLink</b> ( <i>iName As String, iLink As AnyObject</i> )
+	<ul>
+		<li><b>iName</b> is the name of the link container, here it's :
+		  <ul>
+		    <li><b>&quot;MainSupport&quot;</b> for all the groups which need a support.</li>
+		    <li><b>&quot;Boundary&quot;</b> to specify boundary geometry of boundary group.</li>
+		    <li><b>&quot;MainSupport&quot;</b> for the Groups A support list of difference group.</li>
+		    <li><b>&quot;DifferenceGroups&quot;</b> for the Groups B support list of difference group.</li>
+		  </ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+
+<h2><a name="GeometricGroup">Geometry Group Attributes</a></h2>
+<table class="fmt_table">
+  <tr>
+    <td class="width40">
+        <b>CnxElementAllowed</b> (type <b>integer</b>): valuated to:
+		<ul>
+			<li><b>1:</b> to don't allow connection element in the group content</li>
+			<li><b>2:</b> to allow connection element in the group content</li>
+		</ul>
+    </td>
+    <td class="width55">Attribute which specifies if connection elements are allowed in the group content.</td>
+  </tr>
+</table>
+
+<h2><a name="ProximityGroup">Proximity Group Attributes</a></h2>
+<table class="fmt_table">
+  <tr>
+    <td class="width40"><b>Tolerance</b> (type <b>double</b>): valuated to group tolerance. </td>
+    <td class="width55">Attribute which specifies the tolerance in which the 
+		mesh entities will be captured.</td>
+  </tr>
+ </table>
+ <table class="fmt_table">
+  <tr>
+    <td class="width40">
+        <b>CnxElementAllowed</b> (type <b>integer</b>): valuated to:
+		<ul>
+			<li><b>1:</b> to don't allow connection element in the group content</li>
+			<li><b>2:</b> to allow connection element in the group content</li>
+		</ul>
+    </td>
+    <td class="width55">Attribute which specifies if connection elements are allowed in the group content.</td>
+  </tr>
+</table>
+
+<h2><a name="SpatialGroup">Spatial Group Attributes</a></h2>
+<table class="fmt_table">
+  <tr>
+    <td class="width40">
+        <b>Mode</b> (type <b>integer</b>): valuated to:
+		<ul>
+						<li><b>1:</b> to get a box mode</li>
+						<li><b>2:</b> to get a sphere mode</li>
+		</ul>
+    </td>
+    <td class="width55">Attribute which specifies the kind of the bounding selection</td>
+  </tr>
+</table>
+<table class="fmt_table">
+  <tr>
+    <td class="width40">
+        The following attributes are used to define the box in case of spatial group with a box mode.
+        <ul>
+          <li><b>OriginX</b> (type <b>double</b>): the X coordinate of the lower left corner of the box</li>
+          <li><b>OriginY</b> (type <b>double</b>): the Y coordinate of the lower left corner of the box</li>
+          <li><b>OriginZ</b> (type <b>double</b>): the Z coordinate of the lower left corner of the box</li>
+          <li><b>Vector0X</b> (type <b>double</b>): the dimension of the box along the X axis</li>
+          <li><b>Vector1Y</b> (type <b>double</b>): the dimension of the box along the Y axis</li>
+          <li><b>Vector2Z</b> (type <b>double</b>): the dimension of the box along the Z axis</li>
+        </ul>
+    </td>
+    <td class="width55">
+        The box is defined by its lower left corner and a vector transforming it into the upper right corner, 
+        as shown on the picture below.
+        <p align="center"><img src="images/CATFmtHexLocalMeshSizeBox.png" alt="Local Mesh Size in Cartesian Box" height="300"></p>
+    </td>
+  </tr>
+</table>
+<table class="fmt_table">
+  <tr>
+    <td class="width40">
+        The following attributes are used to define the sphere in case of spatial group with a sphere mode.
+        <ul>
+          <li><b>CenterX</b> (type <b>double</b>): the X coordinate of the sphere center</li>
+          <li><b>CenterY</b> (type <b>double</b>): the Y coordinate of the sphere center</li>
+          <li><b>CenterZ</b> (type <b>double</b>): the Z coordinate of the sphere center</li>
+          <li><b>Radius</b> (type <b>double</b>): the radius of the sphere</li>
+        </ul>
+    </td>
+    <td class="width55">Attributes which specifies the sphere</td>
+  </tr>
+</table>
+<table class="fmt_table">
+  <tr>
+    <td class="width40">
+        <b>CnxElementAllowed</b> (type <b>integer</b>): valuated to:
+		<ul>
+			<li><b>1:</b> to don't allow connection element in the group content</li>
+			<li><b>2:</b> to allow connection element in the group content</li>
+		</ul>
+    </td>
+    <td class="width55">Attribute which specifies if connection elements are allowed in the group content.</td>
+  </tr>
+</table>
+
+<h2><a name="BoundaryGroup">Boundary Group Attributes</a></h2>
+<table class="fmt_table">
+  <tr>
+    <td class="width100">
+        No specific attribute for this group.
+    </td>
+  </tr>
+</table>
+
+<h2><a name="UnionGroup">Union Group Attributes</a></h2>
+<table class="fmt_table">
+  <tr>
+    <td class="width40">
+        <b>CnxElementAllowed</b> (type <b>integer</b>): valuated to:
+		<ul>
+			<li><b>1:</b> to don't allow connection element in the group content</li>
+			<li><b>2:</b> to allow connection element in the group content</li>
+		</ul>
+    </td>
+    <td class="width55">Attribute which specifies if connection elements are allowed in the group content.</td>
+  </tr>
+</table>
+
+<h2><a name="IntersectionGroup">Intersection Group Attributes</a></h2>
+<table class="fmt_table">
+  <tr>
+    <td class="width40">
+        <b>CnxElementAllowed</b> (type <b>integer</b>): valuated to:
+		<ul>
+			<li><b>1:</b> to don't allow connection element in the group content</li>
+			<li><b>2:</b> to allow connection element in the group content</li>
+		</ul>
+    </td>
+    <td class="width55">Attribute which specifies if connection elements are allowed in the group content.</td>
+  </tr>
+</table>
+
+<h2><a name="DifferenceGroup">Difference Group Attributes</a></h2>
+<table class="fmt_table">
+  <tr>
+    <td class="width40">
+        <b>CnxElementAllowed</b> (type <b>integer</b>): valuated to:
+		<ul>
+			<li><b>1:</b> to don't allow connection element in the group content</li>
+			<li><b>2:</b> to allow connection element in the group content</li>
+		</ul>
+    </td>
+    <td class="width55">Attribute which specifies if connection elements are allowed in the group content.</td>
+  </tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="History"></a>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [Oct 2014]</td>
+		<td>Document created</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

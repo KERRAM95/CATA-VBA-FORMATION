@@ -1,0 +1,216 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Opening Product Reference Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+
+<pre>'Opening Product Reference
+'Mission: This Use case retrieves a Root Product Reference from database according to end user criteria.
+'         In the process Use Case demonstrates about searching the Product Reference from the database and opening it into VPM Editor.
+'        Further Use Case demonstrates about retrieving handle to Root object though various methods.
+'
+'Steps:
+'        1- Searches for a Product in Database
+'        2- Opens the Product
+'        3- Retrieves Handle of Root object as an occurrence from editor
+'        4- Retrieves Handle of Root object as a reference from editor
+'        5- Retrieves Handle of Root object as a reference from root occurrence
+'        6- Retrieves Handle of UI Active Object
+
+'
+
+'---------------------------------------------------------------------------------------------------------------------------
+
+' Be careful: this piece of code has been written with a specific Product Reference type (VPMReference). If your ENOVIA
+
+' installation does not contain this Product Modele type, use you own Product Reference type.
+
+' You have just to change the contents of the strTheProductReferenceType variable defined just below (in main routine).
+
+'---------------------------------------------------------------------------------------------------------------------------
+'Global variables
+
+'The product Reference type
+
+Dim strTheProductReferenceType As String
+
+'
+'==========================================================================================================================
+' Main Routine
+'==========================================================================================================================
+Sub MainSub()
+    'Error handling
+    On Error GoTo ErrorSub
+    
+    strTheProductReferenceType = &quot;VPMReference&quot;
+   
+    '1- Retrieves the Search service from CATIA session
+    Dim oSearchService As SearchService
+    Set oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    
+    '2- Searches for a Product in Database
+    Dim oDBSearch As DatabaseSearch
+    Set oDBSearch = SearchProduct(oSearchService)
+
+    '3- Opens the Product
+    Dim oProductEditor As Editor
+    Set oProductEditor = OpenProductAndGetEditor(oDBSearch)
+   
+    '4- Retrieves Handle of Root object as an occurrence from editor
+    'Retrieve the Product Service from the editor
+    Dim oProductService As PLMProductService
+    Set oProductService = oProductEditor.GetService(&quot;PLMProductService&quot;)
+        
+    'Retrieve the root occurrence of the product
+    Dim oVPMRootOccOnRoot As VPMRootOccurrence
+    Set oVPMRootOccOnRoot = oProductService.RootOccurrence
+        
+    MsgBox &quot;Success in retrieving Handle of Root object as an occurrence : &quot; + oVPMRootOccOnRoot.Name
+    
+    '4- Retrieves Handle of Root object as a reference from editor
+    'Retrieve the EditedContent object (Root entities of active Editor)
+    Dim oPLMEntities As PLMEntities
+    Set oPLMEntities = oProductService.EditedContent
+        
+    'Retrieves first object from PLMEntities (the elements in the list are always 1 for VPM Editor since it is product reference Root object)
+    'This Root object is of type VPMReference since its the Product Root object of Reference-Instance Model
+    Dim oPLMEntityAsVPMRefOnRoot As VPMReference
+    Set oPLMEntityAsVPMRefOnRoot = oPLMEntities.Item(1)
+    
+    MsgBox &quot;Success in retrieving Handle of Root object as a reference : &quot; + oPLMEntityAsVPMRefOnRoot.Name
+    
+    '5- Retrieves Handle of Root object as a reference from root occurrence
+    'Retrieve the VPMReference from the occurrence model (It is the same Root object retrieved in previous step)
+     Dim oVPMRefOnRoot As VPMReference
+     Set oVPMRefOnRoot = oVPMRootOccOnRoot.ReferenceRootOccurrenceOf
+     
+     MsgBox &quot;Success in retrieving Root object as a reference from root occurrence : &quot; + oVPMRefOnRoot.Name
+      
+    '6- Retrieves Handle of UI Active Object
+    'By default in VPM Editor of opened Product the UI active object is Root occurrence
+    Dim oUIActiveObject As VPMRootOccurrence
+    Set oUIActiveObject = oProductEditor.ActiveObject
+    
+    MsgBox &quot;Success in retrieving UI Active Object : &quot; + oUIActiveObject.Name
+    
+   'Error handling
+    GoTo EndSub
+
+ErrorSub::
+    MsgBox Err.Description
+EndSub:
+
+End Sub
+'--------------------------------------------------------------------------------------------
+' 1- Searches for a Product in Database
+'    The search criteria is:
+'     - The Product reference type
+'     - A PLM_ExternalID value entered by the end user
+'     - A revision value entered by the end user
+'    Output  : the object containing the result of the search
+'--------------------------------------------------------------------------------------------
+'
+Function SearchProduct(oSearchService) As DatabaseSearch
+   'Error handling
+   On Error GoTo ErrorSub
+    
+    '1- Retrieves the Database attribute from Search service
+    Dim oDBSearch As DatabaseSearch
+    Set oDBSearch = oSearchService.DatabaseSearch
+        
+    '2- Builds the Query criteria for Search on underlying Database
+    'Prompts the user to input the PLM_ExternalID for search purpose
+    Dim strInputPLMIDName As String
+    strInputPLMIDName = InputBox(&quot;Please enter the PLM_ExternalID to search&quot;, &quot;Enter PLM_ExternalID&quot;)
+    
+    'Prompts the user to input the revision for search purpose
+    Dim strInputRevision As String
+    strInputRevision = InputBox(&quot;Please enter the revision to search&quot;, &quot;Enter revision&quot;)
+   
+    '3- Sets the type of objects to search for
+    oDBSearch.BaseType = strTheProductReferenceType
+        
+    '4- Updates the PLM Search object created in the above steps with the attribute criteria provided by the user as an input
+    oDBSearch.AddEasyCriteria &quot;PLM_ExternalID&quot;, strInputPLMIDName
+    oDBSearch.AddEasyCriteria &quot;revision&quot;, strInputRevision
+       
+    '5- Triggers the Search
+    oSearchService.Search
+    
+    '6- Valuates the output
+    Set SearchProduct = oDBSearch
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+    
+End Function
+'
+'--------------------------------------------------------------------------------------------
+' 2- Opens the Product
+'    Input  : the object containing the result of the previous search
+'    Output : the editor containing the opened Product
+'--------------------------------------------------------------------------------------------
+'
+Function OpenProductAndGetEditor(oDBSearch) As Editor
+   'Error handling
+   On Error GoTo ErrorSub
+    
+    'Retrieves the root entities from the new tab page within the Search Editor
+    Dim oPLMProdRefAsEntities As PLMEntities
+    Set oPLMProdRefAsEntities = oDBSearch.Results
+    
+    'Ensures the search results retrieves atleast one PLM Entity
+    If oPLMProdRefAsEntities.Count &gt; 1 Then
+        MsgBox &quot;Please enter a query criteria which outputs a unique PLM Component for further processing&quot;
+        GoTo EndSub
+    ElseIf oPLMProdRefAsEntities.Count = 0 Then
+        MsgBox &quot;No result for the input criteria&quot;
+        GoTo EndSub
+    End If
+
+    'Retrieves first PLM Entity from the PLMEntities collection object
+    Dim oPLMProdRefAsPLMEntity As PLMEntity
+    Set oPLMProdRefAsPLMEntity = oPLMProdRefAsEntities.Item(1)
+    
+    'Call the Open Service to open the product
+    Dim oOpenService As PLMOpenService
+    Set oOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    
+    'Opens the PLM Component in the VPM editor
+    Dim oProductEditor As Editor
+    oOpenService.PLMOpen oPLMProdRefAsPLMEntity, oProductEditor
+        
+    'Valuates the output
+    Set OpenProductAndGetEditor = oProductEditor
+    
+   'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Function</pre>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

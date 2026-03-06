@@ -1,0 +1,514 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js"></script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js"></script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js"></script>
+<title>Custom Method XML Schema</title>
+<style type="text/css">
+.tableStyle1 {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.tableStyle1 th, .tableStyle1 td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 3px;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Custom Method XML Schema</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+
+<table class="abstract">
+	<tr>
+		<td>
+			<h3>Abstract</h3>
+			<p>This article details the schema of the custom Method file.</p>
+		</td>
+	</tr>
+</table>
+
+  <p>
+    A custom Method is defined via an XML file. 
+    The Method file is created/edited via any xml/text editor. 
+    There is not a <b>3D</b>EXPERIENCE app for creating/editing a custom Method. </p>
+
+<p>The custom Method file uses the extension ".xml".</p>
+<p>An actual custom Method xsd schema is located in the <b>3D</b>EXPERIENCE runtime view at</p>
+<p style="margin-left:20px">reffiles\SimulationProducts\SMAMpaMethodSchema.xsd</p>
+
+<p>The xsd is not a fully validating schema. It is possible for a custom Method to contain errors that are caught only at runtime.
+It is strongly encouraged that you validate your custom Method instance document against this schema via a 3rd party tool.</p>
+
+<h2><a name="Target Namespace"></a>Target Namespace</h2>
+<p>The custom Method schema is assigned the following target namespace:</p>
+<p style="margin-left:20px">urn:com.dassault_systemes.Simulia.2014.SimulationMethod</p>
+
+<p>Because of the targetNamespace declaration, the custom Method instance documents must include a corresponding namespace spec. For example:</p>
+<div style="margin-left:20px">&lt;Method
+<div style="margin-left:20px">xmlns="urn:com.dassault_systemes.Simulia.2014.SimulationMethod"<br/>
+...<br/>
+&gt;</div></div>
+<p>This namespace spec is required. A custom Method that does not contain this namespace spec is not valid.</p>
+
+<h4>Limitations:</h4>
+<ol>
+<li>The namespace spec in the custom Method instance documents must be specified as the default namespace. That is, it cannot specify a namespace prefix. Therefore, the namespace spec must exactly match
+<div style="margin-left:20px">xmlns="urn:com.dassault_systemes.Simulia.2014.SimulationMethod"</div>
+</li>
+
+<li>The custom Method instance documents are not validated against the schema.
+The consequences of this are:
+<ul>
+<li>Extraneous XML content is not an error, but rather is quietly ignored.
+<ul>
+<li>This means that misspellings are not caught.</li>
+</ul></li></ul>
+<p>It is strongly encouraged that you validate your custom Method instance document via a 3rd party tool.</p>
+</li>
+</ol>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+<h2><a name="Method Element"></a>Method Element</h2>
+
+<h4>Summary</h4>
+<p>&lt;Method  ... &gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;Assistant&gt;? ... &lt;/Assistant&gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;EnableAcoustics&gt;? ... &lt;/EnableAcoustics&gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;Action&gt;+ ... &lt;/Action&gt;<br/>
+&lt;/Method &gt;<br/>
+</p>
+
+<p>&lt;Method  schemaVersion?  type  name?  nlsFile?  &gt;</p>
+
+<h4>Details</h4>
+<table class="tableStyle1">
+<tr>
+<td>
+&lt;Method</td>
+<td>
+The document root element.
+</td>
+</tr>
+<tr>
+<td style="padding-left:20px">
+schemaVersion</td>
+<td>
+type=xs:decimal<br/>
+Specifies the custom Method schema version. <br/>
+This comes from the <b>version</b> attribute of the &lt;schema&gt; element of schema document (SMAMpaMethodSchema.xsd).<br/>
+Optional - defaults to 1.0.
+</td>
+</tr>
+<tr>
+<td style="padding-left:20px">
+type</td>
+<td>
+Enum:[ Structural, Thermal ]<br/>
+See details below.<br/>
+Required.
+</td>
+</tr>
+<tr>
+<td style="padding-left:20px">
+name</td>
+<td>
+type=xs:string<br/>
+Specifies the name that is shown in the UI. (Displayed at the top of the Action-Assistant panel).<br/>
+The value is first treated as an NLS lookup key. (See nlsFile.) If the NLS lookup fails, the value is used as given. Therefore, it is not necessary to specify an NLS key.<br/>
+Optional - defaults to the basename of the Method file. (The default value is also used as a NLS key.)
+</td>
+</tr>
+<tr>
+<td style="padding-left:20px">
+nlsFile</td>
+<td>
+type=xs:string<br/>
+The name/path of the CATNls file for NLS lookups. (Extension omitted.) May include a relative sub-directory path. <br/>
+The location of the CATNls file is relative to the following:<br/>
+<ul>
+<li>The directory of the Method file.</li>
+<li>The standard "resources/msgcatalog" runtime directory.</li>
+</ul>
+Optional - defaults to the basename of the Method file. <br/>
+A CATNls file is not necessary if NLS lookups are not needed. 
+</td>
+</tr>
+<tr>
+<td>
+&lt;Assistant&gt;</td>
+<td>
+Specifies the Method level content of the Active Assistant. See "Assistant Element".<br/>
+minOccurs=0 maxOccurs=1
+</td>
+</tr>
+
+<tr>
+<td>
+&lt;EnableAcoustics&gt;</td>
+<td>
+Specifies that Acoustic option should be enabled for those commands which support
+acoustic capability. See "EnableAcoustics Element".<br/>
+Note: This capability will only activate if the user has a license to a product
+which normally enables the acoustic command options.  If no license is available a warning will
+be issued and the acoustic version of the commands will not be enabled.<br/>
+minOccurs=0 maxOccurs=1
+</td>
+</tr>
+
+
+<tr>
+<td>
+&lt;Action&gt;</td>
+<td>
+Specifies the Actions for this method. See "Action Element".<br/>
+minOccurs=1 maxOccurs=unbounded
+</td>
+</tr>
+</table>
+<br/>
+
+<p><b>type</b>: Conceptually corresponds to the intended analysis of the associated Simulation. </p>
+<ul style="margin-left:40px">
+<li><b>Structural</b> - Creates a Structural Analysis Case.</li>
+<li><b>Thermal</b> - Creates a Thermal Analysis Case.</li>
+</ul>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<h2><a name="Action Element"></a>Action Element</h2>
+<p>Conceptually, an &lt;Action&gt; element corresponds to a workflow step. Thus, &lt;Action&gt; elements are used to define a workflow for setting up a Simulation. </p>
+
+<h4>Summary</h4>
+<p>&lt;Action  ... &gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;Commands&gt;?<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;CommandHeader  ...  &gt;*<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Description&gt; ... &lt;/Description&gt;?<br/>
+&nbsp;&nbsp;&nbsp;&lt;/Commands&gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;Assistant&gt;? ... &lt;/Assistant&gt;<br/>
+&lt;/Action&gt;<br/>
+</p>
+<p>&lt;Action  name?  nlsFile?  type?  id  &gt;</p>
+<p>&lt;CommandHeader  headerId  name?  iconFile?  &gt;</p>
+
+<h4>Details</h4>
+<table class="tableStyle1">
+<tr>
+<td>
+&lt;Action</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td style="padding-left:20px">
+name</td>
+<td>
+type=xs:string<br/>
+Specifies the name that is shown in the UI. (Displayed in the Action-Assistant panel).<br/>
+The value is first treated as an NLS lookup key. (See nlsFile.) If the NLS lookup fails, the value is used as given. Therefore, it is not necessary to specify an NLS key.<br/>
+Optional - defaults to the specified <b>type</b> for this Action. (The default value is also used as a NLS key.) If the <b>type</b> is not specified the <b>name</b> will get set to an internal default.
+</td>
+</tr>
+<tr>
+<td style="padding-left:20px">
+nlsFile</td>
+<td>
+type=xs:string<br/>
+The name/path of the CATNls file for NLS lookups. (Extension omitted.) May include a relative sub-directory path. <br/>
+The location of the CATNls file is relative to the following:<br/>
+<ul>
+<li>The directory of the Method file.</li>
+<li>The standard "resources/msgcatalog" runtime directory.</li>
+</ul>
+Optional - defaults to the Method's CATNls file. <br/>
+A CATNls file is not necessary if NLS lookups are not needed. 
+</td>
+</tr>
+<tr>
+<td style="padding-left:20px">
+type</td>
+<td>
+Enum:[ManageMaterials, ManageAmplitudes, ManageFem, StructuralProcedures, ThermalProcedures,  StructuralControls, InitialConditions, ThermalInitialConditions, Interactions, ThermalInteractions, StructuralRestraints, StructuralLoads, ThermalConditions, Solve, Results, MeshSetup, MeshCreate, MeshOperate, MeshGroup, ModelManage, ModelProperties, ModelAbstractions, ModelConnections ]<br/>
+Specified to use a pre-configured (canned) Action. See notes below.<br/>
+Conditionally required, mutually exclusive with the &lt;Commands&gt; element.
+</td>
+</tr>
+<tr>
+<td style="padding-left:20px">
+id</td>
+<td>
+type=xs:string<br/>
+Provides a unique id; unique within the custom Method.<br/>
+This id is not visible to the user and is not used outside the context of the custom Method.<br/>
+Cannot be changed after a simulation created with the custom Method is saved.<br/>
+Required.<br/>
+(Note: There is a case in which an id is not required. However, it is best to always specify an id.)
+</td>
+</tr>
+<tr>
+<td>
+&lt;Commands&gt;</td>
+<td>
+Contains the commands to associate with an Action. See notes below.<br/>
+minOccurs=0 maxOccurs=1<br/>
+Conditionally required, mutually exclusive with the &lt;Action&gt; <b>type</b> attribute.
+</td>
+</tr>
+<tr>
+<td>
+&lt;CommandHeader</td>
+<td>
+Specifies a command that is associated with the Action.<br/>
+All associated commands are displayed in the Simulation Status panel.<br/>
+minOccurs=1 maxOccurs=unbounded
+</td>
+</tr>
+<tr>
+<td style="padding-left:20px">
+headerId</td>
+<td>
+type=xs:string<br/>
+The command header id of the desired command. See notes below.<br/>
+Required.
+</td>
+</tr>
+<tr>
+<td style="padding-left:20px">
+name</td>
+<td>
+type=xs:string<br/>
+The name (title) to display in the Simulation Status panel for this command. This overrides the command's built-in name.<br/>
+Optional.
+</td>
+</tr>
+<tr>
+<td style="padding-left:20px">
+iconFile</td>
+<td>
+type=xs:string<br/>
+The file name of the icon to display in the Simulation Status panel for this command. This overrides the command's built-in icon.<br/>
+Note: the icon file must be in the <b>3D</b>EXPERIENCE runtime view (under resources\graphic).<br/>
+Optional.
+</td>
+</tr>
+<tr>
+<td>
+&lt;Description&gt;</td>
+<td>
+type=xs:string<br/>
+The description to display in the Simulation Status panel for this command. This overrides the command's built-in description.<br/>
+minOccurs=0 maxOccurs=1
+</td>
+</tr>
+<tr>
+<td>
+&lt;Assistant&gt;</td>
+<td>
+Specifies the Action level content of the Active Assistant. See "Assistant Element".<br/>
+minOccurs=0 maxOccurs=1
+</td>
+</tr>
+</table>
+
+<p><b>Notes</b></p>
+<ul>
+<li>Either the <b>type</b> attribute or the &lt;Commands&gt; child must be specified. </li>
+<li>The &lt;Action&gt; <b>type</b> attribute specifies a configured Action which contains a built-in list of commands. See "Commands Associated with Configured Action Types" below. The set of commands is not configurable; the built-in set of commands is always shown for a configured Action.</li>
+<li>The &lt;Commands&gt; element is used to fully customize the available commands. With the &lt;Commands&gt; element, only the specified commands are provided by the Action.</li>
+<li>The value for the &lt;CommandHeader&gt; <b>headerId</b> attribute is the internal <b>3D</b>EXPERIENCE command header id (or command id).
+<p>See also "Discovering Command Header Identifiers".</p></li>
+<li>The only limitation on the commands that may be specified within a custom &lt;Action&gt; is that the command will run in the context of the Simulation being the UI-Active object. Therefore, it should be possible to use any <b>3D</b>EXPERIENCE command that works correctly in the context of a Simulation.</li>
+</ul>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<h2><a name="Assistant Element"></a>Assistant Element</h2>
+<p>For customizing the help text that appears in the Action-Assistant panel.</p>
+
+<h4>Summary</h4>
+<p>&lt;Assistant ... &gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;Elem&gt;*<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image ... /&gt;?<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Text ... /&gt;?<br/>
+&nbsp;&nbsp;&nbsp;&lt;/Elem&gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;Expander ... &gt;*<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Elem&gt;*<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Image ... /&gt;?<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Text ... /&gt;?<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/Elem&gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;/Expander&gt;<br/>
+&lt;/Assistant&gt;<br/>
+</p>
+
+<p>&lt;Assistant  &gt;</p>
+<p>&lt;Expander  title?&gt;</p>
+<p>&lt;Image file  width?  height? /&gt;</p>
+<p>&lt;Text&gt; ... &lt;Link url &gt; ... &lt;/Link&gt; ... &lt;/Text&gt;</p>
+
+<h4>Details</h4>
+<table class="tableStyle1">
+<tr>
+<td>
+&lt;Assistant	
+</td>
+<td>
+</td>&nbsp;</tr>
+<tr>
+<td>
+&lt;Elem&gt;</td>
+<td>
+Specifies an entry in the Action-Assistant panel.<br/>
+An entry is similar to a table row.<br/>
+minOccurs=0 maxOccurs=unbounded
+</td>
+</tr>
+<tr>
+<td>
+&lt;Image</td>
+<td>
+Specifies an icon image to display on the left side of this entry. Use only if an icon is desired.<br/>
+minOccurs=0 maxOccurs=1
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;file</td>
+<td>
+type=xs:string<br/>
+The name of the image file.<br/>
+This is expected to be a plain file name, no path.  The file must be in the <b>3D</b>EXPERIENCE runtime view (under resources\graphic).<br/>
+Required.
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;width</td>
+<td>
+type=xs:integer<br/>
+Specifies the desired display width of the icon.<br/>
+If not specified, a default width is used.<br/>
+Optional.
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;height</td>
+<td>
+type=xs:integer<br/>
+Specifies the desired display height of the icon.<br/>
+If not specified, a default height is used.<br/>
+Optional.
+</td>
+</tr>
+<tr>
+<td>
+&lt;Text&gt; ... &lt;/Text&gt;</td>
+<td>
+type=xs:string<br/>
+Free-form textual content. This text does not use NLS lookup. This is straight, free-form, multiline text.<br/>
+minOccurs=0 maxOccurs=1
+</td>
+</tr>
+<tr>
+<td>
+&lt;Link</td>
+<td>
+type=xs:string<br/>
+Creates an in-line hyperlink. The element's text content is linked to the specified url.<br/>
+minOccurs=0 maxOccurs=unbounded
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;url</td>
+<td>
+type=xs:string<br/>
+The hyperlink target.<br/>
+Required.
+</td>
+</tr>
+<tr>
+<td>
+&lt;Expander</td>
+<td>
+Contains a group of entries. The group can be expanded/collapsed, as a whole, on the Action-Assistant panel.<br/>
+minOccurs=0 maxOccurs=unbounded
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;title</td>
+<td>
+type=xs:string<br/>
+Specifies the title to display next to the expander widget.<br/>
+Optional
+</td>
+</tr>
+</table>
+
+
+<p>Following is an example of using the &lt;Text&gt; and &lt;Link&gt; elements together.</p>
+<div style="margin-left:20px">&lt;Text&gt;inline text &lt;Link url="..."&gt;hyperlinked text&lt;/Link&gt; more inline text.&lt;/Text&gt;</div>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+<h2><a name="EnableAcoustics Element"></a>EnableAcoustics Element</h2>
+<p>This element is currently defined to be empty.  Its existence specifies 
+that the acoustic option should be enabled for those commands which support
+acoustic capability.
+Note: This capability will only activate if the user has a license to a product
+which normally enables the acoustic command options.  If no license is available, a warning will
+be issued and the acoustic options of the commands will not be enabled.</p>
+<p>The following products support acoustic analysis command options as of the R2017x release:</p>
+<ul>
+<li>SLD - Structural Vibration Analyst : Partial Acoustic Support
+</li>
+<li>SAS - Noise & Vibration Analyst : Full Acoustic Support
+</li>
+<li>SMU - Mechanical Analyst : Full Acoustic Support
+</li>
+</ul>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [Jan 2016]</td>
+		<td>Document created</td>
+  </tr>
+  <tr>  
+		<td>Version: <strong>1.1</strong> [Oct 2016]</td>
+		<td>Changed examples to match XSD tag sequence (Assistant first)</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

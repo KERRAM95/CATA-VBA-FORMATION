@@ -1,0 +1,114 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATSimPLMIDLItf SIMPLMService (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATSimPLMIDLItf.htm" href="../CATSimPLMIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATSimPLMIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SIMPLMService"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SIMPLMService<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SIMPLMService_20440','SIMPLMService','0');</script>
+<section id='maindesc'>
+<b><i> Interface representing the PLMNew service.</i></b><br>
+ It can be retrieves using the 
+ <script type="text/javascript"> activateLinkAnchor('CATIAApplication','','CATIAApplication') </script>.GetSessionService("SimPLMService")  <br><b>Role</b>: provides the services to create and edit in authoring session a new PLM entity.
+ In case this material is not granted the PLMCreate method of the interface fails.
+ The data are created in the default authoring customization domain (environment).</p>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#PLMCreate"><b>PLMCreate</b></a>
+</td><td  id='tdright'>  Method which allows to create a new Simulation object .
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="PLMCreate"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>PLMCreate</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iSimulationName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iSimulationType</span>,<script type="text/javascript"> activateLink('CATIAPLMEntity','CATIAPLMEntity')</script> <span class='param'>iContext</span>,<script type="text/javascript"> activateLink('SimulationReference','SimulationReference')</script> <span class='param'>oSimObject</span>,<script type="text/javascript"> activateLink('CATIAEditor','CATIAEditor')</script> <span class='param'>oEditor</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Method which allows to create a new Simulation object .
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSimulationName</span></dt>
+   <dd>   The newly Simulation's Name.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iSimulationType</span></dt>
+   <dd>   Indicates the type of simulation to create.
+   <br><b>Legal values</b>:
+   <tt>SMAFeaPLMNewSimu</tt>: to create a Multiphysics simulation.
+   <tt>DELPLMSimulation</tt>: to create a Manufacturing simulation.
+   <tt>DELPSSSimulation</tt>: to create a Production simulation.
+   <tt>CATKinPLMNew</tt>: to create a Kinematics simulation.
+   <tt>LogicalSimulation</tt>: to create a Logical simulation.
+   <tt>LogicalSimulation</tt>: to create a Functional simulation.
+   <tt>LogicalSimulation</tt>: to create a Behavior simulation.
+   For other simulation types, contact the responsible team.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iContext</span></dt>
+   <dd>   The Context simulated.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oSimObject</span></dt>
+   <dd> [out,  CATBaseUnknown#Release]   The newly Simulation created.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oEditor</span></dt>
+   <dd> [out,  CATBaseUnknown#Release]   The resulting editor on the newly created data.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example shows you how to create a new Kinematics Simulation reference.
+   <pre>
+   Dim SimService As SIMPLMService
+   Dim oSimlEditor As Editor
+   Dim oPLMSimObject As SimulationObject
+   Set SimService = CATIA.GetSessionService("SimPLMService")
+   ...
+   SimService.PLMCreate "MySimulation","CATKinPLMNew", iContext , oPLMSimObject, oSimlEditor
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

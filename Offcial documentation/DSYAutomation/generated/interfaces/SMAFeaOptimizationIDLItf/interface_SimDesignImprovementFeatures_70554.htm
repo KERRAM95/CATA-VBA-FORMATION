@@ -1,0 +1,249 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAFeaOptimizationIDLItf SimDesignImprovementFeatures (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAFeaOptimizationIDLItf.htm" href="../SMAFeaOptimizationIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAFeaOptimizationIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimDesignImprovementFeatures"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimDesignImprovementFeatures<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimDesignImprovementFeatures_70554','SimDesignImprovementFeatures','0');</script>
+<section id='maindesc'>
+<b><i> Represents the Optimization Feature Set Collection.</i></b><br>
+
+ 
+ <!-- @sample -->
+ <dl>
+ <dt><strong>Example:</strong></dt>
+ <dd>
+ 
+ Given a design improvement study <code>SimDesignImprovementStudyCase</code> object you can retrieve a <code>SimDesignImprovementFeatures</code> object as following:
+ <pre>
+ Dim MyOptimizationCase As SimTopologyOptimizationCase
+ ...
+ Dim MyFeatures As SimDesignImprovementFeatures
+ Set MyFeatures = MyOptimizationCase.Features
+ </pre>
+ </dd>
+ <dt><strong>Example in Python:</strong></dt>
+ <dd> Given a feature <code>SimDesignImprovementStudyCase</code> object you can retrieve a <code>SimDesignImprovementFeatures</code> object as following:
+ <pre>
+ ...
+ MyFeatures = MyOptimizationCase.Features
+ </pre>
+ </dd>
+ </dl>
+ <dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('SMAIAMpaAnalysisCase','','SMAIAMpaAnalysisCase') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#Add"><b>Add</b></a>
+</td><td  id='tdright'>  Creates a Feature object and returns it.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AddSubFeature"><b>AddSubFeature</b></a>
+</td><td  id='tdright'>  Creates a Topology and Shape Design Area Sub Feature object and returns it.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Item"><b>Item</b></a>
+</td><td  id='tdright'>     Returns a Feature from the collection of Optimization Features.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Remove"><b>Remove</b></a>
+</td><td  id='tdright'>     Removes a Feature from the collection of Optimization Features.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="Add"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Add</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iType</span>)</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a Feature object and returns it.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd>    The Feature Type to be created.
+
+ Possible values for iType are:
+   <ul>
+   <li>For Design Variable Features :
+       <ul>
+       <li><strong>SimDesignEnvelope</strong> : Creates a design space feature. It is of type <code>SimDesignEnvelope</code>.</li>
+       </ul>
+   </li>
+   <li>For Objective Features :
+       <ul>
+       <li><strong>SimNonParametricObjective</strong> : Creates a Objective feature. It is of type <code>SimNonParametricObjective</code>.</li>
+       </ul>
+   </li>
+   <li>For Constraint Features :
+       <ul>
+       <li><strong>SimFrequencyConstraint</strong> : Creates a frequency constraint feature. It is of type <code>SimFrequencyControls</code>.</li>
+       <li><strong>SimDisplacementConstraint</strong> : Creates a displacement constraint feature. It is of type <code>SimDisplacementConstraint</code>.</li>
+       <li><strong>SimStressConstraint</strong> : Creates a stress constraint feature. It is of type <code>SimStressConstraint</code>.</li>
+       <li><strong>SimFastenerForceConstraint</strong> : Creates a fastener force constraint feature. It is of type <code>SimFastenerForceConstraint</code>.</li>
+       <li><strong>SimCenterOfGravityConstraint</strong> : Creates a center of gravity constraint feature. It is of type <code>SimCenterofGravityConstraint</code>.</li>
+       <li><strong>SimReactionForceConstraint</strong> : Creates a reaction force constraint feature. It is of type <code>SimReactionForceConstraint</code>.</li>
+       <li><strong>SimGeneralConstraint</strong> : Creates a general constraint feature. It is of type <code>SimGeneralConstraint</code>.</li>
+       </ul>
+   </li>
+   <li>For Shape Controls Features :
+       <ul>
+       <li><strong>SimThicknessControl</strong> : Creates an thickness control feature. It is of type <code>SimThicknessControl</code>.</li>
+       <li><strong>SimSymmetryControl</strong> : Creates an symmetry control feature. It is of type <code>SimSymmetryControl</code>.</li>
+       <li><strong>SimCyclicSymmetryControl</strong> : Creates a cyclic symmetry control feature. It is of type <code>SimCyclicSymmetryControl</code>.</li>
+       <li><strong>SimPenetrationCheck</strong> : Creates a penetration check feature. It is of type <code>SimPenetartionCheck</code>.</li>
+       </ul>
+   </li>
+ <li>For Manufacturing Controls Features :
+       <ul>
+       <li><strong>SimCastingControl</strong> : Creates an casting control feature. It is of type <code>SimCastingControl</code>.</li>
+       <li><strong>SimExtrusionControl</strong> : Creates an extrusion control feature. It is of type <code>SimExtrusionControl</code>.</li>
+       <li><strong>SimMillingControl</strong> : Creates a milling control feature. It is of type <code>SimMillingControl</code>.</li>
+       <li><strong>SimOverhangControl</strong> : Creates a overhang control feature. It is of type <code>SimOverhangControl</code>.</li>
+       <li><strong>SimRibControl</strong> : Creates a rib control feature. It is of type <code>SimRibControl</code>.</li>
+       </ul>
+   </li>
+   <li>For Response Variable Features :
+       <ul>
+       <li><strong>SimAbsoluteMassResponseVariable</strong> : Creates an absolute mass response variable feature. It is of type <code>SimAbsoluteMassResponseVariable</code>.</li>
+       <li><strong>SimCalculatedResponseVariable</strong> : Creates an calculated response variable feature. It is of type <code>SimCalculatedResponseVariable</code>.</li>
+       <li><strong>SimCenterOfGravityResponseVariable</strong> : Creates a center of gravity response variable feature. It is of type <code>SimCenterOfGravityResponseVariable</code>.</li>
+       <li><strong>SimDisplacementResponseVariable</strong> : Creates a displacement response variable feature. It is of type <code>SimDisplacementResponseVariable</code>.</li>
+       <li><strong>SimFastenerForceResponseVariable</strong> : Creates a fastener force response variable feature. It is of type <code>SimFastenerForceResponseVariable</code>.</li>
+       <li><strong>SimFrequencyResponseVariable</strong> : Creates a frequency response variable feature. It is of type <code>SimFrequencyResponseVariable</code>.</li>
+       <li><strong>SimMassResponseVariable</strong> : Creates a mass response variable feature. It is of type <code>SimMassResponseVariable</code>.</li>
+       <li><strong>SimMomentOfInertiaResponseVariable</strong> : Creates a moment inertia response variable feature. It is of type <code>SimMomentOfInertiaResponseVariable</code>.</li>
+       <li><strong>SimReactionForceResponseVariable</strong> : Creates a reaction force response variable feature. It is of type <code>SimReactionForceResponseVariable</code>.</li>
+       <li><strong>SimReactionMomentResponseVariable</strong> : Creates a moment of inertia response variable feature. It is of type <code>SimReactionMomentResponseVariable</code>.</li>
+       <li><strong>SimRotationResponseVariable</strong> : Creates a rotataion response variable feature. It is of type <code>SimRotationResponseVariable</code>.</li>
+       <li><strong>SimComplianceResponseVariable</strong> : Creates a compliance response variable feature. It is of type <code>SimComplianceResponseVariable</code>.</li>
+       <li><strong>SimStressResponseVariable</strong> : Creates a stress response variable feature. It is of type <code>SimStressResponseVariable</code>.</li>
+       </ul>
+   </li>
+   <ul>
+
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created feature object.
+ </ dd>
+</dl>
+</dd>
+<a id="AddSubFeature"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>AddSubFeature</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iType</span>,<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>iParent</span>)</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a Topology and Shape Design Area Sub Feature object and returns it.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd>    The Feature Type to be created.
+
+ Possible values for iType are:
+   <ul>
+   <li>For Topology and Shape Optimization Sub Features :
+       <ul>
+       <li><strong>SimPreservedRegion</strong> : Creates a frozen region feature and is applicable only to Topology Sequence. It is of type <code>SimPreservedRegion</code>.</li>
+       <li><strong>SimLocalOptimizationArea</strong> : Creates a design local optimization area feature and is applicable only to Shape Sequence. It is of type <code>SimLocalOptimizationArea</code>.</li>
+		<li><strong>SimInPlaneControl</strong> : Creates a in plane control feature and is applicable only to Shape Sequence. It is of type <code>SimInPlaneControl</code>.</li>
+		<li><strong>SimTransitionControl</strong> : Creates a transition control feature and is applicable only to Shape Sequence. It is of type <code>SimTransitionControl</code>.</li>
+       </ul>
+   </li>
+   <ul>
+ 
+ </ dd>
+    <dt><span class='paramitem'> iParent</span></dt>
+   <dd>	 The Optimization feature under which the new feature has to be created
+
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created feature object.
+ </ dd>
+</dl>
+</dd>
+<a id="Item"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Item</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> </span></dt>
+  <dd class='ddmethod'>
+    Returns a Feature from the collection of Optimization Features.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'>  iIndex</span></dt>
+   <dd>        The  index of the Feature Set.
+
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The retrieved feature object.
+ </ dd>
+</dl>
+</dd>
+<a id="Remove"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Remove</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+    Removes a Feature from the collection of Optimization Features.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'>  iIndex</span></dt>
+   <dd>      The  index or name of the feature object.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

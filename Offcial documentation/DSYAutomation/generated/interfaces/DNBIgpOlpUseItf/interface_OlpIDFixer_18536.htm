@@ -1,0 +1,244 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpIDFixer (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpIDFixer"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpIDFixer<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpIDFixer_18536','OlpIDFixer','0');</script>
+<section id='maindesc'>
+<b><i> Represents an interface that handles fixing object names to conform to the robot language requirements.</i></b><br>
+
+ <font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ Download or Upload command</font>.<BR>
+  This interface provides methods to set the requirements for the name, as well as to generate a correct
+ name and returning the corrected name.
+ <dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example code shows how to create and use the ID Fixer.<BR>
+ The examples here are written in Visual Studio Tools for Applications (VSTA) VB.NET
+ <pre>
+ ' Create the Translator Helper and ID Fixer.
+ Dim helper As OlpTranslatorHelper = CATIA.Application.GetSessionService("OlpTranslatorHelper")
+ Dim idFixer As DELOlp.OlpIDFixer = helper.CreateIDFixer
+
+ 'Set the properties
+ idFixer.ReplaceWhiteSpace = 0
+ idFixer.Unique = 0
+ idFixer.ReplaceWithChars = "aaa"
+ idFixer.CharactersToRemove = "abc"
+ idFixer.InvalidStartingChars = "R"
+ idFixer.MaxLength = 20
+
+ ' Loop through the tasks, correcting each name
+ Dim tasks As Object() = helper.Tasks
+    For Each task As OlpRobotTask In tasks
+       Dim newName As String = idFixer.FixID(task)
+       MsgBox(" Correcting task named: " & task.Name & " Corrected name is: " & newName)
+   Next
+ </pre>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#CharactersToRemove"><b>CharactersToRemove</b></a>
+</td><td  id='tdright'>  Gets/sets the characters to remove from the ID.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#InvalidNames"><b>InvalidNames</b></a>
+</td><td  id='tdright'>  Gets/sets the list of invalid names.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#InvalidPrefix"><b>InvalidPrefix</b></a>
+</td><td  id='tdright'>  Gets/sets the prefix to use when an invalid name is found.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#InvalidStartingChars"><b>InvalidStartingChars</b></a>
+</td><td  id='tdright'>  Gets/sets the characters to remove from the first character of the ID.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#MaxLength"><b>MaxLength</b></a>
+</td><td  id='tdright'>  Gets/sets the maximum character length for an ID.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ReplaceWhiteSpace"><b>ReplaceWhiteSpace</b></a>
+</td><td  id='tdright'>  Gets/sets the flag to replace white space in the ID with an underscore.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ReplaceWithChars"><b>ReplaceWithChars</b></a>
+</td><td  id='tdright'>  Gets/sets the characters to remove from the ID.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Unique"><b>Unique</b></a>
+</td><td  id='tdright'>  Gets/sets whether the ID should be unique.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#FixID"><b>FixID</b></a>
+</td><td  id='tdright'>  Fixes the ID of the input object.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#FixIDWithName"><b>FixIDWithName</b></a>
+</td><td  id='tdright'>  Fixes the ID of the input object with a specified starting name.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="CharactersToRemove"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CharactersToRemove</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/sets the characters to remove from the ID.<BR>
+ The default is none.
+ If this property is set, every character in the CharactersToRemove string will be removed
+ from the ID.
+ If the ID becomes empty because all the characters have been removed, an error is thrown.
+ If there are any numbers in the characters to remove string, an error is thrown.
+</dd>
+<a id="InvalidNames"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>InvalidNames</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/sets the list of invalid names.<BR>
+ For example, this could be a list of keywords.
+</dd>
+<a id="InvalidPrefix"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>InvalidPrefix</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/sets the prefix to use when an invalid name is found.<BR>
+</dd>
+<a id="InvalidStartingChars"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>InvalidStartingChars</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/sets the characters to remove from the first character of the ID.<BR>
+ The default is none.  (No beginning characters will be removed.)
+ If set and the first character of the ID is any one of the characters in the InvalidStartingChars
+ string, the first character is replace with ReplaceWithChars.
+ If this property is set, so must the ReplaceWithChars property.
+</dd>
+<a id="MaxLength"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>MaxLength</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/sets the maximum character length for an ID.<BR>
+ The default value is 0, meaning no character limit for the ID.
+ The value must be greater than 0.
+ If set, the corrected ID can be no longer than the specified length.
+ Characters are removed from the end of the ID.
+</dd>
+<a id="ReplaceWhiteSpace"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ReplaceWhiteSpace</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/sets the flag to replace white space in the ID with an underscore.<BR>
+ The default is TRUE, replace all white space with an underscore.
+ Otherwise, nothing is done to the ID.
+</dd>
+<a id="ReplaceWithChars"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ReplaceWithChars</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/sets the characters to remove from the ID.<BR>
+ This must be used in conjuction with InvalidStartingChars, otherwise it is ignored.
+ The default value is "x", and cannot be set to empty.
+ Used to set the first character of an ID, if InvalidStartingChars is set.
+</dd>
+<a id="Unique"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Unique</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/sets whether the ID should be unique.<BR>
+ The default value is TRUE, the name should be unique and no two objects will have the same ID.
+ Numbers will be appended to the end of the ID until a unique ID is found.
+ If a unique name can't be found, a warning will be posted indicating this.
+ If the value is FALSE, no test for uniqueness will be done.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="FixID"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>FixID</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iObject</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Fixes the ID of the input object.<BR>
+ The input object's name will be fetched and used as the starting point for generating a name.
+ The name will be generated based on the properties specified.
+ Once a name has been generated, none of the properties can be changed.
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iObject</span></dt>
+   <dd>    The object whose name will be fixed.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     The fixed name for the object.
+ </ dd>
+</dl>
+</dd>
+<a id="FixIDWithName"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>FixIDWithName</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iObject</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iStartingName</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Fixes the ID of the input object with a specified starting name.<BR>
+ The starting point for generating a name will be iStartingName, not the name of the object.
+ The name will be generated based on the properties specified.
+ Once a name nas been generated, none of the properties can be changed.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iObject</span></dt>
+   <dd>    The object whose name will be fixed.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iStartingName</span></dt>
+   <dd>    The name to be used to fix.  (Instead of the name of iObject.)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     The fixed name for the object.
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

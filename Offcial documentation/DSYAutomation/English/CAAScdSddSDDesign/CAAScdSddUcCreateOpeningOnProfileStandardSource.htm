@@ -1,0 +1,486 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningOnProfileStandard.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample creates standard openings on profile using different positioning strategies.</span>
+<span class="comment">'This script requires sdd model which contains a plate and a stiffener</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="comment">'   2- Retrieves Selection object</span>
+<span class="comment">'   3- Retrieves Part object</span>
+<span class="comment">'   4- Retrieves service of type RfgService</span>
+<span class="comment">'   5- Retrieves a stiffener object</span>
+<span class="comment">'   6- Create standard opening on profile using Offset/Offset positioning strategy</span>
+<span class="comment">'   7- Create Standard opening on profile with mid dist offset positioning strategy</span>
+<span class="comment">'   8- Create Standard opening on profile with spacing offset positioning strategy</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Dim </span>Manager<span class="keyword"> As </span>RfgService
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>SDDProdSel<span class="keyword"> As </span>Selection
+<span class="keyword">Dim </span>StiffenerPart <span class="keyword">As</span> Part
+
+
+<span class="keyword">Sub </span>CATMain()
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="keyword">    Dim </span>SDDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SddProduct&quot;
+    OpenProduct prdName , SDDPrdEditor
+    
+<span class="comment">'   2- Retrieves Selection object</span>
+<span class="keyword">    Set </span>SDDProdSel = SDDPrdEditor.Selection
+    
+<span class="comment">'   3- Retrieves Part object</span>
+<span class="keyword">    Dim </span>product1Service  <span class="keyword"> As </span>PLMProductService
+<span class="keyword">    Set </span>product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+<span class="keyword">    Dim </span>ObjVPMRootOccurrence  <span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">    Set </span>ObjVPMRootOccurrence = product1Service.RootOccurrence
+<span class="keyword">    Dim </span>ObjVPMReference<span class="keyword"> As </span>VPMReference
+<span class="keyword">    Set </span>ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+<span class="keyword">    Dim </span>ObjVPMRepInstances<span class="keyword"> As </span>VPMRepInstances
+<span class="keyword">    Set </span>ObjVPMRepInstances = ObjVPMReference.RepInstances
+<span class="keyword">    Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+<span class="keyword">    If </span>ObjPart Is Nothing<span class="keyword"> Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve part&quot;
+<span class="keyword">        Exit Sub</span>
+<span class="keyword">    End If</span>
+    
+<span class="comment">'   4- Retrieves service of type RfgService</span>
+<span class="keyword">    Set </span>Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+<span class="keyword">    If </span>Manager Is Nothing<span class="keyword"> Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve Service Manager&quot;
+<span class="keyword">        Exit Sub</span>
+<span class="keyword">    End If</span>
+    
+<span class="comment">'   5- Get product stiffener</span>
+<span class="keyword">    Set</span> ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">    Set</span> StiffenerRef = ListOfInstances.Item(2).ReferenceInstanceOf
+<span class="keyword">    Set</span> StiffenerRepInstances = StiffenerRef.RepInstances
+<span class="keyword">    Set</span> StiffenerRepInstReference = StiffenerRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set</span> StiffenerPart = StiffenerRepInstReference.GetItem(&quot;Part&quot;)
+<span class="comment">    'Get Sdd Stiffener</span>
+<span class="keyword">    Dim</span> ObjSddProductStiffener <span class="keyword">As</span> SddProductStiffener
+    SDDProdSel.Add StiffenerRef
+<span class="keyword">    Set</span> ObjSddProductStiffener = SDDProdSel.FindObject(&quot;CATIASddProductStiffener&quot;)
+<span class="keyword">    Dim</span> ObjSddStiffener <span class="keyword">As</span> SddStiffener
+<span class="keyword">    Set</span> ObjSddStiffener = ObjSddProductStiffener.SddStiffener
+<span class="comment">    'Get reference of stiffener</span>
+<span class="keyword">    Dim</span> RefObjSddStiffener <span class="keyword">As</span> Reference
+<span class="keyword">    Set</span> RefObjSddStiffener = StiffenerPart.CreateReferenceFromObject(ObjSddStiffener)
+
+<span class="comment">'   6- Create standard Opening on profile with Offset Offset positioning strategy</span>
+<span class="keyword">    Dim</span> ObjStrOpeningOnProfileOffsetOffset <span class="keyword">As</span> StrOpeningOnProfile
+    CreateStandardOpeningOnProfileOffsetOffset ObjSddStiffener, RefObjSddStiffener, ObjStrOpeningOnProfileOffsetOffset
+    ObjSddProductStiffener.Update
+        
+<span class="comment">'   7- Create standard Opening on profile with mid dist offset positioning strategy</span>
+<span class="keyword">    Dim</span> ObjStrOpeningOnProfileMidDistOffset <span class="keyword">As</span> StrOpeningOnProfile
+    CreateStandardOpeningOnProfileMidDistOffset ObjSddStiffener, RefObjSddStiffener, ObjStrOpeningOnProfileMidDistOffset
+    ObjSddProductStiffener.Update    
+    
+<span class="comment">'   8- Create standard Opening on profile with spacing offset positioning strategy</span>
+<span class="keyword">    Dim</span> ObjStrOpeningOnProfileSpacingOffset <span class="keyword">As</span> StrOpeningOnProfile
+    CreateStandardOpeningOnProfileSpacingOffset ObjSddStiffener, RefObjSddStiffener, ObjStrOpeningOnProfileSpacingOffset
+    ObjSddProductStiffener.Update
+        
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Standard Opening on profile with Offset/Offset positioning strategy</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   6.1- Add Opening On Profile</span>
+<span class="comment">'   6.2- Get StrOpening from StrOpeningOnProfile</span>
+<span class="comment">'   6.3- Set opening type catStrOpeningModeStandard for standard opening</span>
+<span class="comment">'   6.4- Set category</span>
+<span class="comment">'   6.5- Get StrOpeningStandard from StrOpening</span>
+<span class="comment">'   6.6- Set standard mode type</span>
+<span class="comment">'   6.7- Get contour and set parameters data</span>
+<span class="comment">'   6.8- Get positioning strategy and parameters data</span>
+<span class="comment">'   6.9- Set standard opening remaining parameters</span>
+<span class="comment">'   6.10- Set Offset Offset Position Strategy Parameters</span>
+<span class="comment">'   6.11- Updates created opening on profile object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateStandardOpeningOnProfileOffsetOffset(iObjSddStiffener<span class="keyword"> As </span>SddStiffener, iRefObjSddStiffener <span class="keyword">As</span> Reference,oObjStrOpeningOnProfile<span class="keyword"> As </span>StrOpeningOnProfile)
+
+<span class="comment">'   6.1-Add Opening On Profile</span>
+    AddOpening iObjSddStiffener, oObjStrOpeningOnProfile
+	
+<span class="comment">'   6.2-Get StrOpening from StrOpeningOnProfile</span>
+<span class="keyword">    Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+<span class="keyword">    Set</span> ObjStrOpening = oObjStrOpeningOnProfile.StrOpening
+	
+<span class="comment">'   6.3-Set opening type catStrOpeningModeStandard for standard opening</span>
+    ObjStrOpening.OpeningType = catStrOpeningModeStandard
+	
+<span class="comment">'   6.4-Set category</span>
+<span class="keyword">    Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+<span class="keyword">    Set</span> ObjStrCategoryMngt = ObjStrOpening.StrCategoryMngt
+    ObjStrCategoryMngt.SetCategory &quot;ManHole&quot;
+	
+<span class="comment">'   6.5-Get StrOpeningStandard from StrOpening</span>
+<span class="keyword">    Dim</span> ObjStrOpeningStandard <span class="keyword">As</span> StrOpeningStandard
+<span class="keyword">    Set</span> ObjStrOpeningStandard = ObjStrOpening.StrOpeningStandard
+	
+<span class="comment">'   6.6-Set standard mode type</span>
+    ObjStrOpeningStandard.StandardModeType = catStrOpeningSTDRectMode
+	
+<span class="comment">'   6.7-Get contour and set parameters data</span>
+<span class="keyword">    Dim</span> ContourName <span class="keyword">As</span> String
+ <span class="keyword">   Dim</span> StdContourParms<span class="keyword"> As</span> StrStandardContourParameters
+    'get contour names
+<span class="keyword">    Dim</span> ContourNames() <span class="keyword">As</span> Variant
+<span class="keyword">    Dim</span> ObjStrOpeningsMgr <span class="keyword">As</span> StrOpeningsMgr
+<span class="keyword">    Set</span> ObjStrOpeningsMgr = iObjSddStiffener.StrOpeningsMgr
+    'get available contour names
+    ObjStrOpeningsMgr.GetAvailableStandardContours ContourNames
+    ContourName = ContourNames(1)
+    'get parameters of contour
+<span class="keyword">    Set</span> StdContourParms = ObjStrOpeningsMgr.GetStandardContourParms(ContourName)
+    'set contour parameters data
+    SetRectContourParamsData StdContourParms, &quot;100mm&quot;, &quot;50mm&quot;, &quot;5mm&quot;
+	
+<span class="comment">'   6.8-Get positioning strategy and parameters data</span>
+<span class="keyword">    Dim</span> PosStratName <span class="keyword">As</span> String
+<span class="keyword">    Dim</span> PosStratParms <span class="keyword">As</span> StrStandardPosStrategyParameters
+    'get std positiong strategy names
+<span class="keyword">    Dim</span> StdPosStrategyNames() <span class="keyword">As</span> Variant
+    'get available standard positioning strategy names
+    ObjStrOpeningsMgr.GetAvailableStandardPositioningStrategiesForProfile StdPosStrategyNames
+    'select positiong strategy offset offset
+    PosStratName = StdPosStrategyNames(2)
+    'get standard positioining strategy parameters
+<span class="keyword">    Set</span> PosStratParms = ObjStrOpeningsMgr.GetStandardPositioningStrategyParmsForProfile(PosStratName)
+    'set contour and position strategy for profile
+    ObjStrOpeningStandard.SetContourAndPosStrategyForProfile ContourName, StdContourParms, PosStratName, PosStratParms
+	
+<span class="comment">'   6.9-Set standard opening remaining parameters</span>
+    'set direction
+    ObjStrOpeningStandard.DirectionForOpeningOnProfile = FALSE	
+    'set extrusion mode
+    'Set ObjStrOpeningExtrusionMngt = ObjStrOpening.StrOpeningExtrusionMngt
+    'ObjStrOpeningExtrusionMngt.ExtrusionMode = 0
+    'set limit mode
+    ObjStrOpeningStandard.LimitMode = 0
+    
+<span class="comment">'   6.10-Set Offset Offset Position Strategy Parameters</span>
+ <span class="keyword">   Set</span> ObjRefElem = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.4&quot;)
+<span class="keyword">    Set</span> RefElem = ObjPart.CreateReferenceFromObject(ObjRefElem)
+    ObjStrOpeningStandard.SetOffsetOffsetPosStratParms iRefObjSddStiffener, RefElem, &quot;0mm&quot;, &quot;0mm&quot;, &quot;Gravity&quot;, &quot;0deg&quot;
+
+<span class="comment">'   6.11-Updates created opening on profile object</span>	
+    ObjPart.UpdateObject oObjStrOpeningOnProfile
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create standard Opening on Profile with mid dist offset positioning strategy</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   7.1- Add Opening On Profile</span>
+<span class="comment">'   7.2- Get StrOpening from StrOpeningOnProfile</span>
+<span class="comment">'   7.3- Set opening type catStrOpeningModeStandard for standard opening</span>
+<span class="comment">'   7.4- Set category</span>
+<span class="comment">'   7.5- Get StrOpeningStandard from StrOpening</span>
+<span class="comment">'   7.6- Set standard mode type</span>
+<span class="comment">'   7.7- Get contour and set parameters data</span>
+<span class="comment">'   7.8- Get positioning strategy and parameters data</span>
+<span class="comment">'   7.9- Set standard opening remaining parameters</span>
+<span class="comment">'   7.10- Set Offset Offset Position Strategy Parameters</span>
+<span class="comment">'   7.11- Updates created opening on profile object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> CreateStandardOpeningOnProfileMidDistOffset(iObjSddStiffener <span class="keyword">As</span> SddStiffener, iRefObjSddStiffener <span class="keyword">As</span> Reference, oObjStrOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile)
+
+<span class="comment">'   7.1-Add Opening On Profile</span>
+    AddOpening iObjSddStiffener, oObjStrOpeningOnProfile
+	
+<span class="comment">'   7.2-Get StrOpening from StrOpeningOnProfile</span>
+<span class="keyword">    Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+<span class="keyword">    Set</span> ObjStrOpening = oObjStrOpeningOnProfile.StrOpening
+	
+<span class="comment">'   7.3-Set opening type catStrOpeningModeStandard for standard opening</span>
+    ObjStrOpening.OpeningType = catStrOpeningModeStandard
+	
+<span class="comment">'   7.4-Set category</span>
+<span class="keyword">    Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+<span class="keyword">    Set</span> ObjStrCategoryMngt = ObjStrOpening.StrCategoryMngt
+    ObjStrCategoryMngt.SetCategory &quot;ManHole&quot;
+	
+<span class="comment">'   7.5-Get StrOpeningStandard from StrOpening</span>
+<span class="keyword">    Dim</span> ObjStrOpeningStandard <span class="keyword">As</span> StrOpeningStandard
+<span class="keyword">    Set</span> ObjStrOpeningStandard = ObjStrOpening.StrOpeningStandard
+	
+<span class="comment">'   7.6-Set standard mode type</span>
+    ObjStrOpeningStandard.StandardModeType = catStrOpeningSTDRoundMode
+	
+<span class="comment">'   7.7-Get contour and set parameters data</span>
+<span class="keyword">    Dim</span> ContourName <span class="keyword">As</span> String
+ <span class="keyword">   Dim</span> StdContourParms<span class="keyword"> As</span> StrStandardContourParameters
+    'get contour names
+<span class="keyword">    Dim</span> ContourNames() <span class="keyword">As</span> Variant
+<span class="keyword">    Dim</span> ObjStrOpeningsMgr <span class="keyword">As</span> StrOpeningsMgr
+<span class="keyword">    Set</span> ObjStrOpeningsMgr = iObjSddStiffener.StrOpeningsMgr
+    'get available contour names
+    ObjStrOpeningsMgr.GetAvailableStandardContours ContourNames
+    ContourName = ContourNames(0)
+    'get parameters of contour
+<span class="keyword">    Set</span> StdContourParms = ObjStrOpeningsMgr.GetStandardContourParms(ContourName)
+    'set contour parameters data
+    SetRoundContourParamsData StdContourParms, &quot;100mm&quot;
+	
+<span class="comment">'   7.8-Get positioning strategy and parameters data</span>
+<span class="keyword">    Dim</span> PosStratName <span class="keyword">As</span> String
+<span class="keyword">    Dim</span> PosStratParms <span class="keyword">As</span> StrStandardPosStrategyParameters
+    'get std positiong strategy names
+<span class="keyword">    Dim</span> StdPosStrategyNames() <span class="keyword">As</span> Variant
+    'get available standard positioning strategy names
+    ObjStrOpeningsMgr.GetAvailableStandardPositioningStrategiesForProfile StdPosStrategyNames
+    'select positiong strategy offset offset
+    PosStratName = StdPosStrategyNames(1)
+    'get standard positioining strategy parameters
+<span class="keyword">    Set</span> PosStratParms = ObjStrOpeningsMgr.GetStandardPositioningStrategyParmsForProfile(PosStratName)
+    'set contour and position strategy for profile
+    ObjStrOpeningStandard.SetContourAndPosStrategyForProfile ContourName, StdContourParms, PosStratName, PosStratParms
+	
+<span class="comment">'   7.9-Set standard opening remaining parameters</span>
+    'set direction
+    ObjStrOpeningStandard.DirectionForOpeningOnProfile = FALSE	
+    'set extrusion mode
+    'Set ObjStrOpeningExtrusionMngt = ObjStrOpening.StrOpeningExtrusionMngt
+    'ObjStrOpeningExtrusionMngt.ExtrusionMode = 0
+    'set limit mode
+    ObjStrOpeningStandard.LimitMode = 0
+    
+<span class="comment">'   7.10-Set Mid Dist Offset Position Strategy Parameters</span>
+<span class="keyword">    Set</span> ObjRefElem_1 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.3&quot;)
+<span class="keyword">    Set</span> RefElem_1 = ObjPart.CreateReferenceFromObject(ObjRefElem_1)
+<span class="keyword">    Set</span> ObjRefElem_2 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.4&quot;)
+<span class="keyword">    Set</span> RefElem_2 = ObjPart.CreateReferenceFromObject(ObjRefElem_2)
+    ObjStrOpeningStandard.SetMidDistOffsetPosStratParms iRefObjSddStiffener, RefElem_1, RefElem_2, &quot;0mm&quot;, &quot;Gravity&quot;, &quot;0deg&quot;
+
+<span class="comment">'   7.11-Updates created opening on profile object</span>	
+    ObjPart.UpdateObject oObjStrOpeningOnProfile
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Standard Opening on profile with Spacing Offset positioning strategy</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   8.1- Add Opening On Profile</span>
+<span class="comment">'   8.2- Get StrOpening from StrOpeningOnProfile</span>
+<span class="comment">'   8.3- Set opening type catStrOpeningModeStandard for standard opening</span>
+<span class="comment">'   8.4- Set category</span>
+<span class="comment">'   8.5- Get StrOpeningStandard from StrOpening</span>
+<span class="comment">'   8.6- Set standard mode type</span>
+<span class="comment">'   8.7- Get contour and set parameters data</span>
+<span class="comment">'   8.8- Get positioning strategy and parameters data</span>
+<span class="comment">'   8.9- Set standard opening remaining parameters</span>
+<span class="comment">'   8.10- Set Offset Offset Position Strategy Parameters</span>
+<span class="comment">'   8.11- Updates created opening on profile object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateStandardOpeningOnProfileSpacingOffset(iObjSddStiffener<span class="keyword"> As </span>SddStiffener, iRefObjSddStiffener <span class="keyword">As</span> Reference,oObjStrOpeningOnProfile<span class="keyword"> As </span>StrOpeningOnProfile)
+
+<span class="comment">'   8.1-Add Opening On Profile</span>
+    AddOpening iObjSddStiffener, oObjStrOpeningOnProfile
+	
+<span class="comment">'   8.2-Get StrOpening from StrOpeningOnProfile</span>
+<span class="keyword">    Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+<span class="keyword">    Set</span> ObjStrOpening = oObjStrOpeningOnProfile.StrOpening
+	
+<span class="comment">'   8.3-Set opening type catStrOpeningModeStandard for standard opening</span>
+    ObjStrOpening.OpeningType = catStrOpeningModeStandard
+	
+<span class="comment">'   8.4-Set category</span>
+<span class="keyword">    Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+<span class="keyword">    Set</span> ObjStrCategoryMngt = ObjStrOpening.StrCategoryMngt
+    ObjStrCategoryMngt.SetCategory &quot;ManHole&quot;
+	
+<span class="comment">'   8.5-Get StrOpeningStandard from StrOpening</span>
+<span class="keyword">    Dim</span> ObjStrOpeningStandard <span class="keyword">As</span> StrOpeningStandard
+<span class="keyword">    Set</span> ObjStrOpeningStandard = ObjStrOpening.StrOpeningStandard
+	
+<span class="comment">'   8.6-Set standard mode type</span>
+    ObjStrOpeningStandard.StandardModeType = catStrOpeningSTDRectMode
+	
+<span class="comment">'   8.7-Get contour and set parameters data</span>
+<span class="keyword">    Dim</span> ContourName <span class="keyword">As</span> String
+ <span class="keyword">   Dim</span> StdContourParms<span class="keyword"> As</span> StrStandardContourParameters
+    'get contour names
+<span class="keyword">    Dim</span> ContourNames() <span class="keyword">As</span> Variant
+<span class="keyword">    Dim</span> ObjStrOpeningsMgr <span class="keyword">As</span> StrOpeningsMgr
+<span class="keyword">    Set</span> ObjStrOpeningsMgr = iObjSddStiffener.StrOpeningsMgr
+    'get available contour names
+    ObjStrOpeningsMgr.GetAvailableStandardContours ContourNames
+    ContourName = ContourNames(0)
+    'get parameters of contour
+<span class="keyword">    Set</span> StdContourParms = ObjStrOpeningsMgr.GetStandardContourParms(ContourName)
+    'set contour parameters data
+    SetRoundContourParamsData StdContourParms, &quot;100mm&quot;
+	
+<span class="comment">'   8.8-Get positioning strategy and parameters data</span>
+<span class="keyword">    Dim</span> PosStratName <span class="keyword">As</span> String
+<span class="keyword">    Dim</span> PosStratParms <span class="keyword">As</span> StrStandardPosStrategyParameters
+    'get std positiong strategy names
+<span class="keyword">    Dim</span> StdPosStrategyNames() <span class="keyword">As</span> Variant
+    'get available standard positioning strategy names
+    ObjStrOpeningsMgr.GetAvailableStandardPositioningStrategiesForProfile StdPosStrategyNames
+    'select positiong strategy offset offset
+    PosStratName = StdPosStrategyNames(0)
+    'get standard positioining strategy parameters
+<span class="keyword">    Set</span> PosStratParms = ObjStrOpeningsMgr.GetStandardPositioningStrategyParmsForProfile(PosStratName)
+    'set contour and position strategy for profile
+    ObjStrOpeningStandard.SetContourAndPosStrategyForProfile ContourName, StdContourParms, PosStratName, PosStratParms
+	
+<span class="comment">'   8.9-Set standard opening remaining parameters</span>
+    'set direction
+    ObjStrOpeningStandard.DirectionForOpeningOnProfile = FALSE	
+    'set extrusion mode
+    'Set ObjStrOpeningExtrusionMngt = ObjStrOpening.StrOpeningExtrusionMngt
+    'ObjStrOpeningExtrusionMngt.ExtrusionMode = 0
+    'set limit mode
+    ObjStrOpeningStandard.LimitMode = 0
+    
+<span class="comment">'   8.10-Set Offset Offset Position Strategy Parameters</span>
+    ObjStrOpeningStandard.SetSpacingOffsetPosStratParms iRefObjSddStiffener, TRUE, &quot;1000mm&quot;, TRUE, &quot;0mm&quot;, &quot;Gravity&quot;, &quot;0deg&quot;
+
+<span class="comment">'   8.11-Updates created opening on profile object</span>	
+    ObjPart.UpdateObject oObjStrOpeningOnProfile
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set contour params data</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetRectContourParamsData(iContourParms<span class="keyword"> As </span>StrStandardContourParameters, iStrW<span class="keyword"> As </span>String, iStrH<span class="keyword"> As </span>String, iStrCR<span class="keyword"> As </span>String)
+    <span class="comment">'access parameters of contour param</span>
+<span class="keyword">    Dim </span>NbOfContourParams<span class="keyword"> As </span>Long
+    NbOfContourParams = iContourParms.Count
+<span class="keyword">    Dim </span>ContourParam<span class="keyword"> As </span>Parameter
+<span class="keyword">    Dim </span>ObjStrParameter<span class="keyword"> As </span>StrParameter
+    
+<span class="keyword">    For </span>i = 1<span class="keyword"> To </span>NbOfContourParams
+<span class="keyword">      Set </span>ObjStrParameter = iContourParms.Item(i)
+      <span class="comment">'get role of the parameter</span>
+      StrRole = ObjStrParameter.Role
+<span class="keyword">      Set </span>ContourParam = ObjStrParameter.Parameter
+      
+      <span class="comment">'set width</span>
+<span class="keyword">      If </span>StrRole = &quot;Str_Width&quot; Then
+<span class="keyword">        Dim </span>StrW<span class="keyword"> As </span>String
+        StrW = ContourParam.ValueAsString
+        <span class="comment">'set value</span>
+        ContourParam.ValuateFromString (iStrW)
+<span class="keyword">      End If</span>
+      
+      <span class="comment">'set height</span>
+<span class="keyword">      If </span>StrRole = &quot;Str_Height&quot; Then
+<span class="keyword">        Dim </span>StrH<span class="keyword"> As </span>String
+        StrH = ContourParam.ValueAsString
+        <span class="comment">'set value</span>
+        ContourParam.ValuateFromString (iStrH)
+<span class="keyword">      End If</span>
+      
+      <span class="comment">'set corner radius</span>
+<span class="keyword">      If </span>StrRole = &quot;Str_CornerRadius&quot; Then
+<span class="keyword">        Dim </span>StrCR<span class="keyword"> As </span>String
+        StrCR = ContourParam.ValueAsString
+        <span class="comment">'set value</span>
+        ContourParam.ValuateFromString (iStrCR)
+<span class="keyword">      End If</span>
+<span class="keyword">    Next</span>
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set contour params data</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetRoundContourParamsData(iContourParms<span class="keyword"> As </span>StrStandardContourParameters, iStrRadius<span class="keyword"> As </span>String)
+    <span class="comment">'access parameters of contour param</span>
+<span class="keyword">    Dim </span>NbOfContourParams<span class="keyword"> As </span>Long
+    NbOfContourParams = iContourParms.Count
+    
+<span class="keyword">    Dim </span>ContourParam<span class="keyword"> As </span>Parameter
+<span class="keyword">    For </span>i = 1<span class="keyword"> To </span>NbOfContourParams
+<span class="keyword">      Dim </span>ObjStrParameter<span class="keyword"> As </span>StrParameter
+<span class="keyword">      Set </span>ObjStrParameter = iContourParms.Item(i)
+      <span class="comment">'get role of the parameter</span>
+      StrRole = ObjStrParameter.Role
+      
+<span class="keyword">      If </span>StrRole = &quot;Str_Radius&quot; Then
+<span class="keyword">        Set </span>ContourParam = ObjStrParameter.Parameter
+<span class="keyword">        Dim </span>Radius<span class="keyword"> As </span>String
+        Radius = ContourParam.ValueAsString
+        <span class="comment">'set value</span>
+        ContourParam.ValuateFromString (iStrRadius)
+<span class="keyword">      End If</span>
+<span class="keyword">    Next</span>
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Adds a new opening</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>AddOpening(iObjSddStiffener<span class="keyword"> As </span>SddStiffener, oObjStrOpeningOnProfile<span class="keyword"> As </span>StrOpeningOnProfile)
+<span class="keyword">    Dim </span>ObjStrOpeningsOnProfile<span class="keyword"> As </span>StrOpeningsOnProfile
+<span class="keyword">    Set </span>ObjStrOpeningsOnProfile = iObjSddStiffener.GetOpeningsOnProfile(0)
+    <span class="comment">'Add opening on profile</span>
+<span class="keyword">    Set </span>oObjStrOpeningOnProfile = ObjStrOpeningsOnProfile.Add
+    
+<span class="keyword">    If </span>oObjStrOpeningOnProfile Is Nothing<span class="keyword"> Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot Create opening on profile&quot;
+<span class="keyword">        Exit Sub</span>
+<span class="keyword">    End If</span>
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SDDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SDDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

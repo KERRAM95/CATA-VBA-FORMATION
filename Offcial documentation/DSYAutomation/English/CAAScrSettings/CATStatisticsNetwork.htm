@@ -1,0 +1,255 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>CATStatisticsNetwork Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>CATStatisticsNetwork Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>CATStatisticsNetwork</h2>
+<p><strong>Role:</strong> Settings for Network Statistics</p>
+<p><strong>Detailed role:</strong> The Network statistics controler manages the values of all or only a part of the attributes available for the thematic</p>
+<p>The CATStatisticsNetwork repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /General/General/Statistics</li>
+  <li><strong>Repository File</strong>: CATStatistics</li>
+  <li><strong>Version</strong>: 1</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+<li><strong>Root tab page</strong> /General/Network Statistics Management reused as /ProductStructure/Network Statistics Management</li>
+</ul>
+<p>CATStatisticsNetwork setting repository attributes:</p>
+<ul>
+  <li><a name="NETWORK_Activation"></a><strong>NETWORK_Activation</strong>
+    <br /><strong>Role</strong>: Activation state of the Network statistics
+    <br /><strong>Detailed role</strong>: Value of Network statistics activation<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_CPUS"></a><strong>NETWORK_CPUS</strong>
+    <br /><strong>Role</strong>: If activated, the cpu duration field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_Cumulate"></a><strong>NETWORK_Cumulate</strong>
+    <br /><strong>Role</strong>: Cumulation mode state of the Network statistics
+    <br /><strong>Detailed role</strong>: Value of Network statistics cumulation mode<br />							if false there is one file per session<br />							if true all sessions are outputted in one file<br />
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_DateFormat"></a><strong>NETWORK_DateFormat</strong>
+    <br /><strong>Role</strong>: Format for the date and time field.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td>standard : Mon Jan 1 08:00.00 2000 </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td> numerical : 2000.001.08.00.00</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td> numerical with millisecond : 2000.001.08.00.00.000</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td> Unix-like UTC timestamp (since 00:00 hours, Jan 1, 1970 UTC)</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_ELPS"></a><strong>NETWORK_ELPS</strong>
+    <br /><strong>Role</strong>: If activated, the elapsed duration field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_Formating"></a><strong>NETWORK_Formating</strong>
+    <br /><strong>Role</strong>: Format of the Network statistics
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td>Standart output format (ie : field="value") </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td> Field is not outputed (ie : "value" )</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td> Common Base Event (CBE) format</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td> WMI EventLog integration</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_HOST"></a><strong>NETWORK_HOST</strong>
+    <br /><strong>Role</strong>: If activated, the host name field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_OutputDirectory"></a><strong>NETWORK_OutputDirectory</strong>
+    <br /><strong>Role</strong>: Output directory for the statistic
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: default_directory</li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_OutputFile"></a><strong>NETWORK_OutputFile</strong>
+    <br /><strong>Role</strong>: Name of the output file
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: default_file</li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_OutputFormat"></a><strong>NETWORK_OutputFormat</strong>
+    <br /><strong>Role</strong>: Output format of the Network statistics
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td> standard output</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td> the thematic name is not repeated on each line</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_OutputType"></a><strong>NETWORK_OutputType</strong>
+    <br /><strong>Role</strong>: Format of the Network statistics
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 2</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td>Console : log is outputed in the console (not use) </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td> File : log is outputed in a file</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_RTIM"></a><strong>NETWORK_RTIM</strong>
+    <br /><strong>Role</strong>: If activated, the response time field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_THEM"></a><strong>NETWORK_THEM</strong>
+    <br /><strong>Role</strong>: If activated, the thematic name field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_TIME"></a><strong>NETWORK_TIME</strong>
+    <br /><strong>Role</strong>: If activated, the time field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_TimeUnit"></a><strong>NETWORK_TimeUnit</strong>
+    <br /><strong>Role</strong>: Time unit for the cpu, elaped and response time.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td>millisecond </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td> second</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_UPID"></a><strong>NETWORK_UPID</strong>
+    <br /><strong>Role</strong>: If activated, the process id field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="NETWORK_USER"></a><strong>NETWORK_USER</strong>
+    <br /><strong>Role</strong>: If activated, the user name field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="Version"></a><strong>Version</strong>
+    <br /><strong>Role</strong>: Internal use - statistics settings version level.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Modifying Visualization Attributes of a Selected Product Object Source
+</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Modifying Visualization Attributes of a Selected Product Object
+'
+'Mission: Select and retrieve the PLM object and display its type (VPMRootOccurrence,
+'         VPMOccurrence) and Modify its visualization property Color
+'
+'steps:  1- Retrieve active editor
+'        2- Retrieve Selection object from active editor
+'           2.1- Update selection object with the search criteria and prompt for selection
+'           2.2- Retrieve Selected element and display its type
+'        3- Change the visualization property Color of the selection
+'==============================================================================================================================
+' Main Routine
+'==============================================================================================================================
+Sub ModifyAttrOfSelectedProductObject()
+
+    'Error Handling
+    On Error GoTo ErrorSub
+  
+    '1- Retrieve Selection object from active editor
+    Dim oCurrentActiveEditor As Editor
+    Set oCurrentActiveEditor = CATIA.ActiveEditor
+    
+    Dim oObjSelection
+    Set oObjSelection = oCurrentActiveEditor.Selection
+
+    '2- Retrieve Selection object from active editor
+    '2.1-Update selection object with the search criteria and prompt for selection
+    'Selection Object updated with selection criteria (VPMRootOccurrence, VPMOccurrence type)
+    Dim oInputObjectType(1)
+    oInputObjectType(1) = &quot;VPMRootOccurrence&quot;
+    oInputObjectType(0) = &quot;VPMOccurrence&quot;
+    
+    'Application prompts for user selection from CATIA spec tree
+    Dim strStatus As String
+    strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select a Element from spec tree&quot;, False)
+    
+    '2.2- Retrieve Selected Element and display its type
+    Dim oSelectedElement As SelectedElement
+    Set oSelectedElement = oObjSelection.Item(1)
+ 
+    'Display type of selected object
+    MsgBox &quot;Type is &quot; + oSelectedElement.Type
+
+    '3- Change the visu property Color (set to Green here)
+    '
+    Dim oVisPropertySet
+    Set oVisPropertySet = oObjSelection.VisProperties
+    oVisPropertySet.SetRealColor 0, 255, 0, 1
+    
+    'Error Handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+    GoTo EndSub
+EndSub:
+End Sub
+</pre>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

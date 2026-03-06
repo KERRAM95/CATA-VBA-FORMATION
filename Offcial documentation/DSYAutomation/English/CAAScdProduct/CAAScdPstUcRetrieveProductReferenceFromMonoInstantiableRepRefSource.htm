@@ -1,0 +1,115 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Retrieving Product Reference from Mono-instantiable Representation Reference Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Retrieving Product Reference from Mono-instantiable Representation Reference
+'
+'Mission: Retrieve the Product Reference aggregating a mono-instantiable Representation Reference
+'
+'steps:  1- Select and Retrieve Product Representation Instance As VPMRepInstance from spec tree or 3D Viewer
+'        2- Retrieve Product Representation Reference from selected Representation Instance
+'        3- Retrieve Product Reference aggregating the Product Representation Reference
+'
+'==========================================================================================================================
+' Main Routine
+'==========================================================================================================================
+'
+Sub RetrieveProductReferenceFromMonoInstantiableRepRef()
+
+'Error Handling
+On Error GoTo ErrorSub
+
+    '1- Select and Retrieve Product Representation Instance As VPMRepInstance from spec tree or 3D Viewer
+    Dim oVPMRepInstance As VPMRepInstance
+    Set oVPMRepInstance = SelectAndRetrieveRepInst
+
+   '2- Retrieve Product Representation Reference from selected Representation Instance
+    Dim oVPMRepRef As VPMRepReference
+    Set oVPMRepRef = oVPMRepInstance.ReferenceInstanceOf
+    
+    MsgBox (&quot;Success in retrieving aggregated Rep Ref : &quot;) + oVPMRepRef.GetAttributeValue(&quot;PLM_ExternalID&quot;)
+   
+   '3- Retrieve Product Reference aggregating the Product Representation Reference
+    Dim oProdReference As VPMReference
+    Set oProdReference = oVPMRepRef.Father
+    
+    MsgBox (&quot;Success in retrieving Product Reference from Representation Reference. Product Reference = &quot;) + oProdReference.GetAttributeValue(&quot;PLM_ExternalID&quot;)
+  
+   'Error Handling
+    GoTo EndSub
+
+ErrorSub:
+    MsgBox Err.Description + &quot;Failure since selected object could be an instance of a Multi-Instantiable Rep Ref. Please select a Mono-Instantiable Rep inst&quot;
+    GoTo EndSub
+EndSub:
+  
+End Sub
+'
+'--------------------------------------------------------------------------------------------
+' 1- Select and Retrieve Product Representation Instance As VPMRepInstance from spec tree or 3D Viewer
+'    Output  : the VPMRepInstance object (Selected Product Representation Instance)
+'--------------------------------------------------------------------------------------------
+'
+Function SelectAndRetrieveRepInst() As VPMRepInstance
+    'Error handling
+    On Error GoTo ErrorSub
+    
+    'Retrieve active editor
+    Dim oCurrentActiveEditor As Editor
+    Set oCurrentActiveEditor = CATIA.ActiveEditor
+
+    'Retrieve Selection object from active editor
+    Dim oObjSelection
+    Set oObjSelection = oCurrentActiveEditor.Selection
+
+    'Selection Object updated with selection criteria (VPMRepInstance type)
+    Dim strStatus As String
+    Dim oInputObjectType(0)
+    oInputObjectType(0) = &quot;VPMRepInstance&quot;
+    strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the mono-instantiable Rep Inst from spec tree or the 3D Viewer&quot;, False)
+
+    'Retrieve Selected Element
+    Dim oSelectedElement As SelectedElement
+    Set oSelectedElement = oObjSelection.Item(1)
+ 
+    'Retrieve selected Product Representation Instance from Active Editor
+    Dim oVPMRepInstance As VPMRepInstance
+    Set oVPMRepInstance = oSelectedElement.Value
+    
+    'Return Product Representation Instance
+    Set SelectAndRetrieveRepInst = oVPMRepInstance
+     
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Function
+</pre>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

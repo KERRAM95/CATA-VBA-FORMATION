@@ -1,0 +1,810 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpTranslatorHelper (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpTranslatorHelper"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpTranslatorHelper<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpTranslatorHelper_32066','OlpTranslatorHelper','0');</script>
+<section id='maindesc'>
+<b><i>   Service used to get access to OLP data objects.</i></b><br>
+<BR>
+ <font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ Download or Upload command</font>.<BR>
+ This interface provides all the input arguments
+ for the translation process, access to related OLP objects
+ needed for translation, and methods to set the outputs
+ of the translation process.<BR>
+ A VB.NET translator is expected to have these macros defined
+ <dl>
+   <dt><tt>MacroUpload</tt></dt>
+   <dd><b>Required</b>.  Called to upload robot programs into DELMIA.</dd>
+   <dt><tt>MacroDownload</tt></dt>
+   <dd><b>Required</b>.  Called to generate robot programs from DELMIA procedures.</dd>
+   <dt><tt>MacroGetTranslatorInfo</tt></dt>
+   <dd><b>Optional</b>.  Called to get information about the translator and translation options supported.</dd>
+   <dt><tt>MacroSetConfigs</tt></dt>
+   <dd><b>Optional</b>.  Called to update the config for any created robot motions.  This is called after MacroUpload.</dd>
+   <dt><tt>MacroParse</tt></dt>
+   <dd><b>Optional</b>.  Called before MacroUpload to parse the selected files.  The user is then given options to exclude tasks, select applications and other options.</dd>
+ </dl>
+ The properties and methods below indicate in which of these macro's they are intended to be called.
+ <dl>
+ <dt><b>Example: (VB.NET)</b>
+ <pre>
+ Dim Helper As OlpTranslatorHelper = CATIA.Application.GetSessionService("OlpTranslatorHelper")
+ </pre>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#AstRoot"><b>AstRoot</b></a>
+</td><td  id='tdright'>  The root node of the abstract syntax tree.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Behavior"><b>Behavior</b></a>
+</td><td  id='tdright'>  The resource behavior selected for download or upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CAAMotionTypes"><b>CAAMotionTypes</b></a>
+</td><td  id='tdright'>  Set the list of CAA motion types.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CATNlsFileName"><b>CATNlsFileName</b></a>
+</td><td  id='tdright'>  Put the name of the CATNls file to use for the NRL teach menu.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CallSucceeded"><b>CallSucceeded</b></a>
+</td><td  id='tdright'>  If the operation succeeded, the translator must set this to True.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DebugMacroCallString"><b>DebugMacroCallString</b></a>
+</td><td  id='tdright'>  Get the macro call to debug<BR>
+ Set the environment variable DELMIA_OLP_TRANSLATOR_DEBUG to enable translator debugging.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Directory"><b>Directory</b></a>
+</td><td  id='tdright'>  The directory which contains the robot programs on upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DownloadDirectory"><b>DownloadDirectory</b></a>
+</td><td  id='tdright'>  Gets/Sets a temp directory used by the translator during translation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DownloadOption"><b>DownloadOption</b></a>
+</td><td  id='tdright'>  The extra option specified by the user (or in tools-options) for
+ download.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ErrorReporter"><b>ErrorReporter</b></a>
+</td><td  id='tdright'>  The object used to report errors, warnings, etc.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ExtensionDescription"><b>ExtensionDescription</b></a>
+</td><td  id='tdright'>  A description of the file type set with 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#FilePaths"><b>FilePaths</b></a>
+</td><td  id='tdright'>  A list of full paths to all the files the user requested to upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IncludeWaypontOperationsInList"><b>IncludeWaypontOperationsInList</b></a>
+</td><td  id='tdright'>  Include the waypoint operations in the 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#MotionGroups"><b>MotionGroups</b></a>
+</td><td  id='tdright'>  The motion groups selected for download or upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#OLPVersionString"><b>OLPVersionString</b></a>
+</td><td  id='tdright'>  Get version of the OLP APIs<BR>
+ Translators can use this property to detect if they have been updated to support the latest
+ version of the OLP APIs.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PositionVariableRobotLanguageLengthUnits"><b>PositionVariableRobotLanguageLengthUnits</b></a>
+</td><td  id='tdright'>  Set the units used by the robot language for position variable data members of type length.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PositionVariableRobotLanguageRotationUnits"><b>PositionVariableRobotLanguageRotationUnits</b></a>
+</td><td  id='tdright'>  Set the units used by the robot language for position variable data members of type rotation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ResourceControlDevice"><b>ResourceControlDevice</b></a>
+</td><td  id='tdright'>  The resource control device for download or upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SimulationOptions"><b>SimulationOptions</b></a>
+</td><td  id='tdright'>  Gets the simulation options handle, which can be used to access values of
+ simulation options by their names.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SupportedExtensions"><b>SupportedExtensions</b></a>
+</td><td  id='tdright'>  The list of supported file extensions, separated by a semicolon (;).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SupportedMotionTypes"><b>SupportedMotionTypes</b></a>
+</td><td  id='tdright'>  Set the list of supported motion types.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SupportsMulitpleMotionGroups"><b>SupportsMulitpleMotionGroups</b></a>
+</td><td  id='tdright'>  Set whether tasks which control multiple motion groups are supported by this translator.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SupportsMultipleRobots"><b>SupportsMultipleRobots</b></a>
+</td><td  id='tdright'>  Set whether controller which control multiple robots are supported by this translator.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SupportsTemplates"><b>SupportsTemplates</b></a>
+</td><td  id='tdright'>  Set whether templates are used by this translator.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Tasks"><b>Tasks</b></a>
+</td><td  id='tdright'>  All the tasks the user requested to download <B>or</B> all the tasks that
+ have been created so far on upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TasksToUpload"><b>TasksToUpload</b></a>
+</td><td  id='tdright'>  The task names the user has selected for uploading.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TemplateDirectory"><b>TemplateDirectory</b></a>
+</td><td  id='tdright'>  The directory which contains the template files on download.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TrigFunctionRobotLanguageRotationUnits"><b>TrigFunctionRobotLanguageRotationUnits</b></a>
+</td><td  id='tdright'>  Set the units used by the robot language for trigenometry functions.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UploadApplicationOptionString"><b>UploadApplicationOptionString</b></a>
+</td><td  id='tdright'>  The application type the user choose to upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UploadApplicationOptions"><b>UploadApplicationOptions</b></a>
+</td><td  id='tdright'>  List of possible applications that could be uploaded.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UploadOption"><b>UploadOption</b></a>
+</td><td  id='tdright'>  The extra option specified by the user (or in tools-options) for
+ upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UploadPathOperationType"><b>UploadPathOperationType</b></a>
+</td><td  id='tdright'>  The robot's application type for path operations.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ValidDownloadOptions"><b>ValidDownloadOptions</b></a>
+</td><td  id='tdright'>  Set the list of valid values for DownloadOption.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ValidUploadOptions"><b>ValidUploadOptions</b></a>
+</td><td  id='tdright'>  Set the list of valid values for UploadOption.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AddSupportedTemplate"><b>AddSupportedTemplate</b></a>
+</td><td  id='tdright'>  Enable special handling of a template instruction.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AddTaskToNotUpload"><b>AddTaskToNotUpload</b></a>
+</td><td  id='tdright'>  Adds a task name to the translator's upload list in the unselected column of the upload dialog.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AddTaskToUpload"><b>AddTaskToUpload</b></a>
+</td><td  id='tdright'>  Add a task name to the list of tasks that could be uploaded based on the files the user selected to upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateExprFixerDownload"><b>CreateExprFixerDownload</b></a>
+</td><td  id='tdright'>  Creates a new expression fixer for download.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateExprFixerUpload"><b>CreateExprFixerUpload</b></a>
+</td><td  id='tdright'>  Creates a new expression fixer for upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateIDFixer"><b>CreateIDFixer</b></a>
+</td><td  id='tdright'>  Creates a new id fixer.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateParser"><b>CreateParser</b></a>
+</td><td  id='tdright'>  Creates a new robot program parser.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateTransform"><b>CreateTransform</b></a>
+</td><td  id='tdright'>  Creates a new transform.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetFeatureEnabled"><b>GetFeatureEnabled</b></a>
+</td><td  id='tdright'>  Query if an LA feature is enabled in the current session.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetRRSIIContext"><b>GetRRSIIContext</b></a>
+</td><td  id='tdright'>  Gets the translator's RRSII Context.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetRRSVirtualRobotDirectory"><b>GetRRSVirtualRobotDirectory</b></a>
+</td><td  id='tdright'>  Get the RRS virtual robot directory to look in for system variable files during upload or download.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IsSame"><b>IsSame</b></a>
+</td><td  id='tdright'>  Tests if 2 objects are the same.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetObjectFramesAllowableAttachmentTypes"><b>SetObjectFramesAllowableAttachmentTypes</b></a>
+</td><td  id='tdright'>  Set the types of moves for which object frames should be attached.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetSupportedFeature"><b>SetSupportedFeature</b></a>
+</td><td  id='tdright'>  Enable a translator feature.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="AstRoot"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>AstRoot</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpAstBranch','OlpAstBranch')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The root node of the abstract syntax tree.<BR>
+ On upload translators should retrieve this element and append all the 
+ parsed files to it.  On download translators should append your generated
+ AST tree to this node.<BR>
+ Used in <tt>MacroUpload</tt> and <tt>MacroDownload</tt>.
+</dd>
+<a id="Behavior"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Behavior</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpBehavior','OlpBehavior')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The resource behavior selected for download or upload.<BR>
+ Used in <tt>MacroUpload</tt> and <tt>MacroDownload</tt>.
+</dd>
+<a id="CAAMotionTypes"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CAAMotionTypes</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iInstructionTypes</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Set the list of CAA motion types.<BR>
+ Any of these motion types will be uploaded as instructions
+ customized through CAA.  If the type is not in this list,
+ it will be uploaded as a standard instruction.
+ Each item in the list is a 
+<script type="text/javascript"> activateLinkAnchor('DELOlpInstructionType','','DELOlpInstructionType') </script>. By default the list is empty.
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="CATNlsFileName"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CATNlsFileName</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Put the name of the CATNls file to use for the NRL teach menu.<BR>
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="CallSucceeded"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CallSucceeded</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iSucceeded</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ If the operation succeeded, the translator must set this to True.<BR>
+ Used in <tt>MacroUpload</tt>, <tt>MacroDownload</tt>, <tt>MacroGetTranslatorInfo</tt>, and <tt>MacroSetConfigs</tt>.
+</dd>
+<a id="DebugMacroCallString"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DebugMacroCallString</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Get the macro call to debug<BR>
+ Set the environment variable DELMIA_OLP_TRANSLATOR_DEBUG to enable translator debugging.
+ When running the upload or download command select the macro(s) you want to debug.  The selection
+ will be used for your entire session.  Instead of that macro being launched automatically, you will 
+ be prompted to run them from Visual Studio as needed.  When that happens, this property
+ will contain the name of the macro to execute which you can use to call that macro by name.
+ <pre>
+   CallByName(Me, TransHelper.DebugMacroCallString, CallType.Method)
+ </pre>
+</dd>
+<a id="Directory"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Directory</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The directory which contains the robot programs on upload.<BR>
+ Used in <tt>MacroUpload</tt>.
+</dd>
+<a id="DownloadDirectory"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DownloadDirectory</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/Sets a temp directory used by the translator during translation.
+ The translator can get this value and a valid temp directory will be returned
+ during any Macro call.  If the translator has a specific directory used during
+ download where some file have been saved, it can set that directory here. For
+ example if those files are to be transferred to the RRS-II VRC.
+ Setting DownloadDirectory only has an meaning during MacroDownload.
+</dd>
+<a id="DownloadOption"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DownloadOption</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The extra option specified by the user (or in tools-options) for
+ download.<BR>
+ The translator can use this option any way it likes.  For example,
+ the XML translator uses this to specify the XSLT-file.  It could 
+ also be used to specify a robot controller version.  The translator
+ can specify valid supported options by setting the 
+<script type="text/javascript"> activateLinkAnchor('','ValidDownloadOptions','ValidDownloadOptions') </script>.<BR> Used in <tt>MacroDownload</tt>.
+</dd>
+<a id="ErrorReporter"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ErrorReporter</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpErrorReporter','OlpErrorReporter')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The object used to report errors, warnings, etc.<BR>
+ Used in <tt>MacroUpload</tt>, <tt>MacroDownload</tt>, <tt>MacroGetTranslatorInfo</tt>, and <tt>MacroSetConfigs</tt>.
+</dd>
+<a id="ExtensionDescription"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ExtensionDescription</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iDesciption</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ A description of the file type set with 
+<script type="text/javascript"> activateLinkAnchor('','SupportedExtensions','SupportedExtensions') </script>.<BR> For example "Kuka robot programs".<BR>
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="FilePaths"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FilePaths</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ A list of full paths to all the files the user requested to upload.<BR>
+ Used in <tt>MacroUpload</tt>.
+</dd>
+<a id="IncludeWaypontOperationsInList"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IncludeWaypontOperationsInList</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iInclude</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Include the waypoint operations in the 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpInstructions','','DELMIAOlpInstructions') </script> list. If true, the WaypointOperations are included.  If False, the waypoint motions
+ inside the waypoint operation are directly included in the list.
+ The default value is False for compatibility.
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="MotionGroups"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>MotionGroups</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpMotionGroups','OlpMotionGroups')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The motion groups selected for download or upload.<BR>
+ Used in <tt>MacroUpload</tt>, <tt>MacroSetConfigs</tt> and <tt>MacroDownload</tt>.
+</dd>
+<a id="OLPVersionString"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>OLPVersionString</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Get version of the OLP APIs<BR>
+ Translators can use this property to detect if they have been updated to support the latest
+ version of the OLP APIs.  For example, if a new API has been added or modified the translator can 
+ check to see if it should use the old or new way.  This way translators can be backported to earlier
+ FPs before the API was available.
+</dd>
+<a id="PositionVariableRobotLanguageLengthUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>PositionVariableRobotLanguageLengthUnits</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iUnits</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Set the units used by the robot language for position variable data members of type length. <BR>
+ Valid values are "mm" (millimeters) or "m" (meters). "m" is the default value.
+ If the value is "mm" units conversion functions will automatically be added and removed when getting and
+ setting expressions using the DELOlp APIs.  These will be added when a position variable data member of
+ type length (e.g. x, y, z, or linear joint value) is assigned or used in an expression.  For example
+ <pre>
+    PV1.x := 100.0
+ </pre>
+ will be converted to
+ <pre>
+    PV1.x := 100.0 / MM_PER_METER
+ </pre>
+ when the expression is set as the destination of the assignment and back again when the expression is retrieved.
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="PositionVariableRobotLanguageRotationUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>PositionVariableRobotLanguageRotationUnits</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iUnits</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Set the units used by the robot language for position variable data members of type rotation. <BR>
+ Valid values are "deg" (degrees) or "rad" (radians). "rad" is the default value.
+ If the value is "deg" units conversion functions will automatically be added and removed when getting and
+ setting expressions using the DELOlp APIs.  These will be added when a position variable data member of
+ type rotation (e.g. w, p, r, or rotational joint value) is assigned or used in an expression.  For example
+ <pre>
+    PV1.w := 60.0
+ </pre>
+ will be converted to
+ <pre>
+    PV1.w := toradian(60.0)
+ </pre>
+ when the expression is set as the destination of the assignment and back again when the expression is retrieved.
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="ResourceControlDevice"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ResourceControlDevice</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpResourceControlDevice','OlpResourceControlDevice')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The resource control device for download or upload.<BR>
+ Used in <tt>MacroUpload</tt> and <tt>MacroDownload</tt>.
+</dd>
+<a id="SimulationOptions"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SimulationOptions</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpSimulationOptions','OlpSimulationOptions')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Gets the simulation options handle, which can be used to access values of
+ simulation options by their names.
+</dd>
+<a id="SupportedExtensions"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SupportedExtensions</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iExtensions</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ The list of supported file extensions, separated by a semicolon (;).<BR>
+ For example "*.src;*.dat".<BR>
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="SupportedMotionTypes"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SupportedMotionTypes</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iInstructionTypes</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Set the list of supported motion types.<BR>
+ Each item in the list is a 
+<script type="text/javascript"> activateLinkAnchor('DELOlpInstructionType','','DELOlpInstructionType') </script>. By default the list contains delOlpSpotOperation, delOlpArcOperation,
+ delOlpSeamSearchOperation, and delOlpRobotMotion.
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="SupportsMulitpleMotionGroups"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SupportsMulitpleMotionGroups</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iSupportsMMG</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Set whether tasks which control multiple motion groups are supported by this translator.<BR>
+ If not supported, the tasks are exposed to the translators as single motion group tasks.
+ Default values is FALSE.
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="SupportsMultipleRobots"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SupportsMultipleRobots</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iSupportsMultiRobot</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Set whether controller which control multiple robots are supported by this translator.<BR>
+ If not supported, only tasks which control a single robot and all control the same robot will be able to be downloaded.
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="SupportsTemplates"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SupportsTemplates</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iUseTemplates</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Set whether templates are used by this translator.<BR>
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="Tasks"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Tasks</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ All the tasks the user requested to download <B>or</B> all the tasks that
+ have been created so far on upload.<BR>
+ Primarily used in <tt>MacroDownload</tt> but also available in <tt>MacroUpload</tt> and <tt>MacroSetConfigs</tt>.
+</dd>
+<a id="TasksToUpload"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TasksToUpload</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The task names the user has selected for uploading.<BR>
+ This is a subset of the tasks added with 
+<script type="text/javascript"> activateLinkAnchor('','AddTaskToUpload','AddTaskToUpload') </script>. Each item in the returns list is a string.
+ Used in <tt>MacroUpload</tt>.
+</dd>
+<a id="TemplateDirectory"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TemplateDirectory</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The directory which contains the template files on download.<BR>
+ Used in <tt>MacroDownload</tt>.
+</dd>
+<a id="TrigFunctionRobotLanguageRotationUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TrigFunctionRobotLanguageRotationUnits</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iUnits</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Set the units used by the robot language for trigenometry functions. <BR>
+ Valid values are "deg" (degrees) or "rad" (radians). "rad" is the default value.
+ If the value is "deg" units conversion functions will automatically be added and removed when getting and
+ setting expressions using the DELOlp APIs.  These will be added when a trig fuction (e.g. sin, cos, tan, asin,
+ acos, atan, atan2) is used in an expression.  For example
+ <pre>
+    x := sin(60.0)
+ </pre>
+ will be converted to
+ <pre>
+    x := sin(toradian(60.0))
+ </pre>
+ when the expression is set as the destination of the assignment and back again when the expression is retrieved.
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="UploadApplicationOptionString"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UploadApplicationOptionString</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The application type the user choose to upload.<BR>
+ This is one of the options passed into 
+<script type="text/javascript"> activateLinkAnchor('','UploadApplicationOptions','UploadApplicationOptions') </script>. If a 
+<script type="text/javascript"> activateLinkAnchor('DELOlpInstructionType','','DELOlpInstructionType') </script> was used, the equivalent string value is returned.  For example "SpotOperation" is returned for delOlpSpotOperation.
+ Used in <tt>MacroUpload</tt>.
+</dd>
+<a id="UploadApplicationOptions"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UploadApplicationOptions</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iOptions</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ List of possible applications that could be uploaded.<BR>
+ The user is presented with this list of options and can pick one.
+ The one they picked is returned by 
+<script type="text/javascript"> activateLinkAnchor('','UploadApplicationOptionString','UploadApplicationOptionString') </script>. The list is a list of 
+<script type="text/javascript"> activateLinkAnchor('DELOlpInstructionType','','DELOlpInstructionType') </script> and/or strings. Used in <tt>MacroUpload</tt>.
+</dd>
+<a id="UploadOption"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UploadOption</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The extra option specified by the user (or in tools-options) for
+ upload.<BR>
+ The translator can use this option any way it likes.  For example,
+ the XML translator uses this to specify the JAR-file.  It could 
+ also be used to specify a robot controller version.  The translator
+ can specify valid supported options by setting the 
+<script type="text/javascript"> activateLinkAnchor('','ValidUploadOptions','ValidUploadOptions') </script>.<BR> Used in <tt>MacroUpload</tt>.
+</dd>
+<a id="UploadPathOperationType"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UploadPathOperationType</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpInstructionType','DELOlpInstructionType')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The robot's application type for path operations.<BR>
+ Translators which cannot differenciate between
+ delOlpPathAdhesiveOperation and delOlpSealantOperation
+ can call this function to determine which type to create during upload.
+ Used in <tt>MacroUpload</tt>.
+</dd>
+<a id="ValidDownloadOptions"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ValidDownloadOptions</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iOptions</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Set the list of valid values for DownloadOption.<BR>
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="ValidUploadOptions"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ValidUploadOptions</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iOptions</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Set the list of valid values for UploadOption.<BR>
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AddSupportedTemplate"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddSupportedTemplate</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTemplateLib</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTemplateName</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Enable special handling of a template instruction.<BR>
+ By default, the OLP APIs expose only the instructions inside a template 
+ to the translator.  This way all templates are supported, even new templates
+ create by users.  If the translator needs to handle the download in a special way,
+ for example to download the entire template as a single instruction, it can call
+ this method.  OlpInstruction.Type will return delOlpTemplate for all supported templates.
+ You can specify "all" for the library and template name to enable support for 
+ all types of templates.
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<a id="AddTaskToNotUpload"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddTaskToNotUpload</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTaskName</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Adds a task name to the translator's upload list in the unselected column of the upload dialog. <BR>
+ This list can be retrieved later using @see DELMIAOlpTranslatorHelper#GetTasksToUpload.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'>	The</span></dt>
+   <dd> task name to add to the translator's upload list
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="AddTaskToUpload"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddTaskToUpload</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTaskName</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Add a task name to the list of tasks that could be uploaded based on the files the user selected to upload.<BR>
+ If tasks have been added, the user is give the option to exclude some from the upload.
+ See 
+<script type="text/javascript"> activateLinkAnchor('','TasksToUpload','TasksToUpload') </script>. Used in <tt>MacroParse</tt>.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iParserName</span></dt>
+   <dd>	The name of the parser to create.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="CreateExprFixerDownload"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateExprFixerDownload</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpExpressionFixerDownload','OlpExpressionFixerDownload')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a new expression fixer for download.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The fixer.
+ </ dd>
+</dl>
+</dd>
+<a id="CreateExprFixerUpload"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateExprFixerUpload</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpExpressionFixerUpload','OlpExpressionFixerUpload')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a new expression fixer for upload.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The fixer.
+ </ dd>
+</dl>
+</dd>
+<a id="CreateIDFixer"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateIDFixer</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpIDFixer','OlpIDFixer')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a new id fixer.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The fixer.
+ </ dd>
+</dl>
+</dd>
+<a id="CreateParser"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateParser</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iParserName</span>)</span> As <script type="text/javascript"> activateLink('OlpParser','OlpParser')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a new robot program parser.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iParserName</span></dt>
+   <dd>	The name of the parser to create.  Some of the parser names are
+ <dl>
+   <dt><tt>DNBOlpFanucParser</tt></dt>
+   <dd>Parser for FANUC TP programs.</dd>
+   <dt><tt>DNBOlpKukaParser</tt></dt>
+   <dd>Parser for Kuka KRL .src and .dat files.</dd>
+   <dt><tt>DNBOlpRapidParser</tt></dt>
+   <dd>Parser for ABB Rapid .mod files.</dd>
+ </dl>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The parser.
+ </ dd>
+</dl>
+</dd>
+<a id="CreateTransform"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateTransform</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpTransform','OlpTransform')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a new transform.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The transform.
+ </ dd>
+</dl>
+</dd>
+<a id="GetFeatureEnabled"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetFeatureEnabled</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFeatureName</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Query if an LA feature is enabled in the current session.<BR>
+ Use this instead of quering an environment variable.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFeatureName</span></dt>
+   <dd>	The name of the feature.  
+   <dl>
+     <dt><tt>ARRAYS_ALL</tt></dt>
+     <dd>Full array variable support.  GA in R2022x FD04.</dd>
+     <dt><tt>ARRAYS_VAR_SCOPE</tt></dt>
+     <dd>Array variable support for everything except external IOs.  GA in R2022x FD04.</dd>
+     <dt><tt>MAPPING</tt></dt>
+     <dd>Device, Motion Group, DOF, and Tool mapping enabled.  GA in R2022x FD02.</dd>
+     <dt><tt>PULSECOUNT</tt></dt>
+     <dd>Pulse count parameters in the DOF mapping.  GA in R2022x FD02.</dd>
+     <dt><tt>POSITIONVARIABLE</tt></dt>
+     <dd>Position Variables.  GA in R2023x FD02.</dd>
+   </dl>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	TRUE if the feature is enabled.
+ </ dd>
+</dl>
+</dd>
+<a id="GetRRSIIContext"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetRRSIIContext</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets the translator's RRSII Context. <BR>
+ For a standard download, the context is blank.  For an RRS-II simulation download the context is "Simulation Run".
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The RRSII Context
+ </ dd>
+</dl>
+</dd>
+<a id="GetRRSVirtualRobotDirectory"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetRRSVirtualRobotDirectory</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iShareName</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the RRS virtual robot directory to look in for system variable files during upload or download.<BR>
+ Used in any macro.
+</dd>
+<a id="IsSame"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>IsSame</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>iObj1</span>,<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>iObj2</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Tests if 2 objects are the same.<BR>
+ This returns true if the underlying objects are the same.
+ The interface pointers need not be of the same type.  You 
+ cannot use the VB equality tests on interface pointers.  That
+ test may say the objects are not equal even if the underlying objects
+ are the same.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iObj1</span></dt>
+   <dd>	The 1st object.  Can be NULL.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iObj2</span></dt>
+   <dd>	The 2nd object.  Can be NULL.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	True if the iObj1 and iObj2 are interfaces
+  of the same underlying object or if both are NULL.
+ </ dd>
+</dl>
+</dd>
+<a id="SetObjectFramesAllowableAttachmentTypes"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetObjectFramesAllowableAttachmentTypes</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iAllowedForCoordination</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iAllowedForConveyorTracking</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the types of moves for which object frames should be attached.
+ If not called, all attachment types are allowed (as if called with all TRUE values).
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAllowedForCoordination</span></dt>
+   <dd> If False, object frames are not attached to the leader device when used with a Coordinated motion (positioner or robot to robot coordination).  Only the tags will be attached.
+ In this case, the same object frame can be used with a Coordinated move and a normal move and users can pick a different part to attach the tags to for each type.
+ If True, the object frame will be attached to the same part the user selects for attaching the tags.  The object frame can then only be used with coordinated motions.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAllowedForConveyorTracking</span></dt>
+   <dd> If False, object frames are not attached to the trolley (aka conveyor) when used with a conveyor tracking motion.  Only the tags will be attached.
+ In this case, the same object frame can be used with a tracking move and a normal move and users can pick a different part to attach the tags to for each type.
+ If True, the object frame will be attached to the same part the user selects for attaching the tags.  The object frame can then only be used with conveyor tracking motions.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetSupportedFeature"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetSupportedFeature</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFeatureName</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Enable a translator feature.<BR>
+ Translators can call this to enable LA features.
+ Used in <tt>MacroGetTranslatorInfo</tt>.
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

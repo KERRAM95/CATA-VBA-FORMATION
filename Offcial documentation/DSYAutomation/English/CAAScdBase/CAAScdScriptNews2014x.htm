@@ -1,0 +1,608 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>What&#39;s New with 3DEXPERIENCE R2014x Automation</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>What's New with <strong>3D</strong>EXPERIENCE R2014x Automation</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article presents Automation objects, methods, and properties 
+		that are added since <strong>3D</strong>EXPERIENCE R2014x GA to enhance V6 Automation capabilities, 
+		support functional evolutions, and correct defects. Some of those 
+		modifications may already exist in <strong>3D</strong>EXPERIENCE R2014 maintenance fixes. A few properties and methods 
+		might have been modified or removed. VB and VBScripts code using those methods 
+		may have to be modified. VB projects using the corresponding objects must 
+		be recompiled.</p>
+		<p>Consult
+		<a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation 
+		Languages, Debug, and Compatibility</a> for details on manual adjustments 
+		that may be required for existing VBA and VSTA projects to be usable on 
+		a new release.</p>
+		<ul>
+			<li><a href="#NewModelers">New Modelers</a></li>
+			<li><a href="#NewArticles">New Articles</a></li>
+			<li><a href="#NewSetting">New Settings Repositories</a></li>
+			<li><a href="#NewObject">New Objects</a></li>
+			<li><a href="#NewMethod">New Methods</a></li>
+			<li><a href="#NewEnum">New Enums</a></li>
+			<li><a href="#Modif">Modified Objects, Methods and Properties</a></li>
+			<li><a href="#Suppress">Removed Objects, Collections, Methods, and Properties</a></li>
+		</ul>
+		<p>Deprecated APIs can be found in
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Deprecated');return false;">
+		V6 IDL API Deprecated Index</a>.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p>You can also find news from previous V6 releases:</p>
+		<ul>
+			<li><a href="CAAScdScriptNews2014.htm"><strong>3D</strong>EXPERIENCE R2014 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2013x.htm">V6R2013x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2013.htm">V6R2013 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2012x.htm">V6R2012x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2012.htm">V6R2012 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2011x.htm">V6R2011x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2011.htm">V6R2011 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2010x.htm">V6R2010x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2010.htm">V6R2010 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2009x.htm">V6R2009x What&#39;s New?</a></li>
+		</ul>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewModelers"></a>New Modelers</th>
+	</tr>
+	<tr>
+	<td>
+	<ul>
+	<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSrsSpaceReferenceSystem/CAAScdSrsToc.htm'); return false;">Space Reference System</a></li>
+	<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSpaceAllocation/CAAScdSpaceAllocationToc.htm'); return false;">Space Allocation</a></li>
+	</ul>
+	</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewArticles"></a>New Articles</th>
+	</tr>
+	<tr>
+		<td>
+		<ul>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdServerAccess/CAAScdSrvToc.htm'); return false;">PLM Services</a>
+		<ul>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdServerAccess/CAAScdSrvObjSearchService.htm'); return false;">SearchService Object</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdServerAccess/CAAScdSrvObjDatabaseSearch.htm'); return false;">DatabaseSearch Object</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdServerAccess/CAAScdSrvUcSearchPLMObjects.htm'); return false;">Searching PLM Objects</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdServerAccess/CAAScdSrvSearchAdoption.htm'); return false;">Adopting <strong>3D</strong>EXPERIENCE R2014x PLM Search Objects</a></li>
+		</ul>
+		</li>
+		
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSfdSFDesign/CAAScdSfdToc.htm'); return false;">Structure Functional Design</a>
+		<ul>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSfdSFDesign/CAAScdSfdUcCreateOpeningOnProfile3DObject.htm'); return false;">Creating an SFD Opening On Profile Using 3D Objects</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSfdSFDesign/CAAScdSfdUcCreateOpeningOnProfileSketch.htm'); return false;">Creating an SFD Opening On Profile Using a Sketch Profile</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSfdSFDesign/CAAScdSfdUcCreateOpeningOnProfileStandard.htm'); return false;">Creating a Standard Opening On Profile</a></li>
+		</ul>
+		</li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSddSDDesign/CAAScdSddToc.htm'); return false;">Structure Design</a>
+		<ul>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSddSDDesign/CAAScdSddUcCreateOpeningOnProfile3DObject.htm'); return false;">Creating an SDD Opening using 3D Objects</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSddSDDesign/CAAScdSddUcCreateOpeningOnProfileSketch.htm'); return false;">Creating an SDD Opening Using a Sketch Profile</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSddSDDesign/CAAScdSddUcCreateOpeningOnProfileStandard.htm'); return false;">Creating a Standard Opening</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSddSDDesign/CAAScdSddUcCreateBracket.htm'); return false;">Creating an SDD Bracket</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSddSDDesign/CAAScdSddUcTestCollar.htm'); return false;">Testing SDD Collar</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSddSDDesign/CAAScdSddUcGetPlateSubElements.htm'); return false;">Getting SDD Plate Sub-Elements</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScdSddSDDesign/CAAScdSddUcGetProfileSubElements.htm'); return false;">Getting SDD Profile Sub-Elements</a></li>
+		</ul>
+		</li>
+		</ul>
+		</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewSetting"></a>New Settings Repositories</th>
+	</tr>
+	<tr>
+		<td>
+		<ul>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATBisBclOptions.htm'); return false;">Options for BioSystems Calibration</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATBisBdcOptions.htm'); return false;">Options for BioSystems Deterministic Simulation</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATBisBsaOptions.htm'); return false;">Options for BioSystems Analysis</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATBisGeneralOptions.htm'); return false;">General Options for BioSystems Experiment</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATCrDToolsOptionsRepository.htm'); return false;">Settings customizing NTS workbench and commands</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATPLMLinksAndRelations.htm'); return false;">Setting to handle the Links and Relations Edition options</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATPLMxNetwork.htm'); return false;">Network Compresssion activation definition</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATSimRepModelerOptions.htm'); return false;">Manage options for simulation</a></li>
+<!--		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CivilEngineering.htm'); return false;">Manages Civil Engineering options</a></li> -->
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/DSESettingsImport.htm'); return false;">Settings to manage Digitized Shape Editor Import Options</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/ELEditorToolsOptions.htm'); return false;">Setting to handle Tools Option Electrical Logical Workbench</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/LegacyProviderOptions.htm'); return false;">Settings for All Legacy Providers</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/PLEditorToolsOptions.htm'); return false;">Setting to handle Tools Option Piping Logical Workbench</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/SWXAssemblySettings.htm'); return false;">Setting to handle mouse zoom options for view</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/SWXGraphicsSettings.htm'); return false;">Setting to handle mouse zoom options for view</a></li>
+<!--		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/SWXImportSettings.htm'); return false;">Orientation</a></li> -->
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/ShapeDesignGeometricalScale.htm'); return false;">Geometric Scale</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/SymbolEditorSettings.htm'); return false;">Setting to handle the Symbol Editor parameters</a></li>
+		<li><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/VPMNavigator.htm'); return false;">Setting to handle the parameters of the VPM Navigator User Interface</a></li>
+		</ul>
+		</td>
+	</tr>
+</tbody>
+</table>
+</div>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewObject"></a>New Objects</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSrsIDLItf', 'interface', 'SrsBoundingBox');return false;">SrsBoundingBox</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSrsIDLItf', 'interface', 'SrsCentreLine');return false;">SrsCentreLine</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSrsIDLItf', 'interface', 'SrsGridFace');return false;">SrsGridFace</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSrsIDLItf', 'interface', 'SrsGridFaces');return false;">SrsGridFaces</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSrsIDLItf', 'interface', 'SrsGridSet');return false;">SrsGridSet</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSrsIDLItf', 'interface', 'SrsGridSets');return false;">SrsGridSets</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSrsIDLItf', 'interface', 'SrsMidShip');return false;">SrsMidShip</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSrsIDLItf', 'interface', 'SrsPart');return false;">SrsPart</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddContourBased');return false;">SddContourBased</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddProductBracket');return false;">SddProductBracket</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningOnProfile');return false;">StrOpeningOnProfile</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningsOnProfile');return false;">StrOpeningsOnProfile</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMAccessIDLItf', 'interface', 'DatabaseSearch');return false;">DatabaseSearch</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMAccessIDLItf', 'interface', 'PLMScriptService');return false;">PLMScriptService</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMAccessIDLItf', 'interface', 'SearchService');return false;">SearchService</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewMethod"></a>New Methods</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeSweepExplicit', 'CanonicalDetection');return false;">HybridShapeSweepExplicit::CanonicalDetection</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeTrim', 'GetPieceDiscriminationIndex');return false;">HybridShapeTrim::GetPieceDiscriminationIndex</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeTrim', 'KeepAllPieces');return false;">HybridShapeTrim::KeepAllPieces</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeTrim', 'SetPieceDiscriminationIndex');return false;">HybridShapeTrim::SetPieceDiscriminationIndex</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsInertiaIDLItf', 'interface', 'Inertia', 'GetArea');return false;">Inertia::GetArea</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsInertiaIDLItf', 'interface', 'Inertia', 'GetVolume');return false;">Inertia::GetVolume</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrDetailInterfaces', 'interface', 'SddFactory', 'AddProductBracket');return false;">SddFactory::AddProductBracket</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpenings', 'Add');return false;">StrOpenings::Add</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrService', 'ConvertReferenceToObject');return false;">StrService::ConvertReferenceToObject</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningStandard', 'DirectionForOpeningOnProfile');return false;">StrOpeningStandard::DirectionForOpeningOnProfile</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningsMgr', 'GetAvailableStandardPositioningStrategiesForProfile');return false;">StrOpeningsMgr::GetAvailableStandardPositioningStrategiesForProfile</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StructureProfile', 'GetOpeningsOnProfile');return false;">StructureProfile::GetOpeningsOnProfile</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningsMgr', 'GetStandardPositioningStrategyParmsForProfile');return false;">StrOpeningsMgr::GetStandardPositioningStrategyParmsForProfile</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpenings', 'Item');return false;">StrOpenings::Item</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpenings', 'Remove');return false;">StrOpenings::Remove</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningStandard', 'SetContourAndPosStrategyForProfile');return false;">StrOpeningStandard::SetContourAndPosStrategyForProfile</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrPanelLimitMngt', 'SetLimitingObject2');return false;">StrPanelLimitMngt::SetLimitingObject2</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningStandard', 'SetMidDistOffsetPosStratParms');return false;">StrOpeningStandard::SetMidDistOffsetPosStratParms</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningStandard', 'SetOffsetOffsetPosStratParms');return false;">StrOpeningStandard::SetOffsetOffsetPosStratParms</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningStandard', 'SetSpacingOffsetPosStratParms');return false;">StrOpeningStandard::SetSpacingOffsetPosStratParms</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StrOpeningStandard', 'StandardModeType');return false;">StrOpeningStandard::StandardModeType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'interface', 'StructureProfile', 'StrOpeningsMgr');return false;">StructureProfile::StrOpeningsMgr</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'SystemService', 'GetMessage');return false;">SystemService::GetMessage</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewEnum"></a>New enum</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'enum', 'CATStrOpeningCreationMode');return false;">CATStrOpeningCreationMode</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'enum', 'CATStrOpeningSTDMode');return false;">CATStrOpeningSTDMode</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATStrIDLItf', 'enum', 'CATStrUseBracketPositionMode');return false;">CATStrUseBracketPositionMode</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMAccessIDLItf', 'enum', 'SearchCondition');return false;">SearchCondition</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMAccessIDLItf', 'enum', 'SearchMode');return false;">SearchMode</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMAccessIDLItf', 'enum', 'SearchOperator');return false;">SearchOperator</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMAccessIDLItf', 'enum', 'SearchSortOrder');return false;">SearchSortOrder</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="Modif"></a>Modified Objects, Methods and Properties</th>
+	</tr>
+	<tr>
+		<td>none</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="Suppress"></a>Removed Objects, Collections, Methods, 
+		and Properties </th>
+	</tr>
+	<tr>
+  <td>none</td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<script type="text/javascript">insertCopyright();</script>
+</body>
+
+</html>

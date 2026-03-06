@@ -1,0 +1,209 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAMpaFoundationIDLItf SimLocalElementTypeAssignment (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAMpaFoundationIDLItf.htm" href="../SMAMpaFoundationIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAMpaFoundationIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimLocalElementTypeAssignment"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimLocalElementTypeAssignment<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimLocalElementTypeAssignment_68340','SimLocalElementTypeAssignment','0');</script>
+<section id='maindesc'>
+<b><i> Represents the Local Element Type Assignment object.</i></b><br>
+
+
+ <!-- @sample -->
+ <dl>
+ <dt><strong>Example:</strong></dt>
+ <dd>
+ This example demonstrates how to create the <code>SimLocalElementTypeAssignment</code> object
+ from a <code>SimLocalElementTypeAssignments</code>, set the support link,
+ retrieve the family, topologies, formulation, default and candidate formulations.
+ <pre>
+ Dim MyLocalAssignments As SimLocalElementTypeAssignments
+ ...
+ Dim MyLocalAssignment As SimLocalElementTypeAssignment
+ Set MyLocalAssignment = MyLocalAssignments.Add
+ Dim MyLinkAccess As SimLinkAccess
+ Set MyLinkAccess = MyLocalAssignment.GetItem("SimLinkAccess")
+ Dim MyLink As AnyObject
+ ...
+ MyLinkAccess.AddLink "MainSupport", MyLink
+ Dim MyFamily As String
+ MyFamily = MyLocalAssignment.Family
+ Dim MyElementTopology As String
+ MyElementTopology = MyLocalAssignment.Topologies(1)
+ Dim MyElementFormulation As String
+ MyElementFormulation = MyLocalAssignment.GetFormulation(MyElementTopology)
+ Dim MyDefaultFormulation As String
+ MyDefaultFormulation = MyLocalAssignment.DefaultFormulation(MyElementTopology)
+ Dim MyCandidates As Variant
+ MyCandidates = MyLocalAssignment.CandidateFormulations(MyElementTopology)
+ </pre>
+ </dd>
+ <dt><strong>Example in Python:</strong></dt>
+ <dd>
+ <pre>
+ MyLocalAssignment = MyLocalAssignments.Add()
+ MyLinkAccess = MyLocalAssignment.GetItem("SimLinkAccess")
+ MyLinkAccess.AddLink("MainSupport", MyLink)
+ MyFamily = MyLocalAssignment.Family
+ MyElementTopology = MyLocalAssignment.Topologies(1)
+ MyElementFormulation = MyLocalAssignment.GetFormulation(MyElementTopology)
+ MyDefaultFormulation = MyLocalAssignment.DefaultFormulation(MyElementTopology)
+ MyCandidates = MyLocalAssignment.CandidateFormulations(MyElementTopology)
+ </pre>
+ </dd>
+ </dl>
+ The link created must be to one or more sections in the model referenced
+ by the <code>SimAnalysisCase</code> to be valid for usage in this object.
+ The sections must all be of the same type.
+ <dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('SMAIAMpaLocalElementTypeAssignments','','SMAIAMpaLocalElementTypeAssignments') </script>, <script type="text/javascript"> activateLinkAnchor('CATIASimLinkAccess','','CATIASimLinkAccess') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Family"><b>Family</b></a>
+</td><td  id='tdright'>  Returns or sets the family of elements formulations.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Topologies"><b>Topologies</b></a>
+</td><td  id='tdright'>  Returns the section and topology pairs in the support.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#CandidateFormulations"><b>CandidateFormulations</b></a>
+</td><td  id='tdright'>  Returns the candidate element formulations for the argument topology.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DefaultFormulation"><b>DefaultFormulation</b></a>
+</td><td  id='tdright'>  Returns the default element formulation for the argument topology.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetFormulation"><b>GetFormulation</b></a>
+</td><td  id='tdright'>  Returns the element formulation for the argument topology.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetFormulation"><b>SetFormulation</b></a>
+</td><td  id='tdright'>  Sets the element formulation for the argument topology.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Family"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Family</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the family of elements formulations.
+
+ Valid values:
+ <ul>
+   <li>Standard-3D-Stress/Displacement</li>
+   <li>Standard-3D-Thermal</li>
+   <li>Standard-3D-Piezoelectric</li>
+   <li>Standard-3D-Thermal/Displacement</li>
+   <li>Standard-3D-Thermal/Displacement/Electric</li>
+   <li>Standard-3D-Thermal/Electric</li>
+   <li>Standard-3D-Thermal/Electric/Electrochemical</li>
+   <li>Standard-3D-Thermal/Displacement/Electric/Electrochemical</li>
+   <li>Standard-3D-Thermal/Displacement/Electric/Electrochemical/Pore</li>
+   <li>Standard-Axisymmetric-Stress/Displacement</li>
+   <li>Standard-Axisymmetric-Thermal</li>
+   <li>Standard-Axisymmetric-Piezoelectric</li>
+   <li>Standard-Axisymmetric-Thermal/Displacement</li>
+   <li>Standard-Axisymmetric-Thermal/Displacement/Electric</li>
+   <li>Standard-Axisymmetric-Thermal/Electric</li>
+   <li>Explicit-3D-Stress/Displacement</li>
+   <li>Explicit-3D-Thermal/Displacement</li>
+   <li>Explicit-Axisymmetric-Stress/Displacement</li>
+   <li>Explicit-Axisymmetric-Thermal/Displacement</li>
+ </ul>
+ 
+ Setting an invalid family will return an error.
+</dd>
+<a id="Topologies"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Topologies</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the section and topology pairs in the support.
+ 
+ Element topologies are:
+ <ul>
+    <li><b>BAR</b> - Linear bar element for trusses/beams</li>
+    <li><b>BAR3</b> - Parabolic bar element for trusses/beams</li>
+    <li><b>TR3</b> - Linear triangular element for shells</li>
+    <li><b>TR6</b> - Parabolic triangular element for shells</li>
+    <li><b>QD4</b> - Linear quadrilateral element for shells</li>
+    <li><b>QD8</b> - Parabolic quadrilateral element for shells</li>
+    <li><b>TE4</b> - Linear tetrahedral element for solids</li>
+    <li><b>TE10</b> - Parabolic tetrahedral element for solids</li>
+    <li><b>HE8</b> - Linear hexahedral element for solids</li>
+    <li><b>HE20</b> - Parabolic hexahedral element for solids</li>
+    <li><b>WE6</b> - Linear prismatic wedge element for solids</li>
+    <li><b>WE15</b> - Parabolic prismatic wedge element for solids</li>
+    <li><b>PY5</b> - Linear pyramid element for solids</li>
+ </ul>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="CandidateFormulations"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CandidateFormulations</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTopology</span>)</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the candidate element formulations for the argument topology.
+</dd>
+<a id="DefaultFormulation"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>DefaultFormulation</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTopology</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the default element formulation for the argument topology.
+</dd>
+<a id="GetFormulation"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetFormulation</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTopology</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the element formulation for the argument topology.
+</dd>
+<a id="SetFormulation"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetFormulation</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTopology</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFormulation</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the element formulation for the argument topology.
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

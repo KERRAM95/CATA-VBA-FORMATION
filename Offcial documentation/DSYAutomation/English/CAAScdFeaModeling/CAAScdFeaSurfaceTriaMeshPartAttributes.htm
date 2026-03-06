@@ -1,0 +1,1448 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Surface Triangle Mesh Part Attributes</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Surface Triangle Mesh Part Attributes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+			<h3>Abstract</h3>
+			<p>This article presents an overview of the <b>Surface Triangle Mesh Part</b> attributes and its local specifications.</p>
+			<p><b><a href="#Surface_Mesh_Part_Creation">Surface Triangle Mesh Part Creation</a>:</b></p>
+			<p><b><a href="#Surface_Mesh_Part_Support_Definition">Surface Triangle Mesh Part Support Definition</a>:</b></p>
+			<ul>
+				<li><a href="#CleanedGeometry">CleanedGeometry</a></li>
+				<li><a href="#CleaningMode">CleaningMode</a></li>
+			</ul>
+			<p><b><a href="#Global_Mesh_Specifications">Global Mesh Specifications</a>:</b></p>
+			<ul>
+				<li><a href="#MeshSizeValue">MeshSizeValue</a></li>
+                <li><a href="#AutoMap">AutoMap</a></li>
+				<li><a href="#ElementOrder">ElementOrder</a></li>
+				<li><a href="#AbsoluteSag">AbsoluteSag</a></li>
+				<li><a href="#AbsoluteSagValue">AbsoluteSagValue</a></li>
+				<li><a href="#ProportionalSag">ProportionalSag</a></li>
+				<li><a href="#ProportionalSagValue">ProportionalSagValue</a></li>
+	            <li><a href="#MinCellsPerGap">MinCellsPerGap</a></li>
+				<li><a href="#MinCellsPerGapValue">MinCellsPerGapValue</a></li>
+				<li><a href="#MinMeshSize">MinMeshSize</a></li>
+	            <li><a href="#GrowthRatioSurface">GrowthRatioSurface</a></li>
+				<li><a href="#AutomaticMeshCapture">AutomaticMeshCapture</a></li>
+				<li><a href="#AutomaticMeshCaptureTolValue">AutomaticMeshCaptureTolValue</a></li>
+			</ul>
+			<p><b><a href="#Global_Topology_Specifications">Global Topology Specifications</a>:</b></p>
+			<ul>
+				<li><a href="#AngleBetweenCurves">AngleBetweenCurves</a></li>
+				<li><a href="#AngleBetweenFaces">AngleBetweenFaces</a></li>
+				<li><a href="#CurvatureAngle">CurvatureAngle</a></li>
+				<li><a href="#OffsetValue">OffsetValue</a></li>
+				<li><a href="#OffsetFromThickness">OffsetFromThickness</a></li>
+				<li><a href="#AutomaticCurveCapture">AutomaticCurveCapture</a></li>
+				<li><a href="#GeometrySimplification">GeometrySimplification</a></li>
+				<li><a href="#GeometrySimplificationValue">GeometrySimplificationValue</a></li>
+	            <li><a href="#2DHolesSuppression">2DHolesSuppression</a></li>
+				<li><a href="#2DHolesMaxDiameter">2DHolesMaxDiameter</a></li>
+	            <li><a href="#LogosSuppression">LogosSuppression</a></li>
+				<li><a href="#LogosMaxHeight">LogosMaxHeight</a></li>
+				<li><a href="#LogosMaxSize">LogosMaxSize</a></li>
+			</ul>
+			<p><b><a href="#Local_Specifications">Local Specifications</a>:</b></p>
+			<p><b><a href="#Local_Topology_Specifications">Local Topology Specifications</a>:</b></p>
+			<ul>
+				<li><a href="#CATFmtConstrainEdgeLocalSpec">CATFmtConstrainEdgeLocalSpec</a> (Constrain Edge)</li>
+				<li><a href="#CATFmtUnconstrainEdgeLocalSpec">CATFmtUnconstrainEdgeLocalSpec</a> (Unconstrain Edge)</li>
+				<li><a href="#CATFmtConstrainHoleLocalSpec">CATFmtConstrainHoleLocalSpec</a> (Constrain Hole)</li>
+				<li><a href="#CATFmtUnconstrainHoleLocalSpec">CATFmtUnconstrainHoleLocalSpec</a> (Unconstrain Hole)</li>
+							<li><a href="#CATFmtGroupingLocalSpec">CATFmtGroupingLocalSpec</a> (Group Geometries)</li>
+							<li><a href="#CATFmtExternalPointLocalSpec">CATFmtExternalPointLocalSpec</a> (Imposed Point):
+							<ul>
+								<li><a href="#ToleranceValue_ProjectPoint">ToleranceValue</a></li>
+								<li><a href="#ProjectOnGeometry">ProjectOnGeometry</a></li>
+							</ul>
+							</li>
+							<li><a href="#CATFmtExternalCurveLocalSpec">CATFmtExternalCurveLocalSpec</a> (Imposed Curve):
+							<ul>
+								<li><a href="#ToleranceValue_ProjectCurve">ToleranceValue</a></li>
+							</ul>
+							</li>
+			</ul>
+			<p><b><a href="#Local_Mesh_1D_Specifications">Local Mesh 1D Specifications</a>:</b></p>
+			<ul>
+				<li><a href="#CATFmtStudioDistributionSpec">CATFmtStudioDistributionSpec</a> (Edge Distribution):
+				<ul>
+					<li><a href="#Type">Type</a></li>
+					<li><a href="#Combination">Combination</a></li>
+					<li><a href="#CombinationUnif">CombinationUnif</a></li>
+					<li><a href="#NbElementsValue">NbElementsValue</a></li>
+					<li><a href="#RatioValue">RatioValue</a></li>
+					<li><a href="#Size1Value">Size1Value</a></li>
+					<li><a href="#Size2Value">Size2Value</a></li>
+					<li><a href="#Symmetry">Symmetry</a></li>
+					<li><a href="#Reverse">Reverse</a></li>
+				</ul>
+				</li>
+				<li><a href="#CATFmtStudioHoleSpec">CATFmtStudioHoleSpec</a> (Edge Distribution around Hole):
+				<ul>
+					<li><a href="#NbElements_Hole">NbElements</a></li>
+					<li><a href="#NbRows">NbRows</a></li>
+					<li><a href="#Height1">Heigth1</a></li>
+					<li><a href="#Height2">Heigth2</a></li>
+					<li><a href="#Height3">Heigth3</a></li>
+				</ul>
+				</li>
+				<li><a href="#CATFmtStudioCaptureSpec">CATFmtStudioCaptureSpec</a> (Element Capture):
+				<ul>
+					<li><a href="#ManualCaptureMeshMode">ManualMeshCaptureMode</a></li>
+					<li><a href="#ManualCaptureMeshTolValue">ManualMeshCaptureTolValue</a></li>
+				</ul>
+				</li>
+				<li><a href="#CATFmtStudioPropagationSpec">CATFmtStudioPropagationSpec</a> (Distribution Propagation):
+				<ul>
+					<li><a href="#PropagationMode">PropagationMode</a></li>
+					<li><a href="#Geometry">Geometry</a></li>
+				</ul>
+				</li>
+			</ul>
+			<p><b><a href="#Local_Mesh_2D_Specifications">Local Mesh 2D Specifications</a>:</b></p>
+			<ul>
+	        	<li><a href="#CATFmtLocalSpecLocalSize">CATFmtLocalSpecLocalSize</a> (Local Mesh Size)</li>
+				<li><a href="#CATFmtStudioFrontTriaSpec">CATFmtStudioFrontTriaSpec</a> (Frontal Triangle Method):
+				<ul>
+					<li><a href="#SizeValue_FrontTria">SizeValue</a></li>
+				</ul>
+				</li>
+				<li><a href="#CATFmtStudioMappedSpec">CATFmtStudioMappedSpec</a> (Mapped Method):
+				<ul>
+					<li><a href="#SizeValue_Mapped">SizeValue</a></li>
+				</ul>
+				</li>
+	        <li><a href="#CATFmtStudioFaceCaptureSpec">CATFmtStudioFaceCaptureSpec</a> (Face Capture):
+	          <ul>
+					    <li><a href="#MeshSources">MeshSources</a></li>
+	            <li><a href="#Tolerance">Tolerance</a></li>
+	            <li><a href="#ManualCaptureMeshMode2">ManualMeshCaptureMode</a></li>
+				    </ul>
+				  </li>
+			</ul>
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Surface_Mesh_Part_Creation">Surface Triangle Mesh Part Creation</a></h2>
+<p>A &quot;late type&quot; must be given to indicate which type of mesh part is to be created.</p>
+<p>In the case of the Surface Triangle Mesh Part, the late type is &quot;<b>CATFmtSurfTriaMesher</b>&quot;.</p>
+<p>The Surface Triangle Mesh Part can be created by using <b>Add</b> method of <b>SimMeshParts</b> object.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Surface_Mesh_Part_Support_Definition">Surface Mesh Part Support Definition</a></h2>
+<p>The Surface Triangle Mesh Part support can be initialized and managed using the <b>AddSupport</b> method of <b>SimMeshPart</b> object:</p>
+  <ul>
+    <li>
+      <b>AddSupport</b> ( <i>iSupport <span class="keyword">As</span> AnyObject</i> ) to add a new support to the mesh part
+    </li>
+  </ul>
+<p><b><a name="CleanedGeometry">CleanedGeometry</a></b></p>
+<p>Surface Triangle Mesh Part support can be optionally modified to keep 
+a subset of the previous geometry. For that purpose, the list of geometry to 
+keep or to remove has to be managed using the following methods  with <b>iSetType = &quot;Topology&quot;</b> 
+and <b>iAttribute = &quot;CleanedGeometry&quot;</b>:</p>
+<ul>
+	<li><b>SetExternalReference</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iSupport <span class="keyword">As</span> AnyObject</i>) to add external reference to the mesh part</li>
+	<li><b>RemoveExternalReference</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iSupport <span class="keyword">As</span> AnyObject</i>) to remove external reference from the mesh part</li>
+</ul>
+<p>Other mesh part attributes support definition are managed using following 
+methods:</p>
+<ul>
+	<li><b>SetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iValue</i>) to set a mesh attribute with an integer value</li>
+	<li><b>GetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, oValue</i>) to get a mesh attribute with an integer value</li>
+</ul>
+<p>where <b>iType</b> is the type of specification and <b>iType =&quot;Topology&quot;</b> for support definition 
+and <b>iName</b> the attribute name.</p>
+<p><b><a name="CleaningMode">CleaningMode</a></b></p>
+<table border="1" width="100%" height="22">
+  <tr>
+    <td width="33%" height="16" valign="middle" align="left" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>
+        <b>type</b>: <b><i>integer </i></b>valuated to:</p>
+		<ul>
+			<li>1: to exclude geometry of CleanedGeometry of support</li>
+			<li>2: to keep only geometry of CleanedGeometry as support</li>
+		</ul>
+		<p><b>default value: 1</b></p>
+      </blockquote>
+    </td>
+    <td width="67%" height="16" valign="middle" align="center" bgcolor="#C0C0C0">
+      <blockquote>
+        <p align="left">Attribute which specifies if the geometries stored 
+		in CleanedGeometry external references have to be removed from the 
+		mesh part support definition or if this geometries will replace the 
+		initial support.</p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Global_Mesh_Specifications">Global Mesh Specifications</a></h2>
+<p>Global mesh specifications can be set or retrieved using following methods:</p>
+<ul>
+	<li><b>SetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iValue</i>) to set a mesh attribute with an integer value</li>
+	<li><b>GetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, oValue</i>) to get a mesh attribute with an integer value</li>
+</ul>
+<p><b>iType</b> is the type of specification and <b>iType =&quot;Mesh&quot;</b> for Global Mesh Specifications.</p>
+<p><b><a name="MeshSizeValue">MeshSizeValue</a></b></p>
+<table border="1" width="100%" height="22">
+  <tr>
+    <td width="33%" height="16" valign="middle" align="left" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>
+        <b>type</b>: <b><i>double </i></b>valuated to mesh elements 
+		size.</p>
+		<p><b>default value:</b> <b>10</b><b>.</b></p>
+      </blockquote>
+    </td>
+    <td width="67%" height="16" valign="middle" align="center" bgcolor="#C0C0C0">
+      <blockquote>
+        <p align="left">Attribute which specifies the mesh 
+		element target size that surface mesher tries torespect.</p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+
+<p class="style4">
+<!---------------------------------comment------------------------------------->
+<a name="Architecture"></a><strong><a name="AutoMap">AutoMap</a></strong></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" valign="middle" align="left" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b><br>
+        type</b>: <strong><em>integer</em></strong> valuated to:</p>
+        <ul>
+          <li><b>1:</b> do not map mesh the support </li>
+          <li><b>2:</b> map mesh the support where appropriate</li>
+        </ul>
+      	<p><strong>default value: 2 </strong></p>
+      </blockquote>
+    </td>
+      <td width="67%" valign="middle" bgcolor="#C0C0C0">
+         <blockquote class="style40">
+           <p>
+             <br />
+                  This attribute specifies whether map mesh is applied on support where appropriate.
+              </p>
+          </blockquote>
+    </td>
+  </tr>
+</table>
+
+<p><b><a name="ElementOrder">ElementOrder</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <i><b>integer </b></i>valuated to:</p>
+		<ul>
+			<li><b>1:</b> to get a mesh with linear elements</li>
+			<li><b>2:</b> to get a mesh with quadratic elements</li>
+		</ul>
+      	<p><b>default value: 1 </b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies <b>the </b>
+		<b>number</b><b> of </b>
+		<b>intermediate nodes per element edge</b>,
+        either linear 
+		TR3 (<em>on the left picture</em>) or
+        quadratic TR6 (<em>on the right picture</em>).</p>
+      </blockquote>
+    </td>
+    <td width="20%" bgcolor="#C0C0C0"><img border="0" src="images/ElementType3.png" width="294" height="146"/></td>
+  </tr>
+</table>
+<p><b><a name="AbsoluteSag">AbsoluteSag</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="35%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>
+        type</b>:<i><b> integer </b></i>valuated to:</p>
+        <ul>
+          <li><b>1: </b>to create a mesh that does not respect sag</li>
+          <li><b>2:</b> to create a mesh that respects sag</li>
+        </ul>
+      	<p><b>default value: 1 </b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+        <p>Attribute which specifies if the mesh is created with a maximum imposed sag.</p>
+    </td>
+    <td width="20%" bgcolor="#C0C0C0"><img border="0" src="images/SagFig2.jpg"/></td>
+  </tr>
+</table>
+<p><b><a name="AbsoluteSagValue">AbsoluteSagValue</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><i>double</i></b> valuated to the target maximum sag when <b>AbsoluteSag</b> attribute is valuated to 2.</p>
+		<p><b>default value: 1.0 </b></p>
+      </blockquote>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the maximum value of the absolute sag (distance between the geometry of the mesh ).</p>
+		<p><b>WARNING</b>: It is taken into account only if the <b>AbsoluteSag</b> attribute is equal to 2</p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<p><b><a name="ProportionalSag">ProportionalSag</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>
+        type</b>: <i><b>integer </b></i>valuated to:</p>
+        <ul>
+          <li><b>1: </b>to create a mesh that does not respect proportional sag</li>
+          <li><b>2:</b> to create a mesh that respects proportional sag</li>
+        </ul>
+      	<p><b>default value: 1</b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies if the mesh is created with a imposed maximum proportional sag which is the ratio of the Sag by the 
+        Length of a mesh edge element. (<b><var>Sag/Length</var></b>).</p>
+      </blockquote>
+    </td>
+    <td width="20%" bgcolor="#C0C0C0"><img border="0" src="images/SagFig1.jpg"/></td>
+  </tr>
+</table>
+<p><b><a name="ProportionalSagValue">ProportionalSagValue</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><i>double</i></b> valuated to target proportional sag when ProportionalSag attribute is valuated to 2.</p>
+		<p><b>default value: 0.2</b></p>
+      </blockquote>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the maximum value of the proportional sag.</p>
+		<p><b>WARNING</b>: It is taken into account only if the <b>ProportionalSag</b> attribute is equal to 2</p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<p><b><a name="MinMeshSize">MinMeshSize</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>
+        type</b>: <b><i>double</i></b> valuated to target minimum size for elements 
+		when AbsoluteSag or 
+		ProportionalSag attributes are valuated to 2.</p>
+		<p><b>default value: 0. </b></p>
+      </blockquote>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the minimum size when mesh is computed with absolute sag or proportional sag. 
+		In that cases, the mesh minimum size can be very small regarding the target MeshSizeValue and it becomes 
+		necessary to control minimum size in order to prevent to have too many elements</p>
+		<p><b>WARNING</b>: this attribute is taken into account only if <b>AbsoluteSag</b> or 
+		<b>ProportionalSag </b>attribute is equal to 2.</p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<p><b><a name="AutomaticMeshCapture">AutomaticMeshCapture</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <i><b>integer</b></i> valuated to:</p>
+        <ul>
+          <li><b>1: </b>to ignore automatic mesh capture</li>
+          <li><b>2:</b> to compute automatic mesh capture</li>
+        </ul>
+      	<p><b>default value: 1 </b></p>
+      </blockquote>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies if external meshes 
+		must be captured. This attribute is linked to the attribute
+		<b>AutomaticMeshCaptureTolValue</b>.</p>
+      </blockquote>
+    </td>
+    </tr>
+</table>
+<p><b>
+<a name="AutomaticMeshCaptureTolValue">AutomaticMeshCaptureTolValue</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>
+        type</b>: <b><i>double</i></b> valuated to the
+        maximum distance under which mesh 
+		is captured.</p>
+		<p><b>default value: 0. </b></p>
+      </blockquote>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the maximum distance for mesh capture: if a
+        mesh (element edges) is farthest from the geometry than this tolerance, it
+		will not be captured even if the <b>AutomaticMeshCapture</b> attribute is 
+		valuated to 2.</p>
+		<p><b>WARNING</b>: to precise exactly the list of mesh parts to capture, 
+		the method <b>SetMeshPartsToCapture</b> of <b>SimMeshPart</b> 
+		object can be used:</p>
+		<ul>
+			<li>SetMeshPartsToCapture ()</li>
+		</ul>
+		<p>To retrieve the parents mesh parts another method of <b>SimMeshPart</b> 
+		object can be used:</p>
+		<ul>
+			<li>Parent ()</li>
+		</ul>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<p><b>
+<a name="GrowthRatioSurface">GrowthRatioSurface</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><i>double</i></b> valuated to the
+        mesh size growth.</p>
+		<p><b>default value: 1.41 </b></p>
+      </blockquote>
+    </td>
+    <td width="37%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>
+        Attribute which controls the mesh size growth between neighboring elements on the surface</p>
+	     <p><b>WARNING</b>: It is taken into account only 
+		if the <b>AbsoluteSag</b> or <b>ProportionalSag</b> or <b>MinCellsPerGap</b> attribute is 
+		equal to 2</p>
+      </blockquote>
+    </td>
+    <td width="30%" bgcolor="#C0C0C0"><img border="0" src="images/GrowthRatioSurface.png"/></td>
+  </tr>
+</table>
+<p><b>
+<a name="MinCellsPerGap">MinCellsPerGap</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>
+        type</b>: <i><b>integer </b></i>valuated to:</p>
+        <ul>
+          <li><b>1</b>:to keep the default mesh </li>
+          <li><b>2</b>:to refine the mesh</li>
+        </ul>
+		<p><b>default value: 1 </b></p>
+      </blockquote>
+    </td>
+    <td width="37%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>
+        Attribute which specifies the mesh refinement to be applied in narrow regions.</p>
+      </blockquote>
+    </td>
+    <td width="30%" bgcolor="#C0C0C0"><img border="0" src="images/MinCellsPerGapSurface.png"/></td>
+  </tr>
+</table>
+<p><b><a name="MinCellsPerGapValue">MinCellsPerGapValue</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><br /><b>type: <i>integer</i></b> valuated to the expected number of layers across the thickness.</p>
+        <p><b>default value: 1</b></p>
+      </blockquote>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the number of expected layers across the thickness. The mesh is refined (see picture above).</p>
+        <p><b>WARNING</b>: It is taken into account only if the <b>MinCellsPerGap</b> attribute is equal to 2.</p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Global_Topology_Specifications">Global Topology Specifications</a></h2>
+<p>Global topology specifications can be set or retrieved using following methods:</p>
+<ul>
+	<li><b>SetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iValue</i>) to set a topology attribute</li>
+	<li><b>GetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, oValue</i>) to get a topology attribute</li>
+</ul>
+<p><b>iType</b> is the type of specification and <b>iType =&quot;Topology&quot;</b> for Global Topology Specifications.</p>
+<p><b><a name="AngleBetweenCurves">AngleBetweenCurves</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <i><b>double (radian unit)  </b></i>
+		valuated to the angle under which vertices are nactivated</p>
+		<p><b>default value: 20°</b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the maximum angle under which
+		a vertex connected exactly to two constrained edges can 
+		be inactivated.</p>
+      </blockquote>
+    </td>
+    <td width="20%" bgcolor="#C0C0C0">
+    	<img border="0" src="images/CurveAngle.jpg" width="352" height="191"/>
+    </td>
+  </tr>
+</table>
+<p><b><a name="AngleBetweenFaces">AngleBetweenFaces</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <i><b>double (radian unit) </b></i>
+		valuated to the angle under which edges are
+		inactivated.</p>
+		<p><b>default value: 20°</b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the maximum angle under 
+		which an edge connected exactly to two faces 
+		can be inactivated during topology computation. </p>
+      </blockquote>
+    </td>
+    <td width="34%" bgcolor="#C0C0C0">
+		<img border="0" src="images/FaceAngle.jpg" width="300" height="130"/>
+	</td>
+  </tr>
+</table>
+<p><b><a name="CurvatureAngle">CurvatureAngle</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <i><b>double (radian unit) </b></i>
+		valuated to the angle over which 
+		edges are activated.</p>
+		<p><b>default value: 20°</b></p>
+      </blockquote>
+    </td>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p> Attribute which specifies the minimum angle 
+		computed along filleted surfaces over which edges are 
+		activated. For a given fillet, when the computed curvature 
+		angleis greater than <b>CurvatureAngleValue</b> 
+		all boundary edges of this fillet are activated 
+		otherwise they are not.<o:p></o:p> </p>
+      </blockquote>
+    </td>
+    <td width="34%" bgcolor="#C0C0C0">
+		<img border="0" src="images/CATFmtCurvatureAngle.jpg" width="375" height="280"/>
+	</td>
+  </tr>
+</table>
+<p><b><a name="OffsetValue">OffsetValue</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><i>double</i></b> valuated to the
+        offset between the geometry and the mesh.</p>
+		<p><b>default value: 0.</b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the distance of the offset between the mesh
+        and the geometry.</p>
+      </blockquote>
+    </td>
+    <td width="20%" bgcolor="#C0C0C0"><img border="0" src="images/Offset.jpg" width="303" height="246"/></td>
+  </tr>
+</table>
+<p><b><a name="OffsetFromThickness">OffsetFromThickness</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>
+        type</b>: <i><b>integer </b></i>valuated to:</p>
+		<ul>
+						<li><b>1: </b>if <b>OffsetValue</b> 
+						has not been computed from geometry thickness</li>
+						<li><b>2:</b> <b></b>if <b>
+						OffsetValue</b> has been computed from geometry
+						thickness</li>
+		</ul>
+		<p><b>default value: 0.</b>
+		</p>
+      </blockquote>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+	 Attribute
+      which specifies if <b>OffsetValue</b> has been 
+	computed from geometry thickness using for
+	example CATIGSMThickness<font SIZE="2"> </font>interface.</td>
+  </tr>
+</table>
+<p><b><a name="AutomaticCurveCapture">AutomaticCurveCapture</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <i><b>integer </b></i>valuated to:</p>
+        <ul>
+          <li><b>1: </b>to ignore
+			automatic capture of external curves</li>
+          <li><b>2:</b> to activate 
+			automatic capture of external curves</li>
+        </ul>
+      	<p><b>default value: 1</b>
+		</p>
+      </blockquote>
+      </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies if external curves must be captured automatically. It is possible to automatically capture curve only when <b>AutomaticMeshCapture</b> attribute value is set to 2 (enabled). The geometries used to compute the projections are the support of the mesh part to be captured. The tolerance used to compute the projections is
+		<b>AutomaticMeshCaptureTolValue.</b></p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<p><b><a name="GeometrySimplification">GeometrySimplification</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b><b>:</b> <i><b>integer </b></i>valuated to:</p>
+        <ul>
+          <li><b>1:</b> to keep grouping topology
+			without 
+			additional simplification </li>
+          <li><b>2: </b>to compute 
+			topology simplification</li>
+        </ul>
+      	<p><b>default value: 2</b></p>
+      </blockquote>
+      </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies if topology simplification is 
+		computed. Topology simplification objective is to 
+		minimize the number of bad elements regarding the Min Height element 
+		quality criterion. </p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<p><b><a name="GeometrySimplificationValue">GeometrySimplificationValue</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><i>double</i></b> valuated to the Min Height	criterion 
+		targeted for mesh elements.</p>
+		<p><b>default value: 0.1 * MeshSizeValue</b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>When topology simplication is computed, different 
+		topology modifications are done automatically using a set of topological 
+		operators in order to respect Min Height element quality criterion:</p>
+		<ul>
+						<li>Vertex Creation/Activation/Inactivation</li>
+						<li>Edge Creation/Activation/Inactivation</li>
+						<li>Edge collapse (see picture)</li>
+						<li>Edge Merge</li>
+		</ul>
+      </blockquote>
+    </td>
+    	<td width="20%" bgcolor="#C0C0C0"><p align="left"><img border="0" src="images/Merge1.jpg" width="209" height="264"/></p>
+    </td>
+  </tr>
+</table>
+<p><b><a name="2DHolesSuppression">2DHolesSuppression</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><em>integer</em></b> valuated to:</p>
+		<ul>
+			<li><b>1:</b> to ignore hole control suppression</li>
+			<li><b>2:</b> to control hole suppression</li>
+		</ul>
+		<p><b>default value: 1 </b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies whether hole suppression 
+		will be done. Hole suppression is computed from hole diameter value.</p>
+        <p>For example in the right picture, a 
+		suppress hole size (<b>2DHolesMaxDiameter </b>
+		attribute) was
+        specified for the mesh part.
+		Hole 1 diameter is
+		below than this
+        value and was ignored conversely
+		to Hole 2.</p>
+      </blockquote>
+    </td>
+    <td width="20%" bgcolor="#C0C0C0"><img border="0" src="images/cleanHole1.jpg" width="231" height="234"/></td>
+  </tr>
+</table>
+<p><b><a name="2DHolesMaxDiameter">2DHolesMaxDiameter</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><i>double</i></b> valuated to the
+        maximum diameter under which a hole is ignored.</p>
+		<p><b>default value: 0.</b></p>
+      </blockquote>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the maximum diameter 
+		allowed for hole suppression. This value is computed as the maximum 
+		distance between two points of a hole discretization.</p>
+		<p><b>WARNING</b>: It is taken into account only 
+		if the <b>2DHolesSuppression </b>attribute is 
+		equal to 2.</p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<p><b><a name="LogosSuppression">LogosSuppression</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><em>integer</em></b> valuated to:</p>
+		<ul>
+			<li><b>1:</b> to ignore logos control suppression</li>
+			<li><b>2:</b> to control logos suppression</li>
+		</ul>
+		<p><b>default value: 1 </b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0" >
+      <blockquote>
+        <p>Attribute which specifies whether logos suppression 
+		will be done. </p>
+        <p>Logos suppression consists of ignoring small features of the geometry that are useless for the mesh (small height regarding the mesh size). Logos suppression is driven by two attributes: <b>LogosMaxHeight</b> and <b>LogosMaxSize</b>.</p>
+        <p> For example on the right picture, an ignored logo can be seen.</p>
+      </blockquote>
+    </td>
+    <td width="20%" bgcolor="#C0C0C0"> <img border="0" src="images/RemoveLogo1.jpg" width="400" height="234"/></td>
+  </tr>
+</table>
+<p><b><a name="LogosMaxHeight">LogosMaxHeight</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><em>double</em></b> valuated to the max height of a detectable logo</p>
+		<p><b>default value: 0.1 * MeshSizeValue </b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the maximal height allowed to detect logos. </p>
+        <p>The maximum height of a logo can be defined as the maximum distance of any points on the logo faces to the extrapolated bounding surfaces.</p>
+      </blockquote>
+    </td>
+    <td width="20%" bgcolor="#C0C0C0"> <img border="0" src="images/RemoveLogo2.jpg" width="400" height="234"/></td>
+  </tr>
+</table>
+<p><b><a name="LogosMaxSize">LogosMaxSize</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><em>double</em></b> valuated to the max size of a detectable logo</p>
+		<p><b>default value: MeshSizeValue </b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the maximal size allowed to detect logos. </p>
+        <p>The maximum size of a logo can be defined as the maximum distance between two points on the logo boundary (maximum diameter).</p>
+      </blockquote>
+    </td>
+    <td width="20%" bgcolor="#C0C0C0"><img border="0" src="images/RemoveLogo3.jpg" width="400" height="234"/></td>
+  </tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Local_Specifications">Local Specifications</a></h2>
+<p>The Surface Triangle Mesh Part has two kind of local specifications: <b>topology</b> 
+and <b>mesh</b> local specifications. These specifications are managed by 
+collection object:</p>
+<ul>
+	<li><b>SimMeshSpecifications</b>: for the collection of local mesh specifications</li>
+	<li><b>SimTopologySpecifications</b>: for the collection of local topology specifications</li>
+</ul>
+<p>You should use the following methods of <b>SimMeshPart</b> object to retrieve these collections:</p>
+<ul>
+	<li><b>GetMeshSpecifications</b> to retrieve the local mesh specification collection</li>
+	<li><b>GetTopologySpecification</b> to retrieve the local topology specification collection</li>
+</ul>
+<p>Local specifications are managed from the collection objects:</p>
+<ul>
+	<li><b>Add</b> (<i>iType <span class="keyword">As String</span></i>) to create a new local 
+	specification with:
+	<ul>
+		<li>iType is the late type of the specification to create</li>
+	</ul>
+	</li>
+	<li><b>Item</b> (<i>iIndex</i>) to retrieve a local specification with:
+	<ul>
+		<li>iIndex is the index of the local specification in its collection</li>
+	</ul>
+	</li>
+	<li><b>Remove</b> (<i>iIndex</i>) to delete a local specification with:
+	<ul>
+		<li>iIndex is the index of the local specification in its collection</li>
+	</ul>
+	</li>
+</ul>
+<p>Attribute of local specification are set using following method from 
+<b>SimMeshSpecification</b> or <b>SimTopologySpecification</b> object depending of the kind of 
+local specification:</p>
+<ul>
+	<li><b>SetAttributeValue</b> (<i>iAttribute <span class="keyword">As String</span>, iValue</i>) to set a local specification attribute value</li>
+</ul>
+<p>In a manner similar, attribute of local specification are retrieved using following method:</p>
+<ul>
+	<li><b>GetAttributeValue</b> (<i>iAttribute <span class="keyword">As String</span>, iValue</i>) to retrieve a local specification</li>
+</ul>
+<p>Geometric attribute of local specification (supports) are managed using <b>SimLinkAccess</b> object:</p>
+<ul>
+	<li><b>AddLink</b> ( <i>iName <span class="keyword">As String</span>, iLink <span class="keyword">As</span> AnyObject</i> )</li>
+	<li><b>RemoveAllLinks</b> ( <i>iName <span class="keyword">As String</span></i> )</li>
+	<li><b>RemoveLink</b> ( <i>iName <span class="keyword">As String</span>, iLink <span class="keyword">As</span> AnyObject</i> )</li>
+	<ul>
+		<li><b>iName</b> is the name of the link container, here it's <b>&quot;ConnectorList&quot;</b></li>
+	</ul>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Local_Topology_Specifications">Local Topology Specifications</a></h2>
+<p><b><a name="CATFmtConstrainEdgeLocalSpec">CATFmtConstrainEdgeLocalSpec</a></b></p>
+<table border="1" width="100%">
+	<tr>
+	    <td width="42%" bgcolor="#C0C0C0">
+			<p>Specification attributes are managed using <b>
+			SimTopologySpecification</b> object.</p>
+			<ul><li>Only geometric attribute (supports)</li></ul>
+    	</td>
+    	<td width="67%" bgcolor="#C0C0C0">
+      		<blockquote>
+        		<p><b>Description</b>: 
+				This specification is used in order to constrain a set of edges resulting of one or more <b>1D </b><b>
+				grouping specifications.</b>
+        		</p>
+      		</blockquote>
+    	</td>
+  	</tr>
+</table>
+<p><b><a name="CATFmtUnconstrainEdgeLocalSpec">CATFmtUnconstrainEdgeLocalSpec</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="42%" bgcolor="#C0C0C0">
+			<p>Specification attributes are managed using <b>
+			SimTopologySpecification</b> object.</p>
+			<ul><li>Only geometric attribute (supports)</li></ul>
+    	</td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>Description</b>: This specification is used in order to unconstrain a set of edges resulting of one or more
+		<b>1D grouping specifications.</b></p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<p><b><a name="CATFmtConstrainHoleLocalSpec">
+CATFmtConstrainHoleLocalSpec</a></b></p>
+<table border="1" width="100%">
+	<tr>
+		<td width="42%" bgcolor="#C0C0C0">
+			<p>Specification attributes are managed using <b>
+			SimTopologySpecification</b> object.</p>
+			<ul><li>Only geometric attribute (supports)</li></ul>
+    	</td>
+    	<td width="67%" bgcolor="#C0C0C0">
+      		<blockquote>
+        	<p><b>Description</b>: This specification is used in order to constrain a hole resulting of one or more <b>1D grouping specifications.</b>
+        </p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<p><b><a name="CATFmtUnconstrainHoleLocalSpec">CATFmtUnconstrainHoleLocalSpec</a></b></p>
+<table border="1" width="100%">
+	<tr>
+		<td width="42%" bgcolor="#C0C0C0">
+			<p>Specification attributes are managed using <b>
+			SimTopologySpecification</b> object.</p>
+			<ul><li>Only geometric attribute (supports)</li></ul>
+    	</td>
+	    <td width="67%" bgcolor="#C0C0C0">
+      		<blockquote>
+        		<p><b>Description</b>: 
+				This specification is used in order to 
+				unconstrain a hole resulting of one or more 
+				<b>1D grouping specifications.</b></p>
+      		</blockquote>
+    	</td>
+  	</tr>
+</table>
+<p><b><a name="CATFmtGroupingLocalSpec">CATFmtGroupingLocalSpec</a> </b> </p>
+<table border="1" width="100%">
+  <tr>
+    <td width="42%" bgcolor="#C0C0C0">
+			<p>Specification attributes are managed using <b>
+			SimTopologySpecification</b> object.</p>
+			<ul><li>Only geometric attribute (supports)</li></ul>
+    	</td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>Description</b>: 
+		This specification is used in order to 
+		group geometries from a set of supports (internal 
+		1D or 2D geometries that belong to the geometry to mesh). The overall behavior is the 
+		following:</p>
+		<ul>
+						<li>if<b> 1D geometries</b> 
+						have been selected the program tries to<b> create 
+						an edge </b>of the topology<b> per group of 
+						connected selected 1D geometries. </b>1D 
+						selected geometries<b> are also constrained
+						</b>during this execution.</li>
+		</ul>
+		<p><b>WARNING:</b> It is possible to select only one support which useful to set local mesh specifications</p>
+		<ul>
+			<li>if <b>2D geometries</b> have been selected the program tries to <b>create a 
+			domain </b>of the topology <b>per group of connected selected 2D geometries. 
+			</b>Consequently,<b> all boundary edges of new created domains are constrained and all internal edges of new 
+			created domains are unconstrained.</b></li>
+		</ul>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+<p><b><a name="CATFmtExternalPointLocalSpec">CATFmtExternalPointLocalSpec</a> </b></p>
+<table border="1" width="100%">
+	<tr>
+    	<td width="42%" bgcolor="#C0C0C0">
+      		<p>Specification attributes are managed using <b>SimTopologySpecification</b> interface:</p>
+			<ul>
+				<li>Geometric attribute (supports)</li>
+			</ul>
+			<p>Other attributes are managed using (GetAttributeValue, SetAttributeValue):</p>
+			<ul>
+				<li><b><a name="ToleranceValue_ProjectPoint">ToleranceValue</a>: <i>double</i> </b>valuated to the
+        		maximum distance between external point and its projection on geometry to mesh.</li>
+			</ul>
+			<p><b>default value: 0. </b></p>
+			<ul>
+				<li><b><a name="ProjectOnGeometry">ProjectOnGeometry</a>: <i>integer</i></b> valuated to the target geometry choice</li>
+			</ul>
+			<p><b>default value: 1</b></p>
+    	</td>
+    	<td width="67%" bgcolor="#C0C0C0">
+      		<p><b>Description</b>: This specification is used in order to project <b>external</b> 
+			points (points that don't belong to the geometry to mesh) in order to constrain the mesh. 
+			External points definition (supports) and projection tolerance are mandatory. The overall 
+			behavior is the following:</p>
+			<ul>
+				<li>if the <b>distance</b> between an external point and the geometry to mesh is <b>greater</b> than the 
+				<b>ToleranceValue</b>, the point will not be projected</li>
+				<li>if the <b>distance</b> between an external point and the geometry to mesh is <b>lower</b> than the 
+				<b>ToleranceValue</b>, the point will be projected. The final location of this point depends on 
+				ProjectOnGeometry attribute:
+				<ul>
+					<li>if <b>ProjectOnGeometry</b> is equal to <b>1</b>, the <b>node</b> representing the point will be 
+					<b>located</b> exactly on the projection point on the surface geometry</li>
+					<li>if <b>ProjectOnGeometry</b> is equal to <b>2</b>, the <b>node</b> representing the 	point 
+					projection will be <b>located</b> exactly on the <b>external point (same Cartesian coordinates)</b></li>
+				</ul>
+				</li>
+			</ul>
+    	</td>
+  	</tr>
+</table>
+<p><b><a name="CATFmtExternalCurveLocalSpec">CATFmtExternalCurveLocalSpec</a></b></p>
+<table border="1" width="100%">
+	<tr>
+    	<td width="42%" bgcolor="#C0C0C0">
+      		<p>Specification attributes are managed using <b>
+			SimTopologySpecification</b> interface:</p>
+			<ul>
+				<li>Geometric attribute (supports)</li>
+			</ul>
+			<p>Other attributes are managed using (GetAttributeValue, 
+			SetAttributeValue):</p>
+			<ul>
+				<li><b><a name="ToleranceValue_ProjectCurve">ToleranceValue</a> attribute</b> is set 
+				and retrieved with:
+				<ul>
+					<li>SetAttributeValue</li>
+					<li>GetAttributeValue</li>
+				</ul>
+				</li>
+			</ul>
+			<p><b>type</b>: <b><i>double</i></b> valuated to the
+        	maximum distance between external
+			curves and its projection on geometry to mesh.</p>
+			<p><b>default value: 0.</b></p>
+    	</td>
+    	<td width="67%" bgcolor="#C0C0C0">
+      		<blockquote>
+        		<p><b>Description</b>: 
+				This specification is used in order to 
+				<b>project external curves</b> (curves that don't belong to 
+				the geometry to mesh) in order to constrain the mesh. External curves 
+				definition (supports) and projection tolerance are mandatory. Only<b> 
+				relimitations of curves located below this value</b> 
+				are projected on the geometry to mesh.</p>
+      		</blockquote>
+    	</td>
+  	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<h2><a name="Local_Mesh_1D_Specifications">Local Mesh 1D Specifications</a></h2>
+<p><b>WARNING</b>: <b>1D grouping specifications are the 
+only supports possible for Local Mesh 1D Specifications</b>. 
+Before creating a <b>Local Mesh 1D Specification</b>,
+it is 
+ <b> mandatory to create at least one 
+1D Grouping Specification </b>with the targeted 
+geometry supports.</p>
+<p><b><a name="CATFmtStudioDistributionSpec">CATFmtStudioDistributionSpec</a></b> </p>
+<table border="1" width="100%">
+ 	<tr>
+    	<td width="41%" bgcolor="#C0C0C0">
+      		<p>Distribution specification (named for example <b><i>localSpec</i></b>) can be applied 
+      		only on <b>one edge</b> resulting of an unique grouping specification. 
+      		Specification attributes are managed using <b>SimMeshSpecification</b> object:</p>
+			<ul>
+				<li>Geometric attribute (supports)</li>
+			</ul>
+			<p>Other attributes are managed using (GetAttributeValue, 
+			SetAttributeValue):</p>
+			<ul>
+				<li><b><a name="Type">Type</a>: integer</b> defining the type of distribution valuated to:
+				<ul>
+					<li><b>1:</b> for a Uniform distribution (Isometric)</li>
+					<li><b>2:</b> for an Arithmetic distribution</li>
+					<li><b>3:</b> for a Geometric distribution</li>
+					<li><b>4:</b>	for a distribution defined by a Law</li>
+				</ul>
+				</li>
+				<p><b>default value: 1</b></p>
+			</ul>
+			<ul>
+				<li><b><a name="Combination">Combination</a>: <i>integer</i></b> indicating what are the 
+				possible combination for Arithmetic or Geometric distributions valuated to:
+				<ul>
+					<li><b>1: </b>for a distribution defined by the number of elements (<i>NbElements</i>) 
+					and the size ratio of the elements (<i>Ratio21</i>)</li>
+					<li><b>2: </b>for a distribution defined by the number of elements (<i>NbElements</i>) 
+					and the size (<i>Size1</i>) at first vertex</li>
+					<li><b>3: </b>for a distribution defined by the number of elements (<i>NbElements</i>) 
+					and the size (<i>Size2</i>) at second vertex</li>
+					<li><b>4: </b>for a distribution defined by the size ratio (<i>Ratio21</i>) and the size 
+					(<i>Size1</i>) at first vertex</li>
+					<li><b>5: </b>for a distribution defined by the size ratio (<i>Ratio21</i>) and the size 
+					(<i>Size2</i>) at second vertex</li>
+					<li><b>6: </b>for a distribution defined by the size (<i>Size1</i>) at first vertex and 
+					the size (<i>Size2</i>) at second vertex</li>
+				</ul>
+				</li>
+			</ul>
+		<p><b>default value: 1</b></p>
+		<ul>
+			<li><b><a name="CombinationUnif">CombinationUnif</a>: <i>integer</i></b> indicating what are the 
+			possible combination for Uniform distributions valuated to:
+			<ul>
+				<li><b>1: </b>for a distribution defined by the number of elements (<i>NbElements</i>)</li>
+				<li><b>2: </b>for a distribution defined by the size (<i>Size1</i>) of the elements</li>
+			</ul>
+			</li>
+		</ul>
+		<p><b>default value: 1</b></p>
+		<ul>
+			<li><b><a name="NbElementsValue">NbElementsValue</a>: <i>integer</i></b> defining the number of 
+			elements (<i>NbElements</i>)</li>
+		</ul>
+		<p><b>default value: 4</b></p>
+		<ul>
+			<li><b><a name="RatioValue">RatioValue</a>: <i>double</i></b> defining the ratio between the max 
+			element size and the min element size (<i>Ratio21</i>)</li>
+		</ul>
+		<p><b>default value: 1.</b></p>
+		<ul>
+			<li><b><a name="Size1Value">Size1Value</a>: <i>double</i></b> defining the size at first vertex 
+			(<i>Size1</i>)</li>
+		</ul>
+		<p><b>default value: 0.</b></p>
+		<ul>
+			<li><b><a name="Size2Value">Size2Value</a>: <i>double</i></b> defining the size at second vertex 
+			(<i>Size</i>2)</li>
+		</ul>
+		<p><b>default value: 0.</b></p>
+		<ul>
+			<li><b><a name="Symmetry">Symmetry</a>: <i>integer</i></b> valuated to:
+			<ul>
+				<li><b>1:</b> to keep the distribution unchanged</li>
+				<li><b>2:</b> to compute a symmetric distribution with current attributes</li>
+			</ul>
+			</li>
+		</ul>
+		<p><b>default value: 1</b></p>
+		<ul>
+			<li><b><a name="Reverse">Reverse</a>: <i>integer</i></b> usable for Law and non Uniform distribution 
+			valuated to:
+			<ul>
+				<li><b>1:</b> to keep the distribution unchanged</li>
+				<li><b>2:</b> to invert the distribution </li>
+			</ul>
+			</li>
+			<p><b> default value: 1</b></p>
+		</ul>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+    	<p><b>Description</b>: This specification creates a node distribution on an edge resulting of a 1D 
+    	grouping specification. Depending on the choice of the distribution type (Type attribute), Combination 
+    	or CombinationUnif attributes several various distributions &quot;Option&quot; can be computed. The next 
+    	table summarize all &quot;<i>Option</i>&quot;:</p>
+		<ul>
+			<li>Isometric (Uniform) distribution is defined by only one attributes(Option 1 and 2):
+			<ul>
+				<li><i>Nbelements</i> (<b>CombinationUnif= 1</b>)</li>
+				<li><i>Size1</i> (<b>CombinationUnif= 2</b>)</li>
+			</ul>
+			</li>
+			<li>Non isometric distribution is defined by two attributes as indicated in the next table. There 
+			are six couples of attributes (Option 3 to 8):
+			<ul>
+				<li><i>Nbelements</i> and <i>Ratio21</i> (<b>Combination = 1</b>)</li>
+				<li><i>NbElements</i> and <i>Size1</i> (<b>Combination 	= 2</b>)</li>
+				<li><i>NbElements</i> and <i>Size2</i> (<b>Combination = 3</b>)</li>
+				<li><i>Ratio21</i> and <i>Size1</i> (<b>Combination = 4</b>)</li>
+				<li><i>Ratio21</i> and <i>Size2</i> (<b>Combination = 5</b>)</li>
+				<li><i>Size1</i> and <i>Size2</i> (<b>Combination = 6</b>)</li>
+			</ul>
+			</li>
+		</ul>
+      	<p><img border="0" src="images/CATFmtTypesDistributions.gif" width="519" height="123"/></p>
+		<p>The next table shows examples of various distributions using additional Symmetry and Law attributes.</p>
+		<p><img border="0" src="images/CATFmtExemplesDistributions.gif" width="447" height="277"/></p>
+    </td>
+  </tr>
+  </table>
+<p><b><a name="CATFmtStudioHoleSpec">CATFmtStudioHoleSpec</a></b> </p>
+<table border="1" width="100%">
+	<tr>
+    	<td width="46%" bgcolor="#C0C0C0">
+      		<blockquote>
+      			<p>Hole specification can be applied only on <b>one closed edge</b> 
+				resulting of an unique 1D grouping specification. Specification attributes 
+				are managed using <b>SimMeshSpecification</b> object:</p>
+				<ul>
+					<li>Geometric attribute (supports)</li>
+				</ul>
+				<p>Other attributes are managed using (GetAttributeValue, SetAttributeValue):</p>
+        		<ul>
+          			<li><b><a name="NbElements_Hole">NbElements</a></b>:<b><i>integer</i></b> valuated 
+          			to <b>the number of elements created on the contour</b></li>
+        		</ul>
+        		<p><b>default value: 3</b></p>
+				<ul>
+          			<li><b><a name="NbRows">NbRows</a></b>: <b><i>integer</i></b> valuated to the number 
+          			of regular layers (row) of mesh around the contour. The possible value are <b>{1,2,3}</b></li>
+        		</ul>
+				<p><b>default value: 1</b></p>
+				<ul>
+          			<li><b><a name="Height1">Height1</a></b>, <b><a name="Height2">Height2</a></b> and <b>
+					<a name="Height3">Height3</a></b>: <b><i>double</i></b> valuated respectively to the 
+					element height of the first, second and third row if specified</li>
+        		</ul>
+				<p><b>Height1 default value: 0.</b></p>
+				<p><b>Height2 default value: 0.</b></p>
+				<p><b>Height3 default value: 0.</b></p>
+      		</blockquote>
+    	</td>
+    	<td width="65%" bgcolor="#C0C0C0">
+      		<blockquote>
+        		<p><b>Description</b>: This specification creates an uniform node distribution on a internal closed 
+        		contour resulting of a 1D grouping specification and to get a regular mesh around this contour.</p>
+				<p><img border="0" src="images/CATFmtMeshHoleTria.png"/></p>
+      		</blockquote>
+    	</td>
+  	</tr>
+</table>
+<p><b><a name="CATFmtStudioCaptureSpec">CATFmtStudioCaptureSpec</a></b> </p>
+<table border="1" width="100%">
+	<tr>
+    	<td width="29%" bgcolor="#C0C0C0">
+      		<p>Capture specification can be applied only on <b>one edge</b> resulting of an unique 
+			1D grouping specification. Specification attributes are managed using <b>SimMeshSpecification</b> 
+			object:</p>
+			<ul>
+				<li>Geometric attribute (supports)</li>
+			</ul>
+			<p>Other attributes are managed using methods (GetAttributeValue, SetAttributeValue):</p>
+			<ul>
+				<li><b><a name="ManualCaptureMeshMode">ManualCaptureMeshMode</a></b>: <b><i>integer</i></b> valuated 
+				to the capture mode with possible values <b>{1,2,3}</b></li>
+			</ul>
+			<p> <b>default value: 1</b></p>
+			<ul>
+				<li><b><a name="ManualCaptureMeshTolValue">ManualCaptureMeshTolValue</a></b>:	<b><i>double</i></b> 
+				valuated to the maximum distance under which external mesh is captured.</li>
+			</ul>
+			<p><b>default value: 0.</b></p>
+    	</td>
+    	<td width="71%" bgcolor="#C0C0C0">
+      		<blockquote>
+        		<p><b>Description</b>: This specification captures external mesh in order to create compatible meshes 
+        		with or without geometrically coinciding or duplicated nodes. The overall behavior is the following:</p>
+				<ul>
+					<li>if<b> ManualCaptureMeshMode</b> is equal to 1 then mesh nodes are located at the captured nodes projection on mesh.</li>
+            		<li>if<b> ManualCaptureMeshMode</b> is equal to 2 then mesh nodes are coincident with captured nodes.</li>
+            		<li>if<b> ManualCaptureMeshMode</b> is equal to 3 then mesh nodes are shared with captured nodes.</li>
+				</ul>
+      		</blockquote>
+    	</td>
+  	</tr>
+</table>
+<p><b><a name="CATFmtStudioPropagationSpec">CATFmtStudioPropagationSpec</a></b></p>
+<table width="100%" border="1">
+	<tr>
+    	<td width="33%" bgcolor="#C0C0C0">
+      		<p>Propagation specification can be applied on <b>a set edges</b> resulting of one or more 1D
+			grouping specifications (supports). Specification attributes are managed using <b>SimMeshSpecification</b> object:</p>
+			<ul>
+				<li>Geometric attribute (supports)</li>
+			</ul>
+			<p>Other attributes are managed using (GetAttributeValue, SetAttributeValue):</p>
+			<ul>
+				<li><b><a name="PropagationMode">PropagationMode</a></b>:<b><i>integer</i></b> valuated to
+				the propagation mode (see picture for detailed explanations) with possible values <b>{1,2,3}</b></li>
+			</ul>
+			<p><b>default value: 1</b></p>
+    	</td>
+    	<td bgcolor="#C0C0C0">
+      		<blockquote>
+        		<p><b>Description</b>: This specification propagates one or more 1D mesh local specifications (specification sources) 
+        		on several edges (target supports) resulting of one or more 1D grouping specifications. PropagationMode attribute indicates 
+        		how propagation is computed:</p>
+				<ul>
+					<li>if <b>PropagationMode</b> is equal to 1 (proportional mode), propagation is computed proportionally (see picture)</li>
+					<li>if <b>PropagationMode</b> is equal to 2 (projection mode), propagation is computed by projection (see picture) </li>
+					<li>if <b>PropagationMode</b> is equal to 3 (directional mode), propagation is computed following a direction given by a geometry. 
+					This geometry is managed using following method of <b>SimMeshPart</b> object (with iAttribute=&quot;<b><a name="Geometry">Geometry</a></b>&quot;):
+					<ul>
+						<li>SetExternalReferences</li>
+					</ul>
+					</li>
+				</ul>
+				<p><img border="0" src="images/CATFmtMeshPropagation.jpg" width="632" height="498"/></p>
+      		</blockquote>
+    	</td>
+  	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Local_Mesh_2D_Specifications">Local Mesh 2D Specifications</a></h2>
+<p><b>WARNING</b>: Except for <b>CATFmtLocalSpecLocalSize</b> which works with geometrical elements as an input,  <b>2D grouping specifications are the only supports possible for all the other Local Mesh 2D Specifications</b>. It is 
+therefore<b> mandatory to create before one or more grouping
+2D specifications with 
+the targeted geometry support</b><b>s</b>.</p>
+<p><b><a name="CATFmtLocalSpecLocalSize">CATFmtLocalSpecLocalSize</a></b></p>
+<table border="1" width="100%">
+	<tr>
+		<td width="40%" bgcolor="#C0C0C0">
+        	<blockquote>
+          		<p>Specification attributes are managed using <b>SimMeshSpecification</b> object:</p>
+            	<ul>
+					<li>Geometric attribute (supports)</li>
+				</ul>
+          		<p>Other attributes are managed using (GetAttributeValue, SetAttributeValue):</p>
+            	<ul>
+              		<li><b>SizeValue</b>: <b>double</b> valuated to the target size on the support</li>
+              		<li><b>AbsoluteSag</b>: <b>int</b> valuated to
+                	<ul>
+                  		<li><b>1</b>: to specify only a target mesh size (default)</li>
+                  		<li><b>2</b>: to specify a local sag as well</li>
+                	</ul>
+              		</li>
+              		<li><b>AbsoluteSagValue</b>: <b>double</b> valuated to the target sag on the support
+               	 	(only taken into accoung if the <b>AbsoluteSag</b> attribute above is set to 2)
+              		</li>
+            	</ul>
+        	</blockquote>
+		</td>
+      	<td width="60%" bgcolor="#C0C0C0">
+			<blockquote>
+          		<p><b>Description</b>: This specification is used in order to specify a local mesh
+            	size or sag on a set of faces.</p>
+        	</blockquote>
+      	</td>
+    </tr>
+</table> 
+<p><b><a name="CATFmtStudioFrontTriaSpec">CATFmtStudioFrontTriaSpec</a></b></p>
+<table border="1" width="100%">
+	<tr>
+		<td width="40%" bgcolor="#C0C0C0">
+      		<p>Frontal Tria 2D mesh specification can be applied on <b>a set of domains</b> 
+			resulting of one or more 2D	grouping specifications. Specification attributes are managed using <b>
+			SimMeshSpecification</b> object:</p>
+			<ul>
+				<li>Geometric attribute (supports)</li>
+			</ul>
+			<p>Other attributes are managed using (GetAttributeValue, SetAttributeValue):</p>
+			<ul>
+				<li><b><a name="SizeValue_FrontTria">SizeValue</a></b>:<b> <i>double</i></b> valuated to<b> the mesh size</b></li>
+			</ul>
+			<p><b>default value: 10.</b></p>
+	    </td>
+    	<td width="60%" bgcolor="#C0C0C0">
+      		<p><b>Description</b>: This specification  provides full triangle elements meshes on one or more domains 
+      		defined by a list of 2D grouping specifications.</p>
+    	</td>
+  	</tr>
+</table>
+<p><b><a name="CATFmtStudioMappedSpec">CATFmtStudioMappedSpec</a></b></p>
+<table border="1" width="100%">
+	<tr>
+		<td width="44%" bgcolor="#C0C0C0">
+      		<p>Mapped 2D mesh specification can be applied on <b>one domain</b> resulting of <b>only one 2D grouping specification</b>. 
+			Specification attributes are managed using <b>SimMeshSpecification</b> object:</p>
+			<ul>
+				<li>Geometric attribute (supports)</li>
+			</ul>
+			<p>Other attributes are managed using (GetAttributeValue, SetAttributeValue):</p>
+			<ul>
+				<li><b><a name="SizeValue_Mapped">SizeValue</a></b>:<b>	<i>double</i></b> valuated to <b>the mesh size</b></li>
+			</ul>
+			<p><b>default value: 10</b><b>.</b></p>
+    	</td>
+    	<td width="67%" bgcolor="#C0C0C0">
+      		<p><b>Description</b>: This specification  provides mapped mesh with triangle elements on one domain with 
+			quadrangular shape (four corners) defined by only one of 2D grouping specification.</p>
+			<p><img border="0" src="images/CATFmtMappedTria.png"/></p>
+    	</td>
+  	</tr>
+</table>
+<p><b><a name="CATFmtStudioFaceCaptureSpec">CATFmtStudioFaceCaptureSpec</a></b> </p>
+<table border="1" width="100%" bgcolor="#C0C0C0">
+	<tr>
+		<td>
+      <p>Face capture specification can be applied on a set of <b>external faces</b> containing the mesh to capture. 
+			Specification attributes are managed using <b>SimMeshSpecification</b> object.</p>
+			<p>The supports of the specification (external faces) are managed using <b>SimLinkAccess</b> object with <b>iName = &quot;ConnectorList&quot;</b>:</p>
+			<ul>
+				<li>AddLink</li>
+				<li>RemoveLink</li>
+				<li>GetAllLinks</li>
+			</ul>
+      <p>Mesh to capture associated to external faces are managed using <b>SimLinkAccess</b> object with <b>iName= &quot;<a name="MeshSources">MeshSources</a>&quot;</b>:</p> 
+			<ul>
+				<li>AddLink</li>
+				<li>RemoveLink</li>
+				<li>GetAllLinks</li>
+			</ul>
+			<p>Other attributes are managed using methods (GetAttributeValue, SetAttributeValue):</p>
+			<ul>
+				<li><b><a name="ManualCaptureMeshMode2">ManualMeshCaptureMode</a></b>:<b> <i>integer</i></b> valuated to 
+				the capture mode with possible values <b>{1,2,3}</b></li>
+			</ul>
+			<p><b>default value: 1</b></p>
+			<ul>
+				<li><b><a name="Tolerance">Tolerance</a></b>: <b><i>double</i></b> valuated to the maximum distance 
+				under which external mesh is captured.</li>
+			</ul>
+			<p><b>default value: 0.</b></p>
+    	</td>
+		<td width="60%" bgcolor="#C0C0C0">
+		<blockquote>
+			<p><b>Description</b>: This specification captures 
+			external mesh in order to create compatible meshes with or without geometrically 
+			coinciding or duplicated nodes. The overall behavior is the following:</p>
+			<ul>
+				<li>if<b> ManualMeshCaptureMode</b> is equal to 1 then mesh nodes 
+				are located at the captured nodes projection on mesh.</li>
+				<li>if<b> ManualMeshCaptureMode</b> is equal to 2 then mesh nodes 
+				are coincident with captured nodes.</li>
+				<li>if<b> ManualMeshCaptureMode</b> is equal to 3 then mesh nodes 
+				are shared with captured nodes.</li>
+			</ul>
+		</blockquote>
+		</td>
+	</tr>
+</table>
+
+	<h2><a name="History"></a>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <b>1</b> [Oct 2014]</td>
+		<td>Document created</td>
+	</tr>
+</table>
+
+<script type="text/javascript">insertCopyright();</script>
+</body>
+
+</html>

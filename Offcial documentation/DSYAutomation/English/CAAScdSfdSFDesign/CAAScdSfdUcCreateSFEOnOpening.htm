@@ -1,0 +1,289 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SFD StiffenerOnFreeEdge on an Opening</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SFD StiffenerOnFreeEdge on an Opening</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SFD StiffenerOnFreeEdge(SFE) 
+						on an opening&#39;s edge.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSfdUcPart.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSfdUcCGR.3dxml</div></code> 
+							and <code><div class=vb_sample_data>CAAScdSfdUcSR.3dxml</div></code> files supplied 
+							in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSfdSFDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where 
+								the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSfdUcCreateSFEOnOpeningSource.htm">CAAScdSfdUcCreateSFEOnOpeningSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSfdTocSFDesign.htm">Structure Functional Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves a SFD panel object</a></li>
+			<li><a href="#Step5">Retrieves a SFD opening object</a></li>
+			<li><a href="#Step6">Creates SFE on opening</a></li>
+			<li><a href="#Step7">Updates the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SFD_VB_TEST&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SFD_VB_TEST&quot; from DB and 
+			loads it and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SFDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SFD_VB_TEST&quot;
+ OpenProduct prdName , SFDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SFD model from underlying database the current active 
+			editor is returned in <strong><code>SFDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+			<p>As a next step, the UC retrieves Selection object in SFDProdSel variable. 
+			To retrieve the Selection object <strong><code>SFDPrdEditor </code>
+			</strong>is used.</p>
+			<pre class="code"> ...
+<span class="keyword">    Set</span> SFDProdSel = SFDPrdEditor<strong>.Selection </strong>
+ ...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> ObjPart = SFDPrdEditor.<strong>ActiveObject</strong>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves a SFD panel object</strong></p>
+			<p>In this step UC retrieves panel object.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> RefObjPanel = ObjPart.<strong>FindObjectByName</strong>(&quot;Panel.1&quot;)
+  <span class="keyword">Dim</span> ObjPanel <span class="keyword">As</span> SfdPanel
+  SFDProdSel.<strong>Add</strong> (RefObjPanel)
+  <span class="keyword">Set</span> ObjPanel = SFDProdSel.<strong>FindObject</strong>(&quot;CATIASfdPanel&quot;)
+...</pre>
+			<p><code>FindObjectByName</code> method finds object whose name is &quot;Panel.1&quot; 
+			and returns reference to it. Here RefObjPanel is of type <code>Reference</code>. 
+			To retrieve <code>SfdPanel</code> object from <code>Reference</code> 
+			add retrieved reference to the selection and call <code>FindObject</code> 
+			method as shown above. This will return the <code>SfdPanel</code> object 
+			variable.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieves a SFD opening object</strong></p>
+			<p>In this step UC retrieves opening object. SFE will be created on 
+			this opening&#39;s edge.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> RefObjStrOpening = ObjPart.<strong>FindObjectByName</strong>(&quot;OpeningPlate.2&quot;)
+  <span class="keyword">Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+  SFDProdSel.<strong>Add</strong> (RefObjStrOpening)
+  <span class="keyword">Set</span> ObjStrOpening = SFDProdSel.<strong>FindObject</strong>(&quot;CATIAStrOpening&quot;)
+...</pre>
+			<p><code>FindObjectByName</code> method finds object whose name is &quot;OpeningPlate.2&quot; 
+			and returns reference to it. Here RefObjStrOpening is of type <code>
+			Reference</code>. To retrieve <code>StrOpening</code> object from
+			<code>Reference</code> add retrieved reference to the selection and 
+			call <code>FindObject</code> method as shown above. This will return 
+			the <code>StrOpening</code> object variable.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Creates SFE on opening</strong></p>
+			<p>Now, panel and opening are available to create SFE on opening edge. 
+			Call <code>CreateSFEOnOpening</code> method to create SFE on opening.
+			<code>CreateSFEOnOpening</code> method takes a panel and an opening 
+			as input parameters and it returns created SFE as output parameter in
+			<code>ObjSFE</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjSFE <span class="keyword">As </span>StrSfdStiffenerOnFreeEdge
+  <strong>CreateSFEOnOpening</strong> ObjPanel, ObjStrOpening, ObjSFE
+...</pre>
+			<p>The method <code>CreateSFEOnOpening</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Retrieves <code>StrSfdStiffeners</code> and creates a empty 
+				SFE.</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> CreateSFEOnOpening(iObjSfdPanel <span class="keyword">As </span>SfdPanel, iObjStrOpening <span class="keyword">As</span> StrOpening, oObjSFE <span class="keyword">As</span> StrSfdStiffenerOnFreeEdge)
+    <span class="comment">&#39;Get StrSfdStiffeners object</span>
+    <span class="keyword">Dim</span> ObjSfdStiffeners <span class="keyword">As</span> StrSfdStiffeners
+    <span class="keyword">Set</span> ObjSfdStiffeners = iObjSfdPanel.<strong>StrSfdStiffeners</strong>
+    <span class="comment">&#39;Create StiffenerOnFreeEdge</span>
+    <span class="keyword">Set</span> oObjSFE = ObjSfdStiffeners.<strong>AddStiffenerOnFreeEdge</strong>
+...</pre>
+				<p><code>StrSfdStiffeners </code>is retrieved in <code>ObjSfdStiffeners</code> 
+				variable from <code>iObjSfdPanel</code> object. On <code>StrSfdStiffeners</code> 
+				object, <code>AddStiffenerOnFreeEdge</code> method is called to 
+				create the SFE with no data. Empty SFE is created now Uc sets different 
+				properties of the SFE like material, section etc.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves <code>StrMaterialMngt</code> and sets material</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrMaterialMngt object</span>
+    <span class="keyword">Dim</span> ObjStrMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+    <span class="keyword">Set</span> ObjStrMaterialMngt = oObjSFE.<strong>StrMaterialMngt</strong>
+    <span class="comment">&#39;Set material</span>
+    ObjStrMaterialMngt.<strong>SetMaterial</strong> (&quot;Steel A42&quot;)
+...</pre>
+				<p>Here Uc retrieves object of type <code>StrMaterialMngt</code> 
+				in <code>ObjStrMaterialMngt</code>. Then <code>SetMaterial</code> 
+				method is called on object <code>ObjStrMaterialMngt</code>. Method
+				<code>SetMaterial</code> takes material name as input parameter.</p>
+				</li>
+				<li>
+				<p><strong>Sets profile type</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;set profile type</span>
+    oObjSFE.<strong>ProfileType</strong> = catStrProfileModeOnOpening
+...</pre>
+				<p>Here Uc sets <code>ProfileType</code> property of <code>SFE</code>. 
+				When a profile is created on an opening&#39;s edge then profile type 
+				needs to be set to catStrProfileModeOnOpening.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves <strong>StrSectionMngt</strong> and sets section 
+				parameters</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrSectionMngt object</span>
+    <span class="keyword">Dim</span> ObjStrSectionMngt <span class="keyword">As</span> StrSectionMngt
+    <span class="keyword">Set</span> ObjStrSectionMngt = oObjSFE.<strong>StrSectionMngt</strong>
+    <span class="comment">&#39;Set different section parameters</span>
+    ObjStrSectionMngt.<strong>SetSectionName</strong> (&quot;WT18x179.5&quot;)
+    ObjStrSectionMngt.<strong>AnchorPoint</strong> = &quot;catStrTopCenter&quot;
+    ObjStrSectionMngt.<strong>WebOrientation</strong> = 1
+    ObjStrSectionMngt.<strong>FlangeOrientation</strong> = 1
+...</pre>
+				<p>Here Uc retrieves object of type <code>StrSectionMngt</code> 
+				in <code>ObjStrSectionMngt</code>. Then using <code>SetSectionName</code> 
+				method section name is set to WT18x179.5. <code>AnchorPoint</code> 
+				property is set to &quot;catStrTopCenter&quot;. Properties <code>WebOrientation</code> 
+				and <code>FlangeOrientation</code> are set to 1.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves <code>StrProfileOnOpening</code> and sets opening, 
+				on which SFE will be created</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfileOnOpening object</span>
+    <span class="keyword">Dim</span> ObjStrProfileOnOpening <span class="keyword">As</span> StrProfileOnOpening
+    <span class="keyword">Set</span> ObjStrProfileOnOpening = oObjSFE.<strong>StrProfileOnOpening</strong>
+    <span class="comment">&#39;set opening on which SFE will be created</span>
+    ObjStrProfileOnOpening.<strong>Opening</strong> = iObjStrOpening
+...</pre>
+				<p>Here Uc retrieves object of type <code>StrProfileOnOpening</code> 
+				in <code>ObjStrProfileOnOpening</code>. Then on <code>ObjStrProfileOnOpening</code> 
+				object <code>Opening</code> property is set. This property defines 
+				that SFE will be created on this opening&#39;s edge. /p&gt; </p>
+				</li>
+				<li>
+				<p><strong>Updates created SFE object</strong></p>
+				<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjSFE
+<span class="keyword">End Sub</span></pre>
+				<p><code>UpdateObject</code> method from <code>Part</code> will 
+				update the created SFE.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Updates the Part object</strong></p>
+			<pre class="code">...
+    ObjPart.<strong>Update</strong>
+<span class="keyword">End Sub</span></pre>
+			<p><code>Update</code> method updates the <code>ObjPart</code></p>
+			<table>
+				<caption><a name="Fig.1"></a>Fig.1: StiffenerOnFreeEdge on Opening</caption>
+				<tr>
+					<td>
+					<img alt="StiffenerOnFreeEdge on Opening" src="CAAScdSfdUcCreateSFEOnOpening.png"/></td>
+				</tr>
+			</table>
+			</li>
+		</ol>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

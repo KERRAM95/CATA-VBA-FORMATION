@@ -1,0 +1,263 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Browse Occurrence Model</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Browse Product Occurrence Model
+'
+'Mission:  This use case fundamentally illustrates navigation of the Product Occurrence Model.
+'          Use case navigates through Product model recursively upto it's each leaf node
+'
+'Steps:     1- Searches for a Product in database
+'           2- Opens the Product and retrieves its Editor
+'           3- Navigates the Product Occurrence recursively
+'              3.1- Retrieves the Root Product Occurrence from the current VPM Editor to navigate
+'              3.2- Navigates the Product Occurrence
+'                   3.2.1- Retrieves the list of Occurrences within the input Occurrence
+'                   3.2.2- Navigates through each child Occurrence recursively
+
+'---------------------------------------------------------------------------------------------------------------------------
+
+' Be careful: this piece of code has been written with a specific Product Reference type (VPMReference). If your ENOVIA
+
+' installation does not contain this Product Modele type, use you own Product Reference type.
+
+' You have just to change the contents of the strTheProductReferenceType variable defined just below.
+
+'---------------------------------------------------------------------------------------------------------------------------
+
+'
+
+Dim strTheProductReferenceType As String
+
+
+
+'
+'Global variable to gather and display at the end the PLM Component Identification Set attributes
+Dim strBrowsedPLMCompIDAttr As String
+
+'
+'--------------------------------------------------------------------------------------------
+Sub BrowseProductOccurrenceModel()
+   'Error handling
+   On Error GoTo ErrorSub
+    strTheProductReferenceType = &quot;VPMReference&quot;
+    
+    '1- Retrieves the Search service from CATIA session
+    Dim oSearchService As SearchService
+    Set oSearchService = CATIA.GetSessionService("Search")
+
+    '2- Searches for a Product in database
+    Dim oDBSearch As DatabaseSearch
+    Set oDBSearch = SearchProduct(oSearchService)
+    
+    '2- Opens the Product and retrieves its Editor
+    Dim oProductEditor As Editor
+    Set oProductEditor = OpenProductAndGetEditor(oDBSearch)
+    
+    '3- Navigates the Product Occurrence recursively
+    NavigateProductOccurrence oProductEditor
+    
+'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Sub
+'
+'--------------------------------------------------------------------------------------------
+' 1- Searches for a Product in database
+'    The search criteria is:
+'     - The Product reference type
+'     - A PLM_ExternalID value entered by the end user
+'     - A revision value entered by the end user
+'    Output  : the object containing the result of the search
+'--------------------------------------------------------------------------------------------
+'
+Function SearchProduct(oSearchService) As DatabaseSearch
+   'Error handling
+   On Error GoTo ErrorSub
+    
+    'Retrieves the Database attribute from Search service
+    Dim oDBSearch As DatabaseSearch
+    Set oDBSearch = oSearchService.DatabaseSearch
+
+    'Builds the Query criteria for Search on underlying database
+    'Prompts the user to input the PLM_ExternalID for search purpose
+    Dim strInputPLMIDName As String
+    strInputPLMIDName = InputBox(&quot;Please enter the PLM_ExternalID to search&quot;, &quot;Enter PLM_ExternalID&quot;)
+    
+    'Prompts the user to input the revision for search purpose
+    Dim strInputRevision As String
+    strInputRevision = InputBox(&quot;Please enter the revision to search&quot;, &quot;Enter revision&quot;)
+
+    'Sets the type of objects to search for
+    oDBSearch.BaseType = strTheProductReferenceType
+          
+    'Updates the PLM Search object created in the above steps with the attribute criteria provided by the user as an input
+    oDBSearch.AddEasyCriteria &quot;PLM_ExternalID&quot;, strInputPLMIDName
+    oDBSearch.AddEasyCriteria &quot;revision&quot;, strInputRevision
+       
+    'Triggers the Search
+    oSearchService.Search
+    
+    'Valuates the output
+    Set SearchProduct = oDBSearch
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+    
+End Function
+'
+'--------------------------------------------------------------------------------------------
+' 2- Opens the Product and retrieves its Editor
+'    Input  : the object containing the result of the previous search
+'    Output : the editor containing the opened Product
+'--------------------------------------------------------------------------------------------
+'
+Function OpenProductAndGetEditor(oDBSearch) As Editor
+   'Error handling
+   On Error GoTo ErrorSub
+    
+    'Retrieves the list of PLM Entities from the PLM Search object
+    Dim oPLMProdRefAsEntities As PLMEntities
+    Set oPLMProdRefAsEntities = oDBSearch.Results
+    
+    'Ensures the search results retrieves atleast one PLM Entity
+    If oPLMProdRefAsEntities.Count &gt; 1 Then
+        MsgBox &quot;Please enter a query criteria which outputs a unique PLM Component for further processing&quot;
+        GoTo EndSub
+    ElseIf oPLMProdRefAsEntities.Count = 0 Then
+        MsgBox &quot;No result for the input criteria&quot;
+        GoTo EndSub
+    End If
+
+
+    'Retrieves first PLM Entity from the PLMEntities collection object
+    Dim oPLMProdRefAsPLMEntity As PLMEntity
+    Set oPLMProdRefAsPLMEntity = oPLMProdRefAsEntities.Item(1)
+    
+    'Call the Open Service to open the product
+    Dim oOpenService As PLMOpenService
+    Set oOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    
+    'Opens the PLM Component in the VPM editor
+    Dim oProductEditor As Editor
+    oOpenService.PLMOpen oPLMProdRefAsPLMEntity, oProductEditor
+        
+    'Valuates the output
+    Set OpenProductAndGetEditor = oProductEditor
+    
+   'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Function
+'
+'--------------------------------------------------------------------------------------------
+'  3- Navigates the Product Occurrence recursively
+'     Input : the Product editor
+'--------------------------------------------------------------------------------------------
+'
+Sub NavigateProductOccurrence(oProductEditor)
+    'Error handling
+    On Error GoTo ErrorSub
+    
+    'Initializes the global variable
+    strBrowsedPLMCompIDAttr = &quot;&quot;
+ 
+    'Retrieves the PLMProductService service from the editor
+    Dim oProductService As PLMProductService
+    Set oProductService = oProductEditor.GetService(&quot;PLMProductService&quot;)
+        
+    '3.1 - Retrieves the Root Product Occurrence from the current VPM Editor to navigate
+    Dim oVPMRootOccOnRoot As VPMRootOccurrence
+    Set oVPMRootOccOnRoot = oProductService.RootOccurrence
+        
+    '3.2- Navigates the Product Occurrence
+    '(Call for Navigate on the retrieved Occurrence)
+    NavigateProdOccurrences oVPMRootOccOnRoot, 0
+    
+    'Displays the Occurrence Product Model Contents in the Message Box
+    MsgBox strBrowsedPLMCompIDAttr
+        
+    'Clears the display contents
+    strBrowsedPLMCompIDAttr = &quot;&quot;
+        
+   'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Sub
+'
+
+'--------------------------------------------------------------------------
+'3.2 Navigates the Product Occurrence and display its name in the message box
+'    Input : the Product Occurrence
+'            depth of the object in hierarchy
+'--------------------------------------------------------------------------
+Sub NavigateProdOccurrences(oOccurrence, depth)
+   'Error handling
+    On Error GoTo ErrorSub
+    
+    '3.2.1- Retrieves the list of Occurrences within the input Occurrence
+    Dim oListChildrenOccurrences As VPMOccurrences
+    Set oListChildrenOccurrences = oOccurrence.Occurrences
+    
+    'Manages  the spaces and tabs for display according to depth
+    For spaceCnt = 1 To depth
+            strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + vbTab '&quot;    &quot;
+    Next spaceCnt
+    
+    'Displays the occurrence name
+    strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + oOccurrence.Name + vbCrLf
+    
+    '3.2.2- For each child Occurrence navigate through recursively
+    'Loop through the List of child occurrences
+    For i = 1 To oListChildrenOccurrences.Count
+        
+        'Retrieves the Child Occurrence from the list
+        Dim oChildOcc As VPMOccurrence
+        Set oChildOcc = oListChildrenOccurrences.Item(i)
+       
+       'Recursively navigates through the occurrences for child occurrences
+        NavigateProdOccurrences oChildOcc, depth + 1
+    Next
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Sub</pre>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

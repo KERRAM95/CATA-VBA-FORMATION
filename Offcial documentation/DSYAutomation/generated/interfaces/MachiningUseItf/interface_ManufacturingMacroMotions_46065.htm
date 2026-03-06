@@ -1,0 +1,108 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>MachiningUseItf ManufacturingMacroMotions (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../MachiningUseItf.htm" href="../MachiningUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "MachiningUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "ManufacturingMacroMotions"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> ManufacturingMacroMotions<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_ManufacturingMacroMotions_46065','ManufacturingMacroMotions','0');</script>
+<section id='maindesc'>
+<b><i> Interface to manage the macros of an operation.</i></b><br>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Active"><b>Active</b></a>
+</td><td  id='tdright'>  Returns or sets whether the macro is active.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetMacroMotion"><b>GetMacroMotion</b></a>
+</td><td  id='tdright'>  Gets the motion corresponding to the macro.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Active"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Active</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets whether the macro is active.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetMacroMotion"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetMacroMotion</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iPosition</span>)</span> As <script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets the motion corresponding to the macro.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iPosition</span></dt>
+   <dd>   The type of the macro we want. Must be equal to 1 or 2.
+ <pre>
+	Macro Type                  | iPosition = 1	    | iPosition = 2
+	-----------------------------------------------------------------
+	MfgApproachMacro            | Approach          | Global approach (in some axial operations only, like thread milling)
+	MfgRetractMacro	            | Retract           | Global retract (in some axial operations only, like thread milling)
+	MfgLinkingMacro	            | Retract           | Approach
+	MfgClearanceMacro           | Clearance         | NOTHING
+	MfgReturnOneLevelMacro      | Retract           | Approach
+	MfgReturnTwoLevelMacro      | Retract           | Approach
+	MfgReturnFinishPathMacro    | Retract           | Approach
+	MfgBetweenPassesMacro       | Between paths     | Between paths link
+	MfgAutomaticRoughingMacro   | Automatic	        | NOTHING
+	MfgPreRoughingMacro         | Pre motions       | NOTHING
+	MfgPostRoughingMacro        | Post motions      | NOTHING
+ </pre>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     The corresponding motion.
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

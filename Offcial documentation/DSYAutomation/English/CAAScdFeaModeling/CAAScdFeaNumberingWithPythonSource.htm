@@ -1,0 +1,173 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment"># -------------- Sample SCRIPT written in Python ------------------------------------------</span>
+<span class="comment"># This sample manages a connection property.</span>
+
+<span class="comment"># Steps :</span>
+
+<span class="comment"># 1  - Retrieves the simulation and its product</span>
+<span class="comment"># 2  - Retrieves the assembly FEM Rep</span>
+<span class="comment"># 3  - Creates global numbering specifications</span>
+<span class="comment"># 4  - Creates a link between the assembly FEM and the first occurrence FEM</span>
+<span class="comment"># 5  - Sets numbering offsets</span>
+<span class="comment"># 6  - Retrieves the mesh part of the first occurrence FEM</span>
+<span class="comment"># 7  - Creates mesh part numbering specifications</span>
+<span class="comment"># 8  - Retrieves the group of the first occurrence FEM</span>
+<span class="comment"># 9  - Creates group numbering specifications</span>
+<span class="comment"># 10 - Updates the assembly FEM Rep</span>
+<span class="comment"># 11 - Retrieves the numbering labels</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  1 - Retrieves the simulation and its product</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># As a first step, retrieves the simulation editor which is the actived one</span>
+myEditor = CATIA.ActiveEditor
+
+<span class="comment"># Then retrieves the product service</span>
+myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="comment"># Retrieves the PLMEntities</span>
+myEntities = myProdService.EditedContent
+
+<span class="comment"># Now retrieves the PLMEntity</span>
+myEntity = myEntities.Item(1)
+
+<span class="comment"># Gets the simulation Root</span>
+MySimulationRoot = myEntity
+
+<span class="comment"># Now retrieves the Model</span>
+myModel = MySimulationRoot.Model
+
+<span class="comment"># Opens the simulation model</span>
+oOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+oOpenService.PLMOpen (myModel)
+
+<span class="comment"># Retrieves the product root product and the root occurrence</span>
+myProductEditor = CATIA.ActiveEditor
+MyProductService = myProductEditor.GetService(&quot;PLMProductService&quot;)
+
+myRootOcc = MyProductService.RootOccurrence
+
+<span class="comment">#----------------------------------------------------------------------------------------------------</span>
+<span class="comment">#  2 - Retrieves the assembly FEM Rep</span>
+<span class="comment">#----------------------------------------------------------------------------------------------------</span>
+myProductEntities = MyProductService.EditedContent
+
+<span class="keyword">for</span> myProductEntity <span class="keyword">in</span> myProductEntities:
+    myRef = myProductEntity
+    myReps = myRef.RepInstances
+    
+    <span class="keyword">for</span> myRep <span class="keyword">in</span> myReps:
+        myRepRef = myRep.ReferenceInstanceOf
+        attr = myRepRef.GetAttributeValue(&quot;V_discipline&quot;)
+        <span class="keyword">if</span> attr == &quot;FEM&quot;:
+           myFEMRoot = myRepRef.GetItem(&quot;SimFemRoot&quot;)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  3 - Creates global numbering specifications</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+MyNumberingEntity = myFEMRoot.GetItem("SimNumbering")
+MyNumberingEntity.SetAttributeValue ("NodesLowerBoundValue", 1)
+MyNumberingEntity.SetAttributeValue ("NodesUpperBoundValue", 1000000)
+MyNumberingEntity.SetAttributeValue ("ElementsLowerBoundValue", 1)
+MyNumberingEntity.SetAttributeValue ("ElementsUpperBoundValue", 2000000)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  4 - Creates a link between the assembly FEM and the first occurrence FEM</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+MyRootOccurrences = myRootOcc.Occurrences
+MyOccurrence = MyRootOccurrences.Item(1)
+
+MyRepInstances = MyOccurrence.InstanceOccurrenceOf.ReferenceInstanceOf.RepInstances
+
+<span class="keyword">for</span> MyRep2 <span class="keyword">in</span> MyRepInstances:
+    MyRepRef2 = MyRep2.ReferenceInstanceOf
+    attr = MyRepRef2.GetAttributeValue(&quot;V_discipline&quot;)
+    <span class="keyword">if</span> attr == &quot;FEM&quot;:
+       MyFirstFEMRoot = MyRepRef2.GetItem(&quot;SimFemRoot&quot;)
+       MyFirstLink = MyProductService.ComposeLink(MyOccurrence, MyRep2, None)
+       MyFirstFEMRepManagerLink = MyProductService.ComposeLink(MyOccurrence, MyRep2, MyFirstFEMRoot)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  5 - Sets numbering offsets</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+myFEMRoot.SetNumberingOffsetValue (simMeshNodeEntity, MyFirstLink, 500000)
+myFEMRoot.SetNumberingOffsetValue (simMeshElementEntity, MyFirstLink, 600000)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  6 - Retrieves the mesh part of the first occurrence FEM</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+MyMeshSet = MyFirstFEMRoot.GetSet("SimNodesElements")
+MyMeshParts = MyMeshSet.MeshParts
+MyMeshPart = MyMeshParts.Item(1)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  7 - Creates mesh part numbering specifications</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+MyNumberingEntity = MyMeshPart.GetItem("SimNumbering")
+MyNumberingEntity.SetAttributeValue ("NodesLowerBoundValue", 100001)
+MyNumberingEntity.SetAttributeValue ("NodesUpperBoundValue", 102000)
+MyNumberingEntity.SetAttributeValue ("ElementsLowerBoundValue", 103001)
+MyNumberingEntity.SetAttributeValue ("ElementsUpperBoundValue", 105000)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  8 - Retrieves the group of the first occurrence FEM</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+MyGroups = MyFirstFEMRoot.GetSet("SimGroups")
+MyGroup = MyGroups.Item(1)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  9 - Creates group numbering specifications</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+MyNumberingEntity = MyGroup.GetItem("SimNumbering")
+MyNumberingEntity.SetAttributeValue ("NodesLowerBoundValue", 105101)
+MyNumberingEntity.SetAttributeValue ("NodesUpperBoundValue", 105200)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  10 - Updates the assembly FEM Rep</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+myFEMRoot.Update
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  11 - Retrieves the group of the first occurrence FEM</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+nodeLabels = MyFEMRoot.GetNumberingLabelsFromPath(simMeshNodeEntity, MyFirstFEMRepManagerLink)
+elementLabels = MyFEMRoot.GetNumberingLabelsFromPath(simMeshElementEntity, MyFirstFEMRepManagerLink)
+
+nodeLabels = MyFirstFEMRoot.GetNumberingLabels(simMeshNodeEntity)
+elementLabels = MyFirstFEMRoot.GetNumberingLabels(simMeshElementEntity)
+
+nodeLabels = MyMeshPart.GetNumberingLabels(simMeshNodeEntity)
+elementLabels = MyMeshPart.GetNumberingLabels(simMeshElementEntity)
+
+nodeLabels = MyNodeGroup.GetNumberingLabels(simMeshNodeEntity)
+elementLabels = MyElementGroup.GetNumberingLabels(simMeshElementEntity)
+
+</pre>
+  </body>
+</html>
+

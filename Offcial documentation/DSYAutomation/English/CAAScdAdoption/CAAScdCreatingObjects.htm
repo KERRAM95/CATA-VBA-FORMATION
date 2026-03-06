@@ -1,0 +1,110 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating Objects</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Creating Objects</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 Automation macros to take 
+		advantage of the Open <strong>3D</strong>EXPERIENCE platform PLM infrastructure. It explains how the V5 document 
+		centric model and more precisely the <strong>Documents</strong> collection 
+		object has been replaced to to accommodate creation of persistent objects 
+		in database.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p>In V5, the <strong>Document</strong> object is the key object that allows persistency. 
+Through the <strong>Documents</strong> collection object, new <strong>Document</strong> 
+objects can be created as a repository for persistent data, modifications performed 
+in session can be saved on disk, and existing <strong>Document</strong> objects 
+loaded into session.</p>
+<p>In <strong>3D</strong>EXPERIENCE platform, persistent data is stored in the PLM server, either as a PLM object and 
+its attributes and links, or as the streamed (black box) content of a specific PLM 
+objects: the representation references.</p>
+<p>This article focuses on object creation. Saving and retrieving objects is described 
+in the <a href="CAAScdBringingObjectsInSession.htm">Bringing Objects into Session 
+And Saving Objects</a> article. </p>
+<h2><a name="FileSelection0"></a>Creating Objects</h2>
+<p>For <strong>3D</strong>EXPERIENCE platform object that are stored in reference representations. The creation mode 
+has not changed, but PLM objects should be created using the <strong>PLMNewService</strong> 
+object. This service should be used in three steps:</p>
+<ol>
+	<li>Creating a template entity that will receive any required PLM attributes 
+	and their default values.</li>
+	<li>Modifying the template entity PLM attributes values if necessary.</li>
+	<li>Creating and editing actual PLM entities in session using the template entity.</li>
+</ol>
+<table>
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Creating a new Document object in memory</span>
+<span class="keyword">Dim</span> newDoc <span class="keyword">As</span> PartDocument
+<span class="keyword">Set</span> newDoc = CATIA.Documents.Add(&quot;Part&quot;)</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Get the PLMNewService</span>
+<span class="keyword">Dim</span> oNewService <span class="keyword">As</span> PLMNewService
+<span class="keyword">Set</span> oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+
+<span class="comment">' Create And Edit entity</span>
+<span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor
+Set<span></span> oEditor = oNewService.PLMCreate(&quot;3DShape&quot;)</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p><strong>Note</strong>: Drawing representations are created with default values 
+for standards and sheet style. See the <a href="CAAScdDraftingAdoption.htm">
+Drafting Changes</a> article for more information.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="10"></a>Creating Objects as Copy of Existing Objects</h2>
+<p><strong>3D</strong>EXPERIENCE platform is no more document based, so the <code>NewFrom</code> method of the
+<strong>Documents</strong> collection object has no meaning anymore. No equivalent 
+capability is currently provided.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

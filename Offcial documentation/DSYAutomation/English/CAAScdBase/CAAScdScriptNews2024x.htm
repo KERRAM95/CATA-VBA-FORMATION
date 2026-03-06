@@ -1,0 +1,2991 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta content="Ta" name="topictype" />
+<meta content="idl" name="devlang" />
+<meta content="idl" name="devlang" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>What&#39;s New with 3DEXPERIENCE R2024x Automation</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>What's New with <strong>3D</strong>EXPERIENCE R2024x 
+		Automation</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article presents Automation objects, methods, and properties that 
+		are added since <strong>3D</strong>EXPERIENCE R2024x GA to enhance V6 Automation capabilities, support 
+		functional evolutions, and correct defects. Some of those modifications 
+		may already exist in <strong>3D</strong>EXPERIENCE R2023x maintenance fixes. A few properties and methods 
+		might have been modified or removed. VB and VBScripts code using those methods 
+		may have to be modified. VB projects using the corresponding objects must 
+		be recompiled.</p>
+		<p>Consult
+		<a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation 
+		Languages, Debug, and Compatibility</a> for details on manual adjustments 
+		that may be required for existing VBA and VSTA projects to be usable on 
+		a new release.</p>
+		<ul>
+			<li><a href="#NewModelers">New Modelers</a></li>
+			<li><a href="#NewArticles">New Articles</a></li>
+			<li><a href="#NewSetting">New Settings Repositories</a></li>
+			<li><a href="#Newinterface">New Objects</a></li>
+			<li><a href="#Newmethod">New Methods</a></li>
+			<li><a href="#Newenum">New Enums</a></li>
+			<li><a href="#Modif">Modified Objects, Methods and Properties</a></li>
+			<li><a href="#Suppress">Removed Objects, Collections, Methods, and Properties</a></li>
+		</ul>
+		<p>Deprecated APIs can be found in
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Deprecated');return false;">
+		V6 IDL API Deprecated Index</a>.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<p>You can also find news from previous <strong>3D</strong>EXPERIENCE releases:</p>
+		<ul>
+			<li><a href="CAAScdScriptNews2023x.htm"><strong>3D</strong>EXPERIENCE R2023x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2022x.htm"><strong>3D</strong>EXPERIENCE R2022x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2021x.htm"><strong>3D</strong>EXPERIENCE R2021x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2020x.htm"><strong>3D</strong>EXPERIENCE R2020x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2019x.htm"><strong>3D</strong>EXPERIENCE R2019x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2018x.htm"><strong>3D</strong>EXPERIENCE R2018x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2017x.htm"><strong>3D</strong>EXPERIENCE R2017x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2016x.htm"><strong>3D</strong>EXPERIENCE R2016x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2015x.htm"><strong>3D</strong>EXPERIENCE R2015x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2014x.htm"><strong>3D</strong>EXPERIENCE R2014x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2014.htm"><strong>3D</strong>EXPERIENCE R2014 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2013x.htm">V6R2013x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2013.htm">V6R2013 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2012x.htm">V6R2012x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2012.htm">V6R2012 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2011x.htm">V6R2011x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2011.htm">V6R2011 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2010x.htm">V6R2010x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2010.htm">V6R2010 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2009x.htm">V6R2009x What&#39;s New?</a></li>
+		</ul>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewModelers"></a>New Modelers</th>
+	</tr>
+        <tr>
+		<td><a href="../CAAScdDesignExplorationScenario/CAAScdDesignExplorationScenarioToc.htm">Multiphysics Design Exploration Scenario Creation.</a></td>
+        </tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewArticles"></a>New Articles</th>
+	</tr>
+	<tr>
+		<td>
+<!--           -=-=-=-=-= BEG INSERT DOCNEWS HERE -=-=-=-=-=-=-=-=-=-=-=-=-= -->
+	<!--
+<ul>
+  <li><a href="../../CAAScdBase.doc/src/CAAScdTcCompassWestToc.htm">3D Modeling</a>
+    <ul>
+      <li><a href="../../CAAScdBase.doc/src/CAAScdTcMSToc.htm">Mechanical Systems</a>
+        <ul>
+          <li><a href="../../CAAScdKin.doc/src/CAAScdKinToc.htm">Mechanical Systems Design / Experience</a>
+            <ul>
+              <li><a href="../../CAAScdKin.doc/src/CAAScdKinRunSubMech.htm">Simulating a Mechanism with subcommands</a></li>
+              <li><a href="../../CAAScdKin.doc/src/CAAScdKinRecordedExcitation.htm">Recorded Excitation in a Kinematics Simulation</a></li>
+              <li><a href="../../CAAScdKin.doc/src/CAAScdKinCreateRecExcitation.htm">Creating a Recorded Excitation</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+	-->
+<ul><li><a href="../CAAScdBase/CAAScdTcCompassSouthToc.htm">Simulation</a>
+  <ul><li><a href="../CAAScdBase/CAAScdTcPModToc.htm">Physics Simulation</a>
+    <ul><li><a href="../CAAScdFeaScenario/CAAScdFeaObjOutputs.htm">Multiphysics Scenario Creation</a>
+	<ul>
+	  <li><a href="../CAAScdFeaScenario/CAAScdFeaObjSimSetup.htm">Setup Objects</a></li>
+	  <li><a href="../CAAScdFeaScenario/CAAScdFeaObjSimInitialConditions.htm">Initial Condition Objects</a></li>
+	  <li><a href="../CAAScdFeaScenario/CAAScdFeaObjSimInteractions.htm">Interaction Objects</a></li>
+	  <li><a href="../CAAScdFeaScenario/CAAScdFeaObjSimBoundaryConditions.htm">Boundary Condition Objects</a></li>
+	  <li><a href="../CAAScdFeaScenario/CAAScdFeaObjSimLoads.htm">Load Objects</a></li>
+	  <li><a href="../CAAScdFeaScenario/CAAScdFeaObjSimPredefinedFields.htm">Predefined Field Objects</a></li>
+	  <li><a href="../CAAScdFeaScenario/CAAScdFeaObjOutputs.htm">Output Objects</a></li>
+        </ul>
+    </ul>
+</ul>
+
+<!--           -=-=-=-=-= END INSERT DOCNEWS HERE -=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<!--           -=-=-=-=-= BEG INSERT SETTINGS HERE -=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="reference">
+  <tr>
+	<th><a name="NewSetting"></a>New Setting Repository</th>
+    <th>Primary Tab Page</th>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/AmbianceStudioSettings.htm'); return false;">AmbianceStudioSettings</a></td>
+    <td>/Interactive_Experience/Ambiance_Studio/AmbianceGeneral</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATCompositesSettingsNumericalAnalysis.htm'); return false;">CATCompositesSettingsNumericalAnalysis</a></td>
+    <td>/Mechanical Design/Composites Design/Numerical Analysis</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CATSys3DAllocationUI.htm'); return false;">CATSys3DAllocationUI</a></td>
+    <td>/3D Modeling/Systems Architecture/Systems 3D Allocation</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/CivilProvidersSettings.htm'); return false;">CivilProvidersSettings</a></td>
+    <td>/Multi_Discipline_Engineering/Civil_Engineering_Design/CIVProviders</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/EngineeringTemplate.htm'); return false;">EngineeringTemplate</a></td>
+    <td>/Infrastructure/View</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/DEL4DPlanningPreferences.htm'); return false;">DEL4DPlanningPreferences</a></td>
+    <td>/Infrastructure/View</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/LatticeDesign.htm'); return false;">LatticeDesign</a></td>
+    <td>/Lattice Design/Lattice Design/General</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/MCMfgPreferences_Additive.htm'); return false;">MCMfgPreferences_Additive</a></td>
+    <td>/Simulation/Additive_Manufacturing</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/MCMfgPreferences_Subtractive.htm'); return false;">MCMfgPreferences_Subtractive</a></td>
+    <td>/Simulation/Additive_Manufacturing</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/MOTA3DMotionAnalysisPreferencesStructure.htm'); return false;">MOTA3DMotionAnalysisPreferencesStructure</a></td>
+    <td>/Physics Simulation and Simulation for Designers/Motion/Joint Solve</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/MOTA3DMotionDesignPreferencesStructure.htm'); return false;">MOTA3DMotionDesignPreferencesStructure</a></td>
+    <td>/Mechanical Systems/Motion Design/General</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/MOTA3DSuspAnalysisPreferencesStructure.htm'); return false;">MOTA3DSuspAnalysisPreferencesStructure</a></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/SMAFeaScenarioOptions.htm'); return false;">SMAFeaScenarioOptions</a></td>
+    <td>/AnalysisSimulation/Scenario</td>
+  </tr>
+  <tr>
+    <td><a href="#" onclick="CAAlinkOutOfPreqs('CAAScrSettings/SMAWflUIReliability.htm'); return false;">SMAWflUIReliability</a></td>
+    <td>/AnalysisSimulation/Wintop</td>
+  </tr>
+</table>
+<!--           -=-=-=-=-= END INSERT SETTINGS HERE -=-=-=-=-=-=-=-=-=-=-=-=-= -->
+</div>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!--           -=-=-=-=-= BEG INSERT GEN NEWS HERE -=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<thead>
+	<tr>
+		<th colspan="2"><a name="Newinterface"></a>New Objects</th>
+	</tr>
+	<thead>
+	<tbody>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATFmtModelIDLItf', 'interface', 'SimAutomatedSpecifications');return false;">SimAutomatedSpecifications</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATFmtModelIDLItf', 'interface', 'SimMethod');return false;">SimMethod</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATFmtModelIDLItf', 'interface', 'SimMethodSet');return false;">SimMethodSet</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'Partition');return false;">Partition</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSimRepIDLItf', 'interface', 'SimGenerativeSpecification');return false;">SimGenerativeSpecification</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELSpotWeldingIDLItf', 'interface', 'SpotDRAction2');return false;">SpotDRAction2</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'CalibLeastSquaresService');return false;">CalibLeastSquaresService</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpChoreographyEvent');return false;">OlpChoreographyEvent</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpChoreographyEvents');return false;">OlpChoreographyEvents</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpEventVisibility');return false;">OlpEventVisibility</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpPositionVariable');return false;">OlpPositionVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRunByString');return false;">OlpRunByString</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingSpecializedResource');return false;">ManufacturingSpecializedResource</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingContours');return false;">ManufacturingContours</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimAbsoluteMassResponseVariable');return false;">SimAbsoluteMassResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimBeadDesignImprovementStudy');return false;">SimBeadDesignImprovementStudy</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimBeadWidthControl');return false;">SimBeadWidthControl</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimCalculatedResponseVariable');return false;">SimCalculatedResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimCastingControl');return false;">SimCastingControl</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimCenterOfGravityConstraint');return false;">SimCenterOfGravityConstraint</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimCenterOfGravityResponseVariable');return false;">SimCenterOfGravityResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimComplianceResponseVariable');return false;">SimComplianceResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimCyclicSymmetryControl');return false;">SimCyclicSymmetryControl</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimDesignExplorationStudyCase');return false;">SimDesignExplorationStudyCase</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimDesignImprovementDesignVariable');return false;">SimDesignImprovementDesignVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimDesignImprovementFeatures');return false;">SimDesignImprovementFeatures</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimDesignImprovementObjective');return false;">SimDesignImprovementObjective</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimDesignImprovementResponseVariable');return false;">SimDesignImprovementResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimDesignImprovementStudyCase');return false;">SimDesignImprovementStudyCase</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimDesignSpace');return false;">SimDesignSpace</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimDisplacementConstraint');return false;">SimDisplacementConstraint</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimDisplacementResponseVariable');return false;">SimDisplacementResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimExtrusionControl');return false;">SimExtrusionControl</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimFastenerForceConstraint');return false;">SimFastenerForceConstraint</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimFastenerForceResponseVariable');return false;">SimFastenerForceResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimFrequencyConstraint');return false;">SimFrequencyConstraint</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimFrequencyResponseVariable');return false;">SimFrequencyResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimGeneralConstraint');return false;">SimGeneralConstraint</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimInPlaneControl');return false;">SimInPlaneControl</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimLocalOptimizationArea');return false;">SimLocalOptimizationArea</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimMassConstraint');return false;">SimMassConstraint</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimMillingControl');return false;">SimMillingControl</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimMomentOfInertiaResponseVariable');return false;">SimMomentOfInertiaResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimNonParametricObjective');return false;">SimNonParametricObjective</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimNonParametricResponseVariable');return false;">SimNonParametricResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimOptimizationSolverSettings');return false;">SimOptimizationSolverSettings</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimOverhangControl');return false;">SimOverhangControl</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimPenetrationCheck');return false;">SimPenetrationCheck</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimPreservedRegion');return false;">SimPreservedRegion</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimReactionForceConstraint');return false;">SimReactionForceConstraint</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimReactionForceResponseVariable');return false;">SimReactionForceResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimReactionMomentResponseVariable');return false;">SimReactionMomentResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimRelativeMassResponseVariable');return false;">SimRelativeMassResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimRibControl');return false;">SimRibControl</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimRotationResponseVariable');return false;">SimRotationResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimShapeDesignImprovementStudy');return false;">SimShapeDesignImprovementStudy</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimStrainResponseVariable');return false;">SimStrainResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimStressConstraint');return false;">SimStressConstraint</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimStressResponseVariable');return false;">SimStressResponseVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimSymmetryControl');return false;">SimSymmetryControl</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimThicknessControl');return false;">SimThicknessControl</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimTopologyDesignImprovementStudy');return false;">SimTopologyDesignImprovementStudy</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'interface', 'SimTransitionControl');return false;">SimTransitionControl</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaBaseIDLItf', 'interface', 'SimPortRegion');return false;">SimPortRegion</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaBaseIDLItf', 'interface', 'SimSpaceTimeField');return false;">SimSpaceTimeField</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaBaseIDLItf', 'interface', 'SimSymmetricTensorField');return false;">SimSymmetricTensorField</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaFoundationIDLItf', 'interface', 'SimFeatureHistory');return false;">SimFeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'interface', 'SimSensorOutputParameters');return false;">SimSensorOutputParameters</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimAmplitude');return false;">SimAmplitude</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimCoupledThermalElectricStep');return false;">SimCoupledThermalElectricStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimCoupledThermalElectricalStressStep');return false;">SimCoupledThermalElectricalStressStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimCoupledThermalElectroChemicalStep');return false;">SimCoupledThermalElectroChemicalStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimCoupledThermalElectroChemicalStressPoreStep');return false;">SimCoupledThermalElectroChemicalStressPoreStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimCoupledThermalElectroChemicalStressStep');return false;">SimCoupledThermalElectroChemicalStressStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimCoupledThermalStressExplicitStep');return false;">SimCoupledThermalStressExplicitStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimCoupledThermalStressStep');return false;">SimCoupledThermalStressStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimDirectHarmonicResponseStep');return false;">SimDirectHarmonicResponseStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimFieldEvolution');return false;">SimFieldEvolution</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimFrequencyBasedDamping');return false;">SimFrequencyBasedDamping</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimGeneralGlobalDamping');return false;">SimGeneralGlobalDamping</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimImportedForce');return false;">SimImportedForce</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimInitialField');return false;">SimInitialField</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimInitialStress');return false;">SimInitialStress</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimMassScaling');return false;">SimMassScaling</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimModeBasedDamping');return false;">SimModeBasedDamping</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimPeriodicAmplitude');return false;">SimPeriodicAmplitude</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimRandomGlobalDamping');return false;">SimRandomGlobalDamping</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimRandomVibrationStep');return false;">SimRandomVibrationStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimResponseSpectrumStep');return false;">SimResponseSpectrumStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimShellEdgeLoad');return false;">SimShellEdgeLoad</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimSpectrum');return false;">SimSpectrum</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimStaticRiksStep');return false;">SimStaticRiksStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimSubstructureGenerationStep');return false;">SimSubstructureGenerationStep</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimUserAmplitude');return false;">SimUserAmplitude</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'interface', 'SimVoidRatio');return false;">SimVoidRatio</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'interface', 'SimCohesiveProperty');return false;">SimCohesiveProperty</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'interface', 'SimCompositeContinuumShellSection');return false;">SimCompositeContinuumShellSection</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'interface', 'SimEmbeddedConstraint');return false;">SimEmbeddedConstraint</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'interface', 'SimRebarLayer');return false;">SimRebarLayer</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'interface', 'SimRebarLayers');return false;">SimRebarLayers</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'interface', 'SimSPHParticles');return false;">SimSPHParticles</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<thead>
+	<tr>
+		<th colspan="2"><a name="Newmethod"></a>New Methods</th>
+	</tr>
+	<thead>
+	<tbody>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'method', 'ShapeFactory', 'AddNewManuOrAutoPartition');return false;">ShapeFactory::AddNewManuOrAutoPartition</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSimPLMIDLItf', 'method', 'SimSimulationService', 'GetSimulationReferenceFromObject');return false;">SimSimulationService::GetSimulationReferenceFromObject</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSimRepIDLItf', 'method', 'SimSpecsRepManager', 'Excitations');return false;">SimSpecsRepManager::Excitations</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSimRepIDLItf', 'method', 'SimSpecsRepManager', 'Probes');return false;">SimSpecsRepManager::Probes</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATSimRepIDLItf', 'method', 'SimSpecsRepManager', 'ScenarioSpecs');return false;">SimSpecsRepManager::ScenarioSpecs</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'method', 'Capture', 'AddViewPoint3D');return false;">Capture::AddViewPoint3D</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'method', 'Capture', 'RemoveViewPoint3D');return false;">Capture::RemoveViewPoint3D</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'method', 'Capture', 'ViewPoint3D');return false;">Capture::ViewPoint3D</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpVariable', 'AliasOf');return false;">OlpVariable::AliasOf</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpVariable', 'AllAliases');return false;">OlpVariable::AllAliases</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRun', 'Arguments');return false;">OlpRun::Arguments</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpActionPRun', 'AssignUndefinedProcedureInStringType');return false;">OlpActionPRun::AssignUndefinedProcedureInStringType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpPRun', 'AssignUndefinedProcedureInStringType');return false;">OlpPRun::AssignUndefinedProcedureInStringType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRun', 'AssignUndefinedProcedureInStringType');return false;">OlpRun::AssignUndefinedProcedureInStringType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRobotMotionTarget', 'Choreography');return false;">OlpRobotMotionTarget::Choreography</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpVariable', 'DataTypeInString');return false;">OlpVariable::DataTypeInString</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpActionSetVar', 'DestinationExpress');return false;">OlpActionSetVar::DestinationExpress</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpVariables', 'FilterInString');return false;">OlpVariables::FilterInString</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpExpressionFixer', 'FixSubscriptedVariables');return false;">OlpExpressionFixer::FixSubscriptedVariables</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpVariables', 'GetOrCreateAlias');return false;">OlpVariables::GetOrCreateAlias</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpVariables', 'GetOrCreateConstInStringType');return false;">OlpVariables::GetOrCreateConstInStringType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpVariables', 'GetOrCreateIOInStringType');return false;">OlpVariables::GetOrCreateIOInStringType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpVariables', 'GetOrCreateLocalVarInStringType');return false;">OlpVariables::GetOrCreateLocalVarInStringType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpInstruction', 'GetParameterFromParent');return false;">OlpInstruction::GetParameterFromParent</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRobotMotionTarget', 'GetParameterFromParent');return false;">OlpRobotMotionTarget::GetParameterFromParent</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpController', 'GetParameterNames');return false;">OlpController::GetParameterNames</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpInstruction', 'GetParameterNames');return false;">OlpInstruction::GetParameterNames</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpProcedure', 'GetParameterNames');return false;">OlpProcedure::GetParameterNames</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpProfile', 'GetParameterNames');return false;">OlpProfile::GetParameterNames</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpProfiles', 'GetParameterNames');return false;">OlpProfiles::GetParameterNames</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpResourceControlDevice', 'GetParameterNames');return false;">OlpResourceControlDevice::GetParameterNames</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRobotMotionTarget', 'GetParameterNames');return false;">OlpRobotMotionTarget::GetParameterNames</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRobotMotionTarget', 'GetPositionVariableOffset');return false;">OlpRobotMotionTarget::GetPositionVariableOffset</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpInstruction', 'GetProfileNameFromParent');return false;">OlpInstruction::GetProfileNameFromParent</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRobotMotionTarget', 'GetProfileNameFromParent');return false;">OlpRobotMotionTarget::GetProfileNameFromParent</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpInstruction', 'GetProfileOlp');return false;">OlpInstruction::GetProfileOlp</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpProcedure', 'GetProfileOlp');return false;">OlpProcedure::GetProfileOlp</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRobotMotionTarget', 'GetProfileOlp');return false;">OlpRobotMotionTarget::GetProfileOlp</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpDrillRivetCycle', 'GetTCPOffset');return false;">OlpDrillRivetCycle::GetTCPOffset</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpDrillRivetCycle', 'GetTCPOffsetLink');return false;">OlpDrillRivetCycle::GetTCPOffsetLink</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpCFrameRivetProfile', 'GetToolKinSimulation');return false;">OlpCFrameRivetProfile::GetToolKinSimulation</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpDrillRivetProfile', 'GetToolKinSimulation');return false;">OlpDrillRivetProfile::GetToolKinSimulation</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpVariable', 'HasAliasRelationWith');return false;">OlpVariable::HasAliasRelationWith</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpVariable', 'IsAlias');return false;">OlpVariable::IsAlias</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRobotMotionTarget', 'IsOffsetPositionVariable');return false;">OlpRobotMotionTarget::IsOffsetPositionVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpInstruction', 'IsProfileSetOnParent');return false;">OlpInstruction::IsProfileSetOnParent</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRobotMotionTarget', 'IsProfileSetOnParent');return false;">OlpRobotMotionTarget::IsProfileSetOnParent</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpTeachHelper', 'PositionAccessMode');return false;">OlpTeachHelper::PositionAccessMode</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRobotMotionTarget', 'PositionVariable');return false;">OlpRobotMotionTarget::PositionVariable</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpTranslatorHelper', 'PositionVariableRobotLanguageLengthUnits');return false;">OlpTranslatorHelper::PositionVariableRobotLanguageLengthUnits</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpTranslatorHelper', 'PositionVariableRobotLanguageRotationUnits');return false;">OlpTranslatorHelper::PositionVariableRobotLanguageRotationUnits</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpInstruction', 'SequenceName');return false;">OlpInstruction::SequenceName</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRobotMotionTarget', 'SetPositionVariableOffset');return false;">OlpRobotMotionTarget::SetPositionVariableOffset</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpInstruction', 'SetProfileOlp');return false;">OlpInstruction::SetProfileOlp</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpProcedure', 'SetProfileOlp');return false;">OlpProcedure::SetProfileOlp</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpRobotMotionTarget', 'SetProfileOlp');return false;">OlpRobotMotionTarget::SetProfileOlp</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpDrillRivetCycle', 'SetTCPOffset');return false;">OlpDrillRivetCycle::SetTCPOffset</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpDrillRivetCycle', 'SetTCPOffsetLink');return false;">OlpDrillRivetCycle::SetTCPOffsetLink</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpCFrameRivetProfile', 'SetToolKinSimulation');return false;">OlpCFrameRivetProfile::SetToolKinSimulation</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpDrillRivetProfile', 'SetToolKinSimulation');return false;">OlpDrillRivetProfile::SetToolKinSimulation</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpExpressionFixerUpload', 'SubsituteVariableGetOrCreateInStringType');return false;">OlpExpressionFixerUpload::SubsituteVariableGetOrCreateInStringType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'method', 'OlpTranslatorHelper', 'TrigFunctionRobotLanguageRotationUnits');return false;">OlpTranslatorHelper::TrigFunctionRobotLanguageRotationUnits</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'method', 'VisPropertySet', 'SetVisibleColor');return false;">VisPropertySet::SetVisibleColor</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'method', 'VisPropertySet', 'SetVisibleLineType');return false;">VisPropertySet::SetVisibleLineType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'method', 'VisPropertySet', 'SetVisibleOpacity');return false;">VisPropertySet::SetVisibleOpacity</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'method', 'VisPropertySet', 'SetVisibleWidth');return false;">VisPropertySet::SetVisibleWidth</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningToolPathUseItf', 'method', 'ManufacturingToolPathManagement', 'GetToolPathLimitZ');return false;">ManufacturingToolPathManagement::GetToolPathLimitZ</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaBaseIDLItf', 'method', 'SimTableColumn', 'GetCellLongData');return false;">SimTableColumn::GetCellLongData</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaBaseIDLItf', 'method', 'SimTableColumn', 'GetCellStringData');return false;">SimTableColumn::GetCellStringData</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaBaseIDLItf', 'method', 'SimTableColumn', 'SetCellLongData');return false;">SimTableColumn::SetCellLongData</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaBaseIDLItf', 'method', 'SimTableColumn', 'SetCellStringData');return false;">SimTableColumn::SetCellStringData</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'method', 'SimStrainGaugeSensor', 'PositionType');return false;">SimStrainGaugeSensor::PositionType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'method', 'SimHistorySensor', 'SensorOutputParameter');return false;">SimHistorySensor::SensorOutputParameter</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'method', 'SimSensor', 'SensorOutputParameter');return false;">SimSensor::SensorOutputParameter</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'method', 'SimSensor', 'SetParameters');return false;">SimSensor::SetParameters</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'method', 'SimSensor', 'SetSupport1');return false;">SimSensor::SetSupport1</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'method', 'SimHistorySensor', 'SetSupport2');return false;">SimHistorySensor::SetSupport2</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'method', 'SimSensor', 'SetSupport2');return false;">SimSensor::SetSupport2</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimExplicitDynamicStep', 'BulkViscosityFlag');return false;">SimExplicitDynamicStep::BulkViscosityFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimSmoothStepAmplitude', 'DomainType');return false;">SimSmoothStepAmplitude::DomainType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimAccelerationBaseMotion', 'FeatureHistory');return false;">SimAccelerationBaseMotion::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimAppliedRotationVelocity', 'FeatureHistory');return false;">SimAppliedRotationVelocity::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimAppliedRotation', 'FeatureHistory');return false;">SimAppliedRotation::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimAppliedTranslationVelocity', 'FeatureHistory');return false;">SimAppliedTranslationVelocity::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimAppliedTranslation', 'FeatureHistory');return false;">SimAppliedTranslation::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimBearingLoad', 'FeatureHistory');return false;">SimBearingLoad::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimBoltDisplacement', 'FeatureHistory');return false;">SimBoltDisplacement::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimBoltForce', 'FeatureHistory');return false;">SimBoltForce::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimBoltRestraint', 'FeatureHistory');return false;">SimBoltRestraint::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimBoltTorque', 'FeatureHistory');return false;">SimBoltTorque::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimCavityPressure', 'FeatureHistory');return false;">SimCavityPressure::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimCentrifugalForce', 'FeatureHistory');return false;">SimCentrifugalForce::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimClamp', 'FeatureHistory');return false;">SimClamp::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimConnectorDisplacementRestraint', 'FeatureHistory');return false;">SimConnectorDisplacementRestraint::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimConnectorForce', 'FeatureHistory');return false;">SimConnectorForce::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimConnectorMoment', 'FeatureHistory');return false;">SimConnectorMoment::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimConnectorRotation', 'FeatureHistory');return false;">SimConnectorRotation::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimDisplacementBaseMotion', 'FeatureHistory');return false;">SimDisplacementBaseMotion::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimDisplacementRestraint', 'FeatureHistory');return false;">SimDisplacementRestraint::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimFilmCondition', 'FeatureHistory');return false;">SimFilmCondition::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimForce', 'FeatureHistory');return false;">SimForce::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimGravity', 'FeatureHistory');return false;">SimGravity::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimHeatFlux', 'FeatureHistory');return false;">SimHeatFlux::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimInertiaRelief', 'FeatureHistory');return false;">SimInertiaRelief::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimOutput', 'FeatureHistory');return false;">SimOutput::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimPlanarSymmetry', 'FeatureHistory');return false;">SimPlanarSymmetry::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimPrescribedTemperature', 'FeatureHistory');return false;">SimPrescribedTemperature::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimPressure', 'FeatureHistory');return false;">SimPressure::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimRadiationAmbient', 'FeatureHistory');return false;">SimRadiationAmbient::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimRadiationCavityApprox', 'FeatureHistory');return false;">SimRadiationCavityApprox::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimRemoteForce', 'FeatureHistory');return false;">SimRemoteForce::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimRemoteTorque', 'FeatureHistory');return false;">SimRemoteTorque::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimRotaryAccelerationForce', 'FeatureHistory');return false;">SimRotaryAccelerationForce::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimSlidingVelocity', 'FeatureHistory');return false;">SimSlidingVelocity::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimTemperature', 'FeatureHistory');return false;">SimTemperature::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimTorque', 'FeatureHistory');return false;">SimTorque::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimVelocityBaseMotion', 'FeatureHistory');return false;">SimVelocityBaseMotion::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimVolumetricHeatSource', 'FeatureHistory');return false;">SimVolumetricHeatSource::FeatureHistory</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimExplicitDynamicStep', 'LinearBulkViscosity');return false;">SimExplicitDynamicStep::LinearBulkViscosity</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimFeatureState', 'PropagationState');return false;">SimFeatureState::PropagationState</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimExplicitDynamicStep', 'QuadraticBulkViscosity');return false;">SimExplicitDynamicStep::QuadraticBulkViscosity</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimExplicitDynamicStep', 'RestartStepProperty');return false;">SimExplicitDynamicStep::RestartStepProperty</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'method', 'SimImplicitDynamicStep', 'RestartStepProperty');return false;">SimImplicitDynamicStep::RestartStepProperty</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimMembraneSection', 'AddRebarLayer');return false;">SimMembraneSection::AddRebarLayer</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'AddRebarLayer');return false;">SimShellSection::AddRebarLayer</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimSurfaceSection', 'AddRebarLayer');return false;">SimSurfaceSection::AddRebarLayer</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimMembraneSection', 'AllRebarLayers');return false;">SimMembraneSection::AllRebarLayers</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'AllRebarLayers');return false;">SimShellSection::AllRebarLayers</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimSurfaceSection', 'AllRebarLayers');return false;">SimSurfaceSection::AllRebarLayers</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimCompositeShellSection', 'CompositeLayupType');return false;">SimCompositeShellSection::CompositeLayupType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'FieldPointSpecified');return false;">SimShellSection::FieldPointSpecified</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimCompositeShellSection', 'FieldPointSpecifiedFlag');return false;">SimCompositeShellSection::FieldPointSpecifiedFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimCompositeShellSection', 'FieldPoints');return false;">SimCompositeShellSection::FieldPoints</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'FieldPoints');return false;">SimShellSection::FieldPoints</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimTie', 'FluidPotentialFlag');return false;">SimTie::FluidPotentialFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimBeamProfile', 'GetShearCenter');return false;">SimBeamProfile::GetShearCenter</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'InfiniteMaxThicknessIntervalFlag');return false;">SimShellSection::InfiniteMaxThicknessIntervalFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSectionOptions', 'Interval');return false;">SimShellSectionOptions::Interval</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'Interval');return false;">SimShellSection::Interval</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSectionOptions', 'IntervalFlag');return false;">SimShellSectionOptions::IntervalFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'IntervalFlag');return false;">SimShellSection::IntervalFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimTie', 'IonConcentrationFlag');return false;">SimTie::IonConcentrationFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimCompositeShellSection', 'LayerMaterialSupport');return false;">SimCompositeShellSection::LayerMaterialSupport</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSectionNodalThickness', 'MapThicknessToNodesFlag');return false;">SimShellSectionNodalThickness::MapThicknessToNodesFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'MapThicknessToNodesFlag');return false;">SimShellSection::MapThicknessToNodesFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimCompositeShellSection', 'NonstructuralPlyAngle');return false;">SimCompositeShellSection::NonstructuralPlyAngle</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimCompositeShellSection', 'NonstructuralPlyFlag');return false;">SimCompositeShellSection::NonstructuralPlyFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimCompositeShellSection', 'NonstructuralPlyMaterial');return false;">SimCompositeShellSection::NonstructuralPlyMaterial</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimCompositeShellSection', 'NonstructuralPlyPosition');return false;">SimCompositeShellSection::NonstructuralPlyPosition</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimCompositeShellSection', 'NumIntPointsPerLayerMaterial');return false;">SimCompositeShellSection::NumIntPointsPerLayerMaterial</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimTie', 'PorePressureFlag');return false;">SimTie::PorePressureFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimMembraneSection', 'RebarLayersOrientation');return false;">SimMembraneSection::RebarLayersOrientation</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'RebarLayersOrientation');return false;">SimShellSection::RebarLayersOrientation</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimSurfaceSection', 'RebarLayersOrientation');return false;">SimSurfaceSection::RebarLayersOrientation</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimMembraneSection', 'Rebars');return false;">SimMembraneSection::Rebars</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'Rebars');return false;">SimShellSection::Rebars</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimSurfaceSection', 'Rebars');return false;">SimSurfaceSection::Rebars</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimMembraneSection', 'ReducedIntegrationFlag');return false;">SimMembraneSection::ReducedIntegrationFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimBeamProfile', 'SetShearCenter');return false;">SimBeamProfile::SetShearCenter</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimTie', 'SolidPotentialFlag');return false;">SimTie::SolidPotentialFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSectionOptions', 'SplitByThicknessOffsetFlag');return false;">SimShellSectionOptions::SplitByThicknessOffsetFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'SplitByThicknessOffsetFlag');return false;">SimShellSection::SplitByThicknessOffsetFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimTie', 'TemperatureFlag');return false;">SimTie::TemperatureFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'ThicknessGroupingFlag');return false;">SimShellSection::ThicknessGroupingFlag</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'method', 'SimShellSection', 'ThicknessGroupingValue');return false;">SimShellSection::ThicknessGroupingValue</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<thead>
+	<tr>
+		<th colspan="2"><a name="Newenum"></a>New Enums</th>
+	</tr>
+	<thead>
+	<tbody>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'enum', 'CatPartitionLimitType');return false;">CatPartitionLimitType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpChoreographyEventType');return false;">DELOlpChoreographyEventType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimBasePlaneType');return false;">SimBasePlaneType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimCalculatedResponseVariableType');return false;">SimCalculatedResponseVariableType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimCastingControlType');return false;">SimCastingControlType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimCenterOfGravityConstraintType');return false;">SimCenterOfGravityConstraintType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimDensityUpdateStrategyType');return false;">SimDensityUpdateStrategyType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimDesignResponseDirection');return false;">SimDesignResponseDirection</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimDisplacementConstraintType');return false;">SimDisplacementConstraintType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimFastenerForceType');return false;">SimFastenerForceType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimFrequencyResponseVariableType');return false;">SimFrequencyResponseVariableType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimMassConstraintType');return false;">SimMassConstraintType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimMaterialInterpolationType');return false;">SimMaterialInterpolationType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimMomentOfInertiaComponent');return false;">SimMomentOfInertiaComponent</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimNodalUpdateType');return false;">SimNodalUpdateType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimOptimizationTargetMassType');return false;">SimOptimizationTargetMassType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimOptimizationTaskType');return false;">SimOptimizationTaskType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimPenetrationCheckType');return false;">SimPenetrationCheckType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimReactionForceConstraintType');return false;">SimReactionForceConstraintType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimReferenceModeType');return false;">SimReferenceModeType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimRemoveSoftElementsType');return false;">SimRemoveSoftElementsType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimStrainType');return false;">SimStrainType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAFeaOptimizationIDLItf', 'enum', 'SimVectorUpdateType');return false;">SimVectorUpdateType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaBaseIDLItf', 'enum', 'SimSymmetricTensorFieldVariationType');return false;">SimSymmetricTensorFieldVariationType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'enum', 'SimCalculationBetweenSupports');return false;">SimCalculationBetweenSupports</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'enum', 'SimSectionPointLocations');return false;">SimSectionPointLocations</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'enum', 'SimStrainGaugePositionType');return false;">SimStrainGaugePositionType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaResultsIDLItf', 'enum', 'SimValuePerSupportOption');return false;">SimValuePerSupportOption</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimAmplitudeDefinitionType');return false;">SimAmplitudeDefinitionType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimAmplitudeTimeSpanType');return false;">SimAmplitudeTimeSpanType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimCoupledCreepIntegration');return false;">SimCoupledCreepIntegration</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimCoupledSolutionTechnique');return false;">SimCoupledSolutionTechnique</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimCoupledThermalResponseType');return false;">SimCoupledThermalResponseType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimDirectHarmonicResponseStepIntervalType');return false;">SimDirectHarmonicResponseStepIntervalType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimDirectHarmonicResponseStepScaleType');return false;">SimDirectHarmonicResponseStepScaleType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimDirectHarmonicResponseStepTableColumn');return false;">SimDirectHarmonicResponseStepTableColumn</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimFrequencyBasedDampingDampingType');return false;">SimFrequencyBasedDampingDampingType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimFrequencyBasedDampingModesType');return false;">SimFrequencyBasedDampingModesType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimFrequencyBasedDampingTableColumn');return false;">SimFrequencyBasedDampingTableColumn</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimGeneralGlobalDampingModesType');return false;">SimGeneralGlobalDampingModesType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimInitialStressType');return false;">SimInitialStressType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimMassScalingMassScalingBehavior');return false;">SimMassScalingMassScalingBehavior</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimMassScalingMassScalingMethod');return false;">SimMassScalingMassScalingMethod</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimModeBasedDampingDampingType');return false;">SimModeBasedDampingDampingType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimModeBasedDampingTableColumn');return false;">SimModeBasedDampingTableColumn</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimPeriodicAmplitudeColumnType');return false;">SimPeriodicAmplitudeColumnType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimRandomGlobalDampingModesType');return false;">SimRandomGlobalDampingModesType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimRandomVibrationStepDampingDefinition');return false;">SimRandomVibrationStepDampingDefinition</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimRandomVibrationStepTableColumn');return false;">SimRandomVibrationStepTableColumn</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimResponseSpectrumStepAlignAxisType');return false;">SimResponseSpectrumStepAlignAxisType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimResponseSpectrumStepDampingDefinition');return false;">SimResponseSpectrumStepDampingDefinition</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimResponseSpectrumStepDirectionType');return false;">SimResponseSpectrumStepDirectionType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimResponseSpectrumStepDirectionalSummationMethod');return false;">SimResponseSpectrumStepDirectionalSummationMethod</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimResponseSpectrumStepModalSummationMethod');return false;">SimResponseSpectrumStepModalSummationMethod</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimResponseSpectrumStepRigidResponseMethod');return false;">SimResponseSpectrumStepRigidResponseMethod</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimShellEdgeLoadTractionType');return false;">SimShellEdgeLoadTractionType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimSmoothStepAmplitudeDomainType');return false;">SimSmoothStepAmplitudeDomainType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimSpectrumDefinitionType');return false;">SimSpectrumDefinitionType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimSpectrumTableColumn');return false;">SimSpectrumTableColumn</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimStaticRiksStepDisplacementType');return false;">SimStaticRiksStepDisplacementType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralIDLItf', 'enum', 'SimSurfaceBasedContactDiscretizationMethod');return false;">SimSurfaceBasedContactDiscretizationMethod</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'enum', 'SimCohesiveMechanicalResponse');return false;">SimCohesiveMechanicalResponse</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'enum', 'SimCompositeLayupType');return false;">SimCompositeLayupType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'enum', 'SimConversionType');return false;">SimConversionType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'enum', 'SimFunctionOrder');return false;">SimFunctionOrder</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'enum', 'SimRebarAttributeType');return false;">SimRebarAttributeType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'enum', 'SimRebarGeometryType');return false;">SimRebarGeometryType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'enum', 'SimThicknessType');return false;">SimThicknessType</a>
+		</td>
+   <td>
+
+	</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!--           -=-=-=-=-= END INSERT GEN NEWS HERE -=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2" style="height: 24px"><a name="Modif"></a>Modified Objects, Methods and Properties</th>
+	</tr>
+		<tr>
+		<td colspan="2">The following object has been removed into new type 
+		libraries. This has no impact on vbscript/CATScript macros and should have no impact on VBA project as well, however, in case of problem, apply the procedure described in the <a href="../CAAScdInfInfrastructure/CAAInfHints.htm#Compatibility">Inter Release Compatibility</a> 
+		paragrah:
+		<ul>
+				<li><a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaFoundationIDLItf', 'interface', 'SimInitializationService');return false;">SimInitializationService</a>, moved from SMAMpaCAStructuralIDLItfTypeLib (SMAMpaCAStructuralIDLItfTypeLib.tlb.tlb) into SMAMpaFoundationIDLItfTypeLib (SMAMpaFoundationIDLItfTypeLib.tlb).</li>
+		<li>SimSpaceTimeField and SimMassScaling objects have been moved from SMAMpaStructuralIDLItf type library into SMAMpaBaseIDLItf type library.</li>
+		<li>SMAIAMpaMassScaling object has been moved from SMAMpaStructuralModelIDLItf type library into SMAMpaStructuralIDLItfTypeLib type library.<br /></li>
+		<li>Properties SimCompositeShellSection::NonStructuralPlyAngle, SimCompositeShellSection::NonStructuralPlyFlag, SimCompositeShellSection::NonStructuralPlyMaterial,
+		<li>Properties SimShellSectionOptions::InfiniteMaxThicknessIntervalFlag, SimShellSectionOptions::ThicknessGroupingFlag and SimShellSectionOptions::ThicknessGroupingValue, deprecated since 3DEXPERIENCE R2020x, have been replaced by properties IntervalFlag, SplitByThicknessOffsetFlag and Interval.   
+			for example: Non<strong>s</strong>tructuralPlyFlag. Macros written in VBA or VBScript languages are not impacted.</li>
+		<li>Property DELMIAOlpExpressionFixerDownload::FixSubscriptedVariables has been moved into base class DELMIAOlpExpressionFixer with not impact on existing macros.
+		<li>Signature of method ManufacturingPartOperationPosition::GetTopPlaneDirectionInversion was non functional and has been fixed.
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		
+	</tr>
+		<tr>
+	</tr>
+<tr>
+	</tr>
+		<tr>
+	</tr>
+
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="Suppress"></a>Removed Objects, Collections, Methods, 
+		and Properties </th>
+	</tr>
+	<tr>
+		<td colspan="2">SimSpecsRepManager2 object has been removed, its methods have been moved into SimSpecsRepManager object.
+		</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,245 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATStrIDLItf StrDetailFeature (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATStrIDLItf.htm" href="../CATStrIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATStrIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "StrDetailFeature"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> StrDetailFeature<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_StrDetailFeature_22115','StrDetailFeature','0');</script>
+<section id='maindesc'>
+<b><i> Object to manage the Endcut / Slot.</i></b><br>
+ 
+ There are two ways to initialize the attributes of a detailing feature:
+   - Automatic way: use InitByName() to automatically set the type and parameters from the PRMTable
+   - Manual way: use Type, FeatureName and SetParameters() to explicitly set the values. 
+ <br><b>Role</b>: To Manage Endcut / Slot.<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#FeatureName"><b>FeatureName</b></a>
+</td><td  id='tdright'>    Returns or Sets the name of this endcut/slot.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Type"><b>Type</b></a>
+</td><td  id='tdright'>    Returns or Sets the type of this endcut / slot.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetCoordinates"><b>GetCoordinates</b></a>
+</td><td  id='tdright'>    Retrieves the location where the connection is
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetParameters"><b>GetParameters</b></a>
+</td><td  id='tdright'>   Returns the list of parameters of this endcut / slot.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#InitByName"><b>InitByName</b></a>
+</td><td  id='tdright'>  This method is for automatic initialization of Slot / Endcut parameters
+	The name of the Slot / Endcut will be used to find the type and list of parameters in the PRMTable.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetParameters"><b>SetParameters</b></a>
+</td><td  id='tdright'>   	Sets the list of parameters of this endcut / slot.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Update"><b>Update</b></a>
+</td><td  id='tdright'>    Update the connection coordinate and visulization for endcut / slot.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="FeatureName"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FeatureName</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+   Returns or Sets the name of this endcut/slot. 
+
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example sets <code>FeatureName</code> of the Slot/Endcut.
+ <pre>
+ ObjStrDetailFeature.<font color="red">FeatureName</font> = "RECT_UNI_WT"
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="Type"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Type</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+   Returns or Sets the type of this endcut / slot. 
+    -  Build  In  =>  EndcutName(ShortPoint/LongPoint/Weld/Miter/MetalToMetal)  
+    -  Generic    =>  EndcutType(Weld/Trim/Snip/...)  
+                                 EndcutName(Generic)  
+    -  Slot          =>  SlotName(Slot_Buld1/...)  
+                                  SlotType(Rect/Boot/Gate/Bulb/Flar/...)  
+
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example retrieves <code>Type</code> of the Slot/Endcut.
+ <pre>
+ Dim ObjStrDetailFeature As StrDetailFeature
+ Set ObjStrDetailFeature = ObjStrSlot.StrDetailFeature
+ Type = ObjStrDetailFeature.<font color="red">Type</font>
+ </pre>
+</dd>
+</dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetCoordinates"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetCoordinates</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oCoordinate</span>)</span></span></dt>
+  <dd class='ddmethod'>
+   Retrieves the location where the connection is
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'>  oCoordinate</span></dt>
+   <dd>         Coordinate.   
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example retrieves location of connection.
+ <pre>
+  Dim ConnCoord(3) As Variant
+  ObjStrDetailFeature.<font color="red">GetCoordinates</font> ConnCoord
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="GetParameters"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetParameters</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('StrParameters','StrParameters')</script> </span></dt>
+  <dd class='ddmethod'>
+  Returns the list of parameters of this endcut / slot.
+
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example retrieves list of parameters set on Slot/Endcut while creation.
+ <pre>
+  Dim SlotParameters As StrParameters
+  Set SlotParameters = ObjStrDetailFeature.<font color="red">GetParameters</font> 
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="InitByName"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>InitByName</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ This method is for automatic initialization of Slot / Endcut parameters
+	The name of the Slot / Endcut will be used to find the type and list of parameters in the PRMTable.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd>     Name.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetParameters"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetParameters</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAParameters','CATIAParameters')</script> <span class='param'>iParamters</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iParamRoleList</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  	Sets the list of parameters of this endcut / slot. Those parameters are copied and aggregated by
+ this endcut / slot. 
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iParamters</span></dt>
+   <dd>     List of parameters.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iParamRoleList</span></dt>
+   <dd>     List of names of parameters.  
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example sets parameters of the Slot.
+ <pre>
+  'This will retrieve part parameters
+  Set ObjPartParameters = ObjPart.Parameters
+  'Aggregate parameters list under iObjSfdPanel 
+  Dim HB As AnyObject
+  Set HB = iObjSfdPanel
+  Set HBParameters = ObjPartParameters.SubList(HB, True)
+  'Create parameters  
+  Dim DBB As Dimension
+  Set DBB = HBParameters.CreateDimension("DBB", "LENGTH", "300")
+  Dim DR As Dimension
+  Set DR = HBParameters.CreateDimension("DR", "LENGTH", "200")
+  Dim DL As Dimension
+  Set DL = HBParameters.CreateDimension("DL", "LENGTH", "200")
+  Dim DTT As Dimension
+  Set DTT = HBParameters.CreateDimension("DTT", "LENGTH", "50")
+  'Create an array which will contain the role of each parameter
+  Dim ParamRoles(3) As Variant
+  ParamRoles(1) = "DBB"
+  ParamRoles(2) = "DR"
+  ParamRoles(3) = "DL"
+  ParamRoles(0) = "DTT"
+  'Get reference of element which will be impacted by this Slot/EndCut
+  Set RefSfdPanel = ObjPart.CreateReferenceFromObject(iObjSfdPanel)
+  'Set parameters
+  ObjStrDetailFeature.<font color="red">SetParameters</font> HBParameters, ParamRoles
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="Update"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Update</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+   Update the connection coordinate and visulization for endcut / slot.
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

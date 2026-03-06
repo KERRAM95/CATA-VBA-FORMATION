@@ -1,0 +1,118 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSpaceReferenceSystem.CATScript</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample shows usage of Space Reference System APIs.</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Retrieve active editor from the opened model.</span>
+<span class="comment">'   2- Retrieves Selection object.</span>
+<span class="comment">'   3- Retrieves SrsPart object.</span>
+<span class="comment">'   4- Retrieves a grid set.</span>
+<span class="comment">'   5- Retrieves the group faces of the grid set</span>
+<span class="comment">'   6- Retrieves a grid face in the grid set</span>
+<span class="comment">'   7- Retrieves short name of the grid face</span>
+<span class="comment">'   8- Sets short name of the grid face</span>
+<span class="comment">'   9- Retrieves the category of the grid face</span>
+<span class="comment">'   10- Sets a new category on the grid face</span>
+<span class="comment">'   11- Retrieves the Reference hull surface of the SRS part</span>
+<span class="comment">'   12- Retrieves the MidShip plane of the SRS part</span>
+<span class="comment">'   13- Retrieves the CentreLine plane of the SRS part</span>
+<span class="comment">'   14- Updates the Part object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Sub</span> CATMain()
+<span class="comment">'   1- Model &quot;SRS_VB_TEST&quot; is already opened and product editor is active</span>
+    <span class="keyword">Dim</span> SRSPrdEditor <span class="keyword">As</span> Editor
+    <span class="keyword">Set</span> SRSPrdEditor = CATIA.ActiveEditor
+    
+<span class="comment">'   2- Retrives selection object</span>
+    <span class="keyword">Set</span> SRSProdSel = SRSPrdEditor.Selection
+
+<span class="comment">'   3- Retrives Srspart object</span>
+    <span class="keyword">Dim</span> productService<span class="keyword"> As</span> PLMProductService
+    <span class="keyword">Set</span> productService = SRSPrdEditor.GetService(&quot;PLMProductService&quot;)
+    <span class="keyword">Dim</span> ObjVPMRootOccurrence<span class="keyword"> As</span> VPMRootOccurrence
+    <span class="keyword">Set</span> ObjVPMRootOccurrence = productService.RootOccurrence
+    <span class="keyword">Dim</span> ObjVPMReference <span class="keyword">As</span> VPMReference
+    <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+    <span class="keyword">Dim</span> ObjVPMRepInstances<span class="keyword"> As</span> VPMRepInstances
+    <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+    <span class="keyword">Set</span> ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+    <span class="keyword">Dim</span> ObjPart <span class="keyword">As</span> Part
+    <span class="keyword">Set</span> ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+
+    SRSProdSel.Add ObjPart
+    <span class="keyword">Set</span> ObjSrsPart = SRSProdSel.FindObject(&quot;CATIASrsPart&quot;)
+        
+<span class="comment">'   4- Retrieves Grid Set from part.</span>
+    <span class="keyword">Dim</span> ObjSrsGridSets <span class="keyword">As</span> SrsGridSets
+    <span class="keyword">Set</span> ObjSrsGridSets = ObjSrsPart.SrsGridSets
+    
+    <span class="keyword">Dim</span> ObjSrsGridSet <span class="keyword">As</span> SrsGridSet
+    <span class="keyword">Set</span> ObjSrsGridSet = ObjSrsGridSets.Item(1)
+
+<span class="comment">'   5- Group faces of the grid set</span>
+    <span class="keyword">Dim</span> ObjSrsLastGridFacesAfr <span class="keyword">As</span> SrsGridFaces
+    <span class="keyword">Dim</span> ObjSrsLastGridFacesBfr <span class="keyword">As</span> SrsGridFaces
+    
+    ObjSrsGridSet.GetGroupFaces ObjSrsLastGridFacesAfr, ObjSrsLastGridFacesBfr
+    
+<span class="comment">'   6- Retrieves grid face in the grid set</span>
+    <span class="keyword">Dim</span> ObjSrsGridFace <span class="keyword">As</span> SrsGridFace
+    <span class="keyword">Set</span> ObjSrsGridFace = ObjSrsLastGridFacesAfr.Item(1)
+
+<span class="comment">'   7- Retrieves short name of the grid face</span>
+    <span class="keyword">Dim</span> StrShortName <span class="keyword">As</span> String
+    StrShortName = ObjSrsGridFace.ShortName
+
+<span class="comment">'   8- Set short name of the grid face</span>
+    StrShortName = &quot;T.89&quot;
+    ObjSrsGridFace.ShortName = StrShortName
+
+<span class="comment">'   9- Retrieves Category of the grid face</span>
+    <span class="keyword">Dim</span> strCategory <span class="keyword">As</span> String
+    strCategory = ObjSrsGridFace.Category
+
+<span class="comment">'   10- Set a new category of the grid face</span>
+    strCategory = &quot;WebFrame&quot;
+    ObjSrsGridFace.Category = strCategory
+
+<span class="comment">'   11- Retrieves Reference Hull Surface of the Srs part</span>
+    <span class="keyword">Dim</span> ObjReferenceSurface <span class="keyword">As</span> Reference
+    <span class="keyword">Set</span> ObjReferenceSurface = ObjSrsPart.ReferenceSurface
+
+<span class="comment">'   12- Retrieves Mid ship of the Srs part</span>
+    <span class="keyword">Dim</span> ObjSrsMidShip <span class="keyword">As</span> SrsMidShip
+    <span class="keyword">Set</span> ObjSrsMidShip = ObjSrsPart.MidShip
+    
+<span class="comment">'   13- Retrieves Centre Line of the Srs part</span>
+    <span class="keyword">Dim</span> ObjSrsCentreLine <span class="keyword">As</span> SrsCentreLine
+    <span class="keyword">Set</span> ObjSrsCentreLine = ObjSrsPart.CentreLine
+
+<span class="comment">'   14- Update the Srs part</span>
+    ObjPart.Update
+<span class="keyword">End Sub</span>
+
+</pre>
+
+</body>
+
+</html>

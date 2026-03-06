@@ -1,0 +1,328 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateFlangeSource.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates flange.</span>
+<span class="comment">'This script requires sdd model.</span>
+<span class="comment">'</span>
+<span class="comment">'Steps:</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;.</span>
+<span class="comment">'   2- Retrieves Part object. </span>
+<span class="comment">'   3- Retrieves Service manager. (RfgService)</span>
+<span class="comment">'   4- Retrieves SddProductPlate object.</span>
+<span class="comment">'   5- Create Flange </span>
+<span class="comment">'       5.1- Retrieves the Flange object from the plate object.</span>
+<span class="comment">'       5.2- Set the Type of conversion for flange.</span>
+<span class="comment">'            1- Centered  </span>
+<span class="comment">'            2- Tangent </span>
+<span class="comment">'       5.3- Set the Flange Start Limit. </span>
+<span class="comment">'       5.4- Set the Flange End Limit. </span>
+<span class="comment">'       5.5- Set and get the Width Measurement Type. </span>
+<span class="comment">'            1- FlangeWidthToInnerFace </span>
+<span class="comment">'            2- FlangeWidthToOuterFace </span>
+<span class="comment">'            3- FlangeWidthToNeutralFibre </span>
+<span class="comment">'       5.6- Get the operated Plate. </span>
+<span class="comment">'       5.7- Get the type of conversion for Flange. </span>
+<span class="comment">'       5.8- Get the Bending Angle and valuate it. </span>
+<span class="comment">'       5.9- Get the Bending Radius and valuate it. </span>
+<span class="comment">'       5.10- Get the Flange Start Limit. </span>
+<span class="comment">'       5.11- Get the Flange End Limit. </span>
+<span class="comment">'       5.12- Get the Flange Width and valuate it. </span>
+<span class="comment">'       5.13- Get the Width Measurement Type for Flange. </span>
+<span class="comment">'       5.14- Get the StartEndCutOffset and valuate it. </span>
+<span class="comment">'       5.15- Get the EndEndCutOffset and valuate it. </span>
+<span class="comment">'       5.16- Get the StartEndCutRadius and valuate it. </span>
+<span class="comment">'       5.17- Get the EndEndCutRadius and valuate it. </span>
+<span class="comment">'       5.18- Get the StartEndCutDistance and valuate it. </span>
+<span class="comment">'       5.19- Get the EndEndCutDistance and valuate it. </span>
+<span class="comment">'       5.20- Get the StartEndCutAngle and valuate it. </span>
+<span class="comment">'       5.21- Get the EndEndCutAngle and valuate it. </span>
+<span class="comment">'       5.22- Set the Edges on which flanges to be created. </span>
+<span class="comment">'       5.23- Get the Edge of plate. </span>
+<span class="comment">'   6- Update the plate</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+Language = &quot;VBSCRIPT&quot; 
+<span class="keyword">Dim </span>Manager<span class="keyword"> As </span>RfgService
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>SDDProdSel<span class="keyword"> As </span>Selection
+
+
+<span class="keyword">Sub </span>CATMain()
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="keyword">    Dim </span>SDDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SddProduct&quot;
+    OpenProduct prdName , SDDPrdEditor
+    
+<span class="keyword">    Set </span>SDDProdSel = SDDPrdEditor.Selection
+
+<span class="comment">'   2- Retrieves Part object </span>
+<span class="keyword">    Dim </span>product1Service  <span class="keyword"> As </span>PLMProductService
+<span class="keyword">    Set </span>product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+<span class="keyword">    Dim </span>ObjVPMRootOccurrence  <span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">    Set </span>ObjVPMRootOccurrence = product1Service.RootOccurrence
+<span class="keyword">    Dim </span>ObjVPMReference<span class="keyword"> As </span>VPMReference
+<span class="keyword">    Set </span>ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+<span class="keyword">    Dim </span>ObjVPMRepInstances<span class="keyword"> As </span>VPMRepInstances
+<span class="keyword">    Set </span>ObjVPMRepInstances = ObjVPMReference.RepInstances
+<span class="keyword">    Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+
+<span class="comment">'   3- Retrieves Service manager (RfgService)</span>
+<span class="keyword">    Set </span>Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+    
+<span class="comment">'   4- Retrieves SddProductPlate object</span>
+<span class="keyword">    Set </span>ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">    Set </span>PlateRef = ListOfInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>PlateRepInstances = PlateRef.RepInstances
+<span class="keyword">    Set </span>PlateRepInstReference = PlateRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>PlatePart = PlateRepInstReference.GetItem(&quot;Part&quot;)
+  
+<span class="keyword">    Dim</span> ObjSddProductPlate As SddProductPlate
+    SDDProdSel.Add PlateRef
+<span class="keyword">    Set </span>ObjSddProductPlate = SDDProdSel.FindObject(&quot;CATIASddProductPlate&quot;)
+<span class="keyword">    Dim</span> ObjSddPlate As SddPlate
+<span class="keyword">    Set </span>ObjSddPlate = ObjSddProductPlate.SddPlate
+
+<span class="comment">'   5- Create Flange</span>
+<span class="keyword">    Dim </span>ObjStrFlange <span class="keyword"> As </span>StrFlange
+    CreateFlange ObjSddPlate, ObjStrFlange
+    
+<span class="comment">'   6- Update the plate</span>
+    ObjSddProductPlate.Update
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Calling CreateFlange</span>
+<span class="comment">'</span>
+<span class="comment">'Steps:</span>
+<span class="comment">'       5.1- Retrieves the Flange object from the plate object.</span>
+<span class="comment">'       5.2- Set the Type of conversion for flange.</span>
+<span class="comment">'            1- Centered  </span>
+<span class="comment">'            2- Tangent </span>
+<span class="comment">'       5.3- Set the Flange Start Limit. </span>
+<span class="comment">'       5.4- Set the Flange End Limit. </span>
+<span class="comment">'       5.5- Set and get the Width Measurement Type. </span>
+<span class="comment">'            1- FlangeWidthToInnerFace </span>
+<span class="comment">'            2- FlangeWidthToOuterFace </span>
+<span class="comment">'            3- FlangeWidthToNeutralFibre </span>
+<span class="comment">'       5.6- Get the operated Plate. </span>
+<span class="comment">'       5.7- Get the type of conversion for Flange. </span>
+<span class="comment">'       5.8- Get the Bending Angle and valuate it. </span>
+<span class="comment">'       5.9- Get the Bending Radius and valuate it. </span>
+<span class="comment">'       5.10- Get the Flange Start Limit. </span>
+<span class="comment">'       5.11- Get the Flange End Limit. </span>
+<span class="comment">'       5.12- Get the Flange Width and valuate it. </span>
+<span class="comment">'       5.13- Get the Width Measurement Type for Flange. </span>
+<span class="comment">'       5.14- Get the StartEndCutOffset and valuate it. </span>
+<span class="comment">'       5.15- Get the EndEndCutOffset and valuate it. </span>
+<span class="comment">'       5.16- Get the StartEndCutRadius and valuate it. </span>
+<span class="comment">'       5.17- Get the EndEndCutRadius and valuate it. </span>
+<span class="comment">'       5.18- Get the StartEndCutDistance and valuate it. </span>
+<span class="comment">'       5.19- Get the EndEndCutDistance and valuate it. </span>
+<span class="comment">'       5.20- Get the StartEndCutAngle and valuate it. </span>
+<span class="comment">'       5.21- Get the EndEndCutAngle and valuate it. </span>
+<span class="comment">'       5.22- Set the Edges on which flanges to be created. </span>
+<span class="comment">'       5.23- Get the Edge of plate. </span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Sub </span>CreateFlange(iObjSddPlate As SddPlate, oObjStrFlange As StrFlange) 
+
+<span class="comment">' 5.1- Retrieves the Flange object from the plate object.</span>
+  <span class="comment">'Add Flange</span>     
+  AddFlange iObjSddPlate, oObjStrFlange
+
+<span class="comment">'   5.2- Set the Type of conversion for flange.</span>
+<span class="comment">'        1- Centered  </span>
+<span class="comment">'        2- Tangent </span>
+    <span class="comment">'Set Type</span>
+    oObjStrFlange.Type = 1
+    
+<span class="comment">'   5.3- Set the Flange Start Limit. </span>
+    <span class="comment">'Set FlangeStartLimit </span>
+    Set RefSddPlane = ObjPart.FindObjectByName(&quot;CROSS.40&quot;)
+    Dim ObjSddReferencePlane_1 As Reference
+    SDDProdSel.Add RefSddPlane
+    Set ObjSddReferencePlane_1 = SDDProdSel.FindObject(&quot;CATIAReference&quot;)
+    oObjStrFlange.FlangeStartLimit = ObjSddReferencePlane_1
+
+<span class="comment">'   5.4- Set the Flange End Limit. </span>
+    <span class="comment">'Set FlangeEndLimit </span>
+    Set RefSddPlane = ObjPart.FindObjectByName(&quot;CROSS.24&quot;)
+    Dim ObjSddReferencePlane_2 As Reference
+    SDDProdSel.Add RefSddPlane
+    Set ObjSddReferencePlane_2 = SDDProdSel.FindObject(&quot;CATIAReference&quot;)
+    oObjStrFlange.FlangeEndLimit = ObjSddReferencePlane_2
+    
+<span class="comment">'   5.5- Set and get the Width Measurement Type. </span>
+<span class="comment">'        1- FlangeWidthToInnerFace  </span>
+<span class="comment">'        2- FlangeWidthToOuterFace </span>
+<span class="comment">'        3- FlangeWidthToNeutralFibre </span>
+    <span class="comment">'Set WidthMeasurementType</span>
+    oObjStrFlange.WidthMeasurementType = 1
+    
+<span class="comment">'   5.6- Get the operated Plate. </span>
+    <span class="comment">'Get OperatedPlate</span>
+    Dim ObjSddPlate_1 As Reference
+    Set ObjSddPlate_1 = oObjStrFlange.OperatedPlate 
+    
+<span class="comment">'   5.7- Get the type of conversion for Flange. </span>
+    <span class="comment">'Get Type</span>
+    Dim oType As long
+    oType = oObjStrFlange.Type    
+    
+<span class="comment">'   5.8- Get the Bending Angle and valuate it. </span>    
+    <span class="comment">'Get BendingAngle</span>
+    Dim oBendingAngle As Parameter
+    Set oBendingAngle = oObjStrFlange.BendingAngle
+    oBendingAngle.ValuateFromString(&quot;120deg&quot;)
+    
+<span class="comment">'   5.9- Get the Bending Radius and valuate it. </span>
+    <span class="comment">'Get BendingRadius</span>
+    Dim oBendingRadius As Parameter
+    Set oBendingRadius = oObjStrFlange.BendingRadius
+    oBendingRadius.ValuateFromString(&quot;8mm&quot;)
+    
+<span class="comment">'   5.10- Get the Flange Start Limit. </span>
+    <span class="comment">'Get FlangeStartLimit</span>
+    Dim oFlangeStartLimit As Reference
+    Set oFlangeStartLimit = oObjStrFlange.FlangeStartLimit
+    
+<span class="comment">'   5.11- Get the Flange End Limit. </span>
+    <span class="comment">'Get FlangeEndLimit</span>
+    Dim oFlangeEndLimit As Reference
+    Set oFlangeEndLimit = oObjStrFlange.FlangeEndLimit
+    
+<span class="comment">'   5.12- Get the Flange Width and valuate it. </span>
+    <span class="comment">'Get FlangeWidth</span>
+    Dim oFlangeWidth As Parameter
+    Set oFlangeWidth = oObjStrFlange.FlangeWidth
+    oFlangeWidth.ValuateFromString(&quot;500mm&quot;)
+		 
+<span class="comment">'   5.13- Get the Width Measurement Type for Flange. </span>
+    <span class="comment">'Get WidthMeasurementType</span>
+    Dim oWidthMeasurementType As long
+    oWidthMeasurementType = oObjStrFlange.WidthMeasurementType  
+    
+<span class="comment">'   5.14- Get the StartEndCutOffset and valuate it. </span>
+    <span class="comment">'Get StartEndCutOffset</span>
+    Dim oStartEndCutOffset As Parameter
+    Set oStartEndCutOffset = oObjStrFlange.StartEndCutOffset
+    oStartEndCutOffset.ValuateFromString(&quot;10mm&quot;)
+    
+<span class="comment">'   5.15- Get the EndEndCutOffset and valuate it. </span>
+    <span class="comment">'Get StartEndCutOffset</span>
+    Dim oEndEndCutOffset As Parameter
+    Set oEndEndCutOffset = oObjStrFlange.EndEndCutOffset 
+    oEndEndCutOffset.ValuateFromString(&quot;10mm&quot;)
+
+<span class="comment">'   5.16- Get the StartEndCutRadius and valuate it. </span>
+    <span class="comment">'Get StartEndCutRadius </span>
+    Dim oStartEndCutRadius As Parameter
+    Set oStartEndCutRadius = oObjStrFlange.StartEndCutRadius 
+    oStartEndCutRadius.ValuateFromString(&quot;50mm&quot;)
+    
+<span class="comment">'   5.17- Get the EndEndCutRadius and valuate it. </span>
+    <span class="comment">'Get EndEndCutRadius </span>
+    Dim oEndEndCutRadius As Parameter
+    Set oEndEndCutRadius = oObjStrFlange.EndEndCutRadius 
+    oEndEndCutRadius.ValuateFromString(&quot;50mm&quot;)
+    
+<span class="comment">'   5.18- Get the StartEndCutDistance and valuate it. </span>
+    <span class="comment">'Get StartEndCutDistance </span>
+    Dim oStartEndCutDistance As Parameter
+    Set oStartEndCutDistance = oObjStrFlange.StartEndCutDistance
+    oStartEndCutDistance.ValuateFromString(&quot;100mm&quot;)
+    
+<span class="comment">'   5.19- Get the EndEndCutDistance and valuate it. </span>
+    <span class="comment">'Get EndEndCutDistance </span>
+    Dim oEndEndCutDistance As Parameter
+    Set oEndEndCutDistance = oObjStrFlange.EndEndCutDistance 
+    oEndEndCutDistance.ValuateFromString(&quot;100mm&quot;)
+
+<span class="comment">'   5.20- Get the StartEndCutAngle and valuate it. </span>
+    <span class="comment">'Get StartEndCutAngle </span>
+    Dim oStartEndCutAngle As Parameter
+    Set oStartEndCutAngle = oObjStrFlange.StartEndCutAngle 
+    oStartEndCutAngle.ValuateFromString(&quot;60deg&quot;)
+    
+<span class="comment">'   5.21- Get the EndEndCutAngle and valuate it. </span>
+    <span class="comment">'Get EndEndCutAngle </span>
+    Dim oEndEndCutAngle  As Parameter
+    Set oEndEndCutAngle  = oObjStrFlange.EndEndCutAngle 
+    oEndEndCutAngle.ValuateFromString(&quot;60deg&quot;)
+
+<span class="comment">'  5.22- Set the Edges on which flanges to be created. </span>    
+    <span class="comment">'Set Edges</span>
+    Dim EdgeList(1) As Variant
+    EdgeList(0) = 2
+    EdgeList(1) = 3
+    oObjStrFlange.SetEdges EdgeList    
+    
+<span class="comment">'  5.23- Get the Edge of plate. </span>    
+    <span class="comment">'Get Edge</span>
+    Dim ObjSddReferencePlane_3 As Reference
+    Set ObjSddReferencePlane_3 = oObjStrFlange.Edge 
+        
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SDDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SDDPrdEditor
+    
+<span class="keyword">End Sub
+
+Sub AddFlange(iObjSddPlate As SddPlate, oObjStrFlange As StrFlange)
+
+'Get StrFlanges object
+Dim ObjStrFlanges As StrFlanges
+Set ObjStrFlanges = iObjSddPlate.Flanges
+
+'Create a flange
+Set oObjStrFlange = ObjStrFlanges.Add
+
+End Sub
+</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

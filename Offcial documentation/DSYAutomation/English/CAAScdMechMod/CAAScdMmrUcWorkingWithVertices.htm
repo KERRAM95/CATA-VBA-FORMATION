@@ -1,0 +1,333 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Working with Vertices</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Working with Vertices</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates about working with Vertices. It further selects 
+						two vertices and creates a line between them.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:</span>
+						<a href="CAAScdMmrUcWorkingWithVerticesSource.htm">CAAScdMmrUcWorkingWithVerticesSource.htm</a></p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjEditor.htm">Editor Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjSelection.htm">Selection Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrTocPart.htm">Part Object Model Map</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 3 steps</p>
+		<ol>
+			<li><a href="#Step1">Creates a 3D Shape with vertices (a 2D Sketch extruded 
+			to a Pad)</a></li>
+			<li><a href="#Step2">Creates a Point to Point Line with two vertices</a></li>
+			<li><a href="#Step3">Appends newly created Line to the Geometrical Set</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Creates a 3D Shape with 
+			vertices (a 2D Sketch extruded to a Pad)</strong></p>
+			<p>As a first step, this UC creates the geometry with a 2D Sketch which 
+			is extruded to a Pad creating vertices</p>
+			<pre class="code">... 
+<span class="keyword">    Dim</span> oPart <span class="keyword">As</span> Part
+    <strong>CreatingGeometry</strong> <strong>oPart</strong>
+...</pre>
+			<p>A call to <em>CreatingGeometry</em> function creates a 3DShape, retrieves 
+			its <a href="CAAMmrObjPart.htm">Part Object</a>, <code>oPart</code>, 
+			creates a Geometrical Set and adds a sketch with lines to form a bounded 
+			area to it and extrudes it to a Pad, forming vertices as depicted 
+			in the below figure, <a href="#Fig1">Fig1</a>.</p>
+			<p>Please Note here that the created 3DShape essentially has a Geometrical 
+			Set, to enable the line creation with vertices in the steps ahead.</p>
+			<table>
+				<caption><a name="Fig1"></a>Fig. 1: Created Geometry with Sketch 
+				Extruded to a Pad</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Created Geometry" src="CAAScdMmrUcWorkingWithVertices_image1.jpg" width="329" height="310"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>We thus create the Geometry and we now proceed to selecting the Vertices 
+			and drawing a line between them.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Creates a Point to Point 
+			Line with two vertices</strong></p>
+			<p>In this step, we prompt the user to select the two vertices from 
+			the Geometry created in the above step. We then create a Point to Point 
+			line between the two selected vertices, as depicted in
+			<a href="#Fig2">Fig2</a>. For better understanding we divide this step 
+			in sub steps</p>
+			<table>
+				<caption><a name="Fig2"></a>Fig. 2: Selecting two Vertices</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Selecting two Vertices" src="CAAScdMmrUcWorkingWithVertices_image2.jpg" width="462" height="389"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Retrieves Active Editor from CATIA</p>
+				<p>As a first sub step, we retrieve the Selection Object from CATIA, 
+				to enable us to select the vertices in the steps ahead.</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oCurrentActiveEditor <span class="keyword">As</span> Editor
+    <span class="keyword">Set</span> oCurrentActiveEditor = CATIA.<strong>ActiveEditor</strong>
+...</pre>
+				<p>The <em>ActiveEditor</em> property of the Application Object, 
+				CATIA returns the Editor, oCurrentActiveEditor which is currently 
+				active.</p>
+				</li>
+				<li>
+				<p>Retrieves Selection object from Active Editor:</p>
+				<pre class="code">
+...
+    <span class="keyword">Dim</span> oObjSelection
+    <span class="keyword">Set</span> oObjSelection = oCurrentActiveEditor.<strong>Selection</strong>
+...</pre>
+				<p>A call to <em>Selection</em> Property of the Active Editor returns
+				<code>oObjSelection</code>, a <code>Selection </code>object. It 
+				is significant to note here that we have not declared a type for
+				<code>oObjSelection </code>. The section &quot;Virtual Function Table 
+				Compatibility&quot; in the Technical Article &quot;About Automation Languages, 
+				Debug, and Compatibility&quot; [<a href="#References">1</a>] provides 
+				an explanation for why these variables are not typed.</p>
+				</li>
+				<li>
+				<p>Updates Selection Object with selection criteria(Vertex 
+				only allowed)</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oInputObjectType(0)
+    oInputObjectType(0) = &quot;Vertex&quot;
+...</pre>
+				<p>&quot;Vertex&quot; type is appended to an array <code>oInputObjectType</code>, 
+				which now represents the select criteria. </p>
+				</li>
+				<li>
+				<p>Retrieves First Vertex through Selection</p>
+				<p>We now retrieve the First Vertex, Vertex1</p>
+				<pre class="code">...
+    strStatus = oObjSelection.<strong>SelectElement</strong>(<strong>oInputObjectType</strong>, &quot;Select the first vertex&quot;, True)
+...</pre>
+				<p>The <em>SelectElement</em> method on the <code>Selection
+				</code>Object, <code>oObjSelection </code>asks the end user to select 
+				a feature (in the geometry or in the specification tree). During 
+				the selection, when the end user moves the mouse above a feature 
+				which fits in the given filter, Vertex in this case, the mouse pointer 
+				turns into the &quot;hand&quot; cursor; otherwise into the &quot;no entry&quot; cursor. 
+				Refer <a href="#Fig2">Fig2</a> for selecting the Vertex1.</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oFirstVertex <span class="keyword">As</span> Vertex
+    <span class="keyword">Set</span> oFirstVertex = oObjSelection.<strong>Item</strong><strong>(1).Value</strong>
+...</pre>
+				<p>The <em>Item</em> method on <code>oObjSelection</code>, returns 
+				the iIndex-th SelectedElement Object contained by the current selection, 
+				the first Object, <code>oFirstVertex </code>in this case.</p>
+				<p>We further clear the above selection, to enable us to select 
+				the Second Vertex</p>
+				<pre class="code">...
+    oObjSelection.<strong>Clear</strong>
+...</pre>
+				<p>The <em>Clear</em> method on <code>Selection </code>Object,
+				<code>oObjSelection</code>, clears the selection.</p>
+				</li>
+				<li>
+				<p>Retrieves Second Vertex through Selection</p>
+				<p>We now retrieve the Second Vertex, Vertex2</p>
+				<pre class="code">...
+    strStatus = oObjSelection.<strong>SelectElement</strong>(<strong>oInputObjectType</strong>, &quot;Select the second vertex&quot;, True)
+    <span class="keyword">Dim</span> oSecondVertex <span class="keyword">As</span> Vertex
+    <span class="keyword">Set</span> oSecondVertex = oObjSelection.<strong>Item(1).Value</strong>
+...</pre>
+				<p>Following the above sub step, we similarly select the second 
+				Vertex, oSecondVertex. Refer <a href="#Fig2">Fig2</a> for selecting 
+				the Vertex2.</p>
+				</li>
+				<li>
+				<p>Creates a Point-Point Line with two vertices</p>
+				<p>In this sub step we finally create a Point to Point line between 
+				the two selected vertices from the above sub steps</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oHybridShapeLinePtPt <span class="keyword">As</span> HybridShapeLinePtPt
+    <span class="keyword">Set</span> oHybridShapeLinePtPt = oPart.<strong>HybridShapeFactory</strong>.<strong>AddNewLinePtPt</strong>(<strong>oFirstVertex</strong>, <strong>oSecondVertex</strong>)
+...</pre>
+				<p>The <em>AddNewLinePtPt</em> method on <code>HybridShapeFactory
+				</code>Object aggregated beneath the Part Object, creates a new 
+				point-point line where the two points are the two vertices oFirstVertex 
+				and oSecondVertex (Vertex1, Vertex2) selected by the user. Refer
+				<a href="#Fig2">Fig2</a> for selection example.</p>
+				<table>
+					<caption><a name="Fig3"></a>Fig. 3: Created Line Between the 
+					two Vertices</caption>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="Created Line" src="CAAScdMmrUcWorkingWithVertices_image3.jpg" width="335" height="316"/></td>
+					</tr>
+				</tbody>
+				</table>
+				<p>The created Line is as depicted in the above figure,
+				<a href="#Fig3">Fig3</a></p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Appends newly created Line 
+			to the Geometrical Set</strong></p>
+			<p>This step essentially retrieves the Geometrical Set Object from the 
+			Part Object and Append the Created line to it. We divide this step in 
+			sub steps for better understanding.</p>
+			<p>It is interesting to note here that the Geometrical Set is internally 
+			referred to as a Hybrid Body.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Retrieves Geometrical Sets Collection Object </p>
+				<p>As a first sub step, we retrieve the Geometrical Sets Collection 
+				Object from the Part Object</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oHybridBodies <span class="keyword">As</span> HybridBodies
+    <span class="keyword">Set</span> oHybridBodies =  oPart.<strong>HybridBodies</strong>
+...</pre>
+				<p>The <em>HybridBodies</em> method of the <code>Part </code>object, 
+				returns the <code>HybridBodies </code>Object , which is the Collection 
+				of all direct <code>HybridBody </code>objects (i.e. GeometricalSet) 
+				aggregated by the Part object, <code>oPart</code>.</p>
+				</li>
+				<li>
+				<p>Retrieves First Geometrical Set from the Geometrical Sets Collection 
+				Object.</p>
+				<p>We now retrieve the First Geometrical Set from the Geometrical 
+				Sets Collection Object retrieved in the above sub step:</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oHybridBody <span class="keyword">As</span> HybridBody
+    <span class="keyword">Set</span> oHybridBody =  oHybridBodies.<strong>Item</strong>(1)
+...</pre>
+				<p>Next, the <em>Item</em> method on the <code>HybridBodies
+				</code>Object, <code>oHybridBodies</code>, retrieves the Hybrid 
+				Body by index, the first Hybrid Body from the Collection in this 
+				case.</p>
+				</li>
+				<li>
+				<p>Appends newly created Line to the Geometrical Set </p>
+				<p>In this final sub step, we append the line created in the earlier 
+				step to the Geometrical Set retrieved in the above sub step</p>
+				<pre class="code">...
+    oHybridBody.<strong>AppendHybridShape</strong> <strong>oHybridShapeLinePtPt</strong>
+    oPart.<strong>Update</strong>
+...</pre>
+				<p>The <em>AppendHybridShape</em> method on the <code>HybridBody
+				</code>Object, <code>oHybridBody </code>accepts a HyBridShape Object,
+				<code>oHybridShapeLinePtPt</code> in this case as an input and appends 
+				it to the Hybrid Body.</p>
+				<p>And lastly, we Update the <code>Part </code>Object with a call 
+				to <em>Update</em> method on <code>oPart</code>. Refer to
+				<a href="#Fig3">Fig3</a> to view the result in CATIA specification 
+				tree.</p>
+				</li>
+			</ol>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[1]</td>
+		<td><a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation Languages, Debug, and Compatibility</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

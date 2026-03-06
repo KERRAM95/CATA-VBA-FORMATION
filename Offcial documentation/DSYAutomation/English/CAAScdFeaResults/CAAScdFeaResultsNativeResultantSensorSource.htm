@@ -1,0 +1,186 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcCreateResultantSensor.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+    '--------------------------------------------------------------------------
+<pre>
+<span class="comment">'---------------------------- Sample MACRO written in Basic Script ---------------------------------</span>
+<span class="comment">'This sample creates a resultant sensor using a .3dxml file. First launch 3DExperience and import 
+ 'the <div class=vb_sample_data>CAAScdFeaResults.3dxml</div> provided in the samples folder.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">'    2- Retrieves the results analysis case</span>
+<span class="comment">'    3- Creates a resultant sensor</span>
+<span class="comment">'    4- Set step and frame to the sensor</span>
+<span class="comment">'    5- Retrieves the analysis case</span>
+<span class="comment">'    6- Retrieves the clamp feature for support</span>
+<span class="comment">'    7- Sets the support for the sensor</span>
+<span class="comment">'    8- Updates the sensor</span>
+<span class="comment">'    9- Exports the sensor</span>
+
+<span class="keyword">Sub </span>CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oEditor<span class="keyword"> As </span>Editor
+<span class="keyword">Set </span>oEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim </span>oProdService<span class="keyword"> As </span>PLMProductService
+<span class="keyword">Set </span>oProdService = oEditor.GetService("PLMProductService")
+
+<span class="keyword">Dim </span>oEntities<span class="keyword"> As </span>PLMEntities
+
+<span class="keyword">If Not </span>oProdService.EditedContent<span class="keyword"> Is Nothing Then</span>
+
+<span class="keyword">Set </span>oEntities = oProdService.EditedContent
+
+<span class="keyword">Dim </span>oEntity<span class="keyword"> As </span>PLMEntity
+<span class="keyword">Dim </span>oSimObjEntity<span class="keyword"> As </span>PLMEntity
+
+<span class="keyword">For </span>Each oEntity<span class="keyword"> In </span>oEntities
+<span class="keyword">If </span>oEntity.GetCustomType = "SIMObjSimulationObjectGenericDS" Or oEntity.GetCustomType = "DesignSight"<span class="keyword"> Then </span>
+<span class="keyword">Set </span>oSimObjEntity = oEntity
+<span class="keyword">End If</span>
+<span class="keyword">Next</span>
+
+<span class="keyword">Dim </span>oSimulationRoot<span class="keyword"> As </span>SimulationReference
+<span class="keyword">Set </span>oSimulationRoot = oSimObjEntity
+    
+<span class="keyword">Dim </span>oResults<span class="keyword"> As </span>SimulationResults
+<span class="keyword">Set </span>oResults = oSimulationRoot.Results
+
+<span class="keyword">Dim </span>oSimulationRepRes<span class="keyword"> As </span>SimulationRepresentation
+<span class="keyword">Set </span>oSimulationRepRes = oResults.Item(1)  
+
+<span class="keyword">Dim </span>oRootRepRes<span class="keyword"> As </span>SimResultRepManager
+<span class="keyword">Set </span>oRootRepRes = oSimulationRepRes.Root    
+
+<span class="keyword">Dim </span>oResultsManager<span class="keyword"> As </span>SimResultsManager
+<span class="keyword">Set </span>oResultsManager = oRootRepRes.GetItem("SimResultsManager")   
+
+<span class="keyword">End If</span>
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    2- Retrieves the results analysis case</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oResultsAnalysisCases<span class="keyword"> As </span>SimResultsAnalysisCases
+<span class="keyword">Set </span>oResultsAnalysisCases = oResultsManager.ResultsAnalysisCases
+
+<span class="keyword">Dim </span>oResultsAnalysisCase<span class="keyword"> As </span>SimResultsAnalysisCase
+<span class="keyword">Set </span>oResultsAnalysisCase = oResultsAnalysisCases.Item(1)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    3- Creates a resultant sensor</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oResultantSensor<span class="keyword"> As </span>SimResultantSensor
+<span class="keyword">Set </span>oResultantSensor = oResultsAnalysisCase.CreateResultantSensor
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    4- Sets step and frame</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oSteps <span class="keyword"> As </span>SimResultsSteps
+<span class="keyword">Set </span>oSteps = oResultsAnalysisCase.ResultsSteps
+
+<span class="keyword">Dim </span>oStep  <span class="keyword"> As </span>SimResultsStep
+<span class="keyword">Set </span>oStep = oSteps.Item(1)
+
+<span class="keyword">Dim </span>osStepID  <span class="keyword"> As </span>String
+<span class="keyword">Dim </span>ocsStepName  <span class="keyword"> As </span>String
+<span class="keyword">Dim </span>ocsStepDescription  <span class="keyword"> As </span>String
+
+ oStep.GetIdentifier osStepID, ocsStepName, ocsStepDescription
+ oResultantSensor.SetStepAndFrame osStepID, 1, 0
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    5- Retrieves the analysis case</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oScenarioManager<span class="keyword"> As </span>SimScenarioManager
+<span class="keyword">Set </span>oScenarioManager = oSimulationRoot.GetItem("SimScenarioManager")
+
+<span class="keyword">Dim </span>oAnalysisCases<span class="keyword"> As </span>SimAnalysisCases
+<span class="keyword">Set </span>oAnalysisCases = oScenarioManager.AnalysisCases
+
+<span class="keyword">Dim </span>oAnalysisCase<span class="keyword"> As </span>SimAnalysisCase
+<span class="keyword">Set </span>oAnalysisCase = oAnalysisCases.Item(1)
+
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    6- Retrieves the clamp feature for support</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oFeatures<span class="keyword"> As </span>SimFeatures
+<span class="keyword">Set </span>oFeatures = oAnalysisCase.Features
+
+<span class="keyword">Dim </span>oPressure<span class="keyword"> As </span>SimPressure
+<span class="keyword">Set </span>oPressure = oFeatures.Item("Pressure.1")
+
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    7- Sets the support for the sensor</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oDispatch<span class="keyword"> As </span>CATBaseDispatch
+<span class="keyword">Set </span>oDispatch = oPressure
+
+<span class="keyword">Dim </span>oSupports(0)<span class="keyword"> As </span>CATSafeArrayVariant
+<span class="keyword">Set </span>oSupports(0) = oDispatch
+
+oResultantSensor.Support = oSupports
+
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    8- Updates the sensor</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+oResultantSensor.Update
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    9- Exports the sensor</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+Dim olsSensors(0)
+Set olsSensors(0) = oResultantSensor
+
+Dim oFileName As String
+Dim oFilePath As String
+oFileName = "ExportResultantSensor"
+oFilePath = C:\Temp
+
+<span class="comment">' Exports the sensor to file</span>
+oResultsAnalysisCase.ExportSensorOutputToFile olsSensors, oFileName, oFilePath, SimCsv, True, SimComma
+
+<span class="comment">' Exports the sensor as a PLM document</span>
+oResultsAnalysisCase.ExportSensorOutputToPLM olsSensors, oFileName, SimCsv, False, SimSemicolan
+
+<span class="keyword">End Sub</span>
+
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

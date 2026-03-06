@@ -1,0 +1,188 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>V4V5Space Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>V4V5Space Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>V4V5Space</h2>
+<p><strong>Role:</strong> Setting to handle the V4-&gt;V5 migration options</p>
+<p>The V4V5Space repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /General/Compatibility/V4 V5 SPACE</li>
+  <li><strong>Repository File</strong>: GeometrybV4ToV5</li>
+  <li><strong>Version</strong>: 1</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+  <li><strong>Setting controller</strong>:
+    <ul>
+      <li>Framework_CPP: CATIAV4Interfaces</li>
+      <li>Framework_IDL: CATIAV4Interfaces</li>
+      <li>Interface_CPP: CATIV4IV4V5SpaceSettingAtt</li>
+      <li>Interface_IDL: CATIAV4V5SpaceSettingAtt</li>
+      <li>LateType: CATV4IV4V5SpaceSettingCtrl</li>
+    </ul>
+  </li>
+</ul>
+<p>V4V5Space setting repository attributes:</p>
+<ul>
+  <li><a name="CurvImprovSize"></a><strong>CurvImprovSize</strong>
+    <br /><strong>Role</strong>: The Internal Maximum Deformation setting parameter manages the maximum authorized for internal deformation.
+    <ul>
+      <li><strong>Type</strong>: float</li>
+      <li><strong>Default value</strong>: 0.001</li>
+    </ul>
+  </li>
+  <li><a name="CurvImprovState"></a><strong>CurvImprovState</strong>
+    <br /><strong>Role</strong>:  The Internal Type Deformation setting parameter manages the deformation type.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>User Defined Value</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Model Relative Value</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="DetailsModeExplode"></a><strong>DetailsModeExplode</strong>
+    <br /><strong>Role</strong>: The DetailsModeExplode setting parameter manages the dittos migration.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+    </ul>
+  </li>
+  <li><a name="DetailsModeUsual"></a><strong>DetailsModeUsual</strong>
+    <br /><strong>Role</strong>: The DetailsModeUsual setting parameter manages the dittos migration.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="DetailsModeWireframe"></a><strong>DetailsModeWireframe</strong>
+    <br /><strong>Role</strong>: The DetailsModeWireframe setting parameter manages the dittos migration.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+    </ul>
+  </li>
+  <li><a name="GapSize"></a><strong>GapSize</strong>
+    <br /><strong>Role</strong>: The External Maximum Deformation setting parameter manages the maximum authorized for external deformation if User Defined Value is chosen.
+    <ul>
+      <li><strong>Type</strong>: float</li>
+      <li><strong>Default value</strong>: 0.001</li>
+    </ul>
+  </li>
+  <li><a name="GapState"></a><strong>GapState</strong>
+    <br /><strong>Role</strong>: The External Type Deformation setting parameter manages the deformation type
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>User Defined Value</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Model Relative Value</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="SegmState"></a><strong>SegmState</strong>
+    <br /><strong>Role</strong>: The KeepSegmentation setting parameter manages the segmentation.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Do not keep segmentation</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Keep segmentation</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="SolidMUState"></a><strong>SolidMUState</strong>
+    <br /><strong>Role</strong>: The SolidMU setting parameter manages the migration for Solids Mock-Up.
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: CGR</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>CGR</td>
+            <td>Feature Result As CGR</td>
+          </tr>
+          <tr>
+            <td>PartBody</td>
+            <td>Feature Result As PartBody</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="TextMigrState"></a><strong>TextMigrState</strong>
+    <br /><strong>Role</strong>: The TextMigration setting parameter manages the 3D text migration.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td>Keep 3D Text</td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td>Do not keep 3D Text</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

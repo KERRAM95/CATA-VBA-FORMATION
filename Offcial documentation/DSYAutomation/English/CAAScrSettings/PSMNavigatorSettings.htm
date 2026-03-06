@@ -1,0 +1,86 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>PSMNavigatorSettings Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>PSMNavigatorSettings Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>PSMNavigatorSettings</h2>
+<p><strong>Role:</strong> Manage navigation settings</p>
+<p><strong>Detailed role:</strong> Define priority order to retain to create the navigation representations at simulation root node and at category nodes</p>
+<p>The PSMNavigatorSettings repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /Infrastructure/CATPSMNavigatorWkb/SLMNavigator</li>
+  <li><strong>Repository File</strong>: PSMNavigatorSettings</li>
+  <li><strong>Version</strong>: 1</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+</ul>
+<p>PSMNavigatorSettings setting repository attributes:</p>
+<ul>
+  <li><a name="CategoryActiveNodeList"></a><strong>CategoryActiveNodeList</strong>
+    <br /><strong>Role</strong>: Define activation of items in previous list
+    <br /><strong>Detailed role</strong>: This attribute is the ordered list, specifies the activation status to retain to create the navigation representations. Note that this array of 6 values must contain activate or deactivate value<br />
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: Activated</li>
+<li><strong>Default Value Role</strong>: CategoryNodeList activation (Activated/Deactivated) </li>
+    </ul>
+  </li>
+  <li><a name="CategoryNodeList"></a><strong>CategoryNodeList</strong>
+    <br /><strong>Role</strong>: search order for creating the 3D display resources at category level
+    <br /><strong>Detailed role</strong>: This attribute is the ordered list, specifies the priority to retain to create the navigation representations. Note that this array of 6 values must not contain any duplicates<br />
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: VPMReference</li>
+<li><strong>Default Value Role</strong>: Default order is Category, SimuRepV5, MeshRep, ShapeRep, SimuRepNotV5</li>
+    </ul>
+  </li>
+  <li><a name="SimulationActiveNodeList"></a><strong>SimulationActiveNodeList</strong>
+    <br /><strong>Role</strong>: Define activation of items in previous list
+    <br /><strong>Detailed role</strong>: This attribute is the ordered list, specifies the activation status to retain to create the navigation representations. Note that this array of 7 values must contain activate or deactivate value<br />
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: Activated</li>
+<li><strong>Default Value Role</strong>: SimulationNodeList activation (Activated/Deactivated) </li>
+    </ul>
+  </li>
+  <li><a name="SimulationNodeList"></a><strong>SimulationNodeList</strong>
+    <br /><strong>Role</strong>: search order for creating the 3D display resources at simulation level
+    <br /><strong>Detailed role</strong>: This attribute is the ordered list, specifies the priority to retain to create the navigation representations. Note that this array of 7 values must not contain any duplicates<br />
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: dsc_Model_Category_Ref</li>
+<li><strong>Default Value Role</strong>: Default order is Simulation, CategoryResult, CategorySpecs, CategoryContext </li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

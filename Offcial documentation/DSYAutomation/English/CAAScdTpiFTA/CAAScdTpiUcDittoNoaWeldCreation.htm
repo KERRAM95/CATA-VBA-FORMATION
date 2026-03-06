@@ -1,0 +1,297 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a Ditto NOA &amp; a Weld on the XY Plane</title>
+
+<style type="text/css">
+.auto-style1 {
+	margin: auto;
+}
+.auto-style2 {
+	margin-left: 80px;
+}
+</style>
+
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating a Ditto NOA &amp; a Weld on the XY Plane</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case 
+						primarily focuses on the methodology to create 2 non 
+						semantic features:</p>
+						<ol>
+							<li>
+							<p class="header">a Ditto NOA with the option &quot;Stick 
+							Ditto perpendicular to geometry&quot;,</p>
+							</li>
+							<li>
+							<p class="header">a Weld feature.</p>
+							</li>
+						</ol>
+						<div id="toc"></div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you 
+						begin :</span> 
+						<ul>
+							<li>You should first launch CATIA and import the 
+								<code><div class=vb_sample_data>CAAScdTpiUcDittoNoaWeldCreation.3dxml<div></code> file supplied in 
+							folder <code>
+							InstallRootFolder\CAADoc\Doc\English\CAAScdTpiFTA\samples\</code> 
+							where <code>InstallRootFolder</code> is the 
+							directory where the CAA CD-ROM is installed.</li>
+							<li>You will have to uncheck in your preferences the 
+							option &quot;<i>Disable template creation</i>&quot; in
+							<i>&quot;Preferences / 
+							Mechanical / 3D Tolerancing &amp; Annotations&quot;</i> within the 
+							<i>&quot;Administration&quot;</i> tab page to enable NOA creation.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro :
+						<a href="CAAScdTpiUcDittoNoaWeldCreationSource.htm">
+						CAAScdTpiUcDittoNoaWeldCreationSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td style="width: 413px">
+		<p>This use case is illustrating:</p>
+		<ol>
+			<li><a href="#Step1">Selects the Ditto from the 2DLayout</a></li>
+			<li><a href="#Step2">Creates the Ditto NOA entity</a></li>
+			<li><a href="#Step3">Provides a text content to be placed in the 
+			Ditto instance</a></li>
+			<li><a href="#Step4">Creates the Weld feature</a></li>		
+			<li><a href="#Step5">Retrieves the 2D Annotation to adjust some 
+			characteristics</a></li>		
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol>
+			<li>
+			<p><strong><a name="Step1">Selects the Ditto from the 2DLayout</a></strong></p>
+			<p>Lets the user choose the Ditto component to constitute display of 
+			the NOA entity
+	  			</p>
+			<pre class="code">...
+' Trigger the selection processing
+Dim Status, InputObjectType(0)
+
+InputObjectType(0) = &quot;AnyObject&quot; 
+Status = Selection.SelectElement( InputObjectType, &quot;Select a Ditto&quot;, False)
+
+If (Status = &quot;Cancel&quot;) Then Exit Sub
+
+' Retrieve the ditto
+Dim oSelectionItem As SelectedElement
+Set oSelectionItem = Selection.Item( 1 )
+
+Dim oDitto As DrawingComponent
+Set oDitto = oSelectionItem.Value
+
+...</pre>
+			<p>The figure (<a href="#Fig.1">Fig.1</a>) is illustrating how the selection is 
+			taking place; notice that Ditto is directly picked from the Layout 
+			specification tree under the &quot;<i>Component Instances</i>&quot; node</p>
+			<table class="auto-style1">
+				<caption><a name="Fig.1"></a>Fig.1: The selection of the Ditto Component</caption>
+				<tr>
+					<td>
+					<img alt="" height="200" src="images/CAAScdTpiUcDittoNoaWeldCreationDittoSelection.png" width="500"/></td>
+				</tr>
+			</table>
+			<br />
+			</li>
+			<li>
+			<p><strong><a name="Step2">Creates the Ditto NOA entity</a></strong></p>
+			<p>Process to the NOA creation; this goes through the enumertaed 
+			steps:</p>
+			<ul class="auto-style2">
+				<li>Creates the Annotation Set based on the &quot;ASME&quot; Standard,</li>
+				<li>Accesses to the AnnotationFactory2 from the Annotation Set,</li>
+				<li>Creates a User Feature entity using a Reference generated 
+				from the XY Plane of the Part,</li>
+				<li>Invoke the method from the factory to create the NOA Ditto; 
+				final argument is set to TRUE to specify that &quot;Stick Ditto 
+				perpendicular to geometry&quot; option is required.</li>
+			</ul>
+			<pre class="code">...
+' Get the Part root feature
+Dim oPart as Part
+Set oPart = CATIA.ActiveEditor.ActiveObject
+
+' Create a new ASME Annotation Set
+Dim oAnnotationSets As Collection
+Set oAnnotationSets = oPart.AnnotationSets
+Dim oAnnotationSet as AnnotationSet
+Set oAnnotationSet = oAnnotationSets.Add(&quot;ASME&quot;)
+
+' Retrieve the factory
+Dim oFactory as AnnotationFactory2
+Set oFactory = oAnnotationSet.AnnotationFactory2
+
+' Create a reference on the XY Plane of the Part
+Dim oReferenceOnXYPlane as Reference
+Set oReferenceOnXYPlane = oPart.CreateReferenceFromObject( oPart.OriginElements.PlaneXY )
+
+' Make the user surface corresponding to this reference
+Dim oUserSurface As UserSurface
+Set oUserSurface = oPart.UserSurfaces.Generate( oReferenceOnXYPlane )
+
+' Create the NOA Ditto with option &quot;Stick Ditto perpendicular to geometry&quot;
+Dim oNewDittoNOA as Annotation2
+Set oNewDittoNOA = oFactory.CreateDittoNOA( oUserSurface, &quot;VB_DittoNOA&quot;, oDitto , TRUE )
+...</pre>
+			<p>In case of wrong setting environment, macro execution is stopped 
+			by the error panel displayed by (<a href="#Fig.2">Fig.2</a>)</p>
+			</li>
+			<table class="auto-style1">
+				<caption><a name="Fig.2"></a>Fig.2: The Error raised consequent to wrong option activation.<br />
+				</caption>
+				<tr>
+					<td>
+					<img alt="" height="350" src="images/CAAScdTpiUcDittoNoaWeldCreationError.png" width="400"/></td>
+				</tr>
+			</table>
+			<br />
+			<li>
+			<p><strong><a name="Step3">Provide a text content to be placed in the Ditto instance</a></strong></p>
+			<p style="height: 42px">Drawing Ditto Annotation composing the NOA 
+			representation is accessible using the GetDitto method; next lines 
+			are demonstrating how InputBox is employed to<br />
+			request text used to supersede Ditto modifiable text.</p>
+			<table class="auto-style1">
+				<caption><a name="Fig.3"></a>Fig.3: Input Box for text replacement in Ditto.<br />
+				</caption>
+				<tr>
+					<td>
+					<img alt="" height="250" src="images/CAAScdTpiUcDittoNoaWeldCreationTextInput.png" width="400"/></td>
+				</tr>
+			</table>
+			<pre class="code">...
+ ' Retrieve the ditto as component of this newly created NOA
+Dim o2DComponentInNOA As DrawingComponent
+Set o2DComponentInNOA = oNewDittoNOA.Noa.GetDitto( )
+
+' Retrieve the modifiable text of the ditto
+Dim oText As DrawingText
+Set oText = o2DComponentInNOA.GetModifiableObject( 1 )
+
+' Modify the modifiable text value
+Dim ReturnValue As String
+ReturnValue = InputBox( &quot;Enter operation name: &quot;, &quot;&quot;, &quot;New Value For Text&quot;)
+oText.Text = ReturnValue
+...</pre>
+			<p>The Drawing Component object is employed in the rest of this script to 
+			modify the scale and the annotation orientation.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step4">Creates the Weld feature</a></strong></p>
+			<pre class="code"> ...
+' Create a new Weld feature
+Dim oNewWeld As Annotation2 
+Set oNewWeld = oFactory.CreateWeld( oUserSurface )
+...</pre>
+			<p>The CreateWeld method returns a nude Weld entity as Annotation2 
+			object.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step5">Retrieves the 2D Annotation to adjust some characteristics</a></strong></p>
+			<pre class="code">...
+' Change Weld content
+Dim oWeldingVisu As DrawingWelding
+Set oWeldingVisu = oNewWeld.Weld.Get2DAnnot
+...</pre>
+			<p>Then, apply some changes to the Drawing Weld to modify its 
+			visualization.</p>
+			<pre class="code">...
+oWeldingVisu.GetTextRange( catWeldingFieldOne ).Text = &quot;Field 1&quot;
+oWeldingVisu.GetTextRange( catWeldingFieldTwo ).Text = &quot;Field 2&quot;
+oWeldingVisu.GetTextRange( catWeldingFieldThree ).Text = &quot;Field 3&quot;
+oWeldingVisu.GetTextRange( catWeldingFieldFour ).Text = &quot;Field 4&quot;
+oWeldingVisu.GetTextRange( catWeldingFieldFive ).Text = &quot;Field 5&quot;
+oWeldingVisu.GetTextRange( catWeldingFieldSix ).Text = &quot;Field 6&quot;
+oWeldingVisu.GetTextRange( catWeldingFieldSeven ).Text = &quot;Field 7&quot;
+oWeldingVisu.SetSymbol catHVGrooveWelding, catFirstWelding
+oWeldingVisu.SetSymbol catRechargWelding, catSecondWelding
+oWeldingVisu.SetAdditionalSymbol catConvexWelding, catFirstWelding
+oWeldingVisu.SetAdditionalSymbol catSmoothWelding, catSecondWelding
+oWeldingVisu.SetFinishSymbol catDftLetterCWelding, catFirstWelding
+oWeldingVisu.SetFinishSymbol catDftLetterHWelding, catSecondWelding
+oWeldingVisu.IdentificationLineSide = catWeldingDown
+oWeldingVisu.WeldingSide = catWeldingDown
+oWeldingVisu.WeldingTail = catDftWeldingTailYES
+
+' Apply new position
+oWeldingVisu.x = -70.
+oWeldingVisu.y = -30.
+...</pre>
+			<p>See the final result of this script execution (<a href="#Fig.4">Fig.4</a>). 
+			</p>
+			<table class="auto-style1">
+				<caption><a name="Fig.4"></a>Fig.4: The Script expected outcome.</caption>
+				<tr>
+					<td>
+					<img alt="" height="600" src="images/CAAScdTpiUcDittoNoaWeldCreationFinalResult.png" width="1000"/></td>
+				</tr>
+			</table>
+			</li>
+		</ol>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		&nbsp;</td>
+	</tr>
+	<tr>
+		<td>
+		&nbsp;</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

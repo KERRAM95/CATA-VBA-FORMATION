@@ -1,0 +1,965 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta content="Ta" name="topictype" />
+<meta content="idl" name="devlang" />
+<meta content="idl" name="devlang" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>What&#39;s New with 3DEXPERIENCE R2019x Automation</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>What's New with <strong>3D</strong>EXPERIENCE R2019x 
+		Automation</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article presents Automation objects, methods, and properties that 
+		are added since <strong>3D</strong>EXPERIENCE R2019x GA to enhance V6 Automation capabilities, support 
+		functional evolutions, and correct defects. Some of those modifications 
+		may already exist in <strong>3D</strong>EXPERIENCE R2018x maintenance fixes. A few properties and methods 
+		might have been modified or removed. VB and VBScripts code using those methods 
+		may have to be modified. VB projects using the corresponding objects must 
+		be recompiled.</p>
+		<p>Consult
+		<a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation 
+		Languages, Debug, and Compatibility</a> for details on manual adjustments 
+		that may be required for existing VBA and VSTA projects to be usable on 
+		a new release.</p>
+		<ul>
+			<li><a href="#NewModelers">New Modelers</a></li>
+			<li><a href="#NewArticles">New Articles</a></li>
+			<li><a href="#NewSetting">New Settings Repositories</a></li>
+			<li><a href="#Newinterface">New Objects</a></li>
+			<li><a href="#Newmethod">New Methods</a></li>
+			<li><a href="#Newenum">New Enums</a></li>
+			<li><a href="#Modif">Modified Objects, Methods and Properties</a></li>
+			<li><a href="#Suppress">Removed Objects, Collections, Methods, and Properties</a></li>
+		</ul>
+		<p>Deprecated APIs can be found in
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Deprecated');return false;">
+		V6 IDL API Deprecated Index</a>.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p>You can also find news from previous V6 releases:</p>
+		<ul>
+			<li><a href="CAAScdScriptNews2018x.htm"><strong>3D</strong>EXPERIENCE R2018x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2017x.htm"><strong>3D</strong>EXPERIENCE R2017x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2016x.htm"><strong>3D</strong>EXPERIENCE R2016x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2015x.htm"><strong>3D</strong>EXPERIENCE R2015x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2014x.htm"><strong>3D</strong>EXPERIENCE R2014x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2014.htm"><strong>3D</strong>EXPERIENCE R2014 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2013x.htm">V6R2013x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2013.htm">V6R2013 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2012x.htm">V6R2012x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2012.htm">V6R2012 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2011x.htm">V6R2011x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2011.htm">V6R2011 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2010x.htm">V6R2010x What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2010.htm">V6R2010 What&#39;s New?</a></li>
+			<li><a href="CAAScdScriptNews2009x.htm">V6R2009x What&#39;s New?</a></li>
+		</ul>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewModelers"></a>New Modelers</th>
+	</tr>
+        <tr>
+        <td><a href="../CAAScdSimResult/CAAScdSimResultToc.htm">Simulation Interchange Model</a></td>
+        </tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewArticles"></a>New Articles</th>
+	</tr>
+	<tr>
+	<td>
+	<ul>
+		<li><a href="../CAAScdFeaModeling/CAAScdFeaModelingToc.htm">Multiphysics Model Creation</a>
+			<ul>
+				<li><a href="../CAAScdFeaModeling/CAAScdFeaMeshingGeometryToc.htm">Meshing Geometry</a>
+					<ul>
+						<li><a href="../CAAScdFeaModeling/CAAScdFeaPartitionHexMeshPartAttributes.htm">Partition Hex Mesh Part Attributes</a></li>
+					</ul>
+				</li>
+				<li><a href="../CAAScdFeaResults/CAAScdFeaResultsToc.htm">Physics Results Explorer</a>
+					<ul>
+						<li><a href="../CAAScdFeaResults/CAAScdFeaResultsExportFieldPlot.htm">Exporting Field Plots</a></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
+	</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="NewSetting"></a>New Settings Repositories</th>
+	</tr>
+
+
+
+	<tr>
+	<td>
+<a href="../CAAScrSettings/AssemblyDesignImport.htm">AssemblyDesignImport</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/CATCompositesForming.htm">CATCompositesForming</a>
+</td>
+</tr>
+<tr>
+<td>
+CATPpxSettings
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/ClippingToolSettings.htm">ClippingToolSettings</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DELAdditiveMfgPreferencesRepository.htm">DELAdditiveMfgPreferencesRepository</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DELFITProdSysGanttSettings.htm">DELFITProdSysGanttSettings</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DELFITSequencerGanttSettings.htm">DELFITSequencerGanttSettings</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DELManufacturingPlanningCommon.htm">DELManufacturingPlanningCommon</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DELMfgFastenerSettings.htm">DELMfgFastenerSettings</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DELMrlRscVisuSetting.htm">DELMrlRscVisuSetting</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DELSLABehaviorDefaultValues.htm">DELSLABehaviorDefaultValues</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DELSLABehaviorPathwayValues.htm">DELSLABehaviorPathwayValues</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DELSLABehaviorPlanningIntegration.htm">DELSLABehaviorPlanningIntegration</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DELSLABehaviorReportFormatting.htm">DELSLABehaviorReportFormatting</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DELTimeAnalysisMODAPTSOptions.htm">DELTimeAnalysisMODAPTSOptions</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DNBIgpTemplateLibSettings.htm">DNBIgpTemplateLibSettings</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DeliveryCobot.htm">DeliveryCobot</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/DieFaceDesignGeneral.htm">DieFaceDesignGeneral</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/EMPGeneral.htm">EMPGeneral</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/GEOVIA.htm">GEOVIA</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/IASClassAAppOptionsDefaults.htm">IASClassAAppOptionsDefaults</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/IASCommonShapeTolerancesDefaults.htm">IASCommonShapeTolerancesDefaults</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/IASHighlightSlotColorsDefaults.htm">xIASHighlightSlotColorsDefaultsxxx</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/LargePointCloudSettings.htm">LargePointCloudSettings</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/LayerNameDisplay.htm">LayerNameDisplay</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/SMAMatCalPlotSettings.htm">SMAMatCalPlotSettings</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/SMAMatCalPreferences.htm">SMAMatCalPreferences</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/SWXBuExportCityGMLSettings.htm">SWXBuExportCityGMLSettings</a>
+</td>
+</tr>
+<tr>
+<td>
+SearchOrder
+</td>
+</tr>
+<tr>
+<td>
+SheetMetalDesign
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/StellarPreciseRepository.htm">StellarPreciseRepository</a>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../CAAScrSettings/VPMEditor.htm">VPMEditor</a>
+</td>
+</tr>
+</table>
+</div>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<thead>
+	<tr>
+		<th colspan="2"><a name="Newinterface"></a>New Objects</th>
+	</tr>
+	</thead>
+	<tbody>
+			<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATFmtModelIDLItf', 'interface', 'SimFemFeatureInitialization');return false;">SimFemFeatureInitialization</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'MedianFeature');return false;">MedianFeature</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'NumericalDisplayFormat');return false;">NumericalDisplayFormat</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDTCommonZone');return false;">SemanticGDTCommonZone</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDTFrameExtension');return false;">SemanticGDTFrameExtension</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDTNxDisplay');return false;">SemanticGDTNxDisplay</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RobotRRSParameters');return false;">RobotRRSParameters</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscControllerAttributes');return false;">RscControllerAttributes</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscControllerAttributesAccess');return false;">RscControllerAttributesAccess</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'interface', 'RscGenericProfilesMgr');return false;">RscGenericProfilesMgr</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RobotRRSConnection');return false;">RobotRRSConnection</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscAssignment');return false;">RscAssignment</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscBreak');return false;">RscBreak</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscCondition');return false;">RscCondition</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscConst');return false;">RscConst</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscCustomInstruction');return false;">RscCustomInstruction</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscDataEntity');return false;">RscDataEntity</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscFor');return false;">RscFor</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscGoto');return false;">RscGoto</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscInstruction');return false;">RscInstruction</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscLocalVar');return false;">RscLocalVar</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscLoop');return false;">RscLoop</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscPulse');return false;">RscPulse</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscReturn');return false;">RscReturn</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscRunInternalTask');return false;">RscRunInternalTask</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscRunServiceTask');return false;">RscRunServiceTask</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscSequence');return false;">RscSequence</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'interface', 'RscWait');return false;">RscWait</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpConveyorTrackingProfile');return false;">OlpConveyorTrackingProfile</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpPaintProfile');return false;">OlpPaintProfile</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTemplate');return false;">OlpTemplate</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningResourceUseItf', 'interface', 'ManufacturingFSConfigManagement');return false;">ManufacturingFSConfigManagement</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingActivityToolPath');return false;">ManufacturingActivityToolPath</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMSimulationEngineIDLItf', 'interface', 'SIMDynClashResult');return false;">SIMDynClashResult</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMSimulationEngineIDLItf', 'interface', 'SIMDynClashServices');return false;">SIMDynClashServices</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaStructuralModelIDLItf', 'interface', 'SimConnectionServices');return false;">SimConnectionServices</a>
+		</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<thead>
+	<tr>
+		<th colspan="2"><a name="Newmethod"></a>New Methods</th>
+	</tr>
+	</thead>
+	<tbody>
+			<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeRevol', 'BeginAngleOffset');return false;">HybridShapeRevol::BeginAngleOffset</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeRevol', 'EndAngleOffset');return false;">HybridShapeRevol::EndAngleOffset</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeAssemble', 'GetHealingMode');return false;">HybridShapeAssemble::GetHealingMode</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATGSMIDLItf', 'interface', 'HybridShapeAssemble', 'SetHealingMode');return false;">HybridShapeAssemble::SetHealingMode</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATMaterialIDLItf', 'interface', 'MATPLMService', 'LoadMaterials');return false;">MATPLMService::LoadMaterials</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsVocIDLItf', 'interface', 'VOCServices', 'CreateFreeSpaceInBoxArea');return false;">VOCServices::CreateFreeSpaceInBoxArea</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsVocIDLItf', 'interface', 'VOCServices', 'CreateFreeSpaceInClosedArea');return false;">VOCServices::CreateFreeSpaceInClosedArea</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsVocIDLItf', 'interface', 'VOCServices', 'CreateOffsetAlongFixedVectors');return false;">VOCServices::CreateOffsetAlongFixedVectors</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'TPSView', 'AnnotationPlane');return false;">TPSView::AnnotationPlane</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationSet', 'AnnotationSetPupose');return false;">AnnotationSet::AnnotationSetPupose</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'TPSView', 'AnnotationSketch');return false;">TPSView::AnnotationSketch</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'TPSView', 'Annotations');return false;">TPSView::Annotations</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationSet', 'ApplyResultWithLinkWhenCopySetTo');return false;">AnnotationSet::ApplyResultWithLinkWhenCopySetTo</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'FrameExtensions');return false;">SemanticGDT::FrameExtensions</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'HasACenteredElement');return false;">SemanticGDT::HasACenteredElement</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'HasAFrameExtension');return false;">SemanticGDT::HasAFrameExtension</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation', 'HasANumericalDisplayFormat');return false;">Annotation::HasANumericalDisplayFormat</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation2', 'IsAConsumableAnnotation');return false;">Annotation2::IsAConsumableAnnotation</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Dimension3D', 'IsAContinuousFeatureApplied');return false;">Dimension3D::IsAContinuousFeatureApplied</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'IsAppliedOnMultipleEntities');return false;">SemanticGDT::IsAppliedOnMultipleEntities</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'MedianFeature');return false;">SemanticGDT::MedianFeature</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Annotation', 'NumericalDisplayFormat');return false;">Annotation::NumericalDisplayFormat</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'SemanticGDT', 'NxDisplay');return false;">SemanticGDT::NxDisplay</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationSet', 'ReadISODefaultProperties');return false;">AnnotationSet::ReadISODefaultProperties</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'TPSView', 'ViewType');return false;">TPSView::ViewType</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAccuracyProfile', 'AccuracyType');return false;">OlpAccuracyProfile::AccuracyType</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAccuracyProfile', 'AccuracyValue');return false;">OlpAccuracyProfile::AccuracyValue</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTranslatorHelper', 'AddTaskToUpload');return false;">OlpTranslatorHelper::AddTaskToUpload</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotionTarget', 'ApplicationType');return false;">OlpRobotMotionTarget::ApplicationType</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotionTarget', 'ApplicationTypeString');return false;">OlpRobotMotionTarget::ApplicationTypeString</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpGun', 'AttachedRobot');return false;">OlpGun::AttachedRobot</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTranslatorHelper', 'CATNlsFileName');return false;">OlpTranslatorHelper::CATNlsFileName</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpController', 'CartesianSafetyZones');return false;">OlpController::CartesianSafetyZones</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpGun', 'Controller');return false;">OlpGun::Controller</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpResourceControlDevice', 'ControllerType');return false;">OlpResourceControlDevice::ControllerType</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotionTarget', 'ConveyorTaughtPosition');return false;">OlpRobotMotionTarget::ConveyorTaughtPosition</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotionTarget', 'ConveyorTracking');return false;">OlpRobotMotionTarget::ConveyorTracking</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotionTarget', 'ConveyorTrackingProfile');return false;">OlpRobotMotionTarget::ConveyorTrackingProfile</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpController', 'ConveyorTrackingProfileList');return false;">OlpController::ConveyorTrackingProfileList</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpInstructions', 'CreateInstructionFromTemplate');return false;">OlpInstructions::CreateInstructionFromTemplate</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpPulse', 'DelayExpress');return false;">OlpPulse::DelayExpress</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpController', 'DeviceID');return false;">OlpController::DeviceID</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpController', 'DeviceTypeString');return false;">OlpController::DeviceTypeString</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpPulse', 'DurationExpress');return false;">OlpPulse::DurationExpress</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAccuracyProfile', 'FlyByMode');return false;">OlpAccuracyProfile::FlyByMode</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotionTarget', 'GetAuxHome');return false;">OlpRobotMotionTarget::GetAuxHome</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpResourceControlDevice', 'GetDeviceByID');return false;">OlpResourceControlDevice::GetDeviceByID</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTranslatorHelper', 'GetFeatureEnabled');return false;">OlpTranslatorHelper::GetFeatureEnabled</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpSpotProfile', 'GetGun');return false;">OlpSpotProfile::GetGun</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpResourceControlDevice', 'GetGunByID');return false;">OlpResourceControlDevice::GetGunByID</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpController', 'GetHomePosition');return false;">OlpController::GetHomePosition</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTranslatorHelper', 'GetRRSVirtualRobotDirectory');return false;">OlpTranslatorHelper::GetRRSVirtualRobotDirectory</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpSpotProfile', 'GetWeldPressureStabilizationTime');return false;">OlpSpotProfile::GetWeldPressureStabilizationTime</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotionTarget', 'GlobalPosition');return false;">OlpRobotMotionTarget::GlobalPosition</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpResourceControlDevice', 'Guns');return false;">OlpResourceControlDevice::Guns</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpController', 'HomePositions');return false;">OlpController::HomePositions</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpGun', 'JointIndex');return false;">OlpGun::JointIndex</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpController', 'PaintProfileList');return false;">OlpController::PaintProfileList</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotionTarget', 'RedundantAngle');return false;">OlpRobotMotionTarget::RedundantAngle</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAccuracyProfile', 'SetAccuracyType');return false;">OlpAccuracyProfile::SetAccuracyType</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAccuracyProfile', 'SetAccuracyValue');return false;">OlpAccuracyProfile::SetAccuracyValue</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotionTarget', 'SetAuxHome');return false;">OlpRobotMotionTarget::SetAuxHome</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAccuracyProfile', 'SetFlyByMode');return false;">OlpAccuracyProfile::SetFlyByMode</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpSpotProfile', 'SetGun');return false;">OlpSpotProfile::SetGun</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpController', 'SetHomePosition');return false;">OlpController::SetHomePosition</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpSpotProfile', 'SetWeldPressureStabilizationTime');return false;">OlpSpotProfile::SetWeldPressureStabilizationTime</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTranslatorHelper', 'SupportsMultipleRobots');return false;">OlpTranslatorHelper::SupportsMultipleRobots</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTranslatorHelper', 'TasksToUpload');return false;">OlpTranslatorHelper::TasksToUpload</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpWait', 'TimeOutExpress');return false;">OlpWait::TimeOutExpress</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpController', 'ToolVolumes');return false;">OlpController::ToolVolumes</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTranslatorHelper', 'UploadApplicationOptionString');return false;">OlpTranslatorHelper::UploadApplicationOptionString</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTranslatorHelper', 'UploadApplicationOptions');return false;">OlpTranslatorHelper::UploadApplicationOptions</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingGeometryDefinition', 'GetGeometricElements2');return false;">ManufacturingGeometryDefinition::GetGeometricElements2</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'MachiningUseItf', 'interface', 'ManufacturingGeometryDefinition', 'GetGeometricReferences2');return false;">ManufacturingGeometryDefinition::GetGeometricReferences2</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaFoundationIDLItf', 'interface', 'SimAnalysisCases', 'Add');return false;">SimAnalysisCases::Add</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'SMAMpaFoundationIDLItf', 'interface', 'SimAnalysisCases', 'Clone');return false;">SimAnalysisCases::Clone</a>
+		</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<thead>
+	<tr>
+		<th colspan="2"><a name="Newenum"></a>New enums</th>
+	</tr>
+	</thead>
+	<tbody>
+			<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELResourceBuilderIDLItf', 'enum', 'DELRscControllerGenericProfilesType');return false;">DELRscControllerGenericProfilesType</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'enum', 'DELRscDataEntityType');return false;">DELRscDataEntityType</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'enum', 'DELRscForType');return false;">DELRscForType</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'enum', 'DELRscLoopType');return false;">DELRscLoopType</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DELRobotSimulationIDLItf', 'enum', 'DELRscMoveParameter');return false;">DELRscMoveParameter</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpGunState');return false;">DELOlpGunState</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'enum', 'DELOlpTriggerConditionType');return false;">DELOlpTriggerConditionType</a>
+		</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="Modif"></a>Modified Objects, Methods and Properties</th>
+	</tr>
+	<tr>
+		<td colspan="2">None.</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tr>
+		<th colspan="2"><a name="Suppress"></a>Removed Objects, Collections, Methods, 
+		and Properties </th>
+	</tr>
+	<tr>
+		<td colspan="2">None.</td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

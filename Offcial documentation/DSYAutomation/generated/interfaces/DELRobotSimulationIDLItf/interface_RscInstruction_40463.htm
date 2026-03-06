@@ -1,0 +1,350 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELRobotSimulationIDLItf RscInstruction (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELRobotSimulationIDLItf.htm" href="../DELRobotSimulationIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELRobotSimulationIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RscInstruction"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RscInstruction<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RscInstruction_40463','RscInstruction','0');</script>
+<section id='maindesc'>
+<b><i> Interface representing a Resource Instruction.</i></b><br>
+
+
+ <br><b>Role</b>: This interface represents a Resource Instruction in a Resource Task
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#FatherInstruction"><b>FatherInstruction</b></a>
+</td><td  id='tdright'>  Retrieve the Father Sequence.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GotoInstructions"><b>GotoInstructions</b></a>
+</td><td  id='tdright'>  Get all Goto instruction pointing to this label.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Index"><b>Index</b></a>
+</td><td  id='tdright'>  Retrieve the index in the father Sequence.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Label"><b>Label</b></a>
+</td><td  id='tdright'>  Get/Set the label associated to this instruction.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetDataEntityFromName"><b>GetDataEntityFromName</b></a>
+</td><td  id='tdright'>  Retrieve a data entity from its name.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Move"><b>Move</b></a>
+</td><td  id='tdright'>  Move the current instruction in the parent sequence.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#MoveToOtherSequence"><b>MoveToOtherSequence</b></a>
+</td><td  id='tdright'>  Move the current instruction in a target sequence.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RemoveLabel"><b>RemoveLabel</b></a>
+</td><td  id='tdright'>  Remove the label associated to this instruction.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="FatherInstruction"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FatherInstruction</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('RscInstruction','RscInstruction')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Retrieve the Father Sequence.  
+   
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  oFatherInstr      The returned Father Sequence.
+   
+ </ dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   Set ResourceSequence = oResourceTask.MainRscSequence
+   ......
+   Dim oInstructions
+   oInstructions = ResourceSequence.Instructions
+   
+   Dim oInstr As RscInstruction
+   Set oInstr = oInstructions(0)
+   Dim FatherInstruction As RscInstruction
+   Set FatherInstruction = oInstr.FatherInstruction
+   </pre>
+</dl>
+</dd>
+<a id="GotoInstructions"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>GotoInstructions</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Get all Goto instruction pointing to this label.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  oList   The list of instructions.
+ 
+ </ dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   Set ResourceSequence = oResourceTask.MainRscSequence
+   ......
+   Dim oInstructions
+   oInstructions = ResourceSequence.Instructions
+   
+   Dim oInstr As RscInstruction
+   Set oInstr = oInstructions(0)
+   Dim GotoInstructions
+   GotoInstructions = oInstr.GotoInstructions
+   </pre>
+</dl>
+</dd>
+<a id="Index"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Index</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('short','short')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Retrieve the index in the father Sequence.  
+   
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  oIndex      The returned Index.
+   
+ </ dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   Set ResourceSequence = oResourceTask.MainRscSequence
+   ......
+   Dim oInstructions
+   oInstructions = ResourceSequence.Instructions
+   
+   Dim oInstr As RscInstruction
+   Set oInstr = oInstructions(0)
+   Dim Index
+   Index = oInstr.Index
+   </pre>
+</dl>
+</dd>
+<a id="Label"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Label</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the label associated to this instruction.
+ <br>
+ <b>Role</b>: label are target of Goto instruction
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  oLabel   The label
+ 
+ </ dd>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLabel</span></dt>
+   <dd>  The label
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   Set ResourceSequence = oResourceTask.MainRscSequence
+   ......
+   Dim oInstructions
+   oInstructions = ResourceSequence.Instructions
+   ......
+   Dim oInstr As RscInstruction
+   Set oInstr = oInstructions(0)
+   Dim sLabel
+   sLabel = oInstr.Label
+   ......
+   oInstr.Label = sLabel 
+   </pre>
+</dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetDataEntityFromName"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetDataEntityFromName</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>)</span> As <script type="text/javascript"> activateLink('RscDataEntity','RscDataEntity')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve a data entity from its name.
+   
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd>      The name of the data entity that is visible from the current instruction.
+   
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  oEntity      The retrieved data entity.
+   
+ </ dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   Set ResourceSequence = oResourceTask.MainRscSequence
+   ......
+   Dim oInstructions
+   oInstructions = ResourceSequence.Instructions
+   
+   Dim oInstr As RscInstruction
+   Set oInstr = oInstructions(0)
+   Dim iName
+   ...
+   Dim oEntity As RscDataEntity
+   Set  oEntity= oInstr.GetDataEntityFromName(iName)
+   </pre>
+</dl>
+</dd>
+<a id="Move"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Move</span><span class='signature'>(<script type="text/javascript"> activateLink('DELRscMoveParameter','DELRscMoveParameter')</script> <span class='param'>iParam</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Move the current instruction in the parent sequence.
+   
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iParam</span></dt>
+   <dd>      The move parameter.
+   
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   ResourceSequence = oResourceTask.RscSequence
+   ......
+   Dim oInstructions
+   oInstructions = ResourceSequence.Instructions
+   
+   Dim oInstr As RscInstruction
+   Set oInstr = oInstructions(0)
+   Dim iParam As DELRscMoveParameter
+   Set iParam = DELRscMoveParameter_Forward
+   ...
+   Call  oInstr.Move(iParam)
+   </pre>
+ 
+ </pre></dd>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscMoveParameter','','DELRscMoveParameter') </script></dd>
+</dl>
+</dd>
+<a id="MoveToOtherSequence"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>MoveToOtherSequence</span><span class='signature'>(<script type="text/javascript"> activateLink('RscInstruction','RscInstruction')</script> <span class='param'>iInSequence</span>,<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Move the current instruction in a target sequence.
+ <br><b>Note:</b>The target sequence must be in the same Task as the current instruction
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iInSequence</span></dt>
+   <dd>    The target sequence.
+  
+ </ dd>
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd>    The index in the sequence where to move the instruction. 
+  
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   Set ResourceSequence = oResourceTask.MainRscSequence
+   ......
+   Dim oInstructions
+   oInstructions = ResourceSequence.Instructions
+   
+   Dim oInstr As RscInstruction
+   Set oInstr = oInstructions(0)
+   Dim iInSequence
+   Dim iIndex
+   ...
+   Call  oInstr.MoveToOtherSequence(iInSequence,iIndex)
+   </pre>
+</dl>
+</dd>
+<a id="RemoveLabel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>RemoveLabel</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Remove the label associated to this instruction.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   Set ResourceSequence = oResourceTask.MainRscSequence
+   ......
+   Dim oInstructions
+   oInstructions = ResourceSequence.Instructions
+   
+   Dim oInstr As RscInstruction
+   Set oInstr = oInstructions(0)
+   Call  oInstr.RemoveLabel()
+   </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

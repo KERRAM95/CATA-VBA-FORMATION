@@ -1,0 +1,125 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment"># -------------- Sample SCRIPT written in Python ------------------------------------------</span>
+<span class="comment"># This sample creates a XRep and manages data inside it.</span>
+
+<span class="comment"># Steps :</span>
+
+<span class="comment"># 1  - Retrieves the simulation and its product</span>
+<span class="comment"># 2  - Retrieves the PartBody</span>
+<span class="comment"># 3  - Creates a new XRep</span>
+<span class="comment"># 4  - Sets the data file name associated to the XRep</span>
+<span class="comment"># 5  - Imports the data file in the XRep</span>
+<span class="comment"># 6  - Adds a relation in the XRep</span>
+<span class="comment"># 7  - Exports the data of the XRep</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  1 - Retrieves the simulation and its product</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># As a first step, retrieves the simulation editor which is the actived one</span>
+myEditor = CATIA.ActiveEditor
+
+<span class="comment"># Then retrieves the product service</span>
+myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="comment"># Retrieves the PLMEntities</span>
+myEntities = myProdService.EditedContent
+
+<span class="comment"># Now retrieves the PLMEntity</span>
+myEntity = myEntities.Item(1)
+
+<span class="comment"># Gets the simulation Root</span>
+MySimulationRoot = myEntity
+
+<span class="comment"># Now retrieves the Model</span>
+myModel = MySimulationRoot.Model
+
+<span class="comment"># Opens the simulation model</span>
+oOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+oOpenService.PLMOpen (myModel)
+
+<span class="comment"># Retrieves the product root product and the root occurrence</span>
+myProductEditor = CATIA.ActiveEditor
+MyProductService = myProductEditor.GetService(&quot;PLMProductService&quot;)
+
+myRootOcc = MyProductService.RootOccurrence
+MyRootProduct = myRootOcc.PLMEntity
+
+<span class="comment">#----------------------------------------------------------------------------------------------------</span>
+<span class="comment">#  2 - Retrieves the PartBody</span>
+<span class="comment">#----------------------------------------------------------------------------------------------------</span>
+myProductRepInstances = MyRootProduct.RepInstances
+
+MyEntities = MyProductService.EditedContent
+
+<span class="keyword">for</span> MyEntity <span class="keyword">in</span> MyEntities:
+    MyRef = MyEntity
+    MyReps = MyRef.RepInstances
+    <span class="keyword">for</span> MyRep <span class="keyword">in</span> MyReps :
+        MyRepRef = MyRep.ReferenceInstanceOf
+        attr = MyRepRef.GetAttributeValue("V_discipline")
+        <span class="keyword">if</span> attr == "Design":
+           myPart = MyRepRef.GetItem("Part")
+           myPartInstance = MyRep
+           myBody = myPart.MainBody
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  3 - Creates a new XRep</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+MyPrdRepFactory = MyRootProduct.GetItem("SimPrdRepFactory")
+MyXRepRef = MyPrdRepFactory.CreatePrdRep("XRep")
+MyXRep = MyXRepRef.GetItem("SimXRep")
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  4 - Sets the data file name associated to the XRep</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+MyXRep.FileName = &quot;RootProduct.inp&quot;
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  5 - Imports the data file in the XRep</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+sFolderPath = CATIA.SystemService.Environ(&quot;TEMP&quot;)
+MyXRep.ImportFile (sFolderPath, True)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  6 - Adds a relation in the XRep</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+MyLink = MyProductService.ComposeLink(myRootOcc, myPartInstance , None)
+
+MyXRep.AddRelation(MyLink, win32com.client.constants.SimXRepTo3DShapeRelation)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  7 - Exports the data of the XRep</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+MyXRep.FileName = &quot;RootProductOut.inp&quot;
+MyXRep.ExportFile(sFolderPath)
+
+
+</pre>
+  </body>
+</html>
+

@@ -1,0 +1,385 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta content="Uc" name="topictype" />
+<meta content="idl" name="devlang" />
+<meta content="idl" name="devlang" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>Getting Started with Python</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1><a name="Top"></a>Getting Started with Python</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header">This task shows you how to get started 
+						with Python. It will show you how to use a scripting language 
+						to access CAA Automation objects to capture your own know-how 
+						and to increase your productivity. You can customize applications 
+						to automate repetitive tasks, and to make it fit your own 
+						process.</p>
+						<p class="header">You will discover here how to create and 
+						execute a Python script through an example dealing with 
+						creating a mesh part.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span>
+						<ul>
+							<li>You should first log in to the <strong>3D</strong>EXPERIENCE 
+							platform.</li>
+							<li>You should open a simulation to access the python 
+							command.</li>
+							<li>The apps that make up the the <strong>3D</strong>EXPERIENCE 
+							platform share the same object model [<a href="#References">1</a>]which 
+							can be accessed, as well as their own objects, by scripts 
+							written in Python. Refer to <em>About Automation Languages, 
+							Debug, and Compatibility</em> [<a href="#References">2</a>] 
+							to learn about the languages supported.</li>
+							<li>You can then find information about the scripting 
+							languages and environments, in <em>Running and Editing 
+							Macros</em>. This is located in the product documentation, 
+							Social and Collaborative Apps, Collaborative Apps Common 
+							Services, Native Apps Common Services, Other Services.
+							</li>
+						</ul>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Also in this Page...</td>
+					</tr>
+					<tr>
+						<td><a href="#hj-func">Functions in Python</a></td>
+					</tr>
+					<tr>
+						<td><a href="#hj-enum">Enumerations in Python</a></td>
+					</tr>
+					<tr>
+						<td><a href="#hj-type">Typename in Python</a></td>
+					</tr>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAInfTocApplication.htm">Foundation Object 
+						Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAInfWorkingWithPython.htm">About Python</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Creating"></a>Creating the Script</h2>
+<ol class="task">
+	<li>
+	<p>Create a .py file and edit it with any editor, and write in it the following 
+	script.</p>
+	</li>
+	<li>
+	<p>Accessing the CATIA application object, and the ENUM object for all enumeration constants.</p>
+	<pre class="code">
+	from com3dx import *
+	CATIA = get3dxClient()
+	ENUM = win32com.client.constants
+	... </pre>
+	</li>
+	<li>
+	<p>Retrieving the active simulation and its product.</p>
+	<ol class="task1">
+		<li>
+		<p>As a first step, retrieve the active editor.</p>
+		<pre class="code">	...
+	myEditor = CATIA.ActiveEditor
+	... </pre>
+		</li>
+		<li>
+		<p>Then retrieve the product service.</p>
+		<pre class="code">	...
+	myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+	...  </pre>
+		</li>
+		<li>
+		<p>Retrieve the PLMEntities collection object.</p>
+		<pre class="code">	...
+	myEntities = myProdService.EditedContent
+	...</pre>
+		</li>
+		<li>
+		<p>Now retrieve the PLMEntity.</p>
+		<pre class="code">	...
+	myEntity = myEntities.Item(1)
+	... </pre>
+		</li>
+		<li>
+		<p>Get the simulation Root.</p>
+		<pre class="code">	...
+	MySimulationRoot = myEntity
+	... </pre>
+		</li>
+		<li>
+		<p>Now retrieve the Model.</p>
+		<pre class="code">	...
+	myModel = MySimulationRoot.Model
+	... </pre>
+		</li>
+	</ol>
+	</li>
+	<li>
+	<p>Retrieving the Publication.</p>
+	<ol class="task1">
+		<li>
+		<p>Get first the list of all publications.</p>
+		<pre class="code">	...
+	myPublications = myModel.Publications
+	...</pre>
+		</li>
+		<li>
+		<p>Then retrieve the publication needed to use as support.</p>
+		<p>In our sample, we need a publication of a part body to create a support 
+		for our mesh</p>
+		<pre class="code">	...
+	myPublication = myPublications.GetItem(&quot;Part_Body_Publication_Name&quot;)
+	...</pre>
+		</li>
+	</ol>
+	</li>
+	<li>
+	<p>Creating a Mesh.</p>
+	<ol class="task1">
+		<li>
+		<p>Get the product representation factory.</p>
+		<pre class="code">	...
+	myPrdRepFactory = myModel.GetItem(&quot;SimPrdRepFactory&quot;)
+	... </pre>
+		</li>
+		<li>
+		<p>Create the product representation.</p>
+		<pre class="code">	...
+	myRepRef = myPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+	... </pre>
+		</li>
+		<li>
+		<p>Get the FEM Root and add the associated representation.</p>
+		<pre class="code">	...
+	myFEMRoot = myRepRef.GetItem(&quot;SimFemRoot&quot;)
+	myFEMRoot.AddAssociatedRep(myPublication)
+	... </pre>
+		</li>
+		<li>
+		<p>Get the mesh set and add the mesh part.</p>
+		<pre class="code">	...
+	myMeshSet = myFEMRoot.GetSet(&quot;SimNodesElements&quot;)
+	myMeshParts = myMeshSet.MeshParts
+	myMeshPart = myMeshParts.Add(&quot;CATFmtOctree3DRulesMesher&quot;)
+	myMeshPart.AddSupport(myPublication)
+	myMeshPart.Update
+	... </pre>
+		</li>
+	</ol>
+	</li>
+</ol>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Running"></a>Running the Script</h2>
+<ol class="task">
+	<li>
+	<p>Run the
+	<img alt="Python command" height="32" longdesc="Python command" src="I_SMAFeaPythonCmd.png" width="32"/> 
+		<kbd>Python</kbd> command.</p>
+	</li>
+	<li>
+	<p>Select your python file.</p>
+	</li>
+	<li>
+	<p>Uncheck the two options. </p>
+	</li>
+	<li>
+	<p>Click OK to run the script. </p>
+	</li>
+</ol>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="hj-func"></a>Functions in Python</h2>
+<p>If you want to split the script in different function for each of the steps 2 to 5 described in <a href="#Creating">Creating the Script</a>,
+you should define a function for each. </p>
+<p>Below is an example for the step 5) &quot;Creating a mesh&quot;.</p>
+<ol class="task">
+	<li><p>At the end of the step 4, call the function "CreateMesh" with myModel and 
+	myPublication as inputs.</p>
+	<pre class="code">
+	...
+	CreateMesh(myModel,myPublications)
+	</pre>
+	</li>
+	<li>
+	<p>Define the CreateMesh function at the top of the script.</p>
+	<pre class="code">
+	def CreateMesh(myModel, myPublications):
+		myPrdRepFactory = myModel.GetItem("SimPrdRepFactory")
+		myRepRef = myPrdRepFactory.CreatePrdRep("FEM")
+		myFEMRoot = myRepRef.GetItem("SimFemRoot")
+		myFEMRoot.AddAssociatedRep(myPublication)
+		myMeshSet = myFEMRoot.GetSet("SimNodesElements")
+		myMeshParts = myMeshSet.MeshParts
+		myMeshPart = myMeshParts.Add("CATFmtOctree3DRulesMesher")
+		myMeshPart.AddSupport(myPublication)
+		myMeshPart.Update
+	...</pre>
+	</li>
+</ol>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="hj-enum"></a>Enumerations in Python</h2>
+<p>The enumeration values defined for VBA are available in Python. Below is an example of how to use enumerations in Python.</p>
+<ol class="task">
+	<li>
+	<p>Retrieve the ENUM object.</p>
+	<pre class="code">
+	from com3dx import *
+	ENUM = win32com.client.constants
+	... </pre>
+	</li>
+	<li>
+	<p>Retrieve the enumeration values from the ENUM object.</p>
+	<pre class="code">
+	...
+	myAxis = myCentrifugalForce.Line
+	myAxis.AxisType = ENUM.SimAxisGeometric
+	...</pre>
+	</li>
+</ol>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="hj-type"></a>Typename in Python</h2>
+<p>The <strong>3D</strong>EXPERIENCE objects available in Python have type information available 
+using the <strong>typename</strong> function. Python includes a builtin <strong>type</strong> 
+function, but this is not useful for <strong>3D</strong>EXPERIENCE objects. Below is an example 
+of how to use typename in Python.</p>
+<ol class="task">
+	<li>
+	<p>Retrieve the CATIA Application object.</p>
+	<pre class="code">
+	from com3dx import *
+	CATIA = get3dxClient()
+	... </pre>
+	</li>
+	<li>
+	<p>Retrieve the type information from the CATIA Application object.</p>
+	<pre class="code">
+	typename(CATIA)
+	type(CATIA)
+	... </pre>
+	<p>This produces the output:</p>
+	<pre class="code">
+	&apos;Application&apos;
+	&lt;type &apos;Instance&apos;&gt;</pre>
+	</li>
+</ol>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="PythonSettings"></a>Python Settings</h2>
+<ol class="task">
+	<li>
+		<p>Open Preferences</p>
+		<p>
+		<img alt="preferences" height="258" src="I_SMAFeaPreferences.png" width="348"/>
+		</p>
+	</li>
+	<li>
+		<p>Go to the <kbd>Physics Simulation / Python</kbd> panel.</p>
+		<p>
+		<img alt="python preferences" height="594" src="I_SMAFeaPythonOption.png" width="869"/></p>
+	</li>
+	<li>
+		<p>Choose a Python interpreter.</p>
+		<p>
+		<img alt="python interpreter" height="259" src="I_SMAFeaPythonInterpreter.png" width="554"/></p>
+		<p>
+		<ul>
+		<li><strong>Configured Python Installation</strong> is available for customers to run their own custom installation of python. This is recommended for customers that need 3rd party packages.</li>
+		<li><strong>Discontinued Python 2.7 Installation</strong> is discontinued. Customers requiring this python release can configure a custom installation.</li>
+		<li><strong>Discontinued Python 3.7 Installation</strong> is discontinued. Customers requiring this python release can configure a custom installation.</li>
+		<li><strong>Default Python 3.10 Installation</strong> is the default and recommended choice. It requires no extra installation, or configuration.</li>
+		</ul>
+	</li>
+	<li>
+		<p>Optional: Configure your own installed Python interpreter.</p>
+		<p>
+		<img alt="python configure" height="236" src="I_SMAFeaPythonConfigure.png" width="549"/></p>
+		<p><strong>Executable Path</strong> is the full filename path of the python interpreter or virtual environment installation.
+		This field cannot be empty.</p>
+		<p><strong>Library Path</strong> is used to set the PYTHONPATH environment variable.
+		It is set as a series of paths seperated by the ; character.
+		The Python Standard Library is found where the interpreter is installed and does not need to be included here.
+		Most 3rd party packages are installed in the interpeter directory and do not need to be included here.
+		The primary usage of this field is to allow Python to find modules developed by a customer that are imported by their scripts.
+		This field can be empty.</p>
+		<p><strong>Editor Path</strong> is the command line to launch the 3rd party editor or integrated development environment (IDE) to be used to run or debug Python scripts.
+		If this field is left empty, the default Idle editor from the python installation under <kbd>Executable Path</kbd> will be used.
+		The editor will be launched using the python script as the final command line argument.
+		For example, if your <kbd>Editor Path</kbd> is c:\MyEditor.exe, and your script name is c:\MyScript.py, the editor will be launched as "c:\MyEditor.exe c:\MyScript.py".
+		Important: the 3rd party editor must be configured to use the same python interpreter as 3DEXPERIENCE.
+		This field can be empty.</p>
+	</li>
+</ol>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="InShort"></a>In Short</h2>
+<p>This use case has shown how to create a script with Python dealing with mesh creation 
+and how to run it</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tr>
+		<td>[1]</td>
+		<td><a href="CAAInfTocApplication.htm">Foundation Object Model Map</a></td>
+	</tr>
+	<tr>
+		<td>[2]</td>
+		<td><a href="CAAInfWorkingWithPython.htm">About Python</a></td>
+	</tr>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

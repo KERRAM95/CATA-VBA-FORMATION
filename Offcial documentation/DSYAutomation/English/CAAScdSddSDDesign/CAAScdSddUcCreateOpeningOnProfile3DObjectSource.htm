@@ -1,0 +1,186 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningOnProfile3DObject.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates a opening on profile using 3d object and removes it.</span>
+<span class="comment">'This script requires sdd model which contains a stiffener on a plate with one extruded sketch intersecting it.</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="comment">'   4- Retrieves Service manager</span>
+<span class="comment">'   5- Retrieves stiffener object</span>
+<span class="comment">'   6- Get 3D Object for creating opening on profile</span>
+<span class="comment">'   7- Creates opening on profile</span>
+<span class="comment">'   8- Removes opening on profile</span>
+<span class="comment">'   9- Updates the Product Stiffener object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Dim </span>Manager<span class="keyword"> As </span>RfgService
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>SDDProdSel<span class="keyword"> As </span>Selection
+
+
+<span class="keyword">Sub </span>CATMain()
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="keyword">    Dim </span>SDDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SddProduct&quot;
+    OpenProduct prdName , SDDPrdEditor
+    
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="keyword">    Set </span>SDDProdSel = SDDPrdEditor.Selection
+    
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="keyword">    Dim </span>product1Service  <span class="keyword"> As </span>PLMProductService
+<span class="keyword">    Set </span>product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+<span class="keyword">    Dim </span>ObjVPMRootOccurrence  <span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">    Set </span>ObjVPMRootOccurrence = product1Service.RootOccurrence
+<span class="keyword">    Dim </span>ObjVPMReference<span class="keyword"> As </span>VPMReference
+<span class="keyword">    Set </span>ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+<span class="keyword">    Dim </span>ObjVPMRepInstances<span class="keyword"> As </span>VPMRepInstances
+<span class="keyword">    Set </span>ObjVPMRepInstances = ObjVPMReference.RepInstances
+<span class="keyword">    Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+
+<span class="comment">'   4- Retrieves Service manager</span>
+<span class="keyword">    Set </span>Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+    
+<span class="comment">'   5- Get product stiffener</span>
+<span class="keyword">    Set</span> ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">    Set</span> StiffenerRef = ListOfInstances.Item(2).ReferenceInstanceOf
+<span class="keyword">    Set</span> StiffenerRepInstances = StiffenerRef.RepInstances
+<span class="keyword">    Set</span> StiffenerRepInstReference = StiffenerRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set</span> StiffenerPart = StiffenerRepInstReference.GetItem(&quot;Part&quot;)
+<span class="comment">    'Get Sdd Stiffener</span>
+<span class="keyword">    Dim</span> ObjSddProductStiffener <span class="keyword">As</span> SddProductStiffener
+    SDDProdSel.Add StiffenerRef
+<span class="keyword">    Set</span> ObjSddProductStiffener = SDDProdSel.FindObject(&quot;CATIASddProductStiffener&quot;)
+<span class="keyword">    Dim</span> ObjSddStiffener <span class="keyword">As</span> SddStiffener
+<span class="keyword">    Set</span> ObjSddStiffener = ObjSddProductStiffener.SddStiffener
+<span class="comment">    'Get reference of stiffener</span>
+<span class="keyword">    Dim</span> RefObjSddStiffener <span class="keyword">As</span> Reference
+<span class="keyword">    Set</span> RefObjSddStiffener = StiffenerPart.CreateReferenceFromObject(ObjSddStiffener)
+
+<span class="comment">'   6- Get 3D Object for creating opening on profile</span>
+<span class="keyword">    Set</span> Obj3DOpeningOnProfileDimensions = StiffenerPart.FindObjectByName(&quot;Extrude.1&quot;)
+<span class="keyword">    Dim</span> Ref3DObjectOpeningOnProfileDimensions <span class="keyword">As</span> Reference
+<span class="keyword">    Set</span> Ref3DObjectOpeningOnProfileDimensions = StiffenerPart.CreateReferenceFromObject(Obj3DOpeningOnProfileDimensions)
+
+<span class="comment">'   7- Creates opening on profile</span>
+<span class="keyword">    Dim </span>ObjStrOpeningOnProfile<span class="keyword"> As </span>StrOpeningOnProfile
+    CreateOpeningOnProfile3DObject ObjSddStiffener, Ref3DObjectOpeningOnProfileDimensions, ObjStrOpeningOnProfile
+    
+<span class="comment">'   8- Removes opening on profile</span>
+<span class="keyword">    Dim </span>ObjStrOpeningsOnProfile<span class="keyword"> As </span>StrOpeningsOnProfile
+<span class="keyword">    Set </span>ObjStrOpeningsOnProfile = ObjSddStiffener.GetOpeningsOnProfile(0)
+    ObjStrOpeningsOnProfile.Remove ObjStrOpeningOnProfile
+    
+<span class="comment">'   9- Updates the Product Stiffener object</span>
+    ObjSddProductStiffener.Update
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Opening On Profile</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   7.1- Add Opening On Profile</span>
+<span class="comment">'   7.2- Get StrOpening from StrOpeningOnProfile</span>
+<span class="comment">'   7.3- Set Opening Type for 3D Object</span>
+<span class="comment">'   7.4- Set Category</span>
+<span class="comment">'   7.5- sets intersecting element for opening creation</span>
+<span class="comment">'   7.6- Sets forming mode and extrusion mode</span>
+<span class="comment">'   7.7- Updates created opening on profile object.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> CreateOpeningOnProfile3DObject(iObjSddStiffener <span class="keyword">As</span> SddStiffener, Ref3DObject <span class="keyword">As</span> Reference, oObjStrOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile)
+    
+<span class="comment">    'Add Opening On Profile</span>
+    AddOpening iObjSddStiffener, oObjStrOpeningOnProfile
+	
+<span class="comment">    'Get StrOpening from StrOpeningOnProfile</span>
+    <span class="keyword">Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+    <span class="keyword">Set</span> ObjStrOpening = oObjStrOpeningOnProfile.StrOpening
+    
+<span class="comment">    'Set opening type catStrOpeningMode3DObject for 3dobject opening</span>
+    ObjStrOpening.OpeningType = catStrOpeningMode3DObject
+    
+<span class="comment">    'Set Category</span>
+    <span class="keyword">Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjStrCategoryMngt = ObjStrOpening.StrCategoryMngt
+    ObjStrCategoryMngt.SetCategory &quot;ManHole&quot;
+
+<span class="comment">    'Set intersecting element for opening creation</span>
+    <span class="keyword">Dim</span> ObjStrOpening3DObject <span class="keyword">As</span> StrOpening3DObject
+    <span class="keyword">Set</span> ObjStrOpening3DObject = ObjStrOpening.StrOpening3DObject
+    ObjStrOpening3DObject.IntersectingElement = Ref3DObject
+    
+<span class="comment">    'Set forming mode and extrusion mode</span>
+    <span class="keyword">Set</span> ObjStrOpeningExtrusionMngt = ObjStrOpening.StrOpeningExtrusionMngt
+    ObjStrOpeningExtrusionMngt.ExtrusionMode = 1
+    'ObjStrOpening.FormingMode = 0
+	
+<span class="comment">    'Updates created opening on profile object</span>	
+    ObjPart.UpdateObject oObjStrOpeningOnProfile
+ 
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Add Opening.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> AddOpening(iObjSfdStiffener <span class="keyword">As</span> SddStiffener, oObjSfdOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile)
+    <span class="keyword">Dim</span> ObjStrOpeningsOnProfile <span class="keyword">As</span> StrOpeningsOnProfile
+    <span class="keyword">Set</span> ObjStrOpeningsOnProfile = iObjSfdStiffener.GetOpeningsOnProfile(0)
+<span class="comment">    'Add opening</span>
+    <span class="keyword">Set</span> oObjSfdOpeningOnProfile = ObjStrOpeningsOnProfile.Add
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SDDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SDDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

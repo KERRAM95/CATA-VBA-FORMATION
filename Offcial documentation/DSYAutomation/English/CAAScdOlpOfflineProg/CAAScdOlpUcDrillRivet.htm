@@ -1,0 +1,431 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Integrating Drilling and Riveting into your Translator</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody><tr>
+		<td class="DocHeader1">
+		<h1><a name="Top">Integrating Drilling and Riveting into your Translator</a></h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="use">Use Case</td>
+	</tr>
+</tbody></table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody><tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This document describes the necessary steps to customize an existing 
+		translator so it can translate drill and rivet instructions and their 
+		associated profiles during both program upload and download.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody></table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="BeforeYouBegin"></a>Before you Begin</h2>
+<p>You should have read <a href="CAAScdOlpTaOverview.htm">Robotics Programming 
+Overview</a>, <a href="CAAScdOlpUcTranslator.htm">Customizing a Translator</a> 
+and <a href="CAAScdOlpUcInstruction.htm">Translating an Instruction</a>.</p>
+<p>You can import a working version of the customized translator from the file 
+<div class=vb_sample_data>DELMIAXMLCAADrillRivetTranslator.3dxml</div> and a sample dataset supplied in the 
+folder InstallRootFolder\CAADoc\Doc\English\CAAScdOlpOfflineProg\samples\ where <code>
+InstallRootFolder</code> [<a href="#References">1</a>] is the folder where the 
+API CD-ROM is installed. Additionally, this folder contains a sample XML program 
+to upload.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="About"></a>On the Customized Translator and the Program Structure</h2>
+<ul>
+	<li>The XML program structure supplied in the sample file is just for 
+	teaching purposes. The Delmia V5/V6 XML format does not specify a structure 
+	for this instruction set.</li>
+	<li>During the entire upload process, the XML translator does not make use 
+	of a parser/scanner. Instead, it iterates through the XML nodes found in an 
+	XML document. Thus, the structure of program uploaded is clearly visible and 
+	requires no parsing. </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="ConceputalOverview"></a>Conceputal Overview of Waypoints</h2>
+<h3><a name="WaypointTargets"></a>Waypoint Targets:</h3>
+<p><img height="243" src="MfgFastenerDR.png" style="float: right" width="300" alt="MfgFastenerDR"/>
+A series of joint or cartesian target locations that define collision free paths 
+the robot can move between. A robot can always move from the parent to a child 
+waypoint and visa-versa. Each parent waypoint target can have multiple possible 
+children to move to. Each process point defines, at least, a waypoint target 
+that it can move to on a collision free path. The hierarchical structure forms 
+an inverted Tree structure with the Root of the Tree having no parent. Each 
+waypoint target must have a WaypointID and a ParentWaypointID assigned. 
+Optionally, the waypoint can have an escape motion type defined.</p>
+<h3><a name="WaypointMotion"></a>Waypoint Motion:</h3>
+<p>A robot motion that contains a waypoint target.</p>
+<h3><a name="WaypointOperation"></a>Waypoint Operation:</h3>
+<p>A sequence instruction containing a series Waypoint motions generated using 
+an assigned Waypoint Task as a reference. In a Drill/Rivet robot task only one 
+Waypoint Task can be assigned as a reference for its contained Waypoint 
+Operations. The assignment just needs to happen once, in any of the Waypoint 
+Operations instantiated within the Drill/Rivet task.</p>
+<h3><a name="WaypointTask"></a>Waypoint Task:</h3>
+<p><img height="241" src="WaypointTaskLayout.png" style="float: left" width="308" alt="WaypointTaskLayout"/>
+A task containing only waypoint motions. A waypoint task cannot contain any 
+other type of instruction. Conceptually, a waypoint task can be seen as the 
+reference task that solely defines the hierarchical structure and positional 
+data of waypoint motions. A waypoint task is used as a reference when creating a 
+drill/rivet task, serving as the source of positional data for any waypoint 
+operations instantiated within the drill/rivet task.</p>
+<p>In waypoint task image, Waypoint 1 (Root) is the parent of Waypoint 11 and 
+12. Waypoint 11 is the parent of Waypoint 111 and Waypoint 112 and Waypoint 12 
+is the parent of Waypoint 121.</p>
+<h3><a name="MfgFastener"></a>Manufacturing Fastener:</h3>
+<p>An object containing manufacturing positions for the design 
+fasteners/entities (3D points). This object is persisted in the logical behavior 
+Representation and aggregated to Manufacturing cell in the Resource tree. 
+Manufacturing Fastener is used downstream to generate robot tasks.</p>
+<p>Manufacturing Pattern &#8211; An object used to group Manufacturing Fasteners. This 
+object is persisted in the logical behavior Representation along with 
+Manufacturing Fasteners and aggregated to Manufacturing cell in the Resource 
+tree. Manufacturing Pattern is used downstream to generate robot tasks.</p>
+<h3><a name="DROperation"></a>Drill/Rivet Operation:</h3>
+<p>A Robot instruction for drilling/riveting a point. Depending on the content 
+of associated Drill/Rivet Profile, Drill/Rivet Operation would perform different 
+intermediate motions (like Approach, Drill/Rivet Start, Drill/Rivet, Drill/Rivet 
+Complete, Retract) to emulate Drilling/Riveting. Each Drill/Rivet Operation in a 
+Drill/Rivet Task is assigned a parent waypoint, which is used to approach and 
+depart from the operation.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>An Example Program</h2>
+<p>
+<img height="325" src="WaypointTree.png" style="float: right" width="281" alt="WaypointTree"/>
+Let us consider a Drill/Rivet task with 4 Drill Operations (DOp.1- ROp.3) and 2 
+Rivet Operations (ROp.1 and ROp.2). Let us assign Waypoint 111 as parent 
+waypoint of Drill Operation DOp.1 and Rivet Operation ROP.1, Waypoint 112 as 
+parent waypoint of Drill Operation DOp.2 and Rivet Operation ROp.2 and Waypoint 
+121 as parent waypoint of Drill Operations DOp.3 and ROp.3. </p>
+<p>Let&#8217;s define the order of execution as follows: DOp.1, ROp.1, DOp.2, ROp.2, 
+DOp.3 and finally ROp.3. These are the steps the robot will take to accomplish 
+this:</p>
+<ol>
+	<li>DOp.1 and ROp.1 identify waypoint #112 as its parent. This means we must 
+	move to Waypoint #112 in order to execute these operations. Thus, the robot 
+	would move to:<ol>
+		<li>Waypoint 1</li>
+		<li>Waypoint 11</li>
+		<li>Waypoint 112</li>
+	</ol>
+	</li>
+	<li>The robot would perform drill operation DOp.1 and rivet operation ROp.1. 
+	Because both share the same parent waypoint, the robot would not perform any 
+	waypoint motion between them by default. However, it is possible for the 
+	Robot programmer to specify that they wish to force waypoint motion between 
+	DOp.1 and ROp.1, even though their parent waypoint is the same. If this 
+	option is chosen, the robot would move to waypoint 112 between DOp.1 and 
+	ROp.1.</li>
+	<li>DOp.2 and ROp.2 identify waypoint 111 as its parent. In order to reach 
+	waypoint 111, the robot would move to:<ol>
+		<li>Waypoint 112, as this is the parent waypoint of the previously 
+		executed DOp.1 and ROp.1.</li>
+		<li>Waypoint 11, as this is the lowest common parent of waypoints 111 
+		and 112</li>
+		<li>Waypoint 111</li>
+	</ol>
+	</li>
+	<li>The robot would perform drill operation DOp.2 and rivet operation ROp.2</li>
+	<li>Drill Operation DOp.3 and Rivet Operation ROp.3 identify waypoint 121 as 
+	its parent. In order to reach waypoint 121, the robot would move to:<ol>
+		<li>Waypoint 111</li>
+		<li>Waypoint 11</li>
+		<li>Waypoint 1</li>
+		<li>Waypoint 12</li>
+		<li>Waypoint 121</li>
+	</ol>
+	</li>
+	<li>The robot would perform drill operations DOp.3, and ROp.3</li>
+</ol>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>Customizing the XML Translator</h2>
+<p>To customize the translator, we will follow the steps described in 
+Customizing a Translator:</p>
+<ol>
+	<li><a href="#DelmiaStruct">Determine the DELMIA instruction structure</a></li>
+	<li><a href="#XMLStruct">Determine the XML structure</a></li>
+	<li><a href="#CopyTrans">Make a copy of the translator</a></li>
+	<li><a href="#WriteClasses">Write the required classes to translate the 
+	instruction</a></li>
+	<li><a href="#ModifyClasses">Modify the translator to use your classes</a></li>
+	<li><a href="#UpdateOptions">Update options to use your translator</a></li>
+</ol>
+<h3><a name="DelmiaStruct"></a>1. Determine the DELMIA instruction structure</h3>
+<h4>Waypoint Task</h4>
+<p>To create a waypoint task, we will create a regular robot task and define the 
+waypoint tree structure within by creating Waypoint Motion instructions. A 
+Waypoint Task is just that, a task that contains only waypoint motions. Thus, no 
+special customization is needed on the way the XML translator translates tasks &#8211; 
+at least for Waypoint Tasks.</p>
+<h4>Waypoint Motion</h4>
+<p>Creating a waypoint motion is not any different from creating any other 
+instruction type, except that they can only be instantiated within a Waypoint 
+Task. Use the CreateInstruction interface on an <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpInstructions');return false;">
+OlpInstructions</a> object, and pass in the instruction type &#8211; <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'DELOlpInstructionType');return false;">
+delOlpWaypointMotion</a>. Waypoint motion instructions can only be created in a 
+Waypoint Task or under a waypoint Operation. The returned instruction is 
+actually of type <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotion');return false;">
+OlpRobotMotion</a>, and the main key difference from a regular <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotion');return false;">
+OlpRobotMotion</a> is that the waypoint motion target implements <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpWaypointMotionTarget');return false;">
+OlpWaypointMotionTarget</a>. Thus, we will have to customize the class used to 
+translate Robot Motions (XMLMotionInstruction) in order to translate Waypoint 
+Motions.</p>
+<h4>Waypoint Operation</h4>
+<p>To create them, use the CreateInstruction interface on an <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpInstructions');return false;">
+OlpInstructions</a> object, and pass in the instruction type &#8211; <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'DELOlpInstructionType');return false;">
+delOlpWaypointOperation</a>. The returned object of type <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpWaypointOperation');return false;">
+OlpWaypointOperation</a> contains an Instructions member where we will create 
+the desired waypoint motions. When uploading a waypoint operation, we must set 
+its reference waypoint task. Keep in mind that, when instantiating Waypoint 
+Motion instructions within a Waypoint Operation that has a Waypoint Task set, 
+the only requirement for a fully defined waypoint motion is its waypoint ID. Any 
+additional information set will be overwriting the information stored in the 
+Waypoint Task, so please plan accordingly. As far as our custom translator goes 
+and, since this is a new instruction that did not exist before, we will add a 
+new class that derives from the base Instruction class to translate it.</p>
+<h4>Drill/Rivet Operation</h4>
+<p>Creating drill, rivet and drill-rivet operations follows a slightly different 
+approach from what we are accustomed to. This type of operations need to be 
+instantiated from a 
+<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTemplate');return false;">
+OlpTemplate</a>. To do so, we will use the CreateInstructionFromTemplate method 
+on the task&#8217;s <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpInstructions');return false;">
+OlpInstructions</a> object with the following parameters:</p>
+<pre class="code">libraryName = &#8220;DrillRivet&#8221; 
+templateName = &#8220;DrillAction&#8221; or &#8220;DrillRivetAction&#8221; or &#8220;RivetAction&#8221;
+TemplateType = &#8220;Spot&#8221;
+subtype = &#8220;Action&#8221;
+RelInstruction is the relative OlpInstruction where to create this action
+After is a Boolean value indicating whether to create the instruction before or after the relative instruction
+</pre>
+<p>We must keep in mind that the return object from this function call is an <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTemplate');return false;">
+OlpTemplate</a>, but we can also use the <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpDrillRivetAction');return false;">
+OlpDrillRivetAction</a> interface to access further properties of this object. 
+The returned object&#8217;s instructions will contain the drill and/or rivet 
+operations for us to set data on.</p>
+<p>The instructions within the returned <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTemplate');return false;">
+OlpTemplate</a> will vary depending on whether we created a Drill, Rivet or a 
+DrillRivet operation. When creating a drill or a rivet action we get a list with 
+a single instruction, as opposed to a DrillRivet action where two instructions 
+are contained. Use the <a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRobotMotion');return false;">
+OlpRobotMotion</a> to modify or access the action&#8217;s data.</p>
+<h4>DrillRivet Profile</h4>
+<p>Drill, Rivet and Drill-Rivet actions must have an associated DrillRivet 
+profile for their definition to be complete. To translate DrillRivet profiles 
+within our custom XML translator, we will derive the XMLController class to add 
+a DrillRivet profile translation method. When instantiating a new DrillRivet 
+profile, we will get a profile that contains slightly different objects 
+depending on the process type we assign it during creation.</p>
+<h4>Translation Logic</h4>
+<p>Since we are adding instructions to the translation set, we will have to 
+customize the logic governing the translation process: XMLInstructionList. 
+Additionally, to aid in our translation of waypoint operations, we will need a 
+customized XMLTask.</p>
+<h4>Others</h4>
+<p>For the sake of clarity, we will store our Keywords in a separate class from 
+XMLKeywords.</p>
+<table class="fill">
+<tbody>
+	<tr>
+		<th>Class</th>
+		<th>Base Class</th>
+		<th>Purpose of customization</th>
+	</tr>
+	<tr>
+		<td>XMLControllerCustom</td>
+		<td>XMLController</td>
+		<td>Translate Drill-Rivet profiles</td>
+	</tr>
+	<tr>
+		<td>XMLDrillRivetOperationBaseInstruction</td>
+		<td>XMLMotionInstructionCustom</td>
+		<td>Translate Drill and Rivet operations</td>
+	</tr>
+	<tr>
+		<td>XMLDrillRivetOperationInstruction</td>
+		<td>XMLInstruction</td>
+		<td>Coordinate Drill-Rivet operation upload/download</td>
+	</tr>
+	<tr>
+		<td>XMLInstructionListCustom</td>
+		<td>XMLInstructionList</td>
+		<td>Control translation logic</td>
+	</tr>
+	<tr>
+		<td>XMLKeywordsCustom</td>
+		<td>XMLKeywords</td>
+		<td>Storage of keywords</td>
+	</tr>
+	<tr>
+		<td>XMLMotionInstructionCustom</td>
+		<td>XMLMotionInstruction</td>
+		<td>Translate waypoint instructions</td>
+	</tr>
+	<tr>
+		<td>XMLTaskCustom</td>
+		<td>XMLTask</td>
+		<td>Aid in WaypointOperation translation</td>
+	</tr>
+	<tr>
+		<td>XMLTranslatorCustom</td>
+		<td>XMLTranslator</td>
+		<td>Set translator options, fix waypoint operations without waypoint 
+		task.</td>
+	</tr>
+	<tr>
+		<td>XMLWaypointMotionInstruction</td>
+		<td>XMLMotionInstructionCustom</td>
+		<td>Translate WaypointMotions</td>
+	</tr>
+	<tr>
+		<td>XMLWaypointOperationInstruction</td>
+		<td>XMLInstruction</td>
+		<td>Translate WaypointOperations</td>
+	</tr>
+	</tbody>
+</table>
+<h3><a name="XMLStruct"></a>2. Determine the XML structure</h3>
+<p>Note: Have a look at the sample XML program to get a deeper insight into any 
+of the structures outlined below.</p>
+<h4>Drill-Rivet profiles</h4>
+<p>Their structure is contained within the Controller element, and is quite 
+simple.</p>
+<pre class="code">
+&lt;DrillProfileList&gt;
+	&lt;/DrillProfile&gt;
+		Properties
+	&lt;/DrillProfile&gt;
+&lt;/DrillProfileList&gt;
+&lt;DrillRivetProfileList&gt;
+	&lt;DrillRivetProfile&gt;
+		Properties
+	&lt;/DrillRivetProfile&gt;
+&lt;/DrillProfileList&gt;</pre>
+<h4>Waypoint Motion</h4>
+<p>The Waypoint Motion XML structure is identical to that of a Robot Motion.</p>
+<pre class="code">
+&lt;Instruction&gt;
+	&lt;/PersistentParameters&gt;
+		&lt;ApplicativeParameters&gt;
+			&lt;/MotionAttributes&gt;
+		&lt;/Target&gt;
+	&lt;/ApplicativeParameters&gt;
+&lt;/Instruction&gt;</pre>
+<h4>Waypoint Operation</h4>
+<p>The Waypoint Operation structure is quite simple, as it mainly just serves as 
+a Waypoint Motion container. We can identify a waypoint operation by its 
+LateType, which takes a value of DNBWaypointOperationActivity. The link to the 
+Waypoint Task is stored within the PersistentParameters element.</p>
+<pre class="code">
+&lt;Instruction&gt;
+	&lt;/PersistentParameters&gt;
+	&lt;/WaypointOperationInstructions&gt;
+&lt;/Instruction&gt;
+</pre>
+<h4>Drill, Drill-Rivet and Rivet Operations</h4>
+<p>The DrillRivet Motion XML structure is identical to that of a Robot Motion. 
+We can identify them by the use of DNBDrillOperationActivity, 
+DNBDrillRivetOperationActivity and DNBRivetOperationActivity.</p>
+<pre class="code">
+&lt;Instruction&gt;
+	&lt;/PersistentParameters&gt;
+	&lt;ApplicativeParameters&gt;
+		&lt;/MotionAttributes&gt;
+		&lt;/Target&gt;
+	&lt;/ApplicativeParameters&gt;
+&lt;/Instruction&gt;
+</pre>
+<h3><a name="CopyTrans"></a>3. Make a copy of the translator</h3>
+<p>We recommend creating your own copy of the macro library for your 
+customizations. This way it is clear whether you are using the DELMIA standard 
+translator or your custom version. Also, as soon as you save a change to a macro 
+library, it is updated in the database so other users in your enterprise will 
+get your changes.</p>
+<ol>
+	<li>Search for the translator in the database. You can use the search string 
+	&quot;VSTA: *&quot; to find all VSTA macro libraries.</li>
+	<li>Use the Collaborative Tasks-&gt;Duplicate command to create a copy of 
+	&quot;DELMIA XML R2020x&quot; and rename it to your liking.</li>
+	<li>Open your copy of the macro library for editing using the 
+	Tools-&gt;Macros dialog.</li>
+</ol>
+<h3><a name="WriteClasses"></a>4. Write the required classes to translate the 
+instruction</h3>
+<p>Please import the provided XMLCAADrillRivet translator to get details on 
+writing the classes.</p>
+<h3><a name="ModifyClasses"></a>5. Modify the translator to use your classes</h3>
+<p>We will update the TranslatorFactory class to return the appropriate 
+instruction class when instantiating XMLController, XMLMotionInstruction, 
+XMLInstructionList and XMLTask objects. For the newly added classes, we will 
+create new factory methods. Please refer to the provided XMLCAADrillRivet 
+translator for more details.</p>
+<h3><a name="UpdateOptions"></a>6. Update options to use your translator</h3>
+<p>The XML translator supports both V5 and V6 upload and downloads. There is no 
+upload option so there is nothing for us to update there. However, the 
+translator does provide a V5 and a V6 download option. In our case, since we 
+have defined this custom XML structure in a V6-typed XML, we will set the valid 
+download options to &#8220;V6&#8221;, thus dropping &#8220;V5&#8221; from the supported formats for 
+download.</p>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody><tr>
+		<td>[1]</td>
+		<td>
+		<a href="CAAScdOlpTaOverview.htm">Robotics Programming Overview</a></td></tr>
+		<tr><td>[2]</td>
+		<td>
+		<a href="CAAScdOlpUcTranslator.htm">Customizing a Translator</a></td></tr>
+		<tr><td>[3]</td>
+		<td>
+		<a href="CAAScdOlpUcInstruction.htm">Translating an Instruction</a></td>
+	</tr>
+</tbody></table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="history">
+	<caption>History</caption>
+	<tbody><tr>
+		<td>Version: <strong>1</strong> [Jun 2020]</td>
+		<td>Document created</td>
+	</tr>
+</tbody></table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

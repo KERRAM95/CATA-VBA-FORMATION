@@ -1,0 +1,88 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>DrawingRoot Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>DrawingRoot Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingRoot', 'PropertyIndex'); return false;">
+		Properties</a></td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingRoot', 'MethodIndex'); return false;">
+		Methods</a></td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p class="auto"><a href="../CAAScdInfInfrastructure/CAAInfObjApplication.htm">
+<img src="../CAAScdImages/Application.png" alt="Application Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="../CAAScdInfInfrastructure/CAAInfObjEditors.htm"><img src="../CAAScdImages/Editors.png" alt="Editors Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="Space" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="../CAAScdInfInfrastructure/CAAInfObjEditor.htm"><img src="../CAAScdImages/Editor.png" alt="Editor Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space2.png" alt="Space" width="40" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingRoot');return false;"><img src="../CAAScdImages/DrawingRoot.png" alt="DrawingRoot Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space3.png" alt="Space" width="60" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/propActiveSheet.png" alt="Returns or Sets the 2D Layout Active Sheet" width="80" height="24"/><a href="CAADriObjDrawingSheet.htm"><img src="../CAAScdImages/DrawingSheet.png" alt="DrawingSheet Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space3.png" alt="Space" width="60" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAADriObjDrawingSheets.htm"><img src="../CAAScdImages/DrawingSheets.png" alt="DrawingSheets Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space3.png" alt="Space" width="60" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'KnowledgeIDLItf', 'interface', 'Parameters');return false;"><img src="../CAAScdImages/Parameters.png" alt="Parameters Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space3.png" alt="Space" width="60" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'KnowledgeIDLItf', 'interface', 'Relations');return false;"><img src="../CAAScdImages/Relations.png" alt="Relations Collection Object" width="252" height="22"/></a></p>
+<p>Represents the root object of a drawing representation.</p>
+<p>The root object of a drawing representation can be retrieved thanks to the
+<strong>ActiveObject</strong> property of the drawing representation editor once 
+the drawing representation is the active one.</p>
+<pre class="code"><span class="keyword">Dim</span> oDrwRoot <span class="keyword">As</span> DrawingRoot
+<span class="keyword">Set</span> oDrwRoot = CATIA.ActiveEditor.ActiveObject</pre>
+<h2>Using the DrawingRoot Object</h2>
+<p>The following properties of the <strong>DrawingRoot</strong> object are described 
+in this section:</p>
+<ul>
+	<li><strong>ActiveSheet</strong> property</li>
+	<li><strong>Sheets</strong> property.</li>
+</ul>
+<h3>ActiveSheet Property</h3>
+<p>Use the <strong>ActiveSheet</strong> property to retrieve the active <strong>
+Sheet</strong> object:</p>
+<pre class="code"><span class="keyword">Dim</span> oSht <span class="keyword">As</span> Sheet
+<span class="keyword">Set</span> oSht = CATIA.ActiveEditor.ActiveObject.ActiveSheet</pre>
+<p>Use the <strong>ActiveSheet</strong> property along with the <strong>Sheets</strong> 
+collection object to set the active sheet. The following example activates the second 
+sheet in the collection.</p>
+<pre class="code"><span class="keyword">Dim</span> oSht <span class="keyword">As</span> Sheet
+<span class="keyword">Set</span> oSht = CATIA.ActiveEditor.ActiveObject.Sheets.Item(2)
+CATIA.ActiveEditor.ActiveObject.ActiveSheet = oSht</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

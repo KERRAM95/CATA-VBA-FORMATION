@@ -1,0 +1,274 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Integrating Your Customizations</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Integrating Your Customizations</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This example illustrates 
+						how to integrate into a DELMIA translator a class which 
+						translates a custom instruction. </p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span><ul>
+							<li>You should have read
+							<a href="CAAScdOlpTaOverview.htm">Robotics Programming Overview</a>,
+							<a href="CAAScdOlpUcTranslator.htm">Customizing a 
+							Translator</a>
+							and <a href="CAAScdOlpUcInstruction.htm">Translating 
+							an Instruction</a>.</li>
+							<li>You can import a working version of the customized 
+							translator from the file <code><div class=vb_sample_data>MyFanucTranslatorR2016x.3dxml</div></code> 
+							supplied in the folder<br />
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdOlpOfflineProg\samples\</code><br />
+							where <code>InstallRootFolder</code> is the folder where 
+							the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="MyInstructionListSource.htm">MyInstructionListSource.htm</a>,
+						<a href="TranslatorFactorySource.htm">TranslatorFactorySource.htm</a></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td class="Intro2">
+						<p class="header">This example steps through how to identify 
+						they type of an instruction and call the appropriate class 
+						to translate that instruction. To illustrate the example, 
+						we have invented a custom FANUC instruction &quot;IO_SYNC&quot;. The 
+						details of the IO_SYNC instruction are explained in
+						<a href="CAAScdOlpUcTranslator.htm">Customizing a Translator</a>. 
+						The class to translate that instruction,
+						<a href="MyIO_SYNCSource.htm">MyIO_SYNC.vb</a>, is explained 
+						in <a href="CAAScdOlpUcInstruction.htm">Translating an 
+						Instruction</a>.</p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="CAAScdOlpTaOverview.htm">Robotics Programming Overview</a> </td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdOlpUcTranslator.htm">Customizing a 
+						Translator</a></td>
+					</tr>
+					<tr>
+						<td style="height: 13px">
+						<a href="CAAScdOlpUcInstruction.htm">Translating an Instruction</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>The modifications required to integrate a custom translator class are:</p>
+		<ol>
+			<li><a href="#MyInstructionList">Create MyInstructionList Class</a></li>
+			<li><a href="#CreateTranslatorForUpload">Override CreateTranslatorForUpload</a></li>
+			<li><a href="#CreateTranslatorForDownload">Override CreateTranslatorForDownload</a></li>
+			<li><a href="#TranslatorFactory">Modify TranslatorFactory</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="MyInstructionList"></a><strong>Create MyInstructionList 
+			Class</strong></p>
+			<p>The class FanucInstructionList is used to identify the instructions 
+			in a FANUC TP program on upload or in a DELMIA task on download. It 
+			then creates the appropriate object to perform the translation of the 
+			instruction. Therefore, since we need to identify CALL IO_SYNC instructions 
+			and create the MyIO_SYNC object to translate them, we need to create 
+			our own version of this class.</p>
+			<p>For the same reasons given in
+			<a href="CAAScdOlpUcTranslator.htm#WriteInstructionTranslator">Customizing 
+			a Translator</a>, we should create our own class, MyInstructionList, 
+			which inherits from FanucInstructionList.</p>
+			<pre class="code">&lt;CLSCompliant(False)&gt; <span class="keyword">Public</span> <span class="keyword">Class</span> MyInstructionList
+    <span class="keyword">Inherits</span> FanucInstructionList
+
+    <span class="keyword">Public</span> <span class="keyword">Sub</span> New(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByRef</span> iV6Instructions<span class="keyword"> As </span>OlpInstructions, <span class="keyword">ByRef</span> iAstInstructions<span class="keyword"> As </span>OlpAstBranch)
+        MyBase.New(iTask, iV6Instructions, iAstInstructions)
+<span class="keyword">    End Sub</span></pre>
+			<p>We will need to override 2 methods in this class to create the MyIO_SYNC 
+			class for upload and download.</p>
+			</li>
+			<li>
+			<p><a name="CreateTranslatorForUpload"></a><strong>Override CreateTranslatorForUpload</strong></p>
+			<p>In the FANUC translator, the method CreateTranslatorForUpload is 
+			called for each instruction in the FANUC AST. We will override this 
+			function to identify CALL IO_SYNC instructions and return a new MyIO_SYNC 
+			object for them. For all other instructions, we will rely on the base 
+			class implementation. After all the objects to translate the instructions 
+			have been created, the FanucInstructionList class will call Upload on 
+			each of them.</p>
+			<p>If the AST instruction branch is of type delAstRUN then we know that 
+			the instruction is a CALL instruction. </p>
+			<pre class="code">    <span class="keyword">Protected</span> <span class="keyword">Overrides</span> <span class="keyword">Function</span> CreateTranslatorForUpload(<span class="keyword">ByRef</span> AstInstruction<span class="keyword"> As </span>OlpAstNode)<span class="keyword"> As </span>FanucInstruction
+<span class="keyword">        If </span>AstInstruction.Type = DELOlpAstNodeType.delAstRUN<span class="keyword"> Then</span>
+        ...
+</pre>
+			<p>If it is a CALL, then we need to get the task that is called. Based 
+			on the FANUC AST instruction format which was identified in
+			<a href="CAAScdOlpUcTranslator.htm#DetermineAST">Customizing a Translator</a>, 
+			we know that the task name is in a node of type delAstIDENTIFIER.
+			</p>
+			<pre class="code">
+        ...
+<span class="keyword">            Dim </span>AstInstructionBranch<span class="keyword"> As </span>OlpAstBranch = AstInstruction
+<span class="keyword">            Dim </span>TaskName<span class="keyword"> As </span>String = _
+                    AstInstructionBranch.FindChildByType(DELOlpAstNodeType.delAstIDENTIFIER).Value
+        ...
+</pre>
+			<p>If the name of the task is IO_SYNC, then we create a run instruction 
+			and a new MyIO_SYNC translator and return the MyIO_SYNC object. The 
+			FANUC translator always creates the DELMIA instruction at the same time 
+			as the class which will translate it. Other translators may do this 
+			differently. You will need to examine the equivalent methods in those 
+			translators to see how it is done.</p>
+			<pre class="code">
+        ...
+<span class="keyword">            If </span>TaskName = <span class="string">&quot;IO_SYNC&quot;</span> Then
+<span class="keyword">                Dim </span>EVTAPIInstruction<span class="keyword"> As </span>OlpInstruction = _
+                        V6Instructions.CreateInstruction(DELOlpInstructionType.delOlpRun, Nothing, True)
+                Return New MyIO_SYNC(TaskTranslator, EVTAPIInstruction, AstInstruction)
+<span class="keyword">            End If</span>
+        ...
+</pre>
+			<p>If the instruction is not a CALL MY_IOSYNC, then call the base class 
+			implementation of CreateTranslatorForUpload to create the appropriate 
+			objects.</p>
+			<pre class="code">
+        ...
+<span class="keyword">        End If</span>
+
+        Return MyBase.CreateTranslatorForUpload(AstInstruction)
+<span class="keyword">    End Function</span></pre>
+			</li>
+			<li>
+			<p><a name="CreateTranslatorForDownload"></a><strong>Override CreateTranslatorForDownload</strong></p>
+			<p>This method identifies the DELMIA instruction and creates the appropriate 
+			object to perform the translation. We will override it to identify a 
+			run IO_SYNC instruction and return MyIO_SYNC.</p>
+			<p>Check the instruction type to see if it is a run instruction.</p>
+			<pre class="code">
+    <span class="keyword">Protected</span> <span class="keyword">Overrides</span> <span class="keyword">Function</span> CreateTranslatorsForDownload(<span class="keyword">ByVal</span> V6Instruction<span class="keyword"> As </span>DELOlp.OlpInstruction)<span class="keyword"> As </span>List(Of FanucInstruction)
+<span class="keyword">        If </span>V6Instruction.Type = DELOlpInstructionType.delOlpRun<span class="keyword"> Then</span>
+        ...
+</pre>
+			<p>Check the called task&#39;s name to see if it is IO_SYNC.</p>
+			<pre class="code">
+        ...
+<span class="keyword">            Dim </span>RunInstruction<span class="keyword"> As </span>OlpRun = V6Instruction
+            <span class="keyword">If </span>RunInstruction.Procedure.Name = <span class="string">&quot;IO_SYNC&quot;</span> Then
+        ...
+</pre>
+			<p>If a run IO_SYNC instruction was found, create the main AST branch 
+			for the FANUC instruction and the MyIO_SYNC object. The FANUC translator 
+			may use more than 1 object to translate a DELMIA instruction. We only 
+			need 1 object, so we need to return a list which has just the MyIO_SYNC 
+			object in it. Other translators may not create the AST branch at the 
+			same time or may not use a list. You will need to examine the equivalent 
+			method in other translators to identify what needs to be done.</p>
+			<pre class="code">
+        ...
+<span class="keyword">                Dim </span>AstEVTAPIInstruction<span class="keyword"> As </span>OlpAstBranch = AstInstructions.CreateBranch(DELOlpAstNodeType.delAstRUN, <span class="string">&quot;&quot;</span>)
+<span class="keyword">                Dim </span>Translator<span class="keyword"> As </span>FanucInstruction = New MyIO_SYNC(TaskTranslator, V6Instruction, AstEVTAPIInstruction)
+<span class="keyword">                Dim </span>InstructionTranslators<span class="keyword"> As </span>List(Of FanucInstruction) = New List(Of FanucInstruction)
+                InstructionTranslators.Add(Translator)
+                Return InstructionTranslators
+        ...
+</pre>
+			<p>If the instruction is not a run IO_SYNC, then call the base class 
+			implementation of CreateTranslatorForDownload to create the appropriate 
+			objects.</p>
+			<pre class="code">
+        ...
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+        Return MyBase.CreateTranslatorsForDownload(V6Instruction)
+<span class="keyword">    End Function</span></pre>
+			</li>
+			<li>
+			<p><a name="TranslatorFactory"></a><strong>Modify TranslatorFactory 
+			to create MyInstructionList</strong></p>
+			<p>The final step in customizing a translator is to replace an existing 
+			translator class with one (or more) of your classes. To do this, your 
+			class <strong>must</strong> inherit from the class it is replacing.
+			</p>
+			<p><a href="TranslatorFactorySource.htm">TranslatorFactory.vb</a> is 
+			the file which enables you do do this substitution. This is the
+			<strong>only</strong> file you will ever need to modify in the DELMIA 
+			translator. The same file is used in all translators. When you move 
+			your customizations from one version of a DELMIA translator to another, 
+			you will only need to copy the files you created, and update the TranslatorFactory.</p>
+			<p>In our example, we only need to replace one class, FanucInstructionList, 
+			with our version, MyInstructionList. The only change we made below was 
+			to replace <em>&quot;New FanucInstructionList&quot; </em>with <em>&quot;New MyInstructionList&quot;.</em></p>
+			<pre class="code">
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewInstructionListTranslator( _
+                <span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, _
+                <span class="keyword">ByRef</span> iV6Instructions<span class="keyword"> As </span>OlpInstructions, _
+                <span class="keyword">ByRef</span> iAstInstructions<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucInstructionList
+        Return New MyInstructionList(iTask, iV6Instructions, iAstInstructions)
+<span class="keyword">    End Function</span></pre>
+			</li>
+		</ol>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

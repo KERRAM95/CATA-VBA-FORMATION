@@ -1,0 +1,307 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Working with Vertices - Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Working with Vertices
+'
+'Mission: This use case fundamentally illustrates about working with Vertices. We further illustrate creating a line between the two Vertices.
+'
+'Steps:  1- Creates a 3D Shape with vertices (a 2D Sketch extruded to a Pad)
+'        2- Creates a Point to Point Line with two vertices
+'		2.1- Retrieves Active Editor from CATIA
+'	 	2.2- Retrieves Selection object from Active Editor
+'        		2.3- Updates Selection Object with selection criteria(Vertex only allowed)
+'        		2.4- Retrieves First Vertex through Selection
+'        		2.5- Retrieves Second Vertex through Selection
+'        		2.6- Creates a Point-Point Line with two vertices
+'        3- Appends newly created Line to the Geometrical Set
+'        		3.1- Retrieves Geometrical Sets Collection Object
+'        		3.2- Retrieves First Geometrical Set from the Geometrical Sets Collection Object
+'		3.3- Appends newly created Line to the Geometrical Set
+'---------------------------------------------------------------------------------------------------------------------------
+
+
+Sub WorkingWithVertices()
+
+'Error Handling
+'On Error GoTo ErrorSub
+ 
+       '1- Creates a 3D Shape with vertices (a 2D Sketch extruded to a Pad)
+       Dim oPart As Part
+       CreatingGeometry oPart        
+          
+        '2- Creates a Point to Point Line with two vertices
+	'2.1- Retrieves Active Editor from CATIA
+        Dim oCurrentActiveEditor As Editor
+        Set oCurrentActiveEditor = CATIA.ActiveEditor
+    
+        '2.2- Retrieves Selection object from Active Editor
+        Dim oObjSelection
+        Set oObjSelection = oCurrentActiveEditor.Selection
+    
+        '2.3- Updates Selection Object with selection criteria(Vertex only allowed)
+        Dim strStatus As String
+        Dim oInputObjectType(0)
+	oInputObjectType(0) = &quot;Vertex&quot;
+        
+        '2.4- Selects and retrieves the First Vertex
+        'Proposes to the user to select the first vertex
+        strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the first vertex&quot;, True)
+   
+        'Retrieves First Vertex through Selection
+        Dim oFirstVertex As Vertex
+        Set oFirstVertex = oObjSelection.Item(1).Value
+        
+        'Clears the selection object
+        oObjSelection.Clear
+        
+        '2.5- Retrieves Second Vertex through Selection
+        'Proposes to the user to select the second vertex
+        strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the second vertex&quot;, True)
+          
+        'Selects the second Vertex
+        Dim oSecondVertex As Vertex
+        Set oSecondVertex = oObjSelection.Item(1).Value
+        
+        '2.6- Creates a new Point to Point Line with two selected vertices
+        Dim oHybridShapeLinePtPt As HybridShapeLinePtPt
+        Set oHybridShapeLinePtPt = oPart.HybridShapeFactory.AddNewLinePtPt(oFirstVertex, oSecondVertex)
+
+	'3- Appends newly created Line to the Geometrical Set
+	'3.1- Retrieves Geometrical Sets (Hybrid Bodies) Collection Object
+        Dim oHybridBodies As HybridBodies
+        Set oHybridBodies = oPart.HybridBodies
+        
+        '3.2- Retrieves First Geometrical Set (Hybrid Body) from the Geometrical Sets Collection Object
+        Dim oHybridBody As HybridBody
+        Set oHybridBody = oHybridBodies.Item(1)
+        
+        '3.3- Appends newly created Line to the Geometrical Set
+        oHybridBody.AppendHybridShape oHybridShapeLinePtPt
+        
+        'Updates Part Object
+        oPart.Update
+        
+'Error Handling
+   GoTo EndSub
+
+ErrorSub:
+          MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+          GoTo EndSub
+EndSub:
+End Sub
+
+
+'-----------------------------------------------------------------------------------------------------------
+'Creating a 3D Shape with vertices (a 2D Sketch extruded to a Pad)
+'Steps:
+'   1 -Creates a 3DShape
+'   2 -Retrieves the Part Object from the 3D Shape Editor
+'   3 -Retrieves its Geometrical Sets Collection Object
+'   4 -Creates and Adds a Geometrical Set to the Geometrical Sets Collection Object
+'   5 -Retrieves the HybridSketches Collection object of the Geometrical Set
+'   6 -Retrieves the Object defining the part 3D reference axis system
+'   7 -Retrieves the ZX plane of the part 3D reference axis system
+'   8 -Creates a new sketch and adds it to the HybridSketches Collection Object
+'   9 -Opens the Sketch Edition
+'   10-Creates the geometry with Lines
+'   11-Closes Sketch Edition
+'   12-Retrieves the Part's Bodies Collection Object
+'   13-Retrieves the PartBody from the Bodies collection
+'   14-Retrieves the part shape factory
+'   15-Creates and returns a new pad within the current body
+'   16-Updates Part Object
+'-----------------------------------------------------------------------------------------------------------
+Sub CreatingGeometry(Part1)
+
+    '1- Creates a 3DShape
+    'Creates a new 3DShape Rep Ref
+    Dim oNewService As PLMNewService
+    Set oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+ 
+    Dim oEditor3DShape As Editor
+    oNewService.PLMCreate &quot;3DShape&quot;, oEditor3DShape
+
+    '2- Retrieves the Part Object from the 3D Shape Editor
+    Set Part1 = oEditor3DShape.ActiveObject
+
+    MsgBox (&quot;Part Name :&quot;) + Part1.Name
+
+    '3- Retrieves its Geometrical Sets Collection Object
+    Dim hybridBodies1 As HybridBodies
+    Set hybridBodies1 = Part1.HybridBodies
+    
+    '4- Creates and Adds a Geometrical Set to the Geometrical Sets Collection Object
+    Dim hybridBody1 As HybridBody
+    Set hybridBody1 = hybridBodies1.Add()
+    
+    Part1.Update
+    
+    '5- Retrieves the HybridSketches Collection object of the Geometrical Set
+    Dim sketches1 As Sketches
+    Set sketches1 = hybridBody1.HybridSketches
+    
+    
+    '6- Retrieves the Object defining the part 3D reference axis system
+    Dim originElements1 As OriginElements
+    Set originElements1 = Part1.OriginElements
+    
+    '7- Retrieves the ZX plane of the part 3D reference axis system
+    Dim reference1 As Reference
+    Set reference1 = originElements1.PlaneZX
+    
+    '8- Creates a new sketch and adds it to the HybridSketches Collection Object
+    Dim sketch1 As Sketch
+    Set sketch1 = sketches1.Add(reference1)
+    
+    Dim arrayOfVariantOfDouble1(8)
+    arrayOfVariantOfDouble1(0) = 0#
+    arrayOfVariantOfDouble1(1) = 0#
+    arrayOfVariantOfDouble1(2) = 0#
+    arrayOfVariantOfDouble1(3) = -1#
+    arrayOfVariantOfDouble1(4) = 0#
+    arrayOfVariantOfDouble1(5) = 0#
+    arrayOfVariantOfDouble1(6) = 0#
+    arrayOfVariantOfDouble1(7) = -0#
+    arrayOfVariantOfDouble1(8) = 1#
+    Set sketch1Variant = sketch1
+    sketch1Variant.SetAbsoluteAxisData arrayOfVariantOfDouble1
+    
+    'Sets the in work object of the part
+    Part1.InWorkObject = sketch1
+    
+    '9- Opens the Sketch Edition
+    Dim factory2D1 As Factory2D
+    Set factory2D1 = sketch1.OpenEdition()
+    
+    '10- Creates the Geometry with Lines
+    'Retrieves the list of geometrical elements included in the sketch
+    Dim geometricElements1 As GeometricElements
+    Set geometricElements1 = sketch1.GeometricElements
+    
+    'Retrieves a geometric element using its name, AbsoluteAxis&quot; from the GeometricElements collection
+    Dim axis2D1 As Axis2D
+    Set axis2D1 = geometricElements1.Item(&quot;AbsoluteAxis&quot;)
+    
+    'Retrieves an object from its name, HDirection, we call it Line1
+    Dim line2D1 As Line2D
+    Set line2D1 = axis2D1.GetItem(&quot;HDirection&quot;)
+   
+    'Retrieves an object from its name, VDirection, we call it Line2
+    Dim line2D2 As Line2D
+    Set line2D2 = axis2D1.GetItem(&quot;VDirection&quot;)
+    
+    'Creates and returns a 2D point, we call it Point1
+    Dim point2D1 As Point2D
+    Set point2D1 = factory2D1.CreatePoint(-50#, 40#)
+        
+    'Creates and returns a 2D point, we call it Point2
+    Dim point2D2 As Point2D
+    Set point2D2 = factory2D1.CreatePoint(-30#, 0#)
+    
+    'Creates and returns a 2D line, we call it Line3
+    Dim line2D3 As Line2D
+    Set line2D3 = factory2D1.CreateLine(-50#, 40#, -30#, 0#)
+   
+    line2D3.StartPoint = point2D1
+    
+    line2D3.EndPoint = point2D2
+    
+    'Creates and returns a 2D point, we call it Point3
+    Dim point2D3 As Point2D
+    Set point2D3 = factory2D1.CreatePoint(60#, -0#)
+    
+    'Creates and returns a 2D line, we call it Line4
+    Dim line2D4 As Line2D
+    Set line2D4 = factory2D1.CreateLine(-30#, 0#, 60#, -0#)
+    
+    line2D4.StartPoint = point2D2
+    
+    line2D4.EndPoint = point2D3
+    
+    'Creates and returns a 2D point, we call it Point4
+    Dim point2D4 As Point2D
+    Set point2D4 = factory2D1.CreatePoint(80#, 40#)
+   
+    'Creates and returns a 2D line, we call it Line5
+    Dim line2D5 As Line2D
+    Set line2D5 = factory2D1.CreateLine(60#, -0#, 80#, 40#)
+    
+    line2D5.StartPoint = point2D3
+    
+    line2D5.EndPoint = point2D4
+    
+    'Creates and returns a 2D point, we call it Point5
+    Dim point2D5 As Point2D
+    Set point2D5 = factory2D1.CreatePoint(10#, 20#)
+    
+    'Creates and returns a 2D line, we call it Line6
+    Dim line2D6 As Line2D
+    Set line2D6 = factory2D1.CreateLine(80#, 40#, 10#, 20#)
+    
+    line2D6.StartPoint = point2D4
+    
+    line2D6.EndPoint = point2D5
+    
+    'Creates and returns a 2D line, we call it Line7
+    Dim line2D7 As Line2D
+    Set line2D7 = factory2D1.CreateLine(10#, 20#, -50#, 40#)
+    
+    line2D7.StartPoint = point2D5
+    
+    line2D7.EndPoint = point2D1
+    
+    '11- Closes the Sketch Edition
+    sketch1.CloseEdition
+    
+    '12- Retrieves the Part's Bodies Collection Object
+    Dim bodies1 As Bodies
+    Set bodies1 = Part1.Bodies
+    
+    '13- Retrieves the PartBody from the Bodies collection
+    Dim body1 As Body
+    Set body1 = bodies1.Item(&quot;PartBody&quot;)
+    
+    Part1.InWorkObject = body1
+    
+    Part1.Update
+    
+    '14-Retrieves the part shape factory
+    Dim shapeFactory1 As ShapeFactory
+    Set shapeFactory1 = Part1.ShapeFactory
+    
+    '15- Creates and returns a new pad within the current body
+    Dim pad1 As Pad
+    Set pad1 = shapeFactory1.AddNewPad(sketch1, 20#)
+    
+    '16- Updates Part Object
+    Part1.Update
+
+End Sub</pre>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

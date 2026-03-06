@@ -1,0 +1,82 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Windows Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Windows Collection Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused"><a href="CAAInfCollections.htm">See Also</a></td>
+		<td class="ofvbanavreuse"><a href="CAAInfArchitectureOverview.htm">Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavunused">Properties</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Windows', 'MethodIndex'); return false;">
+		Methods</a></td>
+	</tr>
+</tbody>
+</table>
+<p class="auto"><a href="#" onclick="javascript:CAAlink ('IDL', 'InfInterfaces', 'interface', 'Windows');return false;"><img src="../CAAScdImages/Windows.png" alt="Windows Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAAInfObjWindow.htm"><img src="../CAAScdImages/Window.png" alt="Window Abstract Object" width="252" height="22"/></a></p>
+<p>A collection of <strong>Window</strong> objects that represent of all the windows currently managed by the
+application.</p>
+<p>The <strong>Windows</strong> collection object gathers <strong>Window</strong> objects which make the
+link with the windowing system and display objects in a viewable form, mainly
+in 3D or 2D modes, or as a specification tree in graph or tree mode. Windows of 
+the collection can be arranged in the frame.</p>
+<h2>Retrieving the Windows Collection</h2>
+<p>Use the <strong>Windows</strong> property of the <strong>Application</strong> object to return the
+<strong>Windows</strong> collection object.</p>
+<pre class="code"><span class="keyword">Dim</span> cWindows <span class="keyword">As</span> Windows 
+<span class="keyword">Set</span> cWindows = CATIA.Windows</pre>
+<h2>Using the Windows Collection</h2>
+<p>Use the <strong>Item</strong> method to return a window from the <strong>Windows</strong> 
+collection object, namely below the third one.</p>
+<pre class="code"><span class="keyword">Dim</span> oWindow <span class="keyword">As</span> Windows
+<span class="keyword">Set</span> oWindow = CATIA.Windows.Item(3)</pre>
+
+<p>Note that you can also use the window name in place of the window range. The 
+example below returns the search window the name of which is &quot;Name Like Part&quot;.</p>
+<pre class="code"><span class="keyword">Dim</span> oWindow <span class="keyword">As</span> Windows
+<span class="keyword">Set</span> oWindow = CATIA.Windows.Item(&quot;Name Like Part&quot;)</pre>
+
+<p>Use the <strong>Arrange</strong> method to arrange the windows. You can arrange the 
+windows, according to the values of the <a href="#" onclick="javascript:CAAlink ('IDL', 'InfInterfaces', 'enum', 'CatArrangeStyle');return false;">CatArrangeStyle</a> enumeration:</p>
+<ul>
+	<li>As horizontal tiles.</li>
+	<li>As vertical tiles.</li>
+	<li>As a cascade.</li>
+</ul>
+<pre class="code">CATIA.Windows.Arrange(catArrangeCascade)</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

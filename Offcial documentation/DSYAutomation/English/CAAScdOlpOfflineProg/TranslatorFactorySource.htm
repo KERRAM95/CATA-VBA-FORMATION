@@ -1,0 +1,208 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>TranslatorFactory.vb</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'===================================================================</span>
+<span class="comment">' COPYRIGHT Dassault Systemes Delmia Corp. 2012/02/09</span>
+<span class="comment">'===================================================================</span>
+<span class="keyword">Imports</span> DELOlp
+<span class="keyword">Imports</span> System.Collections.Generic
+
+&lt;CLSCompliant(False)&gt; <span class="keyword">Public</span> <span class="keyword">Class</span> TranslatorFactory
+
+    <span class="comment">' FanucTranslator</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewMainTranslator()<span class="keyword"> As </span>FanucTranslator
+        Return New FanucTranslator()
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucController</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewControllerTranslator()<span class="keyword"> As </span>FanucController
+        Return New FanucController()
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucMotionGroups</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewMotionGroupsTranslator(<span class="keyword">ByRef</span> iController<span class="keyword"> As </span>FanucController)<span class="keyword"> As </span>FanucMotionGroups
+        Return New FanucMotionGroups(iController)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucPositionRegs</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewPositionRegsTranslator(<span class="keyword">ByRef</span> iController<span class="keyword"> As </span>FanucController)<span class="keyword"> As </span>FanucPositionListPosReg
+        Return New FanucPositionListPosReg(iController)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucProfiles</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewProfilesTranslator(<span class="keyword">ByRef</span> iController<span class="keyword"> As </span>FanucController)<span class="keyword"> As </span>FanucProfiles
+        Return New FanucProfiles(iController)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucUtool</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewUtoolTranslator(<span class="keyword">ByVal</span> iFanucGroupNum<span class="keyword"> As </span>Integer, <span class="keyword">ByVal</span> iProfileNum<span class="keyword"> As </span>Integer)<span class="keyword"> As </span>FanucUtool
+        Return New FanucUtool(iFanucGroupNum, iProfileNum)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucUframe</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewUframeTranslator(<span class="keyword">ByVal</span> iFanucGroupNum<span class="keyword"> As </span>Integer, <span class="keyword">ByVal</span> iProfileNum<span class="keyword"> As </span>Integer)<span class="keyword"> As </span>FanucUframe
+        Return New FanucUframe(iFanucGroupNum, iProfileNum)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucSysVars</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewSysVarsTranslator(<span class="keyword">ByRef</span> iController<span class="keyword"> As </span>FanucController)<span class="keyword"> As </span>FanucSysVars
+        Return New FanucSysVars(iController)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucOptions</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewOptionsTranslator(<span class="keyword">ByRef</span> iController<span class="keyword"> As </span>FanucController)<span class="keyword"> As </span>FanucOptions
+        Return New FanucOptions(iController)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucTask</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewTaskTranslator(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>OlpProcedure, <span class="keyword">ByRef</span> iAstTask<span class="keyword"> As </span>OlpAstBranch, <span class="keyword">ByRef</span> iTranslator<span class="keyword"> As </span>FanucTranslator)<span class="keyword"> As </span>FanucTask
+        Return New FanucTask(iTask, iAstTask, iTranslator)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucATTRHeader</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewATTRTranslator(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByRef</span> iAstTask<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucATTRHeader
+        Return New FanucATTRHeader(iTask, iAstTask)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucPositionListLS</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewPositionListLSTranslator(<span class="keyword">ByVal</span> iTask<span class="keyword"> As </span>FanucTask)<span class="keyword"> As </span>FanucPositionListLS
+        Return New FanucPositionListLS(iTask)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucLabelList</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewLabelListTranslator(<span class="keyword">ByVal</span> iTask<span class="keyword"> As </span>FanucTask)<span class="keyword"> As </span>FanucLabelList
+        Return New FanucLabelList(iTask)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucArcInstructionList</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewArcInstructionListTranslator(<span class="keyword">ByVal</span> iTask<span class="keyword"> As </span>FanucTask)<span class="keyword"> As </span>FanucArcInstructionList
+        Return New FanucArcInstructionList(iTask)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucInstructionList</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewInstructionListTranslator( _
+                <span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, _
+                <span class="keyword">ByRef</span> iV6Instructions<span class="keyword"> As </span>OlpInstructions, _
+                <span class="keyword">ByRef</span> iAstInstructions<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucInstructionList
+        Return New MyInstructionList(iTask, iV6Instructions, iAstInstructions)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucCustomInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewCustomInstructionTranslator(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByRef</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucCustomInstruction
+        Return New FanucCustomInstruction(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucMotionInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewMotionInstructionTranslator(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByRef</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch, <span class="keyword">ByRef</span> iV6Instructions<span class="keyword"> As </span>OlpInstructions)<span class="keyword"> As </span>FanucMotionInstruction
+        Return New FanucMotionInstruction(iTask, iV6Instruction, iAstInstruction, iV6Instructions)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucArcInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewArcInstructionTranslator(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByRef</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch, <span class="keyword">ByRef</span> iV6Instructions<span class="keyword"> As </span>OlpInstructions)<span class="keyword"> As </span>FanucArcInstruction
+        Return New FanucArcInstruction(iTask, iV6Instruction, iAstInstruction, iV6Instructions)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucSpotInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewSpotInstructionTranslator(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByRef</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch, <span class="keyword">ByRef</span> iV6Instructions<span class="keyword"> As </span>OlpInstructions)<span class="keyword"> As </span>FanucSpotInstruction
+        Return New FanucSpotInstruction(iTask, iV6Instruction, iAstInstruction, iV6Instructions)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucAssignInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewAssignInstructionTranslator(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByRef</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucAssignInstruction
+        Return New FanucAssignInstruction(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucWaitInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewWaitInstructionTranslator(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByRef</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucWaitInstruction
+        Return New FanucWaitInstruction(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucCallInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewCallInstructionTranslator(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByRef</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucCallInstruction
+        Return New FanucCallInstruction(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucLabelInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewLabelInstructionTranslator(<span class="keyword">ByVal</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByVal</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucLabelInstruction
+        Return New FanucLabelInstruction(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucJmpInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewJmpInstructionTranslator(<span class="keyword">ByVal</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByVal</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucJmpInstruction
+        Return New FanucJmpInstruction(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucEndInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewEndInstructionTranslator(<span class="keyword">ByVal</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByVal</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucEndInstruction
+        Return New FanucEndInstruction(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucIfInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewIfInstructionTranslator(<span class="keyword">ByVal</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByVal</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucIfInstruction
+        Return New FanucIfInstruction(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucProfileInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewProfileInstructionTranslator(<span class="keyword">ByVal</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByVal</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch, <span class="keyword">ByVal</span> iPreviousProfileInstruction<span class="keyword"> As </span>FanucProfileInstruction)<span class="keyword"> As </span>FanucProfileInstruction
+        Return New FanucProfileInstruction(iTask, iV6Instruction, iAstInstruction, iPreviousProfileInstruction)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucGrabReleaseInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewGrabReleaseInstructionTranslator(<span class="keyword">ByVal</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByVal</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucGrabReleaseInstruction
+        Return New FanucGrabReleaseInstruction(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucGrabReleaseInstruction</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewVariableTranslator(<span class="keyword">ByVal</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, <span class="keyword">ByVal</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)<span class="keyword"> As </span>FanucVariable
+        Return New FanucVariable(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucPositionLS</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewPositionLSTranslator(<span class="keyword">ByVal</span> iTask<span class="keyword"> As </span>FanucTask)<span class="keyword"> As </span>FanucPositionLS
+        Return New FanucPositionLS(iTask)
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucPositionPosReg</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewPositionPosRegTranslator()<span class="keyword"> As </span>FanucPositionPosReg
+        Return New FanucPositionPosReg()
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucGroupPosVA</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewGroupPosVATranslator()<span class="keyword"> As </span>FanucGroupPosVA
+        Return New FanucGroupPosVA()
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucGroupPosReg</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewGroupPosRegTranslator()<span class="keyword"> As </span>FanucGroupPosReg
+        Return New FanucGroupPosReg()
+<span class="keyword">    End Function</span>
+
+    <span class="comment">' FanucGroupPosLS</span>
+    <span class="keyword">Public</span> <span class="keyword">Shared Function</span> NewGroupPosLSTranslator()<span class="keyword"> As </span>FanucGroupPosLS
+        Return New FanucGroupPosLS()
+<span class="keyword">    End Function</span>
+
+<span class="keyword">End Class</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

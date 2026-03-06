@@ -1,0 +1,104 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Know-how Reuse Expert Overview</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Know-how Reuse Overview</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>This article provides the basis for understanding how to create macros replaying 
+most of the operations you can perform with the Know-how Reuse app. Note that 
+the Know-how Reuse app does not provide you with journaling capabilities. 
+The objects described below as well as the Use Cases which illustrate how to manipulate 
+these objects can only be used to write a VB macro to be replayed later on.</p>
+<p>Basically, to start with Know-how Reuse Automation, you need know:</p>
+<ol>
+	<li>How to create the Know-how Reuse objects you are going to manipulate. 
+	These objects are the rule base, the rule sets, the expert rules and the expert 
+	checks. These objects can be created from the <strong>RuleBasesSet</strong> object</li>
+	<li>How to manipulate these objects</li>
+	<li>How to launch some Know-how Reuse specific operations such as solving 
+	a rule base, generating a check report, or highlighting the elements that don't 
+	fulfill the criteria specified in a check.</li>
+</ol>
+<p>The Use Cases provided as samples are fully commented and should help you understand 
+how to proceed to write simple macros as well as fully-fledged macros manipulating 
+Know-how Reuse objects.</p>
+<h2>Creating a Rule Base</h2>
+<p>The entry point is the <strong>RuleBasesSet</strong> object which provides you with the 
+factory and its <strong>CreateRuleBase</strong> method. This method takes as its argument 
+the rule base name.</p>
+<pre class="code">
+<span class="keyword">Dim</span> oRBSet <span class="keyword">As</span> ExpertRuleBasesSet
+<span class="keyword">Set</span> oRBSet = CATIA.ActiveEditor.ActiveObject.GetItem(&quot;KnowledgeObjects&quot;).GetKnowledgeRootSet(True, 3) ' kweRuleBasesType = 3
+
+<span class="comment">' Create the RB1 rulebase</span>
+<span class="keyword">Dim</span> oRuleBase <span class="keyword">As</span> ExpertRulebase
+<span class="keyword">Set</span> oRuleBase = oRBSet.Factory.CreateRuleBase(&quot;RB1&quot;)
+
+<span class="comment">' Add a root of facts to the rulebase</span>
+aRuleBase.AddRootOfFacts CATIA.ActiveEditor.ActiveObject
+</pre>
+<p>The <strong>GetItem</strong> method called against the active object object using 
+the <code>KnowledgeObjects</code> arguments returns a
+<a href="#" onclick="javascript:CAAlink('IDL', 'KnowledgeIDLItf', 'interface', 'KnowledgeObjects');return false;">
+KnowledgeObjects</a> object, the <strong>GetKnowledgeRootSet</strong> method of 
+which creates the requested collection object and returns it.</p>
+<p>Using <code>False</code> instead of <code>True</code> as the first argument of 
+the <strong>GetKnowledgeRootSet</strong> method would have returned the existing
+<strong>RuleBasesSet</strong> object, if any, instead of creating it.</p>
+<p>After a rule base has just been created, it is in a to-be-solved status.</p>
+<h2>Creating a Rule Set</h2>
+<p>In interactive mode, you don't have to create rule sets. They are automatically 
+created upon creation of rules and checks. It is the same in VB.</p>
+<p>In the present version, rule sets cannot be gathered in a collection. There are 
+no direct means to retrieve the set of <strong>RuleSet</strong> objects.</p>
+<h2>Creating Expert Rules and Expert Checks</h2>
+<p>Prior to using the rule or check creation methods, you need retrieve the <strong>RuleSet</strong> 
+object from the rule base. To create an expert rule or expert check, you must specify 
+the rule set name as the last argument of the <strong>CreateRule</strong> or <strong>CreateCheck</strong> 
+method. In the statements below, <code>RuleSet.1</code> is created if it does not 
+exist yet. If it already exists, the <code>HDiaCheck</code> is created right below 
+it.</p>
+<pre class="code"><span class="keyword">Dim</span> oCheck <span class="keyword">As</span> ExpertCheck
+<span class="keyword">Set</span> oCheck= oRuleBase.RuleSet.CreateCheck(&quot;HDiaCheck&quot;,&quot;H:Hole&quot;,&quot;H.Diameter&gt;12mm&quot;,&quot;RuleSet.1&quot;)</pre>
+<h2>Determining whether a Rule Base is to Be Solved</h2>
+<p>The status of a rule base is described by its FingerPrint attribute. If it is 
+set to 0, the rule base must be solved, if it is set to 1, the rule base is solved.</p>
+<h2>Manipulating the Components of a Rule Base</h2>
+<p>The experts rules and checks making up a rule base are grouped into an <strong>ExpertRuleBaseComponentRunTimes</strong> 
+collection object. The component type where by you can differentiate a rule from 
+a check in a collection is <strong>ExpertRuleRunTime</strong> or <strong>ExpertCheckRunTime</strong>.</p>
+<h2>Know-how Reuse Specific Operations</h2>
+<p>To solve a rule base, use the <em>rulebase</em>.Deduce() method.</p>
+<p>To generate a report, use the <em>rulebase</em>.Report() method</p>
+<p>To highlight the elements which do not satisfy the checks, use the <em>rulebase</em>.Highlight() 
+method.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

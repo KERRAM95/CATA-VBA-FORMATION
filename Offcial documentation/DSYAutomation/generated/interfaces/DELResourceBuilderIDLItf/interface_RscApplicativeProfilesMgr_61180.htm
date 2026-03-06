@@ -1,0 +1,177 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELResourceBuilderIDLItf RscApplicativeProfilesMgr (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELResourceBuilderIDLItf.htm" href="../DELResourceBuilderIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELResourceBuilderIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RscApplicativeProfilesMgr"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RscApplicativeProfilesMgr<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RscApplicativeProfilesMgr_61180','RscApplicativeProfilesMgr','0');</script>
+<section id='maindesc'>
+<b><i> Interface to manage a collection of all Applicative Profile Groups.</i></b><br>
+
+
+ <strong>Role</strong>:
+  This interface provides methods to manage all of the Applicative Profile Groups.
+ <dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example code shows how to retrieve an Applicative Profile Manager.<br>
+ The examples here are written in Visual Studio Tools for Applications (VSTA) VB.NET
+ <pre>
+ ' Select an applicative profile
+ Dim selector As INFITF.Selection = CATIA.ActiveEditor.Selection
+ Dim type(0) As Object
+ type(0) = "RscApplicativeProfile"
+ selector.SelectElement2(type, "Select AP", False)
+ Dim applicativeProfile As DELResourceBuilderIDLTypeLib.RscApplicativeProfile = selector.Item(1).Value
+
+ ' Get the profile's group
+ Dim applicativeProfileGroup As DELResourceBuilderIDLTypeLib.RscApplicativeProfilesGroup = applicativeProfile.Parent
+
+ ' Get the manager from the group
+ Dim applicativeProfileManager As DELResourceBuilderIDLTypeLib.RscApplicativeProfilesManager = applicativeProfileGroup.Parent
+ </pre>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#AvailableGroups"><b>AvailableGroups</b></a>
+</td><td  id='tdright'>  Get a list of all profile group types including groups which have not yet been created.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#Item"><b>Item</b></a>
+</td><td  id='tdright'>  Retrieves a profile group using its index or its name.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RemoveProfileGroup"><b>RemoveProfileGroup</b></a>
+</td><td  id='tdright'>  Removes (and deletes) an existing profile group.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="AvailableGroups"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>AvailableGroups</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Get a list of all profile group types including groups which have not yet been created.<br>
+ To create a new group use 
+<script type="text/javascript"> activateLinkAnchor('DELMIARscApplicativeProfilesGroup','Item','DELMIARscApplicativeProfilesGroup.Item') </script>. <dl>
+ <dt><b>Example:</b>
+ <pre>
+ ' Get all the available types
+ Dim Types() As Object = applicativeProfileManager.<font color="red">AvailableGroups</font>
+ ' Create a new group for the first type
+ If Types.Count > 0 Then 
+   Dim FirstType As String = Types(0)
+   Dim Group As DELResourceBuilderIDLTypeLib.RscApplicativeProfilesGroup = applicativeProfileManager.Item(FirstType)
+ End If
+ </pre>
+ </dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="Item"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Item</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('RscApplicativeProfilesGroup','RscApplicativeProfilesGroup')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves a profile group using its index or its name.<br>
+ Can also use CATIACollection::GetItem to get the profile group by name.
+ If the input is a string, a profile group will also be created if it doesn't exist.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd>   The index or the name of the profile group to retrieve from the collection of groups. 
+   As a number, this is the index of the group in the collection. The index of the first 
+   group in the collection is 1 and the index of the last group is Count. As a string, 
+   it is the type of the group to retrieve.  See 
+<script type="text/javascript"> activateLinkAnchor('DELMIARscApplicativeProfilesGroup','ProfileType','DELMIARscApplicativeProfilesGroup.ProfileType') </script>. 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  profile retrieved <dl>
+ <dt><b>Examples:</b>
+ <pre>
+ ' Retrieve a profile group using an index.
+ Dim profileGroup As DELResourceBuilderIDLTypeLib.RscApplicativeProfilesGroup = applicativeProfileManager.<font color="red">Item</font>(1)
+ If profileGroup IsNot Nothing Then
+     Dim name As String = profileGroup.Name
+     MsgBox(" Retrieved the first applicative profile group by index , and the name is: " & name)
+ End If
+
+ ' Retrieve a profile group by name.
+ Dim profileGroup As DELResourceBuilderIDLTypeLib.RscApplicativeProfilesGroup = applicativeProfileManager.<font color="red">Item</font>("GroupType")
+ If profileGroup IsNot Nothing Then
+     Dim name As String = profileGroup.Name
+     MsgBox(" Retrieved an applicative profile group by its name, and the name is: " & name)
+ End If
+ </pre>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="RemoveProfileGroup"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>RemoveProfileGroup</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iType</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Removes (and deletes) an existing profile group.<br>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd>   The type of the group to delete.  See 
+<script type="text/javascript"> activateLinkAnchor('DELMIARscApplicativeProfilesGroup','ProfileType','DELMIARscApplicativeProfilesGroup.ProfileType') </script>. <dl>
+ <dt><b>Example:</b>
+ <pre>
+ ' Removes/Deletes an existing applicative profile group.
+ applicativeProfileManager.<font color="red">RemoveProfileGroup</font>("AnExistingApplicativeProfileGroupType")
+ </pre>
+ </dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

@@ -1,0 +1,189 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreatePlate.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample demonstrates creation of panel, </span>
+<span class="comment">'This script requires a sdd model</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="comment">'   2- Retrieves Part object </span>
+<span class="comment">'   3- Retrieves Service manager (RfgService)</span>
+<span class="comment">'   4- Retrieves SddFactory for creating SDD objects</span>
+<span class="comment">'   5- Create Plate</span>
+<span class="comment">'   6- Update Part</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Dim </span>Manager<span class="keyword"> As </span>RfgService
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>SDDProdSel<span class="keyword"> As </span>Selection
+
+
+<span class="keyword">Sub </span>CATMain()
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="keyword">    Dim </span>SDDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SddProduct&quot;
+    OpenProduct prdName , SDDPrdEditor
+    
+<span class="keyword">    Set </span>SDDProdSel = SDDPrdEditor.Selection
+
+<span class="comment">'   2- Retrieves Part object </span>
+<span class="keyword">    Dim </span>product1Service<span class="keyword"> As </span>PLMProductService
+<span class="keyword">    Set </span>product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+<span class="keyword">    Dim </span>ObjVPMRootOccurrence  <span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">    Set </span>ObjVPMRootOccurrence = product1Service.RootOccurrence
+<span class="keyword">    Dim </span>ObjVPMReference<span class="keyword"> As </span>VPMReference
+<span class="keyword">    Set </span>ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+<span class="keyword">    Dim </span>ObjVPMRepInstances<span class="keyword"> As </span>VPMRepInstances
+<span class="keyword">    Set </span>ObjVPMRepInstances = ObjVPMReference.RepInstances
+<span class="keyword">    Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+    
+<span class="comment">'   3- Retrieves Service manager (RfgService)</span>
+<span class="keyword">    Set </span>Manager = SDDPrdEditor.GetService(&quot;RfgService&quot;)
+    
+   
+<span class="comment">'   4- Retrieves SddFactory for creating SDD objects</span>
+<span class="keyword">    Dim </span>ObjSddFactory<span class="keyword"> As </span>SddFactory
+    SDDProdSel.Add ObjVPMRootOccurrence
+<span class="keyword">    Set </span>ObjSddFactory = SDDProdSel.FindObject(&quot;CATIASddFactory&quot;)
+
+    
+<span class="comment">'   5- Create Plate</span>
+<span class="keyword">    Dim </span>ObjSddProductPlate<span class="keyword"> As </span>SddProductPlate
+    CreatePlate ObjSddFactory, ObjSddProductPlate
+    
+<span class="comment">'   6- Update Part</span>
+    ObjPart.Update
+
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Plate</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   5.1- Creates panel with no properties then set the properties category, support, material and thickness</span>
+<span class="comment">'   5.2- Sets panel limits</span>
+<span class="comment">'   5.4- Updates created panel object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreatePlate(iObjSddFactory<span class="keyword"> As </span>SddFactory, oObjSddProductPlate<span class="keyword"> As </span>SddProductPlate)
+    
+<span class="comment">'   5.1- Creates panel with no properties then set the properties category, support, material and thickness</span>
+<span class="keyword">    Set </span>oObjSddProductPlate = iObjSddFactory.AddProductPlate(False)
+<span class="keyword">    Dim </span>ObjSddPlate<span class="keyword"> As </span>SddPlate
+<span class="keyword">    Set </span>ObjSddPlate = oObjSddProductPlate.SddPlate
+    
+    <span class="comment">'Set category    </span>
+<span class="keyword">    Dim </span>ObjStrCategoryMngt<span class="keyword"> As </span>StrCategoryMngt
+<span class="keyword">    Set </span>ObjStrCategoryMngt = ObjSddPlate.StrCategoryMngt
+    ObjStrCategoryMngt.AutomaticName = True
+    ObjStrCategoryMngt.SetCategory &quot;DeckPanel&quot;
+    
+    <span class="comment">'Set panel support</span>
+<span class="keyword">    Set </span>ObjPlateSupport = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.1&quot;)
+<span class="keyword">    Set </span>PlateSupport = ObjPart.CreateReferenceFromObject(ObjPlateSupport)
+<span class="keyword">    Dim </span>ObjStrPanelSurf<span class="keyword"> As </span>StrPanelSurf
+<span class="keyword">    Set </span>ObjStrPanelSurf = ObjSddPlate.StrPanelSurf
+    ObjStrPanelSurf.Support = PlateSupport
+    
+    <span class="comment">'Set material</span>
+<span class="keyword">    Dim </span>ObjMaterialMngt<span class="keyword"> As </span>StrMaterialMngt
+<span class="keyword">    Set </span>ObjMaterialMngt = oObjSddProductPlate.StrMaterialMngt
+    ObjMaterialMngt.SetMaterial &quot;Steel A42&quot; 
+    
+    <span class="comment">'Set thickness and throw orientation</span>
+<span class="keyword">    Dim </span>ObjStrPlateExtrusionMngt<span class="keyword"> As </span>StrPlateExtrusionMngt
+<span class="keyword">    Set </span>ObjStrPlateExtrusionMngt = ObjSddPlate.StrPlateExtrusionMngt
+    ObjStrPlateExtrusionMngt.ThrowOrientation = 0
+    ObjStrPlateExtrusionMngt.OffsetMode = 0
+<span class="keyword">    Dim </span>Thickness<span class="keyword"> As </span>Parameter
+<span class="keyword">    Set </span>Thickness = ObjStrPlateExtrusionMngt.GetThickness
+    Thickness.ValuateFromString &quot;10mm&quot;
+        
+<span class="comment">'   5.2- Sets panel limits</span>
+    SetPanelLimits ObjSddPlate
+    
+<span class="comment">'   5.3- Updates created panel object</span>
+   oObjSddProductPlate.Update
+    
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Set panel limits</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Retrieves StrPanelLimitMngt for setting limits</span>
+<span class="comment">'   2- Sets limits on the panel</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetPanelLimits(iObjSddPlate<span class="keyword"> As </span>SddPlate)
+    
+<span class="comment">'   1- Retrieves StrPanelLimitMngt for setting limits</span>
+<span class="keyword">    Dim </span>ObjStrPanelLimitMngt<span class="keyword"> As </span>StrPanelLimitMngt
+<span class="keyword">    Set </span>ObjStrPanelLimitMngt = iObjSddPlate.StrPanelLimitMngt
+    
+<span class="comment">'   2- Sets limits on the panel</span>
+<span class="keyword">    Set </span>ObjLimit1 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.60&quot;)
+<span class="keyword">    Set </span>Limit1 = ObjPart.CreateReferenceFromObject(ObjLimit1)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit1, -1, 0, 2
+<span class="keyword">    Set </span>ObjLimit2 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.120&quot;)
+<span class="keyword">    Set </span>Limit2 = ObjPart.CreateReferenceFromObject(ObjLimit2)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit2, -1, -1, 2
+<span class="keyword">    Set </span>ObjLimit3 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-18&quot;)
+<span class="keyword">    Set </span>Limit3 = ObjPart.CreateReferenceFromObject(ObjLimit3)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit3, -1, 0, 2
+<span class="keyword">    Set </span>ObjLimit4 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.18&quot;)
+<span class="keyword">    Set </span>Limit4 = ObjPart.CreateReferenceFromObject(ObjLimit4)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit4, -1, -1, 2
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SDDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SDDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

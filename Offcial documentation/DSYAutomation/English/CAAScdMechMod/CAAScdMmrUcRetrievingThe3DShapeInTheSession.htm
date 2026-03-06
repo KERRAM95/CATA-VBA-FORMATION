@@ -1,0 +1,167 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Retrieving the 3DShape in the Session</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Retrieving the 3DShape in the Session</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally illustrates retriving of the Product 3DShapes from current session.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA</li>
+							<li>It is recommended that at least one 3DShape 
+							loaded in session to see result</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:</span>
+						<a href="CAAScdMmrUcRetrievingThe3DShapeInTheSessionSource.htm">CAAScdMmrUcRetrievingThe3DShapeInTheSessionSource.htm</a></p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjService.htm">Service Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrTocPart.htm">Part Object Model Map</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case is divided in 5 steps</p>
+		<ol>
+			<li><a href="#Step1">Retrieves session service related to Product data</a></li>
+			<li><a href="#Step2">Retrieves the List of 3DShape in session</a></li>
+			<li><a href="#Step3">Displays the list of each of them in a dialog box - to lets the end user select one</a></li>
+			<li><a href="#Step4">Retrieve its Part feature for selected 3DShape</a></li>
+			<li><a href="#Step5">Creates the Pad</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"><strong></strong></a><strong>Retrieves session service related to Product data</strong></p>
+			<pre class="code"> ... 
+<span class="keyword">Dim</span> oProductSessionService <span class="keyword">As</span> <strong>ProductSessionService</strong>
+<span class="keyword">Set</span> oProductSessionService = CATIA.<strong>GetSessionService</strong>(&quot;<strong>ProductSessionService</strong>&quot;)
+...</pre>
+			<p>Returns a ProductSessionService object, <code>oProductSessionService </code>from the 
+			Application object using the <em>GetSessionService</em> method. </p>
+			</li>
+			<li>
+			<p><a name="Step2"></a><strong>Retrieves the List of 3DShape in session</strong></p>
+			<pre class="code">...
+<span class="keyword">Dim </span>oShape3Ds <span class="keyword">As</span> Shape3Ds
+<span class="keyword">Set</span> oShape3Ds = oProductSessionService.Shape3Ds
+...</pre>
+			<p>A call to <em>Shape3Ds</em> on <code>oProductSessionService
+			</code>returns list of the 3DShape objects loaded in session, <code>oShape3Ds</code>.</p>
+			</li>
+			<li>
+			<p><a name="Step3"><strong></strong></a><strong>Displays the list of each of them in a dialog box - to lets the end user select one </strong></p>
+			<pre class="code">...
+For i = 1 To oShape3Ds.Count   
+    <span class="keyword"> Dim </span>oShape3D <span class="keyword"> As </span>  <strong>Shape3D</strong>
+    <span class="keyword"> Set </span>oShape3D = <strong>oShape3Ds</strong>.<strong>Item</strong>(i)
+        
+    strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + oShape3D.Name + &quot; &quot; + vbCrLf
+ Next i
+
+ <span class="keyword"> Dim </span>iInput3DshapeIndex <span class="keyword"> As </span> Integer
+ iInput3DshapeIndex = InputBox("Please enter the index number of 3dshape to create pad", strBrowsedPLMCompIDAttr)
+    
+ <span class="keyword"> Dim </span>oShape3DSelected <span class="keyword"> As </span> <strong>Shape3D</strong>
+ <span class="keyword"> Set </span>oShape3DSelected= <strong>oShape3Ds</strong>.<strong>Item</strong>(<strong>iInput3DshapeIndex</strong>)
+...</pre>
+			<p>The <em>Item</em> method 
+			of 3D Shape list (Shape3Ds), <code>oShape3Ds </code>returns the
+			3Dshape object according to item index.</p>
+			</li>
+			<li>
+			<p><a name="Step4"></a><strong>Retrieve its Part feature for selected 3DShape</strong></p>
+			<pre class="code">...
+ <span class="keyword">Dim </span> part1 <span class="keyword"> As </span> Part
+<span class="keyword"> Set </span> part1 = oShape3DSelected.GetItem("Part")
+...</pre>
+			<p>The <code>GetItem</code> method on <code>oShape3DSelected</code> 
+			returns <code>part1</code>, a Part type.</p>
+			</li>
+			<li>
+			<p><a name="Step5"></a><strong>Creates the Pad</strong></p>
+			<pre class="code">...
+    <strong>CreatesPad</strong> part1
+...</pre>
+			<p>A call to <em>CreatesPad</em> creates a Pad in the Part,(part1) .</p>
+	
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

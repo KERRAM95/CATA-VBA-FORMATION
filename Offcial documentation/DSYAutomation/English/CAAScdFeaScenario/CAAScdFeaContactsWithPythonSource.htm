@@ -1,0 +1,199 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcContacts.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+
+<pre class=>
+<span class="comment"># -------------- Sample script written in Python ------------------------------------------</span>
+<span class="comment"># This sample creates and initializes contact features.</span>
+
+<span class="comment"># Steps:</span>
+<span class="comment">#          1 - Retrieves the simulation and its product 										</span>
+<span class="comment">#          2 - Initializes the Simulation PLM Object 								</span>
+<span class="comment">#          3 - Retrieves the Features Set 		</span>
+<span class="comment">#          4 - Creates and Initializing a Contact property feature								</span>
+<span class="comment">#          5 - Creates a Surface-based Contact feature 					</span>
+<span class="comment">#          6 - Creates a General Contact feature						</span>
+<span class="comment"># ============================================================================================</span>
+
+<span class="keyword">import</span> sys, os
+<span class="keyword">from</span> com3dx <span class="keyword">import</span> *
+CATIA = get3dxClient()
+
+<span class="comment">#--------------------------------------------------------------------------
+# 1 - Retrieves the simulation and its product
+#--------------------------------------------------------------------------
+</span>
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+
+<span class="comment">#--------------------------------------------------------------------------
+# 2 - Initializes the Simulation PLM Object
+#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Retrieving the Publications
+# ---------------------------</span>
+myPublications  = myModel.Publications
+mySupport = myPublications.GetItem("Pump_Housing")
+myContactSurface1 = myPublications.GetItem("Pump_Housing_Contact_Face")
+myContactSurface2 = myPublications.GetItem("Cover_Contact_Face")
+
+<span class="comment"># Composing links
+# ---------------</span>
+myLinkToSupport = myProdService.ComposeLink(<span class="keyword">None</span>, <span class="keyword">None</span>, mySupport)
+myLinkToContactSurface1 = myProdService.ComposeLink(<span class="keyword">None</span>, <span class="keyword">None</span>, myContactSurface1)
+myLinkToContactSurface2 = myProdService.ComposeLink(<span class="keyword">None</span>, <span class="keyword">None</span>, myContactSurface2)
+
+<span class="comment"># Creating the FEM Rep and retrieving its Rep Manager
+# ----------------------------------------------------</span>
+
+myPrdRepFactory =myModel.GetItem("SimPrdRepFactory")
+myRepRef = myPrdRepFactory.CreatePrdRep("FEM")
+myFEMRoot = myRepRef.GetItem("SimFemRoot")
+myFEMRoot.AddAssociatedRep (mySupport)
+
+<span class="comment"># Creating a Mesh on a Part
+# --------------------------</span>
+myMeshSet = myFEMRoot.GetSet("SimNodesElements")
+myMeshParts = myMeshSet.MeshParts
+myMeshPart = myMeshParts.Add("CATFmtOctree3DMesher")
+myMeshPart.AddSupport (mySupport)
+
+myMeshPart.SetAttributeValue ("Mesh", "ElementOrder", 1)
+myMeshPart.SetAttributeValue ("Mesh", "SizeValue", 4.0)
+
+myMeshSet.Update()
+
+<span class="comment"># Creating a Property
+# --------------------</span>
+myPropertiesSet = myFEMRoot.GetSet("SimProperties")
+mySolidSection = myPropertiesSet.Add("SimSolidSection")
+myLinkAccess = mySolidSection.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToSupport)
+mySolidSection.MaterialBehaviorByName = "Behavior.1"
+
+<span class="comment"># Retrieving the Scenario Manager
+# --------------------------------</span>
+myScenarioManager = MySimulationRoot.GetItem("SimScenarioManager")
+
+<span class="comment"># Associating the Structural Analysis Case with the FEM rep
+# ----------------------------------------------------------</span>
+myAnalysisCases = myScenarioManager.AnalysisCases
+myAnalysisCase = myAnalysisCases.Item(1)
+myAnalysisCase.FEMRep = myFEMRoot
+
+<span class="comment"># Creating and initializing the static step
+# ------------------------------------------</span>
+mySteps = myAnalysisCase.Steps
+myStaticStep = mySteps.Add("SimStaticStep")
+myAnalysisCase.CreateDefaultElementTypeAssignment()
+myStaticStep.CreateAnalysisDefaultOutputRequests()
+myStaticStep.MaximumIncrements = 1000
+
+<span class="comment">#--------------------------------------------------------------------------
+# 3 - Retrieves the Features Set
+#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Retrieving the features and features states sets
+# -------------------------------------------------</span>
+myFeatures = myAnalysisCase.Features
+myFeatureStates = myStaticStep.FeatureStates
+
+<span class="comment">#--------------------------------------------------------------------------
+# 4 - Creates and Initializes a Contact property feature
+#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Creating a contact property
+# ----------------------------</span>
+mySurfaceBasedContactProperty = myFeatures.Add("SimSurfaceBasedContactProperty")
+
+<span class="comment"># Adding a tangential behavior
+# -----------------------------</span>
+mySurfaceBasedContactProperty.TangentialBehaviorFlag = <span class="keyword">True</span>
+myTangentialBehavior = mySurfaceBasedContactProperty.TangentialBehavior
+myTangentialBehavior.FrictionType = win32com.client.constants.SimTangentialBehaviorCoulomb
+
+myFrictionColumn = myTangentialBehavior.GetTableColumn(win32com.client.constants.SimTangentialBehaviorFriction)
+
+myFrictionColumn.SetCellData (1, 0.33)
+myFrictionColumn.SetCellData (2, 0.66)
+myTangentialBehavior.ContactPressureDependentFlag = <span class="keyword">True</span>
+myContactPressureColumn = myTangentialBehavior.GetTableColumn(win32com.client.constants.SimTangentialBehaviorContactPressure)
+myContactPressureColumn.SetCellData (1, 3)
+myContactPressureColumn.SetCellData (2, 4)
+
+<span class="comment"># Adding a normal behavior
+# -------------------------</span>
+mySurfaceBasedContactProperty.NormalBehaviorFlag = <span class="keyword">True</span>
+
+myNormalBehavior = mySurfaceBasedContactProperty.NormalBehavior
+
+myNormalBehavior.PressureOverlosureType = win32com.client.constants.SimNormalBehaviorHard
+
+<span class="comment">#--------------------------------------------------------------------------
+# 5 - Creates a Surface-based Contact feature 
+#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Creating a Surface-based contact feature
+# ------------------------------------------</span>
+mySurfaceBasedContact = myFeatures.Add("SimSurfaceBasedContact")
+myFeatureStates.CreateFeatureState (mySurfaceBasedContact)
+
+<span class="comment"># Setting attributes
+# -------------------</span>
+myMasterSurface = mySurfaceBasedContact.MasterSurface
+myMasterSurface.AddLink ("MainSupport", myLinkToContactSurface1)
+
+mySlaveSurface = mySurfaceBasedContact.SlaveSurface
+mySlaveSurface.AddLink ("MainSupport", myLinkToContactSurface2)
+mySurfaceBasedContact.ContactProperty = mySurfaceBasedContactProperty
+
+<span class="comment">#--------------------------------------------------------------------------
+# 6 - Creates a General Contact feature
+#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Creating a General contact feature
+# ------------------------------------</span>
+mySimGeneralContact = myFeatures.Add("SimGeneralContact")
+myFeatureStates.CreateFeatureState (mySimGeneralContact)
+
+<span class="comment"># Setting attributes
+# -------------------</span>
+mySimGeneralContact.SpecifyExcludedSurfacesFlag = <span class="keyword">True</span>
+
+mySurfaceExclusions = mySimGeneralContact.SurfaceExclusions
+mySurfaceExclusion = mySurfaceExclusions.Add()
+
+myFirstSurface = mySurfaceExclusion.FirstSurface
+myFirstSurface.AddLink ("MainSupport", myLinkToContactSurface1)
+
+mySecondSurface = mySurfaceExclusion.SecondSurface
+mySecondSurface.AddLink ("MainSupport", myLinkToContactSurface2)
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

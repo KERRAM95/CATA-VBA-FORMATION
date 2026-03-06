@@ -1,0 +1,514 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELResourceBuilderIDLItf RscHomePositions (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELResourceBuilderIDLItf.htm" href="../DELResourceBuilderIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELResourceBuilderIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RscHomePositions"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RscHomePositions<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RscHomePositions_42957','RscHomePositions','0');</script>
+<section id='maindesc'>
+<b><i> Interface to access the home positions of a resource.</i></b><br>
+
+
+ <strong>Role</strong>:
+  This interface provides methods to manages home position on resource 
+having a motion controller. A home position is a predefined state of the 
+resource, used in programming. This state is characterized by the DOF values 
+of the resource.
+These API are specifically designated to manage home positions on a given 
+resource driven by a single mechanism.
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<dd>Let assume there is a robot opened as a root entity in a given editor.
+<pre>
+Dim MainResource As Variant
+Set MainResource = CATIA.ActiveEditor.ActiveObject
+
+Dim MyHomeResource As RscHomePositions
+Set MyHomeResource = MainResource.GetItem("<font color="red"><b>CAARscHomePositions</b></font>")
+If Not MyHomeResource Is Nothing Then
+
+End If
+</pre>
+</dl>
+<b>Note:</b>API documentation will include sample code referring to 
+</b>MyHomeResource</b> as a variable of type <b>RscHomePositions</b>.
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELMIARscMotionController','','DELMIARscMotionController') </script></dd>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscJointType','','DELRscJointType') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#HomePositionDOFCount"><b>HomePositionDOFCount</b></a>
+</td><td  id='tdright'>  Retrieves the DOF count of the current resource.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ListHomePositionIDs"><b>ListHomePositionIDs</b></a>
+</td><td  id='tdright'>  Returns the list of home position names associated to the current resource.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#CreateHomePosition"><b>CreateHomePosition</b></a>
+</td><td  id='tdright'>  Create a new home position values.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetHomePositionDOFType"><b>GetHomePositionDOFType</b></a>
+</td><td  id='tdright'>  Retrieve the type of joint for a given DOF index.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetHomePositionIndex"><b>GetHomePositionIndex</b></a>
+</td><td  id='tdright'>  Remove an existing home position index.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetHomePositionValues"><b>GetHomePositionValues</b></a>
+</td><td  id='tdright'>  Retrieve the values for an existing home position.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ModifyHomePositionIndex"><b>ModifyHomePositionIndex</b></a>
+</td><td  id='tdright'>  Modify an existing home position index.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ModifyHomePositionName"><b>ModifyHomePositionName</b></a>
+</td><td  id='tdright'>  Modify an existing home position name.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RemoveHomePosition"><b>RemoveHomePosition</b></a>
+</td><td  id='tdright'>  Remove an existing home position values from its name.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetHomePositionValues"><b>SetHomePositionValues</b></a>
+</td><td  id='tdright'>  Modify an existing home position values.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="HomePositionDOFCount"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>HomePositionDOFCount</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Retrieves the DOF count of the current resource. The DOF count will 
+ignore all external axes.
+
+
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The number of DOF available for home position definition.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim iHomeDOFCount As Integer
+ iHomeDOFCount = MyHomeResource.<font color="red"><b>HomePositionDOFCount</b></font>
+ <font color="green">'uncomment next line to display value</font>
+ <font color="green">'MsgBox ("Home DOF count: " & CStr(iHomeDOFCount))</font>
+</pre>
+</dl>
+ </ dd>
+</dl>
+</dd>
+<a id="ListHomePositionIDs"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ListHomePositionIDs</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the list of home position names associated to the current resource.
+
+
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The list of home position name existing on the current resource.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim ListHomeID <font color="green">'array for VBScript</font>
+ ListHomeID = MyHomeResource.<font color="red"><b>ListHomePositionIDs</b></font>
+ Dim NbHome As Integer
+ NbHome = UBound(ListHomeID) + 1
+ <font color="green">'uncomment next line to display value</font>
+ <font color="green">'MsgBox ("Number of home position : " & CStr(NbHome))</font>
+ Dim HomeID As String
+ For II = LBound(ListHomeID) To UBound(ListHomeID)
+   HomeID = ListHomeID(II)
+   <font color="green">'uncomment next line to display value</font>
+   <font color="green">'MsgBox ("HomeID:" & HomeID)</font>
+ Next
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is slightly different for array declaration:
+<pre>
+ Dim <b>ListHomeID() As Variant</b> <font color="green">'array for VBA</font>
+ ListHomeID = MyHomeResource.<font color="red"><b>ListHomePositionIDs</b></font>
+</pre>
+</dl>
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="CreateHomePosition"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>CreateHomePosition</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iHomePositionName</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iHomeValues</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Create a new home position values. Values are expressed in standard 
+SI units (meters for length and radians for angle). To identify a given 
+dimension, Use 
+<script type="text/javascript"> activateLinkAnchor('','GetHomePositionDOFType','GetHomePositionDOFType') </script>. <br>
+<b>Note:</b>the array index starts at 0 (due to the variant array 
+management)
+<b>Note:</b>input name must be unique and not empty or the method will fail.
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iHomePositionName</span></dt>
+   <dd> Name of a new home position. Must be unique and not empty.
+
+
+ </ dd>
+    <dt><span class='paramitem'> iHomeValues</span></dt>
+   <dd> The list of DOF values to apply on the newly created home position.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim NewHomeValues <font color="green">'array for VBScript</font>
+ ReDim NewHomeValues(iHomeDOFCount-1)
+ For KK = 0 To UBound(NewHomeValues)
+   NewHomeValues(KK) = 0.5
+ Next
+ MyHomeResource.<font color="red"><b>CreateHomePosition</b></font> HomeID, NewHomeValues
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is significantly different:
+<pre>
+ Dim NewHomeValues() As Variant <font color="green">'array for VBA</font>
+ ReDim NewHomeValues(iHomeDOFCount-1)
+ For KK = 0 To UBound(NewHomeValues)
+   NewHomeValues(KK) = 0.5
+ Next
+ Dim MyObj <font color="green">'need to change typing due to early typing for VBA</font>
+ Set MyObj = MyHomeResource
+ MyObj.<font color="red"><b>CreateHomePosition</b></font> HomeID, NewHomeValues
+</pre>
+</dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetHomePositionDOFType"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetHomePositionDOFType</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iDOFIndex</span>)</span> As <script type="text/javascript"> activateLink('DELRscJointType','DELRscJointType')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve the type of joint for a given DOF index. The index must be 
+within 1 and 
+<script type="text/javascript"> activateLinkAnchor('','SimulatedDOFCount','SimulatedDOFCount') </script> included.
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iDOFIndex</span></dt>
+   <dd> DOF index. Ranges from 1 to the value returned by 
+<script type="text/javascript"> activateLinkAnchor('','SimulatedDOFCount','SimulatedDOFCount') </script> included.
+
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The dimension of the requested DOF.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyHomeDOFType As DELRscJointType
+ 
+ For JJ = 1 To iHomeDOFCount
+     MyHomeDOFType = MyHomeResource.<font color="red"><b>GetHomePositionDOFType</b></font>(JJ)
+     <font color="green">'uncomment next line to display value</font>
+     <font color="green">'MsgBox ("Home DOFType:" & CStr(MyHomeDOFType))</font>
+ Next
+</pre>
+</dl>
+
+
+
+ </ dd>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscJointType','','DELRscJointType') </script></dd>
+</dl>
+</dd>
+<a id="GetHomePositionIndex"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetHomePositionIndex</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iHomePositionName</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Remove an existing home position index. Available home position names can 
+be retrieved through the property 
+<script type="text/javascript"> activateLinkAnchor('','ListHomePositionIDs','ListHomePositionIDs') </script>. Index starts at 1.
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iHomePositionName</span></dt>
+   <dd> Name of an existing home position.
+
+
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  Index of the home position. Index starts at 1.
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim iTestIndex As Integer
+ iTestIndex = MyHomeResource.<font color="red"><b>GetHomePositionIndex</b></font>(HomeID)
+</pre>
+</dl>
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetHomePositionValues"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetHomePositionValues</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iHomePositionName</span>)</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve the values for an existing home position. Values are expressed 
+in standard SI units (meters for length and radians for angle). To identify 
+a given dimension, Use 
+<script type="text/javascript"> activateLinkAnchor('','GetHomePositionDOFType','GetHomePositionDOFType') </script>. <br>
+<b>Note:</b>the array index starts at 0 (due to the variant array 
+management)
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iHomePositionName</span></dt>
+   <dd> Name of a existing home position.
+
+
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The list of DOF values associated with the requested home position.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim HomeValues <font color="green">'array for VBScript</font>
+ HomeValues = MyHomeResource.<font color="red"><b>GetHomePositionValues</b></font>(HomeID)
+ Dim HomeValueIndexed As Double
+ For II = LBound(HomeValues) To UBound(HomeValues)
+     HomeValueIndexed = HomeValues(II)
+     <font color="green">'uncomment next line to display value</font>
+     <font color="green">'MsgBox ("HomeValueIndexed:" & CStr(HomeValueIndexed))</font>
+ Next
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is slightly different for array declaration: 
+<pre>
+ Dim HomeValues() As Variant <font color="green">'array for VBA</font>
+ HomeValues = MyHomeResource.<font color="red"><b>GetHomePositionValues</b></font>(HomeID)
+</pre>
+</dl>
+
+ </ dd>
+</dl>
+</dd>
+<a id="ModifyHomePositionIndex"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ModifyHomePositionIndex</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iHomePositionName</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iNewHomeIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Modify an existing home position index. Available home position names can 
+be retrieved through the property 
+<script type="text/javascript"> activateLinkAnchor('','ListHomePositionIDs','ListHomePositionIDs') </script>. Index starts at 1. Method will fail if the input index is out of range.
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iHomePositionName</span></dt>
+   <dd> Name of an existing home position to be reordered.
+
+ </ dd>
+    <dt><span class='paramitem'> iNewHomeIndex</span></dt>
+   <dd> Index of the new home position (must start at 1).
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim iTestIndex As Integer
+ iTestIndex = 1
+ MyHomeResource.<font color="red"><b>ModifyHomePositionIndex</b></font>(HomeID)
+</pre>
+</dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="ModifyHomePositionName"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ModifyHomePositionName</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iHomePositionOldName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iHomePositionNewName</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Modify an existing home position name. Available home position names can 
+be retrieved through the property 
+<script type="text/javascript"> activateLinkAnchor('','ListHomePositionIDs','ListHomePositionIDs') </script>. New name must be unique.
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iHomePositionOldName</span></dt>
+   <dd> Name of an existing home position to be renamed.
+
+ </ dd>
+    <dt><span class='paramitem'> iHomePositionNewName</span></dt>
+   <dd> New name to apply to the requested home position.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim HomeID As String
+ Dim NewHomeID As String
+ NewHomeID = "TEST"
+ MyHomeResource.<font color="red"><b>ModifyHomePositionName</b></font>(HomeID,NewHomeID)
+</pre>
+</dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="RemoveHomePosition"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>RemoveHomePosition</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iHomePositionName</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Remove an existing home position values from its name. Available home 
+position names can be retrieved through the property 
+<script type="text/javascript"> activateLinkAnchor('','ListHomePositionIDs','ListHomePositionIDs') </script>.
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iHomePositionName</span></dt>
+   <dd> Name of an existing home position.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim ExistingHomeID As String
+ MyHomeResource.<font color="red"><b>RemoveHomePosition</b></font>(ExistingHomeID)
+</pre>
+</dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetHomePositionValues"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetHomePositionValues</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iHomePositionName</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iHomeValues</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Modify an existing home position values. Values are expressed in standard 
+SI units (meters for length and radians for angle). To identify a given 
+dimension, Use 
+<script type="text/javascript"> activateLinkAnchor('','GetHomePositionDOFType','GetHomePositionDOFType') </script>. <br>
+<b>Note:</b>the array index starts at 0 (due to the variant array 
+management)
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iHomePositionName</span></dt>
+   <dd> Name of a existing home position.
+
+
+ </ dd>
+    <dt><span class='paramitem'> iHomeValues</span></dt>
+   <dd> The list of DOF values to apply on the requested home position.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim iHomeDOFCount As Integer
+ iHomeDOFCount = MyHomeResource.HomePositionDOFCount
+ Dim NewHomeValues <font color="green">'array for VBScript</font>
+ ReDim NewHomeValues(iHomeDOFCount-1)
+ For KK = 0 To UBound(NewHomeValues)
+   NewHomeValues(KK) = 0.5
+ Next
+ MyHomeResource.<font color="red"><b>SetHomePositionValues</b></font> HomeID, NewHomeValues
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is significantly different:
+<pre>
+ Dim iHomeDOFCount As Integer
+ iHomeDOFCount = MyHomeResource.HomePositionDOFCount
+ Dim NewHomeValues() As Variant <font color="green">'array for VBA</font>
+ ReDim NewHomeValues(iHomeDOFCount-1)
+ For KK = 0 To UBound(NewHomeValues)
+   NewHomeValues(KK) = 0.5
+ Next
+ Dim MyObj <font color="green">'need to change typing due to early typing for VBA</font>
+ Set MyObj = MyHomeResource
+ MyObj.<font color="red"><b>SetHomePositionValues</b></font> HomeID, NewHomeValues
+</pre>
+</dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

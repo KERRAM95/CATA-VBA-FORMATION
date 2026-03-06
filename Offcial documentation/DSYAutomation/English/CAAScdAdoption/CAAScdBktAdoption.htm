@@ -1,0 +1,147 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Business Process Knowledge Template Changes</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>Business Process Knowledge Template Changes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 Automation macros to take 
+		advantage of the Open <strong>3D</strong>EXPERIENCE platform PLM2.0 infrastructure. It focuses on Business Process 
+		Knowledge Template.</p>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p>V5 Business Process Knowledge Template is changed to Automated Design Process 
+in <strong>3D</strong>EXPERIENCE platform. Since the objects handled are operations, the objects are renamed as follows:</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Objects</th>
+		<th><strong>3D</strong>EXPERIENCE platform Objects</th>
+	</tr>
+	<tr>
+		<td>Behavior</td>
+		<td>DPCOperation</td>
+	</tr>
+	<tr>
+		<td>BehaviorExtension</td>
+		<td>Not supported any longer</td>
+	</tr>
+	<tr>
+		<td>BehaviorVBScript</td>
+		<td>DPCOperationVBScript</td>
+	</tr>
+	<tr>
+		<td>Behaviors</td>
+		<td>DPCOperations</td>
+	</tr>
+</tbody>
+</table>
+<p>The <strong>Behavior</strong> objects are accessed in V5 from the object they 
+extend using the <strong>BehaviorExtension</strong> object retrieved thanks to calling 
+the <code>GetItem</code> method against this extended object. The <strong>BehaviorExtension</strong> 
+object aggregates a <strong>Behavior</strong> object that aggregates a <strong>Behaviors</strong> 
+collection object where the Behavior objects associated to the extended object can 
+be used.</p>
+<p>This model changes with <strong>3D</strong>EXPERIENCE platform. The <strong>DPCOperations</strong> collection object 
+can directly be retrieved from the extended object still thanks to the <code>GetItem</code> 
+method. As a consequence: </p>
+<ul>
+	<li>The <strong>Behavior</strong> object property <code>Behaviors</code> that 
+	returned the child <strong>Behaviors</strong> collection object is removed from 
+	the <strong>DPCOperation</strong> object.</li>
+	<li>The <strong>BehaviorExtension</strong> object is removed. It has one property 
+	and one method. Use the <strong>DPCOperations</strong> collection object to 
+	replace it, as follows:
+	<ul>
+		<li><code>ExtensionClass</code> property<br />
+		Replace a call to this property, such as <code>oBehaviorExtension.ExtensionClass</code>, 
+		with
+		<pre class="code"><span class="keyword">Dim</span> cOperations <span class="keyword">As</span> DPCOperations
+...
+<span class="keyword">Dim</span> sExtension <span class="keyword">As</span> String
+<span class="keyword">Set</span> sExtension = cOperations.Parent.Name</pre>
+		</li>
+		<li><code>SelectBehavior</code> method<br />
+		Replace a call to this method, such as <code>oBehaviorExtension.SelectBehavior(&quot;BehaviorName&quot;)</code>, 
+		with
+		<pre class="code"><span class="keyword">Dim</span> cOperations <span class="keyword">As</span> DPCOperations
+...
+<span class="keyword">Dim</span> oOperation <span class="keyword">As</span> DPCOperation
+<span class="keyword">Set</span> oOperation = cOperations.Operate(&quot;BehaviorName&quot;)
+</pre>
+		</li>
+	</ul>
+	<p>If the <strong>BehaviorExtension</strong> object is used in a script launched 
+	by a <strong>BehaviorVBScript</strong> operation object (behavior) to get the 
+	operation itself, use in <strong>3D</strong>EXPERIENCE platform the first argument of the macro, which is the operation, 
+	as the argument of the Operate method.</p>
+	<p>Refer to
+	<a href="../CAAScdDpcAutDesignProcess/CAAScdDpcObjDPCOperations.htm">DPCOperations Collection Object</a> to retrieve such an object.</p>
+	</li>
+</ul>
+<p>In addition:</p>
+<ul>
+	<li>The methods <code>Activate</code> and <code>Deactivate</code> of the <strong>Behavior</strong> 
+	object are removed. The best way to control the activity of an operation is 
+	to act on its &quot;Activity&quot; parameter. This can be done either through 
+	an EKL operation or through a VB launched by the VBScript Operation:
+	<ol>
+		<li>EKL: Compute the state of the targeted operation and directly valuate 
+		its &quot;Activity&quot; parameter.</li>
+		<li>VB: Compute the state of the targeted operation and valuate an 
+		output variable (&quot;ActivateOrNot&quot; for example) of the VBScript Operation. The 
+		&quot;Activity&quot; 
+		parameter of the targeted operation must be linked to &quot;ActivateOrNot&quot;.</li>
+	</ol>
+	</li>
+	<li>The methods <code>Start</code>, <code>Done</code>, <code>Suspend</code>, 
+	and <code>Cancel</code> of the <strong>BehaviorVBScript</strong> object are 
+	removed from the <strong>DPCOperationVBScript</strong> object. They have empty 
+	implementations in V5, and can safely be removed from your macros in <strong>3D</strong>EXPERIENCE platform, if 
+	you still call them.</li>
+</ul>
+<p>In addition to object renaming and model changes, some properties or methods 
+of the <strong>Behavior</strong> object are mapped to properties and methods of 
+the <strong>DPCOperationVBScript</strong> object. Refer to
+<a href="CAAScdBUIDLCATBehaviorInterfaces.htm">CATBehaviorInterfaces</a> changed objects 
+for details.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

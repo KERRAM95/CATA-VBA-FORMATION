@@ -1,0 +1,105 @@
+<!DOCTYPE html 
+	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<head>
+		<meta http-equiv="Content-Language" content="en-us" />
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta name="topictype" content="Uc" />
+		<meta name="devlang" content="idl" />
+		<meta name="devlang" content="idl" />
+		<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+		<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+		<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+		<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+		<title>CAAScd2dlUcImpDrwTo2DLayoutSource</title>
+	</head>
+
+	<body onload="highlightSearchTerms();"> 
+		<pre>
+<span class="keyword">Sub</span> CATMain() 
+   <span class="comment">' Importation of a Drawing into a New 2D Layout </span>
+   <span class="comment">' --------------------------------------------- </span>
+
+   <span class="comment">' 1/ Gets the Drawing informations </span>
+   <span class="comment">' 2/ Creates the 3D Shape and its 2D Layout </span>
+   <span class="comment">' 3/ Copies the Drawing Sheets in the 2D Layout </span>
+
+   <span class="comment">' 1/ Gets the Drawing informations </span>
+   <span class="comment">' -------------------------------- </span>
+   <span class="comment">' Gets the drawing Editor </span>
+   <span class="keyword">Dim</span> drwEditor <span class="keyword">As</span> Editor 
+   <span class="keyword">Set</span> drwEditor = CATIA.ActiveEditor 
+
+   <span class="comment">' Gets the drawing Root </span>
+   <span class="keyword">Dim</span> drwRoot <span class="keyword">As</span> DrawingRoot 
+   <span class="keyword">Set</span> drwRoot = drwEditor.ActiveObject 
+
+   <span class="comment">' Gets the drawing Title </span>
+   <span class="keyword">Dim</span> drwRepRef <span class="keyword">As</span> VPMRepReference 
+   <span class="keyword">Set</span> drwRepRef = drwRoot.Parent 
+
+   <span class="keyword">Dim</span> drwTitle <span class="keyword">As</span> String 
+   drwTitle = drwRepRef.GetAttributeValue(&quot;V_Name&quot;) 
+
+   <span class="comment">' 2/ Creates the 3D Shape and its 2D Layout </span>
+   <span class="comment">' ----------------------------------------- </span>
+   <span class="comment">' Gets the PLMNewService </span>
+   <span class="keyword">Dim</span> oNewService <span class="keyword">As</span> PLMNewService 
+   <span class="keyword">Set</span> oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;) 
+
+   <span class="comment">' Creates the 3D Shape representation </span>
+   <span class="keyword">Dim</span> shapeEditor <span class="keyword">As</span> Editor 
+   oNewService.PLMCreate &quot;3DShape&quot;, shapeEditor 
+
+   <span class="comment">' Changes its Title </span>
+   <span class="keyword">Dim</span> shapeRepRef <span class="keyword">As</span> VPMRepReference 
+   <span class="keyword">Set</span> shapeRepRef = shapeEditor.ActiveObject.Parent 
+
+   shapeRepRef.SetAttributeValue &quot;V_Name&quot;, drwTitle 
+
+   <span class="comment">' Creates the 2D Layout </span>
+   <span class="keyword">Dim</span> shapePart <span class="keyword">As</span> Part 
+   <span class="keyword">Set</span> shapePart = shapeEditor.ActiveObject 
+
+   <span class="keyword">Dim</span> shapeLayRootFact <span class="keyword">As</span> Layout2DFactory 
+   <span class="keyword">Set</span> shapeLayRootFact = shapePart.GetItem(&quot;CATLayoutRootFactory&quot;) 
+
+   <span class="keyword">Dim</span> shapeLayRoot <span class="keyword">As</span> Layout2DRoot 
+   <span class="keyword">Set</span> shapeLayRoot = shapeLayRootFact.Create2DLayout(drwRoot.Standard) 
+
+   <span class="comment">' 3/ Copies the Drawing Sheets in the 2D Layout </span>
+   <span class="comment">' --------------------------------------------- </span>
+   <span class="keyword">For</span> i = 1 <span class="keyword">To</span> drwRoot.Sheets.Count 
+      <span class="keyword">Dim</span> drwSheet <span class="keyword">As</span> DrawingSheet 
+      <span class="keyword">Set</span> drwSheet = drwRoot.Sheets.Item(i) 
+
+      <span class="comment">' Creates a new Layout Sheet </span>
+      shapeLayRoot.Sheets.Add drwSheet.Name 
+
+      <span class="comment">' Gets the Sheet Views </span>
+      <span class="keyword">Dim</span> tabToImport() <span class="keyword">As</span> Variant 
+      <span class="keyword">ReDim</span> tabToImport(drwSheet.Views.Count - 3) 
+      <span class="keyword">For</span> j = 3 <span class="keyword">To</span> drwSheet.Views.Count 
+         <span class="keyword">Set</span> tabToImport(j - 3) = drwSheet.Views.Item(j) 
+      <span class="keyword">Next</span> 
+
+      <span class="comment">' Gets the 2D Layout Services </span>
+      <span class="keyword">Dim</span> layoutServices <span class="comment">' As Layout2DServices </span>
+      <span class="keyword">Set</span> layoutServices = shapeLayRoot.GetItem(&quot;CATLayout2DServices&quot;) 
+
+      <span class="comment">' Imports the Views in the 2D Layout </span>
+      <span class="keyword">Dim</span> tabImported() <span class="keyword">As</span> Variant 
+      <span class="keyword">ReDim</span> tabImported(drwSheet.Views.Count - 3) 
+      layoutServices.ImportFromDrawing tabToImport, CatImportAll, tabImported 
+   <span class="keyword">Next</span> 
+
+   <span class="comment">' Remove the first 2DLayout Sheet </span>
+   shapeLayRoot.Sheets.Remove 1 
+
+<span class="keyword">End Sub </span>
+
+		</pre>
+	</body>
+</html>

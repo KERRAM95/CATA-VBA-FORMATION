@@ -1,0 +1,202 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSpaceAllocation.CATScript</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample shows usage of Space Allocarion APIs.</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Model &quot;SSM_VB_TEST*&quot; is already opened in database.</span>
+<span class="comment">'   2- Retrieves Root object.</span>
+<span class="comment">'   3- Retrieves Space Root.</span>
+<span class="comment">'   4- Retrieves Space Folder and Spaces.</span>
+<span class="comment">'   5- Retrieves Space System</span>
+<span class="comment">'   6- Retrieves Space Manager</span>
+<span class="comment">'   7- Retrieves Bounding Box and External Volume</span>
+<span class="comment">'   8- Retrieves SpaceCell Set,Cutting Set and family</span>
+<span class="comment">'   9- Retrieves Molded Surface</span>
+<span class="comment">'   10- Retrieves Molded Surface Internal Attributes</span>
+<span class="comment">'   11- Retrieves Molded Surface Limit Internal Attributes</span>
+<span class="comment">'   12- Retrieves Space Concept Root</span>
+<span class="comment">'   13- Retrieves Space Concept Node</span>
+<span class="comment">'   14- Retrieves Space Reference</span>
+<span class="comment">'   15- Retrieves Design and Manufacturing Space Reference</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Sub</span> CATMain()
+<span class="comment">'   1- Model &quot;Root&quot; is already opened in the active editor</span>
+    <span class="keyword">Dim</span> SSMPrdEditor <span class="keyword">As</span> Editor
+    Set SSMPrdEditor = CATIA.ActiveEditor
+    
+<span class="comment">'   2- Retrieves active object</span>
+    <span class="keyword">Dim</span> oUIActiveObject   <span class="keyword">As</span> VPMRootOccurrence
+    <span class="keyword">Set</span> oUIActiveObject = SSMPrdEditor.ActiveObject
+
+<span class="comment">'   3- Retrieves Space Root</span>
+    <span class="keyword">Dim</span> oListChildrenOccurrences   <span class="keyword">As</span> VPMOccurrences
+    <span class="keyword">Dim</span> objectcount <span class="keyword">As</span> <span class="keyword">Long</span>
+    <span class="keyword">Set</span> objectOccur = oUIActiveObject
+    <span class="keyword">Set</span> oListChildrenOccurrences = objectOccur.Occurrences
+    
+    <span class="keyword">Dim</span> SsmSpaceRootObj <span class="keyword">As</span> SsmSpaceRoot
+    <span class="keyword">Dim</span> TempVPMInst <span class="keyword">As</span> VPMInstance
+    <span class="keyword">Dim</span> TempVPMOccur <span class="keyword">As</span> VPMOccurrence
+    <span class="keyword">Dim</span> TempVPMReference <span class="keyword">As</span> VPMReference
+    
+    objectcount = oListChildrenOccurrences.Count
+    <span class="keyword">For</span> j = 1 <span class="keyword">To</span> objectcount
+      <span class="keyword">Set</span> TempVPMOccur = oListChildrenOccurrences.Item(j)
+      <span class="keyword">Set</span> TempVPMInst = TempVPMOccur.InstanceOccurrenceOf
+      <span class="keyword">Set</span> TempVPMReference = TempVPMInst.ReferenceInstanceOf
+      
+      <span class="keyword">Dim</span> name <span class="keyword">As</span> <span class="keyword">String</span>
+      
+      name = TempVPMReference.GetCustomType
+      
+      <span class="keyword">If</span> TempVPMReference.GetCustomType = &quot;SPP_SpaceRoot&quot; <span class="keyword">Then</span>
+        <span class="keyword">Set</span> SsmSpaceRootObj = TempVPMReference
+      <span class="keyword">End If</span>
+    <span class="keyword">Next</span>
+    
+<span class="comment">'   4- Retrieves Space Folder and Spaces.</span>
+    <span class="keyword">Dim</span> Spacefolder <span class="keyword">As</span> SsmSpaceFolder
+    <span class="keyword">Set</span> Spacefolder = SsmSpaceRootObj.Spacefolder
+    
+    <span class="keyword">Dim</span> SpaceList <span class="keyword">As</span> SsmSpaces
+    <span class="keyword">Set</span> SpaceList = Spacefolder.Spaces
+
+<span class="comment">'   5- Retrieves Space System</span>
+    <span class="keyword">Dim</span> SsmSpaceSys <span class="keyword">As</span> SsmSpaceSystem
+    <span class="keyword">Dim</span> SpaceSysList <span class="keyword">As</span> SsmSpaceSystems
+    
+    <span class="keyword">Set</span> SpaceSysList = SsmSpaceRootObj.SpaceSystems
+    <span class="keyword">Set</span> SsmSpaceSys = SpaceSysList.Item(1)
+    
+<span class="comment">'   6- Retrieves Space Manager</span>
+    <span class="keyword">Dim</span> SsmManager <span class="keyword">As</span> SsmSpaceManager
+    <span class="keyword">Set</span> SsmManager = SsmSpaceSys.SpaceManager
+
+<span class="comment">'   7- Retrieves Bounding Box and External Volume</span>
+    <span class="keyword">Dim</span> SpaceExtrVol <span class="keyword">As</span> SsmSpaceInput
+    <span class="keyword">Set</span> SpaceExtrVol = SsmManager.ExternalVolume
+    <span class="keyword">Set</span> extrvolume   = SpaceExtrVol.SpaceElement
+
+    <span class="keyword">Dim</span> SpaceboundingBox <span class="keyword">As</span> SsmSpaceInput
+    <span class="keyword">Set</span> SpaceboundingBox = SsmManager.BoundingBox
+    <span class="keyword">Set</span> boundBox         = SpaceboundingBox.SpaceElement
+
+<span class="comment">'   8- Retrieves SpaceCell Set,Cutting Set and family</span>
+    <span class="keyword">Dim</span> SpaceCellTool <span class="keyword">As</span> SsmToolSet
+    <span class="keyword">Dim</span> SpaceCellChild <span class="keyword">As</span> References
+    <span class="keyword">Set</span> SpaceCellTool = SsmManager.SpaceCellSet
+    SpaceCellTool.GetChildren SpaceCellChild
+
+    <span class="keyword">Dim</span> CuttingCellTool <span class="keyword">As</span> SsmCuttingSet
+    <span class="keyword">Dim</span> CuttingSetChild <span class="keyword">As</span> SsmCuttingFamilys
+    <span class="keyword">Dim</span> CuttigFamilychild <span class="keyword">As</span> SsmCuttingInputs
+    <span class="keyword">Set</span> CuttingCellTool = SsmManager.CuttingSet
+    CuttingCellTool.GetChildren CuttingSetChild
+
+    <span class="keyword">Dim</span> cuttingfamily <span class="keyword">As</span> SsmCuttingFamily
+    <span class="keyword">Set</span> cuttingfamily = CuttingSetChild.Item(1)
+
+    cuttingfamily.GetChildren CuttigFamilychild
+    
+    <span class="keyword">Dim</span> cuttingelementInput <span class="keyword">As</span> SsmCuttingInput
+    <span class="keyword">Set</span> cuttingelementInput = CuttigFamilychild.Item(1)
+
+    <span class="keyword">Set</span> cuttingelement = cuttingelementInput
+
+<span class="comment">'   9- Retrieves Molded Surface</span>
+    <span class="keyword">Dim</span> SpaceSysVPMReference <span class="keyword">As</span> VPMReference
+    <span class="keyword">Dim</span> oVPMRepInsts <span class="keyword">As</span> VPMRepInstances
+
+    <span class="keyword">Set</span> SpaceSysVPMReference = SsmSpaceSys
+    <span class="keyword">Set</span> oVPMRepInsts = SpaceSysVPMReference.RepInstances
+    
+    <span class="keyword">Dim</span> oVPMRepInst <span class="keyword">As</span> VPMRepInstance
+    <span class="keyword">Set</span> oVPMRepInst = oVPMRepInsts.Item(1)
+
+    <span class="keyword">Dim</span> oVPMRepRef <span class="keyword">As</span> VPMRepReference
+    <span class="keyword">Set</span> oVPMRepRef = oVPMRepInst.ReferenceInstanceOf
+ 
+    <span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+    
+    <span class="keyword">Set</span> oPart = oVPMRepRef.GetItem(&quot;Part&quot;)
+    <span class="keyword">Dim</span> MoldedSurface <span class="keyword">As</span> SsmDelimitedMoldedSurface
+    <span class="keyword">Set</span> MoldedSurface = oPart.FindObjectByName(&quot;D.2&quot;)
+
+<span class="comment">'   10- Retrieves Molded Surface Internal Attributes</span>
+    <span class="keyword">Dim</span> Orientation <span class="keyword">As</span> <span class="keyword">Long</span>
+
+    <span class="keyword">Set</span> MSSupport = MoldedSurface.Support
+    Orientation   = MoldedSurface.SupportOrientation
+    <span class="keyword">Set</span> MSOffset  = MoldedSurface.SupportOffset
+
+<span class="comment">'   11- Retrieves Molded Surface Limit Internal Attributes</span>
+    <span class="keyword">Dim</span> MoldedSurfaceLmt <span class="keyword">As</span> SsmMoldedSurfaceLmt
+    <span class="keyword">Dim</span> index <span class="keyword">As</span> <span class="keyword">Long</span>
+
+    index = -1
+    <span class="keyword">Set</span> MoldedSurfaceLmt = MoldedSurface
+    Orientation = MoldedSurfaceLmt.GetOrientation(index)
+    <span class="keyword">Set</span> limitingObj = MoldedSurfaceLmt.GetLimitingObject(index)
+
+<span class="comment">'   12- Retrieves Space Concept Root</span>
+    <span class="keyword">Dim</span> SsmSpaceConRoot <span class="keyword">As</span> SsmSpaceConceptRoot
+    <span class="keyword">Dim</span> SpaceConRootList <span class="keyword">As</span> SsmSpaceConceptRoots
+
+    <span class="keyword">Set</span> SpaceConRootList = SsmSpaceRootObj.SpaceConceptRoots
+    <span class="keyword">Set</span> SsmSpaceConRoot = SpaceConRootList.Item(1)
+
+<span class="comment">'   13- Retrieves Space Concept Node</span>
+    <span class="keyword">Dim</span> SpaceConNodeList <span class="keyword">As</span> SsmSpaceConceptNodes
+    <span class="keyword">Set</span> SpaceConNodeList = SsmSpaceConRoot.SpaceConceptNodes
+
+    <span class="keyword">Dim</span> SpaceConNode <span class="keyword">As</span> SsmSpaceConceptNode
+    <span class="keyword">Set</span> SpaceConNode = SpaceConNodeList.Item(2)
+
+    <span class="comment">'We can get aggregated Space concept nodes from this object</span>
+    <span class="keyword">Dim</span> SpaceConNodeList2 <span class="keyword">As</span> SsmSpaceConceptNodes
+    <span class="keyword">Set</span> SpaceConNodeList2 = SpaceConNode.SpaceConceptNodes
+
+<span class="comment">'   14- Retrieves Space Reference</span>
+    <span class="keyword">Dim</span> SpaceRef <span class="keyword">As</span> SsmSpace
+    <span class="keyword">Set</span> SpaceRef = SpaceConNode.Space
+
+    <span class="comment">'We can then access all its attributes from this object</span>
+    <span class="keyword">Set</span> SpaceRefGeo = SpaceRef.VolumeGeom
+    <span class="keyword">Dim</span> SpaceVolume <span class="keyword">As</span> <span class="keyword">Double</span>
+    SpaceVolume = SpaceRef.Volume
+
+<span class="comment">'   15- Retrieves Design and Manufacturing Space Reference</span>
+    <span class="keyword">Dim</span> SpaceRefDesign <span class="keyword">As</span> SsmDesignSpace
+    <span class="keyword">Dim</span> SpaceRefManuf  <span class="keyword">As</span> SsmManufacturingSpace
+
+    <span class="keyword">Set</span> SpaceRefDesign = SpaceRef
+
+    <span class="comment">'It can be either Design or Manufacturing Space Reference.We can then access all its attributes from this object</span>
+    <span class="keyword">Dim</span> SpaceFloorArea <span class="keyword">As</span> <span class="keyword">Double</span>
+    SpaceFloorArea = SpaceRefDesign.FloorArea
+<span class="keyword">End Sub</span>
+</pre>
+
+</body>
+
+</html>

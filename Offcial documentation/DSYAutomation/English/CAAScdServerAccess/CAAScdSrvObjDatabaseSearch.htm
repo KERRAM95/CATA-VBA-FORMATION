@@ -1,0 +1,354 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>DatabaseSearch Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>DatabaseSearch Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMAccessIDLItf', 'interface', 'DatabaseSearch', 'PropertyIndex'); return false;">
+		Properties</a></td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMAccessIDLItf', 'interface', 'DatabaseSearch', 'MethodIndex'); return false;">
+		Methods</a></td>	</tr>
+</tbody>
+</table>
+<table>
+	<tbody>
+	<tr>
+		<td class="auto">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Service');return false;"><img src="../CAAScdImages/Service.png" alt="Service Abstract Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'PLMAccessIDLItf', 'interface', 'SearchService');return false;"><img src="../CAAScdImages/SearchService.png" alt="SearchService Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/space1.png" alt="Space" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'PLMAccessIDLItf', 'interface', 'DatabaseSearch');return false;"><img src="../CAAScdImages/DatabaseSearch.png" alt="Database Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/space2.png" alt="Space" width="40" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'PLMModelerBaseIDLItf', 'interface', 'PLMEntities');return false;"><img src="../CAAScdImages/PLMEntities.png" alt="PLMEntities Collection Object" width="252" height="22"/></a></td>
+	</tr>
+</tbody>
+</table>
+
+<p>Represents a search query for PLM objects in the database and holds the query 
+results.</p>
+<p>The <strong>DatabaseSearch</strong> object lets you:</p>
+<ul>
+	<li>Create a database search query for PLM objects.</li>
+	<li>Retrieve the search query results as a <strong>PLMEntities</strong> 
+		collection object as they are displayed in the Search Results dialog 
+		box, and manage the way these results are arranged in the collection.</li>
+</ul>
+<p>The <strong>DatabaseSearch</strong> object enables you to use different search 
+modes:</p>
+<ul>
+<li>Predefined Queries.</li>
+<li>Advanced Search, divided into:<ul>
+	<li>Easy. This is the default search mode.</li>
+	<li>Extended</li>
+	<li>Expert.</li>
+	</ul>
+	</li>
+</ul>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>Retrieving the DatabaseSearch Object</h2>
+<p>Use the <strong>DatabaseSearch</strong> property of the <strong>SearchService</strong> 
+object to return the <strong>DatabaseSearch</strong> object.</p>
+<pre class="code"><span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> SearchService
+<span class="keyword">Set</span> oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+<span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch
+<span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch</pre>
+<p>Refer to the <a href="CAAScdSrvObjSearchService.htm">SearchService Object</a>.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>Using the DatabaseSearch Object</h2>
+<p>This example uses the default Advanced Search - Easy search mode. The search 
+mode are defined thanks to the
+<a href="#" onclick="CAAlink('IDL', 'PLMAccessIDLItf', 'enum', 'SearchMode'); return false;">SearchMode</a> 
+enumeration.</p>
+<pre class="code">oDBSearch.BaseType = &quot;VPMReference&quot;
+oDBSearch.AddEasyCriteria = &quot;PLM_ExternalID&quot;, &quot;Ship*&quot;</pre>
+<p>The <strong>BaseType</strong> property sets the type of the PLM objects to 
+search for as <code>VPMReference</code>, that is, Physical Product. The <strong>AddEasyCriteria</strong> 
+sub sets an 
+additional criterion to search for <strong>VPMReference</strong> objects for 
+which the value of the
+<strong>PLM_ExternalID</strong> attribute, which stores the value of the <kbd>
+Name</kbd> property, starts with the character 
+string Ship, since the &quot;*&quot; wild character is used.</p>
+<p>Then launch the search using the <strong>Search</strong> sub of the <strong>SearchService</strong> object.</p>
+<pre class="code">...
+oSearchService.<strong>Search</strong>
+...</pre>
+<p>Finally use the <strong>Results</strong> property of the <strong>DatabaseSearch</strong> 
+object to retrieve the search results 
+in a <strong>PLMEntities</strong> collection object.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> cPLMEntities <span class="keyword">As</span> PLMEntities 
+<span class="keyword">Set</span> cPLMEntities = oDBSearch.<strong>Results</strong>
+...</pre>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3>Predefined Queries</h3>
+<p>First set the Predefined Queries mode thanks to the <strong>Mode</strong> 
+property of the <strong>DatabaseSearch</strong> object.</p>
+<pre class="code">...
+oDBSearch.<strong>Mode</strong> = <strong>SearchMode_Predefined</strong>
+...</pre>
+<p>Then create the search criteria.</p>
+<pre class="code">...
+oDBSearch.<strong>AddPredefinedCriteria</strong> &quot;prd:Ship&quot;
+...</pre>
+<p>The <strong>AddPredefinedCriteria</strong> method sets two criteria separated 
+by a column &quot;:&quot;. The first character string is a shortcut of the type of the 
+objects to search, and the second one is a character string contained in the 
+value of one of the attributes <kbd>Title</kbd>, <kbd>Name</kbd>,
+<kbd>Description</kbd>, or <kbd>Responsible</kbd>. In this example, <code>prd</code> 
+stands for Physical Product.</p>
+<p>To see a list of all predefined types for the application in which you 
+are working, in the <kbd>Search</kbd> options list, select <kbd>What to Search for &gt; More</kbd>. You can see the 
+predefined query shortcuts associated with all predefined types.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3>Advanced Search - Easy</h3>
+<p>This is the default mode. You can set it explicitly using the <strong>Mode</strong> 
+property of the <strong>DatabaseSearch</strong> object.</p>
+<pre class="code">...
+oDBSearch.<strong>Mode</strong> = <strong>SearchMode_Easy</strong>
+...</pre>
+<p>Then create the search criteria. First set the type of objects to search 
+using the <strong>BaseType</strong> property of the <strong>DatabaseSearch</strong> object.</p>
+<pre class="code">...
+oDBSearch.<strong>BaseType</strong> = &quot;VPMReference&quot;
+...</pre>
+<p>The types you can use are those available in the <kbd>Object</kbd> list of 
+the <kbd>SEARCH</kbd> dialog box that you open from the <kbd>
+Search</kbd> options list by selecting <kbd>How to Search &gt; 
+Advanced Search</kbd>. The character string to use for a type is the attribute value taken from the 
+Unified Typing Reference Dictionary. In this example, <code>VPMReference</code> 
+stands for Physical Product.</p>
+<p>Finally create a criterion relying on one of the attributes of the object to 
+search, with a character string to be found in the value of this attribute 
+using the <strong>AddEasyCriteria</strong> sub of the <strong>DatabaseSearch</strong> object.</p>
+<pre class="code">...
+oDBSearch.<strong>AddEasyCriteria</strong> &quot;V_Name&quot;, &quot;engine&quot;
+...</pre>
+<p>The attributes are declared using their name in the Unified Typing Reference 
+Dictionary. For example, <code>V_Name</code> stand for the <kbd>Title</kbd> 
+property. The second parameter contains the character string to be searched for 
+in the V_Name attribute values. Note that you can use the <strong>AddEasyCriteria</strong> 
+sub several times with a different couple attribute/value each time. They are 
+combined using an AND operator.</p>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3>Advanced Search - Extended</h3>
+<p>First set the Advanced Search - Extended mode thanks to the <strong>Mode</strong>  
+property of the <strong>DatabaseSearch</strong> object.</p>
+<pre class="code">...
+oDBSearch.<strong>Mode</strong> = <strong>SearchMode_Extended</strong>
+...</pre>
+<p>Then create the search criteria. First set the type of objects to search 
+using the <strong>BaseType</strong> property of the <strong>DatabaseSearch</strong> object, 
+and possibly the extension type using the <strong>Extension</strong> Property.</p>
+<pre class="code">...
+oDBSearch.<strong>BaseType</strong>  = &quot;Drawing&quot;
+oDBSearch.<strong>Extension</strong> = &quot;CATDftGenDraftingExt&quot;
+...</pre>
+<p>The types you can use are those available in the <kbd>Object</kbd> list of 
+the <kbd>SEARCH</kbd> dialog box that you open from the <kbd>
+Search</kbd> options list by selecting <kbd>How to Search &gt; 
+Advanced Search</kbd>, then checking <kbd>Advanced</kbd>, finally clicking <kbd>
+Extended</kbd>. The character string to use for a type is the attribute value taken from the 
+Unified Typing Reference Dictionary. In this example, <code>Drawing</code> 
+stands fortunately for <kbd>Drawing</kbd>.</p>
+<p>The extension you can use are those available in the <kbd>Extension</kbd> list of 
+the <kbd>SEARCH</kbd> dialog box. In this example, <code>CATDftGenDraftingExt</code> 
+stands for <kbd>Drawing additional info</kbd>.</p>
+<p>Create a criterion relying on one of the attributes of the object to 
+search, for example with a character string to be found in the value of this attribute 
+using the <strong>AddExtendedCriteria</strong> sub of the <strong>DatabaseSearch</strong> object.</p>
+<pre class="code">...
+oDBSearch.<strong>AddExtendedCriteria</strong> &quot;V_Name&quot;, &quot;engine&quot;, SearchOperator_LIKE
+...</pre>
+<p>The attributes are declared using their name in the Unified Typing Reference 
+Dictionary. For example, <code>V_Name</code> stands for the <kbd>Title</kbd> 
+property. The second parameter contains the character string to be searched for 
+in the V_Name attribute values. The third parameter is the operator to be used, 
+here Like. The available operators are declared thanks to the <a href="#" onclick="CAAlink('IDL', 'PLMAccessIDLItf', 'enum', 'SearchOperator'); return false;">SearchOperator</a> enumeration.</p>
+<p>You can create several criteria, such as the following:</p>
+<pre class="code">...
+oDBSearch.<strong>AddExtendedCriteria</strong> &quot;originated&quot;, &quot;01/06/2014&quot;, SearchOperator_EQ
+...</pre>
+<p>In this example, <code>originated</code> stands for the <kbd>Creation date</kbd> 
+property. The second parameter contains the date to search for, and the third parameter is the operator to be used, 
+here equal to. This searches for drawings created on this date. The available operators are declared thanks to the <a href="#" onclick="CAAlink('IDL', 'PLMAccessIDLItf', 'enum', 'SearchOperator'); return false;">SearchOperator</a> enumeration.</p>
+<p>You can also create a criterion using a range of values:</p>
+
+<pre class="code">...
+oDBSearch.<strong>AddExtendedRangeCriteria</strong> &quot;modified&quot;, &quot;01/07/2014&quot;, &quot;01/10/2014&quot;, SearchOperator_BETWEEN
+...</pre>
+
+<p>In this example, <code>modified</code> stands for the <kbd>Last 
+modification</kbd> date 
+property. The second and third parameters contain the date range to search for, and the third parameter is the operator to be used, 
+here between to. This searches for drawings modifieded between these two dates. The available operators are declared thanks to the <a href="#" onclick="CAAlink('IDL', 'PLMAccessIDLItf', 'enum', 'SearchOperator'); return false;">SearchOperator</a> enumeration.</p>
+<p>You can the apply an operator between these criteria.</p>
+<pre class="code">...
+oDBSearch.<strong>Condition</strong> = SearchCondition_AND
+...</pre>
+<p>In this example, the AND operator is applied. This searches for the drawings 
+with the extension <kbd>Drawing additional info</kbd>. that include the 
+character string &quot;engine&quot; in their <kbd>Title</kbd> property and that were 
+created on the 01/06/2014 and that were modified between the 01/07/2014 and the 
+01/10/2014.</p>
+<p>&nbsp;The available operators are AND and OR, and are declared thanks to the <a href="#" onclick="CAAlink('IDL', 'PLMAccessIDLItf', 'enum', 'SearchCondition'); return false;">SearchCondition</a> enumeration.</p>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3>Advanced Search - Expert</h3>
+<p>First set the Advanced Search - Expert mode thanks to the <strong>Mode</strong> 
+property of the <strong>DatabaseSearch</strong> object.</p>
+<pre class="code">...
+oDBSearch.<strong>Mode</strong> = <strong>SearchMode_Expert</strong>
+...</pre>
+<p>Then create the search criteria.</p>
+<pre class="code">...
+oDBSearch.<strong>BaseType</strong>  = &quot;Drawing&quot;
+oDBSearch.<strong>Extension</strong> = &quot;CATDftGenDraftingExt&quot;
+...</pre>
+<p>Then create the search criteria.</p>
+<pre class="code">...
+oDBSearch.<strong>SetExpertExpression</strong> &quot;(`Drawing`.&quot;&quot;Title&quot;&quot; Like &quot;&quot;engine&quot;&quot; AND `Drawing`.&quot;&quot;Name&quot;&quot; NotLike &quot;&quot;body&quot;&quot;)&quot; _
+                                &amp; &quot;OR `Drawing`.&quot;&quot;Creation date&quot;&quot; == Date(&quot;&quot;01/06/14&quot;&quot;)&quot;
+...</pre>
+<p>You can copy such a query from the <kbd>Expert</kbd> tab of the <kbd>SEARCH</kbd> 
+dialog box. Pay attention that this query is localized to your region and 
+language in the <kbd>SEARCH</kbd> 
+dialog box, and that the macro must be run using the same localization. In 
+addition, replace each double quotes coming from the <kbd>SEARCH</kbd> dialog 
+box with two double quotes, and enclose it with double quotes.</p>
+<p>If you want to display a long query on several lines as shown above, use the 
+_ character to make two lines a single statement, and use the &amp; operator to 
+concatenate the two character strings in a single one.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3>Launching the Search</h3>
+<p>Once your criteria are created, you can launch the search
+thanks to the <strong>Search</strong> sub
+of the <strong>SearchService</strong> object.</p>
+<pre class="code">...
+oSearchService.<strong>Search</strong>
+...</pre>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3>Retrieving the Search Results</h3>
+<p>When the search completes and returns results, they are displayed in the 
+Search Results. You can retrieve these results as <strong>PLMEntity</strong> objects in a
+<strong>PLMEntities</strong> collection object using the <strong>Results</strong> properties
+of the <strong>DatabaseSearch</strong> object.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> cPLMEntities <span class="keyword">As</span> PLMEntities 
+<span class="keyword">Set</span> cPLMEntities = oDBSearch.<strong>Results</strong>
+...</pre>
+<p>Note that you can get properties from these <strong>PLMEntity</strong> 
+objects, but not set them. To do this, open these object using the <strong>
+PLMOpen</strong> sub of the <strong>PLMOpenService</strong> object. </p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>Search Mode Dedicated Properties and Subs</h2>
+<p>The following properties and subs of the <strong>DatabaseSearch</strong> 
+object are dedicated to one or several search modes. The others are mode 
+independent.</p>
+<table class="fill">
+<tr>
+<th rowspan="2">Property or Sub</th>
+<th rowspan="2">Predefined Queries</th>
+<th colspan="3">Advanced Search</th>
+</tr>
+<tr>
+<th>Easy</th>
+<th>Extended</th>
+<th>Expert</th>
+</tr>
+	<tr>
+<td>BaseType</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+	</tr>
+<tr>
+<td>Condition</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>AddEasyCriteria</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>AddExtendedCriteria</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>AddExtendedRangedCriteria</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+	<tr>
+<td>AddPredefinedCriteria</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+	</tr>
+<tr>
+<td>SetExpertExpression</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

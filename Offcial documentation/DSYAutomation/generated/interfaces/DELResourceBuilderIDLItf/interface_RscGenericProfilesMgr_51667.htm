@@ -1,0 +1,307 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELResourceBuilderIDLItf RscGenericProfilesMgr (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELResourceBuilderIDLItf.htm" href="../DELResourceBuilderIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELResourceBuilderIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RscGenericProfilesMgr"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RscGenericProfilesMgr<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RscGenericProfilesMgr_51667','RscGenericProfilesMgr','0');</script>
+<section id='maindesc'>
+<b><i> Interface to access the controller generic profiles.</i></b><br>
+
+
+ <strong>Role</strong>:
+  This interface provides methods to access the controller generic profile.
+<br>
+This API retrieves the default generic profiles on the controller. There are used 
+before any simulation and must be modified before the simulation starts.
+<br>
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<dd>Let assume there is a robot opened as a root entity in a given editor.
+<pre>
+ Dim MainResource As Variant
+ Set MainResource = CATIA.ActiveEditor.ActiveObject
+
+ Dim MySelectedResource As RscControllerAttributesAccess
+ Set MySelectedResource = MainResource.GetItem("<font color="red"><b>CAARscControllerAttributesAccess</b></font>")
+ 
+ If Not MySelectedResource Is Nothing Then
+   Dim MyControllerData As RscGenericProfilesMgr
+   MyControllerData = MySelectedResource.<font color="red"><b>RetrieveControllerAttributesObject</b></font>
+ End If
+</pre>
+</dl>
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELMIARscControllerAttributesAccess','','DELMIARscControllerAttributesAccess') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#CreateGenericProfile"><b>CreateGenericProfile</b></a>
+</td><td  id='tdright'>  Create a generic profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetCurrentGenericProfile"><b>GetCurrentGenericProfile</b></a>
+</td><td  id='tdright'>  Retrieves the current generic profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetGenericProfileByName"><b>GetGenericProfileByName</b></a>
+</td><td  id='tdright'>  Retrieves a profile by its name.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetGenericProfileCount"><b>GetGenericProfileCount</b></a>
+</td><td  id='tdright'>  Retrieves the number of generic profiles for a given type.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetGenericProfileList"><b>GetGenericProfileList</b></a>
+</td><td  id='tdright'>  Retrieves the list of generic profiles for a given type.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#HasGenericProfile"><b>HasGenericProfile</b></a>
+</td><td  id='tdright'>  Check the existence of a given generic profile
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim bTest As Boolean
+ Dim NewCurrentID As String
+ NewCurrentID = "TEST"
+ bTest = MyControllerData.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RemoveGenericProfile"><b>RemoveGenericProfile</b></a>
+</td><td  id='tdright'>  Remove a generic profile by name.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetCurrentGenericProfile"><b>SetCurrentGenericProfile</b></a>
+</td><td  id='tdright'>  Set the current generic profile.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="CreateGenericProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateGenericProfile</span><span class='signature'>(<script type="text/javascript"> activateLink('DELRscControllerGenericProfilesType','DELRscControllerGenericProfilesType')</script> <span class='param'>iProfileType</span>)</span> As <script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> </span></dt>
+  <dd class='ddmethod'>
+ Create a generic profile.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyToolProfile As RscToolProfile
+ Set RscToolProfile = MyControllerData.<font color="red"><b>CreateGenericProfile</b></font>(DELRscControllerGenericProfilesType_Tool)
+</pre>
+</dl>
+
+</dd>
+<a id="GetCurrentGenericProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetCurrentGenericProfile</span><span class='signature'>(<script type="text/javascript"> activateLink('DELRscControllerGenericProfilesType','DELRscControllerGenericProfilesType')</script> <span class='param'>iProfileType</span>)</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the current generic profile.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim NewCurrentID As String
+ NewCurrentID.<font color="red"><b>GetCurrentGenericProfile</b></font>9DELRscControllerGenericProfilesType_Tool)
+</pre>
+
+</dd>
+<a id="GetGenericProfileByName"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetGenericProfileByName</span><span class='signature'>(<script type="text/javascript"> activateLink('DELRscControllerGenericProfilesType','DELRscControllerGenericProfilesType')</script> <span class='param'>iProfileType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iProfileName</span>)</span> As <script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves a profile by its name.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyToolProfileID As String
+ MyToolProfileID = "TEST"
+ Dim MyToolProfile As RscToolProfile
+ Set MyToolProfile = MyControllerData.<font color="red"><b>GetGenericProfileByName</b></font> DELRscControllerGenericProfilesType_Tool,MyToolProfileID
+</pre>
+</dl>
+
+</dd>
+<a id="GetGenericProfileCount"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetGenericProfileCount</span><span class='signature'>(<script type="text/javascript"> activateLink('DELRscControllerGenericProfilesType','DELRscControllerGenericProfilesType')</script> <span class='param'>iProfileType</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the number of generic profiles for a given type.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim NumberToolProfiles As Integer
+ NumberToolProfiles = MyControllerData.<font color="red"><b>GetGenericProfileCount</b></font>(DELRscControllerGenericProfilesType_Tool)
+</pre>
+</dl>
+
+</dd>
+<a id="GetGenericProfileList"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetGenericProfileList</span><span class='signature'>(<script type="text/javascript"> activateLink('DELRscControllerGenericProfilesType','DELRscControllerGenericProfilesType')</script> <span class='param'>iProfileType</span>)</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the list of generic profiles for a given type.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim ToolProfilesList <font color="green">'array for VBScript</font>
+ ToolProfilesList = MyControllerData.<font color="red"><b>GetGenericProfileList</b></font>(DELRscControllerGenericProfilesType_Tool)
+ Dim ListIndex As Double
+ For II = LBound(ToolProfilesList) To UBound(ToolProfilesList)
+     Dim MyToolProfile As RscToolProfile
+     MyToolProfile = ToolProfilesList(II)
+     <font color="green">'uncomment next line to display value</font>
+     <font color="green">'MsgBox ("ListIndex:" & CStr(ListIndex))</font>
+ Next
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is slightly different for array declaration: 
+<pre>
+ Dim ToolProfilesList() As Variant <font color="green">'array for VBA</font>
+ ToolProfilesList = MyControllerData.<font color="red"><b>GetGenericProfileList</b></font>(DELRscControllerGenericProfilesType_Tool)
+</pre>
+</dl>
+
+</dd>
+<a id="HasGenericProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>HasGenericProfile</span><span class='signature'>(<script type="text/javascript"> activateLink('DELRscControllerGenericProfilesType','DELRscControllerGenericProfilesType')</script> <span class='param'>iProfileType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iProfileName</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Check the existence of a given generic profile
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim bTest As Boolean
+ Dim NewCurrentID As String
+ NewCurrentID = "TEST"
+ bTest = MyControllerData.<font color="red"><b>HasGenericProfile</b></font> DELRscControllerGenericProfilesType_Tool, NewCurrentID
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is significantly different:
+<pre>
+ Dim NewCurrentID As String
+ NewCurrentID = "TEST"
+ MyControllerData.<font color="red"><b>HasGenericProfile</b></font> DELRscControllerGenericProfilesType_Tool, NewCurrentID
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is significantly different:
+<pre>
+ Dim MyObj <font color="green">'need to change typing due to early typing for VBA</font>
+ Set MyObj = MyControllerData
+ bTest = MyObj.<font color="red"><b>HasGenericProfile</b></font> DELRscControllerGenericProfilesType_Tool, NewCurrentID
+</pre>
+</dl>
+
+</dd>
+<a id="RemoveGenericProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>RemoveGenericProfile</span><span class='signature'>(<script type="text/javascript"> activateLink('DELRscControllerGenericProfilesType','DELRscControllerGenericProfilesType')</script> <span class='param'>iProfileType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iProfileName</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Remove a generic profile by name.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim NewCurrentID As String
+ NewCurrentID = "TEST"
+ MyControllerData.<font color="red"><b>RemoveGenericProfile</b></font> DELRscControllerGenericProfilesType_Tool, NewCurrentID
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is significantly different:
+<pre>
+ Dim NewCurrentID As String
+ NewCurrentID = "TEST"
+ MyControllerData.<font color="red"><b>RemoveGenericProfile</b></font> DELRscControllerGenericProfilesType_Tool, NewCurrentID
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is significantly different:
+<pre>
+ Dim MyObj <font color="green">'need to change typing due to early typing for VBA</font>
+ Set MyObj = MyControllerData
+ MyObj.<font color="red"><b>RemoveGenericProfile</b></font> DELRscControllerGenericProfilesType_Tool, NewCurrentID
+</pre>
+</dl>
+
+</dd>
+<a id="SetCurrentGenericProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetCurrentGenericProfile</span><span class='signature'>(<script type="text/javascript"> activateLink('DELRscControllerGenericProfilesType','DELRscControllerGenericProfilesType')</script> <span class='param'>iProfileType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iProfileName</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the current generic profile.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim NewCurrentID As String
+ NewCurrentID = "TEST"
+ MyControllerData.<font color="red"><b>SetCurrentGenericProfile</b></font> DELRscControllerGenericProfilesType_Tool, NewCurrentID
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is significantly different:
+<pre>
+ Dim NewCurrentID As String
+ NewCurrentID = "TEST"
+ MyControllerData.<font color="red"><b>SetCurrentGenericProfile</b></font> DELRscControllerGenericProfilesType_Tool, NewCurrentID
+ Dim MyObj <font color="green">'need to change typing due to early typing for VBA</font>
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is significantly different:
+<pre>
+ Set MyObj = MyControllerData
+ MyObj.<font color="red"><b>SetCurrentGenericProfile</b></font> DELRscControllerGenericProfilesType_Tool, NewCurrentID
+</pre>
+</dl>
+
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

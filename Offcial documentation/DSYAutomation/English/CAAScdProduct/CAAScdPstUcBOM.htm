@@ -1,0 +1,363 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Generating Bill Of Materials (BOM)</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Generating Bill Of Materials (BOM)</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates generation of the Bill of materials. The use 
+						case navigate through the instance/reference Product structure 
+						and calculates the count of each leaf node&#8217;s occurrences. 
+						Then it displays status of each leaf node along with Product 
+						Structure and finally displays the Bill of material in tabular 
+						format.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:<a href="CAAScdPstUcBOMSource.htm"> 
+						CAAScdPstUcBOMSource.htm</a></span> </p>
+						<p>Attention the macro can request a slight change to 
+						take into account your own Product types. First read
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a> 
+						before using it.</p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 4 steps</p>
+		<ol>
+			<li><a href="#Step1">Retrieves Root Reference from the database</a></li>
+			<li><a href="#Step2">Navigates the Product Reference Recursively</a></li>
+			<li><a href="#Step3">Gets Leaf Node Status (New or existing) And Add 
+			Count</a></li>
+			<li><a href="#Step4">Displays Bill of Materials </a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"></a>Retrieves the root reference from 
+			the database </p>
+			<p>As a first step, the Use case retrieves a Product Reference 
+			(Root) from database. </p>
+			<p>It begins with a call to <strong>SearchProduct</strong> function. 
+			This function searches for a list of Product References from the underlying 
+			database based on an input search criteria[<a href="#References">1</a>]. 
+			This list is output in the PLM Search Result window in CATIA. We 
+			build up the search criteria, with the PLM Entity type of a Product 
+			Reference type, PLM_ExternalID 
+			and revision as an input. </p>
+			<p>As a next step, the UC essentially loads in session 
+			first Product Reference (Root) output by search collection occurring 
+			in the new tab page within Search Editor retrieved earlier above.
+			</p>
+			<p>The steps of retrieving Root in session from database 
+			explained in detail in [<a href="#References">1</a>] article.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a></strong>Navigates the Product 
+			Reference Recursively</p>
+			<p>Now Use case retrieves the Product Reference (Root) associated with 
+			its reference-Instance Model and then navigates down its product hierarchy 
+			to display its contents, precisely in the same way, as seen in the specification 
+			tree within CATIA, with the Representation Instances/ References as 
+			shown in the <a href="#fig.1">Fig.1</a> below. Please Note that 
+			in this case we are not only displaying the Product structure reference 
+			elements in addition to that we are showing the status of leaf node 
+			References. </p>
+			<table>
+				<caption><a name="fig.1"></a>Fig. 1 The sample out of Product structure 
+				with updated status </caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdPstUcBOM_Image_1.jpg" width="540" height="211"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<pre class="code">...
+ <strong>   NavigateProductReference </strong> oProductEditor
+...</pre>
+			<p>The function <em>NavigateProductReference </em>takes an <code>Editor</code>,
+			<code>oProductEditor</code>, as an input.</p>
+			<p>The function <em>NavigateProductReference </em>details are given 
+			in the [<a href="#References">2</a>] use case. The only additional part 
+			in this method is explained here below rest is same as previous use 
+			case [<a href="#References">2</a>]. These additional sections are basically 
+			added to generate Bill of Material.</p>
+			<ol class="task" style="list-style-type: upper-roman">
+				<li>
+				<p>Retrieves the Leaf nodes</p>
+				<p>In this section our main aim is to retrieve leaf node Product 
+				Reference while navigating through instance/reference Product structure. 
+				To identify leaf node use case do a check for Reference Instances 
+				(children) aggregated under Product Reference, The zero count of 
+				aggregated Reference instances proves that the current Reference 
+				is Leaf node Reference. </p>
+				<pre class="code">Sub <strong>NavigateProdReference</strong>(oProdRef, depth)
+    ...
+    Dim oListChildrenInstances As VPMInstances
+    Set oListChildrenInstances = oProdRef.Instances
+
+    For i = 1 To oListChildrenInstances.Count
+    
+        Dim oVPMInst As VPMInstance
+        Set oVPMInst = oListChildrenInstances.Item(i)
+        ...
+        
+        Dim oVPMRef As VPMReference
+        Set oVPMRef = oVPMInst.ReferenceInstanceOf
+
+        ...   
+      <span class="keyword">  Dim  </span>oListChildrenInstToIdentifyLeafNode<span class="keyword"> As</span> VPMInstances
+ <span class="keyword">       Set  </span><strong>oListChildrenInstToIdentifyLeafNode= oVPMRef.Instances</strong>
+  
+     <span class="keyword">   Dim  </span>StrNewObjRef <span class="keyword">As  </span> String
+        StrNewObjRef = &quot;&quot;
+      
+        If <strong>0 = oListChildrenInstances2.Count</strong> Then
+...</pre>
+				<p>A call to <em>Instances</em> Property of the <code>VPMReference</code>, 
+				retrieves the <code>VPMInstances </code>a collection object,<code> 
+				oListChildrenInstToIdentifyLeafNode </code></p>
+				<p>Further we check for count of Instances in the collection object
+				<code>oListChildrenInstances2</code>, if that is zero then we consider 
+				that current reference object <code>oVPMRef </code>is leaf node 
+				Product Reference.</p>
+				</li>
+				<li>
+				<p>Count and display leaf node occurrences</p>
+				<p>After confirmation of leaf node Product Reference use case makes 
+				an entry of this Product Reference inside the array. This array 
+				will be further used for retrieving status of the object (New leaf 
+				node reference or already existing leaf node Reference). In addition 
+				to this Use case maintains the count of each leaf node occurred 
+				in the instance reference model as leaf node.</p>
+				<pre class="code">... 
+           StrNewObjRef = <strong>GetLeafNodeStatusAndAddCount</strong>(oVPMRef)
+        End If
+        
+        strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + oVPMRef.GetAttributeValue(&quot;PLM_ExternalID&quot;) + oVPMRef.GetAttributeValue(&quot;revision&quot;) + &quot; &quot; + &quot;(&quot;
+        strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + oVPMInst.GetAttributeValue(&quot;PLM_ExternalID&quot;) + &quot;)&quot; + StrNewObjRef + vbCrLf
+              
+        <strong>NavigateProdReference</strong> oVPMRef, depth + 1
+            
+    Next i
+...</pre>
+				<p>A call to <em>GetLeafNodeStatusAndAddCount </em>function returns 
+				the status (New/Existing Product Reference) of the input leaf node
+				<code>oVPMRef . </code></p>
+				<p>Finally we show the Product Structure with updated status [<a href="#fig.1">Fig.1</a>].
+				</p>
+				<p>The function <em>GetLeafNodeStatusAndAddCount</em> described 
+				below in <a href="#Step3">step 3</a></p>
+				<p>The elements those are not leaf node we browse though them recursively 
+				to get leaf nodes by calling <em>NavigateProdReference</em> 
+				method recursively.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><a name="Step3"></a>Gets Leaf Node Status (New or existing) And Add 
+			Count </p>
+			<p>To create BOM it is very important to identify the Leaf node (this 
+			step we already done). Next important thing is to identify the count 
+			of each leaf node's occurrence in the whole input Product structure.
+			</p>
+			<p>For calculating occurrence count first we need to find out new Reference 
+			Component. Then if component is new then mark there entry in the array 
+			list and initialize its count. If component already has the entry in 
+			the array list in that case we increase its count. These occurrence 
+			counts also we are maintaining in the array.</p>
+			<p>In this way we get the total count of each leaf node entry as well 
+			status of each leaf node. steps elaborated further below.</p>
+			<p>please note that due to this array we have some limitation we can 
+			only count that many new Components as much the size of array is declared, 
+			in this case we are using size 10 . </p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>We Parse through the component list array, this array contains 
+				the PLM_ExternalID attribute values. We compare current leaf node's 
+				PLM_ExternalID value with all array elements and set the flag as 
+				true if entry found in the array list.</p>
+				<p>Further if object is already exist in the list then we increase 
+				the count, this maintains the count of each occurrence of Leaf node 
+				Reference </p>
+				<pre class="code">Function <strong>GetLeafNodeStatusAndAddCount</strong>(oVPMLeafRef) As String
+
+ <span class="keyword">   Dim  </span>bObjFound <span class="keyword">As  </span> Boolean
+    bObjFound = False
+    
+    For g = 0 To 10
+       If lstCompList(g) = oVPMLeafRef.GetAttributeValue(&quot;<strong>PLM_ExternalID</strong>&quot;) Then
+          bObjFound = <strong>True</strong>
+          <strong>lstCompCount(g) = lstCompCount(g) + 1</strong>
+       End If
+    Next g   
+...</pre>
+				<p>A call to <em>GetAttributeValue </em>method returns PLM_ExternalID 
+				attribute value. which we compare with each element of array, and 
+				if values are same then we set the flag as True. </p>
+				<p>Next if we found entry already exist then we add its count.</p>
+				</li>
+				<li>
+				<p>Update the status (New or already exist in list) and for new 
+				element make an entry in the array. </p>
+				<pre class="code">... 
+ <span class="keyword">   Dim  </span>strIsNewObject <span class="keyword">As </span>String
+    strIsNewObject = &quot;&quot;
+    
+    If <strong>False = bObjFound</strong> Then
+       <strong>lstCompList(iNewObjectIndex) = oVPMLeafRef.GetAttributeValue(&quot;PLM_ExternalID&quot;)
+       lstCompCount(iNewObjectIndex) = 1
+       </strong>
+       <strong>iNewObjectIndex = iNewObjectIndex + 1</strong>
+       strIsNewObject = &quot; This is new Component&quot;
+     
+    Else 
+       strIsNewObject = &quot; This is already exist Component in the list&quot;
+    End If 
+...</pre>
+				<p>After identifying new leaf element (flag check) for each new 
+				element we make its entry in the array and initialize count to 1 
+				(one). </p>
+				<p>Further we update the status as Component is new if component 
+				is new otherwise update status as already exist in the list. </p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><a name="Step4"></a>Displays Bill of Materials </p>
+			<p>Display action of BOM happens at the end of use case. </p>
+			<p>Actual calculation of the each leaf node Product Reference and their 
+			count of occurrence is already done. In this step we are only displaying 
+			aggregated bill of Material. </p>
+			<pre class="code">... 
+ <span class="keyword">   Dim  </span>strBOM <span class="keyword">As  </span> String
+    strBOM = &quot;********Bill of material*********&quot; + vbCrLf
+    strBOM = strBOM + &quot;Product Reference Name   &quot; + &quot;    Count&quot; + vbCrLf
+    For k = 0 To 10
+        <span class="keyword">Dim  </span>strCount <span class="keyword">As  </span> String
+        strCount = lstCompCount(k)
+        strBOM = strBOM + lstCompList(k) + &quot;                        &quot; + strCount + vbCrLf
+    Next k
+    
+    MsgBox <strong>strBOM</strong>
+...</pre>
+			<p>Here we parse though the array list and Build the String <code>strBOM</code> 
+			with output of PLM Reference name and their count . And finally we display 
+			the message box. </p>
+			<table>
+				<caption><a name="Fig.2"></a>Fig.2 Sample Bill of Materials</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Bill of Materials" src="CAAScdPstUcBOM_Image_2.jpg" width="198" height="263"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>The above image [<a href="#Fig.2">Fig.2</a>] shows the sample output 
+			of the Bill of Materials.</p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[1]</td>
+		<td><a href="CAAScdPstUcOpenProductReference.htm">Opening Product Reference</a></td>
+	</tr>
+	<tr>
+		<td>[1]</td>
+		<td><a href="CAAScdPstUcBrowsingProductContents.htm">Browsing Product Contents</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

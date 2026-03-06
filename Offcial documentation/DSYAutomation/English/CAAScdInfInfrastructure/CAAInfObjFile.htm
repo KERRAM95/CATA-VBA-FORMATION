@@ -1,0 +1,81 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>File Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>File Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+  <tbody>
+  <tr>
+    <td class="ofvbanavunused">See Also</td>
+    <td class="ofvbanavreuse"><a href="CAAInfArchitectureOverview.htm">Legend</a></td>
+    <td class="ofvbanavunused">Use Cases</td>
+    <td class="ofvbanavreuse"><a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'File', 'PropertyIndex'); return false;">Properties</a></td>
+    <td class="ofvbanavreuse"><a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'File', 'MethodIndex'); return false;">Methods</a></td>
+  </tr>
+</tbody>
+</table>
+<p class="auto">
+<a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'FileSystem');return false;"><img src="../CAAScdImages/FileSystem.png" alt="FileSystem Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchila.png" alt="Mono-Directional Relation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'FileComponent');return false;"><img src="../CAAScdImages/FileComponent.png" alt="FileComponent Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'File');return false;"><img src="../CAAScdImages/File.png" alt="File Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'Folder');return false;"><img src="../CAAScdImages/Folder.png" alt="Folder Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'TextStream');return false;"><img src="../CAAScdImages/TextStream.png" alt="TextStream Object" width="252" height="22"/></a></p>
+<p>Represents a file.</p>
+<p>The <strong>File</strong> object is operating system independent. Using it instead of 
+those available with the platform you use makes your macro portable.</p>
+<p>The <strong>File</strong> object derives from the <strong>FileComponent</strong> object from 
+which it inherits the <strong>Path</strong> property. It aggregates:</p>
+<ul>
+	<li>A <strong>Folder</strong> object: its parent folder accessible using the <strong>
+	ParentFolder</strong> property also inherited from the <strong>FileComponent</strong> 
+	object</li>
+	<li>A <strong>TextStream</strong> object that represents the file contents as a text 
+	stream, returned thanks 
+	to the <strong>OpenAsTextStream</strong> method.</li>
+</ul>
+<h2>Retrieving the File Object</h2>
+<p>Use the <strong>GetFile</strong> method of the <strong>FileSystem</strong> object, returned 
+thanks to the <strong>FileSystem</strong> property of the <strong>Application</strong> object, to return 
+an existing file.</p>
+<pre class="code"><span class="keyword">Dim</span> oFile <span class="keyword">As</span> File
+<span class="keyword">Set</span> oFile = CATIA.FileSystem.GetFile(&quot;C:\tmp\myFile.txt&quot;)</pre>
+<p>In the same way, use the other properties and methods of the <strong>FileSystem</strong> 
+object to create, copy, delete, and check for the existence of a file.</p>
+<h2>Using the File Object</h2>
+<p>Use the <strong>Size</strong> property to return the size of a file. The size is 
+expressed in bytes.</p>
+<pre class="code"><span class="keyword">Dim</span> oSize <span class="keyword">As</span> Long
+<span class="keyword">Set</span> oSize = oFile.Size</pre>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

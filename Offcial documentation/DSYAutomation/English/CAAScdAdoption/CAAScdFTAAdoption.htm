@@ -1,0 +1,193 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>3D Functional Tolerancing &amp; Annotation Changes</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>3D Functional Tolerancing &amp; Annotation Changes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 Automation macros to take 
+		advantage of the Open <strong>3D</strong>EXPERIENCE platform PLM2.0 infrastructure. It focuses on how 3D Functional 
+		Tolerancing &amp; Annotation objects can be accessed and created.</p>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="10"></a>Annotation Sets</h2>
+<p>In V5, 3D Functional Tolerancing &amp; Annotations objects are obtained through the
+<strong>AnnotationSets</strong> collection object, retrieved:</p>
+<ul>
+	<li>In a CATPart document
+	<p>Directly under the <strong>Part</strong> object:</p>
+	<pre class="code"><span class="keyword">Set</span> cAnnotationSets = oPart.AnnotationSets</pre>
+	</li>
+	<li>In a CATProduct document:
+	<p>Through the <code>GetTechnologicalObject</code> method of a <strong>Product</strong> 
+	object:</p>
+	<pre class="code"><span class="keyword">Set</span> cAnnotationSets = oProductDocument.Product.GetTechnologicalObject(&quot;CATAnnotationSets&quot;)</pre>
+	</li>
+	<li>In a CATProcess document:
+	<p>Through the <code>GetItem</code> method of a <strong>ProcessDocument</strong> 
+	object:</p>
+	<pre class="code"><span class="keyword">Set</span> cAnnotationSets = oProcesstDocument.GetItem(&quot;CATAnnotationSets&quot;)</pre>
+	</li>
+</ul>
+<p>In <strong>3D</strong>EXPERIENCE platform, annotation Sets is only defined in a 3D Shape representation reference. 
+The <strong>AnnotationSets</strong> collection object is retrieved by using the
+<code>AnnotationSets</code> property of the <strong>Part</strong> object.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p>Hereunder the script create a dimension of a hole. The surface of the hole is 
+selected before launching the macro.</p>
+<table id="table1">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' A Part Document is the active document in the session</span>
+<span class="keyword">Dim</span> oPartDocument <span class="keyword">As</span> PartDocument
+<span class="keyword">Set </span>oPartDocument = CATIA.Documents.ActiveDocument
+
+<span class="comment">' Get the Part object
+</span><span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+<span class="keyword">Set </span>oPart = <strong>oPartDocument.Part</strong>
+
+<span class="comment">' Get the Selection
+</span><span class="keyword">Dim</span> oSel <span class="keyword">As</span> Selection
+<span class="keyword">Set </span>oSel = <strong>oPartDocument.Selection</strong></pre>
+		</td>
+		<td>
+		<pre><span class="comment">' A Representation is opened in the session.</span>
+<span class="comment">' The Part object can be retrieved</span>
+<span class="comment">' from the active editor.</span>
+<span class="comment">
+' Get the Part object</span>
+<span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+<span class="keyword">Set </span>oPart = <strong>CATIA.ActiveEditor.ActiveObject</strong>
+
+<span class="comment">' Get the Selection</span>
+<span class="keyword">Dim</span> oSel <span class="keyword">As</span> Selection
+<span class="keyword">Set o</span>Sel = <strong>CATIA.ActiveEditor.Selection</strong></pre>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">V5 and <strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td colspan="2" align="center">
+		<pre><span class="comment">' Get the AnnotationSet from the part feature</span>
+<span class="keyword">Dim</span> oAnnotSet <span class="keyword">As</span> AnnotationSet
+<span class="keyword">Set </span>oAnnotSet = oPart.AnnotationSets.Item(1)
+
+<span class="comment">' Get the collection of UserSurfaces</span>
+<span class="keyword">Dim</span> cUserSurfs As Object
+<span class="keyword">Set </span>cUserSurfs = oPart.UserSurfaces
+
+<span class="comment">' Get the Annotation Factory</span>
+<span class="keyword">Dim</span> oAnnotFact As AnnotationFactory
+<span class="keyword">Set </span>oAnnotFact = oAnnotSet.AnnotationFactory<br />
+<span class="comment">' The dimensioned surface must be selected</span>
+<span class="keyword">If</span> (oSel.Count = 1) <span class="keyword">Then</span>
+
+  <span class="comment">' Create the hole dimension</span>
+  <span class="keyword">Dim</span> myRef1 <span class="keyword">As</span> Reference
+  <span class="keyword">Set </span>myRef1 = mySel.Item(1).Reference
+
+  <span class="keyword">Dim</span> myUserSurf1 <span class="keyword">As</span> UserSurface
+  <span class="keyword">Set </span>myUserSurf1 = cUserSurfs.Generate(myRef1)
+
+  <span class="keyword">Dim</span> myDim3DForHole As Annotation
+  <span class="keyword">Set </span>myDim3DForHole = _
+    oAnnotFact.CreateSemanticDimension(myUserSurf1, 1, 1)
+<span class="keyword">
+End If</span></pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>Below is the script to create an <strong>AnnotationSet</strong> object from the
+<strong>Part</strong> object.</p>
+<table>
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' A Part Document is the active document in the session</span>
+<span class="keyword">Dim</span> oPartDocument <span class="keyword">As</span> PartDocument
+<span class="keyword">Set </span>oPartDocument = <strong>CATIA.Documents.ActiveDocument</strong>
+<span class="comment">
+' Get the Part object</span>
+<span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+<span class="keyword">Set </span>oPart = <strong>oPartDocument.Part</strong></pre>
+		</td>
+		<td>
+		<pre><span class="comment">' A Representation is opened in the session.</span>
+<span class="comment">' The Part object can be retrieved</span>
+<span class="comment">' from the active editor.</span>
+
+<span class="comment">' Get the Part object</span>
+<span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+<span class="keyword">Set</span> oPart = <strong>CATIA.ActiveEditor.ActiveObject</strong></pre>
+		</td>
+	</tr>
+	<tr>
+		<th colspan="2">V5 and <strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td colspan="2" align="center">
+		<pre><span class="comment">' Get the Annotation Set collection from the Part feature</span>
+<span class="keyword">Dim</span> cAnnotSets <span class="keyword">As</span> AnnotationSets
+<span class="keyword">Set</span> cAnnotSets = oPart.AnnotationSets
+
+<span class="comment">' Create an Annotation Set</span>
+<span class="keyword">Dim</span> oAnnotSet As AnnotationSet
+<span class="keyword">Set </span>oAnnotSet = cAnnotSets.Add(&quot;ISO_3D)</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p><strong>Note</strong>: Only one <strong>AnnotationSet</strong> object can be 
+aggregated by the <strong>Part</strong> object.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

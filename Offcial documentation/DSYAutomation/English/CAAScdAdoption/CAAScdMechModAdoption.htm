@@ -1,0 +1,229 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Mechanical Modeler and Part Applications Changes</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Mechanical Modeler and Part Applications Changes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 Automation macros to take 
+		advantage of the Open <strong>3D</strong>EXPERIENCE platform PLM infrastructure. It focuses on how the Part 
+		object and objects related to Part Applications can be retrieved.</p>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="11"></a>The PartDocument Object</h2>
+<p>The <strong>PartDocument</strong> object is in V5 the key object to access Part objects. 
+In <strong>3D</strong>EXPERIENCE platform, those objects persist in the 3DShape representation of the Product modeler. 
+In the following example, such a representation, whose type always derives from
+<strong>VPMRepReference,</strong> is retrieved through a set of attributes. Any kind 
+of representation can be retrieved this way. No predefined attribute shows that 
+the retrieved object is actually a 3DShape. Generally, company processes allow to 
+identify 3DShapes by defining standard values for specific attributes. Content can 
+also be tested using the <code>GetItem</code> method of the retrieved <strong>PLMEntity</strong> 
+object.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">&#39; The PartDocument is known by its path</span>
+sPart = &quot;myPart.CATPart&quot;</pre>
+		</td>
+		<td>
+		<pre><span class="comment">&#39; Use the SearchService object to retrieve a VPMRepresentationReference
+&#39; from its identification attributes</span>
+<span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> SearchService
+<span class="keyword">Set</span> oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+<span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+<span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+oDBSearch.BaseType = &quot;VPMRepReference&quot;
+oDBSearch.AddEasyCriteria &quot;PLM_ExternalID&quot;, &quot;myPart&quot; 
+oSearchService.Search
+
+<span class="comment">&#39; Get the first found PLM entity (other versions may exist)</span>
+<span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">&#39; Open the file: a Part Document
+</span><span class="keyword">Dim</span> oPartDocument <span class="keyword">As</span> PartDocument
+<span class="keyword">Set </span>oPartDocument = CATIA.Documents.Open(sPart)</pre>
+		</td>
+		<td>
+		<pre><span class="comment">&#39; Open the entity: the Editor object has no specific type</span>
+<span class="keyword">  Set</span> oEditor = CATIA.GetSessionService(&quot;PLMOpenService&quot;).PLMOpen(oEntity)</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">&#39; Retrieve the Part object</span>
+<span class="keyword">Set</span> oPart = oPartDocument.Part</pre>
+		</td>
+		<td>
+		<pre><span class="comment">&#39; The editor has no specific type, but part data is expected, so to </span></pre>
+		<pre><span class="comment">&#39; retrieve the Part object one can use:</span></pre>
+		<pre><span class="comment">&#39; - either the ActiveObject property (illustrated here)
+&#39; - or the generic GetItem method (illustrated in next example)</span>
+<span class="keyword">  Set</span> oPart = oEditor.ActiveObject</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>More information on how to replace usage of the Document object is described 
+in <a href="CAAScdAccessingObjectsInSession.htm">Accessing and Editing Objects in 
+Session</a>.</p>
+<h2><a name="12"></a>The Product property of the PartDocument Object</h2>
+<p>In V5, a Product object is contained in each Part document. In <strong>3D</strong>EXPERIENCE platform, this is not 
+true anymore. V5 scenarios retrieving the Product object contained in the Part Document 
+generally aimed at identifying which product is a Part when exploring a product 
+structure, to process data inside the Part document:</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="keyword">Dim</span> oProduct <span class="keyword">As</span> Product
+<span class="keyword">Set</span> oProduct = ...</pre>
+		</td>
+		<td>
+		<pre><span class="keyword">Dim </span>oVPMReference <span class="keyword">As </span>VPMReference
+<span class="keyword">Set </span>oVPMReference = ...</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">&#39; Loop on instances attached to this reference</span>
+<span class="keyword">Dim </span><span class="comment">oChildProduct As Product</span>
+<span class="keyword">For each</span> oChildProduct <span class="keyword">In</span> oProduct.Products</pre>
+		</td>
+		<td>
+		<pre><span class="comment">&#39; Loop on instances attached to this reference</span>
+<span class="keyword">Dim</span> oInstance <span class="keyword">As</span> VPMInstance<br /><span class="keyword">For each</span> oInstance <span class="keyword">In</span> oVPMReference.Instances</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">  &#39; Retrieve the reference of the considered instance</span>
+<span class="keyword">  Dim</span> oRefOfInstance <span class="keyword">As</span> Product
+<span class="keyword">  Set</span> oRefOfInstance = oChildProduct.ReferenceProduct</pre>
+		</td>
+		<td>
+		<pre><span class="comment">  &#39; Retrieve the reference of the considered instance</span>
+<span class="keyword">  Dim </span>oRefOfInstace <span class="keyword">As</span> VPMReference
+<span class="keyword">  Set </span>oRefOfInstance = oInstance.ReferenceInstanceOf</pre>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+		<pre><span class="comment">  &#39; Retrieve first associated representation</span>
+  <span class="keyword">Set</span> oRepInstance = oRefOfInstance.RepInstances.Item(1)
+
+<span class="comment">  &#39; Retrieve as the e RepReference of the RepInstance </span>
+<span class="keyword">  Set</span> oRefOfRepInstance = oRepInstance.ReferenceInstanceOf</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">  &#39; Identify which product of a structure is a Part:</span>
+  <span class="keyword">If</span> (typename (oReference.Parent) = &quot;PartDocument&quot;) <span class="keyword">Then</span>
+<span class="comment">    &#39; Use the PartDocument to retrieve the Part</span>
+    msgbox oReference.Parent.Part.Name
+  <span class="keyword">End If</span></pre>
+		</td>
+		<td>
+		<pre><span class="comment">  &#39; Identify if it is a 3DShape: see above</span>
+<span class="keyword">  If</span> (...) <span class="keyword"> Then </span>
+<span class="comment">    &#39; Use VPMRepReference to retrieve the Part</span>
+    msgbox oRefOfRepInstance.GetItem(&quot;Part&quot;).Name
+  <span class="keyword">End If</span></pre>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="keyword">Next</span></pre>
+		</td>
+		<td>
+		<pre><span class="keyword">Next</span></pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>Note that in V5, references and instances have the same Product type, while in 
+<strong>3D</strong>EXPERIENCE platform, they have distinct types: VPMReference and VPMInstance.</p>
+<h2><a name="10"></a>Objects Related to Part Applications</h2>
+<p>Retrieving a <code>Part</code> object is described above. Objects that are retrieved 
+from the <code>Part</code> object in V5, like <strong>Sketch </strong>objects,
+<strong>Shape</strong> objects, <strong>Body</strong> objects, <strong>HybridShape</strong> objects, 
+or <strong>Layout2DRoot</strong> objects are retrieved the same way in <strong>3D</strong>EXPERIENCE platform:</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">&#39; Retrieve the main Body object</span>
+<span class="keyword">Set</span> oBody = oPart.MainBody
+
+<span class="comment">&#39; Retrieve the 2D Layout Root</span>
+<span class="keyword">Set</span> o2DLayoutRoot = oPart.GetItem(&quot;CATLayoutRoot&quot;)</pre>
+		</td>
+		<td>
+		<pre><span class="comment">&#39; Retrieve the main Body object</span>
+<span class="keyword">Set</span> oBody = oPart.MainBody
+
+<span class="comment">&#39; Retrieve the 2D Layout Root</span>
+<span class="keyword">Set</span> o2DLayoutRoot = oPart.GetItem(&quot;CATLayoutRoot&quot;)</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

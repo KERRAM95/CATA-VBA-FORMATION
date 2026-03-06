@@ -1,0 +1,226 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<style type="text/css">
+table.compare {
+	width: 97%;
+	overflow: hidden;
+	white-space: nowrap;
+}
+table.compare td {
+	padding: 2px;
+	width: 50%;
+}
+</style>
+<title>Adopting 3DEXPERIENCE PLM Search Objects</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1><a name="Top"></a>Adopting <strong>3D</strong>EXPERIENCE PLM Search Objects</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header">This task shows you how to adopt the search 
+						objects new in <strong>3D</strong>EXPERIENCE R2014x in place of the <strong>PLMSearchService</strong>,
+						<strong>PLMSearches</strong>, and <strong>PLMSearch</strong> 
+						objects.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span><ul>
+							<li>You should first locate in the database the 
+								macros with which you use PLM search objects.</li>
+						</ul>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSrvObjSearchService.htm">SearchService 
+						Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSrvObjDatabaseSearch.htm">DatabaseSearch 
+						Object</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<ol class="task">
+	<li>
+		<p class="task">Retrieving the search service object.</p>
+		<p class="task">Replace the <strong>PLMSearchService</strong> object with 
+		the <strong>SearchService</strong> object, and <strong>PLMSearch</strong> 
+		argument with <strong>Search</strong>.</p>
+		<table class="compare">
+			<tr>
+				<th>Up to V6R2014</th>
+				<th>Starting with <strong>3D</strong>EXPERIENCE R2014x</th>
+			</tr>
+			<tr>
+				<td>
+				<pre class="code"><span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> <strong>PLMSearchService</strong>
+<span class="keyword">Set</span> oSearchService = CATIA.GetSessionService(&quot;<strong>PLMSearch</strong>&quot;)</pre>
+				</td>
+				<td>
+				<pre class="code"><span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> <strong>SearchService</strong>
+<span class="keyword">Set</span> oSearchService = CATIA.GetSessionService(&quot;<strong>Search</strong>&quot;)</pre>
+				</td>
+			</tr>
+		</table>
+		<p class="task">The <strong>PLMSearchService</strong> object is replaced 
+		with the <strong>SearchService</strong> object, still retrieved from the
+		<strong>Application</strong> object using its <strong>GetSessionService</strong> 
+		method with <strong>Search</strong> as argument instead of <strong>PLMSearch</strong>.</p>
+	</li>
+	<li>
+		<p class="task">Retrieving the object holding the query.</p>
+		<p class="task">Replace the <strong>PLMSearches</strong> and <strong>PLMSearch</strong> 
+		objects with the single object <strong>DatabaseSearch</strong>.</p>
+		<table class="compare">
+			<tr>
+				<th>Up to V6R2014</th>
+				<th>Starting with <strong>3D</strong>EXPERIENCE R2014x</th>
+			</tr>
+			<tr>
+				<td>
+				<pre class="code"><span class="keyword">Dim</span> <strong>oSearches</strong> <span class="keyword">As</span> <strong>PLMSearches</strong>
+<span class="keyword">Set</span> <strong>oSearches</strong> = oSearchService.<strong>Searches</strong>
+
+<span class="keyword">Dim</span> <strong>oSearch</strong> <span class="keyword">As</span> <strong>PLMSearch</strong>
+<span class="keyword">Set</span> <strong>oSearch</strong> = oSearches.<strong>Add</strong></pre>
+				</td>
+				<td>
+				<pre class="code"><span class="keyword">Dim</span> <strong>oDBSearch</strong> <span class="keyword">As</span> <strong>DatabaseSearch</strong> 
+<span class="keyword">Set</span> <strong>oDBSearch</strong> = oSearchService.<strong>DatabaseSearch</strong></pre>
+				</td>
+			</tr>
+		</table>
+		<p class="task">Rather than retrieving a <strong>PLMSearches</strong> collection 
+		object from the <strong>PLMSearchService</strong> object and adding a
+		<strong>PLMSearch</strong> object to the collection, a single <strong>DatabaseSearch</strong> 
+		object is aggregated to the <strong>SearchServices</strong> object, and 
+		returned thanks to the <strong>DatabaseSearch</strong> property.</p>
+	</li>
+	<li>
+		<p class="task">Building the query.</p>
+		<p class="task">Replace the <strong>PLMSearch</strong> object used by the 
+		query construction with the <strong>DatabaseSearch</strong> object, as well 
+		as the property and method names.</p>
+		<table class="compare">
+			<tr>
+				<th>Up to V6R2014</th>
+				<th>Starting with <strong>3D</strong>EXPERIENCE R2014x (for example using R2017x equivalent type)</th>
+			</tr>
+			<tr>
+				<td>
+				<pre class="code"><strong>oSearch</strong>.<strong>Type</strong> = &quot;PLMProductDS&quot;
+<strong>oSearch</strong>.<strong>AddAttributeCriteria</strong> &quot;PLM_ExternalID&quot;, &quot;Ship*&quot;</pre>
+				</td>
+				<td>
+				<pre class="code"><strong>oDBSearch</strong>.<strong>BaseType</strong> = &quot;VPMReference&quot;
+<strong>oDBSearch</strong>.<strong>AddEasyCriteria</strong> &quot;PLM_ExternalID&quot;, &quot;Ship*&quot;</pre>
+				</td>
+			</tr>
+		</table>
+		<p class="task">The PLM Object type is declared using the <strong>BaseType</strong> 
+		property instead of Type, and a simple criteria to query for PLM object 
+		having a given value for a PLM attribute is set using the <strong>AddEasyCriteria</strong> 
+		method instead of <strong>AddAttributeCriteria</strong>. Note that other 
+		methods exist to create more complex criteria that with the <strong>PLMSearch</strong> 
+		object, such as <strong>AddExtendedCriteria</strong> or <strong>AddExtendedRangeCriteria</strong>.</p>
+	</li>
+	<li>
+		<p class="task">Launching the query.</p>
+		<p class="task">Replace the <strong>PLMSearch</strong> object launching 
+		the search with the <strong>SearchService</strong> object</p>
+		<table class="compare">
+			<tr>
+				<th>Up to V6R2014</th>
+				<th>Starting with <strong>3D</strong>EXPERIENCE R2014x</th>
+			</tr>
+			<tr>
+				<td>
+				<pre class="code"><strong>oSearch</strong>.Search</pre>
+				</td>
+				<td>
+				<pre class="code"><strong>oSearchService</strong>.Search</pre>
+				</td>
+			</tr>
+		</table>
+		<p class="task">The search query is still launched using the <strong>Search</strong> 
+		method.</p>
+	</li>
+	<li>
+		<p class="task">Retrieving the results.</p>
+		<p class="task">Replace the <strong>PLMSearch</strong> object used to retrieve 
+		the search result with the <strong>DatabaseSearch</strong> object, as well 
+		as the property name.</p>
+		<table class="compare">
+			<tr>
+				<th>Up to V6R2014</th>
+				<th>Starting with <strong>3D</strong>EXPERIENCE R2014x</th>
+			</tr>
+			<tr>
+				<td>
+				<pre class="code"><span class="keyword">Dim</span> cPLMEntities <span class="keyword">As</span> PLMEntities
+<span class="keyword">Set</span> cPLMEntities = <strong>oSearch.EditedContent</strong></pre>
+				</td>
+				<td>
+				<pre class="code"><span class="keyword">Dim</span> cPLMEntities <span class="keyword">As</span> PLMEntities
+<span class="keyword">Set</span> cPLMEntities = <strong>oDBSearch.Results</strong></pre>
+				</td>
+			</tr>
+		</table>
+		<p class="task">The results are retrieved from the <strong>DatabaseSearch</strong> 
+		object using the <strong>Results</strong> properties instead of the service 
+		object, still as a <strong>PLMEntities</strong> collection object.</p>
+	</li>
+</ol>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="InShort"></a>In Short</h2>
+<p>This task shows you how to replace in your macros the pre-<strong>3D</strong>EXPERIENCE R2014x <strong>PLMSearchService</strong>,
+<strong>PLMSearches</strong>, and <strong>PLMSearch</strong> objects with the
+<strong>SearchService</strong> and <strong>DatabaseSearch</strong> objects.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

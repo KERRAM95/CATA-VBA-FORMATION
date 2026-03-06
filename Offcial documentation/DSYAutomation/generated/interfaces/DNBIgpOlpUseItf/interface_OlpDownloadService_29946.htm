@@ -1,0 +1,271 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpDownloadService (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpDownloadService"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpDownloadService<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpDownloadService_29946','OlpDownloadService','0');</script>
+<section id='maindesc'>
+<b><i> Service to download tasks and convert them into native robot programs.</i></b><br>
+<BR>
+ <dl>
+ <dt><b>Example: (VB.NET)</b>
+ <pre>
+ 
+ Dim DownloadService As OlpDownloadService = CATIA.Application.GetSessionService("OlpDownloadService")
+ 
+ Dim CellRoot As VPMRootOccurrence = Nothing
+ Dim ProdService As PLMProductService = CATIA.ActiveEditor.GetService("PLMProductService")
+ CellRoot = ProdService.RootOccurrence
+ Dim Robots As List(Of VPMOccurrence) = New List(Of VPMOccurrence)
+ For i As Integer = 1 To parent.Occurrences.Count
+     Dim occ As VPMOccurrence = CellRoot.Occurrences.Item(i)
+     Try
+         Dim resource As RscMotionController = occ
+         If resource.GetMotionControllerType(resource) = DELRscMotionControllerType.DELRscMotionControllerType_Arm Then
+             Robots.Add(occ)
+			  Continue For
+		  End If
+     Catch ex As Exception
+ 
+     End Try
+ Next
+ 
+ For Each Robot As VPMOccurrence In Robots
+     Dim robottaskmanager As TaskManager = Robot
+     DownloadService.Resource = Robot
+
+	  'Set default translator for robot found. This step is not required if using default translator, as the default translator will be set during downloader if no other translator is set.
+	  DownloadService.Translator = "" 
+     DownloadService.Download(robottaskmanager.TaskList)
+     DownloadService.SaveToFolder("E:\tmp\" & CellRoot.Name & "\" & Robot.Name)
+ Next
+ 
+ 
+ </pre>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#DownloadCallTasks"><b>DownloadCallTasks</b></a>
+</td><td  id='tdright'>   Get/Set the option to download called tasks during download.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Resource"><b>Resource</b></a>
+</td><td  id='tdright'>  Get/Set the resource.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TemplateDir"><b>TemplateDir</b></a>
+</td><td  id='tdright'>  Get/Set the template directory.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Translator"><b>Translator</b></a>
+</td><td  id='tdright'>  Get/Set the translator.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TranslatorOption"><b>TranslatorOption</b></a>
+</td><td  id='tdright'>  Get/Set the translator option.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UseDesignPosition"><b>UseDesignPosition</b></a>
+</td><td  id='tdright'>   Get/Set the option to use design position during download.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#Download"><b>Download</b></a>
+</td><td  id='tdright'>  Translate the tasks into native robot programs.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ExportMessagesToFile"><b>ExportMessagesToFile</b></a>
+</td><td  id='tdright'>  Create a file with all the translation messagse.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Finalize"><b>Finalize</b></a>
+</td><td  id='tdright'>  Clean up the translation service's state manager.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SaveToDatabase"><b>SaveToDatabase</b></a>
+</td><td  id='tdright'>  Save the programs to a document attached to a resource in the database.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SaveToFolder"><b>SaveToFolder</b></a>
+</td><td  id='tdright'>  Save the programs to a folder on your computer.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="DownloadCallTasks"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DownloadCallTasks</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+  Get/Set the option to download called tasks during download.<BR>
+
+ If true, then any tasks called by a downloaded task will be downloaded as part of that task.
+
+ Default value is false.
+
+ This must be called before 
+<script type="text/javascript"> activateLinkAnchor('','Download','Download') </script>.
+</dd>
+<a id="Resource"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Resource</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the resource.<BR>
+
+ This is the occurrence of the robot or tool that is being downloaded.  If the robot system 
+ contains multiple devices, any of the resources can be used. this is required for download.
+</dd>
+<a id="TemplateDir"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TemplateDir</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the template directory.<BR>
+
+ This is the directory where existing robot programs from this robot's controller  
+ are stored.  If set, they are used to generate the new programs in the same formatting
+ and using the system variables from the robot backup to adjust the download.
+ If this is not set prior to 
+<script type="text/javascript"> activateLinkAnchor('','Download','Download') </script>, templates will not be used during download.
+</dd>
+<a id="Translator"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Translator</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the translator.<BR>
+
+ This is the title of the translator (e.g. "DELMIA Fanuc Translator").
+ The database will be searched for a matching translator.  If you do not specify 
+ a translator, the default one from the preferences will be used.
+</dd>
+<a id="TranslatorOption"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TranslatorOption</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the translator option.<BR>
+
+ This is upload option.  If not set, the default one from the preferences will be used.
+</dd>
+<a id="UseDesignPosition"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UseDesignPosition</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpInitialPositionMode','DELOlpInitialPositionMode')</script> </span></dt>
+  <dd class='ddmethod'>
+  Get/Set the option to use design position during download.<BR>
+
+ Can be set to either DELOlpDesignPosition or DELOlpCurrentPosition to control behavior of points attached to moving objects.
+
+ Default value is DELOlpCurrentPosition.
+
+ This must be called after 
+<script type="text/javascript"> activateLinkAnchor('','Download','Download') </script> but before saving.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="Download"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Download</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iTaskList</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Translate the tasks into native robot programs.<BR>
+ The 
+<script type="text/javascript"> activateLinkAnchor('','Resource','Resource') </script> must be set before calling this method. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTaskList</span></dt>
+   <dd> List of DELMIAResourceTask objects.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="ExportMessagesToFile"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ExportMessagesToFile</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFile</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Create a file with all the translation messagse.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFile</span></dt>
+   <dd>   The full path to the file to create.  If the file extension is xls, xlsx or xlsm an Excel file will be created
+   otherwise a text file will be created.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="Finalize"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Finalize</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Clean up the translation service's state manager.<BR>
+ This MUST be run after all translation service functions are complete.
+</dd>
+<a id="SaveToDatabase"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SaveToDatabase</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iSaveResource</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Save the programs to a document attached to a resource in the database.
+ 
+<script type="text/javascript"> activateLinkAnchor('','Download','Download') </script> must be called before calling this method. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSaveResource</span></dt>
+   <dd> The resource occurrence on which to save the documents.  The documents
+ will be saved on the resource's reference
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SaveToFolder"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SaveToFolder</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iSaveDir</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Save the programs to a folder on your computer.
+ 
+<script type="text/javascript"> activateLinkAnchor('','Download','Download') </script> must be called before calling this method. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSaveDir</span></dt>
+   <dd> The full path to the directory to save the files.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

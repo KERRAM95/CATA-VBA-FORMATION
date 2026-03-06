@@ -1,0 +1,161 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="topictype" content="Uc" />
+    <meta name="devlang" content="idl" />
+    <meta name="devlang" content="idl" />
+    <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+    <title>Get field and history variables specified in the output request</title>
+    <style type="text/css">
+        .padded td, .padded th {
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+    <table class="table1">
+        <tr>
+            <td class="DocHeader1">
+                <h1>Retrieving the field and history variables</h1>
+            </td>
+        </tr>
+        <tr>
+            <td class="DocHeader3" style="width: 1807px">
+                <table class="DocHeaderIntro">
+                    <tr>
+                        <td class="Intro1">
+                            <p class="header">This article explains how to get the field and history variable names specified in the output request.
+                            It also shows how to retrieve the region and sub regions avaialble for the history output</p>
+                            <hr class="header" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span class="run-in">Where to find the macro: <a href="CAAScdFeaResultsGetOutputVariablesSourcePython.htm">CAAScdFeaResultsGetOutputVariablesSourcePython.htm</a></span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="indented">
+        <tr>
+            <td>
+                <p>This use case can be divided in 5 steps:</p>
+                <ol>
+                    <li><a href="#Step1">Opens the document and retrieves the results analysis case</a></li>
+                    <li><a href="#Step2">Retrieves the step</a></li>
+                    <li><a href="#Step3">Retrieves the field variables from step</a></li>
+                    <li><a href="#Step4">Retrieves the history variables from step</a></li>
+                    <li><a href="#Step5">Retrieves the region and sub region for history variables</a></li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+    <table class="table1">
+
+        <tr>
+            <td>
+                <ol class="task">
+                    <li>
+                        <p><strong><a name="Step1"></a>Opens the document and retrieves the results analysis case</strong></p>
+                        <p>
+                            As a first step, the following code will show how to open the simulation document and retrieve the
+                            results analysis case.You can use  <code><div class=vb_sample_data>VB_HistoryPlot.SMASim</div></code>
+                            file supplied in the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaResults\samples\</code>
+                            where <code>InstallRootFolder</code> is the folder where the
+                            API CD-ROM is installed.
+                        </p>
+                        <p>On opening the model,Select yes option from the dialogue to activate the results. </p>
+                        <a href="CAAScdFeaResultsOpenDocumentPython.htm">Retrieve the analysis case</a>
+                    </li>
+                    <ul></ul>
+
+                    <li>
+
+                        <p><strong><a name="Step2"></a>Retrieves the step</strong></p>
+                        <p>This step shows how to get the step from the case.</p>
+                        <pre class="code">...
+
+oResultsSteps = oResultsAnalysisCase.ResultsSteps
+oResultsStep = oResultsSteps.Item(1)
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step3"></a>Retrieves the field variables from step</strong></p>
+                        <p>This step shows how to get the field variables from the step. The list of avialable field names
+                        will be returned. These variable can then be used to create Plots, Sensors etc.</p>
+                        <pre class="code">...
+
+idFrame = 0
+ieSource = ENUM.SimFieldSourceResults
+
+
+The available options for SimResultsSource are:
+<span class="comment">SimFieldSourceResults,
+SimFieldSourceDiagnostic,
+SimFieldSourcePreLoad,
+SimFieldSourceHistory
+</span>
+
+oFieldVariables = oResultsStep.GetAvailableFields (idFrame, ieSource, ())
+...
+</pre>
+                    </li>
+
+                    <li>
+
+                        <p><strong><a name="Step4"></a>Retrieves the history variables from step</strong></p>
+                        <p>
+                            This step shows how to get the history variables from the step. The list of avialable history names
+                            will be returned. These variable can then be used to create history plots, history sensors.
+                        </p>
+                        <pre class="code">...
+odFrame = 0
+ieSource = ENUM.SimFieldSourceHistory
+oHistoryVariables = oResultsStep.GetAvailableFields (idFrame, ieSource, ())
+...
+</pre>
+
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step5"></a>Retrieves the region and sub region for history variables</strong></p>
+                        <p>
+                            This step shows how to get the history region and sub region informationfor the given variable.
+                            These can be used to specify support while creating the history plot.
+                        </p>
+                        <pre class="code">...
+iVariableString = "U"
+
+oRegionNames, oSubRegionIndex, oSubRegionNames = oResultsStep.GetHistoryRegionsAndSubRegions (iVariableString, (), (), ())
+...
+</pre>
+                    </li>
+
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

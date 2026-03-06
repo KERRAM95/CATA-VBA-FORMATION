@@ -1,0 +1,444 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpUploadService (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpUploadService"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpUploadService<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpUploadService_26472','OlpUploadService','0');</script>
+<section id='maindesc'>
+<b><i> Service to upload robot programs and convert them into 3DExperience Tasks.</i></b><br>
+<BR>
+ <dl>
+ <dt><b>Example: (VB.NET)</b>
+ <pre>
+ Dim Uploader As OlpUploadService = CATIA.Application.GetSessionService("OlpUploadService")
+ Dim FilesToUpload as Object() = { C:\ToUpload\File1, C:\ToUpload\File2 }
+ Dim Robot as Object = RobotSelection 'getting this selection is outside the scope of this example
+
+ Uploader.SetResource(Robot)
+ Uploader.SetFiles(FilesToUpload)
+ Uploader.Translator = "" 'Setting this to an empty string will use the default translator, set in your preferences. If you want to use a specific other translator, set that name instead
+ Uploader.Parse()
+ Uploader.Upload()
+ Uploader.PostProcess()
+ Uploader.Finalize()
+ </pre>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#AllowDeviceParamUpdate"><b>AllowDeviceParamUpdate</b></a>
+</td><td  id='tdright'>  Get/Set the option to allow device parameters to be updated.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateCartesianHomes"><b>CreateCartesianHomes</b></a>
+</td><td  id='tdright'>  Get/Set the option to create home positions with the Cartesian position set.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateHomesForJointTargets"><b>CreateHomesForJointTargets</b></a>
+</td><td  id='tdright'>  Get/Set the option to create home positions for all joint targets.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DeleteReferencedTagsAndHomes"><b>DeleteReferencedTagsAndHomes</b></a>
+</td><td  id='tdright'>  Get/Set the option to delete tags and homes in replaced tasks.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DeleteUnusedProfiles"><b>DeleteUnusedProfiles</b></a>
+</td><td  id='tdright'>  Get/Set the option to delete unused profiles.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Files"><b>Files</b></a>
+</td><td  id='tdright'>  Get/Set the files to be translated.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ReplaceTasks"><b>ReplaceTasks</b></a>
+</td><td  id='tdright'>  Get/Set the option to replace the tasks.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Resource"><b>Resource</b></a>
+</td><td  id='tdright'>  Get/Set the resource.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TasksToUpload"><b>TasksToUpload</b></a>
+</td><td  id='tdright'>  Get/Set the tasks to be upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Translator"><b>Translator</b></a>
+</td><td  id='tdright'>  Get/Set the translator.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TranslatorOption"><b>TranslatorOption</b></a>
+</td><td  id='tdright'>  Get/Set the translator option.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UploadObjectFrameCoords"><b>UploadObjectFrameCoords</b></a>
+</td><td  id='tdright'>  Get/Set the option to use uploaded object frame coordinates.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UseDesignPosition"><b>UseDesignPosition</b></a>
+</td><td  id='tdright'>  Get/Set the option to use design position during download.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#ExportMessagesToFile"><b>ExportMessagesToFile</b></a>
+</td><td  id='tdright'>  Create a file with all the translation messagse.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Finalize"><b>Finalize</b></a>
+</td><td  id='tdright'>  Clean up the translation service's state manager.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetObjectFrames"><b>GetObjectFrames</b></a>
+</td><td  id='tdright'>  Obtain the object frames associated with the upload.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Parse"><b>Parse</b></a>
+</td><td  id='tdright'>  Parse the files to be uploaded in order to identify the tasks that will be
+ created and other information about the controller setup.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PostProcess"><b>PostProcess</b></a>
+</td><td  id='tdright'>  Finalize creation of the tasks, tags, profiles and call MacroSetConfigs.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPartForObjectFrame"><b>SetPartForObjectFrame</b></a>
+</td><td  id='tdright'>  Set a part to attach an object frame to.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPartForObjectFrameWithType"><b>SetPartForObjectFrameWithType</b></a>
+</td><td  id='tdright'>  Set a part to attach an object frame to.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Upload"><b>Upload</b></a>
+</td><td  id='tdright'>  Translate the files
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="AllowDeviceParamUpdate"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>AllowDeviceParamUpdate</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the option to allow device parameters to be updated.<BR>
+
+ If false then any updates to the properties of the device that would normally be modified by the translator
+ will be ignored.  This includes Hard Limits, Soft Limits, Max Speeds and Accelerations, Singularity Tolerance,
+ Heart Beat, Controller Type, Acceleration Mode, and Turn Mode.<BR>
+
+ Default value is true.
+
+ This must be called before 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>.
+</dd>
+<a id="CreateCartesianHomes"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CreateCartesianHomes</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the option to create home positions with the Cartesian position set.<BR>
+
+ If true, all created and modified home positions will be created as Cartesian homes
+ which preserves the Cartesian position instead of the joint values when replacing a resource.<BR>
+
+ Default value is false.
+
+ This must be called before 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>.
+</dd>
+<a id="CreateHomesForJointTargets"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CreateHomesForJointTargets</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the option to create home positions for all joint targets.<BR>
+
+ If true, home positions for all joint target motions will be created instead of just setting the joint values on the motion directly.<BR>
+
+ Default value is false.
+
+ This must be called before 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>.
+</dd>
+<a id="DeleteReferencedTagsAndHomes"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DeleteReferencedTagsAndHomes</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the option to delete tags and homes in replaced tasks.<BR>
+
+ If true, then tags and homes used only in the tasks that are replaced will be deleted.  This
+ only has an effect if 
+<script type="text/javascript"> activateLinkAnchor('','ReplaceTasks','ReplaceTasks') </script> is set to true.	<BR>
+ Default value is false.
+
+ This must be called before 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>.
+</dd>
+<a id="DeleteUnusedProfiles"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DeleteUnusedProfiles</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the option to delete unused profiles.<BR>
+
+ If true, then all profiles which are not used will be deleted at the end of the upload.
+ Any profiles defined on the robot reference will be kept.<BR>
+
+ Default value is false.
+
+ This must be called before 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>.
+</dd>
+<a id="Files"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Files</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the files to be translated.<BR>
+
+ Each entry is a string that is a full path to a file to be uploaded. Must be called before Parse.
+</dd>
+<a id="ReplaceTasks"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ReplaceTasks</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the option to replace the tasks.<BR>
+
+ If true existing tasks with the same name as the uploaded tasks will be overwritten.  <BR>
+
+ Default value is false.
+
+ This must be called before 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>.
+</dd>
+<a id="Resource"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Resource</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the resource.<BR>
+
+ This is the occurrence of the robot or tool that is being uploaded.  If the robot system
+ contains multiple devices, any of the resources can be used.
+</dd>
+<a id="TasksToUpload"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TasksToUpload</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the tasks to be upload.<BR>
+
+ This can be used to limit the tasks uploaded in cases where you do not want to upload
+ all tasks contained in the Parsed files.  This is primarially used if a file contains
+ multiple tasks.  <BR>
+
+ You can get the list of all tasks contained in the files and then set back a subset of those
+ tasks as the ones to be created.  If you do nothing, all tasks will be created.<BR>
+
+ Each item in the list is the name of a task as a string.<BR>
+
+ If called, this must be called after 
+<script type="text/javascript"> activateLinkAnchor('','Parse','Parse') </script> but before 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>.
+</dd>
+<a id="Translator"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Translator</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the translator.<BR>
+
+ This is the title of the translator (e.g. "DELMIA Fanuc Translator").
+ The database will be searched for a matching translator.  If you do not specify
+ a translator, the default one from the preferences will be used.
+</dd>
+<a id="TranslatorOption"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TranslatorOption</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the translator option.<BR>
+
+ This is upload option.  If not set, the default one from the preferences will be used.
+</dd>
+<a id="UploadObjectFrameCoords"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UploadObjectFrameCoords</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the option to use uploaded object frame coordinates.<BR>
+
+ If false, the object frame coordinates imported from the robot program will be ignored.  In most cases you should leave this option set to true.
+ Only set to false if you have manually positioned the object frames in the correct locations. 
+ You can perform a legacy part coordinate upload by creating an object frame, attaching it to the part, and setting the offset to zero relative to the part.<BR>
+
+ Default value is true.
+
+ This must be called after 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>, but before 
+<script type="text/javascript"> activateLinkAnchor('','PostProcess','PostProcess') </script>.
+</dd>
+<a id="UseDesignPosition"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UseDesignPosition</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpInitialPositionMode','DELOlpInitialPositionMode')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the option to use design position during download.<BR>
+
+ Can be set to either DELOlpDesignPosition or DELOlpCurrentPosition to control behavior of points attached to moving objects.
+
+ Default value is DELOlpCurrentPosition.
+
+ This must be called after 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script> but before 
+<script type="text/javascript"> activateLinkAnchor('','PostProcess','PostProcess') </script>.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="ExportMessagesToFile"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ExportMessagesToFile</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFile</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Create a file with all the translation messagse.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFile</span></dt>
+   <dd>   The full path to the file to create.  If the file extension is xls, xlsx or xlsm an Excel file will be created
+   otherwise a text file will be created.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="Finalize"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Finalize</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Clean up the translation service's state manager.<BR>
+ This MUST be run after all translation service functions are complete.
+</dd>
+<a id="GetObjectFrames"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetObjectFrames</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Obtain the object frames associated with the upload.
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oFrameList</span></dt>
+   <dd>   The list of Object Frames associated with the upload. Each item in the list is an 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpObjectFrameProfile','','DELMIAOlpObjectFrameProfile') </script>.
+ This must be called after 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>, but before 
+<script type="text/javascript"> activateLinkAnchor('','PostProcess','PostProcess') </script>.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="Parse"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Parse</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Parse the files to be uploaded in order to identify the tasks that will be
+ created and other information about the controller setup. (application types, device types)
+ This is called before 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>.
+</dd>
+<a id="PostProcess"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>PostProcess</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Finalize creation of the tasks, tags, profiles and call MacroSetConfigs.
+ This must be called only after 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>
+</dd>
+<a id="SetPartForObjectFrame"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPartForObjectFrame</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpObjectFrameProfile','OlpObjectFrameProfile')</script> <span class='param'>iObjectProfile</span>,<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iFeature</span>,<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iPartOccurrence</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set a part to attach an object frame to.
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iObjectProfile</span></dt>
+   <dd>   The Object Frame to be attached.  Part will be attached for all usages of the object frame.
+
+ 
+ </ dd>
+    <dt><span class='paramitem'> iFeature</span></dt>
+   <dd>   The Referential Feature to which to attach the frame. This should be a tag, mount port, or other referential feature. This may be nothing if no referential feature is used.
+
+ 
+ </ dd>
+    <dt><span class='paramitem'> iPartOccurrence</span></dt>
+   <dd>   The part to which to attach the frame.
+
+ This must be called after 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>, but before 
+<script type="text/javascript"> activateLinkAnchor('','PostProcess','PostProcess') </script>.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPartForObjectFrameWithType"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPartForObjectFrameWithType</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpObjectFrameProfile','OlpObjectFrameProfile')</script> <span class='param'>iObjectProfile</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iAttachType</span>,<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iFeature</span>,<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iPartOccurrence</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set a part to attach an object frame to.
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iObjectProfile</span></dt>
+   <dd>   The Object Frame to be attached. 
+
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAttachType</span></dt>
+   <dd>   The type of motion attachment to consider.  Can be one of "Standard", "ConveyorTracking", "DeviceCoordinated", or "FixedTCP".
+   Only tag targets for motions of that type will be attached to the specified part.
+
+ 
+ </ dd>
+    <dt><span class='paramitem'> iFeature</span></dt>
+   <dd>   The Referential Feature to which to attach the frame. This should be a tag, mount port, or other referential feature. This may be nothing if no referential feature is used.
+
+ 
+ </ dd>
+    <dt><span class='paramitem'> iPartOccurrence</span></dt>
+   <dd>   The part to which to attach the frame.
+
+ This must be called after 
+<script type="text/javascript"> activateLinkAnchor('','Upload','Upload') </script>, but before 
+<script type="text/javascript"> activateLinkAnchor('','PostProcess','PostProcess') </script>.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="Upload"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Upload</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Translate the files
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

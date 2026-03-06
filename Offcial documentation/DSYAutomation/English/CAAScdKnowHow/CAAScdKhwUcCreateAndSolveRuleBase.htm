@@ -1,0 +1,347 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating Know-how Reuse RuleBase and Check</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating and Solving Know-how Reuse Rule Base</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates creating and solving a rule base.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA </li>
+							<li>In Tools-&gt;Options-&gt;Infrastructure-&gt;3D Shape Infrastructure 
+							-&gt; Display Tab select Parameters and Relations.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdKhwUcCreateAndSolveRuleBaseSource.htm">CAAScdKhwUcCreateAndSolveRuleBaseSource.htm</a></span></p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic1</em>&gt;</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic2</em>&gt;</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 10 steps:</p>
+		<ol>
+			<li><a href="#Step1">Creates a 3DShape with Holes </a></li>
+			<li><a href="#Step2">Retrieves the KnowledgeObjects Object from the 
+			Part </a></li>
+			<li><a href="#Step3">Creates a Set of Rule Base</a></li>
+			<li><a href="#Step4">Creates a Rule Base</a></li>
+			<li><a href="#Step5">Adds the Part Feature as the Root of Facts to the 
+			Rule Base</a></li>
+			<li><a href="#Step6">Creates Expert Checks for the Rule Base</a></li>
+			<li><a href="#Step7">Determines whether the Rule Base to Be Solved or 
+			Not </a></li>
+			<li><a href="#Step8">Solves the Rule Base if the Rule Base is to Be 
+			Solved</a></li>
+			<li><a href="#Step9">Highlights the Failing Items </a></li>
+			<li><a href="#Step10">Updates the Part Object</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<caption></caption>
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Creates a 3DShape with Holes</strong></p>
+			<pre class="code"><span class="keyword">...</span>
+    <span class="keyword">Dim</span> MyNewPart <span class="keyword">As</span> <strong>Part</strong>
+    <strong>Create3DShape</strong> MyNewPart
+...</pre>
+			<p>The <code>Create3DShape</code> sub routine creates a new 3DShape 
+			with geometry as shown in the following picture. This is a pad having 
+			four Holes of diameter 10, 15, 20 and 25 mm.</p>
+			<table>
+				<caption><a name="Fig1">Fig. 1 Displaying the 3DShape </a>
+				</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="3D Shape" src="CAAScdKhwUcCreateAndSolveRuleBase_InputData.jpg"/>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			
+			<p><code>MyNewPart</code> is the Part Object of the 3D 
+			Shape, the object aggregating all the objects making up the 3D shape.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves the KnowledgeObjects 
+			Object from the Part </strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oKnowledgeObjects <span class="keyword">As</span> <strong>KnowledgeObjects</strong>
+    <span class="keyword">Set</span> oKnowledgeObjects = MyNewPart.<strong>GetItem</strong>(&quot;KnowledgeObjects&quot;)
+...</pre>
+			<p>The <code>GetItem</code> method 
+			called against the Part object using the <code>KnowledgeObjects</code> arguments 
+			returns a <strong>KnowledgeObjects</strong> 
+			object. </p>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Creates a Set of Rule Base</strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oExpertRuleBasesSet <span class="keyword">As</span><strong> ExpertRuleBasesSet</strong>
+    <span class="keyword">Set</span> oExpertRuleBasesSet = MyNewPart.<strong>GetKnowledgeRootSet</strong>(True, 3)
+...</pre>
+			<p><a href="#Fig2">Fig. 2</a> shows result of above call. In this figure 
+			the RuleBases below the Relations is a set of rule base created by above 
+			call. In code, a set of rule base is an <strong>ExpertRuleBasesSet</strong> object. In context of a Part 
+			feature this set is always aggregated under a 
+			<strong>Relations</strong> object. So, the
+			<strong>Relations</strong> object is 
+			created automatically if it is not created earlier. To create an
+			<strong>ExpertRuleBasesSet</strong> 
+			object we use the <code>GetKnowledgeRootSet</code> method of the <strong>KnowledgeObjects</strong> 
+			object using TRUE as first argument. The second argument specifies type 
+			of the <code>KnowledgeSet</code> to create. 
+			Its value is 3 if type of the <code>KnowledgeSet</code> 
+			to create is an 
+			<strong>ExpertRuleBasesSet</strong> object.
+			</p>
+			<table>
+				<caption><a name="Fig2">Fig. 2 Displaying the Set of Rule Base under 
+				the Relations</a></caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Set of Rule Base under the Relations" src="CAAScdKhwUcCreateAndSolveRuleBase_RuleBasesSet.jpg"/>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p><a name="Step4"></a><strong>Creates a Rule Base</strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oExpertRuleBasesFactory <span class="keyword">As</span> <strong>ExpertRuleBasesFactory</strong>
+    <span class="keyword">Set</span> oExpertRuleBasesFactory = oExpertRuleBasesSet.<strong>Factory</strong>
+    <span class="keyword">Dim</span> oExpertRuleBase <span class="keyword">As</span> <strong>ExpertRuleBase</strong>
+    <span class="keyword">Set</span> oExpertRuleBase = oExpertRuleBasesFactory.<strong>CreateRuleBase</strong>(&quot;RuleBase.1&quot;)
+...</pre>
+			<p><a href="#Fig3">Fig. 3</a> shows result of above call. In this figure 
+			the RuleBase.1 is the the rule base created by above call. In code, 
+			a rule base is an 
+			<strong>ExpertRuleBase</strong>
+			object. This object is created from the factory of a rule base. 
+			In code, a factory is an 
+			<strong>ExpertRuleBasesFactory</strong> 
+			object. The factory is retrieved from an <strong>ExpertRuleBasesSet</strong> object and uses the
+			<code>CreateRuleBase</code> function 
+			to create an <strong>ExpertRuleBase</strong> 
+			object. The argument is name of the <strong>ExpertRuleBase</strong> object to be created. Same name appears in specification 
+			tree.</p>
+			<table>
+				<caption><a name="Fig3">Fig. 3 Displaying Rule Base under Set of 
+				Rule Base</a></caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Rule Base under Set of Rule Base" src="CAAScdKhwUcCreateAndSolveRuleBase_RuleBase.jpg"/>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p><a name="Step5"></a><strong>Adds the Part Feature as 
+			the Root of Facts to the Rule Base</strong></p>
+			<pre class="code">...
+    oRuleBase.<strong>AddRootOfFacts</strong> MyNewPart
+...</pre>
+			<p>In the Know-how Reuse terminology the 
+			<code>Fact</code> is the set of object provided as input 
+			to solver. This <code>Fact</code> 
+			is found by solver through a <code>Root</code>
+			object. While interactively the <code>
+			Root</code> is associated with solver automatically, 
+			in code this is done with the <code>AddRootOfFacts</code>
+			function of the <code>ExpertRuleBase</code> 
+			object. </p>
+			</li>
+			<li>
+			<p><a name="Step6"></a><strong>Creates Expert Checks for 
+			the Rule Base</strong></p>
+			<p>An expert checks is related to the rule base via a rule 
+			sets. So, in first step rule sets is retrieved from the rule base created 
+			in previous step. Then, in second step the expert checks is created 
+			from the rule sets.</p>
+			<ol class="task1">
+				<li>
+				<p>Retrieves the Rule Sets from the Rule Base</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oExpertRuleSet <span class="keyword">As</span> <strong>ExpertRuleSet</strong>
+    <span class="keyword">Set</span> oExpertRuleSet = oExpertRuleBase.<strong>RuleSet</strong>
+...</pre>
+				<p>A rule base is linked with a rule sets. In code, 
+				a rule sets is <strong>ExpertRuleSet</strong> 
+				object which is retrieved using the <code>RuleSet</code> property of the
+				<strong>ExpertRuleBase</strong> 
+				object.</p>
+				</li>
+				<li>
+				<p>Creates the Expert Checks</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oExpertCheck <span class="keyword">As</span> <strong>ExpertCheck</strong>
+<span class="keyword">    Set</span> oExpertCheck = oExpertRuleSet.<strong>CreateCheck</strong>(&quot;HDiaCheck&quot;, &quot;Hole:<strong>Hole</strong>&quot;, &quot;Hole.Diameter&gt;12mm&quot;, &quot;RuleSet.1&quot;)
+...</pre>
+				<p>In code, the expert checks is an
+				<strong>ExpertCheck</strong> object. This 
+				object is created from the <code>CreateCheck</code> method of the <strong>ExpertRuleSet</strong> object.</p>
+			<p><a href="#Fig4">Fig. 4</a> shows result of above calls. First argument 
+			in the <code>CreateCheck</code> method 
+			is name of the <strong>ExpertCheck</strong> object to be created. Same name appears in specification tree. 
+			Second argument assigns a variable name Hole to 
+			<strong>Hole</strong> object which are part of representation created 
+			in <a href="#Step1">Step 1 </a>. When this check is solved, the solver 
+			replace Hole by actual <strong>Hole</strong> objects. Third argument defines the check to be made on object 
+			specified in argument 2. Here the expert checks check if diameter of 
+			holes are greater than 12 mm.</p>
+			<table>
+				<caption><a name="Fig4">Fig. 4 Displaying the Rule Set and the Check 
+				under the Rule Base</a></caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Rule Set and the Check under the Rule Base" src="CAAScdKhwUcCreateAndSolveRuleBase_RuleSet.jpg"/>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			</ol>
+			</li>
+			<li>
+			<p><a name="Step7"></a><strong>Determines whether the Rule 
+			Base to Be Solved or Not</strong></p>
+			<pre class="code">...
+    <span class="keyword">If</span> (oExpertRuleBase.<strong>Fingerprint</strong> = 0)
+...</pre>
+			<p>The <code>Fingerprint</code> 
+			value determines if an <code>ExpertRuleBase</code>
+			is already solved. The <code>Fingerprint</code>
+			value is 0 if an <code>ExpertRuleBase</code>
+			is unsolved and it is 1 if it is already solved.</p>
+			</li>
+			<li>
+			<p><a name="Step8"></a><strong>Solves the Rule Base if 
+			the Rule Base is to Be Solved</strong></p>
+			<pre class="code">...
+    oExpertRuleBase.<strong>Deduce</strong>
+...</pre>
+			<p>The <code>Deduce</code> method 
+			solves the <code>ExpertRuleBase</code>.</p>
+			</li>
+			<li>
+			<p><a name="Step9"></a><strong>Highlights the Failing Items</strong></p>
+			<pre class="code">...
+    oExpertCheck.<strong>Highlight</strong>
+...</pre>
+			<p>The <code>Highlight</code> method of the
+			<strong>ExpertCheck</strong> object highlights the failed items. 
+			Here Hole having diameter less than 12mm is highlighted as shown in
+			<a href="#Fig5">Fig. 5</a>. Failed items get highlighted in geometry 
+			area as well as in specification tree. Note that expert checks as defined 
+			in third argument of the <code>CreateCheck</code> method in
+			<a href="#Step6">step 6 </a>is to check if diameter of holes are greater 
+			than 12 mm.</p>
+			<table>
+				<caption><a name="Fig5">Fig. 5 Displaying Highlighted Items for 
+				which Check Failed</a></caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Highlighted Items for which Check Failed" src="CAAScdKhwUcCreateAndSolveRuleBase_RuleBaseSolved.jpg"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p><a name="Step10"></a><strong>Updates the Part Object</strong></p>
+			<pre class="code">...
+    MyNewPart.<strong>Update</strong>
+...</pre>
+			<p>Updates the Part Object, <code>MyNewPart</code> , result 
+			with respect to its specifications </p>
+			</li>
+			
+			
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+			<script type="text/javascript">insertLinkToTop()</script>
+			<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+			<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>PLMOpenService Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>PLMOpenService Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavunused">Properties</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMSessionBuilderIDLItf', 'interface', 'PLMOpenService', 'MethodIndex'); return false;">
+		Methods</a></td>
+	</tr>
+</tbody>
+</table>
+<table>
+	<tbody>
+	<tr>
+		<td class="auto">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Service');return false;"><img src="../CAAScdImages/Service.png" alt="Service Abstract Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'PLMSessionBuilderIDLItf', 'interface', 'PLMOpenService');return false;"><img src="../CAAScdImages/PLMOpenService.png" alt="PLMOpenService Object" width="252" height="22"/></a><br />
+		</td>
+	</tr>
+</tbody>
+</table>
+
+<p>Represents a service to open PLM objects.</p>
+<p>The <strong>PLMOpenService</strong> object lets you:</p>
+<ul>
+	<li>Open a PLM object in session.</li>
+	<li>Retrieve the <strong>Editor</strong> object managing this PLM object.</li>
+</ul>
+<h2>Retrieving the PLMOpenService Object</h2>
+<p>Use the <strong>GetSessionService</strong> of the <strong>Application</strong> 
+object to return a <strong>PLMOpenService</strong> object.</p>
+<pre class="code"><span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+<span class="keyword">Set</span> oPLMOpenService = CATIA.<strong>GetSessionService</strong>(&quot;<strong>PLMOpenService</strong>&quot;)</pre>
+<p>Refer to the <a href="../CAAScdInfInfrastructure/CAAInfObjService.htm">Service Object</a>.</p>
+<h2>Using the PLMOpenService Object</h2>
+<p>Use the <strong>PLMOPen</strong> sub to open a PLM object, for example, using 
+a <strong>PLMEntity</strong> object obtained from the Search Results using the 
+Results property of the <strong>DatabaseSearch</strong> object. See the <a href="CAAScdSrvObjDatabaseSearch.htm">DatabaseSearch Object</a>.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> cPLMEntities <span class="keyword">As</span> PLMEntities 
+<span class="keyword">Set</span> cPLMEntities = oDBSearch.<strong>Results</strong>
+...
+<span class="keyword">Dim</span> oPLMEntity <span class="keyword">As</span> PLMEntity
+<span class="keyword">Set</span> oPLMEntity = cPLMEntities.Item(1)
+
+<span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor
+oPLMOpenService.<strong>PLMOpen</strong> oPLMEntity, oEditor
+
+<span class="keyword">Dim</span> oRootOcc <span class="keyword">As</span> VPMRootOccurrence
+<span class="keyword">Set</span> oRootOcc = oEditor.<strong>ActiveObject</strong>
+
+<span class="keyword">Dim</span> oRootProduct <span class="keyword">As</span> VPMReference
+<span class="keyword">Set</span> oRootProduct = oRootOcc.<strong>PLMEntity</strong>
+...</pre>
+<p>This example retrieves the Search Results, supposed to be the results of a 
+search for <strong>VPMReference</strong> objects, in a <strong>PLMEntities</strong> 
+collection object.</p>
+<p>The first item of the collection is opened using the <strong>PLMOpen</strong> 
+sub of the <strong>PLMOpenService</strong> object and retrieved as a <strong>
+VPMRootOccurrence</strong> object of the occurrence model thanks to the <strong>
+ActiveObject</strong> property of the <strong>Editor</strong> object.</p>
+<p>To handle it as a <strong>VPMReference</strong> object of the instance 
+reference model, use the <strong>PLMEntity</strong> property of the <strong>
+VPMRootOccurrence</strong> object.</p>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

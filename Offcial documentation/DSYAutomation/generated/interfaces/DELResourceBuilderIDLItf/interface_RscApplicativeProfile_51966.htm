@@ -1,0 +1,181 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELResourceBuilderIDLItf RscApplicativeProfile (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELResourceBuilderIDLItf.htm" href="../DELResourceBuilderIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELResourceBuilderIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RscApplicativeProfile"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RscApplicativeProfile<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RscApplicativeProfile_51966','RscApplicativeProfile','0');</script>
+<section id='maindesc'>
+<b><i> Interface to manage Applicative Profiles.</i></b><br>
+
+
+ <strong>Role</strong>:
+  This interface provides methods to retrieve information related to Applicative Profiles.
+ <dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example code shows how to retrieve an applicative profile interface.<br>
+ The examples here are written in Visual Studio Tools for Applications (VSTA) VB.NET
+ <pre>
+ ' Select an applicative profile
+ Dim selector As INFITF.Selection = CATIA.ActiveEditor.Selection
+ Dim type(0) As Object
+ type(0) = "RscApplicativeProfile"
+ selector.SelectElement2(type, "Select AP", False)
+ Dim applicativeProfile As DELResourceBuilderIDLTypeLib.RscApplicativeProfile = selector.Item(1).Value
+
+ ' Display the name of the profile
+ MsgBox(" Name of selected Applicative Profile is " & applicativeProfile.Name)
+ </pre>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Attributes"><b>Attributes</b></a>
+</td><td  id='tdright'>  Retrieves the attributes for this profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IsCurrent"><b>IsCurrent</b></a>
+</td><td  id='tdright'>  Retrieves whether this profile is the current profile or not.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IsUserDefined"><b>IsUserDefined</b></a>
+</td><td  id='tdright'>  Retrieves whether this profile is user defined or not.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UserParams"><b>UserParams</b></a>
+</td><td  id='tdright'>  Retrieves the user defined parameters for this profile.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Attributes"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Attributes</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAParameters','CATIAParameters')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Retrieves the attributes for this profile.<BR>
+ Attributes are the parameters which always exist for a 
+ particular profile type.  Profiles in a user profile group
+ do not have any attributes.  Attributes cannot be added or 
+ removed.  Only the value can be changed.
+ If there are no attributes, this function succeeds and returns
+ an empty list of parameters.
+ <dl>
+ <dt><b>Example:</b>
+ <pre>
+ ' Get the profile attributes for this profile
+ Dim profileAttributes As KnowledgewareTypeLib.Parameters = applicativeProfile.<font color="red">Attributes</font>
+
+ ' Display the profile attributes
+ If profileAttributes IsNot Nothing Then
+     For Each Param As KnowledgewareTypeLib.Parameter In profileAttributes
+         Dim paramName As String = Param.Name
+         MsgBox(Param.Name & " = " & Param.ValueAsString)
+     Next
+ End If
+ </pre>
+ </dl>
+</dd>
+<a id="IsCurrent"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IsCurrent</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('short','short')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Retrieves whether this profile is the current profile or not.<br>
+ See 
+<script type="text/javascript"> activateLinkAnchor('DELMIARscApplicativeProfilesGroup','CurrentProfile','DELMIARscApplicativeProfilesGroup.CurrentProfile') </script> <dl>
+ <dt><b>Example:</b>
+ <pre>
+ ' Determine if the profile is the current profile
+ Dim isCurrent As Short = applicativeProfile.<font color="red">IsCurrent</font>
+
+ If isCurrent = 0 Then
+    MsgBox "The profile is not the current profile"
+ Else
+    MsgBox "The profile is the current profile"
+ End If
+ </pre>
+ </dl>
+</dd>
+<a id="IsUserDefined"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IsUserDefined</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('short','short')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Retrieves whether this profile is user defined or not.<BR>
+ User defined profiles do not have Attributes and groups of 
+ user defined profiles are managed by 
+<script type="text/javascript"> activateLinkAnchor('DELMIARscUserProfilesMgr','','DELMIARscUserProfilesMgr') </script>. Profiles and profile groups which are not user defined are 
+ managed by 
+<script type="text/javascript"> activateLinkAnchor('DELMIARscApplicativeProfilesMgr','','DELMIARscApplicativeProfilesMgr') </script>. <dl>
+ <dt><b>Example:</b>
+ <pre>
+ ' Determine if the profile is user defined
+ Dim isCurrent As Short = applicativeProfile.<font color="red">IsUserDefined</font>
+
+ If isCurrent = 0 Then
+    MsgBox "The profile is not user defined"
+ Else
+    MsgBox "The profile is user defined"
+ End If
+ </pre>
+ </dl>
+</dd>
+<a id="UserParams"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UserParams</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAParameters','CATIAParameters')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Retrieves the user defined parameters for this profile.<br>
+ If there are no user parameters, this function succeeds and returns
+ an empty list of parameters.
+ <dl>
+ <dt><b>Example:</b>
+ <pre>
+ ' Get user defined params on this profile
+ Dim userParams As KnowledgewareTypeLib.Parameters = applicativeProfile.<font color="red">UserParams</font>
+
+ ' Display the user parameters
+ If userParams IsNot Nothing Then
+     For Each Param As KnowledgewareTypeLib.Parameter In userParams
+         Dim paramName As String = Param.Name
+         MsgBox(Param.Name & " = " & Param.ValueAsString)
+     Next
+ End If
+ </pre>
+ </dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

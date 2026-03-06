@@ -1,0 +1,175 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>SettingController Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>SettingController Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse"><a href="CAAInfArchitectureOverview.htm">Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavunused">Properties</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'SettingController', 'MethodIndex'); return false;">
+		Methods</a></td>
+	</tr>
+</tbody>
+</table>
+<p class="auto"><a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'SettingControllers');return false;">
+<img src="../CAAScdImages/SettingControllers.png" alt="SettingControllers Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'SettingController');return false;"><img src="../CAAScdImages/SettingController.png" alt="SettingController Abstract Object" width="252" height="22"/></a><a href="CAAInfTocApplication.htm"><img src="../CAAScdImages/uparrow.gif" alt="Application Object Diagram" width="18" height="7"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parderim.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'SettingRepository');return false;"><img src="../CAAScdImages/SettingRepository.png" alt="SettingRepository Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'DLNameSettingAtt');return false;"><img src="../CAAScdImages/DLNameSettingAtt.png" alt="DLNameSettingAtt Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'DynLicenseSettingAtt');return false;"><img src="../CAAScdImages/DynLicenseSettingAtt.png" alt="DynLicenseSettingAtt Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'LicenseSettingAtt');return false;"><img src="../CAAScdImages/LicenseSettingAtt.png" alt="LicenseSettingAtt Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'MacrosSettingAtt');return false;"><img src="../CAAScdImages/MacrosSettingAtt.png" alt="MacrosSettingAtt Object" width="252" height="22"/></a></p>
+<p>Represents a setting controller.</p>
+<p>The <strong>SettingController</strong> object enables you to access the setting attributes 
+stored in setting repository files, and arranged in the different property pages 
+of the Options dialog box you can display thanks to the <strong>Options</strong> command of 
+the <strong>Tools</strong> menu. There are two kinds of setting controllers.</p>
+<ol>
+	<li>The <strong>SettingRepository</strong> object is the generic setting controller. It 
+	applies to any setting repository having an XML definition. Refer to
+	<a href="../CAAScrSettings/CAAScrTocSettings.htm">
+	Setting Repository Reference</a> to have the list of such setting repositories</li>
+	<li>Specific setting controllers, each dedicated to a given setting repository 
+	that is not described using an XML file. For example, the <strong>DynLicenseSettingAtt</strong> 
+	object deals with the dynamic licensing setting repository that stores the list 
+	of available configurations and products for which you can request a dynamic 
+	license.</li>
+</ol>
+<p>The generic setting controller and all of the specific ones share the five methods of the <strong>SettingController</strong> 
+object to deal with the whole set, or a subset of the setting attributes of a 
+setting repository:</p>
+<ul>
+	<li><strong>Commit</strong> to make a memory copy of the setting attribute 
+	values 
+	</li>
+	<li><strong>Rollback</strong> to restore the last memory copy of the setting 
+	attribute values 
+	</li>
+	<li><strong>ResetToAdminValues</strong> to restore the administered values of 
+	all the attributes 
+	</li>
+	<li><strong>ResetToAdminValuesByName</strong> to restore the administered values 
+	of a subset of the attributes 
+	</li>
+	<li><strong>SaveRepository</strong> to make a persistent copy of the setting 
+	attribute values in a file. </li>
+</ul>
+<h2>Retrieving the Generic Setting Controller</h2>
+<p>The generic setting controller can be retrieved for any of the setting repositories 
+listed in
+<a href="../CAAScrSettings/CAAScrTocSettings.htm">
+Setting Repository Reference</a>, provided the configuration or product it belongs 
+to is installed on your computer. Use the <strong>SettingControllers</strong> property of 
+the <strong>Application</strong> object to return the <strong>SettingControllers</strong> collection. 
+Then use its <strong>Item</strong> method to return the generic setting controller applying 
+to the
+<a href="../CAAScrSettings/GeneralGeneral.htm">
+GeneralGeneral</a> setting repository.</p>
+<pre class="code"><span class="keyword">Dim</span> cSettingCtrls <span class="keyword">As</span> SettingControllers
+<span class="keyword">Set</span> cSettingCtrls = CATIA.SettingControllers
+<span class="keyword">Dim</span> oSettingCtrl <span class="keyword">As</span> SettingRepository
+<span class="keyword">Set</span> oSettingCtrl = cSettingCtrls.Item(&quot;GeneralGeneral&quot;)</pre>
+<h2>Using the Generic Setting Controller</h2>
+<p>Use the <strong>GetAttr</strong> or <strong>PutAttr</strong> methods of the <strong>SettingRepository</strong> 
+object to return or set the value of an attribute. The example below returns the 
+value of the <strong>DragAndDrop</strong> attribute of the
+<a href="../CAAScrSettings/GeneralGeneral.htm">
+GeneralGeneral</a> setting repository, and if this value is returned true, set it 
+to false. </p>
+<pre class="code"><span class="keyword">Dim</span> oDragAndDrop <span class="keyword">As Boolean</span>
+oDragAndDrop = oSettingCtrl.GetAttr(&quot;DragAndDrop&quot;)
+<span class="keyword">If</span> oDragAndDrop <span class="keyword">Then</span>
+  oSettingCtrl.PutAttr &quot;DragAndDrop&quot;, False
+<span class="keyword">End If</span></pre>
+<h2>Retrieving a Specific Setting Controller</h2>
+<p>Use the <strong>SettingControllers</strong> property of the <strong>Application</strong> object to 
+return the <strong>SettingControllers</strong> collection. Then use its <strong>Item</strong> method 
+with the appropriate identifier to return the specific <strong>DynLicenseSettingAtt</strong> 
+object.</p>
+<pre class="code"><span class="keyword">Dim</span> oSettingCtrls <span class="keyword">As</span> SettingControllers
+<span class="keyword">Set</span> oSettingCtrls = CATIA.SettingControllers
+<span class="keyword">Dim</span> oSettingCtrl <span class="keyword">As</span> DLNameSettingAtt
+<span class="keyword">Set</span> oSettingCtrl = oSettingCtrls.Item(&quot;CATSysDynLicenseSettingCtrl&quot;)</pre>
+<p>The names to pass to the <strong>Item</strong> method are:</p>
+<table>
+	<tbody>
+	<tr>
+		<th>Setting Controller Objects</th>
+		<th>Identifiers to Pass to the Item Method</th>
+	</tr>
+	<tr>
+		<td>DLNameSettingAtt</td>
+		<td>CATSysDLNameSettingCtrl</td>
+	</tr>
+	<tr>
+		<td>DynLicenseSettingAtt</td>
+		<td>CATSysDynLicenseSettingCtrl</td>
+	</tr>
+	<tr>
+		<td>LicenseSettingAtt</td>
+		<td>CATSysLicenseSettingCtrl</td>
+	</tr>
+	<tr>
+		<td>MacrosSettingAtt</td>
+		<td>CATScriptMacrosSettingCtrl</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>Using a Specific Setting Controller</h2>
+<p>A specific setting controller manages the setting attributes located in a setting 
+repository. A property and two methods enable you to manipulate each setting attribute:</p>
+<ol>
+	<li>A read-write property to return or set the setting attribute value</li>
+	<li>A method to retrieve information about the setting attribute:<ul>
+		<li>The level of administration of the setting attribute</li>
+		<li>The lock status of the setting attribute (Locked or Unlocked)</li>
+	</ul>
+	</li>
+	<li>A method to set a lock onto the setting attribute</li>
+</ol>
+<p>Depending on each setting attribute, when a property is not suitable, the 
+read-write property can be replaced with a couple of methods. For example, a 
+setting attribute managing a color must return or set three integer values. This 
+cannot be performed by a property, and a method with three parameters must be 
+used instead.</p>
+<p>Refer to each derived specific <strong>SettingController</strong> object to know the setting attributes 
+it manages and how to manipulate them.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

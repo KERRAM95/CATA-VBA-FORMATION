@@ -1,0 +1,233 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpErrorReporter (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpErrorReporter"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpErrorReporter<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpErrorReporter_26994','OlpErrorReporter','0');</script>
+<section id='maindesc'>
+<b><i> Interface for reporting translation warnings and errors.</i></b><br>
+<BR>
+ <font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ Download or Upload command</font>.<BR>
+ This object can be retrieved using <script type="text/javascript"> activateLinkAnchor('DELMIAOlpTranslatorHelper','ErrorReporter','DELMIAOlpTranslatorHelper.ErrorReporter') </script>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AddConditionalError"><b>AddConditionalError</b></a>
+</td><td  id='tdright'>  Add an error message only if no error already exists.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AddMessage"><b>AddMessage</b></a>
+</td><td  id='tdright'>  Add a new message that will be displayed to the user.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AddTrace"><b>AddTrace</b></a>
+</td><td  id='tdright'>  Add a new debug trace message.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AddUniqueMessage"><b>AddUniqueMessage</b></a>
+</td><td  id='tdright'>  Add a unique message that will be displayed to the user.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#OverrideMessageSeverity"><b>OverrideMessageSeverity</b></a>
+</td><td  id='tdright'>  Override the message severity for a particular message ID.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AddConditionalError"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddConditionalError</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iMsg</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Add an error message only if no error already exists.<BR>
+ Otherwise this message is added as a trace 
+ with level all traces.  This is intended for 
+ adding an "unexpected" error message when you don't know
+ if some other code already logged the error.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iMsg</span></dt>
+   <dd>   The CATUnicodeString which is the message to add.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="AddMessage"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddMessage</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMessageType','DELOlpMessageType')</script> <span class='param'>iType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iMsg</span>,<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>iAssociatedV6Object</span>,<script type="text/javascript"> activateLink('OlpAstNode','OlpAstNode')</script> <span class='param'>iAssociatedAstNode</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Add a new message that will be displayed to the user.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd>   The type of message.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMsg</span></dt>
+   <dd>   The message to add.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAssociatedV6Object</span></dt>
+   <dd>   An optional V6 object which is associated with the error.
+   Used to help the user know where the error occured so they can 
+   correct it.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAssociatedAstNode</span></dt>
+   <dd>   An optional AST node which is associated with the error.
+   Used to display the file and line number of the error in the 
+   input or output NRL program.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="AddTrace"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddTrace</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpTraceLevel','DELOlpTraceLevel')</script> <span class='param'>iLevel</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iMsg</span>,<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>iAssociatedObject</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Add a new debug trace message.
+ This message will be written to the console if traces are enabled.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLevel</span></dt>
+   <dd>   The importance of this trace.  The trace will only get
+   logged if the current tracing mode is set to accept traces
+   of this importance or higher.  Tracing mode is set by 
+   the environment variable DNB_OLP_TRACES which can be set to 
+   All, User, or None.  
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMsg</span></dt>
+   <dd>   The message to add.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAssociatedObject</span></dt>
+   <dd>   An optional object which is associated with the error.
+   The name of the object will be appended to the trace message
+   in the form: "Message Text - ObjectName"  for example 
+   "Translating - MotionProfile.1"
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="AddUniqueMessage"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddUniqueMessage</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMessageType','DELOlpMessageType')</script> <span class='param'>iType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iMsg</span>,<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>iAssociatedV6Object</span>,<script type="text/javascript"> activateLink('OlpAstNode','OlpAstNode')</script> <span class='param'>iAssociatedAstNode</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iID</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Add a unique message that will be displayed to the user.<BR>
+ All messages with the given ID will be displayed as a single message
+ to the user.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd>   The type of message.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMsg</span></dt>
+   <dd>   The message to add.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAssociatedV6Object</span></dt>
+   <dd>   An optional V6 object which is associated with the error.
+   Used to help the user know where the error occured so they can 
+   correct it.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAssociatedAstNode</span></dt>
+   <dd>   An optional AST node which is associated with the error.
+   Used to display the file and line number of the error in the 
+   input or output NRL program.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iID</span></dt>
+   <dd>   The ID of the message to add.  All messages with this ID will
+   be displayed to the user as a single message.  
+   The recommended format for the message id is
+     [Translator].[Class].[Message].[SubMessage]
+       [Translator] - for example "DELMIAFanuc" etc.
+       [Class]      - the C++ or VB class name that generates the message 
+       [Message]    - the message key
+       [SubMessage] - an optional sub message key
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="OverrideMessageSeverity"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>OverrideMessageSeverity</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMessageType','DELOlpMessageType')</script> <span class='param'>iSeverity</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iID</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Override the message severity for a particular message ID.
+ This can be any infrastructure message or a message
+ create by the translator.  The message must be added with an ID
+ to be able to override it.  The severity specified here will
+ be used in place of whatever message type is used.  This must
+ be called before the message is added the 1st time.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSeverity</span></dt>
+   <dd>   The type of message.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iID</span></dt>
+   <dd>   The ID of the message to override.  See 
+<script type="text/javascript"> activateLinkAnchor('','AddUniqueMessage','AddUniqueMessage') </script>   for more details on the ID.  You can set the environment variable
+   DELMIA_OLP_DISPLAY_ERROR_MESSAGE_ID=1 to display the message IDs in
+   the message.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

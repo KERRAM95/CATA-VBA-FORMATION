@@ -1,0 +1,270 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATStrIDLItf StrReference (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATStrIDLItf.htm" href="../CATStrIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATStrIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "StrReference"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> StrReference<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_StrReference_16478','StrReference','0');</script>
+<section id='maindesc'>
+<b><i> Object representing a reference specification for a Structure object.</i></b><br>
+
+ The reference specification is defined by a specification object (surface or
+ Plate), which is often imported into the part document for this structure object.
+ This interface will set or retrieve the original specification object, and will
+ retrieve the local object, which may be the same as the specification object, or may be an
+ imported feature.
+
+ NOTE:
+ If the specification object is an SDD Product object (Plate, Stiffener or Beam),
+ and not just a feature in these products, specify the Product occurrence as the
+ SDD Product object and the feature as NULL. This way, the modeler can import the 
+ proper data for that application object. (But set the feature if you want to reference
+ a specific feature in the SDD product object.)<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#RfgGridFace"><b>RfgGridFace</b></a>
+</td><td  id='tdright'>  Returns the local feature defining the reference geometry.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Role"><b>Role</b></a>
+</td><td  id='tdright'>  Returns the role of this parameter.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetSpecification"><b>GetSpecification</b></a>
+</td><td  id='tdright'>  Retrieves the specification objects for this support element.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IsSynchronized"><b>IsSynchronized</b></a>
+</td><td  id='tdright'>  Returs the status whether this reference is Synchronized.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IsValid"><b>IsValid</b></a>
+</td><td  id='tdright'>  Analyzes whether this reference is valid.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetSpecification"><b>SetSpecification</b></a>
+</td><td  id='tdright'>  Sets the specification objects for this reference element.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Synchronize"><b>Synchronize</b></a>
+</td><td  id='tdright'>  Synchronize Import.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ValidateSpecification"><b>ValidateSpecification</b></a>
+</td><td  id='tdright'>  Returns the validation status of a proposed reference object.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="RfgGridFace"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>RfgGridFace</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIARfgGridFace','CATIARfgGridFace')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the local feature defining the reference geometry.
+ This local feature is usually an imported datum feature representing the reference element.
+   <br><b>Role</b>:The local feature defining the reference geometry.
+   This feature is usually an imported datum feature. But if the original
+   specification feature is in the same 3DShape representation as where it is referenced,
+   then this local object is the original specification feature.
+</dd>
+<a id="Role"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Role</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the role of this parameter.
+ The role is specific to the element from which this interface was retrieved.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetSpecification"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetSpecification</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibToLoad</span>,<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>oRefProdOcc</span>,<script type="text/javascript"> activateLink('CATIARfgGridFace','CATIARfgGridFace')</script> <span class='param'>oRefFeature</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the specification objects for this support element.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ibToLoad</span></dt>
+   <dd>    A boolean flag specifying whether to load the referenced product and representation
+   if they are not already in session.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oRefProdOcc</span></dt>
+   <dd>    The referenced product occurrence defining the reference element.
+   This product occurrence is unique in a context, so it specifies the assembly context of the product.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oRefFeature</span></dt>
+   <dd>    The referenced feature.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="IsSynchronized"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>IsSynchronized</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>oStatus</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returs the status whether this reference is Synchronized.
+ <br><b>Role</b>:If the reference includes an external reference and a local copy of the data, they may be out of sync.
+ If the reference is to a local object, then it is always synchronized.
+ If the reference is not synchronized, you may call Synchronize() to make it in sync.
+   The synchronization status. <DL>
+ <DT> -1    </DT> <DD> The status could not be determined. </DD>
+ <DT>  0    </DT> <DD> The reference has no link, so it cannot be out of sync. </DD>
+ <DT>  1    </DT> <DD> The reference local copy is in sync with the original. </DD>
+ <DT>  2    </DT> <DD> The reference local copy is not synchronized with the original. </DD> </DL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oStatus.</span></dt>
+   <dd>  <DL> <DT> TRUE   </DT> <DD> The reference does not need synchronization (in sync or no link). </DD> 
+ <DT> FALSE </DT> <DD> The reference is not synchronized (and could be). </DD>  </DL>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="IsValid"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>IsValid</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>oStatus</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>oValidationStatus</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Analyzes whether this reference is valid.
+ <br><b>Role</b>: Analyzes whether this reference is valid. A reference may be invalid by itself (if it is the wrong element type
+ or is mandatory but not set), or it may be invalid in combination with 
+ other specifications of the owning object.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oStatus</span></dt>
+   <dd>  <DL> <DT> TRUE   </DT> <DD> The reference is valid (or state could not be determined). </DD> 
+ <DT> FALSE </DT> <DD> The reference is not valid. </DD> </DL>
+ <P> If not valid 
+ 
+ </ dd>
+    <dt><span class='paramitem'> oValidationStatus</span></dt>
+   <dd>    The general status of the validation. <DL>
+ <DT> -1           </DT> <DD> The status could not be determined. </DD>
+ <DT>  0           </DT> <DD> An error occurred in determining the status. </DD>
+ <DT>  1           </DT> <DD> The referece is valid. </DD>
+ <DT>  2           </DT> <DD> The reference is invalid. </DD> </DL>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetSpecification"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetSpecification</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>iRefProdOcc</span>,<script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> <span class='param'>iRefFeature</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the specification objects for this reference element.
+ The specification objects are usually in another mechanical product,
+ and are imported into the current product representation.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iRefProdOcc</span></dt>
+   <dd>    The referenced product occurrence defining the reference element.
+   This product occurrence is unique in a context, so it specifies the full assembly context of the product.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRefFeature</span></dt>
+   <dd>    The referenced feature.
+   This should be NULL if ispRefProdOcc is a Structures specialized Product and 
+   the modeler is supposed to choose the features to reference (and import).
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example Set the specification object.
+ <pre>
+ Dim ObjStrReference1 As StrReference
+ Set ObjStrReference1 = ObjStrStdPosStParam.GetRef1Data
+ Set ObjRefU1 = Manager.GetReferencePlane(ObjPart, 2, "CROSS.80")
+ Set RefU1 = ObjPart.CreateReferenceFromObject(ObjRefU1)
+ ObjStrReference1.<font color="red">SetSpecification</font> Nothing, RefU1
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="Synchronize"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Synchronize</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Synchronize Import.
+</dd>
+<a id="ValidateSpecification"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>ValidateSpecification</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>iRefProdOcc</span>,<script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> <span class='param'>iRefFeature</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the validation status of a proposed reference object.
+ <br><b>Role</b>:Analyzes and validates whether a proposed reference object is valid.
+ A reference may be invalid by itself (if it is the wrong element type
+ or is mandatory but not set), or it may be invalid in combination with 
+ other specifications of the owning object.
+   The general status of the validation. <DL>
+ <DT> -1           </DT> <DD> The status could not be determined. </DD>
+ <DT>  0             </DT> <DD> An error occurred in determining the status. </DD>
+ <DT>  1    </DT> <DD> The referece is valid. </DD>
+ <DT>  2 </DT> <DD> The reference is invalid. </DD> </DL>
+ <P> If not valid
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iRefProdOcc</span></dt>
+   <dd>    The referenced product occurrence.
+   This product occurrence is unique in a context, so it specifies the assembly context of the product.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRefSupport</span></dt>
+   <dd>    The referenced feature.
+   In some cases, this feature pointer may be NULL if the product itself is the reference object.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

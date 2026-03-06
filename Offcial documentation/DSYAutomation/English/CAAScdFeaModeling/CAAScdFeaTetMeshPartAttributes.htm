@@ -1,0 +1,1002 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<style type="text/css">
+    table.fill1 {
+    	width: 95%;
+    	background-color: #C0C0C0;
+	}
+	td.fill1 {
+		width: 33%;
+		padding: 30px;
+	}
+	td.fill2 {
+		padding: 30px;
+	}
+	td.fill3 {
+		width: 35%;
+		padding: 30px;
+	}
+
+</style>
+<title>Tetrahedron Mesh Part Attributes</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Tetrahedron Mesh Part Attributes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+		<h3>Abstract</h3>
+		<p>This article presents an overview of the <b>Tetrahedron Mesh Part</b> attributes and its local specifications.</p>
+		<p><strong><a href="#Tetrahedron_Mesh_Part_Creation">Tetrahedron Mesh Part 
+		Creation</a></strong> </p>
+		<p><strong><a href="#Tetrahedron_Mesh_Part_Support_Definition">Tetrahedron 
+		Mesh Part Support Definition</a></strong> </p>
+		<p><strong><a href="#Global_Mesh_Specifications">Global Mesh Specifications</a></strong>
+		</p>
+		<ul>
+			<li><a href="#MeshSizeValue">MeshSizeValue</a></li>
+            <li><a href="#AutoMap">AutoMap</a></li>
+            <li><a href="#ElementOrder">ElementOrder</a></li>
+			<li><a href="#AbsoluteSag">AbsoluteSag</a></li>
+			<li><a href="#AbsoluteSagValue">AbsoluteSagValue</a></li>
+			<li><a href="#BoundaryLayersMode">BoundaryLayersMode</a></li>
+			<li><a href="#BoundaryLayersDistribution">BoundaryLayersDistribution</a></li>
+			<li><a href="#BoundaryLayersNumber">BoundaryLayersNumber</a></li>
+			<li><a href="#BoundaryLayersRatio">BoundaryLayersRatio</a></li>
+			<li><a href="#BoundaryLayersHeight1">BoundaryLayersHeight1</a></li>
+			<li><a href="#BoundaryLayersTetsOnly">BoundaryLayersTetsOnly</a></li>
+			<li><a href="#ProportionalSag">ProportionalSag</a></li>
+			<li><a href="#ProportionalSagValue">ProportionalSagValue</a></li>
+			<li><a href="#MinMeshSize">MinMeshSize</a></li>
+			<li><a href="#MinCellsPerGap">MinCellsPerGap</a></li>
+			<li><a href="#MinCellsPerGapValue">MinCellsPerGapValue</a></li>
+			<li><a href="#GrowthRatioSurface">GrowthRatioSurface</a></li>
+			<li><a href="#GrowthRatioVolume">GrowthRatioVolume</a></li>
+		</ul>
+		<p><strong><a href="#Global_Topology_Specifications">Global Topology Specifications</a></strong>
+		</p>
+		<ul>
+			<li><a href="#AngleBetweenCurves">AngleBetweenCurves</a></li>
+			<li><a href="#AngleBetweenFaces">AngleBetweenFaces</a></li>
+			<li><a href="#CurvatureAngle">CurvatureAngle</a></li>
+			<li><a href="#GeometrySimplification">GeometrySimplification</a>
+			</li>
+			<li><a href="#GeometrySimplificationValue">GeometrySimplificationValue</a>
+			</li>
+			<li><a href="#LogosSuppression">LogosSuppression</a></li>
+			<li><a href="#LogosMaxHeight">LogosMaxHeight</a></li>
+			<li><a href="#LogosMaxSize">LogosMaxSize</a></li>
+		</ul>
+		<p><strong><a href="#Local_Specifications">Local Specifications</a></strong></p>
+		<p><strong><a href="#Local_Topology_Specifications">Local Topology Specifications</a></strong>
+		</p>
+		<ul>
+			<li><a href="#CATFmtExternalPointLocalSpec">CATFmtExternalPointLocalSpec</a> 
+			(Imposed Points)</li>
+			<li><a href="#CATFmtPreserveGeometries">CATFmtPreserveGeometries</a> 
+			(Preserved Boundaries)</li>
+		</ul>
+		<p><strong><a href="#Local_Mesh_2D_Specifications">Local Mesh 2D Specifications</a></strong>
+		</p>
+		<ul>
+			<li><a href="#CATFmtLocalSpecLocalSize">CATFmtLocalSpecLocalSize</a> 
+			(Local Mesh Size)</li>
+		</ul>
+		<p><strong><a href="#Local_Mesh_3D_Specifications">Local Mesh 3D Specifications</a></strong>
+		</p>
+		<ul>
+			<li><a href="#CATFmtBoundaryLayerSpecification">CATFmtBoundaryLayerSpecification</a> 
+			(Boundary Layers)</li>
+			<li><a href="#CATFmtExcludedBoundaryLayerSpecification">CATFmtExcludedBoundaryLayerSpecification</a> 
+			(Excluded Boundary Layers)</li>
+		</ul>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Tetrahedron_Mesh_Part_Creation">Tetrahedron Mesh Part Creation</a></h2>
+<p>A &quot;late type&quot; must be given to indicate which type of mesh part is to be created.</p>
+<p>In the case of the Surface Quadrangle Mesh Part, the late type is &quot;<b>CATFmt3DRulesMesher</b>&quot;.</p>
+<p>The Tetrahedron Mesh Part can be created by using <b>Add</b> method of <b>SimMeshParts</b> object.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Tetrahedron_Mesh_Part_Support_Definition">Tetrahedron Mesh Part Support 
+Definition</a></h2>
+<p>The Tetrahedron Mesh Part support can be initialized and managed using the <b>AddSupport</b> method of <b>SimMeshPart</b> object:</p>
+  <ul>
+    <li>
+      <b>AddSupport</b> ( <i>iSupport <span class="keyword">As</span> AnyObject</i> ) to add a new support to the mesh part
+    </li>
+  </ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Global_Mesh_Specifications">Global Mesh Specifications</a></h2>
+<p>Global mesh specifications can be set or retrieved using following methods:</p>
+<ul>
+	<li><b>SetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iValue</i>) to set a mesh attribute with an integer value</li>
+	<li><b>GetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, oValue</i>) to get a mesh attribute with an integer value</li>
+</ul>
+<p><b>iType</b> is the type of specification and <b>iType =&quot;Mesh&quot;</b> for Global Mesh Specifications.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p><strong><a name="ElementOrder">ElementOrder</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <i><b>integer </b></i>valuated to: </p>
+			<ul>
+				<li><b>1</b>: to get a mesh with linear tetrahedra (<i>TE4</i>)</li>
+				<li><b>2</b>: to get a mesh with quadratic tetrahedra (<i>TE10</i>)</li>
+			</ul>
+			<p><strong>default value: 1 </strong></p>
+		
+		</td>
+		<td class="fill3">
+		
+			<p>Attribute which specifies <strong>the </strong><strong>number</strong><strong> 
+			of </strong><strong>intermediate nodes per element edge</strong>, as 
+			shown on the pictures (the left one shows a linear tetrahedron and the 
+			right one shows a parabolic tetrahedron). </p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" height="146" src="images/ElementType2.jpg" width="294"/></td>
+	</tr>
+</table>
+<p><strong><a name="MeshSizeValue">MeshSizeValue</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>double </i></b>valuated to mesh elements size.
+			</p>
+			<p><strong>default value:</strong> <strong>10</strong><strong></strong>
+			</p>
+		
+		</td>
+		<td class="fill2">
+		
+			Attribute which specifies the mesh element target size that mesher tries 
+			to respect on the surface.
+		
+		</td>
+	</tr>
+</table>
+
+<p class="style4">
+<!---------------------------------comment------------------------------------->
+<a name="Architecture"></a><strong><a name="AutoMap">AutoMap</a></strong></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" valign="middle" align="left" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b><br>
+        type</b>: <strong><em>integer</em></strong> valuated to:</p>
+        <ul>
+          <li><b>1:</b> do not map mesh the surfaces </li>
+          <li><b>2:</b> map mesh the surfaces where appropriate</li>
+        </ul>
+      	<p><strong>default value: 2 </strong></p>
+      </blockquote>
+    </td>
+      <td width="67%" valign="middle" bgcolor="#C0C0C0">
+         <blockquote class="style40">
+           <p>
+             <br />
+                  This attribute specifies whether map mesh is applied on surfaces where appropriate.
+              </p>
+          </blockquote>
+    </td>
+  </tr>
+</table>
+
+<p><strong><a name="AbsoluteSag">AbsoluteSag</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>:<i><b> integer </b></i>valuated to: </p>
+			<ul>
+				<li><b>1: </b>to create a mesh that does not respect sag</li>
+				<li><b>2:</b> to create a mesh that respects sag</li>
+			</ul>
+			<p><strong>default value: 1 </strong></p>
+		
+		</td>
+		<td class="fill3">
+		
+		<p>Attribute which specifies if the mesh is created with a maximum imposed 
+		sag.</p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" height="127" src="images/SagFig2.jpg" width="259"/></td>
+	</tr>
+</table>
+<p><strong><a name="AbsoluteSagValue">AbsoluteSagValue</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>double</i></b> valuated to the target maximum 
+			sag when <strong>AbsoluteSag</strong> attribute is valuated to 2.
+			</p>
+			<p><strong>default value: 0</strong></p>
+		
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which specifies the maximum value of the absolute sag (distance 
+			between the geometry of the mesh). </p>
+			<p><b>WARNING</b>: It is taken into account only if the <strong>AbsoluteSag</strong> 
+			attribute is equal to 2. </p>
+		
+		</td>
+	</tr>
+</table>
+<p><b><a name="BoundaryLayersMode">BoundaryLayersMode</a></b> (only available starting 
+from 3DEXPERIENCE 2015x FD01)</p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p>
+			<b>type</b>: <b><i>integer</i></b> valuated to: </p>
+			<ul>
+				<li><b>1</b>: to get a mesh without boundary layers</li>
+				<li><b>2</b>: to get a mesh with boundary layers</li>
+			</ul>
+			<p><b>default value: 1</b></p>
+		
+		</td>
+		<td class="fill2">
+		
+			<p>
+			This attribute specifies whether boundary layers should be added everywhere 
+			in the volume mesh or not. </p>
+		
+		</td>
+	</tr>
+</table>
+<p><b><a name="BoundaryLayersDistribution">BoundaryLayersDistribution</a></b> (only 
+available starting from 3DEXPERIENCE 2015x FD01)</p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p>
+			<b>type</b>: <b><i>integer</i></b> valuated to: </p>
+			<ul>
+				<li><b>1</b>: to get an uniform distribution</li>
+				<li><b>2</b>: to get an arithmetic distribution</li>
+				<li><b>3</b>: to get a geometric distribution</li>
+			</ul>
+			<p><b>default value: 1</b></p>
+		
+		</td>
+		<td class="fill3">
+		
+			<p>
+			This attribute specifies the size distribution to be applied to the 
+			boundary layers. </p>
+			<p>The picture shows how a uniform distribution (at the top) differs 
+			from a geometric one (at the bottom, using a
+			<a href="#BoundaryLayersRatio"><b>ratio</b></a> of 3). </p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" src="images/BoundaryLayersDistribution.png"/> </td>
+	</tr>
+</table>
+<p><b><a name="BoundaryLayersNumber">BoundaryLayersNumber</a></b> (only available 
+starting from 3DEXPERIENCE 2015x FD01)</p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p>
+			<b>type</b>: <b><i>integer</i></b> valuated to the expected number of 
+			boundary layers. </p>
+			<p><b>default value: 1</b></p>
+		
+		</td>
+		<td class="fill2">
+		
+			<p>
+			This attribute specifies the number of boundary layers to be added to 
+			the volume mesh. </p>
+		
+		</td>
+	</tr>
+</table>
+<p><b><a name="BoundaryLayersRatio">BoundaryLayersRatio</a></b> (only available 
+starting from 3DEXPERIENCE 2015x FD01)</p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p>
+			<b>type</b>: <b><i>double</i></b> valuated to the size ratio between 
+			the first and last layer thicknesses. </p>
+			<p><b>default value: 1.0</b></p>
+		
+		</td>
+		<td class="fill2">
+		
+			<p>This attribute specifies the size ratio <i>R</i> between the first layer 
+			thickness <i>h1</i> and last layer thickness <i>h2</i>.
+			<i>R</i> = <i>h2</i> / <i>h1</i> </p>
+			<p><b>WARNING</b>: It is taken into account only if the <b>BoundaryLayersDistribution</b> 
+			attribute is equal to 2 or 3. </p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" src="images/BoundaryLayersRatio.png"/> </td>
+	</tr>
+</table>
+<p><b><a name="BoundaryLayersHeight1">BoundaryLayersHeight1</a></b> (only available 
+starting from 3DEXPERIENCE 2015x FD01)</p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p>
+			<b>type</b>: <b><i>double</i></b> valuated to the expected thickness 
+			of the first layer of boundary elements. </p>
+			<p><b>default value: 1.0</b></p>
+		
+		</td>
+		<td class="fill2">
+		
+			<p>
+			This attribute specifies the thickness of the first layer of elements 
+			in the boundary layers. </p>
+		
+		</td>
+	</tr>
+</table>
+<p><b><a name="BoundaryLayersTetsOnly">BoundaryLayersTetsOnly</a></b> (only available 
+starting from 3DEXPERIENCE 2015x FD01)</p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p>
+			<b>type</b>: <b><i>integer</i></b> valuated to: </p>
+			<ul>
+				<li><b>1</b>: to get wedges and pyramids in the boundary layers</li>
+				<li><b>2</b>: to get tetrahedra only in the boundary layers</li>
+			</ul>
+			<p><b>default value: 1</b></p>
+		
+		</td>
+		<td class="fill2">
+		
+			<p>
+			This attribute specifies the elements to be generated in the boundary 
+			layers.
+			If set to <b>2</b>, elements in the boundary layers will be split into 
+			tetrahedra. </p>
+		
+		</td>
+	</tr>
+</table>
+<p><strong><a name="ProportionalSag">ProportionalSag</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <i><b>integer </b></i>valuated to: </p>
+			<ul>
+				<li><b>1: </b>to create a mesh that does not respect proportional 
+				sag</li>
+				<li><b>2:</b> to create a mesh that respects proportional sag</li>
+			</ul>
+			<p><strong>default value: 1</strong></p>
+		
+		</td>
+		<td class="fill3">
+		
+			<p>Attribute which specifies if the mesh is created with a imposed maximum 
+			proportional sag which is the ratio of the Sag by the Length of a mesh 
+			edge element (<b><var>Sag/Length</var></b>). </p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" height="138" src="images/SagFig1.jpg" width="261"/></td>
+	</tr>
+</table>
+<p><strong><a name="ProportionalSagValue">ProportionalSagValue</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+			<p><b>type</b>: <b><i>double</i></b> valuated to target proportional 
+			sag when ProportionalSag attribute is valuated to 2. </p>
+			<p><strong>default value: 0</strong></p>
+		</td>
+		<td class="fill2">
+			<p>Attribute which specifies the maximum value of the proportional sag.
+			</p>
+			<p><b>WARNING</b>: It is taken into account only if the <strong>ProportionalSag
+			</strong>attribute is equal to 2. </p>
+		</td>
+	</tr>
+</table>
+<p><b><a name="MinMeshSize">MinMeshSize</a></b></p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+			<p>
+			<b>type</b>: <b><i>double </i></b>valuated to the minimum mesh elements 
+			size. </p>
+			<p><strong>default value:</strong> <strong>0.2 * MeshSizeValue</strong></p>
+		</td>
+		<td class="fill2">
+
+			<p>
+			Attribute which specifies the minimum mesh element size that mesher 
+			tries to respect on the surface. </p>
+			<p>This attribute is only needed when <b>AbsoluteSag</b> is set to 2 
+			or <b>ProportionalSag</b> is set to 2. </p>
+		</td>
+	</tr>
+</table>
+<p><b><a name="MinCellsPerGap">MinCellsPerGap</a></b></p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+			
+			<p><b>type: <i>integer</i></b> valuated to: </p>
+			<ul>
+				<li><b>1</b>: to keep the default mesh</li>
+				<li><b>2</b>: to split tetrahedra</li>
+				<li><b>3</b>: to refine the surface</li>
+			</ul>
+			<p><b>default value: 1</b></p>
+		</td>
+		<td class="fill2">
+			<p>Attribute which specifies the treatment to be applied in narrow regions. 
+			Tetrahedra can either be split to ensure two layers of elements everywhere 
+			or the surface mesh can be refined, as shown on the picture below.</p>
+			<p><img alt="" src="images/MinCellsPerGap.png"/> </p>
+		</td>
+	</tr>
+</table>
+<p><b><a name="MinCellsPerGapValue">MinCellsPerGapValue</a></b></p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+			<p>
+			<b>type: <i>integer</i></b> valuated to the expected number of layers 
+			across the thickness. </p>
+			<p><b>default value: 0</b></p>
+		</td>
+		<td class="fill2">
+			<p>
+			Attribute which specifies the number of expected layers across the thickness.
+			The surface mesh is refined (see picture above). </p>
+			<p><b>WARNING</b>: It is taken into account only if the <b>MinCellsPerGap</b> 
+			attribute is equal to 3. </p>
+		</td>
+	</tr>
+</table>
+<p><strong><a name="GrowthRatioSurface">GrowthRatioSurface</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>:&nbsp; <b><i>double</i></b> valuated to the mesh size 
+			growth. </p>
+			<p><strong>default value: 1.41 </strong></p>
+		
+		</td>
+		<td class="fill1">
+		
+			<p>Attribute which controls the mesh size growth between neighboring 
+			elements on the surface. </p>
+			<p><b>WARNING</b>: It is taken into account only if the <strong>AbsoluteSag</strong>,
+			<strong>ProportionalSag</strong> or <strong>MinCellsPerGap</strong> 
+			attribute is equal to 2. </p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" src="images/GrowthRatioSurface.png"/></td>
+	</tr>
+</table>
+<p><b><a name="GrowthRatioVolume">GrowthRatioVolume</a></b></p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p>
+			<b>type</b>: <b><i>double </i></b>valuated to the expected growth ratio 
+			throughout the volume. </p>
+			<p><strong>default value:</strong> <strong>1.0</strong></p>
+		
+		</td>
+		<td class="fill3">
+		
+			<p>
+			This attribute specifies the amount by which adjacent elements through 
+			the volume can differ in size.
+			It controls the smoothness of transitions in mesh size, as shown on 
+			the pictures on the right. </p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" src="images/GrowthRatioVolume.png"/> </td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Global_Topology_Specifications">Global Topology Specifications</a></h2>
+<p>Global topology specifications can be set or retrieved using following methods:</p>
+<ul>
+	<li><b>SetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iValue</i>) to set a topology attribute</li>
+	<li><b>GetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, oValue</i>) to get a topology attribute</li>
+</ul>
+<p><b>iType</b> is the type of specification and <b>iType =&quot;Topology&quot;</b> for Global Topology Specifications.</p>
+<p><strong><a name="AngleBetweenCurves">AngleBetweenCurves</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <i><b>double (radian unit) </b></i>valuated to the angle 
+			under which vertices are inactivated </p>
+			<p><strong>default value: 20°</strong></p>
+		
+		</td>
+		<td class="fill3">
+		
+			<p>Attribute which specifies the maximum angle under which a vertex 
+			connected exactly to two constrained edges can be inactivated. </p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" height="191" src="images/CurveAngle.jpg" width="352"/>
+		</td>
+	</tr>
+</table>
+<p><strong><a name="AngleBetweenFaces">AngleBetweenFaces</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <i><b>double (radian unit) </b></i>valuated to the angle 
+			under which edges are inactivated.&nbsp; </p>
+			<p><strong>default value: 20°</strong></p>
+		
+		</td>
+		<td class="fill3">
+		
+			<p>Attribute which specifies the maximum angle under which an edge connected 
+			exactly to two faces can be inactivated during topology computation.
+			</p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" height="113" src="images/FaceAngle.jpg" width="341"/></td>
+	</tr>
+</table>
+<p><strong><a name="CurvatureAngle">CurvatureAngle</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <i><b>double (radian unit) </b></i>valuated to the angle 
+			over which edges are activated. </p>
+			<p><strong>default value: 20°</strong></p>
+		
+		</td>
+		<td class="fill3">
+		
+			<p>Attribute which specifies the minimum angle computed along filleted 
+			surfaces over which edges are activated. For a given fillet, when the 
+			computed curvature angle is greater than <strong>CurvatureAngle</strong> 
+			all boundary edges of this fillet are activated otherwise they are not.</p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" src="images/CATFmtCurvatureAngle.jpg" width="325" height="180"/>
+		</td>
+	</tr>
+</table>
+<p><strong><a name="GeometrySimplification">GeometrySimplification</a></strong>
+</p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+			<p><b>type</b><strong>:</strong> <i><b>integer </b></i>valuated to:
+			</p>
+			<ul>
+				<li><b>1: </b>to keep grouping topology without additional simplification
+				</li>
+				<li><b>2:</b> to compute topology simplification</li>
+			</ul>
+			<p><strong>default value: 2</strong></p>
+		</td>
+		<td class="fill2">
+			<p>Attribute which specifies if topology simplification is computed. 
+			Topology simplification objective is to minimize the number of bad elements 
+			regarding the Min Height element quality criterion. </p>
+		</td>
+	</tr>
+</table>
+<p><strong><a name="GeometrySimplificationValue">GeometrySimplificationValue</a></strong>
+</p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>double</i></b> valuated to the Min Height criterion 
+			targeted for mesh elements. </p>
+			<p><strong>default value: 0.1 * MeshSizeValue</strong></p>
+		
+		</td>
+		<td class="fill3">
+		
+			<p>When topology simplication is computed, different topology modifications 
+			are done automatically using a set of topological operators in order 
+			to respect Min Height element quality criterion: </p>
+			<ul>
+				<li>Vertex Creation/Activation/Inactivation</li>
+				<li>Edge Creation/Activation/Inactivation</li>
+				<li>Edge collapse (see picture)</li>
+				<li>Edge Merge</li>
+			</ul>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" height="264" src="images/Merge1.jpg" width="209"/> </td>
+	</tr>
+</table>
+<p><strong><a name="LogosSuppression">LogosSuppression</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <strong><em>integer</em></strong> valuated to: </p>
+			<ul>
+				<li><strong>1:</strong> to ignore logos control suppression</li>
+				<li><strong>2:</strong> to control logos suppression</li>
+			</ul>
+			<p><strong>default value: 1 </strong></p>
+		
+		</td>
+		<td class="fill3">
+		
+			<p>Attribute which specifies whether logos suppression will be done.
+			</p>
+			<p>Logos suppression consists of ignoring small features of the geometry 
+			that are useless for the mesh (small height regarding the mesh size). 
+			Logos suppression is driven by two attributes: <strong>LogosMaxHeight</strong> 
+			and <strong>LogosMaxSize</strong>. </p>
+			<p>For example on the right picture, an ignored logo can be seen.
+			</p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" height="234" src="images/RemoveLogo1.jpg" width="400"/></td>
+	</tr>
+</table>
+<p><strong><a name="LogosMaxHeight">LogosMaxHeight</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <strong><em>double</em></strong> valuated to the max 
+			height of a detectable logo </p>
+			<p><strong>default value: 0.1 * MeshSizeValue </strong></p>
+		
+		</td>
+		<td class="fill3">
+		
+			<p>Attribute which specifies the maximal height allowed to detect logos.
+			</p>
+			<p>The maximum height of a logo can be defined as the maximum distance 
+			of any points on the logo faces to the extrapolated bounding surfaces.
+			</p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" height="234" src="images/RemoveLogo2.jpg" width="400"/></td>
+	</tr>
+</table>
+<p><strong><a name="LogosMaxSize">LogosMaxSize</a></strong> </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <strong><em>double</em></strong> valuated to the max 
+			size of a detectable logo </p>
+			<p><strong>default value: MeshSizeValue </strong></p>
+		
+		</td>
+		<td class="fill3">
+		
+			<p>Attribute which specifies the maximal size allowed to detect logos.
+			</p>
+			<p>The maximum size of a logo can be defined as the maximum distance 
+			between two points on the logo boundary (maximum diameter). </p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" height="234" src="images/RemoveLogo3.jpg" width="400"/></td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Local_Specifications">Local Specifications</a> </h2>
+<p>The Tetrahedron Mesh Part has two kind of local specifications: <b>topology</b> 
+and <b>mesh</b> local specifications. These specifications are managed by 
+collection object:</p>
+<ul>
+	<li><b>SimMeshSpecifications</b>: for the collection of local mesh specifications</li>
+	<li><b>SimTopologySpecifications</b>: for the collection of local topology specifications</li>
+</ul>
+<p>You should use the following methods of <b>SimMeshPart</b> object to retrieve these collections:</p>
+<ul>
+	<li><b>GetMeshSpecifications</b> to retrieve the local mesh specification collection</li>
+	<li><b>GetTopologySpecification</b> to retrieve the local topology specification collection</li>
+</ul>
+<p>Local specifications are managed from the collection objects:</p>
+<ul>
+	<li><b>Add</b> (<i>iType <span class="keyword">As String</span></i>) to create a new local 
+	specification with:
+	<ul>
+		<li>iType is the late type of the specification to create</li>
+	</ul>
+	</li>
+	<li><b>Item</b> (<i>iIndex</i>) to retrieve a local specification with:
+	<ul>
+		<li>iIndex is the index of the local specification in its collection</li>
+	</ul>
+	</li>
+	<li><b>Remove</b> (<i>iIndex</i>) to delete a local specification with:
+	<ul>
+		<li>iIndex is the index of the local specification in its collection</li>
+	</ul>
+	</li>
+</ul>
+<p>Attribute of local specification are set using following method from 
+<b>SimMeshSpecification</b> or <b>SimTopologySpecification</b> object depending of the kind of 
+local specification:</p>
+<ul>
+	<li><b>SetAttributeValue</b> (<i>iAttribute <span class="keyword">As String</span>, iValue</i>) to set a local specification attribute value</li>
+</ul>
+<p>In a manner similar, attribute of local specification are retrieved using following method:</p>
+<ul>
+	<li><b>GetAttributeValue</b> (<i>iAttribute <span class="keyword">As String</span>, iValue</i>) to retrieve a local specification</li>
+</ul>
+<p>Geometric attribute of local specification (supports) are managed using <b>SimLinkAccess</b> object:</p>
+<ul>
+	<li><b>AddLink</b> ( <i>iName <span class="keyword">As String</span>, iLink <span class="keyword">As</span> AnyObject</i> )</li>
+	<li><b>RemoveAllLinks</b> ( <i>iName <span class="keyword">As String</span></i> )</li>
+	<li><b>RemoveLink</b> ( <i>iName <span class="keyword">As String</span>, iLink <span class="keyword">As</span> AnyObject</i> )
+	<ul>
+		<li><b>iName</b> is the name of the link container, here it's <b>&quot;ConnectorList&quot;</b></li>
+	</ul>
+	</li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Local_Topology_Specifications">Local Topology Specifications</a></h2>
+<p><strong><a name="CATFmtExternalPointLocalSpec">CATFmtExternalPointLocalSpec</a>
+</strong></p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		<p>Specification attributes are managed using <b>SimTopologySpecification</b> object:</p>
+		<ul>
+			<li>Geometric attribute (supports)</li>
+		</ul>
+		<p>Other attributes are managed using (GetAttribute, SetAttribute):&nbsp;
+		</p>
+		<ul>
+			<li><strong><a name="ToleranceValue_ProjectPoint">ToleranceValue</a>: &nbsp;<b><i>double</i></b>
+			</strong>valuated to the maximum distance between external&nbsp; point 
+			and its projection on geometry to mesh. </li>
+		</ul>
+		<p><strong>default value: 0. </strong></p>
+		<ul>
+			<li><strong><a name="">ProjectOnGeometry</a>:</strong><strong> <em>integer</em></strong> 
+			valuated to the target geometry choice</li>
+		</ul>
+		<p><strong>default value: 1</strong></p>
+		<p>&nbsp;</p>
+		</td>
+		<td class="fill2">
+		<p><strong>Description</strong>: This specification is used in order to 
+		project<b> external </b>points (points that don't belong to the geometry 
+		to mesh) in order to constrain the mesh. External points definition 
+		(supports) and projection tolerance are mandatory. The overall behavior 
+		is the following: </p>
+		<ul>
+			<li>if the <strong>distance</strong> between an external point and the 
+			geometry to mesh is <strong>greater</strong> than the <strong>ToleranceValue</strong>,
+			<strong>the point will not be projected</strong> </li>
+			<li>if the <strong>distance</strong> between an external point and the 
+			geometry to mesh is <strong>lower</strong> than the <strong>ToleranceValue</strong>,
+			<strong>the point will be projected</strong>. The final location of 
+			this point depends on ProjectOnGeometry attribute:
+			<ul>
+				<li>if <strong>ProjectOnGeometry</strong> is equal to <strong>1</strong>, 
+				the <strong>node</strong> representing the point will be <strong>
+				located</strong> exactly on the <strong>projection point on the 
+				surface geometry</strong> </li>
+				<li>if <strong>ProjectOnGeometry</strong> is equal to <strong>2</strong>, 
+				the <strong>node</strong> representing the point projection will 
+				be <strong>located</strong> exactly on the <strong>external point 
+				(same Cartesian coordinates</strong><strong>)</strong></li>
+			</ul>
+			</li>
+		</ul>
+		</td>
+	</tr>
+</table>
+<p><b><a name="CATFmtPreserveGeometries">CATFmtPreserveGeometries</a></b></p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p>Specification attributes are managed using <b>
+			SimTopologySpecification</b> object.</p>
+			<ul><li>Only geometric attribute (supports)</li></ul>
+		
+		</td>
+		<td class="fill3">
+		
+			<p><b>Description</b>: This specification is used in order to preserve 
+			a set of faces, edges or points while meshing i.e. to prevent them from 
+			being simplified. </p>
+			<p>The picture shows how a small geometrical element can be preserved 
+			by selecting its faces as a support of the preserved geometries specification.
+			</p>
+		
+		</td>
+		<td class="fill2">
+		<img alt="" src="images/PreserveGeometries.png"/> </td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Local_Mesh_2D_Specifications">Local Mesh 2D Specifications</a></h2>
+<p><b><a name="CATFmtLocalSpecLocalSize">CATFmtLocalSpecLocalSize</a></b></p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+			<p>Specification attributes are managed using <b>SimMeshSpecification</b> object:</p>
+			<ul>
+				<li>Geometric attribute (supports)</li>
+			</ul>
+			<p>Other attributes are managed using (GetAttribute, SetAttribute):
+			</p>
+			<ul>
+				<li><b>SizeValue</b>: <b>double</b> valuated to the target size 
+				on the support</li>
+				<li><b>AbsoluteSag</b>: <b>int</b> valuated to
+				<ul>
+					<li><b>1</b>: to specify only a target mesh size (default)</li>
+					<li><b>2</b>: to specify a local sag as well</li>
+				</ul>
+				</li>
+				<li><b>AbsoluteSagValue</b>: <b>double</b> valuated to the target 
+				sag on the support (only taken into accoung if the <b>AbsoluteSag</b> 
+				attribute above is set to 2) </li>
+			</ul>
+		</td>
+		<td class="fill2">
+			<p><b>Description</b>: This specification is used in order to specify 
+			a local mesh size or sag on a set of faces. </p>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Local_Mesh_3D_Specifications">Local Mesh 3D Specifications</a></h2>
+<p><b><a name="CATFmtBoundaryLayerSpecification">CATFmtBoundaryLayerSpecification</a></b>
+</p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+			<p>Specification attributes are managed using <b>SimMeshSpecification</b> object:</p>
+			<ul>
+				<li>Geometric attribute (supports)</li>
+			</ul>
+			<p>Other attributes are managed using (GetAttribute, SetAttribute):
+			</p>
+			<ul>
+				<li><b>Offset</b>: <b>double</b> valuated to the total thickness 
+				of the boundary layers </li>
+				<li><b>TetsOnly</b>: <b>int</b> valuated to
+				<ul>
+					<li><b>1</b>: to get wedges and pyramids in the boundary layers 
+					(default)</li>
+					<li><b>2</b>: to get tetrahedra only in the boundary layers</li>
+				</ul>
+				</li>
+				<li><b>Type</b>: <b>int</b> valuated to
+				<ul>
+					<li><b>1</b>: to get an uniform distribution (default)</li>
+					<li><b>2</b>: to get an arithmetic distribution</li>
+					<li><b>3</b>: to get a geometric distribution</li>
+				</ul>
+				</li>
+				<li><b>NbElementsValue</b>: <b>int</b> valuated to the number of 
+				expected boundary layers</li>
+				<li><b>RatioValue</b>: <b>double</b> valuated to the expected ratio 
+				of thicknesses between the first and last boundary layers</li>
+				<li><b>Symmetry</b>: <b>int</b> valuated to
+				<ul>
+					<li><b>1</b>: to get a standard distribution (default)</li>
+					<li><b>2</b>: to get a symmetric distribution </li>
+				</ul>
+				</li>
+			</ul>
+			The <b>RatioValue</b> and <b>Symmetry</b> attributes are only taken 
+			into account if <b>Type</b> is set to <b>2</b> or <b>3</b>.
+		</td>
+		<td class="fill1">
+			<p><b>Description</b>: This specification is used to create boundary 
+			layers only on a given set of faces. </p>
+			<p>It can be used to override the global specification locally.</p>
+		</td>
+	</tr>
+</table>
+<p><b><a name="CATFmtExcludedBoundaryLayerSpecification">CATFmtExcludedBoundaryLayerSpecification</a></b> 
+(only available starting from 3DEXPERIENCE 2015x FD01) </p>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+			<p>Specification attributes are managed using <b>
+			SimMeshSpecification</b> object.</p>
+			<ul><li>Only geometric attribute (supports)</li></ul>
+		</td>
+		<td class="fill2">
+			<p><b>Description</b>: This specification is used to prevent the creation 
+			of boundary layers on its support faces. </p>
+			<p>This is particularly useful when boundary layers are needed everywhere 
+			(they can be applied through Global Mesh Specifications) except in a 
+			handful of locations. </p>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="History"></a>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [October 2014]</td>
+		<td>Document created</td>
+	</tr>
+</table>
+
+<script type="text/javascript">insertCopyright();</script>
+</body>
+
+</html>

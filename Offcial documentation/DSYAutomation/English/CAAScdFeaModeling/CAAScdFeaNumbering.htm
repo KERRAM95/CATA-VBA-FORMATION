@@ -1,0 +1,253 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating Numbering Specifications</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Creating Numbering Specifications</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This use case primarily focuses on the 
+					methodology to create nodes and elements numbering specifications for an assembly.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					Note that:<ul>
+						<li>You should first launch CATIA and import the
+						<code><div class=vb_sample_data>CAAScdFeaAssemblyForNumbering.3dxml</div></code> file 
+						supplied in the folder <code>
+						InstallRootFolder\CAADoc\Doc\English\CAAScdFeaModeling\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder 
+						where the API CD-ROM is installed.</li>
+						</ul>
+					<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdFeaNumberingSource.htm">
+					CAAScdFeaNumberingSource.htm</a></span></p> 
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in eleven steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the active editor</a></li>
+			<li><a href="#Step2">Retrieves the root product</a></li>
+			<li><a href="#Step3">Retrieves the assembly FEM Rep</a></li>
+			<li><a href="#Step4">Creates global numbering specifications</a></li>
+			<li><a href="#Step5">Creates a link between the assembly FEM and the first occurrence FEM</a></li>
+			<li><a href="#Step6">Sets numbering offsets</a></li>
+			<li><a href="#Step7">Retrieves the mesh part of the first occurrence FEM</a></li>
+            <li><a href="#Step8">Creates mesh part numbering specifications</a></li>
+			<li><a href="#Step9">Retrieves the group of the first occurrence FEM</a></li>
+            <li><a href="#Step10">Creates group numbering specifications</a></li>
+            <li><a href="#Step11">Updates the assembly FEM Rep</a></li>
+            <li><a href="#Step12">Retrieves the numbering labels</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the active editor</strong></p>
+			<p>As a first step, the UC retrieves the active editor. </p>
+<pre class="code">... 
+<span class="keyword">Dim</span> MyEditor <span class="keyword">As</span> Editor
+<span class="keyword">Set</span> MyEditor = CATIA.ActiveEditor
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves the root product</strong></p>
+			<p>In this step, the UC retrieves the root product from the active editor.</p>
+<pre class="code"> ...
+<span class="keyword">Dim</span> MyRootOcc <span class="keyword">As</span> VPMRootOccurrence
+<span class="keyword">Set</span> MyRootOcc = MyEditor.ActiveObject
+
+<span class="keyword">Dim</span> MyRootProduct <span class="keyword">As</span> VPMReference
+<span class="keyword">Set</span> MyRootProduct = MyRootOcc.PLMEntity
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves the assembly FEM Rep</strong></p>
+			<p>In this step, the UC retrieves the FEM Rep of the assembly.</p>
+<pre class="code"> ...
+<span class="keyword">Dim</span> MyProductService <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> MyProductService = MyEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> MyFEMRoot <span class="keyword">As</span> SimFemRoot
+<span class="keyword">For Each</span> MyEntity <span class="keyword">In</span> MyProductService.EditedContent
+  <span class="keyword">Dim</span> MyRef <span class="keyword">As</span> VPMReference
+  <span class="keyword">Set</span> MyRef = MyEntity
+
+  <span class="keyword">Dim</span> MyReps <span class="keyword">As</span> VPMRepInstances
+  <span class="keyword">Set</span> MyReps = MyRef.RepInstances
+
+  <span class="keyword">For Each</span> MyRep <span class="keyword">In</span> MyReps
+    <span class="keyword">Dim</span> MyRepRef <span class="keyword">As</span> VPMRepReference
+    <span class="keyword">Set</span> MyRepRef = MyRep.ReferenceInstanceOf
+    <span class="keyword">Dim</span> attr <span class="keyword">As</span> <span class="keyword">String</span>
+    attr = MyRepRef.GetAttributeValue(&quot;V_discipline&quot;)
+
+    <span class="keyword">If</span> (attr = &quot;FEM&quot;) <span class="keyword">Then</span>
+      <span class="keyword">Set</span> MyFEMRoot = MyRepRef.GetItem(&quot;SimFemRoot&quot;)
+    <span class="keyword">End If</span>
+  <span class="keyword">Next</span>
+<span class="keyword">Next</span>
+...</pre>			
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Creates global numbering specifications</strong></p>
+			<p>In this step, the UC creates global nodes and elements numbering specifications for the assembly.</p>
+<pre class="code"> ...
+<span class="keyword">Dim</span> MyNumberingEntity <span class="keyword">As</span> SimNumbering
+<span class="keyword">Set</span> MyNumberingEntity = MyFEMRoot.GetItem(&quot;SimNumbering&quot;)
+MyNumberingEntity.SetAttributeValue &quot;NodesLowerBoundValue&quot;, 1
+MyNumberingEntity.SetAttributeValue &quot;NodesUpperBoundValue&quot;, 1000000
+MyNumberingEntity.SetAttributeValue &quot;ElementsLowerBoundValue&quot;, 1
+MyNumberingEntity.SetAttributeValue &quot;ElementsUpperBoundValue&quot;, 2000000
+...</pre>			
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Creates a link between the assembly FEM and the first occurrence FEM</strong></p>
+			<p>In this step, the UC retrieves the FEM Rep which is aggregated by the first product occurrence. Then the UC creates a path element that will be used to create the link between the retrieved FEM Rep and the assembly FEM Rep.</p>
+<pre class="code"> ...
+<span class="keyword">Dim</span> MyRootOccurrences <span class="keyword">As</span> VPMOccurrences
+<span class="keyword">Set</span> MyRootOccurrences = MyRootOcc.Occurrences
+<span class="keyword">Dim</span> MyOccurrence <span class="keyword">As</span> VPMOccurrence
+<span class="keyword">Set</span> MyOccurrence = MyRootOccurrences.Item(1)
+
+<span class="keyword">Dim</span> MyRepInstances <span class="keyword">As</span> VPMRepInstances
+<span class="keyword">Set</span> MyRepInstances = MyOccurrence.InstanceOccurrenceOf.ReferenceInstanceOf.RepInstances
+
+<span class="keyword">Dim</span> MyFirstFEMRoot <span class="keyword">As</span> SimFemRoot
+<span class="keyword">Dim</span> MyFirstLink <span class="keyword">As</span> AnyObject
+<span class="keyword">Dim</span> MyFirstFEMRepManagerLink <span class="keyword">As</span> AnyObject
+<span class="keyword">For Each</span> MyRep <span class="keyword">In</span> MyRepInstances
+  <span class="keyword">Set</span> MyRepRef = MyRep.ReferenceInstanceOf
+  attr = MyRepRef.GetAttributeValue(&quot;V_discipline&quot;)
+  <span class="keyword">If</span> (attr = &quot;FEM&quot;) <span class="keyword">Then</span>
+    <span class="keyword">Set</span> MyFirstFEMRoot = MyRepRef.GetItem(&quot;SimFemRoot&quot;)
+    <span class="keyword">Set</span> MyFirstLink = MyProductService.ComposeLink(MyOccurrence, MyRep, <span class="keyword">Nothing</span>)
+    <span class="keyword">Set</span> MyFirstFEMRepManagerLink = MyProductService.ComposeLink(MyOccurrence, MyRep, MyFirstFEMRoot)
+  <span class="keyword">End If</span>
+<span class="keyword">Next</span>
+...</pre>
+			</li>
+			<li>	
+			<p><strong><a name="Step6"></a>Sets numbering offsets</strong></p>
+			<p>In this step, the UC sets nodes and elements numbering offsets of the first occurence FEM</p>
+<pre class="code"> ...
+MyFEMRoot.SetNumberingOffsetValue simMeshNodeEntity, MyFirstLink, 500000
+MyFEMRoot.SetNumberingOffsetValue simMeshElementEntity, MyFirstLink, 600000
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Retrieves the mesh part of the first occurrence FEM</strong></p>
+			<p>In this step, the UC retrieves the mesh part of the first occurrence FEM.</p>
+<pre class="code"> ...
+<span class="keyword">Dim</span> MyMeshSet <span class="keyword">As</span> SimMeshSet
+<span class="keyword">Set</span> MyMeshSet = MyFirstFEMRoot.GetSet(&quot;SimNodesElements&quot;)
+<span class="keyword">Dim</span> MyMeshParts <span class="keyword">As</span> SimMeshParts
+<span class="keyword">Set</span> MyMeshParts = MyMeshSet.MeshParts
+<span class="keyword">Dim</span> MyMeshPart <span class="keyword">As</span> SimMeshPart
+<span class="keyword">Set</span> MyMeshPart = MyMeshParts.Item(1)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Creates mesh part numbering specifications</strong></p>
+			<p>In this step, the UC creates nodes and elements numbering specifications for the mesh part.</p>
+<pre class="code"> ...
+<span class="keyword">Set</span> MyNumberingEntity = MyMeshPart.GetItem(&quot;SimNumbering&quot;)
+MyNumberingEntity.SetAttributeValue &quot;NodesLowerBoundValue&quot;, 100001
+MyNumberingEntity.SetAttributeValue &quot;NodesUpperBoundValue&quot;, 102000
+MyNumberingEntity.SetAttributeValue &quot;ElementsLowerBoundValue&quot;, 103001
+MyNumberingEntity.SetAttributeValue &quot;ElementsUpperBoundValue&quot;, 105000
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step9"></a>Retrieves the group of the first occurrence FEM</strong></p>
+			<p>In this step, the UC retrieves the group of the first occurrence FEM.</p>
+<pre class="code"> ...
+<span class="keyword">Dim</span> MyGroups <span class="keyword">As</span> SimGroups
+<span class="keyword">Set</span> MyGroups = MyFirstFEMRoot.GetSet(&quot;SimGroups&quot;)
+<span class="keyword">Dim</span> MyNodeGroup <span class="keyword">As</span> SimGroup
+<span class="keyword">Dim</span> MyElementGroup <span class="keyword">As</span> SimGroup
+<span class="keyword">Set</span> MyNodeGroup = MyGroups.Item(1)
+<span class="keyword">Set</span> MyElementGroup = MyGroups.Item(2)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step10"></a>Creates group numbering specifications</strong></p>
+			<p>In this step, the UC creates nodes numbering specifications for the group.</p>
+<pre class="code"> ...
+<span class="keyword">Set</span> MyNumberingEntity = MyNodeGroup.GetItem(&quot;SimNumbering&quot;)
+MyNumberingEntity.SetAttributeValue &quot;NodesLowerBoundValue&quot;, 105101
+MyNumberingEntity.SetAttributeValue &quot;NodesUpperBoundValue&quot;, 105200
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step11"></a>Updates the assembly FEM Rep</strong></p>
+			<p>In this step, the UC updates the assembly FEM Rep.</p>
+<pre class="code"> ...			
+MyFEMRoot.Update
+...</pre>
+            </li>
+			<li>
+			<p><strong><a name="Step12"></a>Retrieves the numbering labels</strong></p>
+			<p>In this step, the UC retrieves the numbering labels of the FEM Rep, the mesh part and the group.</p>
+<pre class="code"> ...
+nodeLabels = MyFEMRoot.GetNumberingLabelsFromPath(simMeshNodeEntity, MyFirstFEMRepManagerLink)
+elementLabels = MyFEMRoot.GetNumberingLabelsFromPath(simMeshElementEntity, MyFirstFEMRepManagerLink)
+			
+nodeLabels = MyFirstFEMRoot.GetNumberingLabels(simMeshNodeEntity)
+elementLabels = MyFirstFEMRoot.GetNumberingLabels(simMeshElementEntity)
+
+nodeLabels = MyMeshPart.GetNumberingLabels(simMeshNodeEntity)
+elementLabels = MyMeshPart.GetNumberingLabels(simMeshElementEntity)
+
+nodeLabels = MyNodeGroup.GetNumberingLabels(simMeshNodeEntity)
+elementLabels = MyElementGroup.GetNumberingLabels(simMeshElementEntity)
+...</pre>
+            </li>
+	</ol>
+	</td>
+	</tr>
+</table>
+
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>
+
+

@@ -1,0 +1,319 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcContacts.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+
+<pre class=>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample creates and initializes contact features.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'          1- Retrieving the active Product 										</span>
+<span class="comment">'          2- Initializing and Creating the Simulation PLM Object 								</span>
+<span class="comment">'          3- Retrieving the Features Set 		</span>
+<span class="comment">'          4- Creating and Initializing a Contact property feature								</span>
+<span class="comment">'          5- Creating a Surface-based Contact feature 					</span>
+<span class="comment">'          6- Creating a General Contact feature						</span>
+<span class="comment">'============================================================================================</span>
+
+<span class="keyword">Sub </span>CATMain()
+	
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 1- Retrieving the active Product</span>
+    <span class="comment">'=====================================================================</span>
+    
+<span class="keyword">	Dim </span>myEditor<span class="keyword"> As </span>Editor
+<span class="keyword">	Set </span>myEditor = CATIA.ActiveEditor
+	
+<span class="keyword">	Dim </span>myProdService<span class="keyword"> As </span>PLMProductService
+<span class="keyword">	Set </span>myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+	
+<span class="keyword">	Dim </span>myEntities<span class="keyword"> As </span>PLMEntities
+<span class="keyword">	Set </span>myEntities = myProdService.EditedContent
+	
+<span class="keyword">	Dim </span>myModel<span class="keyword"> As </span>VPMReference
+<span class="keyword">	Set </span>myModel = myEntities.Item(1)
+	
+	<span class="comment">'Retrieving the parts</span>
+	<span class="comment">'--------------------</span>
+	
+<span class="keyword">	Dim </span>myProductInstance<span class="keyword"> As </span>VPMInstance
+<span class="keyword">	Dim </span>myProductInstanceRef<span class="keyword"> as </span>VPMReference
+<span class="keyword">	Dim </span>myPartInstance<span class="keyword"> As </span>VPMRepInstance
+<span class="keyword">	Dim </span>myPartInstanceRef<span class="keyword"> As </span>VPMRepReference
+<span class="keyword">	Dim </span>myPart<span class="keyword"> As </span>Part
+<span class="keyword">	For </span>Each myProductInstance<span class="keyword"> in </span>myModel.Instances
+<span class="keyword">		Set </span>myProductInstanceRef = myProductInstance.ReferenceInstanceOf
+<span class="keyword">		For </span>Each myPartInstance<span class="keyword"> in </span>myProductInstanceRef.RepInstances
+<span class="keyword">			Set </span>myPartInstanceRef = myPartInstance.ReferenceInstanceOf
+<span class="keyword">			Set </span>myPart = myPartInstanceRef.GetItem(&quot;Part&quot;)
+<span class="keyword">		Next</span>
+<span class="keyword">	Next</span>
+	
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 2- Initializing and Creating the Simulation PLM Object</span>
+    <span class="comment">'=====================================================================</span>
+	
+	<span class="comment">' Retrieving the Publications</span>
+	<span class="comment">'---------------------------</span>
+	
+<span class="keyword">	Dim </span>myPublications <span class="keyword"> As </span>VPMPublications
+<span class="keyword">	Set </span>myPublications  = myModel.Publications
+	
+<span class="keyword">	Dim </span>mySupport<span class="keyword"> As </span>VPMPublication
+<span class="keyword">	Set </span>mySupport = myPublications.GetItem(&quot;Pump_Housing&quot;)
+	
+<span class="keyword">	Dim </span>myContactSurface1<span class="keyword"> As </span>VPMPublication
+<span class="keyword">	Set </span>myContactSurface1 = myPublications.GetItem(&quot;Pump_Housing_Contact_Face&quot;)
+
+<span class="keyword">	Dim </span>myContactSurface2<span class="keyword"> As </span>VPMPublication
+<span class="keyword">	Set </span>myContactSurface2 = myPublications.GetItem(&quot;Cover_Contact_Face&quot;)
+	
+	<span class="comment">' Composing links</span>
+	<span class="comment">'---------------</span>
+	
+<span class="keyword">	Dim </span>myRootOccurrence<span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">	Set </span>myRootOccurrence = myProdService.RootOccurrence
+	
+<span class="keyword">	Dim </span>myRepInstance<span class="keyword"> As </span>VPMRepInstance
+<span class="keyword">	Set </span>myRepInstance = Nothing <span class="comment">' Because we use publications</span>
+	
+<span class="keyword">	Dim </span>myLinkToSupport<span class="keyword"> As </span>AnyObject
+<span class="keyword">	Set </span>myLinkToSupport = myProdService.ComposeLink(myRootOccurrence, myRepInstance, mySupport)
+	
+<span class="keyword">	Dim </span>myLinkToContactSurface1<span class="keyword"> As </span>AnyObject
+<span class="keyword">	Set </span>myLinkToContactSurface1 = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myContactSurface1)
+	
+<span class="keyword">	Dim </span>myLinkToContactSurface2<span class="keyword"> As </span>AnyObject
+<span class="keyword">	Set </span>myLinkToContactSurface2 = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myContactSurface2)
+	
+	<span class="comment">' Creating the FEM Rep and retrieving its Rep Manager</span>
+	<span class="comment">'----------------------------------------------------</span>
+	
+<span class="keyword">	Dim </span>myPrdRepFactory<span class="keyword"> As </span>SimPrdRepFactory
+<span class="keyword">	Set </span>myPrdRepFactory =myModel.GetItem(&quot;SimPrdRepFactory&quot;)
+	
+<span class="keyword">	Dim </span>myRepRef<span class="keyword"> As </span>VPMRepReference
+<span class="keyword">	Set </span>myRepRef = myPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+	
+<span class="keyword">	Dim </span>myFEMRoot<span class="keyword"> As </span>SimFemRoot
+<span class="keyword">	Set </span>myFEMRoot = myRepRef.GetItem(&quot;SimFemRoot&quot;)
+	
+	myFEMRoot.AddAssociatedRep mySupport
+
+	<span class="comment">' Creating a Mesh on a Part</span>
+	<span class="comment">'--------------------------</span>
+	
+<span class="keyword">	Dim </span>myMeshSet<span class="keyword"> As </span>SimMeshSet
+<span class="keyword">	Set </span>myMeshSet = myFEMRoot.GetSet(&quot;SimNodesElements&quot;)
+	
+<span class="keyword">	Dim </span>myMeshParts<span class="keyword"> As </span>SimMeshParts
+<span class="keyword">	Set </span>myMeshParts = myMeshSet.MeshParts
+
+<span class="keyword">	Dim </span>myMeshPart<span class="keyword"> As </span>SimMeshPart
+<span class="keyword">	Set </span>myMeshPart = myMeshParts.Add(&quot;CATFmtOctree3DMesher&quot;)
+
+	myMeshPart.AddSupport mySupport
+	
+	myMeshPart.SetAttributeValue &quot;Mesh&quot;, &quot;ElementOrder&quot;, 1
+	myMeshPart.SetAttributeValue &quot;Mesh&quot;, &quot;SizeValue&quot;, 4.0
+	
+	myMeshSet.Update
+
+	<span class="comment">' Creating a Property</span>
+	<span class="comment">'--------------------</span>
+	
+<span class="keyword">	Dim </span>myPropertiesSet<span class="keyword"> As </span>SimProperties
+<span class="keyword">	Set </span>myPropertiesSet = myFEMRoot.GetSet(&quot;SimProperties&quot;)
+
+<span class="keyword">	Dim </span>mySolidSection<span class="keyword"> As </span>SimSolidSection
+<span class="keyword">	Set </span>mySolidSection = myPropertiesSet.Add(&quot;SimSolidSection&quot;)
+
+<span class="keyword">	Dim </span>myLinkAccess<span class="keyword"> As </span>SimLinkAccess
+<span class="keyword">	Set </span>myLinkAccess = mySolidSection.GetItem(&quot;SimLinkAccess&quot;)
+	myLinkAccess.AddLink &quot;MainSupport&quot;, myLinkToSupport
+	
+	mySolidSection.MaterialBehaviorByName = &quot;Behavior.1&quot; 
+	
+	<span class="comment">' Initializing and Creating the Simulation PLM Object</span>
+	<span class="comment">'----------------------------------------------------</span>
+	
+<span class="keyword">	Dim </span>myInitService<span class="keyword"> As </span>SimInitializationService
+<span class="keyword">	Set </span>myInitService = CATIA.GetSessionService(&quot;SimInitializationService&quot;)
+	
+	myInitService.SetSimulationInitialization "SimMechanicalScenarioCreation", "SimStructural"
+
+<span class="keyword">	Dim </span>mySimPLMService<span class="keyword"> As </span>SIMPLMService
+<span class="keyword">	Set </span>mySimPLMService = CATIA.GetSessionService(&quot;SIMPLMService&quot;)
+	
+<span class="keyword">	Dim </span>mySimulationReference<span class="keyword"> As </span>SimulationReference
+	mySimPLMService.PLMCreate &quot;NewSimObject&quot;, &quot;SMAFeaPLMNewSimu&quot;, myModel, mySimulationReference, myEditor
+
+	<span class="comment">' Retrieving the Scenario Manager</span>
+	<span class="comment">'--------------------------------</span>
+    
+<span class="keyword">	Dim </span>myScenarioManager<span class="keyword"> As </span>SimScenarioManager
+<span class="keyword">	Set </span>myScenarioManager = mySimulationReference.GetItem(&quot;SimScenarioManager&quot;)
+
+	<span class="comment">' Associating the Structural Analysis Case with the FEM rep</span>
+	<span class="comment">'----------------------------------------------------------</span>
+    
+<span class="keyword">	Dim </span>myAnalysisCases<span class="keyword"> As </span>SimAnalysisCases
+<span class="keyword">	Set </span>myAnalysisCases = myScenarioManager.AnalysisCases
+	
+<span class="keyword">	Dim </span>myAnalysisCase<span class="keyword"> As </span>SimAnalysisCase
+<span class="keyword">	Set </span>myAnalysisCase = myAnalysisCases.Item(1)
+	
+	myAnalysisCase.FEMRep = myFEMRoot 
+
+	<span class="comment">' Creating and initializing the static step</span>
+	<span class="comment">'------------------------------------------</span>
+    
+<span class="keyword">	Dim </span>mySteps<span class="keyword"> As </span>SimSteps
+<span class="keyword">	Set </span>mySteps = myAnalysisCase.Steps
+	
+<span class="keyword">	Dim </span>myStaticStep<span class="keyword"> As </span>SimStaticStep
+<span class="keyword">	Set </span>myStaticStep = mySteps.Add(&quot;SimStaticStep&quot;)
+	
+	myAnalysisCase.CreateDefaultElementTypeAssignment
+	
+	myStaticStep.CreateAnalysisDefaultOutputRequests
+	myStaticStep.MaximumIncrements = 1000
+
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 3- Retrieving the Features Set</span>
+    <span class="comment">'=====================================================================</span>
+
+	<span class="comment">' Retrieving the features and features states sets</span>
+	<span class="comment">'-------------------------------------------------</span>
+    
+<span class="keyword">	Dim </span>myFeatures<span class="keyword"> As </span>SimFeatures
+<span class="keyword">	Set </span>myFeatures = myAnalysisCase.Features
+
+<span class="keyword">	Dim </span>myFeatureStates<span class="keyword"> As </span>SimFeatureStates
+<span class="keyword">	Set </span>myFeatureStates = myStaticStep.FeatureStates
+
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 4- Creating and Initializing a Contact property feature</span>
+    <span class="comment">'=====================================================================</span>
+	
+	<span class="comment">' Creating a contact property</span>
+	<span class="comment">'----------------------------</span>
+
+	<span class="keyword">Dim</span> mySurfaceBasedContactProperty <span class="keyword">As</span> SimSurfaceBasedContactProperty
+	<span class="keyword">Set</span> mySurfaceBasedContactProperty = myFeatures.Add(&quot;SimSurfaceBasedContactProperty&quot;)
+
+	<span class="comment">' Adding a tangential behavior</span>
+	<span class="comment">'-----------------------------</span>
+
+	mySurfaceBasedContactProperty.TangentialBehaviorFlag = TRUE
+
+	<span class="keyword">Dim</span> myTangentialBehavior <span class="keyword">As</span> SimTangentialBehavior
+	<span class="keyword">Set</span> myTangentialBehavior = mySurfaceBasedContactProperty.TangentialBehavior
+
+	myTangentialBehavior.FrictionType = SimTangentialBehaviorCoulomb
+
+	<span class="keyword">Dim</span> myFrictionColumn <span class="keyword">As</span> SimTableColumn
+	<span class="keyword">Set</span> myFrictionColumn = myTangentialBehavior.GetTableColumn(SimTangentialBehaviorFriction)
+
+	myFrictionColumn.SetCellData 1, 0.33
+	myFrictionColumn.SetCellData 2, 0.66
+
+	myTangentialBehavior.ContactPressureDependentFlag = TRUE
+
+	<span class="keyword">Dim</span> myContactPressureColumn <span class="keyword">As</span> SimTableColumn
+	<span class="keyword">Set</span> myContactPressureColumn = myTangentialBehavior.GetTableColumn(SimTangentialBehaviorContactPressure)
+
+	myContactPressureColumn.SetCellData 1, 3
+	myContactPressureColumn.SetCellData 2, 4
+
+	<span class="comment">' Adding a normal behavior</span>
+	<span class="comment">'-------------------------</span>
+
+	mySurfaceBasedContactProperty.NormalBehaviorFlag = TRUE
+
+	<span class="keyword">Dim</span> myNormalBehavior <span class="keyword">As</span> SimNormalBehavior
+	<span class="keyword">Set</span> myNormalBehavior = mySurfaceBasedContactProperty.NormalBehavior
+
+	myNormalBehavior.PressureOverClosureType = SimNormalBehaviorHard
+
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 5- Creating a Surface-based Contact feature</span>
+    <span class="comment">'=====================================================================</span>
+    
+	<span class="comment">' Creating a Surface-based contact feature</span>
+	<span class="comment">'------------------------------------------</span>
+
+	<span class="keyword">Dim</span> mySurfaceBasedContact <span class="keyword">As</span> SimSurfaceBasedContact
+	<span class="keyword">Set</span> mySurfaceBasedContact = myFeatures.Add(&quot;SimSurfaceBasedContact&quot;)
+
+	myFeatureStates.CreateFeatureState mySurfaceBasedContact
+
+	<span class="comment">' Setting attributes</span>
+	<span class="comment">'-------------------</span>
+
+	<span class="keyword">Dim</span> myMasterSurface <span class="keyword">As</span> SimLinkAccess
+	<span class="keyword">Set</span> myMasterSurface = mySurfaceBasedContact.MasterSurface
+	myMasterSurface.AddLink &quot;MainSupport&quot;, myLinkToContactSurface1
+
+	<span class="keyword">Dim</span> mySlaveSurface <span class="keyword">As</span> SimLinkAccess
+	<span class="keyword">Set</span> mySlaveSurface = mySurfaceBasedContact.SlaveSurface
+	mySlaveSurface.AddLink &quot;MainSupport&quot;, myLinkToContactSurface2
+
+	mySurfaceBasedContact.ContactProperty = mySurfaceBasedContactProperty
+	
+    <span class="comment">'=====================================================================</span>
+    <span class="comment">' 6- Creating a General Contact feature</span>
+    <span class="comment">'=====================================================================</span>
+    
+	<span class="comment">' Creating a General contact feature</span>
+	<span class="comment">'------------------------------------</span>
+
+	<span class="keyword">Dim</span> mySimGeneralContact <span class="keyword">As</span> SimGeneralContact
+	<span class="keyword">Set</span> mySimGeneralContact = myFeatures.Add(&quot;SimGeneralContact&quot;)
+
+	myFeatureStates.CreateFeatureState mySimGeneralContact
+
+	<span class="comment">' Setting attributes</span>
+	<span class="comment">'-------------------</span>
+
+	mySimGeneralContact.SpecifyExcludedSurfacesFlag = TRUE
+
+	<span class="keyword">Dim</span> mySurfaceExclusions <span class="keyword">As</span> SimSurfaceExclusions
+	<span class="keyword">Set</span> mySurfaceExclusions = mySimGeneralContact.SurfaceExclusions
+
+	<span class="keyword">Dim</span> mySurfaceExclusion <span class="keyword">As</span> SimSurfaceToSurfacePair
+	<span class="keyword">Set</span> mySurfaceExclusion = mySurfaceExclusions.Add()
+
+	<span class="keyword">Dim</span> myFirstSurface <span class="keyword">As</span> SimLinkAccess
+	<span class="keyword">Set</span> myFirstSurface = mySurfaceExclusion.FirstSurface
+	myFirstSurface.AddLink &quot;MainSupport&quot;, myLinkToContactSurface1
+
+	<span class="keyword">Dim</span> mySecondSurface <span class="keyword">As</span> SimLinkAccess
+	<span class="keyword">Set</span> mySecondSurface = mySurfaceExclusion.SecondSurface
+	mySecondSurface.AddLink &quot;MainSupport&quot;, myLinkToContactSurface2
+
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

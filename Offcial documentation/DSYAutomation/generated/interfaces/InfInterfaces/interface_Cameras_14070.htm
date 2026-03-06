@@ -1,0 +1,161 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>InfInterfaces Cameras (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../InfInterfaces.htm" href="../InfInterfaces.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "InfInterfaces";	}
+		function getCurrentObjectName() { 
+ 	return "Cameras"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> Cameras<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_Cameras_14070','Cameras','0');</script>
+<section id='maindesc'>
+<b><i> A collection of all the Camera objects currently attached to a
+ Document object.</i></b><br>
+
+ A camera can be created using the <script type="text/javascript"> activateLinkAnchor('CATIAViewer','NewCamera','CATIAViewer.NewCamera') </script> method of the 
+<script type="text/javascript"> activateLinkAnchor('CATIAViewer','','CATIAViewer') </script> object. The first seventh cameras of the collection are 
+<script type="text/javascript"> activateLinkAnchor('CATIACamera3D','','CATIACamera3D') </script> objects and cannot be modified or removed.
+ They can just be retrieved and used "as is". They store the following
+ viewpoints whose sight direction is always toward the 3D-axis system
+ origin:
+ <dl>  
+   <dt>* iso
+   <dd>The origin is on a line with (1,1,1) as components with
+       positive coordinates
+   <dt>* front
+   <dd>The origin is on the x axis with a positive x coordinate
+   <dt>* back
+   <dd>The origin is on the x axis with a negative x coordinate
+   <dt>* left
+   <dd>The origin is on the y axis with a positive y coordinate
+   <dt>* right
+   <dd>The origin is on the y axis with a negative y coordinate
+   <dt>* top
+   <dd>The origin is on the z axis with a positive z coordinate
+   <dt>* bottom
+   <dd>The origin is on the z axis with a negative z coordinate
+ </dl>  
+ <p>The cameras of the Cameras collection are available using the
+ dialog box displayed by clicking the View->Defined Views menu.
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#Item"><b>Item</b></a>
+</td><td  id='tdright'>  Returns a camera using its index or its name from the Cameras collection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Remove"><b>Remove</b></a>
+</td><td  id='tdright'>  Removes a camera from the Cameras collection.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="Item"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Item</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('Camera','Camera')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns a camera using its index or its name from the Cameras collection.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd>   The index or the name of the camera to retrieve from
+   the collection of cameras.
+   As a numerics, this index is the rank of the camera
+   in the collection.
+   The index of the first camera in the collection is 1, and
+   the index of the last camera is Count.
+   As a string, it is the name you assigned to the camera using
+   the 
+<script type="text/javascript"> activateLinkAnchor('CATIABase','Name','CATIABase.Name') </script> property. 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The retrieved camera <! @sample >
+ <dt><b>Example:</b>
+ <dd>
+ This example retrieves in <tt>ThisCamera</tt> the ninth camera,
+ and in <tt>ThatCamera</tt> the camera named
+ <tt>MyCamera</tt> in the camera collection of the active document. 
+ <pre>
+ Dim ThisCamera As Camera
+ Set ThisCamera = CATIA.ActiveDocument.Cameras.<font color="red">Item</font>(9)
+ Dim ThatCamera As Camera
+ Set ThatCamera = CATIA.ActiveDocument.Cameras.<font color="red">Item</font>("MyCamera")
+ </pre>
+ </ dd>
+</dl>
+</dd>
+<a id="Remove"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Remove</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Removes a camera from the Cameras collection.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd>   The index or the name of the camera to remove from
+   the collection of cameras.
+   As a numerics, this index is the rank of the camera
+   in the collection.
+   The index of the first camera in the collection is 1, and
+   the index of the last camera is Count.
+   As a string, it is the name you assigned to the camera using
+   the 
+<script type="text/javascript"> activateLinkAnchor('CATIABase','Name','CATIABase.Name') </script> property.   You cannot remove the first seventh cameras in the collection.
+ </dl>
+ <dt><b>Example:</b>
+ <dd>
+ The following example removes the tenth camera and the camera named
+ <tt>CameraToBeRemoved</tt> in the camera collection
+ of the active document.
+ <pre>
+ CATIA.ActiveDocument.Cameras.<font color="red">Remove</font>(10)
+ CATIA.ActiveDocument.Cameras.<font color="red">Remove</font>("CameraToBeRemoved")
+ </pre>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

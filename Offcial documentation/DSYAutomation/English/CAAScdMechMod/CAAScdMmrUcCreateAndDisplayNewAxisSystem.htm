@@ -1,0 +1,303 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating and Displaying New Axis System</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating and Displaying New Axis System</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates about creating new Axis System in a 3DShape.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro</span>:
+						<a href="CAAScdMmrUcCreateAndDisplayNewAxisSystemSource.htm">CAAScdMmrUcCreateAndDisplayNewAxisSystemSource.htm</a></p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrTocPart.htm">Part Object Model Map</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in eight steps:</p>
+		<ol>
+			<li><a href="#Step1">Creates a 3DShape</a></li>
+			<li><a href="#Step2">Retrieves its Part Object</a></li>
+			<li><a href="#Step3">Retrieves its Axis System Collection</a></li>
+			<li><a href="#Step4">Creates a new Axis system</a></li>
+			<li><a href="#Step5">Sets the type of Axis system as per User's input</a></li>
+			<li><a href="#Step6">Retrieves and Displays Type of Axis System</a></li>
+			<li><a href="#Step7">Retrieves and Displays Origin co-ordinates of Axis 
+			System</a></li>
+			<li><a href="#Step8">Updates Part Object</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Creates a 3DShape</strong></p>
+			<p>As a first step, this UC creates a 3DShape thanks to the PLMNewService 
+			service in CATIA.</p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oPLMNewService <span class="keyword">As</span> PLMNewService
+    <span class="keyword">Set</span> oPLMNewService = CATIA.<strong>GetSessionService</strong>(&quot;PLMNewService&quot;)
+    
+    <span class="keyword">Dim</span> oEditor3DShape <span class="keyword">As</span> Editor
+    oPLMNewService.<strong>PLMCreate</strong> &quot;3DShape&quot;, oEditor3DShape
+...</pre>
+			
+			<p>The 3DShape is created
+			and edited through the 3D Shape editor , <code>oEditor3DShape.</code> 
+			For further information on Creating 3DShape, Please refer to
+			<a href="#References">[1] </a></p>
+			</li>
+			<li>
+			<p><a name="Step2"></a><strong>Retrieves its Part Object</strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+    <span class="keyword">Set</span> oPart = oEditor3DShape.<strong>ActiveObject</strong>   
+...</pre>
+			<p>The <em>ActiveObject</em> method of
+			3D Shape Editor, <code>oEditor3DShape </code>returns the
+			<a href="CAAMmrObjPart.htm">Part Object</a>, <code>oPart</code></p>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves its Axis System 
+			Collection</strong></p>
+			<pre class="code">...
+<span class="keyword">    Dim</span> oAxisSystems<span class="keyword"> As</span> <strong>AxisSystems</strong>
+<span class="keyword">    Set</span> oAxisSystems = oPart.<strong>AxisSystems</strong>
+..</pre>
+			<p>A call to <em>AxisSystems</em> method on Part returns the Axis System 
+			Collection object ,<code>oAxisSystems </code>containing the coordinate 
+			systems aggregated under the Part Object, <code>oPart</code>. </p>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Creates a new Axis system</strong>
+			</p>
+			<pre class="code">...
+<span class="keyword">    Dim</span> oAxisSystem 
+<span class="keyword">    Set</span> oAxisSystem = oAxisSystems.<strong>Add</strong>()
+...</pre>
+			<p>A call to <em>Add</em> method on the Axis System Collection creates 
+			a new Axis System and adds it to the Axis Systems Collection, <code>
+			oAxisSystems </code></p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Sets the type of Axis system 
+			as per User's input</strong></p>
+			<p>We prompt the user to give input value (0/1/2/3) for setting type 
+			of the newly created Axis System. </p>
+			<ul>
+				<li>Standard = 0 Specifies that the axis system is defined 
+				by an origin point and three axes.</li>
+				<li>AxisRotation = 1 Specifies that the axis system 
+				is defined by an origin point, and a rotation around one axis</li>
+				<li>EulerAngles = 2 Specifies that the axis system is 
+				defined by an origin point, and the three Euler angles</li>
+				<li>Explicit = 3 Specifies that the axis system is a 
+				datum</li>
+			</ul>
+			<p>It is interesting to note here that if the Type is not specified, 
+			the Axis System is created with the Standard(0) Type. Also the user 
+			can change the Axis System type as and when he requires.</p>
+			<pre class="code">...
+<span class="keyword">    Dim</span> iAxisSystemType <span class="keyword">As</span> Integer
+    iAxisSystemType = InputBox(&quot;Please enter the AxisSystem Type Value (0- Standard, 1- Axis rotation, 2- Euler angles, 3- Datum (explicit)) &quot;, &quot;Enter Axis System Type Value&quot;)
+...</pre>
+			<table>
+				<caption>Fig. 1: Prompting User to fill in Axis System Type</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdMmrUcCreateAndDisplayNewAxisSystem_image_2.jpg" width="363" height="152"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<pre class="code">...
+    oAxisSystem.<strong>Type</strong> = iAxisSystemType
+...</pre>
+			<p>The <code>Type </code>property on Axis System, <code>oAxisSystem
+			</code>sets the type of Axis system as per the user input value.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Retrieves and Displays Type 
+			of Axis System</strong></p>
+			<p>In this step, we retrieve Axis system type value (Enumerated value). 
+			This should be the same value which we have set in earlier step to Axis 
+			system object. According to this value we display the type.</p>
+			<p>please note that <code>Type </code>property is used for both purposes.
+			</p>
+			<pre class="code">...
+<span class="keyword">    Dim</span> oType
+    oType = oAxisSystem.<strong>Type</strong>
+     
+    If (0 = oType) Then
+        MsgBox &quot;Axis System type =  <strong>Standard</strong>&quot;
+         
+    ElseIf (1 = oType) Then
+        MsgBox &quot;Axis System type =  <strong>Axis rotation</strong>&quot;
+        
+    ElseIf (2 = oType) Then
+        MsgBox &quot;Axis System type =  <strong>Euler angles</strong>&quot;
+    
+    Else
+        MsgBox &quot;Axis System type = <strong>Datum</strong> (explicit)&quot;
+         
+    End If 
+...</pre>
+			<p>The <code>Type </code>property on Axis System, <code>oAxisSystem</code> 
+			returns the type of the Axis System.</p>
+			<p>The following fig shows the type of Axis system. This type is retrieved 
+			when user has given input value as 2 while creation.</p>
+			<table>
+				<caption>Fig. 2: Displaying Axis System Type</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdMmrUcCreateAndDisplayNewAxisSystem_image_4.jpg" width="186" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Retrieves and Displays Origin 
+			co-ordinates of Axis System </strong></p>
+			<pre class="code">...
+<span class="keyword">Dim</span> originCoord(2)
+oAxisSystem.<strong>GetOrigin</strong> originCoord
+
+<span class="keyword">Dim</span> X
+  X = originCoord(0)
+<span class="keyword">Dim</span> Y
+  Y = originCoord(1)
+<span class="keyword">Dim</span> Z
+  Z = originCoord(0)
+    
+MsgBox &quot; Origin X co-ordinate = &quot; &amp; X
+MsgBox &quot; Origin Y co-ordinate = &quot; &amp; Y
+MsgBox &quot; Origin Z co-ordinate = &quot; &amp; Z
+...</pre>
+			<p>A call to <em>GetOrigin</em> method on Axis System returns the coordinates 
+			X,Y,Z of the origin point of the Axis System, <code>oAxisSystem</code> 
+			.</p>
+			<p>Then we display each vale of co-ordinate (X,Y,Z) </p>
+			<table>
+				<caption>Fig. 3: Displaying X, Y and Z Coordinate values</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdMmrUcCreateAndDisplayNewAxisSystem_image_5.jpg" width="176" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>The specification (spec) tree in CATIA after adding the Axis System 
+			looks like the figure below</p>
+			<table>
+				<caption>Fig. 4: CATIA Spec tree after adding the Axis System to 
+				the 3DShape</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Specification Tree" src="CAAScdMmrUcCreateAndDisplayNewAxisSystem_image_out.jpg" width="208" height="326"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Updates Part Object</strong></p>
+			<pre class="code">...
+    oPart.<strong>Update</strong>
+<span class="keyword">End Sub</span></pre>
+			<p>Updates the Part Object, <code>oPart </code>result with respect to 
+			its specifications</p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[<a name="1"></a>1]</td>
+		<td>
+		<a href="../CAAScdMechMod/CAAScdMmrUcCreating3DShape.htm">Creating 
+		3DShape</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

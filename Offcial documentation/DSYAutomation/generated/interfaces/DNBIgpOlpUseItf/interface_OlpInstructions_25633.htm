@@ -1,0 +1,300 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpInstructions (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpInstructions"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpInstructions<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpInstructions_25633','OlpInstructions','0');</script>
+<section id='maindesc'>
+<b><i> Represents a list of instructions.</i></b><br>
+<BR>
+ <font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ Download or Upload command</font>.<BR>
+ The instructions are in execution order.
+ You must use the For Each instruction to loop 
+ through this collection. Random access via an "Item"
+ method is not available. "Count" is also not implemented
+ since this would be a time consuming function.
+ <dl>
+ <dt><b>Example: (VB.NET)</b>
+ <pre>
+ Dim Task As OlpProcedure
+ Dim Instructions As OlpInstructions = Task.Instructions
+ For Each Instruction As OlpInstruction In Instructions
+    'Do Something
+ Next
+ </pre>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#CreateInstruction"><b>CreateInstruction</b></a>
+</td><td  id='tdright'>  Creates a new instruction in this list of instructions.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateInstructionFromTemplate"><b>CreateInstructionFromTemplate</b></a>
+</td><td  id='tdright'>  Creates a new instruction from a template in this list of instructions.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateInstructionTypeString"><b>CreateInstructionTypeString</b></a>
+</td><td  id='tdright'>  Creates a new instruction in this list of instructions.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DeleteInstruction"><b>DeleteInstruction</b></a>
+</td><td  id='tdright'>  Deletes an instruction from this instruction list.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Item"><b>Item</b></a>
+</td><td  id='tdright'>  Retrieves a instruction by its index.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Next"><b>Next</b></a>
+</td><td  id='tdright'>  Returns the next instruction in the collection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Previous"><b>Previous</b></a>
+</td><td  id='tdright'>  Returns the previous instruction in the collection.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="CreateInstruction"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateInstruction</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpInstructionType','DELOlpInstructionType')</script> <span class='param'>iType</span>,<script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> <span class='param'>iRelativeInstruction</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iAfterInstruction</span>)</span> As <script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a new instruction in this list of instructions.<BR>
+		<ul>
+			<li>    If iRelativeInstruction is not NULL and iAfterInstruction is FALSE, the instruction is created before iRelativeInstruction.</li>
+			<li>    If iRelativeInstruction is not NULL and iAfterInstruction is TRUE, the instruction is created after iRelativeInstruction.</li>
+			<li>    If iRelativeInstruction is NULL and iAfterInstruction is FALSE, the instruction is created at the beginning.		</li>
+			<li>    If iRelativeInstruction is NULL and iAfterInstruction is TRUE, the instruction is created at the end.</li>
+		</ul>	
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd> The type of instruction to create
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRelativeInstruction</span></dt>
+   <dd> The new instruction will be created before or after this instruction.
+ This input can be either NULL or an instruction in this list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAfterInstruction</span></dt>
+   <dd> If true, the new instruction will be created after the iRelativeInstruction.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The new instruction
+ </ dd>
+</dl>
+</dd>
+<a id="CreateInstructionFromTemplate"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateInstructionFromTemplate</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iLibrary</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTemplate</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iSubType</span>,<script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> <span class='param'>iRelativeInstruction</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iAfterInstruction</span>)</span> As <script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a new instruction from a template in this list of instructions.<BR>
+		<ul>
+			<li>    If iRelativeInstruction is not NULL and iAfterInstruction is FALSE, the instruction is created before iRelativeInstruction.</li>
+			<li>    If iRelativeInstruction is not NULL and iAfterInstruction is TRUE, the instruction is created after iRelativeInstruction.</li>
+			<li>    If iRelativeInstruction is NULL and iAfterInstruction is FALSE, the instruction is created at the beginning.		</li>
+			<li>    If iRelativeInstruction is NULL and iAfterInstruction is TRUE, the instruction is created at the end.</li>
+		</ul>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLibrary</span></dt>
+   <dd> The name of the template library
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTemplate</span></dt>
+   <dd> The name of template
+ 
+ </ dd>
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd> The type of template
+ 
+ </ dd>
+    <dt><span class='paramitem'> iSubType</span></dt>
+   <dd> The subtype of template
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRelativeInstruction</span></dt>
+   <dd> The new instruction will be created before or after this instruction.
+ This input can be either NULL or an instruction in this list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAfterInstruction</span></dt>
+   <dd> If true, the new instruction will be created after the iRelativeInstruction.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The new instruction
+ </ dd>
+</dl>
+</dd>
+<a id="CreateInstructionTypeString"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateInstructionTypeString</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iType</span>,<script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> <span class='param'>iRelativeInstruction</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iAfterInstruction</span>)</span> As <script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a new instruction in this list of instructions.<BR>
+		<ul>
+			<li>    If iRelativeInstruction is not NULL and iAfterInstruction is FALSE, the instruction is created before iRelativeInstruction.</li>
+			<li>    If iRelativeInstruction is not NULL and iAfterInstruction is TRUE, the instruction is created after iRelativeInstruction.</li>
+			<li>    If iRelativeInstruction is NULL and iAfterInstruction is FALSE, the instruction is created at the beginning.		</li>
+			<li>    If iRelativeInstruction is NULL and iAfterInstruction is TRUE, the instruction is created at the end.</li>
+		</ul>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd> The string type of instruction to create.  The type is the same as the 
+<script type="text/javascript"> activateLinkAnchor('DELOlpInstructionType','','DELOlpInstructionType') </script> enum but without the delOlp prefix. For example if the type is delOlpRobotMotion, this property returns "RobotMotion". 
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRelativeInstruction</span></dt>
+   <dd> The new instruction will be created before or after this instruction.
+ This input can be either NULL or an instruction in this list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAfterInstruction</span></dt>
+   <dd> If true, the new instruction will be created after the iRelativeInstruction.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The new instruction
+ </ dd>
+</dl>
+</dd>
+<a id="DeleteInstruction"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>DeleteInstruction</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> <span class='param'>iInstruction</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Deletes an instruction from this instruction list.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iInstruction</span></dt>
+   <dd> The instruction to delete.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="Item"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Item</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves a instruction by its index.<BR>
+ This method should be used sparingly as it is much faster to 
+ loop through all instructions using a "For Each" loop than to 
+ loop through them by calling Item.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd>   The index of the first instruction is 1, and the 
+   index of the last instruction is Count.  If the 
+   index is out of bounds, the function fails.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The instruction.
+ </ dd>
+</dl>
+</dd>
+<a id="Next"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Next</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> <span class='param'>iRelativeInstruction</span>)</span> As <script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the next instruction in the collection.<BR>
+ This method should be used sparingly as it is much faster to 
+ loop through all instructions using a "For Each" loop.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iRelativeInstruction</span></dt>
+   <dd>	The current instruction.  Cannot be NULL.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The next instruction.<BR>
+  This is NULL if iRelativeInstruction is the last instruction in the list.
+ </ dd>
+</dl>
+</dd>
+<a id="Previous"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Previous</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> <span class='param'>iRelativeInstruction</span>)</span> As <script type="text/javascript"> activateLink('OlpInstruction','OlpInstruction')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the previous instruction in the collection.<BR>
+ This method should be used sparingly as it is much faster to 
+ loop through all instructions using a "For Each" loop.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iRelativeInstruction</span></dt>
+   <dd>	The current instruction.  Cannot be NULL.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The next instruction.<BR>
+  This is NULL if iRelativeInstruction is the first instruction in the list.
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

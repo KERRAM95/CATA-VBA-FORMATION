@@ -1,0 +1,486 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:m="http://schemas.microsoft.com/office/2004/12/omml">
+
+<head>
+  <meta http-equiv="Content-Language" content="en-us">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+  <meta name="GENERATOR" content="Microsoft FrontPage 12.0">
+  <meta name="ProgId" content="FrontPage.Editor.Document">
+  <link rel="Stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css">
+  <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js"></script>
+  <script type="text/javascript" src="../CAADocJavaScript/submit.js"></script>
+  <title>Beam Mesh Part Attributes</title>
+  <style type="text/css">
+  .auto-style1 {
+	  margin-left: 0px;
+  }
+  </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+  <table class="DocHeader">
+    <tr>
+      <td class="DocHeader1">
+        <h1><a name="Top"></a>Beam<span lang="en"> Mesh Part Attributes</span></h1>
+      </td>
+    </tr>
+      <tr>
+          <td class="tech">Technical Article</td>
+      </tr>
+  </table>
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <table class="abstract">
+        <tr>
+            <td>
+                <h3>Abstract</h3>
+                <p>
+                    This article presents an overview of the <b>One Node Beam Mesh Part</b> attributes and its local specifications.
+                </p>
+                <p><b><a href="#Beam_Mesh_Part_Creation">Beam Mesh Part Creation</a></b></p>
+                <p><b><a href="#Beam_Mesh_Part_Support_Definition">Beam Mesh Part Support Definition</a>:</b></p>
+
+                <p><b><a href="#Global_Mesh_Specifications">Global Mesh Specifications</a>:</b></p>
+                <ul>
+                    <li><a href="#MeshSizeValue">MeshSizeValue</a></li>
+                    <li><a href="#ElementOrder">ElementOrder</a></li>
+                    <li><a href="#AbsoluteSag">AbsoluteSag</a></li>
+				    <li><a href="#AbsoluteSagValue">AbsoluteSagValue</a></li>
+                    <li><a href="#AutomaticMeshCapture">AutomaticMeshCapture</a></li>
+                    <li><a href="#AutomaticMeshCaptureTolValue">AutomaticMeshCaptureTolValue</a></li>
+                </ul>
+                <p><b><a href="#Global_Topology_Specifications">Global Topology Specifications</a>:</b></p>
+			    <ul>
+				    <li><a href="#AngleBetweenCurves">AngleBetweenCurves</a></li>
+			    </ul>
+			    
+			    <p><b><a href="#Local_Topology_Specifications">Local Topology Specifications</a>:</b></p>
+			    <ul>
+					<li><a href="#CATFmtExternalPointLocalSpec">CATFmtExternalPointLocalSpec</a> (Imposed Point):
+						<ul>
+							<li><a href="#ToleranceValue_ProjectPoint">ToleranceValue</a></li>
+							<li><a href="#ProjectOnGeometry">ProjectOnGeometry</a></li>
+						</ul>
+					</li>
+				</ul>
+
+			    <p><b><a href="#Local_Mesh_1D_Specifications">Local Mesh 1D Specifications</a>:</b></p>
+			    <ul>
+					<li><a href="#CATFmtStudioDistributionSpec">CATFmtStudioDistributionSpec</a> (Edge Distribution):
+						<ul>
+							<li><a href="#Type">Type</a></li>
+							<li><a href="#Combination">Combination</a></li>
+							<li><a href="#CombinationUnif">CombinationUnif</a></li>
+							<li><a href="#NbElementsValue">NbElementsValue</a></li>
+							<li><a href="#RatioValue">RatioValue</a></li>
+							<li><a href="#Size1Value">Size1Value</a></li>
+							<li><a href="#Size2Value">Size2Value</a></li>
+							<li><a href="#Symmetry">Symmetry</a></li>
+							<li><a href="#Reverse">Reverse</a></li>
+						</ul>
+					</li>
+		  		</ul>
+            </td>
+        </tr>
+    </table>
+    <hr>
+    <!---------------------------------comment------------------------------------->
+    <h2><a name="Beam_Mesh_Part_Creation">Beam Mesh Part Creation</a></h2>
+    <p>A &quot;late type&quot; must be given to indicate which type of mesh part is tobe created.</p>
+    <p>In the case of the Beam mesh part, the late type is &quot;CATFmtBeamRulesMesher&quot;</p>
+    <p>The Beam mesh part can be created by using <b>Add</b> method of <b>SimMeshParts</b> object.</p>
+    <script type="text/javascript">insertLinkToTop();</script>
+    <h2><a name="Beam_Mesh_Part_Support_Definition">Beam Mesh Part Support Definition</a></h2>
+    <p>Beam Mesh Part support can be set using following method of the <b>SimMeshPart</b> object:</p>
+    <ul>
+        <li>
+            <b>AddSupport</b> ( <i>iSupport <span class="keyword">As</span> AnyObject</i> ) to add a new support to the mesh part
+        </li>
+    </ul>
+    <script type="text/javascript">insertLinkToTop();</script>
+    
+    <h2><a name="Global_Mesh_Specifications">Global Mesh Specifications</a></h2>
+    <p>Global mesh specifications can be set or retrieved using following methods of the <b>SimMeshPart</b> object:</p>
+
+    <ul>
+        <li><b>SetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iValue</i>) to set a mesh attribute where:</li>
+        <ul>
+            <li><b>iSetType=&quot;Mesh&quot;</b></li>
+            <li><b>iAttribute</b> is the attribute's name</li>
+            <li><b>iValue</b> is the attribute's value</li>
+        </ul>
+        <li><b>GetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, oValue</i>) to get a mesh attribute where:</li>
+        <ul>
+            <li><b>iSetType=&quot;Mesh&quot;</b></li>
+            <li><b>iAttribute</b> is the attribute's name</li>
+            <li><b>oValue</b> is the attribute's value</li>
+        </ul>
+    </ul>
+
+    <!---------------------------------comment------------------------------------->
+<p><b><a name="MeshSizeValue">MeshSizeValue</a></b></p>
+<table border="1" width="100%" height="22">
+  <tr>
+    <td width="33%" height="16" valign="middle" align="left" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>
+        <b>type</b>: <b><i>double </i></b>valuated to mesh elements 
+		size.</p>
+		<p><b>default value:</b> <b>10</b><b>.</b></p>
+      </blockquote>
+    </td>
+    <td width="67%" height="16" valign="middle" align="center" bgcolor="#C0C0C0">
+      <blockquote>
+        <p align="left">Attribute which specifies the mesh 
+		element target size that the mesher tries to respect.</p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+
+<p><b><a name="ElementOrder">ElementOrder</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <i><b>integer </b></i>valuated to:</p>
+		<ul>
+			<li><b>1:</b> to get a mesh with linear elements</li>
+			<li><b>2:</b> to get a mesh with quadratic elements</li>
+		</ul>
+      	<p><b>default value: 1 </b></p>
+      </blockquote>
+    </td>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies <b>the </b>
+		<b>number</b><b> of </b>
+		<b>intermediate nodes per element edge</b>,
+        either linear 
+		BAR (<em>on the left picture</em>) or
+        quadratic BAR3 (<em>on the right picture</em>).</p>
+      </blockquote>
+    </td>
+    <td width="34%" bgcolor="#C0C0C0">
+	<img border="0" src="images/ElementType4.png" width="479" height="146"/></td>
+  </tr>
+</table>
+
+<p><b><a name="AbsoluteSag">AbsoluteSag</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="35%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>
+        type</b>:<i><b> integer </b></i>valuated to:</p>
+        <ul>
+          <li><b>1: </b>to create a mesh that does not respect sag</li>
+          <li><b>2:</b> to create a mesh that respects sag</li>
+        </ul>
+      	<p><b>default value: 1 </b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+        <p>Attribute which specifies if the mesh is created with a maximum imposed sag.</p>
+    </td>
+    <td width="20%" bgcolor="#C0C0C0"><img border="0" src="images/SagFig2.jpg"/></td>
+  </tr>
+</table>
+
+<p><b><a name="AbsoluteSagValue">AbsoluteSagValue</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><i>double</i></b> valuated to the target maximum sag when <b>AbsoluteSag</b> attribute is valuated to 2.</p>
+		<p><b>default value: 1.0 </b></p>
+      </blockquote>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the maximum value of the absolute sag (distance between the geometry of the mesh ).</p>
+		<p><b>WARNING</b>: It is taken into account only if the <b>AbsoluteSag</b> attribute is equal to 2</p>
+      </blockquote>
+    </td>
+  </tr>
+</table>
+
+<p><b><a name="AutomaticMeshCapture">AutomaticMeshCapture</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <i><b>integer</b></i> valuated to:</p>
+        <ul>
+          <li><b>1: </b>to ignore automatic mesh capture</li>
+          <li><b>2:</b> to compute automatic mesh capture</li>
+        </ul>
+      	<p><b>default value: 1 </b></p>
+      </blockquote>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies if external meshes 
+		must be captured. This attribute is linked to the attribute
+		<b>AutomaticMeshCaptureTolValue</b>.</p>
+	  </blockquote>
+    </td>
+    </tr>
+</table>
+
+<p><b>
+<a name="AutomaticMeshCaptureTolValue">AutomaticMeshCaptureTolValue</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <b><i>double</i></b> valuated to the maximum distance under 
+        which mesh is captured.</p>
+		<p><b>default value: 0. </b></p>
+	  </blockquote>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the maximum distance for mesh capture: if a
+        mesh (element edges) is farthest from the support than this tolerance, it
+		will not be captured even if the <b>AutomaticMeshCapture</b> attribute is 
+		valuated to 2.</p>
+		<p><b>WARNING</b>: to precise exactly the list of mesh parts to capture, 
+		the method <b>SetMeshPartsToCapture</b> of <b>SimMeshPart</b> 
+		object can be used:</p>
+		<ul>
+			<li>SetMeshPartsToCapture ()</li>
+		</ul>
+		<p>To retrieve the parents mesh parts another method of <b>SimMeshPart</b> 
+		object can be used:</p>
+		<ul>
+			<li>Parent ()</li>
+		</ul>
+	  </blockquote>
+    </td>
+  </tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Global_Topology_Specifications">Global Topology Specifications</a></h2>
+<p>Global topology specifications can be set or retrieved using following methods:</p>
+<ul>
+	<li><b>SetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, iValue</i>) to set a topology attribute</li>
+	<li><b>GetAttributeValue</b> (<i>iSetType <span class="keyword">As String</span>, iAttribute <span class="keyword">As String</span>, oValue</i>) to get a topology attribute</li>
+</ul>
+<p><b>iType</b> is the type of specification and <b>iType =&quot;Topology&quot;</b> for Global Topology Specifications.</p>
+<p><b><a name="AngleBetweenCurves">AngleBetweenCurves</a></b></p>
+<table border="1" width="100%">
+  <tr>
+    <td width="33%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p><b>type</b>: <i><b>double (radian unit)  </b></i>
+		valuated to the angle under which vertices are nactivated</p>
+		<p><b>default value: 20°</b></p>
+      </blockquote>
+    </td>
+    <td width="47%" bgcolor="#C0C0C0">
+      <blockquote>
+        <p>Attribute which specifies the maximum angle under which
+		a vertex connected exactly to two constrained edges can 
+		be inactivated.</p>
+      </blockquote>
+    </td>
+    <td width="20%" bgcolor="#C0C0C0">
+    	<img border="0" src="images/CurveAngle.jpg" width="352" height="191"/>
+    </td>
+  </tr>
+</table>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Local_Topology_Specifications">Local Topology Specifications</a></h2>
+<p><b><a name="CATFmtExternalPointLocalSpec">CATFmtExternalPointLocalSpec</a> </b></p>
+<table border="1" width="100%">
+	<tr>
+    	<td width="42%" bgcolor="#C0C0C0">
+      		<p>Specification attributes are managed using <b>SimTopologySpecification</b> interface:</p>
+			<ul>
+				<li>Geometric attribute (supports)</li>
+			</ul>
+			<p>Other attributes are managed using (GetAttributeValue, SetAttributeValue):</p>
+			<ul>
+				<li><b><a name="ToleranceValue_ProjectPoint">ToleranceValue</a>: <i>double</i> </b>valuated to the
+        		maximum distance between external point and its projection on geometry to mesh.</li>
+			</ul>
+			<p><b>default value: 0. </b></p>
+			<ul>
+				<li><b><a name="ProjectOnGeometry">ProjectOnGeometry</a>: <i>integer</i></b> valuated to the target geometry choice</li>
+			</ul>
+			<p><b>default value: 1</b></p>
+    	</td>
+    	<td width="67%" bgcolor="#C0C0C0">
+      		<p><b>Description</b>: This specification is used in order to project <b>external</b> 
+			points (points that don't belong to the geometry to mesh) in order to constrain the mesh. 
+			External points definition (supports) and projection tolerance are mandatory. The overall 
+			behavior is the following:</p>
+			<ul>
+				<li>if the <b>distance</b> between an external point and the geometry to mesh is <b>greater</b> than the 
+				<b>ToleranceValue</b>, the point will not be projected</li>
+				<li>if the <b>distance</b> between an external point and the geometry to mesh is <b>lower</b> than the 
+				<b>ToleranceValue</b>, the point will be projected. The final location of this point depends on 
+				ProjectOnGeometry attribute:
+				<ul>
+					<li>if <b>ProjectOnGeometry</b> is equal to <b>1</b>, the <b>node</b> representing the point will be 
+					<b>located</b> exactly on the projection point on the surface geometry</li>
+					<li>if <b>ProjectOnGeometry</b> is equal to <b>2</b>, the <b>node</b> representing the 	point 
+					projection will be <b>located</b> exactly on the <b>external point (same Cartesian coordinates)</b></li>
+				</ul>
+				</li>
+			</ul>
+    	</td>
+  	</tr>
+</table>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Local_Mesh_1D_Specifications">Local Mesh 1D Specifications</a></h2>
+<p><b>WARNING</b>: <b>1D grouping specifications are the 
+only supports possible for Local Mesh 1D Specifications</b>. 
+Before creating a <b>Local Mesh 1D Specification</b>,
+it is 
+ <b> mandatory to create at least one 
+1D Grouping Specification </b>with the targeted 
+geometry supports.</p>
+<p><b><a name="CATFmtStudioDistributionSpec">CATFmtStudioDistributionSpec</a></b> </p>
+<table border="1" width="100%">
+ 	<tr>
+    	<td width="41%" bgcolor="#C0C0C0">
+      		<p>Distribution specification (named for example <b><i>localSpec</i></b>) can be applied 
+      		only on <b>one edge</b> resulting of an unique grouping specification. 
+      		Specification attributes are managed using <b>SimMeshSpecification</b> object:</p>
+			<ul>
+				<li>Geometric attribute (supports)</li>
+			</ul>
+			<p>Other attributes are managed using (GetAttributeValue, 
+			SetAttributeValue):</p>
+			<ul>
+				<li><b><a name="Type">Type</a>: integer</b> defining the type of distribution valuated to:
+				<ul>
+					<li><b>1:</b> for a Uniform distribution (Isometric)</li>
+					<li><b>2:</b> for an Arithmetic distribution</li>
+					<li><b>3:</b> for a Geometric distribution</li>
+					<li><b>4:</b>	for a distribution defined by a Law</li>
+				</ul>
+				</li>
+				<p><b>default value: 1</b></p>
+			</ul>
+			<ul>
+				<li><b><a name="Combination">Combination</a>: <i>integer</i></b> indicating what are the 
+				possible combination for Arithmetic or Geometric distributions valuated to:
+				<ul>
+					<li><b>1: </b>for a distribution defined by the number of elements (<i>NbElements</i>) 
+					and the size ratio of the elements (<i>Ratio21</i>)</li>
+					<li><b>2: </b>for a distribution defined by the number of elements (<i>NbElements</i>) 
+					and the size (<i>Size1</i>) at first vertex</li>
+					<li><b>3: </b>for a distribution defined by the number of elements (<i>NbElements</i>) 
+					and the size (<i>Size2</i>) at second vertex</li>
+					<li><b>4: </b>for a distribution defined by the size ratio (<i>Ratio21</i>) and the size 
+					(<i>Size1</i>) at first vertex</li>
+					<li><b>5: </b>for a distribution defined by the size ratio (<i>Ratio21</i>) and the size 
+					(<i>Size2</i>) at second vertex</li>
+					<li><b>6: </b>for a distribution defined by the size (<i>Size1</i>) at first vertex and 
+					the size (<i>Size2</i>) at second vertex</li>
+				</ul>
+				</li>
+			</ul>
+		<p><b>default value: 1</b></p>
+		<ul>
+			<li><b><a name="CombinationUnif">CombinationUnif</a>: <i>integer</i></b> indicating what are the 
+			possible combination for Uniform distributions valuated to:
+			<ul>
+				<li><b>1: </b>for a distribution defined by the number of elements (<i>NbElements</i>)</li>
+				<li><b>2: </b>for a distribution defined by the size (<i>Size1</i>) of the elements</li>
+			</ul>
+			</li>
+		</ul>
+		<p><b>default value: 1</b></p>
+		<ul>
+			<li><b><a name="NbElementsValue">NbElementsValue</a>: <i>integer</i></b> defining the number of 
+			elements (<i>NbElements</i>)</li>
+		</ul>
+		<p><b>default value: 4</b></p>
+		<ul>
+			<li><b><a name="RatioValue">RatioValue</a>: <i>double</i></b> defining the ratio between the max 
+			element size and the min element size (<i>Ratio21</i>)</li>
+		</ul>
+		<p><b>default value: 1.</b></p>
+		<ul>
+			<li><b><a name="Size1Value">Size1Value</a>: <i>double</i></b> defining the size at first vertex 
+			(<i>Size1</i>)</li>
+		</ul>
+		<p><b>default value: 0.</b></p>
+		<ul>
+			<li><b><a name="Size2Value">Size2Value</a>: <i>double</i></b> defining the size at second vertex 
+			(<i>Size</i>2)</li>
+		</ul>
+		<p><b>default value: 0.</b></p>
+		<ul>
+			<li><b><a name="Symmetry">Symmetry</a>: <i>integer</i></b> valuated to:
+			<ul>
+				<li><b>1:</b> to keep the distribution unchanged</li>
+				<li><b>2:</b> to compute a symmetric distribution with current attributes</li>
+			</ul>
+			</li>
+		</ul>
+		<p><b>default value: 1</b></p>
+		<ul>
+			<li><b><a name="Reverse">Reverse</a>: <i>integer</i></b> usable for Law and non Uniform distribution 
+			valuated to:
+			<ul>
+				<li><b>1:</b> to keep the distribution unchanged</li>
+				<li><b>2:</b> to invert the distribution </li>
+			</ul>
+			</li>
+			<p><b> default value: 1</b></p>
+		</ul>
+    </td>
+    <td width="67%" bgcolor="#C0C0C0">
+    	<p><b>Description</b>: This specification creates a node distribution on an edge resulting of a 1D 
+    	grouping specification. Depending on the choice of the distribution type (Type attribute), Combination 
+    	or CombinationUnif attributes several various distributions &quot;Option&quot; can be computed. The next 
+    	table summarize all &quot;<i>Option</i>&quot;:</p>
+		<ul>
+			<li>Isometric (Uniform) distribution is defined by only one attributes(Option 1 and 2):
+			<ul>
+				<li><i>Nbelements</i> (<b>CombinationUnif= 1</b>)</li>
+				<li><i>Size1</i> (<b>CombinationUnif= 2</b>)</li>
+			</ul>
+			</li>
+			<li>Non isometric distribution is defined by two attributes as indicated in the next table. There 
+			are six couples of attributes (Option 3 to 8):
+			<ul>
+				<li><i>Nbelements</i> and <i>Ratio21</i> (<b>Combination = 1</b>)</li>
+				<li><i>NbElements</i> and <i>Size1</i> (<b>Combination 	= 2</b>)</li>
+				<li><i>NbElements</i> and <i>Size2</i> (<b>Combination = 3</b>)</li>
+				<li><i>Ratio21</i> and <i>Size1</i> (<b>Combination = 4</b>)</li>
+				<li><i>Ratio21</i> and <i>Size2</i> (<b>Combination = 5</b>)</li>
+				<li><i>Size1</i> and <i>Size2</i> (<b>Combination = 6</b>)</li>
+			</ul>
+			</li>
+		</ul>
+      	<p><img border="0" src="images/CATFmtTypesDistributions.gif" width="519" height="123"/></p>
+		<p>The next table shows examples of various distributions using additional Symmetry and Law attributes.</p>
+		<p><img border="0" src="images/CATFmtExemplesDistributions.gif" width="447" height="277"/></p>
+    </td>
+  </tr>
+  </table>
+
+
+  <h2><a name="History"></a>History</h2>
+  <table class="history">
+    <tr>
+      <td>Version: <strong>1</strong> [December 2016]</td>
+      <td>Document created</td>
+    </tr>
+  </table>
+
+<script type="text/javascript">insertCopyright();</script>
+</body>
+
+</html>

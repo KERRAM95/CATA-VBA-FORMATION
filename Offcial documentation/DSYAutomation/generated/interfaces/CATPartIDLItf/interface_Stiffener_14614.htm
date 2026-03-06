@@ -1,0 +1,191 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATPartIDLItf Stiffener (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATPartIDLItf.htm" href="../CATPartIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATPartIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "Stiffener"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> Stiffener<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_Stiffener_14614','Stiffener','0');</script>
+<section id='maindesc'>
+<b><i> Represents the stiffener shape.</i></b><br>
+
+ A stiffener is made up of a sketch used as the stiffener profile,
+ that is extruded (offset) and that fills the nearest shape.
+ This is a "positive" shape: it adds material to the body it
+ belongs to.<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#IsFromTop"><b>IsFromTop</b></a>
+</td><td  id='tdright'>  Returns or sets whether the stiffener is From Side or From Top.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IsSymmetric"><b>IsSymmetric</b></a>
+</td><td  id='tdright'>  Returns or sets whether the stiffener is symmetric.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Thickness"><b>Thickness</b></a>
+</td><td  id='tdright'>  Returns the stiffener thickness.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ThicknessFromTop"><b>ThicknessFromTop</b></a>
+</td><td  id='tdright'>  Returns the stiffener thickness top in case of From Top stiffener.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#ReverseDepth"><b>ReverseDepth</b></a>
+</td><td  id='tdright'>  Reverses the stiffener direction.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ReverseThickness"><b>ReverseThickness</b></a>
+</td><td  id='tdright'>  Reverses the stiffener thickness direction.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="IsFromTop"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IsFromTop</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets whether the stiffener is From Side or From Top.
+ <br>
+ <b>True</b> if the stiffener is From Top stiffener with respect to
+ the base sketch.
+ <b>False</b> if the stiffener is From Side stiffener with respect to
+ the base sketch.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example returns in <tt>FromTopFlag</tt>
+ whether the <tt>firstStiffener</tt> stiffener is From Top,
+ and then sets it as From Top stiffener with respect to its base sketch:
+ <pre>
+ Set FromTopFlag = firstStiffener.<font color="red">IsFromTop</font>
+ firstStiffener.<font color="red">IsFromTop</font>  = True
+</pre>
+ </dl>
+</dd>
+<a id="IsSymmetric"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IsSymmetric</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets whether the stiffener is symmetric.
+ <br>
+ <b>True</b> if the stiffener is symmetric with respect to
+ the base sketch.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example returns in <tt>symFlag</tt>
+ whether the <tt>firstStiffener</tt> stiffener is symmetric,
+ and then sets it as symmetric with respect to its base sketch:
+ <pre>
+ Set symFlag = firstStiffener.<font color="red">IsSymmetric</font>
+ firstStiffener.<font color="red">IsSymmetric</font>  = True
+</pre>
+ </dl>
+</dd>
+<a id="Thickness"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Thickness</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIALength','CATIALength')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the stiffener thickness.
+ This is half of the thickness if the stiffener is symmetrical,
+ and the thickness otherwise.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example returns in <tt>thickness</tt> the thickness
+ of the <tt>firstStiffener</tt> stiffener:
+ <pre>
+ Set thickness = firstStiffener.<font color="red">Thickness</font>
+</pre>
+ </dl>
+</dd>
+<a id="ThicknessFromTop"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ThicknessFromTop</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIALength','CATIALength')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the stiffener thickness top in case of From Top stiffener.
+ This is equal to first thickness if the stiffener is symmetrical,
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example returns in <tt>thicknessfromtop</tt> the thickness
+ of the <tt>firstStiffener</tt> stiffener:
+ <pre>
+ Set thicknessfromtop = firstStiffener.<font color="red">ThicknessFromTop</font>
+</pre>
+ </dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="ReverseDepth"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ReverseDepth</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Reverses the stiffener direction.
+ This is useful for finding the shape to reach.
+ <! @ample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example reverses the current direction of
+ the <tt>firstStiffener</tt> stiffener:
+ <pre>
+ firstStiffener.<font color="red">ReverseDepth</font>
+ </pre>
+ </dl>
+</dd>
+<a id="ReverseThickness"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ReverseThickness</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Reverses the stiffener thickness direction.
+ The stiffener thickness is swapped with respect to
+ the base sketch.
+ <! @ample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example reverses the current direction of
+ the <tt>firstStiffener</tt> stiffener:
+ <pre>
+ firstStiffener.<font color="red">ReverseThickness</font>
+ </pre>
+ </dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

@@ -1,0 +1,352 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Generating a Chain Automatically</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2" style="height: 10px;" >
+				<h1>Generating a Chain Automatically</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case 
+						primarily focuses on the methodology to Generate 
+						automatically a hain.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin 
+						:</span> 
+						<ul>
+							<li>You should first launch CATIA and open a new 
+							Part.</li>
+							<li>Launch the following macro :</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro : <a href="CAAPriGenChainSource.htm">CAAPriGenChainSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case:</p>
+		<ol>
+			<li><a href="#Step1">Gets the number of Chain Links</a></li>	
+			<li><a href="#Step2">Creates the first two Chain Links</a></li>
+			<li><a href="#Step3">Creates the Construction line for a Rectangular Pattern</a></li>
+			<li><a href="#Step4">Creates the other Chain Links with a Rectangular Pattern</a></li>
+			<li><a href="#Step5">Updates the Part</a></li>		
+		</ol>
+		</td>
+	</tr>
+</table>
+<p></p>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+				<p><strong><a name="Step1">Gets the number of Chain Links</a></strong></p>
+				<p>First, the UC displays a dialog box to set the number of 
+				Chain Link(s).</p>
+				<pre class="code">
+<span class="keyword">Dim</span> nbChain Links <span class="keyword">As</span> Integer 
+nbLinks = InputBox(&quot;Number of Chain Links :&quot;) 
+...				</pre>
+						</li>
+			<li>
+				<p><strong><a name="Step2">Creates the first two Chain Links</a></strong></p>
+				<pre class="code"> ...
+<span class="comment">' Gets the First Link Sketch Plane </span>
+<span class="keyword">Dim</span> originElements1 <span class="keyword">As</span> OriginElements 
+<span class="keyword">Set</span> originElements1 = part1.OriginElements 
+
+<span class="keyword">Dim</span> planeLink1 <span class="keyword">As</span> Reference 
+<span class="keyword">Set</span> planeLink1 = originElements1.PlaneZX 
+
+<span class="comment">' Gets the First Link Sketch Absolute Axis </span>
+<span class="keyword">Dim</span> absoluteAxisSketch1(8) 
+absoluteAxisSketch1(0) = 0# 
+absoluteAxisSketch1(1) = 0# 
+absoluteAxisSketch1(2) = 0# 
+absoluteAxisSketch1(3) = 1# 
+absoluteAxisSketch1(4) = 0# 
+absoluteAxisSketch1(5) = 0# 
+absoluteAxisSketch1(6) = 0# 
+absoluteAxisSketch1(7) = 0# 
+absoluteAxisSketch1(8) = 1# 
+
+<span class="comment">' Sets the First Link Anchor Point</span>
+<span class="keyword">Dim</span> anchorPointLink1(1) <span class="keyword">As</span> Double 
+anchorPointLink1(0) = 0 
+anchorPointLink1(1) = 0 
+
+<span class="comment">' Creates the First Link </span>
+<span class="keyword">Dim</span> shaft1 <span class="keyword">As</span> Shaft 
+<span class="keyword">Set</span> shaft1 = CreateLink(part1, body1, planeLink1, absoluteAxisSketch1, anchorPointLink1) 
+ 
+...				</pre>
+				<p>The function CreateLink (annexe 2) creates a Chain Link from a 
+				Plane and an Anchor Point in this Plane. The Chain Link is created in the 
+				plane with the anchor point as its center.</p>
+				<p>&nbsp;</p>
+				<p>The second Chain Link is created the same way with the same function. </p>
+			</li>
+			
+		    
+		    <li>
+				<p><strong><a name="Step3">Creates the Construction line for the Rectangular Pattern</a></strong></p>
+				<p>&nbsp;</p>
+				<pre class="code">...
+<span class="comment">' Creates the 1st Point </span>
+<span class="keyword">Dim</span> hybridShapeFactory1 <span class="keyword">As</span> HybridShapeFactory 
+<span class="keyword">Set</span> hybridShapeFactory1 = part1.HybridShapeFactory 
+
+<span class="keyword">Dim</span> hybridShapePointCoord1 <span class="keyword">As</span> HybridShapePointCoord 
+<span class="keyword">Set</span> hybridShapePointCoord1 = hybridShapeFactory1.AddNewPointCoord(0#, 0#, 0#) 
+
+body1.InsertHybridShape hybridShapePointCoord1 
+
+part1.InWorkObject = hybridShapePointCoord1 
+
+<span class="keyword">Dim</span> reference15 <span class="keyword">As</span> Reference 
+<span class="keyword">Set</span> reference15 = part1.CreateReferenceFromObject(hybridShapePointCoord1) 
+
+<span class="comment">' Creates the 2nd Point </span>
+<span class="keyword">Dim</span> hybridShapePointCoord2 <span class="keyword">As</span> HybridShapePointCoord 
+<span class="keyword">Set</span> hybridShapePointCoord2 = hybridShapeFactory1.AddNewPointCoord(0#, 0#, 135#) 
+
+body1.InsertHybridShape hybridShapePointCoord2 
+
+part1.InWorkObject = hybridShapePointCoord2 
+
+<span class="keyword">Dim</span> reference16 <span class="keyword">As</span> Reference 
+<span class="keyword">Set</span> reference16 = part1.CreateReferenceFromObject(hybridShapePointCoord2) 
+
+<span class="comment">' Creates the Line </span>
+<span class="keyword">Dim</span> hybridShapeLinePtPt1 <span class="keyword">As</span> HybridShapeLinePtPt 
+<span class="keyword">Set</span> hybridShapeLinePtPt1 = hybridShapeFactory1.AddNewLinePtPt(reference15, reference16) 
+
+body1.InsertHybridShape hybridShapeLinePtPt1 
+
+part1.InWorkObject = hybridShapeLinePtPt1 
+
+...		</pre>
+				<p>&nbsp;</p>
+				</li>
+				<li>
+
+				<p><strong><a name="Step4">Creates the other Chain Links with a 
+				Rectangular Pattern</a></strong></p>
+				<p>&nbsp;</p>
+				<pre class="code">...
+<span class="keyword">If</span> (nbLinks Mod 2 &lt;&gt; 0) <span class="keyword">Then</span> 
+   CreateRectPattern part1, shaft1, hybridShapeLinePtPt1, (nbLinks \ 2) + 1 
+<span class="keyword">Else</span> 
+   CreateRectPattern part1, shaft1, hybridShapeLinePtPt1, nbLinks \ 2 
+<span class="keyword">End If </span>
+
+CreateRectPattern part1, shaft2, hybridShapeLinePtPt1, nbLinks \ 2 
+...</pre>
+
+				<p>The method CreateRectPattern (annexe 3) creates a Rectangular Pattern from a 
+				Bodypart, 
+				a Shaft, a Line and an Integer. It creates the Integer number of 
+				Shafts in the direction of the Line, spaced by 265mm.</p>
+				</li>
+				<li>
+				<p><strong><a name="Step5">Updates the Part</a></strong></p>
+				<p>&nbsp;</p>
+				<pre class="code">...
+part1.Update								</pre>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<h2>In Short : </h2><h3> This use case shows how to create 
+				sketches, Shafts, Hybrid Shapes and a Rectangular Patterns in 
+				Part Design.</h3>
+				
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<h2>Annexes :</h2>
+				<p>&nbsp;</p>
+				<table>
+					<tr><td><strong>Annexe 1 : The Generated Chain</strong></td>
+					</tr>
+					<tr>
+						<td>
+						<img alt="" height="600" src="images/CAAPriGenChainPicture1.png" width="600"/></td>
+					</tr>
+				</table>
+				<p>&nbsp;</p>
+				<table>
+					<tr><td><strong>Annexe 2 : The Function CreateLink 
+					Table</strong></td>
+					</tr>
+					<tr>
+						<td>
+						<pre class="code">
+Function CreateLink(part1 <span class="keyword">As</span> Part, body1 <span class="keyword">As</span> Body, planeLink <span class="keyword">As</span> Reference, absoluteAxisSketch() <span class="keyword">As</span> Variant, anchorPoint() <span class="keyword">As</span> Double) 
+   <span class="comment">' Creates the Sketch </span>
+   <span class="keyword">Dim</span> sketch1 <span class="comment">' As Sketch </span>
+   <span class="keyword">Set</span> sketch1 = body1.Sketches.Add(planeLink) 
+
+   sketch1.SetAbsoluteAxisData absoluteAxisSketch 
+
+   <span class="comment">' Gets the 2D Factory </span>
+   <span class="keyword">Dim</span> factory2D1 <span class="keyword">As</span> Factory2D 
+   <span class="keyword">Set</span> factory2D1 = sketch1.OpenEdition() 
+
+   <span class="comment">' Creates a Circle </span>
+   <span class="keyword">Dim</span> point2D1 <span class="keyword">As</span> Point2D 
+   <span class="keyword">Set</span> point2D1 = factory2D1.CreatePoint(anchorPoint(0), 100 + anchorPoint(1)) 
+
+   point2D1.ReportName = 1 
+
+   <span class="keyword">Dim</span> circle2D1 <span class="keyword">As</span> Circle2D 
+   <span class="keyword">Set</span> circle2D1 = factory2D1.CreateClosedCircle(anchorPoint(0), 100 + anchorPoint(1), 20#) 
+
+   circle2D1.CenterPoint = point2D1 
+
+   circle2D1.ReportName = 2 
+
+   <span class="comment">' Creates the construction Line </span>
+   <span class="keyword">Dim</span> point2D2 <span class="keyword">As</span> Point2D 
+   <span class="keyword">Set</span> point2D2 = factory2D1.CreatePoint(anchorPoint(0) - 100, anchorPoint(1)) 
+
+   point2D2.ReportName = 3 
+
+   <span class="keyword">Dim</span> point2D3 <span class="keyword">As</span> Point2D 
+   <span class="keyword">Set</span> point2D3 = factory2D1.CreatePoint(anchorPoint(0) + 100, anchorPoint(1)) 
+
+   point2D3.ReportName = 4 
+
+   <span class="keyword">Dim</span> line2D3 <span class="keyword">As</span> Line2D 
+   <span class="keyword">Set</span> line2D3 = factory2D1.CreateLine(anchorPoint(0) - 100, anchorPoint(1), anchorPoint(0) + 100, anchorPoint(1)) 
+
+   line2D3.ReportName = 5 
+
+   line2D3.StartPoint = point2D2 
+
+   line2D3.EndPoint = point2D3 
+
+   sketch1.CenterLine = line2D3 
+
+   sketch1.CloseEdition 
+
+   part1.InWorkObject = sketch1 
+
+   <span class="comment">' Creates the Shaft </span>
+   <span class="keyword">Dim</span> shapeFactory1 <span class="keyword">As</span> ShapeFactory 
+   <span class="keyword">Set</span> shapeFactory1 = part1.ShapeFactory 
+
+   <span class="keyword">Dim</span> reference6 <span class="keyword">As</span> Reference 
+   <span class="keyword">Set</span> reference6 = part1.CreateReferenceFromName(&quot;&quot;) 
+
+   <span class="keyword">Dim</span> shaft1 <span class="keyword">As</span> Shaft 
+   <span class="keyword">Set</span> shaft1 = shapeFactory1.AddNewShaftFromRef(reference6) 
+
+   <span class="comment">' Sets the Shaft Angle </span>
+   <span class="keyword">Dim</span> angle1 <span class="keyword">As</span> Angle 
+   <span class="keyword">Set</span> angle1 = shaft1.FirstAngle 
+
+   angle1.Value = 360# 
+
+   <span class="comment">' Sets the Sketch on which the Shaft is based </span>
+   <span class="keyword">Dim</span> reference7 <span class="keyword">As</span> Reference 
+   <span class="keyword">Set</span> reference7 = part1.CreateReferenceFromObject(sketch1) 
+
+   shaft1.SetProfileElement reference7 
+
+   <span class="comment">' Sets the Shaft Revolute Axis </span>
+   shaft1.RevoluteAxis = line2D3 
+
+   <span class="comment">' Returns the Shaft </span>
+   <span class="keyword">Set</span> CreateLink = shaft1 
+<span class="keyword">End Function </span>
+</pre></td>
+					</tr>
+				</table>
+				<p>&nbsp;</p>
+				<table>
+					<tr><td><strong>Annexe 3 : The method CreateRectPattern</strong></td>
+					</tr>
+					<tr>
+						<td>
+						<pre class="code">
+<span class="keyword">Sub</span> CreateRectPattern(part1 <span class="keyword">As</span> Part, shaft1 <span class="keyword">As</span> Shaft, hybridShapeLinePtPt1 <span class="keyword">As</span> HybridShapeLinePtPt, nbLinks <span class="keyword">As</span> Integer) 
+   <span class="comment">' Gets the Shape Factory </span>
+   <span class="keyword">Dim</span> shapeFactory1 <span class="keyword">As</span> ShapeFactory 
+   <span class="keyword">Set</span> shapeFactory1 = part1.ShapeFactory 
+
+   <span class="comment">' Creates the Rectangular Pattern </span>
+   <span class="keyword">Dim</span> reference19 <span class="keyword">As</span> Reference 
+   <span class="keyword">Set</span> reference19 = part1.CreateReferenceFromName(&quot;&quot;) 
+
+   <span class="keyword">Dim</span> reference20 <span class="keyword">As</span> Reference 
+   <span class="keyword">Set</span> reference20 = part1.CreateReferenceFromName(&quot;&quot;) 
+
+   <span class="keyword">Dim</span> rectPattern1 <span class="keyword">As</span> RectPattern 
+   <span class="keyword">Set</span> rectPattern1 = shapeFactory1.AddNewRectPattern(Nothing, nbLinks, 1, 265#, 0#, 1, 1, reference19, reference20, True, True, 0#) 
+
+   rectPattern1.FirstRectangularPatternParameters = catInstancesandSpacing 
+
+   rectPattern1.SecondRectangularPatternParameters = catInstancesandSpacing 
+
+   <span class="comment">' Sets the Rectangular Pattern first Direction </span>
+   <span class="keyword">Dim</span> reference21 <span class="keyword">As</span> Reference 
+   <span class="keyword">Set</span> reference21 = part1.CreateReferenceFromObject(hybridShapeLinePtPt1) 
+
+   rectPattern1.SetFirstDirection reference21 
+
+   <span class="comment">' Sets the Item to Copy </span>
+   rectPattern1.ItemToCopy = shaft1 
+<span class="keyword">End Sub </span>
+</pre>
+						</td>
+					</tr>
+				</table>
+			</li>
+ 		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

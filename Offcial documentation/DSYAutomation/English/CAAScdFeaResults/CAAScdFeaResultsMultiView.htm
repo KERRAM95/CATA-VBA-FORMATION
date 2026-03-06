@@ -1,0 +1,177 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="topictype" content="Uc" />
+    <meta name="devlang" content="idl" />
+    <meta name="devlang" content="idl" />
+    <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+    <title>Configure Multiview</title>
+    <style type="text/css">
+        .padded td, .padded th
+        {
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+    <table class="table1">
+        <tr>
+            <td class="DocHeader1">
+                <h1>Configuring multiviews and adding plots to it</h1>
+            </td>
+        </tr>
+        <tr>
+            <td class="DocHeader3" style="width: 1807px">
+                <table class="DocHeaderIntro">
+                    <tr>
+                        <td class="Intro1">
+                            <p class="header">This article explains how to configure multiviews and add plots to it.</p>
+                            <hr class="header" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span class="run-in">Where to find the macro: <a href="CAAScdFeaResultsMultiViewSource.htm">CAAScdFeaResultsMultiViewSource.htm</a></span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="indented">
+        <tr>
+            <td>
+                <p>This use case can be divided in 6 steps:</p>
+                <ol>
+                    <li><a href="#Step1">Opens the document and retrieves the results analysis case</a></li>
+                    <li><a href="#Step2">Retrieves the multi view manager</a></li> 
+                    <li><a href="#Step3">Retrieves the plots list from the analysis case</a></li>
+                    <li><a href="#Step4">Applies the given multi view configuration to current viewer</a></li>
+                    <li><a href="#Step5">Adds a plot in multi view configuration at given position</a></li>
+                    <li><a href="#Step6">Sets the synchronization mode for viewpoints</a></li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+    <table class="table1">
+
+        <tr>
+            <td>
+                <ol class="task">
+                    <li>
+                        <p><strong><a name="Step1"></a>Opens the document and retrieves the results analysis case</strong></p>
+                        <p>As a first step, the following code will show how to open the simulation document and retrieve the 
+                            results analysis case.You can use  <code><div class=vb_sample_data>VB_Composite_Analysis.SMASim</div></code>  
+                            file supplied in the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaResults\samples\</code>
+                            where <code>InstallRootFolder</code> is the folder where the 
+					        API CD-ROM is installed.</p>
+                        <p>Before proceding further,create 3 plots and make undeformed plot as an active plot.</p>
+                        <a href="CAAScdFeaResultsOpenDocument.htm">Retrieve the analysis case</a>
+                    </li>
+                    <ul></ul>
+                    <li>
+
+                        <p><strong><a name="Step2"></a>Retrieves the multi view manager</strong></p>
+                        <p>This step shows how to retrieve the multi view manager.</p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>MultiViewManager <span class="keyword"> As </span>SimMultiView
+<span class="keyword">Set </span>MultiViewManager = oResultsManager.MultiViewManager
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step3"></a>Retrieves the plots list from the analysis case</strong></p>
+                        <p>This step shows how to get list of plots from the analysis case. </p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>oFieldPlots <span class="keyword"> As </span>SimResultsSet
+<span class="keyword">Set </span>oFieldPlots = oResultsAnalysisCase.GetSet("FieldPlots")
+
+<span class="keyword">Dim </span>iPos  <span class="keyword"> As </span>Integer
+ iPos = 1
+
+<span class="keyword">Dim </span>oFieldPlot  <span class="keyword"> As </span>SimFieldPlot
+<span class="keyword">Set </span>oFieldPlot = oFieldPlots.Item(2)
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step4"></a>Applies the given multi view configuration to current viewer</strong></p>
+                        <p>In this step we apply the multi view configuration to the current viewer.</p>
+                        <p>The available configurations are:</p>
+                        <p>    * SimVPFourSquare to apply four views (2x2).  </p>
+                           <p>    * SimVPTriLeft  to apply four views with three views on left and one main view on right.  </p>
+                            <p>   * SimVPTriBottom  to apply four views with three views on bottom and one main view on top.  </p>
+                            <p>   * SimVPTwoRow  to apply two views top and bottom.  </p>
+                            <p>   * SimVPTwoColumn  to apply two views left and right.  </p>
+                            <p>   * SimVPSingle  to apply default single view.   </p>                       
+
+
+                        <pre class="code">...
+                             
+ MultiViewManager.Configuration = SimVPFourSquare
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step5"></a>Adds a plot in multi view configuration at given position</strong></p>
+                        <p>Following code shows how to add plot in multi view configuration at given position.</p>
+                        <p>iPos is the position at which the plot has to be added.</p>
+                        <p>Following are the iPos values to be used for various configurations.</p>
+                        <p>*  VPFourSquare 1-Top left, 2- Top right, 3-Bottom left, 4-Bottom right.</p>
+                        <p>*  VPTriLeft 1- Main view on right, 2-Top left, 3-Left middle, 4- Bottom left.</p>                     
+                        <p>*  VPTriBottom 1-Top main view, 2- Bottom left, 3-Bottom middle, 4- Bottom right.</p>
+                        <p>*  VPTwoRow 1- Top, 2- Bottom.</p>
+                        <p>*  VPTwoColumn 1- Left, 2-Right.</p>
+
+                        <pre class="code">...
+
+ iPos = 2
+<span class="keyword">Set </span>oFieldPlot = oFieldPlots.Item(3)
+MultiViewManager.AddPlot oFieldPlot, iPos
+
+iPos = 4
+<span class="keyword">Set </span>oFieldPlot = oFieldPlots.Item(4)
+MultiViewManager.AddPlot oFieldPlot, iPos
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step6"></a>Sets the synchronization mode for viewpoints</strong></p>                       
+                        <p>Setting synchronization mode TRUE will propagate actions performed such as
+    Pan, Zoom, Rotate in one viewpoint to other viewpoints.</p>
+                        <p>Setting synchronization mode FALSE will allow actions performed such as
+    Pan, Zoom, Rotate in only one viewpoint.</p>
+                         <p>Following code sets the synchronization mode for viewpoints.</p>
+                        <pre class="code">...
+MultiViewManager.Synchronize = False
+...
+</pre>
+
+                   </li>
+                  
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

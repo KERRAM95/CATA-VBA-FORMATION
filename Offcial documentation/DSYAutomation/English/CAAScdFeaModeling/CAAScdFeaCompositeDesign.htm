@@ -1,0 +1,239 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<style type="text/css">
+    .padded td, .padded th {
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Managing Composite Features</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This use case primarily focuses on the 
+					methodology to create/edit composite features.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					<ul>
+						<li>Launch CATIA and then import and open the
+						<code><div class=vb_sample_data>CAAScdFeaSampleCompositeLeadingEdgeSlat.3dxml</div></code> file supplied in 
+						the folder <code>
+						InstallRootFolder\CAADoc\Doc\English\CAAScdFeaModeling\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder 
+						where the API CD-ROM is installed.</li>
+            <li>Note: Creation of new PLM objects via scripting, as in this 
+                use case, requires an enabling license in addition to the
+                interactive roles needed to access the functionality.</li>            
+            </ul>
+					<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdFeaCompositeSource.htm">
+					CAAScdFeaCompositeSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case (UC) is divided into following steps:</p>
+		<ol>
+			<li><a href="#PrepStep">Setting up the Model </a></li>
+			<li><a href="#Step1">Managing the Composite Parameters</a></li>
+			<li><a href="#Step2">Adding materials to the Composite Parameters</a></li>
+			<li><a href="#Step3">Managing Rosette in the Composite Parameters</a></li>
+			<li><a href="#Step4">Add Orientation in the Composite Parameters</a></li>
+			<li><a href="#Step5">Managing Laminates in the Composite Parameters</a></li>
+			<li><a href="#Step6">Creation of Grid using reference geometries and Rosette</a></li>					
+			<li><a href="#Step7">Assigning Laminate to Grid Cells</a></li>					
+			<li><a href="#Step8">Renaming the Grid Cells</a></li>					
+			<li><a href="#Step9">Exporting the Grid to a file</a></li>
+			</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="PrepStep"></a>Setting up the Model</strong></p>
+			<p>For setting up the model, the UC searches and opens the materials to be used in the Composite Parameters, followed by opening the product. Refer to the automation documentation on &quot;PLM Services&quot; for searching and opening, &quot;VPMPublications&quot; for retrieving the publications and &quot;SimMeshSet&quot; for meshing the geometries. </p>
+			</li>
+			<li>
+			<p><strong><a name="Step1"></a>Managing the Composite Parameters</strong></p>
+			<p>As a first step, the UC creates/retrieves the Composite Parameters 
+			from the Composite Shell Section.  Refer to the automation documentation on &quot;SimCompositeShellSection&quot; to create/retrieve the Composite Shell Section.</p>
+<pre class="code">
+<span class="keyword">Dim </span>myCompShellSection<span class="keyword"> As </span>SimCompositeShellSection
+... 
+<span class="keyword">Dim </span>myCompositeParameters<span class="keyword"> As </span>SimCompositeParameters
+<span class="keyword">Set </span>myCompositeParameters = myCompShellSection.GetCompositeParameters
+... 
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Adding materials to the Composite Parameters</strong></p>
+			<p>In this step, the UC retrieves the materials in session and adds them into Composite Parameters. Only the materials that are active in the material session can be added into composite parameters.</p>
+<pre class="code">... 
+<span class="keyword">Dim </span>MatService<span class="keyword"> As </span>MATPLMService
+<span class="keyword">Dim </span>ListMaterialInSession<span class="keyword"> As </span>ListObject
+MatService.GetMaterialsInSession ListMaterialInSession
+<span class="keyword">Dim </span>mat<span class="keyword"> As </span>Material
+For i = 1 To ListMaterialInSession.Count
+    Set mat = ListMaterialInSession.Item(i)
+    myCompositeParameters.AddMaterial mat	
+Next
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Managing Rosette in the Composite Parameters</strong></p>
+			<p>In this step, the UC creates a Rosette in the Composite Parameters.</p>
+<pre class="code">...
+<span class="keyword">Dim </span>myCompositeRosette  <span class="keyword"> As </span>SimCompositeRosette
+<span class="keyword">Set </span>myCompositeRosette  = myCompositeParameters.CreateRosette
+...	 </pre>
+			<p>UC retrieves the Axis System by name "Axis System.1" and assigns the <strong>myCompositeRosette</strong> with the Axis System.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> myActiveObject <span class="keyword">As</span> Part
+<span class="keyword">Set</span> myActiveObject = Editor.ActiveObject
+<span class="keyword">Dim </span>myAxisSystem <span class="keyword"> As </span>AxisSystem
+<span class="keyword">Set </span>myAxisSystem  = myActiveObject.FindObjectByName("Axis System.1")
+myCompositeRosette.SetMainAxis myAxisSystem
+...
+</pre>
+
+			<p> <strong>myCompositeRosette</strong> has &quot;Cartesian&quot; transfer type by default. To modify the transfer type to &quot;Guided by Curve&quot;:</p>
+<pre class="code">...
+myCompositeRosette.SetRosetteTransferType SimCompositeRosetteTypeGuidedCurve
+...						
+</pre>	
+<p>To associate 1D geometry as a guide to the Rosette, 						</p>
+<pre class="code">
+...
+<span class="keyword">Dim </span>myRosetteCurve <span class="keyword"> As </span>HybridShape
+myRosetteCurve.SetCylindricalRosetteTranferCurve myRosetteCurve
+...
+</pre>
+<p>Angle of the Rosette by default is 0&deg;(<strong>SimCompositeCylindericalZero</strong>). To modify the same to 90&deg;:</p>
+<pre class="code">
+...
+myRosetteCurve.SetCylindricalType SimCompositeCylindericalNinety
+...
+							</pre>	
+						</li>
+						<li>
+			<p><strong><a name="Step4"></a>Add Orientation in the Composite Parameters</strong></p>
+			<p>The UC creates a new Orientation in the Composite Parameters.  To create Orientation, Angle in Degrees and the RGB coefficient is required as input:</p>
+<pre class="code">
+...
+myCompositeParameters.CreateOrientation &quot;Custom&quot;, 255,255,255
+... 
+</pre>
+			</li>
+<li>
+			<p><strong><a name="Step5"></a>Managing Laminates in the Composite Parameters</strong></p>
+			<p>To create Laminate under Composite Parameters, list of materials and the Orientation of the laying the material is needed. In this step, the UC will create a laminate with type Stacking Sequence.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> myMaterials
+myMaterials = myCompositeParameters.GetMaterialList
+...
+<span class="keyword">Dim</span> myLaminate <span class="keyword">As</span> SimCompositeLaminate
+<span class="keyword">Set </span>myLaminate = myCompositeParameters.CreateLaminate("Lamina.1")
+...
+ReDim myMatDirection(UBound(myMaterials))
+<span class="keyword">For </span>i<span class="keyword"> in </span>UBound(myMaterials)
+	myMatDirection(i) = 45
+Next
+myLaminate.SetStackingSequence myMaterials, myMatDirection
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Creation of Grid using reference geometries and Rosette</strong></p>
+			<p>In this step, the UC creates the Composite Grid. To create the Grid, a list of geometries (Geometrical Set) and the Rosette is required as input.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> myGeomRefSet <span class="keyword">As</span> HybridShapes
+...
+<span class="keyword">ReDim</span> myGeomRefSetForGrid(myGeomRefSet.Count)
+<span class="keyword">For</span> i = 0 <span class="keyword">To</span> size - 1
+        Set myGeomRefSetForGrid(i) = myGeomRefSet .Item(i + 1)
+<span class="keyword">Next</span>
+<span class="keyword">Dim</span> myCompositeGrid <span class="keyword">As</span> SimCompositeGrid
+<span class="keyword">Set</span> myCompositeGrid  = myCompositeParameters.CreateGrid(myGeomRefSetForGrid, myCompositeRosette)
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Assigning Laminate to Grid Cells</strong></p>
+			<p>In this step, the UC assigns the laminate retrieved by name from the Composite Parameters to the Grid Cells.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> myCompositeLaminate <span class="keyword">As</span> SimCompositeLaminate
+<span class="keyword">Set</span> myCompositeLaminate = myCompositeParameters.GetLaminateByName(&quot;Laminate.1&quot;)
+<span class="keyword">Dim</span> myCompositeGridCells
+myCompositeGrid.GetCells
+<span class="keyword">For Each </span>myCompositeGridCell<span class="keyword"> in </span>myCompositeGridCells
+	myCompositeGridCell.SetLaminateOnCell myCompositeLaminate
+<span class="keyword">Next</span>
+...
+				</pre>
+			</li>
+
+			<li>
+			<p><strong><a name="Step8"></a>Renaming the Grid Cells</strong></p>
+			<p>In this step, the UC renames the Grid Cells in a Composite Grid.</p>
+<pre class="code">...
+<span class="keyword">For Each </span>myCompositeGridCell<span class="keyword"> in </span>myCompositeGridCells
+	myCompositeGridCell.SetCellName(&quot;CustomCellName&quot;)
+<span class="keyword">Next</span>
+...
+				</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step9"></a>Exporting the Grid to a file</strong></p>
+			<p>In this step, the UC exports the Composite Grid information to a file.</p>
+<pre class="code">...
+myCompositeGrid.CreateFileFromCells(&quot;C:\Export.xls&quot;)
+...
+				</pre>
+			</li>
+	</ol>
+	</td>
+	</tr>
+</table>	
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

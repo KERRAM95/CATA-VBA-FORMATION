@@ -1,0 +1,173 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>PLMApplicationContextIDLItf PLMRefreshService (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../PLMApplicationContextIDLItf.htm" href="../PLMApplicationContextIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "PLMApplicationContextIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "PLMRefreshService"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> PLMRefreshService<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_PLMRefreshService_52137','PLMRefreshService','0');</script>
+<section id='maindesc'>
+<b><i> Interface representing service to manage Refresh operation.</i></b><br>
+
+
+ Example of how to retrieve such an object using <script type="text/javascript"> activateLinkAnchor('CATIAApplication','GetSessionService:','CATIAApplication.GetSessionService:') </script> <pre>
+   // Retrieve the Refresh Service
+   Dim oRefreshService as PLMRefreshService
+   Set oRefreshService = CATIA.GetSessionService("PLMRefreshService")
+
+   // for global refresh
+   oRefreshService.PerformRefresh
+
+   // for selective refresh
+   oRefreshService.AddObjectToRefresh iEntity1        // iEntity1 : is object to be refreshed and it must be PLMComponent
+   oRefreshService.AddObjectToRefresh iEntity2        // iEntity2 : 2nd object to be refreshed => and so on... to add more objects 
+   Dim oConcurrentEngineeringStatus() As Variant      // output status of objects in the same sequence of addition using AddObjectToRefresh
+   oRefreshService.getConcurrentEngineeringStatus oConcurrentEngineeringStatus     // retrieve concurrency status (must be called)
+   oRefreshService.PerformRefresh                     
+ </pre>
+ <p>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AddObjectToRefresh"><b>AddObjectToRefresh</b></a>
+</td><td  id='tdright'>  Adds object to be analysed for selective refresh operation (object must be PLMComponent)
+ No need to call this method for Global refresh operation 
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PerformRefresh"><b>PerformRefresh</b></a>
+</td><td  id='tdright'>  Refreshes your model by loading the modifications that have been performed and saved by another user since you have opened the model.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#getConcurrentEngineeringStatus"><b>getConcurrentEngineeringStatus</b></a>
+</td><td  id='tdright'>  Gets ConcurrentEngineeringStatus status of objects that are added using AddObjectToRefresh method
+ No need to call this method for Global refresh operation 
+ Call to the server is performed: consequently the performances of the method are dependent on this
+ 
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AddObjectToRefresh"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddObjectToRefresh</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAPLMEntity','CATIAPLMEntity')</script> <span class='param'>iPLMEntity</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Adds object to be analysed for selective refresh operation (object must be PLMComponent)
+ No need to call this method for Global refresh operation 
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iPLMEntity</span></dt>
+   <dd>	  input PLMComponent to be analysed for selective refresh operation.
+   this method can be called several times to add more than one object for refresh before calling getConcurrentEngineeringStatus.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>    An HRESULT value.
+   <br><b>Legal values</b>:
+   <dl>
+     <dt>S_OK</dt><dd> if addition succeeded.</dd>
+     <dt>E_INVALIDARG</dt><dd> if input object is NULL</dd>
+     <dt>E_FAIL</dt><dd> if addition failed .</dd>
+   </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="PerformRefresh"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>PerformRefresh</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Refreshes your model by loading the modifications that have been performed and saved by another user since you have opened the model.
+	<ul>
+   <li>It will perform Global Refresh by default.
+   <li>For using selective refresh getConcurrentEngineeringStatus must be called earlier to proceed with PerformRefresh
+	<ul>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>    An HRESULT value.
+   <br><b>Legal values</b>:
+   <dl>
+     <dt>S_OK</dt><dd> Refresh successful.</dd>
+     <dt>E_INVALIDARG</dt><dd> At least one object to be refreshed is UI active</dd>
+     <dt>E_FAIL</dt><dd> Refresh failed due to some internal error occurred.</dd>
+   </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="getConcurrentEngineeringStatus"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>getConcurrentEngineeringStatus</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oConcurrentEngineeringStatus</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Gets ConcurrentEngineeringStatus status of objects that are added using AddObjectToRefresh method
+ No need to call this method for Global refresh operation 
+ Call to the server is performed: consequently the performances of the method are dependent on this
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oConcurrentEngineeringStatus</span></dt>
+   <dd>   The list of object concurrent access status at the time of call.
+   <dl>
+     <dt>UnchangedInDatabase</dt><dd>There is no change in the database for given object.</dd>
+     <dt>ModifiedInDatabaseAndNotInSession</dt><dd>Given object is modified in the database. </dd>
+     <dt>ModifiedInDatabaseAndInSession</dt><dd>There are conflicting changes made to the object in the database and in session.</dd>
+     <dt>DeletedInDatabase</dt><dd>Given object is removed from the database.</dd>
+     <dt>ExistInDatabaseAndNotInSession</dt><dd>Given object exists in database but not loaded in session.</dd>
+   </dl>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>    An HRESULT value.
+   <br><b>Legal values</b>:
+   <dl>
+     <dt>S_OK</dt><dd>If the concurrent access status is retrieved correctly.</dd>
+     <dt>E_INVALIDARG</dt><dd>The input list contains non-PLMComponent/UI active objects.</dd>
+     <dt>E_FAIL</dt><dd>If concurrent access status retrieval fails.</dd>
+   </dl>
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

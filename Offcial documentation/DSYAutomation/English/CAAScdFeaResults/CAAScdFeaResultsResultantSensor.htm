@@ -1,0 +1,232 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta content="Uc" name="topictype" />
+<meta content="idl" name="devlang" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>Resultant Sensor</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+		<h1>Creating a resultant sensor</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+				<p class="header">This article explains how to open the results 
+				and create a resultant sensor.</p>
+				<hr class="header" /></td>
+			</tr>
+			<tr>
+				<td>
+				<p><span class="run-in">Where to find the macro:
+				<a href="CAAScdFeaResultsResultantSensorSource.htm">CAAScdFeaResultsResultantSensorSource.htm</a></span>
+				</p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in 6 steps:</p>
+		<ol>
+			<li>
+				<a href="#Step1">
+					Opens the document and retrieves the results analysis
+					case
+				</a>
+			</li>
+			<li><a href="#Step2">Creates the sensor</a></li>
+			<li><a href="#Step3">Sets step and frame</a></li>
+			<li><a href="#Step4">Sets the support for the sensor</a></li>
+			<li><a href="#Step5">Updates the sensor</a></li>
+			<li><a href="#Step6">Exports the sensor</a></li>
+			<li><a href="#Step7">Retrieves the sensor</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Opens the document and retrieves the 
+			results analysis case</strong></p>
+			<p>As a first step, the following code will show how to open the simulation 
+			document and retrieve the results analysis case. </p>
+			<a href="CAAScdFeaResultsOpenDocument.htm">Retrieve the analysis case</a>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Creates the sensor</strong></p>
+			<p>This step shows how to create a sensor from the results analysis 
+			case retrieved from the earlier step.</p>
+			<pre class="code">...
+<span class="keyword">Dim </span>oResultantSensor<span class="keyword"> As </span>SimResultantSensor
+<span class="keyword">Set </span>oResultantSensor = oResultsAnalysisCase.CreateResultantSensor
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Sets step and frame</strong></p>
+			<p>The following code sets the step and frame.</p>
+			<pre class="code">...
+<span class="keyword">Dim </span>oSteps <span class="keyword"> As </span>SimResultsSteps
+<span class="keyword">Set </span>oSteps = oResultsAnalysisCase.ResultsSteps
+
+ <span class="keyword">Dim </span>oStep  <span class="keyword"> As </span>SimResultsStep
+<span class="keyword">Set </span>oStep = oSteps.Item(1)
+
+ <span class="keyword">Dim </span>osStepID   <span class="keyword"> As </span>String
+ <span class="keyword">Dim </span>ocsStepName   <span class="keyword"> As </span>String
+ <span class="keyword">Dim </span>ocsStepDescription   <span class="keyword"> As </span>String
+
+oStep.GetIdentifier osStepID, ocsStepName, ocsStepDescription
+oResultantSensor.SetStepAndFrame osStepID, 1, 0
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Sets the support for the sensor</strong></p>
+			<p>In this step the support for the sensor is specified. The API and 
+			input for orphan and native simulations is different as explained below:
+			</p>
+			<p>a) Orphan simulation: The SimSupport method should be used to set 
+			the support. It takes the input values as list of strings which are 
+			the names of the node sets. </p>
+			<pre class="code">...
+<span class="keyword">Dim </span>MySupports(0)
+MySupports(0) = "Clamp1"
+
+oResultantSensor.SimSupport = MySupports
+...
+</pre>
+			<p>b) Native simulation: The Support method is used to set the support. 
+			It takes input as list of features such as restraints, loads.</p>
+			<p>Find here
+			<a href="CAAScdFeaResultsNativeResultantSensorSource.htm">CAAScdFeaResultsNativeResultantSensorSource</a> 
+			the sample script.</p>
+			<pre class="code">...
+<span class="keyword">Dim </span>oDispatch<span class="keyword"> As </span>CATBaseDispatch
+<span class="keyword">Set </span>oDispatch = oPressure
+
+<span class="keyword">Dim </span>MySupports(0)<span class="keyword"> As </span>CATSafeArrayVariant
+<span class="keyword">Set </span>MySupports(0) = oDispatch
+
+oResultantSensor.Support = MySupports
+...
+</pre>
+			<p><strong>Important note:</strong> The above code where the CATSafeArrayVariant 
+			is used works fine in CATScript. But for VBScript and VBA, one must 
+			un-type the variable which calls the support method. Thus in the above 
+			code "oResultantSensor" variable must be un-typed. Thus in Step 2, the 
+			variable must be be declared without its class type as stated below:</p>
+			<pre class="code">
+<span class="keyword">Dim</span> oResultantSensor
+        </pre>
+			<p>For further details on usage of Arrays please refer to :
+			<a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+			Microsoft Automation Languages, Debug, and Compatibility</a></p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Updates the sensor</strong></p>
+			<p>Following code updates the sensor.</p>
+			<pre class="code">...
+oResultantSensor.Update
+...
+</pre>
+			</li>
+			<li>
+					<p><strong><a name="Step6"></a>Exports the sensor</strong></p>
+					<p>The sensor can be exported to csv file either on disk or as a PLM document.</p>
+					<pre class="code">...
+					<p>(a) Saving the file on disk: User can specify mulitple sensors which will be exported in a single file. </p>
+                        
+<span class="keyword">Dim </span>olsSensors(0) <span class="keyword"> As </span>CATSafeArrayVariant
+Set olsSensors(0) = oResultantSensor
+
+<span class="keyword">Dim </span>icsFileName <span class="keyword"> As </span>String
+icsFileName = "ExportedSensor"
+
+<span class="keyword">Dim </span>icsFileLocation <span class="keyword"> As </span>String
+ icsFileLocation="C:\temp" 
+
+<span class="keyword">Dim </span>ieFileType <span class="keyword"> As </span>SimFileType
+ieFileType = SimXlsx
+
+<p>Note: The following boolean specified if the axis direction is to be exported</p>
+<span class="keyword">Dim </span>bActivate <span class="keyword"> As </span>Boolean
+bActivate = True
+
+oResultsAnalysisCase.ExportSensorOutputToFile olsSensors, icsFileName, icsFileLocation, ieFileType, True, SimComma
+
+
+					<p>(b) Saving as a PLM document: Only 1 sensor can be exported at a time.</p>
+                        
+<span class="keyword">Dim </span>olsSensors(0) <span class="keyword"> As </span>CATSafeArrayVariant
+Set olsSensors(0) = oResultantSensor
+
+<span class="keyword">Dim </span>icsFileName <span class="keyword"> As </span>String
+icsFileName = "ExportedSensor"
+
+<span class="keyword">Dim </span>ieFileType <span class="keyword"> As </span>SimFileType
+ieFileType = SimXlsx
+
+<p>Note: The following boolean specified if the axis direction is to be exported</p>
+<span class="keyword">Dim </span>bActivate <span class="keyword"> As </span>Boolean
+bActivate = True
+
+oResultsAnalysisCase.ExportSensorOutputToPLM olsSensors, icsFileName, SimCsv, False, SimSemicolan
+
+...
+</pre>
+				</pre>
+				</li>
+
+				<li>
+			<p><strong><a name="Step7"></a>Retrieves the sensor</strong></p>
+			<p>This step shows how to retrieve the sensor from the results analysis 
+			case using the results set.</p>
+			<pre class="code">...
+<span class="keyword">Dim </span>oResultSet<span class="keyword"> As </span>SimResultsSet
+<span class="keyword">Set </span>oResultSet = oResultsAnalysisCase.GetSet("ResultantSensorSet")
+
+<span class="keyword">Dim </span>oRetrievedSensor<span class="keyword"> As </span>SimResultantSensor
+
+The sensor can be retrieved from the results set by following two ways:
+a) Index:
+<span class="keyword">Set </span>oRetrievedSensor = oResultSet.Item(1) 
+
+b) Name:
+<span class="keyword">Set </span>oRetrievedSensor = oResultSet.Item("Resultant Sensor.1")
+...
+</pre>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

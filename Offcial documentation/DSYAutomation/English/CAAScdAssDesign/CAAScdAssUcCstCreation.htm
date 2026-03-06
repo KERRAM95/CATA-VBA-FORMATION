@@ -1,0 +1,214 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an Assembly Constraint Between Two Instances of a Basic Pad</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an Assembly Constraint Between Two Instances of a 
+				Basic Pad</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create an Assembly Constraint 
+						between two instances of a basic pad.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>EngCntRootProduct.3dxml</div></code> file supplied in 
+							folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdAssDesign\samples\</code> 
+							where <code>InstallRootFolder</code> is the directory 
+							where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdAssUcCstCreationSource.htm">CAAScdAssUcCstCreationSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic1</em>&gt;</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic2</em>&gt;</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;EngCntRootProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves the Root Product</a></li>
+			<li><a href="#Step3">Retrieves the collection of the Engineering Connection</a></li>
+			<li><a href="#Step4">Creates an Engineering Connection between the two 
+			instances aggregated by the Root Product</a></li>
+			<li><a href="#Step5">Retrieves the collection of the Assembly Constraints</a></li>
+			<li><a href="#Step6">Creates a distance &quot;plan-plan&quot; constraint between 
+			faces identified by their publication</a></li>
+			<li><a href="#Step7">Sets the driving mode</a></li>
+			<li><a href="#Step8">Adds the Engineering Connection in the Selection Object to display it</a></li>
+			
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;EngCntRootProduct&quot;</strong></p>
+			<p>As a first step, the UC retrieves a model &quot;EngCntRootProduct&quot; from 
+			DB and loads it and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>EngCntEditor<span class="keyword"> As </span> Editor
+ <strong>OpenProduct</strong> EngCntEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>EngCntEditor</code></strong>, a Editor object. After searching 
+			and opening of EngCntRootProduct model from underlying database the 
+			current active editor is returned in <strong><code>EngCntEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves the VPMReference from the current 
+			Editor</strong></p>
+			<p>As a next step, the UC retrieves the VPMReference object in EngCntRootProduct 
+			product</p>
+			<pre class="code"> ...
+<span class="keyword">Dim</span> MyPrdService   <span class="keyword">&#39;As </span> PLMProductService
+<span class="keyword">Set</span> MyPrdService = EngCntEditor.GetService(&quot;PLMProductService&quot;)
+<span class="keyword">Dim</span> myRootOccurrence <span class="keyword">&#39;As </span> VPMRootOccurrence
+<span class="keyword">Set</span> myRootOccurrence = MyPrdService.RootOccurrence
+<span class="keyword">Dim</span> myMCXParent <span class="keyword">&#39;As </span> VPMReference
+<span class="keyword">Set</span> myMCXParent = myRootOccurrence.ReferenceRootOccurrenceOf
+ ...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>3- Retrieves the collection of Engineering 
+			Connection from a Product Root</strong></p>
+			<p>In this step UC retrieves the collection of the Engineering Connections.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> myEngConnections <span class="keyword">&#39;As </span> EngConnections
+<span class="keyword">Set</span> myEngConnections = myMCXParent.GetItem(&quot;CATEngConnections&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>4- Creates an Engineering Connection 
+			between the two instances aggregated by the Product Root</strong></p>
+			<p>In this step UC creates a new User Defined Engineering Connection 
+			between the two following impacted: Part1.1 and Part1.2.</p>
+			<p>These instances are identified by the their chain 
+			of characters in the product Structure</p>
+			<pre class="code">...
+<span class="keyword">ReDim</span>  myImpacteds(1) <span class="keyword">&#39;As </span> Collection
+myImpacteds(0) = &quot;Part1.1&quot;
+myImpacteds(1) = &quot;Part1.2&quot;
+<span class="keyword">Set</span> myNewMCX = myEngConnections.Add(catUserDefined, myImpacteds)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>5- Retrieves the collection of Assembly 
+			Constraints.</strong></p>
+			<p>In this step UC retrieves the collection of Assembly Constraints 
+			for a given Engineering Connection. </p>
+			<pre class="code">...
+<span class="keyword">Dim</span> myConstraints <span class="keyword">&#39;As </span> AssemblyConstraints
+<span class="keyword">Set</span> myConstraints = myNewMCX.AssemblyConstraints
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>6- Creates a distance constraint between 
+			2 planar faces identified by their publication</strong></p>
+			<p>In this step UC creates an Assembly constraint between 2 faces identified 
+			by their publication.</p>
+			<p>The publication are identified by their name.</p>
+			<pre class="code">...
+<span class="keyword">ReDim</span>  myGeometries(1) <span class="keyword">&#39;As </span> Collection
+myGeometries(0) = &quot;FacePart1.1&quot;
+myGeometries(1) = &quot;FacePart1.2&quot;
+<span class="keyword">Dim</span> myNewAssemblyConstraint11<span class="keyword"><span class="keyword"> &#39;As </span> </span> AssemblyConstraint
+<span class="keyword">Set</span> myNewAssemblyConstraint11 = myConstraints.Add(catDistancePlanePlane, myGeometries)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>7- Sets the Driving Mode for the created 
+			constraint</strong></p>
+			<p>In this step UC, the constraint is set to DrivingMode and the distance 
+			between the two faces is set to 200mm.</p>
+			<pre class="code">...
+myNewAssemblyConstraint11.Mode = catDrivingMode
+myNewAssemblyConstraint11.SetValue 1, 200.0
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>8- Adds the Engineering Connection in the Selection Object to display it</strong></p>
+			<p>The display of Engineering Connections is managed by settings, by default it displayed only if the Engineering Connection is selected.</p>
+			<pre class="code">...
+CATIA.ActiveEditor.Selection.Add myNewAssemblyConstraint11
+...</pre>
+
+			<table>
+				<caption><a name="Fig.1"></a>Fig.1: Member</caption>
+				<tr>
+					<td>
+					<img alt="" height="550" src="CAAScdAssCstCreationPicture.png" width="844"/></td>
+				</tr>
+			</table>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

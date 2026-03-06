@@ -1,0 +1,171 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpTag (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpTag"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpTag<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpTag_15546','OlpTag','0');</script>
+<section id='maindesc'>
+<b><i> A named Cartesian target of a robot motion.</i></b><br>
+<BR>
+ This object represents any Cartesian target of a robot motion that can be given an name and be reused on multiple motions.
+ This could be a tag or a manufacturing fastener.
+ <font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ Download or Upload command</font>.<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#DesignFastener"><b>DesignFastener</b></a>
+</td><td  id='tdright'>  Get the design fastener.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ManufacturingFastener"><b>ManufacturingFastener</b></a>
+</td><td  id='tdright'>  Get the manufacturing fastener.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ParameterNames"><b>ParameterNames</b></a>
+</td><td  id='tdright'>  Get the list of all parameter names.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetParameter"><b>GetParameter</b></a>
+</td><td  id='tdright'>  Get the specified tag or manufacturing fastener attribute value.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetParameter"><b>SetParameter</b></a>
+</td><td  id='tdright'>  Set the specified tag or manufacturing fastener attribute value.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="DesignFastener"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DesignFastener</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Get the design fastener.<BR>
+
+ This object is only available during download.
+ 
+ The design fastener is the entity that represents the process point in the design product data.  The object returned is the fastener
+ occurrence from the product DAG (EBOM).  From the occurrence you can retrieve the reference and then use 
+<script type="text/javascript"> activateLinkAnchor('CATIAPLMEntity','','CATIAPLMEntity') </script> to access any attributes of the fastener.
+</dd>
+<a id="ManufacturingFastener"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ManufacturingFastener</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Get the manufacturing fastener.<BR>
+
+ This object is only available during download.   
+ 
+ In most cases you should use the 
+<script type="text/javascript"> activateLinkAnchor('','GetParameter','GetParameter') </script> method of this object to get parameters from the manufacturing fastener. In cases where you need additional functionality, the manufacturing fastener is the entity in the resource structure that represents the process point.  
+ Depending on the application this could be a spot weld fastener, a drill and rivet manufacturing fastener or some type of tag.  It can be used to 
+ retrieve process attributes directly from the fastener to customize the download.
+ Depending on the application you can use one of these interfaces or perhaps a different one to access the object properties:
+ 
+<script type="text/javascript"> activateLinkAnchor('DELMIADrManufacturingFastener','','DELMIADrManufacturingFastener') </script>, 
+<script type="text/javascript"> activateLinkAnchor('DELMIATagPoint','','DELMIATagPoint') </script>
+</dd>
+<a id="ParameterNames"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ParameterNames</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Get the list of all parameter names.<BR>
+
+ Retrieve the list of all parameter names that can be retrieved with 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpTag','GetParameter','DELMIAOlpTag.GetParameter') </script>. You can add new attributes by calling 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpTag','SetParameter','DELMIAOlpTag.SetParameter') </script>.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetParameter"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetParameter</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iParameterName</span>)</span> As <script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the specified tag or manufacturing fastener attribute value.<BR>
+ For tags, the value displayed in the trajectory table is retrieved from either the tag or tag group as appropriate.
+ For manufacturing fasteners, the values displayed in the properties dialog can be retrieved including standard and user parameters.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iParameterName</span></dt>
+   <dd> The name of the parameter.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oValue</span></dt>
+   <dd> The value of the parameter.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetParameter"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetParameter</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iParameterName</span>,<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iValue</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iType</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the specified tag or manufacturing fastener attribute value.<BR>
+ The attribute is created with the specified type if it doesn't exist.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iParameterName</span></dt>
+   <dd> The name of the parameter.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oValue</span></dt>
+   <dd> The value of the parameter.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd> iType can by any Knowledgeware magnitude or a simple type.  The simple types
+ are "Integer", "Double", "String" and "Boolean".  The method will fail if
+ an unsupported type is specified.
+ For tags "Length", "Angle", "Time" and "Mass" are supported.
+ For manufacturing fasteners only "Length" and "Angle" are supported.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

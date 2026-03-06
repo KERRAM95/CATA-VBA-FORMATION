@@ -1,0 +1,519 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaGenerateMidSurfWithAbsShapeParameters.catvbs</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">' &lt;!-- -------------- Sample macro written in VB ------------------------------------------ --&gt; </span>
+<span class="comment">' &lt;!-- This sample is an automated modeling procedure to creates a parameter based mid surface Mesh part with abstraction shape. --&gt; </span>
+
+<span class="comment">' &lt;!-- Steps : --&gt; </span>
+
+<span class="comment">' &lt;!-- 1 - Inputs definitions --&gt; </span>
+<span class="comment">' &lt;!-- 2 - VB Script to create Mesh Part --&gt; </span>
+	<span class="comment">' &lt;!-- a - PLM operations --&gt; </span>
+	<span class="comment">' &lt;!-- b - Geometrical operations --&gt; </span>
+	<span class="comment">' &lt;!-- c - FE operations --&gt; </span>
+
+<span class="comment">' &lt;!-- -------------------------------------------------------------------------- --&gt; </span>
+<span class="comment">' &lt;!-- 1 - Inputs definitions --&gt; </span>
+<span class="comment">' &lt;!-- -------------------------------------------------------------------------- --&gt; </span>
+<span class="comment">
+'&lt;Lists&gt;
+  '&lt;List Name = "SelectionDefinition"&gt;
+    '&lt;Member Name = "MainBody" Nls = "MainBody"/&gt;
+    '&lt;Member Name = "AllGeometries" Nls = "AllGeometries"/&gt;
+    '&lt;Member Name = "VisibleGeometries" Nls = "VisibleGeometries"/&gt;
+   '&lt;/List&gt;
+'&lt;/Lists&gt;
+'&lt;Enums&gt;
+  '&lt;Enum Name = "ElementOrder"&gt;
+    '&lt;Member Name = "Linear"    Nls ="Linear"/&gt;
+    '&lt;Member Name = "Quadratic" Nls ="Quadratic"/&gt;
+   '&lt;/Enum&gt;
+'&lt;/Enums&gt;
+'&lt;Inputs&gt;
+  '&lt;Input Name = "SelectionMode" Type = "List" SubType = "SelectionDefinition" Mand ="false" Nls ="SelectionMode"/&gt;
+  '&lt;Input Name = "MaxRadius" Type ="Double" Mand ="true" Nls ="MaxFilletRadius" Min="0" MinExcl="false"/&gt;  
+  '&lt;Input Name = "MeshSize" Type ="Dimension" SubType ="Length" Mand ="true" Nls ="MeshSize"/&gt;
+  '&lt;Input Name = "ElementOrder" Type ="Enum" SubType ="ElementOrder" Mand ="true" Nls ="ElementOrder"/&gt;
+  '&lt;Input Name = "Property" Type ="Boolean" Mand ="true" Nls ="CreateShell"/&gt;
+  '&lt;Input Name = "PublicationName" Type ="String" Mand ="true" Nls ="PublicationName"/&gt;
+'&lt;/Inputs&gt;
+</span>
+<span class="comment">' &lt;!-- ---------------------------------------------------------------------------------------------------- --&gt; </span>
+<span class="comment">' &lt;!-- 2 - VB Script to create Mesh Part --&gt; </span>
+<span class="comment">' &lt;!-- ---------------------------------------------------------------------------------------------------- --&gt; </span>
+
+<span class="keyword">Sub main</span>(iMode,iMaxRadius,iSize,iOrder,iProp,iName)
+
+<span class="comment">'</span>
+  <span class="comment">' a - PLM operations</span>
+  <span class="comment">'----------------------------------------------------------------------------------------------------</span>
+
+  <span class="comment">'Get Shape Ref and Part</span>
+  <span class="keyword">Dim</span> MyRepRef <span class="keyword">As</span> VPMRepReference
+  <span class="keyword">Set</span> MyRepRef = Shape.ReferenceInstanceOf
+  <span class="keyword">Dim</span> MyPart <span class="keyword">As</span> Part
+  <span class="keyword">Set</span> MyPart = MyRepRef.GetItem("Part")
+  <span class="comment">'Get FEM</span>
+  <span class="keyword">Dim</span> MyFEMRoot <span class="keyword">As</span> SimFemRoot
+  <span class="keyword">Set</span> MyFEMRoot = FEM.GetItem("SimFemRoot")
+  <span class="comment">'Get PLM Product Service</span>
+  <span class="keyword">Dim</span> MyProductService <span class="keyword">As</span> PLMProductService
+  <span class="keyword">Set</span> MyProductService = CATIA.ActiveEditor.GetService("PLMProductService")	  
+  <span class="comment">'Get SimComposeLinkServices</span>  
+  <span class="keyword">Dim</span> FEMService <span class="keyword">As</span> SimComposeLinkServices
+  <span class="keyword">Set</span> FEMService = FEM.GetItem("SimComposeLinkServices")
+
+<span class="comment">  '------</span>
+  <span class="comment">' Build the list of solid bodies for all selection modes</span>
+<span class="comment">  '------</span>	  
+  <span class="keyword">Dim</span> EmptyBody <span class="keyword">As</span> Boolean
+  <span class="keyword">Dim</span> count3DGeom <span class="keyword">As</span> Integer
+  count3DGeom = 0
+  <span class="keyword">Dim</span> CheckVisibility <span class="keyword">As</span> Boolean
+  CheckVisibility = False
+  <span class="keyword">If</span> (iMode = "3") <span class="keyword">Then</span>
+    CheckVisibility = True
+  <span class="keyword">End If</span> 
+  <span class="keyword">Dim</span> myList3DGeom
+  <span class="keyword">Dim</span> lShapes(0)
+  <span class="comment">' Get AutomatedFEMServices</span>	 	
+  <span class="keyword">Dim</span> AutomatedFEMServices <span class="keyword">As</span> SimAutoModServices
+  <span class="keyword">Set</span> AutomatedFEMServices = CATIA.ActiveEditor.GetService("SimAutoModServices")  
+
+<span class="comment">  '------</span>
+<span class="comment">  'Selection Mode MainBody</span>
+<span class="comment">  '------</span>
+  <span class="keyword">If</span> (iMode = "1") <span class="keyword">Then</span>
+    <span class="keyword">ReDim</span> myList3DGeom(0)
+    <span class="keyword">Dim</span> PartBody As AnyObject
+    <span class="keyword">Set</span> PartBody = MyPart.MainBody
+    <span class="comment"> 'Check if PartBody is empty</span>
+    EmptyBody = IsAnEmptyBody(PartBody)
+    <span class="keyword">If</span> EmptyBody = True <span class="keyword">Then</span>
+      <span class="keyword">Set</span> PartBody = FindFirstSolidBody(MyPart)
+      <span class="keyword">If Not</span> (PartBody Is Nothing) <span class="keyword">Then</span>
+        EmptyBody = False
+        <span class="keyword">Set</span> myList3DGeom(0)=PartBody
+      <span class="keyword">End If</span>
+    <span class="keyword">Else</span>
+      <span class="keyword">Set</span> myList3DGeom(0)=PartBody
+    <span class="keyword">End If</span>
+    <span class="keyword">If</span> EmptyBody = True <span class="keyword">Then</span>
+      <span class="keyword">Exit Sub</span> 
+    <span class="keyword">End If</span>
+  <span class="keyword">End If</span> 
+
+<span class="comment">  '------</span>
+<span class="comment">  'Selection Mode AllGeometries and VisibleGeometries</span>
+<span class="comment">  '------</span>
+  <span class="keyword">If</span> (iMode = "2") or (iMode = "3") <span class="keyword">Then</span>
+    <span class="comment">' Get all solid results in 3DPart</span>
+    <span class="keyword">Dim</span> myListResults
+    On Error Resume Next
+    myListResults = AutomatedFEMServices.GetAllResults(MyPart, 3)
+    <span class="keyword">If</span> Err = 0 <span class="keyword">Then</span>
+    	BuildList3DGeom MyPart, myListResults, CheckVisibility, myList3DGeom
+    	count3DGeom = UBound(myList3DGeom) - LBound(myList3DGeom) + 1
+    <span class="keyword">End if</span> 
+    On Error GoTo 0
+    <span class="keyword">If</span> count3DGeom = 0 <span class="keyword">Then</span>
+      <span class="keyword">Exit Sub</span> 
+    <span class="keyword">End If</span>
+  <span class="keyword">End If</span> 
+
+<span class="comment">  '------</span>
+<span class="comment">  ' Create and Initialize the Abstraction Shape if not already exists</span>
+<span class="comment">  '------</span>
+
+<span class="comment">  ' Check if publication already exists</span>
+<span class="keyword">  Dim</span> MyAbsShpRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">  Dim</span> MyAbsShape <span class="keyword">As</span> VPMRepInstance
+<span class="keyword">  Dim</span> MyPubAlreadyExists <span class="keyword">As</span> Boolean
+  MyPubAlreadyExists = False
+<span class="keyword">  Dim</span> MyPub <span class="keyword">As</span> VPMPublication
+  <span class="keyword">Set</span> MyPub = Nothing
+<span class="keyword">  Dim</span> PubName <span class="keyword">As</span> CATBSTR
+  <span class="keyword">If</span> (iMode = "1") <span class="keyword">Then</span>
+    PubName = iName
+  <span class="keyword">Else</span>
+    PubName = iName + ".1"
+  <span class="keyword">End If</span>
+  GetPublication MyRepRef, PubName, MyPub, MyPubAlreadyExists
+
+  <span class="comment">' If the Publication already exists we are in MOA case : no need to create the Abs Shape </span>
+  <span class="keyword">If</span> ((IsEmpty(MOAFEM)) <span class="keyword">or</span> ( (IsEmpty(MOAFEM)=False) <span class="keyword">and</span> (MyPubAlreadyExists=False) )) <span class="keyword">Then</span>
+    <span class="keyword">Set</span> lShapes(0) = MyRepRef
+    CreateInitAbsShape Shape, lShapes, myList3DGeom, MyAbsShpRef
+    <span class="keyword">Set</span> MyAbsShape = MyAbsShpRef.ParentRepInstances.Item(1)
+  <span class="keyword">Else</span>
+    <span class="keyword">If</span> MyPubAlreadyExists Then 
+      GetAbsShapeRep MyPub, MyAbsShape
+      <span class="keyword">Set</span> MyAbsShpRef = MyAbsShape.ReferenceInstanceOf
+      <span class="comment">' Link the FEMRep to the Abstraction Shape</span>
+      <span class="keyword">Set</span> MyLinkToExistingAbstractionShape = FEMService.ComposeLink(OCCURRENCE, Nothing, MyPub)
+      MyFEMRoot.AddAssociatedRep MyLinkToExistingAbstractionShape
+    <span class="keyword">End If</span> 
+  <span class="keyword">End If</span>
+
+  <span class="comment">' Get all 3D results of new 3DPart after AbsShape initialization</span>
+  <span class="keyword">Dim</span> MyNewPart <span class="keyword">As</span> Part
+  <span class="keyword">Set</span> MyNewPart = MyAbsShpRef.GetItem("Part")
+  <span class="keyword">Dim</span> myNewList3DGeom
+  myNewList3DGeom = AutomatedFEMServices.GetAllResults(MyNewPart, 3)
+  count3DGeom = UBound(myNewList3DGeom) - LBound(myNewList3DGeom) + 1
+
+  <span class="comment">' Loop on 3D results</span>
+  <span class="keyword">For</span> i = 0 To count3DGeom - 1
+    <span class="comment">' Get body and reference</span>
+    <span class="keyword">Dim</span> lNewBody <span class="keyword">As</span> Body
+    <span class="keyword">Set</span> lNewBody = myNewList3DGeom(i)
+    <span class="keyword">Dim</span> BodyRef <span class="keyword">As</span> Reference
+    <span class="keyword">Set</span> BodyRef = MyNewPart.CreateReferenceFromObject(lNewBody)
+
+    <span class="comment">' Publication name</span>
+    <span class="keyword">Dim</span> iPubCount <span class="keyword">As</span> Integer
+    iPubCount = i + 1
+    <span class="keyword">Dim</span> PubliName <span class="keyword">As</span> CATBSTR
+    <span class="keyword">If</span> (iMode = "1") <span class="keyword">Then</span>
+      PubliName = iName
+    <span class="keyword">Else</span>
+      PubliName = iName + "." + CStr(iPubCount)
+    <span class="keyword">End If</span>
+    
+    <span class="comment">' MOA case : GetPublication</span>
+    <span class="keyword">Dim</span> MyPublication <span class="keyword">As</span> VPMPublication
+    <span class="keyword">Set</span> MyPublication = Nothing
+    <span class="keyword">If</span> MyPubAlreadyExists <span class="keyword">Then</span>
+      GetPublication MyRepRef, PubliName, MyPublication, MyPubAlreadyExists
+      <span class="comment">'Get the link to the Abstraction Shape PartBody for the shell section "secondary support"</span>
+      <span class="keyword">If</span> (iProp = 1) <span class="keyword">Then</span>
+        <span class="keyword">Set</span> Link2 = MyProductService.ComposeLink(OCCURRENCE, MyAbsShape, BodyRef)
+      <span class="keyword">End If</span>
+      
+    <span class="keyword">Else</span>
+
+  <span class="comment">    '</span>
+  <span class="comment">    ' b - Geometrical operations</span>
+  <span class="comment">    '----------------------------------------------------------------------------------------------------</span>
+
+  <span class="comment">    '------</span>
+  <span class="comment">    ' Creation feature defeaturing</span>
+  <span class="comment">    '------</span>
+      <span class="keyword">If</span> iMaxRadius &gt; 0 <span class="keyword">Then</span> 
+        MyNewPart.InWorkObject = lNewBody
+        CreateDefeaturing MyNewPart, iMaxRadius
+      <span class="keyword">End If</span> 
+	 
+  <span class="comment">    '------</span>
+  <span class="comment">    ' Creation midsurface</span>
+  <span class="comment">    '------</span>
+      <span class="keyword">Dim</span> MidSurface <span class="keyword">As</span> HybridShapeMidSurface
+      <span class="keyword">Set</span> MidSurface = CreateMidSurface(MyNewPart, BodyRef)
+		
+  <span class="comment">    '</span>
+  <span class="comment">    ' c - FE operations</span>
+  <span class="comment">    '----------------------------------------------------------------------------------------------------</span>
+  <span class="comment">    'Link the FEMRep to the Abstraction Shape </span>
+      <span class="keyword">Dim</span> MyReference <span class="keyword">As</span> Reference
+      <span class="keyword">Set</span> MyReference = MyNewPart.CreateReferenceFromObject(lNewBody)
+      <span class="keyword">Dim</span> myPublicationServices <span class="keyword">As</span> SimPublicationServices
+      <span class="keyword">Set</span> myPublicationServices = CATIA.ActiveEditor.GetService("SimPublicationServices")
+      <span class="keyword">Set</span> MyLink = MyProductService.ComposeLink(OCCURRENCE, MyAbsShape, MyReference)
+      MyFEMRoot.AddAssociatedRep MyLink
+
+  <span class="comment">    '------</span>
+  <span class="comment">    ' Create a link to the midsurface</span>
+  <span class="comment">    '------</span>
+      <span class="keyword">Dim</span> SupportRef <span class="keyword">As</span> Reference
+      <span class="keyword">Set</span> SupportRef = MyNewPart.CreateReferenceFromObject(MidSurface)
+      <span class="keyword">Set</span> Link = MyProductService.ComposeLink(OCCURRENCE, MyAbsShape, SupportRef)
+      <span class="keyword">Set</span> Link2 = MyProductService.ComposeLink(OCCURRENCE, MyAbsShape, BodyRef)
+
+  <span class="comment">    '------</span>
+  <span class="comment">    ' Create a publication on the midsurface</span>
+  <span class="comment">    '------</span>
+      <span class="keyword">Dim</span> myPrdRef <span class="keyword">As</span> VPMReference
+      <span class="keyword">Set</span> myPrdRef = MyAbsShape.Parent.Parent
+      <span class="keyword">Set</span> MyPublication = myPublicationServices.CreatePublication(myPrdRef, Link, PubliName)
+      
+    <span class="keyword">End If</span>
+ 
+    CreateMeshPart MyFEMRoot, MyProductService, MyPublication, Link2, iSize, iOrder, iProp
+        
+    <span class="comment">'Unlink FEMRep from original 3DShape</span>
+    <span class="keyword">If</span> (MyPubAlreadyExists=False) <span class="keyword">Then</span>
+      <span class="keyword">Set</span> MyReference = MyPart.CreateReferenceFromObject(MyPart.MainBody)
+      <span class="keyword">Set</span> MyLink = MyProductService.ComposeLink(OCCURRENCE, Shape, MyReference)
+      MyFEMRoot.RemoveAssociatedRep MyLink
+    <span class="keyword">End If</span>
+			
+  <span class="keyword">Next</span>
+
+<span class="keyword">End Sub</span>
+
+<span class="keyword">Private Function</span> IsAnEmptyBody(ByVal iBody As Body) <span class="keyword">As</span> Boolean
+
+<span class="keyword">If</span> iBody Is Nothing <span class="keyword">Then</span>
+    <span class="keyword">Exit Function</span>
+<span class="keyword">Else</span>
+    <span class="keyword">Dim</span> myShapes <span class="keyword">As</span> Shapes
+    <span class="keyword">Set</span> myShapes = iBody.Shapes
+    <span class="keyword">Dim</span> myHybridShapes <span class="keyword">As</span> HybridShapes
+    <span class="keyword">Set</span> myHybridShapes = iBody.HybridShapes
+    IsAnEmptyBody = True
+	<span class="keyword">If</span> Not (myShapes Is Nothing) <span class="keyword">Then</span>
+		<span class="keyword">If</span> myShapes.Count &gt; 0 <span class="keyword">Then</span>
+			IsAnEmptyBody = False
+		<span class="keyword">End If</span>
+	<span class="keyword">End If</span>
+	<span class="keyword">If</span> Not (myHybridShapes Is Nothing) <span class="keyword">Then</span>
+		<span class="keyword">If</span> myHybridShapes.Count &gt; 0 <span class="keyword">Then</span>
+			IsAnEmptyBody = False
+		<span class="keyword">End If</span>
+	<span class="keyword">End If</span>
+<span class="keyword">End If</span>
+
+<span class="keyword">End Function</span>
+
+<span class="comment">' Find the fisrt volume in OGS</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Private Function</span> FindFirstSolidBody(ByVal iPart As Part) <span class="keyword">As</span> Body
+
+  <span class="keyword">Dim</span> theMeasureService <span class="keyword">As</span> MeasurableService
+  <span class="keyword">Set</span> theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+  found = False
+  <span class="keyword">For Each</span> lOGS In iPart.OrderedGeometricalSets  
+    <span class="keyword">For Each</span> lHybShape In lOGS.HybridShapes
+      <span class="keyword">Dim</span> theMeasurableVolume <span class="keyword">As</span> MeasurableVolume
+      <span class="keyword">Set</span> theMeasurableVolume = theMeasureService.GetMeasurable(lHybShape, CAAMeasurableVolume)
+      <span class="keyword">Dim</span> theArea <span class="keyword">As</span> Double
+      <span class="keyword">On Error Resume Next</span>
+      theArea = theMeasurableVolume.GetVolume
+      <span class="keyword">If</span> Err = 0 <span class="keyword">Then</span>
+        <span class="keyword">Set</span> FindFirstSolidBody = lHybShape
+        found = True
+        <span class="keyword">Exit For</span>
+      <span class="keyword">End If</span>
+      <span class="keyword">On Error Goto 0</span>
+    <span class="keyword">Next</span>
+    <span class="keyword">If</span> found=True <span class="keyword">Then Exit For</span>
+  <span class="keyword">Next</span>
+   <span class="keyword">On Error Goto 0</span>
+   <span class="keyword">If</span> found=False <span class="keyword">Then</span> <span class="keyword">Set</span> FindFirstSolidBody=Nothing
+   
+<span class="keyword">End Function</span>
+
+<span class="comment">' Get Publication from its name</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Private Function</span> GetPublication(ByVal MyRepRef As VPMRepReference, ByVal PubliName As String, ByRef MyPublication As VPMPublication, ByRef MyPublicationAlreadyExists As Boolean)
+
+  <span class="comment">' Retrieve the publication if it exists</span>
+  <span class="keyword">Dim</span> MyRef As VPMReference
+  <span class="keyword">Set</span> MyRef = MyRepRef.Father
+
+  <span class="keyword">Dim</span> ListPublications As VPMPublications
+  <span class="keyword">Set</span> ListPublications = MyRef.Publications
+
+  <span class="keyword">On Error Resume Next</span>
+  <span class="keyword">Set</span> MyPublication = ListPublications.GetItem (PubliName)
+  <span class="keyword">On Error Goto 0</span>
+	
+  MyPublicationAlreadyExists = Not (MyPublication Is Nothing)
+	
+<span class="keyword">End Function</span>
+
+<span class="comment">' Get Abstraction Shape from a Publication</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Private Sub</span> GetAbsShapeRep(ByVal MyPublication As VPMPublication, ByRef MyPubAbsShape As VPMRepInstance)
+
+  <span class="keyword">Dim</span> PublicationServices <span class="keyword">As</span> SimPublicationServices
+  <span class="keyword">Set</span> PublicationServices = CATIA.ActiveEditor.GetService("SimPublicationServices")
+  <span class="keyword">Dim</span> PublishedElement <span class="keyword">As</span> AnyObject
+  PublicationServices.GetPublishedElement MyPublication, PublishedElement
+				
+  <span class="keyword">Dim</span> MySimLinkSrv <span class="keyword">As</span> SimLinkServices
+  <span class="keyword">Set</span> MySimLinkSrv = CATIA.ActiveEditor.GetService("SimLinkServices")
+		  
+  <span class="keyword">Set</span> MyPubAbsShape = MySimLinkSrv.GetRepInstance(PublishedElement)
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">' Create and Initialize an Abstraction Shape from list of shapes and features</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Private Sub</span> CreateInitAbsShape(ByVal Shape As AnyObject, ByVal lShapes As AnyObject, ByVal lFeats As AnyObject, ByRef MyAbsShpRef As VPMRepReference)
+
+  <span class="comment">' Create the Abstraction Shape</span>
+  <span class="keyword">Dim</span> MyPrdRepFactory <span class="keyword">As</span> SimPrdRepFactory
+  <span class="keyword">Set</span> MyPrdRepFactory = Shape.ReferenceInstanceOf.Father.GetItem("SimPrdRepFactory")
+  <span class="keyword">Set</span> MyAbsShpRef = MyPrdRepFactory.CreatePrdRep("AbstractionShape")
+  <span class="keyword">Dim</span> MyAbsShape <span class="keyword">As</span> VPMRepInstance
+  <span class="keyword">Set</span> MyAbsShape = MyAbsShpRef.ParentRepInstances.Item(1)
+
+  <span class="comment">' Initialize the Abstraction Shape</span>
+  InitAbsShape MyAbsShpRef, lShapes, lFeats
+	
+<span class="keyword">End Sub</span>
+
+<span class="comment">' Initialize a given Abstraction Shape from list of shapes and features</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Private Sub</span> InitAbsShape(ByVal MyAbsShpRef As VPMRepReference, ByVal lShapes As AnyObject, ByVal lFeats As AnyObject)
+
+  <span class="keyword">Dim</span> AshInit <span class="keyword">As</span> SimRepInitialization
+  <span class="keyword">Set</span> AshInit = MyAbsShpRef.GetItem("SimRepInitialization")
+  <span class="keyword">Dim</span> InitParams 'As SimParameterSet
+  <span class="keyword">Set</span> InitParams = AshInit.Parameters
+  InitParams.SetStringParameter "Mode", "LocalImport"
+  InitParams.SetObjectArrayParameter "3DShapes", lShapes
+  InitParams.SetObjectArrayParameter "FeaturesToCopy", lFeats
+  InitParams.SetIntegerParameter "EraseBeforeCopy", 1
+  InitParams.SetIntegerParameter "Assemble3DBodies", 0
+  AshInit.InitializeRep (InitParams)
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">' Build list of 3D results according to visibility flag</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Private Sub</span> BuildList3DGeom(ByVal MyPart As Part, ByVal myListResults As AnyObject, ByVal CheckVisibility As Boolean, ByRef myList3DGeom As AnyObject)
+  
+  <span class="keyword">Dim</span> countResults <span class="keyword">As</span> Integer
+  countResults = UBound(myListResults) - LBound(myListResults) + 1
+  <span class="keyword">Dim</span> count3DGeom <span class="keyword">As</span> Integer
+  count3DGeom = 0
+  <span class="keyword">ReDim</span> myList3DGeom(countResults)
+  
+  <span class="comment">'Loop on Results</span>
+  <span class="keyword">For</span> i = 0 To countResults - 1
+    <span class="keyword">Dim</span> Support <span class="keyword">As</span> Body 
+    <span class="keyword">Set</span> Support = myListResults(i)
+    <span class="keyword">Dim</span> Mysel <span class="keyword">As</span> Selection
+    <span class="keyword">Set</span> Mysel = CATIA.ActiveEditor.Selection
+    <span class="keyword">Dim</span> visStatus <span class="keyword">As</span> CatVisPropertyShow
+    Mysel.Add Support
+    Mysel.VisProperties.GetShow visStatus
+    Mysel.Clear
+    <span class="keyword">If</span> (CheckVisibility = False) <span class="keyword">or</span> ((CheckVisibility = True) <span class="keyword">and</span> (visStatus = catVisPropertyShowAttr)) <span class="keyword">Then</span>
+      <span class="keyword">Set</span> myList3DGeom(count3DGeom) = Support
+      count3DGeom = count3DGeom + 1
+    <span class="keyword">End If</span> 
+  <span class="keyword">Next</span> 
+  <span class="comment">'Resize arrays</span>
+  count3DGeom = count3DGeom - 1
+  <span class="keyword">ReDim Preserve</span> myList3DGeom(count3DGeom)
+	
+<span class="keyword">End Sub</span>
+
+<span class="comment">' Create Defeaturing</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Private Sub</span> CreateDefeaturing(ByVal MyNewPart As Part, iMaxRadius)
+
+  <span class="keyword">Dim</span> myShapeFactory <span class="keyword">As</span> ShapeFactory
+  <span class="keyword">Set</span> myShapeFactory = MyNewPart.ShapeFactory
+  <span class="keyword">Dim</span> defeature <span class="keyword">As</span> Defeaturing
+  <span class="keyword">Set</span> defeature = myShapeFactory.AddNewDefeaturing()
+  
+  <span class="comment">''''' Retrieval of the filter collection associated to the created defeaturing object</span>
+  <span class="keyword">Dim</span> Filters <span class="keyword">As</span> DefeaturingFilters
+  <span class="keyword">Set</span> Filters = defeature.Filters
+  
+  <span class="comment">''''' Creation and retrieval filletfilter</span>
+  filletFilterIndex = Filters.Add("DefeaturingFilletFilter")
+  <span class="keyword">Dim</span> filletFilter <span class="keyword">As</span> DefeaturingFilletFilter
+  <span class="keyword">Set</span> filletFilter = Filters.Item(filletFilterIndex)
+  
+  <span class="comment">''''' Customize fillet filter</span>
+  filletFilter.setMaximumValue "RibbonRadius", iMaxRadius
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">' Create MidSurface</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Private Function</span> CreateMidSurface( ByVal MyNewPart as Part, ByVal BodyRef as Reference ) <span class="keyword">As</span> HybridShapeMidSurface
+
+  <span class="comment">''''' Create a new Geometrical Set</span>
+  <span class="keyword">Dim</span> NewGeomSet As HybridBody
+  <span class="keyword">If</span> MyNewPart.HybridBodies.Count &gt; 0 <span class="keyword">Then</span>
+  	<span class="keyword">Set</span> NewGeomSet = MyNewPart.HybridBodies.Item(1)
+  <span class="keyword">Else</span>
+    <span class="keyword">Set</span> NewGeomSet = MyNewPart.HybridBodies.Add
+  <span class="keyword">End If</span>
+  
+  NewGeomSet.Name = "midsurface"
+  
+  <span class="comment">''''' Create a midsurface</span>
+  <span class="keyword">Dim</span> hybridShapeFactory As hybridShapeFactory
+  <span class="keyword">Set</span> hybridShapeFactory = MyNewPart.hybridShapeFactory
+  
+  <span class="keyword">Set</span> CreateMidSurface = hybridShapeFactory.AddNewMidSurfaceWithAutoThreshold(BodyRef, 2, 7, 1)
+  
+  <span class="comment">''''' Append the midsurface to the Geometrical Set</span>
+  NewGeomSet.AppendHybridShape CreateMidSurface
+  
+  <span class="comment">''''' Update</span>
+  hybridShapeFactory.GSMVisibility CreateMidSurface, 1
+  hybridShapeFactory.GSMVisibility BodyRef, 0
+  
+<span class="keyword">End Function</span>
+
+<span class="comment">' Create Mesh Part</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Private Sub</span> CreateMeshPart(ByVal MyFEMRoot As CATIAFmtFemRoot, ByVal MyProductService As PLMProductService, ByVal MyPublication As VPMPublication, ByVal Link2 As AnyObject, ByVal iSize As String, ByVal iOrder As Integer, ByVal iProp As Integer)
+
+  <span class="comment">''''' Create the surface mesh part</span>
+  <span class="keyword">Dim</span> MyMeshSet <span class="keyword">As</span> SimMeshSet
+  <span class="keyword">Set</span> MyMeshSet = MyFEMRoot.GetSet("SimNodesElements")
+  <span class="keyword">Dim</span> MyMeshParts <span class="keyword">As</span> SimMeshParts
+  <span class="keyword">Set</span> MyMeshParts = MyMeshSet.MeshParts
+  <span class="keyword">Dim</span> MyMeshPart <span class="keyword">As</span> SimMeshPart
+  <span class="keyword">Set</span> MyMeshPart = MyMeshParts.Add("CATFmtSurfQuadMesher")
+  
+  <span class="comment">''''' Set the publication as support</span>
+  <span class="keyword">Set</span> MyDeathLink = MyProductService.ComposeLink(OCCURRENCE, Nothing, MyPublication)
+  MyMeshPart.AddSupport(MyDeathLink)
+  
+  <span class="comment">''''' Set the meshing attributes</span>
+  MyMeshPart.SetAttributeValue "Mesh", "MeshSizeValue", iSize
+  MyMeshPart.SetAttributeValue "Mesh", "ElementOrder", iOrder
+  
+  <span class="comment">''''' Create the shell property</span>
+  <span class="keyword">If</span> (iProp = 1) <span class="keyword">Then</span>
+    <span class="keyword">Dim</span> PropertySet <span class="keyword">As</span> SimProperties
+    <span class="keyword">Set</span> PropertySet = MyFEMRoot.GetSet("SimProperties")
+    <span class="keyword">Dim</span> ShellSection <span class="keyword">As</span> SimShellSection
+    <span class="keyword">Set</span> ShellSection = PropertySet.Add("SimShellSection")
+    ShellSection.ThicknessType = SimShellSectionMid
+    
+    <span class="keyword">Dim</span> LinkAccess <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> LinkAccess = ShellSection.GetItem("SimLinkAccess")
+    <span class="keyword">If</span> IsEmpty(MOAFEM) <span class="keyword">Then</span>
+      LinkAccess.AddLink "MainSupport", MyPublication
+      LinkAccess.AddLink "SecondarySupport", Link2
+    <span class="keyword">Else</span>
+      LinkAccess.AddLinkWithContext "MainSupport", MyPublication, OCCURRENCE
+      LinkAccess.AddLinkWithContext "SecondarySupport", Link2, OCCURRENCE
+    <span class="keyword">End If</span>
+  <span class="keyword">End If</span>
+
+<span class="keyword">End Sub</span>
+
+</pre>
+  </body>
+</html>
+

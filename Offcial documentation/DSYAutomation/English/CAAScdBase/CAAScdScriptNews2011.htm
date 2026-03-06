@@ -1,0 +1,372 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>What's New with V6R2011 Automation</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>What's New with V6R2011 Automation</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article presents Automation objects, methods, and properties that 
+		are added since V6R2010x GA to enhance V6 Automation capabilities, support 
+		functional evolutions, and correct defects. Some of those modifications 
+		may already exist in V6R2010x maintenance fixes. A few properties and methods 
+		might have been modified or removed. VB and VBScripts code using those methods 
+		may have to be modified. VB projects using the corresponding objects must 
+		be recompiled.</p>
+		<p>Consult
+		<a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation 
+		Languages, Debug, and Compatibility</a> 
+	 for details on manual adjustments 
+		that may be required for existing VB/VBA and VSTA projects to be usable 
+		on a new release.</p>
+		<ul>
+			<li><a href="#NewSetting">New Settings Repositories</a></li>
+			<li><a href="#NewObject">New Objects</a></li>
+			<li><a href="#NewMethod">New Methods</a></li>
+			<li><a href="#NewEnum">New Enums</a></li>
+			<li><a href="#NewProperty">New Properties</a></li>
+			<li><a href="#Modif">Modified Methods and Properties</a></li>
+			<li><a href="#Suppress">Removed Objects, Collections, Methods and Properties</a></li>
+		</ul>
+		<p>Deprecated APIs can be found in
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Deprecated');return false;">
+		V6 IDL API Deprecated Index</a>.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p>You can also find news from previous V6 releases:</p>
+		<ul>
+			<li><a href="CAAScdScriptNews2010x.htm">V6R2010x What's New?</a></li>
+			<li><a href="CAAScdScriptNews2010.htm">V6R2010 What's New?</a></li>
+			<li><a href="CAAScdScriptNews2009x.htm">V6R2009x What's New?</a></li>
+		</ul>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="border1">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewSetting"></a>New Settings Repositories</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/CATLiveArchitectureSettings.htm">
+		CATLiveArchitectureSettings</a></td>
+		<td>These settings define the user choice for CATIA Live Architecture environment</td>
+	</tr>
+	<tr>
+		<td>
+		CATPLMxNetwork</td>
+		<td>Network Compresssion activation definition</td>
+	</tr>
+	<tr>
+		<td>DELDPMAppSettings</td>
+		<td>MA structure editor settings</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DELDPMProcDefPESettings.htm">
+		DELDPMProcDefPESettings</a></td>
+		<td>Settings for Process Editor UI</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DELDPMProcessCreationSettings.htm">
+		DELDPMProcessCreationSettings</a></td>
+		<td>Process Creation settings</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DELGanttSettings.htm">
+		DELGanttSettings</a></td>
+		<td>Provides persistent settings for the Gantt Chart</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DELMSDResUtilSettings.htm">
+		DELMSDResUtilSettings</a></td>
+		<td>Settings for Resource Utilization</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DELMSDSysEdSettings.htm">
+		DELMSDSysEdSettings</a></td>
+		<td>Settings for System Editor UI</td>
+	</tr>
+<!--
+	<tr>
+		<td>
+		<a href="../../../CAAScriptResourcesDoc.edu/CAAScrSettings.doc/src/DELPLMProdExpOptions.htm">
+		DELPLMProdExpOptions</a></td>
+		<td>Settings to configure Behavior Experience</td>
+	</tr>
+-->
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBDeviceBase.htm">
+		DNBDeviceBase</a></td>
+		<td>Setting Device visualization parameters</td>
+	</tr>
+	<tr>
+		<td>DNBIgpArcWeldMacroSettings</td>
+		<td>Settings for ARC Welding Application Tags</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBIgpArcWeldTrajectorySettings.htm">
+		DNBIgpArcWeldTrajectorySettings</a></td>
+		<td>Settings for ARC Welding application</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBIgpTagVisuSettings.htm">
+		DNBIgpTagVisuSettings</a></td>
+		<td>Setting Tag visualization parameters</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBIgpTaskVisuSettings.htm">
+		DNBIgpTaskVisuSettings</a></td>
+		<td>Setting Robot task visualization parameters</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBIgpTeachDlgSettings.htm">
+		DNBIgpTeachDlgSettings</a></td>
+		<td>Allow user to set teachin parameters</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBImportD5.htm">
+		DNBImportD5</a></td>
+		<td>Defines Settings to control conversion of DELMIA D5 files</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBRRSSettings.htm">
+		DNBRRSSettings</a></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBRobotBase.htm">
+		DNBRobotBase</a></td>
+		<td>Setting Robot visualization parameters</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBSimulationSettings.htm">
+		DNBSimulationSettings</a></td>
+		<td>Settings to handle default simulation parameters</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBSpotWeldingSettings.htm">
+		DNBSpotWeldingSettings</a></td>
+		<td>Settings for Spot Welding</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBTSASpotWeldTrajectorySettings.htm">
+		DNBTSASpotWeldTrajectorySettings</a></td>
+		<td>Settings to handle the parameters of the TSA Spot Weld Trajectory Settings</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/DNBVNCSimulSettings.htm">
+		DNBVNCSimulSettings</a></td>
+		<td>Lists the settings used during the machine simulation in the Machining 
+		applications</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/FeaOptions.htm">
+		FeaOptions</a></td>
+		<td>Manage options for analysis</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/IVDevice.htm">
+		IVDevice</a></td>
+		<td>Setting to handle the devices parameters</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/IVInteractions.htm">
+		IVInteractions</a></td>
+		<td>Setting to handle the immersive interactions parameters</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/MaterialOptionsSettings.htm">
+		MaterialOptionsSettings</a></td>
+		<td>Setting to handle the Materials Palette parameters</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/PLMEditorColor.htm">
+		PLMEditorColor</a></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/SheetmetalDesignFBDI.htm">
+		SheetmetalDesignFBDI</a></td>
+		<td>These settings define the user choice of the FBDI Settings for GSMD</td>
+	</tr>
+	<tr>
+		<td>
+		SpmImageOptions</td>
+		<td>Manage options for images</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="../CAAScrSettings/VPMIdentificationSettingDlg.htm">
+		VPMIdentificationSettingDlg</a></td>
+		<td>Identification options</td>
+	</tr>
+	<tr>
+		<td>
+		VPMNavigator</td>
+		<td>Setting to handle the parameters of the VPM Navigator User Interface</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="border1">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewObject"></a>New Objects</th>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="border1">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewMethod"></a>New Methods</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableInContext', 'GetResultComputationType');return false;">
+		MeasurableInContext::GetResultComputationType</a> </td>
+		<td>Get the resulting mode of computation of the object.</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'Prism', 'GetProfileElement');return false;">
+		Prism::GetProfileElement</a> </td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'TPSView', 'AddViewText');return false;">
+		TPSView::AddViewText</a> </td>
+		<td>Create a ViewText associated to the CATIAView.</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'TPSView', 'GetViewText');return false;">
+		TPSView::GetViewText</a> </td>
+		<td>Get the Viewtext on the View interface.</td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'TPSView', 'HasViewText');return false;">
+		TPSView::HasViewText</a> </td>
+		<td>Checks if there is a Viewtext in the View.</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewEnum"></a>New Enums</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'enum', 'CATResultCalcType');return false;">
+		CATResultCalcType</a></td>
+		<td>Type of results computation.</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="border1">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewProperty"></a>New Properties</th>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="border1">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="Modif"></a>Modified Methods and Properties</th>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="border1">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="Suppress"></a>Removed Objects, Collections, Methods, 
+		and Properties </th>
+	</tr>
+	<tr>
+		<td>CATIADraftingPageSetup<span></span> (Object)</td>
+		<td>Useless object, has been removed.</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

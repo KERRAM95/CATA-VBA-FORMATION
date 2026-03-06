@@ -1,0 +1,726 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js"></script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js"></script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js"></script>
+<title>VB Scripting Integration</title>
+<style type="text/css">
+.tableStyle1 {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.tableStyle1 th, .tableStyle1 td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 3px;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>VB Scripting Integration</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+
+<table class="abstract">
+	<tr>
+		<td>
+			<h3>Abstract</h3>
+			<p>This article details how to incorporate VB scripting into a custom Method.</p>
+		</td>
+	</tr>
+</table>
+
+<h1>Command to Run a VB Script</h1>
+<p>The SMAExsExecuteScriptCmdHdr command can be used to set up a command that executes a VB script.</p>
+<p>The only limitation on VB script behavior is that the script will run in the context of the Simulation being the UI-Active object. Therefore, it should be possible to use any VB scripting functionality that works correctly in the context of a Simulation.</p>
+<p>The details of the script to run are provided via an additional &lt;ConfigSpec&gt; schema element child of the &lt;CommandHeader&gt; element.</p>
+
+<h2>ConfigSpec Element</h2>
+<p>Provides the configuration information that identifies the script to execute. </p>
+
+<h4>Summary</h4>
+<p>&lt;CommandHeader  &gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;ConfigSpec  ...  /&gt;<br/>
+&lt;/CommandHeader&gt;<br/>
+</p>
+
+<p>&lt;ConfigSpec libraryName libraryRevision? libraryType scriptName functionName?  &gt;</p>
+
+<h4>Details</h4>
+<table class="tableStyle1">
+<tr>
+<td>
+&lt;ConfigSpec</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;libraryName</td>
+<td>
+type=xs:string<br/>
+The name of the <b>3D</b>EXPERIENCE macro library containing the intended script.<br/>
+This is the library's PLM name (or id) (This is separate from the library's title. The title can be modified, the name cannot.)<br/>
+Required.
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;libraryRevision</td>
+<td>
+type=xs:string<br/>
+The desired revision of the PLM library.<br/>
+Optional - needed only if the library has multiple revisions.<br/>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;libraryType</td>
+<td>
+Enum:[ PLM Directory, PLM VBA Project, PLM VSTA Project ]<br/>
+See details below.<br/>
+Required.
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;scriptName</td>
+<td>
+type=xs:string<br/>
+The name of the intended script. This is the name as displayed within the <b>3D</b>EXPERIENCE Macro Library UI.<br/>
+Required.
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;functionName</td>
+<td>
+type=xs:string<br/>
+The name of the function to run within the specified script.<br/>
+(The script may be either a function or a subroutine; there is no distinction between the two.)<br/>
+Optional - defaults to "CATMain".<br/>
+</td>
+</tr>
+</table>
+
+<p>The library types are:</p>
+<table class="tableStyle1">
+<tr>
+<td>
+PLM Directory</td>
+<td>
+A <b>3D</b>EXPERIENCE PLM macro library that contains catvbs or catscript files.<br/>
+The type name displayed within the <b>3D</b>EXPERIENCE UI could be either "PLM Directory" or "Macro library VB Script".<br/>
+</td>
+</tr>
+<tr>
+<td>
+PLM VBA Project</td>
+<td>
+A <b>3D</b>EXPERIENCE VBA PLM macro library.<br/>
+The type name displayed within the <b>3D</b>EXPERIENCE UI could be either "PLM VBA Project" or "Macro library VBA".<br/>
+</td>
+</tr>
+<tr>
+<td>
+PLM VSTA Project</td>
+<td>
+A <b>3D</b>EXPERIENCE VSTA PLM macro library.<br/>
+The type name displayed within the <b>3D</b>EXPERIENCE UI could be either "PLM VSTA Project" or "Macro library VSTA".<br/>
+</td>
+</tr>
+</table>
+
+<h3>Example</h3>
+
+<pre class="code">
+  &lt;Action name="Initialize FEM" id="InitFem" &gt;
+    &lt;Commands&gt;
+      &lt;CommandHeader headerId="SMAExsExecuteScriptCmdHdr" &gt;
+        &lt;ConfigSpec  libraryName="vbs 41723085-00000001" 
+                     libraryType="PLM Directory"  
+                     scriptName="InitFem1.CATScript"
+                       /&gt;
+      &lt;/CommandHeader&gt;
+    &lt;/Commands&gt;
+  &lt;/Action&gt;
+</pre>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<h1>Additional Scripting Functionality</h1>
+<p>The ExecuteScript command provides the following functionalities:</p>
+<ul>
+<li>User input parameters: a script can request user inputs.</li>
+<li>"let" subroutine: a second script subroutine can be used to
+<ul>
+<li>Get the default/initial values for the user inputs.</li>
+<li>Block the call of the main script.</li>
+</ul>
+</li>
+<li>Manage features: a script subroutine can return the Simulation preprocessing features it creates.</li>
+</ul>
+
+<h2>Script User Input Parameters</h2>
+<h3>Overview</h3>
+<p>The ExecuteScript command provides a mechanism for a script to request user inputs.
+In such a case, a dialog is displayed for the user to provide the requested inputs. </p>
+
+<p>The values that the user enters are provided as arguments to the script subroutine. </p>
+
+<p>The supported input types are:</p>
+<ul style="margin-left:20px">
+<li>Simple types: integer, double, string, Boolean</li>
+<li>Literals: length, angle, etc.</li>
+<li>Enum: a locally defined fixed set of choices.</li>
+<li>Publication (Port).</li>
+<li>Meshing rules document.</li>
+<li>Face, Edge or Node Selection.</li>
+</ul>
+
+<p style="margin-left:20%;margin-top:15px;margin-bottom:15px">This functionality leverages the user inputs functionality of the Automated Modeling (batch meshing) Procedures. See Automated Modeling User Procedures for details (Content and Simulation Apps | Physics Simulation | Model Assembly Design | Automated Modeling | About User Procedures).</p>
+
+<p style="margin-left:20%;margin-top:10px;margin-bottom:10px">Limitation:<br/>
+The Script User Input Parameters feature does not work with a VSTA project script. The script must be either a PLM Directory script or a VBA Project script.</p>
+
+<p>If Cancel is selected on the dialog, the script execution is aborted.</p>
+
+<h3>Details</h3>
+<p>A script requests user inputs by adding a specific comment header, called a user input specification, to the script:</p>
+<pre class="code">'&lt;Inputs&gt;
+'  &lt;Input Name="Input1" Type="Integer" /&gt;
+'  &lt;Input Name="Input2" Type="Double" /&gt;
+'&lt;/Inputs&gt;</pre>
+
+<p>The displayed dialog will include a field for each input requested.
+The following table gives the default values for the dialog fields.
+<table class="tableStyle1">
+<tr>
+<th>Input type</th><th>Dialog default value</th>
+</tr>
+<tr>
+<td> Integer, Double</td>
+<td> 0 (zero) </td>
+</tr>
+<tr>
+<td> String, Dimension, DmtDocument</td>
+<td> "" (empty string) </td>
+</tr>
+<tr>
+<td> Boolean</td>
+<td> False </td>
+</tr>
+<tr>
+<td> Port</td>
+<td> "" (empty string) </td>
+</tr>
+<tr>
+<td> Enum</td>
+<td>The first enum entry</td>
+</tr>
+<tr>
+<td> Selection</td>
+<td>An empty list</td>
+</tr>
+</table>
+</p>
+
+<p>The initial value to use for each field of the dialog can be specified via the secondary 'let' subroutine of the ExecuteScript command.</p>
+
+<p>The script subroutine that is being called specifies an input parameter for each input requested. That is, for the input specification header given above, the script subroutine would be defined as</p>
+<pre class="code">Sub CATMain( P1, P2 )</pre>
+<p>(any names can be used for 'P1' and 'P2'.)</p>
+
+<h3>User Input Specification Schema</h3>
+
+<h4>Summary</h4>
+<p>&lt;Enums&gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;Enum ... /&gt;*<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;Member ... /&gt;*<br/>
+&nbsp;&nbsp;&nbsp;&lt;/Enum&gt;<br/>
+&lt;/Enums&gt;<br/>
+</p><p>
+&lt;Inputs&gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;Input ... /&gt;*<br/>
+&lt;/Inputs&gt;<br/>
+</p>
+<p>&lt;Enum  Name &gt;</p>
+<p>&lt;Member  Name  Nls &gt;</p>
+<p>&lt;Input  Name  Type  SubType?  Mand  Nls  /&gt;</p>
+
+<h4>Details</h4>
+<table class="tableStyle1">
+<tr>
+<td>
+&lt;Enums&gt;</td>
+<td>
+Container for &lt;Enum&gt; specifications.<br/>
+Omitted if no &lt;Enum&gt; specifications are given.<br/>
+minOccurs=0 maxOccurs=1<br/>
+</td>
+</tr>
+<tr>
+<td>
+&lt;Enum</td>
+<td>
+Defines an enumeration.<br/>
+An enumeration defines a fixed set of choices for the possible values of an input field.<br/>
+minOccurs=0 maxOccurs=unbounded<br/>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;Name</td>
+<td>
+type=xs:string<br/>
+The internal name of the enumeration.<br/>
+This is the name by which the enumeration is referenced in an &lt;Input&gt; element.<br/>
+</td>
+</tr>
+<tr>
+<td>
+&lt;Member</td>
+<td>
+Defines a member of an enumeration.<br/>
+minOccurs=0 maxOccurs=unbounded<br/>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;Name</td>
+<td>
+type=xs:string<br/>
+The internal name of the member.<br/>
+The user does not see this name.<br/>
+Required.
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;Nls</td>
+<td>
+type=xs:string<br/>
+The name that is displayed to the user.<br/>
+Required.
+</td>
+</tr>
+<tr>
+<td>
+&lt;Inputs&gt;</td>
+<td>
+Container for &lt;Input&gt; specifications.<br/>
+minOccurs=1 maxOccurs=1<br/>
+</td>
+</tr>
+<tr>
+<td>
+&lt;Input</td>
+<td>
+Specifies a desired user input.<br/>
+minOccurs=0 maxOccurs=unbounded<br/>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;Name</td>
+<td>
+type=xs:string<br/>
+The internal name of this input item.<br/>
+Required.
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;Type</td>
+<td>
+enum: [ Integer, Double, String, Boolean, Dimension, Port, Enum, DmtDocument ]<br/>
+The type of the input field.<br/>
+Required.<br/>
+
+<p>Dimension, Enum, and DmtDocument must be further qualified by the <b>SubType</b> attribute.</p>
+
+<p>Dimension represents a double value of a particular <b>3D</b>EXPERIENCE dimension type.</p>
+
+<p>Port is for selecting a Publication. The dialog displays a list of the Publications that are defined on the Simulation's associated Product.</p>
+
+<p>DmtDocument is for selecting a meshing rules document.</p>
+
+<p>Selection is for selecting a 1 or more Nodes, Edges or Faces.</p>
+</td>
+</tr>
+<tr>
+<td> &nbsp;&nbsp;&nbsp;SubType</td>
+<td>
+type=xs:string<br/>
+Qualifies the Dimension, Enum, and DmtDocument types.<br/>
+Optionally required: Required if <b>Type</b> is Dimension, Enum, or DmtDocument.<br/>
+
+<p>For Dimension, the value is a <b>3D</b>EXPERIENCE dimension name. I.e., Length, Angle.</p>
+
+<p>For Enum, the value is the name of the Enum to reference. (The Enum name is given by the <b>Name</b> attribute of the &lt;Enum&gt; element.)</p>
+
+<p>For the DmtDocument, value is the extension of the meshing rules document (the file extension required for each type of meshing rule). For example: CATFmtOct2dRule, CATFmtOct3dRule, CATFmtSurfTriaRule, CATFmtSurfQuadRule, CATFmtTetRule.</p>
+
+<p>For Selection, value is the type of entities to select:</p>
+<ul>
+<li>MonoSelectionNode - Allow selection of a single node.</li>
+<li>MonoSelectionEdge - Allow selection of a single edge.</li>
+<li>MultiSelectionEdge - Allow selection of multiple edges.</li>
+<li>MonoSelectionFace - Allow selection of a single face.</li>
+<li>MonoSelectionNode - Allow selection of a single node</li>
+<li>MultiSelectionFace - Allow selection of multiple faces.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;Mand</td>
+<td>
+type=xs:boolean<br/>
+Indicates whether the user must enter a value for this input.<br/>
+Optional. Defaults to false.<br/>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;Nls</td>
+<td>
+type=xs:string<br/>
+Specifies the field name that is displayed on the dialog.<br/>
+Required.
+</td>
+</tr>
+</table>
+
+
+<h3>VB API</h3>
+<p>For the called subroutine, the type of each input parameter is based on the type of the corresponding input request, as given in the following table.</p>
+
+<table class="tableStyle1">
+<tr>
+<th>User Input Type</th><th>VB Parameter Type</th>
+</tr>
+<tr><td>Integer</td><td>Integer</td></tr>
+<tr><td>Double</td><td>Single</td></tr>
+<tr><td>String</td><td>String</td></tr>
+<tr><td>Boolean</td><td>Boolean</td></tr>
+<tr><td>Dimension</td><td>String, containing the numeric value and the associated current UI units (this string may not be the actual value and units that the user entered)</td></tr>
+<tr><td>Enum</td><td>Integer, representing the ordinal value of the selected enum (1, 2, etc)</td></tr>
+<tr><td>Port</td><td>VPMPublication (Object)<br/>
+* will be Empty if a Publication is not actually selected on the Inputs dialog.</td></tr>
+<tr><td>DmtDocument</td><td>String, the document name.<br/>
+* will be an empty string if a document is not actually selected on the Inputs dialog.</td></tr>
+<tr><td>Selection</td><td>Collection of AnyObject<br/>
+Actual object type in collection changes based on selection of Node, Edge or Face.</td></tr>
+</table>
+
+<br/>
+
+<h3>Example</h3>
+
+<pre class="code">
+'&lt;Enums&gt;
+'  &lt;Enum Name="Color"&gt;
+'    &lt;Member Name="red"   Nls="Red"/&gt;
+'    &lt;Member Name="green" Nls="Green"/&gt;
+'    &lt;Member Name="blue"  Nls="Blue"/&gt;
+'   &lt;/Enum&gt;
+'&lt;/Enums&gt;
+
+'&lt;Inputs&gt;
+'  &lt;Input Name="Input01" Type="Integer" Mand="false" Nls="Integer" /&gt;
+'  &lt;Input Name="Input02" Type="Double"  Mand="false" Nls="Double" /&gt;
+'  &lt;Input Name="Input03" Type="String"  Mand="false" Nls="String" /&gt;
+'  &lt;Input Name="Input04" Type="Boolean" Mand="false" Nls="On/Off" /&gt;
+'  &lt;Input Name="Input05" Type="Dimension" SubType="Length" Mand="false" Nls="Length" /&gt;
+'  &lt;Input Name="Input06" Type="Enum" SubType="Color" Mand="false" Nls="Enum: Color" /&gt;
+'  &lt;Input Name="Input07" Type="Port" Mand="false" Nls="Publication" /&gt;
+'  &lt;Input Name="Input08" Type="DmtDocument" SubType="CATFmtSurfTriaRule" Mand="false" Nls="Mesh Rule" /&gt;
+'&lt;/Inputs&gt;
+
+Sub CATMain( P1, P2, P3, P4, P5, P6, P7, P8 )
+
+  Dim str as String
+  str = ""
+  str = str &amp; "Integer = " &amp; P1 &amp; Chr(13)&amp;Chr(10)
+  str = str &amp; "Double = " &amp; P2 &amp; Chr(13)&amp;Chr(10)
+  str = str &amp; "String = " &amp; P3 &amp; Chr(13)&amp;Chr(10)
+  str = str &amp; "Boolean = " &amp; P4 &amp; Chr(13)&amp;Chr(10)
+  str = str &amp; "Length = " &amp; P5 &amp; Chr(13)&amp;Chr(10)
+  str = str &amp; "Color = " &amp; P6 &amp; Chr(13)&amp;Chr(10)
+
+  Dim FeatureName As String
+  FeatureName = "&lt;Nada&gt;"
+  Dim P7Type As String
+  P7Type = TypeName(P7)
+  If Not IsEmpty(P7) Then
+    If Not P7 Is Nothing Then
+       FeatureName = P7.Name
+    End If
+  End If
+
+  str = str &amp; "Port = " &amp; FeatureName &amp; Chr(13) &amp; Chr(10)
+
+  str = str &amp; "Mesh Rule = " &amp; P8 &amp; Chr(13)&amp;Chr(10)
+  
+  MSGBOX str
+End Sub
+</pre>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<h2>Let Subroutine</h2>
+<p>The ExecuteScript command supports a second subroutine that provides an opportunity to:</p>
+<ul style="margin-left:20px">
+<li>block the call of the main script subroutine, or </li>
+<li>provide default/initial values for the user inputs dialog.</li>
+</ul>
+
+<p>This subroutine is referred to as a "let" subroutine. As implied, this subroutine is called before the main subroutine (CATMain) is called.</p>
+
+<p style="margin-left:20%;margin-top:10px;margin-bottom:10px">Limitation: <br/>
+The let subroutine feature does not work with scripts in a PLM Directory library.</p>
+
+<h3>Let Subroutine Schema</h3>
+<p>The let subroutine is specified within the ExecuteScript command's associated &lt;ConfigSpec&gt; element, via the following schema:</p>
+
+<h4>Summary</h4>
+<p>&lt;ConfigSpec  letSub? &gt;</p>
+
+<h4>Details</h4>
+<table class="tableStyle1">
+<tr><td>&lt;ConfigSpec</td><td>&nbsp;</td></tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;letSub</td>
+<td>type=xs:string<br/>
+The name of the "let" subroutine. (Similar to the functionName attribute.)<br/>
+The let subroutine is in the same script as the main subroutine.<br/>
+Optional.
+</td>
+</tr>
+</table>
+
+<p>Note: The ExecuteScript command has only a single &lt;ConfigSpec&gt; element.</p>
+
+<h3>VB API</h3>
+<p>The let subroutine has the following prototype:</p>
+<pre class="code">Sub LetFunction( ilFeatures(), olParams(), obBlockCall )</pre>
+<p>Where</p>
+
+<div style="margin-left:20px">
+<p>param ilFeatures [in]</p>
+<div style="margin-left:20px">
+<p>The list of features previously created by the main script subroutine (e.g. CATMain).</p>
+<p>This is the list of features returned by the main subroutine on the last invocation.</p>
+<p>If the "manageFeatures" option (described below) is not being used, this parameter will be a zero-length array.</p>
+</div>
+
+<p>param olParams [in/out]</p>
+<div style="margin-left:20px">
+<p>List of default/initial values to use on the user inputs dialog.</p>
+<p>Set the values as desired. </p>
+<p>The content of the array is based on the User Inputs Specification at the top of the script module.</p>
+<p>The values are initialized with the internal default for each input type.</p>
+<p>For Port values, the returned value can be either an actual VPMPublication object or a Publication name. In the case of a Publication name, the name will be resolved to the corresponding VPMPublication object for input to the main script subroutine.</p>
+</div>
+
+<p>param oBlockCall [out]</p>
+<div style="margin-left:20px">
+<p>Integer value passed back by this script that indicates whether to not call the main script subroutine.</p>
+<div style="margin-left:20px">
+<p>0: do not block; run the main subroutine.</p>
+<p>1: Do not run the main subroutine.</p>
+<p>Otherwise: Do not run the main subroutine, and display an info message.</p>
+</div></div>
+</div>
+
+<br/>
+
+<h3>Example</h3>
+<p>Assume the following User Input Specification:</p>
+<pre class="code">
+'&lt;Enums&gt;
+'  &lt;Enum Name="Color"&gt;
+'    &lt;Member Name="red"   Nls="Red"/&gt;
+'    &lt;Member Name="green" Nls="Green"/&gt;
+'    &lt;Member Name="blue"  Nls="Blue"/&gt;
+'   &lt;/Enum&gt;
+'&lt;/Enums&gt;
+
+'&lt;Inputs&gt;
+'  &lt;Input Name="Input01" Type="Integer" Mand="false" Nls="Integer" /&gt;
+'  &lt;Input Name="Input02" Type="Double"  Mand="false" Nls="Double" /&gt;
+'  &lt;Input Name="Input03" Type="String"  Mand="false" Nls="String" /&gt;
+'  &lt;Input Name="Input04" Type="Boolean" Mand="false" Nls="On/Off" /&gt;
+'  &lt;Input Name="Input05" Type="Dimension" SubType="Length" Mand="false" Nls="Length" /&gt;
+'  &lt;Input Name="Input06" Type="Enum" SubType="Color" Mand="false" Nls="Enum: Color" /&gt;
+'  &lt;Input Name="Input07" Type="Port" Mand="false" Nls="Publication" /&gt;
+'  &lt;Input Name="Input08" Type="DmtDocument" SubType="CATFmtSurfTriaRule" Mand="false" Nls="Mesh Rule" /&gt;
+'&lt;/Inputs&gt;
+
+Sub CATMain( P1, P2, P3, P4, P5, P6, P7, P8 )
+   ...
+End Sub
+</pre>
+</br>
+
+<p>The let subroutine is defined as follows, in the same script files as CATMain:</p>
+<pre class="code">
+Sub LetFunction1( ilFeatures(), olParams(), oBlockCall )
+
+  olParams(0) = 123
+  olParams(1) = 234
+  olParams(2) = "This is it."
+  olParams(3) = True
+  olParams(4) = "456mm"
+  olParams(5) = 3         'corresponds to Color Blue.
+  olParams(6) = "Clamp"   'The name of the desired Publication.
+  olParams(7) = "ThisOne" 'The name of the rule document.
+
+End Sub
+</pre>
+</br>
+
+<p>Following is the setup of the ExecuteScript command:</p>
+<pre class="code">
+  &lt;Action name="Initialize FEM" id="InitFem" &gt;
+    &lt;Commands&gt;
+      &lt;CommandHeader headerId="SMAExsExecuteScriptCmdHdr" &gt;
+        &lt;ConfigSpec  libraryName="vbs 41723085-00000001" 
+                     libraryType="PLM Directory"  
+                     scriptName="InitFem1.CATScript"
+                     letSub="LetFunction1"
+                       /&gt;
+      &lt;/CommandHeader&gt;
+    &lt;/Commands&gt;
+  &lt;/Action&gt;
+</pre>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<h2>Manage Features</h2>
+<p>The ExecuteScript command supports an option to enable the script to return the Simulation preprocessing features that the script creates. This is called the "manage features" option.</p>
+
+<p>This list of features is provided as input to the secondary 'let' subroutine described above.</p>
+
+<h3>Manage Features Schema</h3>
+<p>The "manage features" option is specified within the ExecuteScript command's associated &lt;ConfigSpec&gt; element, via the following schema:</p>
+
+<h4>Summary</h4>
+<p>&lt;ConfigSpec  manageFeatures? &gt;</p>
+
+<h4>Details</h4>
+<table class="tableStyle1">
+<tr><td>&lt;ConfigSpec</td><td>&nbsp;</td></tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;manageFeatures</td>
+<td>type=xs:boolean<br/>
+Indicates whether the "manageFeatures" option is active for the main subroutine (e.g. CATMain).<br/>
+Optional. Defaults to false.<br/>
+</td>
+</tr>
+</table>
+<br/>
+
+<p>Note: The ExecuteScript command has only a single &lt;ConfigSpec&gt; element.</p>
+
+<h3>VB API</h3>
+<p>If the "manage features" option is specified, the main script subroutine must include an array input/output parameter. For example:</p>
+
+<pre class="code">Sub CATMain( iolFeatures() )</pre>
+
+<p>If the "manage features" option is used along with the User Input Specification, the features array is the last parameter of the subroutine. For example:</p>
+
+<pre class="code">Sub CATMain( P1, P2, iolFeatures() )</pre>
+
+<p>On the first call of the main subroutine, the passed in argument is a zero-length array. To return the created features, first the array size must be set, as in:</p>
+
+<pre class="code">ReDim iolFeatures(d)</pre>
+
+<p>where "d" specifies the size of the array (see the ReDim command).</p>
+
+
+<br/>
+
+<h3>Example</h3>
+<p>Assume the following User Input Specification:</p>
+<pre class="code">
+'&lt;Inputs&gt;
+'  &lt;Input Name="Input01" Type="Integer" Mand="false" Nls="Integer" /&gt;
+'  &lt;Input Name="Input02" Type="Double"  Mand="false" Nls="Double" /&gt;
+'&lt;/Inputs&gt;
+</pre>
+</br>
+
+<p>The main subroutine is defined as follows:</p>
+<pre class="code">
+Sub CATMain( P1, P2, iolFeatures() )
+   ...
+
+  ReDim iolFeatures(0)
+  Set iolFeatures(0) = myFeature1
+
+End Sub
+</pre>
+</br>
+
+<p>Following is the setup of the ExecuteScript command:</p>
+<pre class="code">
+  &lt;Action name="Initialize FEM" id="InitFem" &gt;
+    &lt;Commands&gt;
+      &lt;CommandHeader headerId="SMAExsExecuteScriptCmdHdr" &gt;
+        &lt;ConfigSpec  libraryName="vbs 41723085-00000001" 
+                     libraryType="PLM Directory"  
+                     scriptName="InitFem1.CATScript"
+                     manageFeatures="true"
+                       /&gt;
+      &lt;/CommandHeader&gt;
+    &lt;/Commands&gt;
+  &lt;/Action&gt;
+</pre>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [Jan 2016]</td>
+		<td>Document created</td>
+	</tr>
+	<tr>
+		<td>Version: <strong>1.1</strong> [Feb 2016]</td>
+		<td>Added examples</td>
+	</tr>
+	<tr>
+		<td>Version: <strong>1.2</strong> [Jul 2016]</td>
+		<td>Added selection keywords to input options</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

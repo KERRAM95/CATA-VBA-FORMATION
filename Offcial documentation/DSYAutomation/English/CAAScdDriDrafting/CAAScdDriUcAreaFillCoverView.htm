@@ -1,0 +1,188 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an AreaFill Covering a Drawing View</title>
+
+<style type="text/css">
+.auto-style1 {
+	margin: auto;
+}
+</style>
+
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an AreaFill Covering a Drawing View</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case 
+						primarily focuses on the methodology to create an AreaFill Covering a Drawing View .</p>
+						<div id="toc"></div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you 
+						begin :</span> 
+						<ul>
+							<li>You should first launch CATIA and import the 
+							<code><div class=vb_sample_data>SkateDrawing.3dxml</div></code> file supplied in 
+							folder <code>
+							InstallRootFolder\CAADoc\Doc\English\CAAScdDriDrafting\samples\</code> 
+							where <code>InstallRootFolder</code> is the 
+							directory where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro :
+						<a href="CAAScdDriUcAreaFillCoverViewSource.htm">
+						CAAScdDriUcAreaFillCoverViewSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case:</p>
+		<ol>
+			<li><a href="#Step1">Selects the Drawing View to cover</a></li>
+			<li><a href="#Step2">Gets the Drawing View Position</a></li>
+			<li><a href="#Step3">Creates the AreaFill covering the Drawing View</a></li>		
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+				<p><strong><a name="Step1">Selects the Drawing View to cover</a></strong></p>
+				<p>Lets the user choose the Drawing View to cover
+	  			</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> drwView <span class="comment">' As DrawingView </span>
+
+<span class="keyword">Dim</span> mySel <span class="comment">' As Selection </span>
+<span class="keyword">Set</span> mySel = CATIA.ActiveEditor.Selection 
+
+mySel.Clear 
+
+<span class="keyword">Dim</span> InputObjectType(0), Status 
+InputObjectType(0) = &quot;DrawingView&quot; 
+
+Status = mySel.SelectElement2(InputObjectType, &quot;Select a view&quot;, True) 
+<span class="keyword">If</span> Status = &quot;Cancel&quot; Or Status = &quot;Undo&quot; <span class="keyword">Then</span> 
+<span class="keyword">Exit</span> <span class="keyword">Sub</span> 
+<span class="keyword">End If </span>
+
+<span class="keyword">Set</span> drwView = mySel.Item(1).Value 
+
+mySel.Clear 
+...</pre>
+			<p>The method SelectElement2 allows the user to select a certain type of Element.</p>
+			
+			</li>
+			<li>
+				<p><strong><a name="Step2">Gets the Drawing View Position</a></strong></p>
+	
+				<pre class="code"> ...
+<span class="keyword">Dim</span> viewSize(3) <span class="keyword">As</span> Variant 
+drwView.Size viewSize 
+...</pre> 
+<p>The Drawing View method returns the Xmin/Xmax and Ymin/Ymax of the Drawing 
+View Bounding Box.</p>
+			</li>
+		    <li>
+				<p><strong><a name="Step3">Creates the AreaFill covering the Drawing View</a></strong></p>
+				<p>Sets the number of points of the AreaFill Contour.</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> nbPoints(0) <span class="keyword">As</span> Variant 
+nbPoints(0) = 4 
+...</pre>
+				<p>Then, sets the points of the AreaFill Contour.</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> areafillContour(7) <span class="keyword">As</span> Variant 
+<span class="keyword">Dim</span> delta <span class="keyword">As Double</span>
+delta = 20
+areafillContour(0) = viewSize(0) - delta 
+areafillContour(1) = viewSize(3) + delta  
+areafillContour(2) = viewSize(1) + delta 
+areafillContour(3) = viewSize(3) + delta 
+areafillContour(4) = viewSize(1) + delta 
+areafillContour(5) = viewSize(2) - delta 
+areafillContour(6) = viewSize(0) - delta 
+areafillContour(7) = viewSize(2) - delta 
+...</pre>
+				<p>The AreaFill is bigger than the Drawing View Bounding Box to fully cover it.</p>
+				<p>Creates the AreaFill and changes its Pattern.</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> myAreaFills <span class="comment">' As DrawingAreaFills </span>
+<span class="keyword">Set</span> myAreaFills = drwSheet.Views.Item(1).AreaFills 
+
+<span class="keyword">Dim</span> myAreaFill <span class="keyword">As</span> DrawingAreaFill 
+<span class="keyword">Set</span> myAreaFill = myAreaFills.Add(nbPoints, areafillContour) 
+
+myAreaFill.SetPattern &quot;Yellow&quot;
+</pre>
+				<p>See the different Patterns in the AreaFill Properties (<a href="#Fig.2">Fig.2</a>). </p>
+				<table class="auto-style1">
+					<caption><a name="Fig.1"></a>Fig.1: The Generated AreaFill</caption>
+					<tr>
+						<td>
+						<img alt="" height="600" src="images/CAAScdDriUcAreaFillCoverViewPicture1.png" width="1000"/></td>
+					</tr>
+				</table>
+
+				
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+					<table class="auto-style1">
+						<caption><a name="Fig.2"></a>Fig.2: Patterns in the AreaFill Properties</caption>
+						<tr>
+							<td>
+							<img alt="" height="400" src="images/CAAScdDriUcAreaFillCoverViewPicture2.png" width="500"/></td>
+						</tr>
+					</table>
+			 	</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

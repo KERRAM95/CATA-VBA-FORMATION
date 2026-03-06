@@ -1,0 +1,256 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<meta name="GENERATOR" content="Microsoft FrontPage 12.0" />
+<meta name="ProgId" content="FrontPage.Editor.Document" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Testing SDD Collar</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Testing SDD Collar</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to test collar.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSddUcTestCollar.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSddUcSteel_A42.3dxml</div></code>,
+							<code><div class=vb_sample_data>CAAScdSddUcWT18x179.5.3dxml</div></code>, 
+							<code><div class=vb_sample_data>CAAScdSddUcRECT_RAN_WT18x179.5.3dxml</div>,</code> <code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div></code> 
+							and <code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div></code> files supplied 
+							in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code><br />
+							where 
+							<code>InstallRootFolder</code> is the folder where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcTestCollarSource.htm">CAAScdSddUcTestCollarSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSddTocSDDesign.htm">Structure Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in 7 steps<span lang="fr">:</span></p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SddProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Part object</a></li>
+			<li><a href="#Step3">Retrieves a SddProduct Plate object</a></li>
+			<li><a href="#Step4">Retrieves sdd slot object</a></li>
+			<li><a href="#Step5">Retrieves sdd collar object</a></li>
+            <li><a href="#Step6">Setting up collar parameters</a></li>
+     		<li><a href="#Step9">Update the plate</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SddProduct&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SddProduct&quot; from DB and 
+			loads it and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim</span> SDDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SddProduct&quot;
+ OpenProduct prdName , SDDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SDDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SDD model from underlying database the current active 
+			editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>product1Service <span class="keyword"> As </span> PLMProductService
+  <span class="keyword">Set</span> product1Service = DDPrdEditor.GetService(&quot;PLMProductService&quot;)
+  <span class="keyword">Dim </span>ObjVPMRootOccurrence <span class="keyword"> As </span> VPMRootOccurrence
+  <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+  <span class="keyword">Dim </span>ObjVPMReference <span class="keyword"> As </span> VPMReference
+  <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+  <span class="keyword">Dim </span>ObjVPMRepInstances <span class="keyword"> As </span> VPMRepInstances
+  <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+  <span class="keyword">Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> ObjPart = ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves a SddProduct Plate object</strong></p>
+			<p>In this step Uc retrieves the SddProduct Plate object.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> ListOfInstances = ObjVPMReference.Instances
+  <span class="keyword">Set</span> PlateRef = ListOfInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> PlateRepInstances = PlateRef.RepInstances
+  <span class="keyword">Set</span> PlateRepInstReference = PlateRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> PlatePart = PlateRepInstReference.GetItem("Part")
+  
+  <span class="keyword">Dim</span> ObjSddProductPlate As SddProductPlate
+  SFDProdSel.Add PlateRef
+  <span class="keyword">Set</span> ObjSddProductPlate = SFDProdSel.FindObject("CATIASddProductPlate")
+  <span class="keyword">Dim</span> ObjSddPlate As SddPlate
+  <span class="keyword">Set</span> ObjSddPlate = ObjSddProductPlate.SddPlate
+...</pre>
+			<p>In this step Uc retrieves the SddProduct Plate as shown above.</p>
+			</li>
+<li>
+			<p><strong><a name="Step4"></a>Retrieves sdd slot object</strong></p>
+			<p>In this step UC finds a SDD slot.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjStrSlot <span class="keyword">As</span> StrSlot
+  <strong>GetSlot</strong> ObjSddPlate, ObjStrSlot
+...</pre>
+<pre class="code">... 
+<span class="keyword">Sub</span> <strong>GetSlot</strong>(iObjSddPlate <span class="keyword">As</span> SddPlate, oObjStrSlot <span class="keyword">As</span> StrSlot)
+       
+    <span class="keyword">Dim</span> ObjStrSlots <span class="keyword">As</span> StrSlots
+    <span class="keyword">Set</span> ObjStrSlots = iObjSddPlate.StrSlots
+    <span class="comment">'Get StrSlot</span>
+    <span class="keyword">Set</span> oObjStrSlot = ObjStrSlots.<strong>Item</strong>(1)
+	
+<span class="keyword">End Sub</span>
+...</pre>
+
+			<p>In above lines, <code>GetSlot</code> method finds slot object from given plate. This slot 
+			has collar which is edited by modifying its properties.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieves sdd collar object</strong></p>
+			<p>In this step UC finds a SDD collar on slot. This is the collar on which testing is to be done.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjStrCollar <span class="keyword">As</span> StrCollar
+  <strong>GetCollar</strong> ObjStrSlot, ObjStrCollar
+...</pre>
+<pre class="code">... 
+<span class="keyword">Sub</span> <strong>GetCollar</strong>(iObjStrSlot <span class="keyword">As</span> StrSlot, oObjStrCollar <span class="keyword">As</span> StrCollar)
+   
+   <span class="keyword">Dim</span> ObjStrCollars <span class="keyword">As</span> StrCollars
+   <span class="keyword">Set</span> ObjStrCollars = iObjStrSlot.Collars   
+   <span class="comment">'Get StrCollar</span>
+   <span class="keyword">Set</span> oObjStrCollar = ObjStrCollars.<strong>Item</strong>(1)
+
+<span class="keyword">End Sub</span>
+...</pre>
+
+			<p>In above lines, <code>GetCollar</code> method finds collar object from given slot. This is the collar used for testing.</p>
+			</li>
+<li>
+			<p><strong><a name="Step6"></a>Setting up collar parameters</strong></p>
+			<p>In this step UC sets up collar parameters. Only public parameters 
+			can be modified.</p>
+			<pre class="code">... 
+  <strong>SetCollarParameters</strong> ObjStrCollar
+...</pre>
+<pre class="code">... 
+<span class="keyword">Sub</span> <strong>SetCollarParameters</strong>(iObjStrCollar <span class="keyword">As</span> StrCollar)
+    
+   iObjStrCollar.<strong>Material</strong> = "Steel A42"
+   
+   iObjStrCollar.<strong>MaterialThrowOrientation</strong> = 0
+	
+   <span class="keyword">Dim</span> oThickness <span class="keyword">As</span> Parameter
+   <span class="keyword">Set</span> oThickness = iObjStrCollar.<strong>Thickness</strong>
+	
+   <span class="keyword">Dim</span> oMaterialThrowOrientation <span class="keyword">As</span> CATStrCollarThrowOrientation
+   oMaterialThrowOrientation = iObjStrCollar.<strong>MaterialThrowOrientation</strong>
+	
+   <span class="keyword">Dim</span> oMaterial <span class="keyword">As</span> String
+   oMaterial = iObjStrCollar.<strong>Material</strong>
+	
+   <span class="keyword">Dim</span> ObjCollarParameters <span class="keyword">As</span> StrParameters
+   <span class="keyword">Set</span> ObjCollarParameters = iObjStrCollar.<strong>CollarParameters</strong>
+   <span class="keyword">Dim</span> TOPC <span class="keyword">As</span> Parameter
+   <span class="keyword">Set</span> TOPC = ObjCollarParameters.Item(2)
+   TOPC.ValuateFromString("40mm")
+ 
+   iObjStrCollar.<strong>Update</strong>
+
+<span class="keyword">End Sub</span>
+...</pre>
+
+			<p>In above lines, <code>SetCollarParameters</code> method sets up different properties on collar. Here, <code>Material</code> property is used to get and set collar material. <code>Thickness</code> is used to get collar thickness. <code>MaterialThrowOrientation</code> is used to set and get different orientations of collar material (0 - catStrCollarThrowOrientationInvert, 1 - catStrCollarThrowOrientationNormal, 2 - catStrCollarThrowOrientationCentered). <code>CollarParameters</code> will get the public parameters on particular collar. Valuate it as required. <code>Update</code> updates the modified collar object.<strong><a name="Step7"></a></strong></p>
+			</li>
+
+			<li>
+			<p><strong><a name="Step9"></a>Update the plate</strong></p>
+<pre class="code">...
+    ObjSddProductPlate.<strong>Update</strong> 
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>Update</code> updates the Product Plate.</p>
+				</li>
+			</ol>
+		
+		</td>
+		</tr>
+		</table>
+		<table>
+			<caption><a name="Fig.1"></a>Fig.1: Tested Collar</caption>
+			<tr>
+				<td>
+				<img alt="Tested Collar" src="CAAScdSddUcTestCollar.png" width="1114px" height="692px"/></td>
+			</tr>
+		</table>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

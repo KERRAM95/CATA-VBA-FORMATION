@@ -1,0 +1,311 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Accessing and Editing Objects in Session</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Accessing and Editing Objects in Session</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 Automation macros to 
+		take advantage of the Open <strong>3D</strong>EXPERIENCE platform PLM infrastructure. It explains how the 
+		V5 document centric model is modified to provide access to objects in session.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="10"></a>Accessing the Document and the Editor</h2>
+<p>In V5 the <strong>Document</strong> object gives access to persistent data loaded in session. This 
+notion has been replaced in <strong>3D</strong>EXPERIENCE platform by an <strong>Editor</strong> object. In the Model View Controller 
+paradigm, the editor plays the Controller role. The editor federates all the objects 
+that can be interactively edited in the same window. As for the V5 <strong>Document</strong> 
+object, the application object aggregates an active <strong>Editor</strong> object and a collection 
+of <strong>Editor</strong> objects. The following illustrates the modifications required to access 
+a <strong>3D</strong>EXPERIENCE platform <strong>Editor</strong> object instead of a V5 <strong>Document</strong> object.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Get the active Document
+</span><span class="keyword">Set </span>oDocument1 = CATIA.ActiveDocument
+
+<span class="comment">' Open a document using its Path and</span>
+<span class="comment">' access the associated Document object</span>
+<span class="keyword">Set</span> cDocuments = CATIA.Documents
+<span class="keyword">Set </span>oDocument2 = cDocuments.Open(&quot;xxx&quot;)</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Get the active Editor</span>
+<span class="keyword">Set</span> oEditor1 = CATIA.ActiveEditor
+
+<span class="comment">' Open a PLMEntity object and</span>
+<span class="comment">' access the associated Editor object</span>
+<span class="keyword">Set</span> oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;) 
+<span class="keyword">Set</span> oEditor2 = oPLMOpenService.PLMOpen oPLMEntity</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<h2><a name="11"></a>Accessing Objects Edited through the Document and the Editor</h2>
+<p>V5 <strong>Document</strong> objects are virtual objects that are specialized depending on their 
+content, like for example the <strong>PartDocument</strong> or <strong>DrawingDocument</strong> objects. Most of the time 
+a macro expects specific types of documents, the generic <strong>Document</strong> object can so 
+be replaced by a more specific object, like a <strong>DrawingDocument</strong> object, that 
+provides dedicated methods to access its specific content. This is illustrated 
+in the following macro that displays the number of sheets of a set of drawings.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Macro will process DrawingDocument objects</span>
+<span class="keyword">Dim </span>oDrawingDocument As DrawingDocument
+
+<span class="comment">' Loop on the files of a folder</span>
+<span class="keyword">Set</span> oFolder = CATIA.FileSystem.GetFolder(&quot;E:\tmp&quot;)
+<span class="keyword">For each</span> oFile in oFolder.Files
+
+ <span class="comment">' Select only drawing documents</span>  
+ <span class="keyword">If</span> ( Right(oFile.Path, 8) = &quot;.CATDrawing&quot;) <span class="keyword">Then</span>
+
+    <span class="comment">' Open the file: a DrawingDocument object is expected</span>
+    <span class="keyword">Set</span> oDrawingDocument = CATIA.Documents.Open(oFile.Path)
+
+    <span class="comment">' Retrieve the DrawingRoot object using a specific
+    ' method of the DrawingDocument object</span>
+    <span class="keyword">Set</span> oDrawingRoot = oDrawingDocument.DrawingRoot
+
+   <span class="comment">' Display the number of sheets</span>
+       msgbox oDrawingRoot.Sheets.Count
+  <span class="keyword">End If
+Next</span></pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Use the SearchService object to retrieve a set of 
+' VPMRepresentationReference objects that contain drawing data</span>
+<span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> SearchService
+<span class="keyword">Set</span> oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+<span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+<span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+<span class="comment">' The type must be a <strong>Product Representation Reference</strong> type 
+' &quot;PLMRepresentationDS&quot; is available with the PLMProductDS customization. 
+' Use your own customization types.</span>
+oDBSearch.BaseType = &quot;PLMRepresentationDS&quot;
+oDBSearch.AddEasyCriteria ...
+oSearchService.Search
+
+<span class="comment">' Loop on found PLM entities</span>
+<span class="keyword">For each</span> oPLMEntity in oDBSearch.Results
+
+  <span class="comment">' Open the entity: Editor object will have no specific type</span>
+  <span class="keyword">Set</span> oEditor = CATIA.GetSessionService(&quot;PLMOpenService&quot;).PLMOpen(oPLMEntity) 
+  <span class="comment">' The editor has no specific type, but drawing data is expected, so 
+  ' the generic GetItem method is used to retrieve the DrawingRoot object</span>
+  <span class="keyword">Set</span> oDrawingRoot = oEditor.GetItem(&quot;DrawingRoot&quot;)
+
+  <span class="comment">' Display the number of sheets</span>
+    msgbox oDrawingRoot.Sheets.Count
+<span class="keyword">Next</span></pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>For details on each type of V5 <strong>Document</strong> objects, consult the <em>Details of modifications 
+on V5 modelers</em> part of this <em>Adoption</em> section.</p>
+<p>When V5 documents are already in session, the specialized type of the <strong>Document</strong> 
+object allows to select a specific kind of document. Some objects may not be always 
+present in the selected document. For example a <strong>PartDocument</strong> 
+object will always contain 
+a <strong>Part</strong> object but not always a <strong>Layout2DRoot</strong> 
+object (2D Layout for 3D Design root object), so the type of the <strong>Document</strong> object is not always discriminative. In <strong>3D</strong>EXPERIENCE platform, representation references may 
+contain different types of data, so this last method is always required. The following 
+example describes how to process all <strong>Layout2DRoot</strong> objects in session.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Macro processes edited documents containing 2D Layout data</span>
+<span class="keyword">Dim </span>oDocument <span class="keyword">As</span> Document
+
+<span class="comment">' Loop on all documents in session</span>
+<span class="keyword">For each </span>oDoc in CATIA.Documents
+<span class="comment">  ' Select only part documents</span>
+  <span class="keyword">If</span> ( TypeName (oDoc) = &quot;PartDocument&quot; ) <span class="keyword">Then</span>
+
+  <span class="comment">  ' Check if Documents contains a 2DLayoutRoot</span>
+  <span class="keyword">  Set </span>oLayout2DRoot = NULL
+  <span class="keyword">  On error resume next</span>
+  <span class="keyword">  Set</span> oLayout2DRoot = oDoc.Part.GetItem(&quot;CATLayout2DRoot&quot;)
+  <span class="keyword">  On error goto 0</span>
+<span class="comment">    ' Test whether a 2D Layout Root has been found</span>
+  <span class="keyword">  If not IsNull</span>(oLayout2DRoot) <span class="keyword">Then</span>
+      ...
+    <span class="keyword">End If
+  End If
+Next</span>
+</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Macro processes any editors editing 2D Layout data</span>
+<span class="keyword">Dim </span>oEditor <span class="keyword">As</span> Editor
+
+<span class="comment">' Loop on all editors  in session</span>
+<span class="keyword">For each </span>oEditor in CATIA.Editors
+
+
+
+  <span class="comment">' Get The Active Object</span>
+  <span class="keyword">Set</span> oObj = oEditor.ActiveObject
+
+
+
+
+ <span class="comment"> &#39; Test whether it is a 2D Layout Root</span>
+ <span class="keyword"> If</span> (Typename(oObj) = &quot;Layout2DRoot&quot;) <span class="keyword">Then </span>
+    ...
+  <span class="keyword">End If
+Next</span></pre>
+		</td>
+	</tr></tbody></table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Session"></a>Changed Capabilities Related to Editing Objects in Session</h2>
+<h3><a name="Selection"></a>Selection</h3>
+<p>The <strong>Selection</strong> object aggregation is moved from the V5
+<strong>Document</strong> object to the <strong>3D</strong>EXPERIENCE platform 
+<strong>Editor</strong> object:</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Access Selection object</span>
+<span class="keyword">Set</span> oSelection = CATIA.ActiveDocument.Selection</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Access Selection object</span>
+<span class="keyword">Set</span> oSelection = CATIA.ActiveEditor.Selection</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Cameras"></a>Cameras</h3>
+<p>V5 <strong>Camera</strong> objects are aggregated under the V5 <strong>Document</strong> 
+object. <strong>3D</strong>EXPERIENCE platform <strong>Camera</strong> objects are only available in representations references 
+in <strong>3D</strong>EXPERIENCE platform and should be accessed through a service on the <strong>Editor</strong> 
+object: the <strong>VisuServices</strong> object.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Access the Cameras collection object</span>
+<span class="comment">' from the Document object</span>
+<span class="keyword">Dim</span> oPartDoc <span class="keyword">As</span> PartDocument
+<span class="keyword">Set </span>oPartDoc = CATIA.ActiveDocument
+
+
+
+
+<span class="keyword">Set </span>oCameras = oPartDoc.Cameras</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Access the Cameras collection object from</span>
+<span class="comment">' the VisuServices object</span>
+<span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor
+<span class="keyword">Set </span>oEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim</span> oEditor <span class="keyword">As</span> VisuServices
+<span class="keyword">Set</span> oEditor = Editor.GetService(&quot;VisuService&quot;)
+
+<span class="keyword">Set</span> oCameras = oService.Cameras</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<h3><a name="CommandsWorkbenches"></a>Commands and Workbenches</h3>
+<p>Some V5 interactive commands can be launched from a macro using the <code>StartCommand</code> 
+method of the <strong>Application</strong> object. This capability still exists in <strong>3D</strong>EXPERIENCE platform 
+but the name and behavior of the commands may have changed, so each usage of this 
+method must be considered independently, based on <strong>3D</strong>EXPERIENCE platform commands interactive 
+behavior.</p>
+<p>The same applies for interactive workbenches that can be accessed through the
+<code>GetWorkbenchId</code> and <code>SetWorkbenchId</code> methods of the 
+<strong>Application</strong> object.</p>
+<h3><a name="GetWorkbench"></a>The GetWorkbench Method</h3>
+<p>The <code>GetWorkbench</code> method of the <strong>Document</strong> object 
+gives access, in V5, to a variety of objects, improperly called <code>Workbench</code> 
+objects, that generally can&#39;t be seen as 
+aggregated by another objects and offer access to edition contexts and creation 
+or calculation services. Such V5 objects are not directly linked to the 
+interactive notion of workbench described upper.</p>
+<p>In <strong>3D</strong>EXPERIENCE platform such objects will be retrieved as <code>Service</code> 
+objects either available at session level or at editor level. The list of V5 
+objects accessible through the <code>GetWorkbench</code> method is not listed 
+here. For details on availability and name of the <strong>3D</strong>EXPERIENCE platform object equivalent to a V5
+<strong>Workbench</strong> object, consult the <em>Details of modifications 
+on V5 modelers</em> part of this <em>Adoption</em> section dedicated to the 
+corresponding V5 modeler.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Extracting"></a>Extracting a Consistent Set of Objects from the Database</h2>
+<p>The <strong>SendToService</strong> object and its <strong>CreateSendTo</strong> 
+factory method of the <strong>Application</strong> object are removed. 
+Extracting a consistent set of data to send to a partner or a supplier should 
+now be interactively done thanks to Export-Import 3DXML with authoring commands. Refer to VPM Multi-Discipline collaboration product documentation for details.</p>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

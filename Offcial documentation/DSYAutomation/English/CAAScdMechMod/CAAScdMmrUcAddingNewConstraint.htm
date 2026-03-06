@@ -1,0 +1,494 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Adding New Constraint</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Adding New Constraint </h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates about adding new constraint. This use case demonstrates 
+						how to create constraints according to its type.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA.</li>
+							<li>The macro should essentially be launched from a 
+							Part Editor (meaning input data is always a PLM Product 
+							Representation Reference).</li>
+							<li>Product/Part editor must be active before launching 
+							the macro.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdMmrUcAddingNewConstraintSource.htm">CAAScdMmrUcAddingNewConstraintSource.htm</a></span></p>
+						<span class="run-in"></span></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrTocPart.htm">Part Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrObjConstraints.htm">Constraints Collection Object</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p>Prolog</p>
+			<p>The macro begins with the <strong>AddingNewConstraint</strong> 
+			main subroutine. It typically begins with the following extract of code, 
+			which serves as a built-in &quot;error handling&quot; mechanism.</p>
+			<pre class="code"><span class="keyword">Sub</span><strong> AddingNewConstraint</strong>()
+
+<span class="keyword">On Error GoTo </span>ErrorSub
+...</pre>
+			<p>The first instruction means that when a method will throw an error, 
+			the macro will skip to the line named, <strong>ErrorSub</strong>. See the step
+			<a href="#Epilog">Epilog</a>.</p>
+			<p><code>AddingNewConstraint</code> subroutine firstly retrieves Part 
+			object from selection. Then retrieve <em>Constraints</em> object. then 
+			prompt the user for selection of geometrical element number for constraint 
+			and constraint type. Then according to these input prompt the user to 
+			select the number of elements. Finally based on that create the constraint. 
+			In addition to this display broken constraint count and un-updated 
+			constraint count.</p>
+			</li>
+			<li>
+			<p>Here, we retrieve the current active Editor object to 
+			select PLM object</p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> oCurrentActiveEditor <span class="keyword">As</span> <strong>Editor</strong>
+<span class="keyword">Set</span> oCurrentActiveEditor = CATIA.<strong>ActiveEditor</strong>
+...</pre>
+			<p>Return a <strong>Editor</strong> object from the Application object (CATIA) 
+			using the <strong>ActiveEditor </strong>method. </p>
+			</li>
+			<li>
+			<p>We then retrieve Selection object from active editor</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oObjSelection
+<span class="keyword">Set</span> oObjSelection = oCurrentActiveEditor.<strong>Selection</strong>
+...</pre>
+			<p>Return a <strong>Selection</strong> object from the Active Editor using <strong>
+			Selection</strong> method. It is significant to note here that we haven't 
+			declared a type for <code>oObjSelection</code> (as for several other 
+			variables, further ahead in this macro). The section &quot;Tips about VB 
+			and VBA&quot; in the technical article &quot;About VB, VBA, Debug, and Compatibility&quot; 
+			[] provides an explanation for why these variables are not typed.
+			</p>
+			</li>
+			<li>
+			<p>The selection object retrieved above is now updated 
+			with the selection criteria (&quot;Part&quot;). The following image shows 
+			sample Object from which user could select Part object (Representation).</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Representation" src="CAAScdMmrUcAddingNewConstraint_in.jpg" width="422" height="290"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<pre class="code">...
+<span class="keyword">Dim</span> strStatus<strong> </strong><span class="keyword">As</span> String
+<span class="keyword">Dim</span> oInputObjectType(0)
+
+oInputObjectType(0) = &quot;Part&quot;
+strStatus = oObjSelection.<strong>SelectElement</strong>(<strong>oInputObjectType</strong>, &quot;Select a Part Element from spec tree or the 3D Viewer&quot;, False)
+...</pre>
+			<p>&quot;<strong><em>Part</em></strong>&quot; type is appended to 
+			an array (<code>oInputObjectType</code>), which now represents the select 
+			criteria. The selection object (<code>oObjSelection</code>) is then 
+			updated with this select criteria, with a call to <code>SelectElement</code> 
+			method. </p>
+			<p>At this stage, the application prompts an end user to 
+			select a <em>Part</em> from the spec tree or the 3D Viewer (second argument 
+			of the <code>SelectElement</code> method, represents the prompt message)</p>
+			<p>The last argument is false, indicating the end user 
+			will always be invited to select something in the spec tree or the 3D 
+			Viewer, though an entity (of the type set as filter in the selection 
+			criteria) has already been selected by the end-user.</p>
+			<p>Once the user does the selection, the application proceeds 
+			further.</p>
+			</li>
+			<li>
+			<p>Now that the user has made a selection in the spec tree 
+			or the 3D Viewer, the current step retrieves it (a <em><strong>Part</strong></em>) 
+			from the Selection Object which contains it.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oSelectedElement <span class="keyword">As</span> SelectedElement
+<span class="keyword">Set</span> oSelectedElement<strong> </strong> =  oObjSelection.<strong>Item</strong>(1)
+
+<span class="keyword">Dim</span> oPart <span class="keyword">As</span> <strong>Part</strong>
+<span class="keyword">Set</span> oPart = oSelectedElement<strong>.Value</strong>
+
+MsgBox (&quot;Selected Part Name :&quot;) + oPart.<strong>Name</strong>
+...</pre>
+			<p>A call to <code>SelectionObject::Item</code> at index 
+			1, on <code>oObjSelection</code> returns the selected entity, as a
+			<em>SelectedElement</em> type (<code>oSelectedElement</code>). </p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns <code>oPart</code>, a <em>Part</em> type representing the selection.</p>
+			<p>Then we display the <em>Part</em> object name using
+			<code>Part::Name</code>.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="CATIA Prompt" src="CAAScdMmrUcAddingNewConstraint_1.jpg" width="203" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Next we retrieve Constraints from Part.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oConstraints <span class="keyword">As</span> Constraints
+<span class="keyword">Set</span> oConstraints =  oPart.<strong>Constraints</strong>
+...</pre>
+			<p>A call to <code>Part::Constraints</code> on <code>oPart</code> retrieves 
+			a list of constraint <code>oConstraints</code>, a <em>Constraints</em> 
+			type</p>
+			</li>
+			<li>
+			<p>Next we prompt the user to define the number geometrical elements 
+			for creation of constraint, according to that we select the method (AddMonoEltCst, 
+			AddBiEltCst, AddTriEltCst) to create constraint.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> iGeometricElementsNumber <span class="keyword">As</span> Integer
+<span class="keyword">Set</span> iGeometricElementsNumber = InputBox(&quot;Please enter the geometric elements number to add the Constraint(1- AddMonoEltCst, 2- AddBiEltCst, 3- AddTriEltCst)&quot;, &quot;Enter Geometric Elements Number&quot;)
+...</pre>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Enter Geometric Elements Number Prompt" src="CAAScdMmrUcAddingNewConstraint_2.jpg" width="363" height="152"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Now we prompt the user to select the constraint type. Following are 
+			the enum values for type.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>catCstTypeReference<br />
+					catCstTypeDistance<br />
+					catCstTypeOn<br />
+					catCstTypeConcentricity<br />
+					catCstTypeTangency<br />
+					catCstTypeLength<br />
+					catCstTypeAngle<br />
+					catCstTypePlanarAngle<br />
+					catCstTypeParallelism<br />
+					catCstTypeAxisParallelism<br />
+					catCstTypeHorizontality<br />
+					catCstTypePerpendicularity<br />
+					catCstTypeAxisPerpendicularity<br />
+					catCstTypeVerticality<br />
+					catCstTypeRadius<br />
+					catCstTypeSymmetry<br />
+					catCstTypeMidPoint<br />
+					catCstTypeEquidistance<br />
+					catCstTypeMajorRadius<br />
+					catCstTypeMinorRadius<br />
+					catCstTypeSurfContact<br />
+					catCstTypeLinContact<br />
+					catCstTypePoncContact<br />
+					catCstTypeChamfer<br />
+					catCstTypeChamferPerpend<br />
+					catCstTypeAnnulContact<br />
+					catCstTypeCylinderRadius<br />
+					catCstTypeStContinuity<br />
+					catCstTypeStDistance<br />
+					catCstTypeSdContinuity<br />
+					catCstTypeSdShape<br />
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			<p>Here user need to input enum value of constraint type. </p>
+			<pre class="code">...
+<span class="keyword">Dim</span> iConstraintType <span class="keyword">As</span> Integer
+<span class="keyword">Set</span> iConstraintType = InputBox(&quot;Please enter the Constraint Type number to create the Constraint&quot;, &quot;Enter Constraint Type&quot;)
+...</pre>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Enter Constraint Type Prompt" src="CAAScdMmrUcAddingNewConstraint_3.jpg" width="363" height="152"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Now create constraint according to its type.</p>
+			<p>According to geometric element constraint type (Mono-element or Bi-element 
+			or tri-element) UC waits for selection of elements. </p>
+			<p>For Mono-element constraint UC waits for one element selection
+			</p>
+			<pre class="code">...
+oObjSelection.Clear			
+
+oInputObjectType(0) = &quot;Reference&quot;
+Status = oObjSelection.SelectElement(oInputObjectType, &quot;Select the first Reference&quot;, False)
+   
+<span class="keyword">Dim</span> oFirstReference <span class="keyword">As</span> Reference
+<span class="keyword">Set</span> oFirstReference = oObjSelection.<strong>Item</strong>(1).<strong>Value</strong>
+...</pre>
+			<p>A call to <code>Selection::Clear</code> , on <code>oObjSelection</code> 
+			clears the previously selected object (Part) from this Selection object.</p>
+			<p>&quot;Reference&quot; type is appended to an array (<code>oInputObjectType</code>), 
+			which now represents the select criteria. The selection object (<code>oObjSelection</code>) 
+			is then updated with this select criteria, with a call to <code>SelectElement</code> 
+			method. </p>
+			<p>At this stage, the application prompts an end user to select a
+			<em>Reference</em> from the spec tree or the 3D Viewer (second argument 
+			of the <code>SelectElement</code> method, represents the prompt message)</p>
+			<p>Now that the user has made a selection in the spec tree or the 3D 
+			Viewer, the current step retrieves it (a <em>Reference</em>) from the 
+			Selection Object which contains it.</p>
+			<p>Next a call to <code>SelectionObject::Item</code> at index 1, on
+			<code>oObjSelection</code> returns the selected entity, as a <em>SelectedElement</em> 
+			type (<code>oSelectedElement</code>). </p>
+			<p>A call to <code>SelectedElement::Value</code> on the 
+			selected entity <code>oSelectedElement</code> (retrieved above) returns
+			<code>oFirstReference</code>, a <em>Reference</em> type representing 
+			the selection.</p>
+			<p>Then according to entered constraint type UC creates constraint. 
+			If geometric element type is Mono-element then there is no need of further 
+			element selection. </p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oConstraint <span class="keyword">As</span> Constraint
+
+<span class="keyword">If</span>(1 = iGeometricElementsNumber) <span class="keyword">Then</span>
+      <span class="keyword">  Set</span> oConstraint = oConstraints.<strong>AddMonoEltCst</strong>(iConstraintType, oFirstReference)
+...</pre>
+			<p>A call to <code>Constraints::AddMonoEltCst</code> on <code>oConstraints</code> 
+			creates a constraint according to input (<code>iConstraintType</code>,
+			<code>oFirstReference</code>) and returns new created constraint (<code>oConstraint</code>, 
+			a <em>Constraint</em> type)</p>
+			<p>If geometric element type is Bi-element then user need to select 
+			one more element then UC creates Constraint according to selection.
+			</p>
+			<pre class="code">...
+<span class="keyword">ElseIf </span>(2 = iGeometricElementsNumber) <span class="keyword">Then</span>
+           
+        strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the second Reference&quot;, False)
+        
+        <span class="keyword">Dim</span> oSecondReference <span class="keyword">As</span> Reference
+        <span class="keyword">Set</span> oSecondReference = oObjSelection.Item(1).Value
+            
+        <span class="keyword">Set</span> oConstraint = oConstraints.<strong>AddBiEltCst</strong>(iConstraintType, oFirstReference, oSecondReference)
+...</pre>
+			<p>A call to <code>SelectionObject::Item</code> at index 1, on <code>
+			oObjSelection</code> returns the selected entity, as a <em>SelectedElement</em> 
+			type (<code>oSelectedElement</code>). </p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns <code>oSecondReference </code>, a <em>Reference</em> type representing 
+			the selection.</p>
+			<p>Now a call to <code>Constraints::AddBiEltCst</code> on <code>oConstraints</code> 
+			creates a constraint according to input (<code>iConstraintType</code>,
+			<code>oFirstReference</code>, <code>oSecondReference</code>) and returns 
+			new created constraint (<code>oConstraint</code>, a <em>Constraint</em> 
+			type)</p>
+			<p>If geometric element type is Tri-element then user has to select 
+			total three elements and one element user selected already so user need 
+			to select two more elements. then according to constraint type UC creates 
+			constraint.</p>
+			<pre class="code">...
+<span class="keyword">ElseIf </span>(3 = iGeometricElementsNumber) <span class="keyword">Then</span>
+           
+        strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the second Reference&quot;, False)
+        
+        <span class="keyword">Dim</span> oSecondReferenceForAddTriEltCst <span class="keyword">As</span> Reference
+        <span class="keyword">Set</span> oSecondReferenceForAddTriEltCst = oObjSelection.Item(1).Value
+            
+        strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the third Reference&quot;, False)
+        
+        <span class="keyword">Dim</span> oThirdReferenceForAddTriEltCst <span class="keyword">As</span> Reference
+        <span class="keyword">Set</span> oThirdReferenceForAddTriEltCst = oObjSelection.Item(1).Value
+            
+        <span class="keyword">Set</span> oConstraint = oConstraints.<strong>AddTriEltCst</strong>(iConstraintType, oFirstReference, oSecondReferenceForAddTriEltCst, oThirdReferenceForAddTriEltCst)
+  
+<span class="keyword">End If</span>
+...</pre>
+			<p>A call to <code>SelectionObject::Item</code> at index 1, on <code>
+			oObjSelection</code> returns the selected entity, as a <em>SelectedElement</em> 
+			type (<code>oSelectedElement</code>). </p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns <code>oSecondReferenceForAddTriEltCst \</code>, a <em>Reference</em> 
+			type representing the selection.</p>
+			<p>A call to <code>SelectionObject::Item</code> at index 1, on <code>
+			oObjSelection</code> returns the selected entity, as a <em>SelectedElement</em> 
+			type (<code>oSelectedElement</code>). </p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns <code>oThirdReferenceForAddTriEltCst</code>, a <em>Reference</em> 
+			type representing the selection.</p>
+			<p>Now a call to <code>Constraints::AddTriEltCst</code> on <code>oConstraints</code> 
+			creates a constraint according to input (<code>iConstraintType</code>,
+			<code>oFirstReference</code>, <code>oSecondReferenceForAddTriEltCst</code>,<code>oThirdReferenceForAddTriEltCst</code>) 
+			and returns new created constraint (<code>oConstraint</code>, a <em>
+			Constraint</em> type)</p>
+			</li>
+			<li>
+			<p>Next we retrieve the broken constraint count and un-updated 
+			constraint count.</p>
+			<p>Firstly we retrieve Broken constraint count</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> longBrokenConstraintsCount <span class="keyword">As</span> Long
+longBrokenConstraintsCount =  oConstraints.<strong>BrokenConstraintsCount</strong>
+        
+MsgBox &quot; Broken Constraints Count:&quot; &amp; longBrokenConstraintsCount
+...</pre>
+			<p>A call to <code>Constraints::BrokenConstraintsCount</code> 
+			on <code>oConstraints</code> retrieves a broken constraint count
+			<code>longBrokenConstraintsCount</code> a <em>Long</em> type</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="CATIA Prompt" src="CAAScdMmrUcAddingNewConstraint_4.jpg" width="164" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>Next we retrieve an un-updated constraint count</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> longUnUpdatedConstraintsCount <span class="keyword">As</span> Long
+longUnUpdatedConstraintsCount = oConstraints.<strong>UnUpdatedConstraintsCount</strong>
+        
+MsgBox &quot;UnUpdated Constraints Count:&quot; &amp; longUnUpdatedConstraintsCount
+...</pre>
+			<p>A call to <code>Constraints::BrokenConstraintsCount</code> on
+			<code>oConstraints</code> retrieves a unUpdated constraint count
+			<code>longUnUpdatedConstraintsCount</code> a <em>Long</em> type</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="CATIA Prompt" src="CAAScdMmrUcAddingNewConstraint_5.jpg" width="191" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Next we update Part object. </p>
+			<pre class="code">...
+oPart.<strong>Update</strong>
+...</pre>
+			<p>Then we update the Part object (<code>oPart</code>) 
+			using call <code>Part::Update</code>. . </p>
+			<p>We can see the created constraint as shown in below 
+			image. for this we have selected 1 as geometrical element number and 
+			then 5 as type means catCstTypeLength type and we have selected one 
+			edge of pad this results into following constraint</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Created Constraint" src="CAAScdMmrUcAddingNewConstraint_out.jpg" width="405" height="285"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>We then save the changes.</p>
+			<pre class="code">.....
+CATIA.GetSessionService(&quot;PLMPropagateService&quot;).<strong>Save</strong>
+...</pre>
+			<p>We next save this product/ Representation in the database. 
+			It is done with calls which occur in the following sequence</p>
+			<ul>
+				<li>A call to <code>Application::GetSessionService</code> 
+				on CATIA (an Application object, defined internally by VB) returns 
+				a <em>PLMPropagateService</em> object.</li>
+				<li>The next call to <code>PLMPropagateService::Save</code> 
+				eventually saves this representation n the database.</li>
+			</ul>
+			</li>
+			<li>
+			<p><a name="Epilog"></a>Epilog</p>
+			<p>The following extract of code is primarily meant for 
+			error-handling purpose. Any run time error that the macro encounters 
+			results in the execution flow reaching this part of the code, and then 
+			terminating with a normal exit from subroutine scope.</p>
+			<pre class="code">...
+    <span class="keyword">GoTo</span> EndSub
+    
+ErrorSub:
+    MsgBox Err.Description
+
+EndSub:
+<span class="keyword">End Subspan&gt;</span></pre>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

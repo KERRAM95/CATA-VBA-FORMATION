@@ -1,0 +1,77 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>DPCOperations Collection Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>DPCOperations Collection Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavunused">Properties</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATBehaviorIDLItf', 'interface', 'DPCOperations', 'MethodIndex'); return false;">
+		Methods</a></td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p class="auto">
+<a href="#" onclick="javascript:CAAlink('IDL', 'CATBehaviorIDLItf', 'interface', 'DPCOperations');return false;">
+<img src="../CAAScdImages/DPCOperations.png" alt="DPCOperations Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATBehaviorIDLItf', 'interface', 'DPCOperation');return false;"><img src="../CAAScdImages/DPCOperation.png" alt="DPCOperation Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img alt="Inheritance Symbol" src="../CAAScdImages/parderiv.png" width="20" height="24"/><a href="CAAScdDpcObjDPCOperationVBScript.htm"><img src="../CAAScdImages/DPCOperationVBScript.png" alt="DPCOperationVBScript Object" width="252" height="22"/></a></p>
+<p>Represents the collection of operations associated with the object of product, 
+a feature, or a 3D shape representation.</p>
+<p>The <strong>DPCOperations</strong> collection object can be retrieved from any 
+object interactively extended by the Automated Design Process, such as a product,&nbsp; 
+a <strong>Part</strong> object, or a <strong>Body</strong> object.</p>
+<p>Use the <strong>GetItem</strong> method of the active object, here a <strong>
+Part</strong> object interactively extended by the Automated Design Process to return 
+the <strong>DPCOperations</strong> collection object.</p>
+<pre class="code"><span class="keyword">Dim</span> oRoot <span class="keyword">As</span> Object
+<span class="keyword">Set</span> oRoot = CATIA.ActiveEditor.ActiveObject
+<span class="keyword">Dim</span> cOperations <span class="keyword">As</span> DPCOperations<span class="keyword">
+Set</span> cOperations = oRoot.GetItem(&quot;CATGetDPCOperations&quot;)
+</pre>
+<p>Use the <strong>Operate</strong> method of the <strong>DPCOperations</strong> 
+collection object to retrieve and run an operation, for example the operation named
+<code>MyOperation</code>.</p>
+<pre class="code"><span class="keyword">Dim</span> oOperation <span class="keyword">As</span> DPCOperation
+<span class="keyword">Set</span> oOperation = cOperations.Operate(&quot;MyOperation&quot;)
+</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

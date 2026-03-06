@@ -1,0 +1,256 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSfdUcCreateStiffener.CATScript</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates a sfd stiffener and edit it.</span>
+<span class="comment">'This script requires sfd model which contains a panel </span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'    1- Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</span>
+<span class="comment">'    2- Retrieves Selection object </span>
+<span class="comment">'    3- Retrieves Part object </span>
+<span class="comment">'    4- Retrieves Service manager </span>
+<span class="comment">'    5- Retrieves a SFD panel(&quot;panel.1&quot;) object </span>
+<span class="comment">'    6- Creates a Stiffener </span>
+<span class="comment">'       6.1- Retrieves the StrSfdStiffeners object from panel. Then Add method from object StrSfdStiffeners </span>
+<span class="comment">'            will create a new empty stiffener.</span>
+<span class="comment">'       6.2- Set different properties of the stiffener like material. Retrieve the StrMaterialMngt object from StrSfdStiffener</span>
+<span class="comment">'            object and set the material for the stiffener using SetMaterial method.</span>
+<span class="comment">'       6.3- To set the category retrieve the StrCategoryMngt object from StrSfdStiffener object and set category using </span>
+<span class="comment">'            SetCategory method.</span>
+<span class="comment">'       6.4- Sets the ProfileType property of the stiffener to 5 (here 5 </span>
+<span class="comment">'            means profile is created with the intersection of two surfaces).</span>
+<span class="comment">'       6.5- Retrieves the StrSectionMngt object from the created stiffener object and sets the different section </span>
+<span class="comment">'            parameters like section name, anchor point, web orientation, flange orientation.</span>
+<span class="comment">'       6.6- Retrieves the StrProfileLimitMngt object from the created stiffener object and sets the Start limit </span>
+<span class="comment">'            and End limit of the stiffener.</span>
+<span class="comment">'       6.7- Retrieves the StrProfileSurSurf object from the created stiffener object and sets two surfaces which are </span>
+<span class="comment">'            intersecting with each other. At the intersection of these two surfaces stiffener will be created.   </span>
+<span class="comment">'       6.8- Updates the created stiffener. </span>
+<span class="comment">'    7- Edits created Stiffener </span>
+<span class="comment">'       7.1- Retrieves the StrProfileSurSurf object from the stiffener object. Then changes the support of the Stiffener</span>
+<span class="comment">'            to LONG.0.</span>
+<span class="comment">'       7.2- Retrieves the StrSectionMngt object from the created stiffener object and changes anchor point, web </span>
+<span class="comment">'            orientation and flange orientation.  </span>
+<span class="comment">'       7.3- Updates the stiffener object. </span>
+<span class="comment">'    8- Update the Part object  </span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+Language=&quot;VBSCRIPT&quot; 
+<span class="keyword">Dim </span>Manager<span class="keyword"> As </span>RfgService
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>SFDProdSel<span class="keyword"> As </span>Selection
+
+
+<span class="keyword">Sub </span>CATMain()
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</span>
+<span class="keyword">    Dim </span>SFDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SFD_VB_TEST&quot;
+    OpenProduct prdName , SFDPrdEditor
+    
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="keyword">    Set </span>SFDProdSel = SFDPrdEditor.Selection
+
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="keyword">    Set </span>ObjPart = SFDPrdEditor.ActiveObject
+
+<span class="comment">'   4- Retrieves Service manager</span>
+<span class="keyword">    Set </span>Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+        
+<span class="comment">'   5- Retrieves a SFD panel(&quot;panel.1&quot;) object</span>
+<span class="keyword">    Set </span>RefSfdPanel = ObjPart.FindObjectByName(&quot;Panel.1&quot;)
+<span class="keyword">    Dim </span>ObjSfdPanel<span class="keyword"> As </span>SfdPanel
+    SFDProdSel.Add RefSfdPanel
+<span class="keyword">    Set </span>ObjSfdPanel = SFDProdSel.FindObject(&quot;CATIASfdPanel&quot;)
+
+<span class="comment">'   6- Creates a Stiffener </span>
+<span class="keyword">    Dim </span>ObjSfdStiffener<span class="keyword"> As </span>StrSfdStiffener
+    CreateStiffener ObjSfdPanel, ObjSfdStiffener
+
+<span class="comment">'   7- Edits created Stiffener </span>
+    EditStiffener ObjSfdStiffener
+ 
+<span class="comment">'   8- Update the Part object     </span>
+    ObjPart.Update
+    
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'create stiffener</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'       6.1- Retrieves the StrSfdStiffeners object from panel. Then AddStiffener method from object StrSfdStiffeners </span>
+<span class="comment">'            will create a new empty stiffener.</span>
+<span class="comment">'       6.2- Set different properties of the stiffener like material. Retrieve the StrMaterialMngt object from StrSfdStiffener</span>
+<span class="comment">'            object and set the material for the stiffener using SetMaterial method.</span>
+<span class="comment">'       6.3- To set the category retrieve the StrCategoryMngt object from StrSfdStiffener object and set category using </span>
+<span class="comment">'            SetCategory method.</span>
+<span class="comment">'       6.4- Sets the ProfileType property of the stiffener to 5 (here 5 </span>
+<span class="comment">'            means profile is created with the intersection of two surfaces).</span>
+<span class="comment">'       6.5- Retrieves the StrSectionMngt object from the created stiffener object and sets the different section </span>
+<span class="comment">'            parameters like section name, anchor point, web orientation, flange orientation.</span>
+<span class="comment">'       6.6- Retrieves the StrProfileLimitMngt object from the created stiffener object and sets the Start limit </span>
+<span class="comment">'            and End limit of the stiffener.</span>
+<span class="comment">'       6.7- Retrieves the StrProfileSurSurf object from the created stiffener object and sets two surfaces which are </span>
+<span class="comment">'            intersecting with each other. At the intersection of these two surfaces stiffener will be created.   </span>
+<span class="comment">'       6.8- Updates the created stiffener. </span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateStiffener(iObjSfdPanel<span class="keyword"> As </span>SfdPanel, oObjSfdStiffener<span class="keyword"> As </span>StrSfdStiffener)
+    
+<span class="comment">'   6.1- Retrieves the StrSfdStiffeners object from panel. Then AddStiffener method from object StrSfdStiffeners </span>
+<span class="comment">'        will create a new empty stiffener.</span>
+    <span class="comment">'Get StrSfdStiffeners object</span>
+<span class="keyword">    Dim </span>ObjSfdStiffeners<span class="keyword"> As </span>StrSfdStiffeners
+<span class="keyword">    Set </span>ObjSfdStiffeners = iObjSfdPanel.StrSfdStiffeners
+    <span class="comment">'Add stiffener</span>
+<span class="keyword">    Set </span>oObjSfdStiffener = ObjSfdStiffeners.AddStiffener
+    
+<span class="comment">'   6.2- Set different properties of the stiffener like material. Retrieve the StrMaterialMngt object from StrSfdStiffener</span>
+<span class="comment">'        object and set the material for the stiffener using SetMaterial method.</span>
+    <span class="comment">'Get StrMaterialMngt object</span>
+<span class="keyword">    Dim </span>ObjMaterialMngt<span class="keyword"> As </span>StrMaterialMngt
+<span class="keyword">    Set </span>ObjMaterialMngt = oObjSfdStiffener.StrMaterialMngt
+    <span class="comment">'Set material of the stiffener</span>
+    ObjMaterialMngt.SetMaterial (&quot;Steel A42&quot;)
+    
+<span class="comment">'   6.3- To set the category retrieve the StrCategoryMngt object from StrSfdStiffener object and set category using </span>
+<span class="comment">'        SetCategory method.</span>
+    <span class="comment">'Get StrCategoryMngt object</span>
+<span class="keyword">    Dim </span>ObjStrCategoryMngt<span class="keyword"> As </span>StrCategoryMngt
+<span class="keyword">    Set </span>ObjStrCategoryMngt = oObjSfdStiffener.StrCategoryMngt
+    <span class="comment">'Set category of the stiffener</span>
+    ObjStrCategoryMngt.SetCategory &quot;SldStiffener&quot;
+
+<span class="comment">'   6.4- Sets the ProfileType property of the stiffener to 5 (here 5 </span>
+<span class="comment">'        means profile is created with the intersection of two surfaces).</span>
+    <span class="comment">'Set type of the stiffener </span>
+    oObjSfdStiffener.ProfileType = catStrProfileModeSurfSurf
+    
+<span class="comment">'   6.5- Retrieves the StrSectionMngt object from the created stiffener object and sets the different section </span>
+<span class="comment">'        parameters like section name, anchor point, web orientation, flange orientation.</span>
+    <span class="comment">'Get StrSectionMngt object</span>
+<span class="keyword">    Dim </span>ObjStrSectionMngt<span class="keyword"> As </span>StrSectionMngt
+<span class="keyword">    Set </span>ObjStrSectionMngt = oObjSfdStiffener.StrSectionMngt
+    <span class="comment">'Set different section parameters</span>
+    ObjStrSectionMngt.SetSectionName (&quot;WT18x179.5&quot;)
+    ObjStrSectionMngt.AnchorPoint = &quot;catStrTopCenter&quot;
+    ObjStrSectionMngt.WebOrientation = 1
+    ObjStrSectionMngt.FlangeOrientation = 1
+    
+<span class="comment">'   6.6- Retrieves the StrProfileLimitMngt object from the created stiffener object and sets the Start limit </span>
+<span class="comment">'        and End limit of the stiffener.</span>
+    <span class="comment">'Get StrProfileLimitMngt object</span>
+<span class="keyword">    Dim </span>ObjStrProfileLimitMngt<span class="keyword"> As </span>StrProfileLimitMngt
+<span class="keyword">    Set </span>ObjStrProfileLimitMngt = oObjSfdStiffener.StrProfileLimitMngt
+    <span class="comment">'set the profile limits</span>
+<span class="keyword">    Set </span>ObjStartLimit = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.70&quot;)
+<span class="keyword">    Set </span>StartLimit = ObjPart.CreateReferenceFromObject(ObjStartLimit)
+    ObjStrProfileLimitMngt.SetLimitingObject 1, StartLimit
+<span class="keyword">    Set </span>ObjEndLimit = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.110&quot;)
+<span class="keyword">    Set </span>EndLimit = ObjPart.CreateReferenceFromObject(ObjEndLimit)
+    ObjStrProfileLimitMngt.SetLimitingObject 2, EndLimit
+
+<span class="comment">'   6.7- Retrieves the StrProfileSurSurf object from the created stiffener object and sets two surfaces which are </span>
+<span class="comment">'        intersecting with each other. At the intersection of these two surfaces stiffener will be created.   </span>
+    <span class="comment">'Get StrProfileSurfSurf object</span>
+<span class="keyword">    Dim </span>ObjStrProfileSurfSurf<span class="keyword"> As </span>StrProfileSurfSurf
+<span class="keyword">    Set </span>ObjStrProfileSurfSurf = oObjSfdStiffener.StrProfileSurfSurf
+    
+<span class="keyword">    Dim </span>DMS<span class="keyword"> As </span>Reference
+<span class="keyword">    Set </span>DMS = iObjSfdPanel.GetDelimitedSupport
+    ObjStrProfileSurfSurf.FirstSurface = DMS
+<span class="keyword">    Set </span>ObjWebSupport = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-4&quot;)
+<span class="keyword">    Set </span>WebSupport = ObjPart.CreateReferenceFromObject(ObjWebSupport)
+    ObjStrProfileSurfSurf.SecondSurface = WebSupport
+   
+<span class="comment">'   6.8- Updates the created stiffener. </span>
+    ObjPart.UpdateObject oObjSfdStiffener
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Edit stiffener data</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'       7.1- Retrieves the StrProfileSurSurf object from the stiffener object. Then changes the support of the Stiffener</span>
+<span class="comment">'            to LONG.0.</span>
+<span class="comment">'       7.2- Retrieves the StrSectionMngt object from the created stiffener object and changes anchor point, web </span>
+<span class="comment">'            orientation and flange orientation.  </span>
+<span class="comment">'       7.3- Updates the stiffener object. </span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>EditStiffener(iObjSfdStiffener<span class="keyword"> As </span>StrSfdStiffener)
+<span class="comment">'   7.1- Retrieves the StrProfileSurSurf object from the stiffener object. Then changes the support of the Stiffener</span>
+<span class="comment">'        to LONG.0.</span>
+    <span class="comment">'Get StrProfileSurfSurf object</span>
+<span class="keyword">    Dim </span>ObjStrProfileSurfSurf<span class="keyword"> As </span>StrProfileSurfSurf
+<span class="keyword">    Set </span>ObjStrProfileSurfSurf = iObjSfdStiffener.StrProfileSurfSurf
+
+    <span class="comment">'Change the websupport of the stiffener</span>
+<span class="keyword">    Set </span>ObjWebSupport = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.0&quot;)
+<span class="keyword">    Set </span>WebSupport = ObjPart.CreateReferenceFromObject(ObjWebSupport)
+    ObjStrProfileSurfSurf.SecondSurface = WebSupport
+
+<span class="comment">'   7.2- Retrieves the StrSectionMngt object from the created stiffener object and changes anchor point, web </span>
+<span class="comment">'        orientation and flange orientation.  </span>
+    <span class="comment">'Get StrSectionMngt object</span>
+<span class="keyword">    Dim </span>ObjStrSectionMngt<span class="keyword"> As </span>StrSectionMngt
+<span class="keyword">    Set </span>ObjStrSectionMngt = iObjSfdStiffener.StrSectionMngt
+    <span class="comment">'Change AnchorPoint, WebOrientation &amp; FlangeOrientation </span>
+    ObjStrSectionMngt.AnchorPoint = &quot;catStrTopLeft&quot;
+    ObjStrSectionMngt.WebOrientation = -1
+    ObjStrSectionMngt.FlangeOrientation = -1
+   
+<span class="comment">'   7.3- Updates the stiffener object. </span>
+    ObjPart.UpdateObject iObjSfdStiffener
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SFDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SFDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

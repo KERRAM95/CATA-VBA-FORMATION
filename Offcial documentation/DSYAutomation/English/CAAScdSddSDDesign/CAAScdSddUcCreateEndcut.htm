@@ -1,0 +1,263 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SDD Endcut</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SDD Endcut</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SDD Endcut.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div>, </code><code><div class=vb_sample_data>CAAScdSddUcCreateEndCut.3dxml</div> </code> 
+							files supplied 
+							in folder<br />
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code><br />
+							where 
+							<code>InstallRootFolder</code> is the folder where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcCreateEndcutSource.htm">CAAScdSddUcCreateEndcutSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSddTocSDDesign.htm">Structure Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in six steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SddProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves a SddProductStiffener object</a></li>
+			<li><a href="#Step5">Creates Endcut </a></li>
+			<li><a href="#Step6">Updates the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SddProduct&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SddProduct&quot; from DB and 
+			loads it and returns object of the Editor.</p>
+			<pre class="code">... 
+ <span class="keyword">Dim</span> SDDPrdEditor <span class="keyword">As</span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SddProduct&quot;
+ OpenProduct prdName , SDDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SDDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SDD model from underlying database the current active 
+			editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+			<p>As a next step, the UC retrieves Selection object in SDDProdSel variable. 
+			To retrieve the Selection object <strong><code>SDDPrdEditor </code>
+			</strong>is used.</p>
+			<pre class="code"> ...
+    <span class="keyword">Set</span> SDDProdSel = SDDPrdEditor<strong>.Selection </strong>
+ ...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> product1Service <span class="keyword">As</span> PLMProductService
+  <span class="keyword">Set</span> product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+  <span class="keyword">Dim</span> ObjVPMRootOccurrence <span class="keyword">As</span> VPMRootOccurrence
+  <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+  <span class="keyword">Dim</span> ObjVPMReference <span class="keyword">As</span> VPMReference
+  <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+  <span class="keyword">Dim</span> ObjVPMRepInstances <span class="keyword">As</span> VPMRepInstances
+  <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+  <span class="keyword">Set</span> ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> ObjPart = ObjVPMRepReference.<strong>GetItem</strong>(&quot;Part&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4">Retrieves a SDD product Stiffener object</a></strong></p>
+			<p>In this step UC retrieves product stiffener object. Endcut will be 
+			created on this stiffener. </p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> ListOfInstances = ObjVPMReference.<strong>Instances</strong>
+  <span class="keyword">Set</span> StiffenerRef = ListOfInstances.Item(2).ReferenceInstanceOf
+  SDDProdSel.Add StiffenerRef
+  <span class="keyword">Set</span> ObjSddProductStiffener = SDDProdSel.FindObject(&quot;CATIASddProductStiffener&quot;)
+...</pre>
+			<p><code>FindObjectByName</code> method finds object whose name is &quot;CATIASddProductStiffener&quot; 
+			and returns reference to it. </p>
+			</li>
+			<li>
+			<p><strong><a name="Step5">Creates Endcut</a></strong></p>
+			<p>Now, stiffener product is retrieved. Call <code>CreateEndCut</code> 
+			method to create Endcut on the stiffener in the stiffener product.
+			<code>CreateEndCut</code> method takes a product stiffener as input 
+			parameter and it returns created Endcut as output parameter.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjStrEndcut <span class="keyword">As </span>StrEndcut 			
+  <strong>CreateEndCut</strong> ObjSddProductStiffener, ObjStrEndcut 
+...</pre>
+			<p>The method <code>CreateEndCut</code> is detailed as in the below 
+			sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Retrieves <code>StrEndcutMngt</code> object and and create 
+				an Endcut with no data.</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> CreateEndCut(iObjProductSfdStiffener <span class="keyword">As</span> SfdProductStiffener, oObjStrEndCut <span class="keyword">As</span> StrEndCut)
+  <span class="comment">&#39;Get StrEndcutMngt object</span>
+  <span class="keyword">Dim</span> ObjSddStiffener <span class="keyword">As</span> SddStiffener
+  <span class="keyword">Set</span> ObjSddStiffener = iObjSddProductStiffener.<strong>SddStiffener</strong>
+  <span class="keyword">Dim</span> ObjStrEndcutMngt <span class="keyword">As</span> StrEndcutMngt
+  <span class="keyword">Set</span> ObjStrEndcutMngt = iObjSfdStiffener.<strong>StrEndcutMngt</strong>
+  <span class="comment">&#39;Create Endcut</span>
+  <span class="keyword">Set</span> oObjStrEndCut = ObjStrEndcutMngt.<strong>AddEndCut(2)</strong>
+...</pre>
+				<p><code>StrEndcutMngt</code> is retrieved in <code>ObjStrEndcutMngt</code> 
+				variable from <code>ObjSddStiffener</code> object as shown above. 
+				On <code>ObjStrEndcutMngt</code> object, <code>AddEndCut</code> 
+				method is called to create the Endcut with no data. Method <code>
+				AddEndCut</code> takes one input parameter which defines whether 
+				this Endcut is created at the start of the profile or end of the 
+				profile. 1 is for start and 2 is for end. Now Uc needs to set the 
+				different properties of the Endcut like Endcut&#39;s parameters etc.</p>
+				</li>
+				<li>
+				<p><strong>Sets Endcut parameters</strong></p>
+				<pre class="code">...
+  <strong>SetSNIPE_WT_radiusEndCutParameters</strong> oObjStrEndCut
+...</pre>
+				<p>Method <code>SetSNIPE_WT_radiusEndCutParameters</code> is called 
+				to set the Endcut parameters.</p>
+				<p>The method <code>SetSNIPE_WT_radiusEndCutParameters</code> is 
+				detailed as in the below sub steps.</p>
+				<ol class="task">
+					<li>
+					<p><strong>Retrieves <code>StrDetailFeature</code> object</strong></p>
+					<pre class="code"><span class="keyword">Sub</span> SetSNIPE_WT_radiusEndCutParameters(iObjStrEndCut <span class="keyword">As</span> StrEndCut)
+  <span class="keyword">Dim</span> ObjStrDetailFeature <span class="keyword">As</span> StrDetailFeature
+  <span class="keyword">Set</span> ObjStrDetailFeature = iObjStrEndCut.<strong>StrDetailFeature</strong>
+...</pre>
+					<p><code>ObjStrDetailFeature </code>is of type <code>StrDetailFeature</code>. 
+					It is retrieved from <code>iObjStrEndCut</code> object using 
+					method <code>StrDetailFeature</code>. Later this object is used 
+					to set different Endcut parameters like Endcut name, Endcut 
+					type etc.</p>
+					</li>
+					<li>
+					<p><strong>Sets Endcut name</strong></p>
+					<pre class="code">...
+  ObjStrDetailFeature.<strong>InitByName</strong> &quot;WT_snipe_radius&quot;
+...</pre>
+					<p><code>InitByName</code> method of <code>StrDetailFeature</code> 
+					is called with parameter &quot;WT_snipe_radius&quot;. This defines the 
+					name of the Endcut.</p>
+					</li>
+					<li>
+					<p><strong>Retrieves list of parameters of EndCut</strong></p>
+					<pre class="code">...
+  <span class="keyword">Dim</span> EndcutParameters <span class="keyword">As</span> StrParameters
+  <span class="keyword">Set</span> EndcutParameters = ObjStrDetailFeature.<strong>GetParameters</strong>
+...</pre>
+					<p><code>GetParameters</code> method of <code>ObjStrDetailFeature</code> 
+					returns list of parameters of <code>ObjStrEndCut</code></p>
+					</li>
+					<li>
+					<p><strong>Sets radius parameter of end cut</strong></p>
+					<pre class="code">...
+  <span class="keyword">Dim</span> Radius <span class="keyword">As</span> Parameter
+  <span class="keyword">Set</span> Radius = EndcutParameters.<strong>Item(1)</strong>
+  Radius.<strong>ValuateFromString</strong> (&quot;70mm&quot;)...</pre>
+					<p><code>Radius</code> parameter <code>EndcutParameters</code> 
+					is retrieved from the list of parameters and its value is set.</p>
+					</li>
+					<li>
+					<p><strong>Updates the ObjStrDetailFeature object</strong></p>
+					<pre class="code">...<br />  ObjStrDetailFeature.<strong>Update</strong>
+End Sub</pre>
+					<p>Call to <code>Update</code> method of <code>ObjStrDetailFeature</code> 
+					will update the Endcut feature.</p>
+					</li>
+				</ol>
+				</li>
+				<li>
+				<p><strong><a name="Step6">Updates the Part object</a></strong></p>
+				<pre class="code">...<br />  ObjPart.<strong>Update</strong><br />End Sub</pre>
+				<p><code>Update</code> method updates the <code>ObjPart</code> Part 
+				object</p>
+				</li>
+			</ol>
+			<script type="text/javascript">insertLinkToTop()</script>
+			<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

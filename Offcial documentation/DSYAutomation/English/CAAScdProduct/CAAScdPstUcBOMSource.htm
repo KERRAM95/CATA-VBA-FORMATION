@@ -1,0 +1,363 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Generating Bill Of Materials (BOM) source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Generating Bill Of Materials (BOM)
+'Mission: The Use case mainly generates Bill of materials. The use case navigate through the instance/reference Product structure and
+'         calculates the count of each leaf node&#8217;s occurrences.
+'
+'Steps:     1- Retrieves the Root Reference from the database
+'           2- Navigates the Product Reference recursively
+'               2.1- Retrieves the Leaf nodes
+'               2.2- Counts and displays leaf node occurrences
+'           3- Displays Bill of Material
+'---------------------------------------------------------------------------------------------------------------------------
+' Be careful: this piece of code has been written with a specific Product Reference type (VPMReference). If your ENOVIA
+' installation does not contain this Product Model type, use you own Product Reference type.
+' You have just to change the contents of the strTheProductReferenceType variable defined just below (in main routine).
+'---------------------------------------------------------------------------------------------------------------------------
+'Global variables
+'The product Reference type
+Dim strTheProductReferenceType As String
+'
+Dim strBrowsedPLMCompIDAttr As String
+Dim iNewObjectIndex As Integer
+'The following array size decides the limit for this use case(In case user needs use of this macro
+'for bigger structure he need to replace 10 digit with desired number throughout the macro)
+Dim lstCompList(10)
+Dim lstCompCount(10)
+'
+'==========================================================================================================================
+' Main Routine
+'==========================================================================================================================
+Sub GenerateBOM()
+    'Error handling
+    On Error GoTo ErrorSub
+    
+    strTheProductReferenceType="VPMReference"
+    
+    '1- Retrieves the Search service from CATIA session
+    Dim oSearchService As SearchService
+    Set oSearchService = CATIA.GetSessionService("Search")
+
+    '2- Searches for a Product in database
+    Dim oDBSearch As DatabaseSearch
+    Set oDBSearch = SearchProduct(oSearchService)
+    
+    'Opens the Product and retrieves its Editor
+    Dim oProductEditor As Editor
+    Set oProductEditor = OpenProductAndGetEditor(oDBSearch)
+
+    
+    'Clear all previous values for display purpose
+    For Flush = 0 To 10
+       lstCompCount(Flush) = 0
+    Next Flush
+
+    '2- Navigates the Product Structure
+    NavigateProductStructure oProductEditor
+    
+    '3- Displays Bill of Material
+    Dim strBOM As String
+    strBOM = &quot;********Bill of material*********&quot; + vbCrLf
+    strBOM = strBOM + &quot;Product Reference Name   &quot; + &quot;    Count&quot; + vbCrLf
+    For k = 0 To 10
+        Dim strCount As String
+        strCount = lstCompCount(k)
+        If (strCount &lt;&gt; 0) Then
+	  strBOM = strBOM + lstCompList(k) + &quot;                        &quot; + strCount + vbCrLf
+        End If
+    Next k
+    
+    'Disaply Bill of material
+    MsgBox strBOM
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Sub
+'
+'--------------------------------------------------------------------------------------------
+' Searches for a Product in database
+'    The search criteria is:
+'     - The Product reference type 
+'     - A PLM_ExternalID value entered by the end user
+'     - A revision value entered by the end user
+'    Output : the object containing the result of the search
+'--------------------------------------------------------------------------------------------
+'
+Function SearchProduct(oSearchService) As DatabaseSearch
+   'Error handling
+   On Error GoTo ErrorSub  
+    
+    '1- Retrieves the Database attribute from Search service
+    Dim oDBSearch As DatabaseSearch
+    Set oDBSearch = oSearchService.DatabaseSearch
+     
+    'Builds the Query criteria for Search on underlying database
+    'Prompts the user to input the PLM_ExternalID for search purpose
+    Dim strInputPLMIDName As String
+    strInputPLMIDName = InputBox(&quot;Please enter the PLM_ExternalID to search&quot;, &quot;Enter PLM_ExternalID&quot;)
+    
+    'Prompts the user to input the revision for search purpose
+    Dim strInputRevision As String
+    strInputRevision = InputBox(&quot;Please enter the revision to search&quot;, &quot;Enter revision&quot;)
+ 
+    'Sets the Product Reference type of objects to search for 
+    oDBSearch.BaseType = strTheProductReferenceType
+         
+    'Updates the PLM Search object created in the above steps with the attribute criteria provided by the user as an input
+    oDBSearch.AddEasyCriteria &quot;PLM_ExternalID&quot;, strInputPLMIDName
+    oDBSearch.AddEasyCriteria &quot;revision&quot;, strInputRevision
+       
+    'Triggers the Search
+    oSearchService.Search
+    
+    'Valuates the output
+    Set SearchProduct = oDBSearch
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+    
+End Function
+'
+'--------------------------------------------------------------------------------------------
+' Opens the Product and retrieves its Editor
+'    Input  : the object containing the result of the previous search
+'    Output : the editor containing the opened Product
+'--------------------------------------------------------------------------------------------
+'
+Function OpenProductAndGetEditor(oDBSearch) As Editor
+   'Error handling
+   On Error GoTo ErrorSub
+    
+    'Retrieves the list of PLM Entities from the PLM Search object
+    Dim oPLMProdRefAsEntities As PLMEntities
+    Set oPLMProdRefAsEntities = oDBSearch.Results
+    
+    'Ensures the search results retrieves atleast one PLM Entity
+    If oPLMProdRefAsEntities.Count &gt; 1 Then
+        MsgBox &quot;Please enter a query criteria which outputs a unique PLM Component for further processing&quot;
+        GoTo EndSub
+    ElseIf oPLMProdRefAsEntities.Count = 0 Then
+        MsgBox &quot;No result for the input criteria&quot;
+        GoTo EndSub
+    End If
+
+    'Retrieves first PLM Entity from the PLMEntities collection object
+    Dim oPLMProdRefAsPLMEntity As PLMEntity
+    Set oPLMProdRefAsPLMEntity = oPLMProdRefAsEntities.Item(1)
+    
+    'Call the Open Service to open the product
+    Dim oOpenService As PLMOpenService
+    Set oOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    
+    'Opens the PLM Component in the VPM editor
+    Dim oProductEditor As Editor
+    oOpenService.PLMOpen oPLMProdRefAsPLMEntity, oProductEditor
+        
+    'Valuates the output
+    Set OpenProductAndGetEditor = oProductEditor
+    
+   'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Function
+'
+'--------------------------------------------------------------------------------------------
+' 2.2- Navigates the Product Structure recursively
+'     Input : the Product editor
+'--------------------------------------------------------------------------------------------
+'
+Sub NavigateProductStructure(oProductEditor)
+    'Error handling
+    On Error GoTo ErrorSub
+    
+    'Initializes the global variable
+    strBrowsedPLMCompIDAttr = &quot;&quot;
+    iNewObjectIndex = 0
+ 
+    'Retrieves the Product Service from the editor
+    Dim oProductService As PLMProductService
+    Set oProductService = oProductEditor.GetService(&quot;PLMProductService&quot;)
+        
+    'Retrieves the Root Product Occurrence from the current VPM Editor to navigate
+    Dim oVPMRootOccOnRoot As VPMRootOccurrence
+    Set oVPMRootOccOnRoot = oProductService.RootOccurrence
+    
+    'Retrieves the Root Reference from the occurrence model
+    Dim oVPMRefOnRoot As VPMReference
+    Set oVPMRefOnRoot = oVPMRootOccOnRoot.ReferenceRootOccurrenceOf
+    
+    'Displays the Root Product Reference name
+    strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + oVPMRefOnRoot.Name + vbCrLf
+        
+    'Navigates the Product Reference
+    '(Call for Navigate on the retrieved Reference)
+    NavigateProdReference oVPMRefOnRoot, 1
+    
+    'Displays the Occurrence Product Model Contents in the Message Box
+    MsgBox strBrowsedPLMCompIDAttr
+        
+    'Clears the display contents
+    strBrowsedPLMCompIDAttr = &quot;&quot;
+            
+   'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Sub
+'
+'--------------------------------------------------------------------------
+'Navigates the Product Reference
+'    Input : the Product Reference
+'            depth of the object in hierarchy
+'--------------------------------------------------------------------------
+Sub NavigateProdReference(oProdRef, depth)
+    'Error handling
+    On Error GoTo ErrorSub
+    
+   'Retrieves the list of instances within the input reference
+    Dim oListChildrenInstances As VPMInstances
+    Set oListChildrenInstances = oProdRef.Instances
+    
+    'Navigates through each child Reference recursively
+    'Loop through the List of child instances
+    For i = 1 To oListChildrenInstances.Count
+    
+        'Retrieves the Child instance from the list
+        Dim oVPMInst As VPMInstance
+        Set oVPMInst = oListChildrenInstances.Item(i)
+        
+        'Indent the PLM entity appropriately
+        For spaceCnt = 1 To depth
+            strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + vbTab
+        Next spaceCnt
+        
+         'Retrieves the Reference of the instance
+        Dim oVPMRef As VPMReference
+        Set oVPMRef = oVPMInst.ReferenceInstanceOf
+         
+        '---------------------------------------------------------------
+        '2.1- Retrieves the Leaf nodes
+        '---------------------------------------------------------------
+        'Retrieve count of Children Instances
+        Dim oListChildrenInstToIdentifyLeafNode As VPMInstances
+        Set oListChildrenInstToIdentifyLeafNode = oVPMRef.Instances
+        
+        Dim StrNewObjRef As String
+        StrNewObjRef = &quot;&quot;
+        
+        'Zero count of Children Instances shows that its leaf node
+        If 0 = oListChildrenInstToIdentifyLeafNode.Count Then
+        '-----------------------------------------------------------------
+        '2.2- Count and display leaf node occurrences
+        '-----------------------------------------------------------------
+            'Update its status for new or already exist node Reference in list
+            StrNewObjRef = GetLeafNodeStatusAndAddCount(oVPMRef)
+        End If
+        
+        'Prepare the string for displaying purpose
+        strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + oVPMRef.GetAttributeValue(&quot;PLM_ExternalID&quot;) + oVPMRef.GetAttributeValue(&quot;revision&quot;) + &quot; &quot; + &quot;(&quot;
+        strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + oVPMInst.GetAttributeValue(&quot;PLM_ExternalID&quot;) + &quot;)&quot; + StrNewObjRef + vbCrLf
+              
+        'Navigate further into this VPM Ref. A recursive call to Navigate follows
+        NavigateProdReference oVPMRef, depth + 1
+            
+    'Next ref
+    Next i
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Sub
+'
+'----------------------------------------------------------------------------------
+'2.2- Gets Leaf Node Status (New or existing) And Add Count for existing References and
+' make new entry for new references
+'    Input : The Product Reference
+'    Output : (String)Status of the Ref is it new or already has entry in list
+'----------------------------------------------------------------------------------
+Function GetLeafNodeStatusAndAddCount(oVPMLeafRef) As String
+   'Error handling
+   On Error GoTo ErrorSub
+        
+    'Search for Object exist in list or not
+    Dim bObjFound As Boolean
+    bObjFound = False
+      
+    'Parse through the list
+    For g = 0 To 10
+       If lstCompList(g) = oVPMLeafRef.GetAttributeValue(&quot;PLM_ExternalID&quot;) Then
+          bObjFound = True
+          lstCompCount(g) = lstCompCount(g) + 1
+       End If
+    Next g
+            
+    'Initialize status string
+    Dim strIsNewObject As String
+    strIsNewObject = &quot;&quot;
+    
+    'If new object then insert it into the list
+    If False = bObjFound Then
+       'Insert new PLM Component's PLM_ExternalID value in the list
+       lstCompList(iNewObjectIndex) = oVPMLeafRef.GetAttributeValue(&quot;PLM_ExternalID&quot;)
+       'Initialize first occurence of Leaf PLM Component with count 1
+       lstCompCount(iNewObjectIndex) = 1
+       
+       'Adjust the index of Array for next entry of new Leaf node
+       iNewObjectIndex = iNewObjectIndex + 1
+       'Update Status for new Component
+       strIsNewObject = &quot; This is new Component&quot;
+     
+    Else 'If Object is already exist in the list
+       'Update Status for existing Component
+       strIsNewObject = &quot; This is already exist Component in the list&quot;
+    End If
+   
+    'Valuates the output
+    GetLeafNodeStatusAndAddCount = strIsNewObject
+    
+   'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Function</pre>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

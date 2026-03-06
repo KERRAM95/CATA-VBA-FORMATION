@@ -1,0 +1,425 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SDD Stiffener</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SDD Stiffener</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SDD stiffener.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSddUcCreateStiffener.3dxml</div></code>, <code>
+							<div class=vb_sample_data>CAAScdSddUcSteel_A42.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSddUcWT18x179_5.3dxml</div></code>,
+							<code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div></code> and <code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div></code> 
+							files supplied in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcCreateStiffenerSource.htm">CAAScdSddUcCreateStiffenerSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSddTocSDDesign.htm">Structure Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in nine steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SddProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves Service manager</a></li>
+			<li><a href="#Step5">Retrieves a SddPlate </a></li>
+			<li><a href="#Step6">Retrieves SddStiffenerMngt </a></li>
+			<li><a href="#Step7">Creates a Stiffener </a></li>
+			<li><a href="#Step8">Edits created Stiffener</a></li>
+			<li><a href="#Step9">Update the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SddProduct&quot;</strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SddProduct&quot; from DB and 
+			loads it and returns object of the Editor.</p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SDDPrdEditor  <span class="keyword">As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SddProduct&quot;
+ OpenProduct prdName , SDDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SDDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SDD model from underlying database the current active 
+			editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+			<p>As a next step, the UC retrieves the representation variable. To 
+			retrieve the Selection object <strong><code>SDDPrdEditor</code>
+			</strong>is used.</p>
+			<pre class="code"> ...
+  <span class="keyword">Set</span> SDDProdSel = SDDPrdEditor<strong>.Selection </strong>
+ ...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> product1Service <span class="keyword">As</span> PLMProductService
+  <span class="keyword">Set</span> product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+  <span class="keyword">Dim</span> ObjVPMRootOccurrence <span class="keyword">As</span> VPMRootOccurrence
+  <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+  <span class="keyword">Dim</span> ObjVPMReference <span class="keyword">As</span> VPMReference
+  <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+  <span class="keyword">Dim</span> ObjVPMRepInstances <span class="keyword">As</span> VPMRepInstances
+  <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+  <span class="keyword">Set</span> ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves Service Manager</strong></p>
+			<p>In this step UC retrieves object of RfgService.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.<strong>GetService(&quot;</strong>RfgService<strong>&quot;)</strong> 
+...</pre>
+			<p><em>GetService</em> method returns the service <code>RfgService</code> 
+			in <code>Manager</code> variable. This service provides various services.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieves a SddPlate object</strong></p>
+			<p>In this step UC retrieves a SddPlate from SddProductPlate which is 
+			retrieved using Selection object.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> ListOfInstances = ObjVPMReference.Instances
+  <span class="keyword">Set</span> PlateRef = ListOfInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> PlateRepInstances = PlateRef.RepInstances
+  <span class="keyword">Set</span> PlateRepInstReference = PlateRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> PlatePart = PlateRepInstReference.GetItem(&quot;Part&quot;)
+  <span class="keyword">Dim</span> ObjSddProductPlate <span class="keyword">As</span> SddProductPlate
+  SFDProdSel.<strong>Add </strong>PlateRef 
+  <span class="keyword">Set</span> ObjSddProductPlate = SDDProdSel.FindObject(&quot;CATIASddProductPlate&quot;)
+  <span class="keyword">Dim</span> ObjSddPlate <span class="keyword">As</span> SddPlate
+  <span class="keyword">Set</span> ObjSddPlate = ObjSddProductPlate.<strong>SddPlate</strong>
+...</pre>
+			<p>In above lines, <em>FindObject</em> method finds the object &quot;CATIASddProductPlate&quot; 
+			and returns to it. To retrieve <code>SddPlate</code> object call <em>
+			SddPlate</em> property as shown above. This will give the <code>SddPlate</code> 
+			object.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Retrieves a SddStiffenerMngt object</strong></p>
+			<p>In this step UC retrieves a SddStiffenerMngt object using Selection 
+			object.</p>
+			<pre class="code">... 
+  SFDProdSel.<strong>Add </strong>ObjVPMRootOccurrence 
+  <span class="keyword">Dim</span> ObjSddStiffenerMngt <span class="keyword">As</span> SddStiffenerMngt
+  <span class="keyword">Set</span> ObjSddStiffenerMngt = SFDProdSel.<strong>FindObject(&quot;</strong>CATIASddStiffenerMngt<strong>&quot;)</strong> 
+...</pre>
+			<p>In above lines, <em>FindObject</em> method finds the object &quot;CATIASddStiffenerMngt&quot; 
+			and returns to it. This will give the <code>SddStiffenerMngt</code> 
+			object.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Creates a Stiffener</strong></p>
+			<p>Now plate is available to create stiffener on it. Call <code>CreateStiffener</code> 
+			method to create stiffener. <code>CreateStiffener</code> method takes 
+			a panel and SddStiffenerMngt object as input and created stiffener is 
+			returned in output parameter.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjSddProductStiffener <span class="keyword">As </span>SddProductStiffener 			
+  <strong>CreateStiffener</strong> ObjSddPlate, ObjSddStiffenerMngt, ObjSddProductStiffener 
+...</pre>
+			<p>The method <code>CreateStiffener</code> is detailed as in the below 
+			sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Create a new empty stiffener by the method <code>AddStiffener</code> 
+				from object <code>SddStiffenerMngt</code> </p>
+				<pre class="code"><span class="keyword">Sub</span> CreateStiffener(iObjSddPlate <span class="keyword">As</span> SddPlate, iObjSddStiffenerMngt <span class="keyword">As</span> SddStiffenerMngt, oObjSddProductStiffener <span class="keyword">As </span>SddProductStiffener)
+  <span class="comment">&#39;Add Stiffener</span>
+  <span class="keyword">Set</span> oObjSddProductStiffener = iObjSddStiffenerMngt.<strong>AddStiffener</strong>
+...</pre>
+				<p>On <code>ObjSddStiffenerMngt</code> object <code>AddStiffener</code> 
+				method is called to create the empty stiffener. Now Uc needs to 
+				set the different properties of the stiffener like material, category 
+				etc.</p>
+				</li>
+				<li>
+				<p>Set different properties of the stiffener like material. Retrieve 
+				the <code>StrMaterialMngt</code> object from <code>SddProductStiffener</code> 
+				object and set the material for the stiffener using <code>SetMaterial</code> 
+				method.</p>
+				<pre class="code">...
+  <span class="comment">&#39;Get StrMaterialMngt object</span>
+  <span class="keyword">  Dim</span> ObjMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+  <span class="keyword">  Set</span> ObjMaterialMngt = oObjSddProductStiffener.<strong>StrMaterialMngt</strong>
+  <span class="comment">&#39;Set material of the stiffener</span>
+    ObjMaterialMngt.<strong>SetMaterial</strong>(&quot;Steel A42&quot;) 
+...</pre>
+				<p><code>ObjMaterialMngt</code> object is of type <code>StrMaterialMngt</code>. 
+				It is retrieved from the stiffener <code>oObjSddProductStiffener</code>.
+				<code>SetMaterial</code> method is called to set the material on 
+				object <code>ObjMaterialMngt</code>. </p>
+				</li>
+				<li>
+				<p>To set the category retrieve the <code>StrCategoryMngt</code> 
+				object from <code>SddStiffener</code> object and set category using
+				<code>SetCategory</code> method.</p>
+				<pre class="code">...
+  <span class="comment">&#39;Get StrCategoryMngt object</span>
+  <span class="keyword">  Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+  <span class="keyword">  Set</span> ObjStrCategoryMngt = ObjSddStiffener.<strong>StrCategoryMngt</strong>
+  <span class="comment">&#39;Set category of the stiffener</span>
+    ObjStrCategoryMngt.<strong>SetCategory</strong>(&quot;SddStiffener&quot;)<strong> </strong>
+...</pre>
+				</li>
+				<li>
+				<p>Sets the <code>ProfileType</code> property of the stiffener to 
+				catStrProfileModeSurfSurf (here catStrProfileModeSurfSurf means 
+				profile is created with the intersection of two surfaces).</p>
+				<pre class="code">...
+  <span class="comment">&#39;Set type of the stiffener</span>
+    ObjSddStiffener.<strong>ProfileType </strong>= catStrProfileModeSurfSurf
+...</pre>
+				</li>
+				<li>
+				<p>Retrieves the <code>StrSectionMngt</code> object from the created 
+				stiffener object and sets the different section parameters like 
+				section name, anchor point, web orientation, flange orientation.</p>
+				<pre class="code">...
+  <span class="comment">&#39;Get StrSectionMngt object</span>
+  <span class="keyword">  Dim</span> ObjStrSectionMngt <span class="keyword">As</span> StrSectionMngt
+  <span class="keyword">  Set</span> ObjStrSectionMngt = ObjSddStiffener.<strong>StrSectionMngt</strong>
+  <span class="comment">&#39;Set different section parameters</span>
+    ObjStrSectionMngt.<strong>SetSectionName </strong>(&quot;WT18x179.5&quot;)
+    ObjStrSectionMngt.<strong>AnchorPoint </strong>= &quot;catStrTopCenter&quot;
+    ObjStrSectionMngt.<strong>WebOrientation </strong>= 1
+    ObjStrSectionMngt.<strong>FlangeOrientation </strong>= 1
+
+    ObjStrSectionMngt.<strong>WebOrientation </strong>= 1
+    ObjStrSectionMngt.<strong>AngleMode </strong>= 0
+...</pre>
+				<p><code>ObjStrSectionMngt</code> object which is of type <code>
+				StrSectionMngt</code> is used to set the different section properties 
+				of the stiffener. <code>SetSectionName</code> method sets the section 
+				name for the stiffener. <code>AnchorPoint</code> property is used 
+				to set anchor point to &quot;catStrTopCenter&quot;. Similarly <code>WebOrientation
+				</code>and <code>FlangeOrientation</code> properties are set to 
+				1. </p>
+				</li>
+				<li>
+				<p>Retrieves the <code>StrProfileLimitMngt</code> object from the 
+				created stiffener object and sets the Start limit and End limit 
+				of the stiffener.</p>
+				<pre class="code">...
+  <span class="comment">&#39;Get StrProfileLimitMngt object</span>
+  <span class="keyword">  Dim</span> ObjStrProfileLimitMngt <span class="keyword">As</span> StrProfileLimitMngt
+  <span class="keyword">  Set</span> ObjStrProfileLimitMngt = ObjSddStiffener.<strong>StrProfileLimitMngt</strong>
+  <span class="comment">&#39;Set the profile limits</span>
+  <span class="keyword">  Set</span> ObjStartLimit = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.70&quot;)
+  <span class="keyword">  Set</span> StartLimit = ObjPart.CreateReferenceFromObject(ObjStartLimit)
+    ObjStrProfileLimitMngt.<strong>SetLimitingObject </strong>1, StartLimit
+  <span class="keyword">  Set</span> ObjEndLimit = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.110&quot;)
+  <span class="keyword">  Set</span> EndLimit = ObjPart.CreateReferenceFromObject(ObjEndLimit)
+    ObjStrProfileLimitMngt.<strong>SetLimitingObject </strong>2, EndLimit
+...</pre>
+				<p><code>ObjStrProfileLimitMngt</code> is retrieved from the
+				<code>ObjSddStiffener</code> object. Variable <code>StartLimit
+				</code>and <code>EndLimit</code> are of type <code>Reference</code> 
+				which contains references to planes &quot;CROSS.70&quot; and &quot;CROSS.110&quot; respectively. 
+				Plane is retrieved using <code>GetReferencePlane </code>method on
+				<code>Manager</code> object. <code>Manager</code> object is of type
+				<code>RfgService</code>. Reference to this plane retrieved is created 
+				using <code>CreateReferenceFromObject</code> method. <code>ObjStrProfileLimitMngt</code> 
+				calls <code>SetLimitingObject </code>method to set the start and 
+				end limit of the of the stiffener. <code>SetLimitingObject</code> 
+				method has two input parameters. First input defines whether it 
+				is start of the stiffener or end of the stiffener. Second input 
+				is the limiting object.</p>
+				</li>
+				<li>
+				<p>Retrieves the <code>StrProfileSurfSurf</code> object from the 
+				created stiffener object and sets two surfaces which are intersecting 
+				with each other. At the intersection of these two surfaces stiffener 
+				will be created.</p>
+				<pre class="code">...
+<span class="comment">  &#39;Get StrProfileSurfSurf object</span>
+  <span class="keyword">  Dim</span> ObjStrProfileSurfSurf <span class="keyword">As</span> StrProfileSurfSurf
+  <span class="keyword">  Set</span> ObjStrProfileSurfSurf = ObjSddStiffener.<strong>StrProfileSurfSurf</strong>
+<span class="comment">  &#39;Set two surfaces </span>
+  <span class="keyword">  Dim</span> PlateReference <span class="keyword">As</span> Reference 
+  <span class="keyword">  Set</span> PlateReference = PlatePart.CreateReferenceFromObject(ObjSddPlate)
+    ObjStrProfileSurfSurf.<strong>FirstSurface </strong>= PlateReference <span class="keyword">
+    Set</span> ObjWebSupport = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-4&quot;) 
+  <span class="keyword">  Set</span> WebSupport = ObjPart.CreateReferenceFromObject(ObjWebSupport)
+    ObjStrProfileSurfSurf.<strong>SecondSurface </strong>= WebSupport
+...</pre>
+				<p><code>ObjStrProfileSurfSurf</code> object is retrieved from
+				<code>ObjSddStiffener</code> object. Here Uc is setting two intersecting 
+				surfaces for stiffener creation. To set first surface, it retrieves 
+				the reference of SddPlate object in <code>PlateReference</code> 
+				using method <code>CreateReferenceFromObject</code>. Then <code>
+				PlateReference</code> is assigned to the <code>FirstSurface</code> 
+				property of the <code>ObjStrProfileSurfSurf</code> object. Similarly
+				<code>SecondSurface</code> is set. </p>
+				</li>
+				<li>
+				<p>Updates the created stiffener. </p>
+				<pre class="code">...
+  oObjSddProductStiffener.<strong>Update</strong>
+<span class="keyword">End Sub</span>
+...</pre>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Edits created stiffener</strong></p>
+			<p>In this step UC edits stiffener&#39;s some of the data like it changes 
+			the support of the stiffener then it changes anchor point, web orientation 
+			and flange orientation. For editing the stiffener data <code>EditStiffener</code> 
+			method is called.</p>
+			<pre class="code">... 
+  <span class="comment">&#39;Edits the stiffener</span> 
+  <strong>EditStiffener</strong> ObjSddProductStiffener  
+...</pre>
+			<p>The method <code>EditStiffener</code> is detailed as in the below 
+			sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Retrieves the <code>SddStiffener</code> object from the SddProductStiffener 
+				object.</p>
+				<pre class="code"><span class="keyword">Sub</span> EditStiffener(iObjSddProductStiffener <span class="keyword">As </span>SddProductStiffener)
+  <span class="comment">&#39;Get SddStiffener object</span>
+    <span class="keyword">Dim</span> ObjSddStiffener <span class="keyword">As</span> SddStiffener
+    <span class="keyword">Set</span> ObjSddStiffener = iObjSddProductStiffener.<strong>SddStiffener</strong>
+...</pre>
+				</li>
+				<li>
+				<p>Retrieves the <code>StrProfileSurfSurf</code> object from the 
+				stiffener object. Then changes the support of the Stiffener to LONG.0.</p>
+				<pre class="code">... 
+    <span class="keyword">Dim</span> ObjSddStiffener <span class="keyword">As</span> SddStiffener
+    <span class="keyword">Set</span> ObjSddStiffener = iObjSddProductStiffener.<strong>SddStiffener</strong>
+  <span class="comment">&#39;Get StrProfileSurfSurf object</span>
+    <span class="keyword">Dim</span> ObjStrProfileSurfSurf <span class="keyword">As</span> StrProfileSurfSurf
+    <span class="keyword">Set</span> ObjStrProfileSurfSurf = ObjSddStiffener.<strong>StrProfileSurfSurf</strong>
+<span class="comment">  &#39;Change the web support of the stiffener</span>
+    <span class="keyword">Set</span> ObjWebSupport = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.0&quot;)
+    <span class="keyword">Set</span> WebSupport = ObjPart.CreateReferenceFromObject(ObjWebSupport)
+    ObjStrProfileSurfSurf.<strong>SecondSurface</strong> = WebSupport
+...</pre>
+				</li>
+				<li>
+				<p>Retrieves the <code>StrSectionMngt</code> object from the created 
+				stiffener object and changes anchor point, web orientation and flange 
+				orientation.</p>
+				<pre class="code">...
+  <span class="comment">&#39;Get StrSectionMngt object</span>
+    <span class="keyword">Dim</span> ObjStrSectionMngt <span class="keyword">As</span> StrSectionMngt
+    <span class="keyword">Set</span> ObjStrSectionMngt = ObjSddStiffener.<strong>StrSectionMngt</strong>
+<span class="comment">  &#39;Change AnchorPoint, WebOrientation, FlangeOrientation </span>
+    ObjStrSectionMngt.<strong>AnchorPoint </strong>= &quot;catStrTopLeft&quot;
+    ObjStrSectionMngt.<strong>WebOrientation </strong>= -1
+    ObjStrSectionMngt.<strong>FlangeOrientation </strong>= -1
+...</pre>
+				</li>
+				<li>
+				<p>Updates the stiffener object. </p>
+				<pre class="code">...
+  <span class="comment">&#39;Update the stiffener</span>
+    iObjSddProductStiffener.<strong>Update</strong>
+<strong></strong>End Sub
+...</pre>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step9"></a>Update the Part object</strong> </p>
+			<pre class="code">...
+   ObjPart.<strong>Update</strong>
+<strong></strong>End Sub
+</pre>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table>
+	<caption><a name="Fig.1"></a>Fig.1: Stiffener with Limits</caption>
+	<tr>
+		<td>
+		<img alt="Stiffener with Limits" src="CAAScdSddUcCreateStiffener.png"/></td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

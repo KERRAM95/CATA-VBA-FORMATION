@@ -1,0 +1,682 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SFD Member</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating a SFD Member</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SFD member.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSfdUcPart.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSfdUcCGR.3dxml</div></code>, 
+							and <code><div class=vb_sample_data>CAAScdSfdUcSR.3dxml</div></code> files supplied 
+							in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSfdSFDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where 
+								the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSfdUcCreateMemberSource.htm">CAAScdSfdUcCreateMemberSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSfdTocSFDesign.htm">Structure Functional Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in 11 steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</a></li>
+			<li><a href="#Step2">Retrieves Part object</a></li>
+			<li><a href="#Step3">Retrieves Service Manger (RfgService)</a></li>
+			<li><a href="#Step4">Creates a Geometrical Set in Part for creating 
+			Members in it</a></li>
+			<li><a href="#Step5">Creates a member using two surfaces</a></li>
+			<li><a href="#Step6">Creates a member using a point and a limit</a></li>
+			<li><a href="#Step7">Creates a member using a point and length</a></li>
+			<li><a href="#Step8">Creates a member using a curve</a></li>
+			<li><a href="#Step9">Creates a member using a surface and two members(crvs)</a></li>
+			<li><a href="#Step10">Creates a member using two points</a></li>
+			<li><a href="#Step11">Updates the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SFD_VB_TEST&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SFD_VB_TEST&quot; from DB and 
+			loads it and returns object of the Editor.</p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SFDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SFD_VB_TEST&quot;
+ OpenProduct prdName , SFDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SFD model from underlying database the current active 
+			editor is returned in <strong><code>SFDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object in <code>ObjPart</code> variable.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> ObjPart = SFDPrdEditor.<strong>ActiveObject</strong>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Service manager (RfgService)</strong></p>
+			<p>In this step UC retrieves <code>RfgService</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.<strong>GetService</strong>(&quot;RfgService&quot;)
+...</pre>
+			<p><code>GetService</code> method returns <code>RfgService</code>. This 
+			service provides methods such GetReferencePlane, CreateProjectData, 
+			CreateRefSurfaceFeature.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Creates a Geometrical Set in Part for 
+			creating Members in it</strong></p>
+			<p>In this step Uc creates a geometrical set. The created members (beams) 
+			will be aggregated under this.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> oHybridBodies = ObjPart.<strong>HybridBodies</strong>
+  <span class="keyword">Set</span> oGeometricalSet = oHybridBodies.<strong>Add</strong>()
+  <span class="keyword">Set</span> RefGeometricalSet = ObjPart.<strong>CreateReferenceFromObject</strong>(oGeometricalSet)
+...</pre>
+			<p>In this step Uc creates a geometrical set by retrieving <code>HybridBodies</code> 
+			object and calling <code>Add</code> method on it. Then it creates reference 
+			to the created geometrical set and stores it in <code>RefGeometricalSet</code>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Creates a member using two surfaces</strong></p>
+			<p>Call <code>CreateMemberSurfSurf</code> method to create member using 
+			two surfaces. <code>CreateMemberSurfSurf</code> method takes 
+			a reference to the geometrical set as input parameter and it returns 
+			created member as output parameter in <code>ObjMemberSurfSurf</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjMemberSurfSurf <span class="keyword">As</span> SfdMember
+  <strong>CreateMemberSurfSurf</strong> RefGeometricalSet, ObjMemberSurfSurf
+...</pre>
+			<p>The method <code>CreateMemberSurfSurf</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberSurfSurf</strong>(iRefGeometricalSet <span class="keyword">As</span> Reference, oObjMember <span class="keyword">As</span> SfdMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iRefGeometricalSet, &quot;SldMember&quot;, catStrProfileModeSurfSurf, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member under given GeometricalSet sets some 
+				of the properties of the member and return the created member in 
+				oObjMember. This method sets category, profile type, material, section 
+				name and anchor point of the member. Here iRefGeometricalSet is 
+				gemetrical set, catStrProfileModeSurfSurf is the profile type(it 
+				means profile is created on intersection of two surfaces), &quot;Steel 
+				A42&quot; is material name, &quot;WT18x179.5&quot; is section name and &quot;catStrTopCenter&quot; 
+				is anchor point.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfileLimitMngt and sets profile limits</strong></p>
+				<pre class="code">...   
+    <span class="keyword">Dim</span> ObjStrProfileLimitMngt <span class="keyword">As</span> StrProfileLimitMngt
+    <span class="keyword">Set</span> ObjStrProfileLimitMngt = oObjMember.<strong>StrProfileLimitMngt</strong>
+    <span class="comment">&#39;set Start limit</span>
+    <span class="keyword">Set</span> ObjStartLimit = Manager.<strong>GetReferencePlane</strong>(ObjPart, 1, &quot;DECK.8&quot;)
+    <span class="keyword">Set</span> StartLimit = ObjPart.CreateReferenceFromObject(ObjStartLimit)
+    ObjStrProfileLimitMngt.<strong>SetLimitingObject</strong> 1, StartLimit
+    <span class="comment">&#39;set End limit</span>
+    <span class="keyword">Set</span> ObjEndLimit = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.3&quot;)
+    <span class="keyword">Set</span> EndLimit = ObjPart.CreateReferenceFromObject(ObjEndLimit)
+    ObjStrProfileLimitMngt.<strong>SetLimitingObject</strong> 2, EndLimit
+...</pre>
+				<p>In this step Uc retrieves object of type <code>StrProfileLimitMngt</code> 
+				in <code>ObjStrProfileLimitMngt</code>. Reference to the plane DECK.8 
+				is retrieved in <code>StartLimit</code> by using method <code>GetReferencePlane</code>. 
+				Method <code>GetReferencePlane</code> takes 3 input parameters. 
+				First parameter is the part from which plane is, second is the index 
+				of the plane system (DECK = 1, CROSS = 2, LONG = 3) and third is 
+				the name of the plane.</p>
+				<p>To set start limit, <code>SetLimitingObject</code> 
+				method is called. It takes two inputs, <strong>1</strong> and
+				<strong>StartLimit</strong>. here 1 means the limit is for Start 
+				of profile. In the same manner another plane DECK.3 is set as the 
+				end limit for the profile. To set the End limit <code>SetLimitingObject</code> 
+				method takes first parameter as <strong>2</strong>.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfileSurfSurf and sets surfaces for member 
+				creation</strong></p>
+				<pre class="code">...    
+    <span class="comment">&#39;Get StrProfileSurfSurf object</span>
+    <span class="keyword">Dim</span> ObjStrProfileSurfSurf <span class="keyword">As</span> StrProfileSurfSurf
+    <span class="keyword">Set</span> ObjStrProfileSurfSurf = oObjMember.<strong>StrProfileSurfSurf</strong>
+    <span class="comment">&#39;Set FirstSurface</span>
+    <span class="keyword">Set</span> ObjRefFirstSurf = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.8&quot;)
+    <span class="keyword">Set</span> RefFirstSurf = ObjPart.CreateReferenceFromObject(ObjRefFirstSurf)
+    ObjStrProfileSurfSurf.<strong>FirstSurface</strong> = RefFirstSurf
+    <span class="comment">&#39;Set SecondSurface</span>
+    <span class="keyword">Set</span> ObjRefSecondSurf = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-4&quot;)
+    <span class="keyword">Set</span> RefSecondSurf = ObjPart.CreateReferenceFromObject(ObjRefSecondSurf)
+    ObjStrProfileSurfSurf.<strong>SecondSurface</strong> = RefSecondSurf
+...</pre>
+				<p>This step sets two surfaces FirstSurface and SecondSurface. Member 
+				will be created at the intersection of these two surfaces.</p>
+				<p>Uc first 
+				retrieves the object of type <code>StrProfileSurfSurf</code>.To 
+				set the FirstSurface, it retrieves the reference to the CROSS.8 
+				plane in <code>RefFirstSurf</code> and assign it to the <code>FirstSurface</code> 
+				property of the <code>ObjStrProfileSurfSurf</code> object. To set 
+				the SecondSurface, it retrieves the reference to the LONG.-4 plane 
+				in <code>RefSecondSurf</code> and assign it to the <code>SecondSurface</code> 
+				property of the <code>ObjStrProfileSurfSurf</code> object.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjMember
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>UpdateObject</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Creates a member using a point and a 
+			limit</strong></p>
+			<p>Call <code>CreateMemberPtLimit</code> method to create member using 
+			a point and a limit.</p>
+			<p><code>CreateMemberPtLimit</code> method takes a 
+			reference to the geometrical set as input parameter and it returns created 
+			member as output parameter in <code>ObjMemberPtLimit</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjMemberPtLimit <span class="keyword">As</span> SfdMember
+  <strong>CreateMemberPtLimit</strong> RefGeometricalSet, ObjMemberPtLimit
+...</pre>
+			<p>The method <code>CreateMemberPtLimit</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberPtLimit</strong>(iRefGeometricalSet <span class="keyword">As</span> Reference, oObjMember <span class="keyword">As</span> SfdMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iRefGeometricalSet, &quot;SldMember&quot;, catStrProfileModePtLimit, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member under given GeometricalSet sets some 
+				of the properties of the member and return the created member in 
+				oObjMember. Third parameter of this method is catStrProfileModePtLimit. 
+				Here catStrProfileModePtLimit means profile is created using a point 
+				and a limit.</p>
+				</li>
+				<li>
+				<p><strong>Creates a point. Later this point will be used for member 
+				creation</strong></p>
+				<pre class="code">...
+    <span class="keyword">Set</span> ObjHybridShapeFactory = ObjPart.HybridShapeFactory
+    <span class="keyword">Set</span> ObjHybridShapePointCoord = ObjHybridShapeFactory.<strong>AddNewPointCoord</strong>(5000, 5000, 0)
+    <span class="keyword">Set</span> RefPoint = ObjPart.<strong>CreateReferenceFromObject</strong>(ObjHybridShapePointCoord)
+...</pre>
+				<p>In this step Uc creates a point using method <code>AddNewPointCoord</code> 
+				and reference to this point is stored in <code>RefPoint</code>.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfilePtLimit and sets point and limit 
+				and direction</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfilePtLimit object</span>
+    <span class="keyword">Dim</span> ObjStrProfilePtLimit <span class="keyword">As</span> StrProfilePtLimit
+    <span class="keyword">Set</span> ObjStrProfilePtLimit = oObjMember.<strong>StrProfilePtLimit</strong>
+    <span class="comment">&#39;set point</span>
+    ObjStrProfilePtLimit.<strong>StartPoint</strong> = RefPoint
+    <span class="comment">&#39;set limit</span>
+    <span class="keyword">Set</span> ObjMemberLimitRef = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.4&quot;)
+    <span class="keyword">Set</span> MemberLimitRef = ObjPart.CreateReferenceFromObject(ObjMemberLimitRef)
+    ObjStrProfilePtLimit.<strong>UpToLimit</strong> = MemberLimitRef
+    <span class="comment">&#39;set direction</span>
+    ObjStrProfilePtLimit.<strong>Direction</strong> = MemberLimitRef
+...</pre>
+				<p>In this step object of type <code>StrProfilePtLimit</code> is 
+				retrieved in <code>ObjStrProfilePtLimit</code>. Then <code>RefPoint</code>, 
+				which is created in the step above is assigned to the <code>StartPoint</code> 
+				property. Point is set, now Uc needs to set the limit. To set the 
+				limit it retrieves the reference to plane DECK.4 in <code>MemberLimitRef</code> 
+				and assigns it to the <code>UpToLimit</code> property. Same plane 
+				is assigned to the <code>Direction</code> property also.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjMember
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>UpdateObject</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Creates a member using a point and length</strong></p>
+			<p>Call <code>CreateMemberPtLength</code> method to create member using 
+			a point and length. <code>CreateMemberPtLength</code> method takes a 
+			reference to the geometrical set as input parameter and it returns created 
+			member as output parameter in <code>ObjMemberPtLength</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjMemberPtLength <span class="keyword">As</span> SfdMember
+  <strong>CreateMemberPtLength</strong> RefGeometricalSet, ObjMemberPtLength
+...</pre>
+			<p>The method <code>CreateMemberPtLength</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberPtLength</strong>(iRefGeometricalSet <span class="keyword">As</span> Reference, oObjMember <span class="keyword">As</span> SfdMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iRefGeometricalSet, &quot;SldMember&quot;, catStrProfileModePtLength, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member under given GeometricalSet and sets 
+				some of the properties of the member and return the created member 
+				in oObjMember. Third parameter of this method is catStrProfileModePtLength. 
+				Here catStrProfileModePtLength means profile is created using a 
+				point and length.</p>
+				</li>
+				<li>
+				<p><strong>Creates a point. Later this point will be used for member 
+				creation</strong></p>
+				<pre class="code">...
+    <span class="keyword">Set</span> ObjHybridShapeFactory = ObjPart.HybridShapeFactory
+    <span class="keyword">Set</span> ObjHybridShapePointCoord = ObjHybridShapeFactory.<strong>AddNewPointCoord</strong>(20000, 20000, 0)
+    <span class="keyword">Set</span> RefPoint = ObjPart.<strong>CreateReferenceFromObject</strong>(ObjHybridShapePointCoord)
+...</pre>
+				<p>In this step Uc creates a point using method <code>AddNewPointCoord</code> 
+				and reference to this point is stored in <code>RefPoint</code>.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfilePtLength and sets point and direction 
+				and length</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfilePtLength object</span>
+    <span class="keyword">Dim</span> ObjStrProfilePtLength <span class="keyword">As</span> StrProfilePtLength
+    <span class="keyword">Set</span> ObjStrProfilePtLength = oObjMember.<strong>StrProfilePtLength</strong>
+    <span class="comment">&#39;set point</span>
+    ObjStrProfilePtLength.<strong>StartPoint</strong> = RefPoint
+    <span class="comment">&#39;set direction</span>
+    <span class="keyword">Set</span> ObjRefMemberDirection = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.7&quot;)
+    <span class="keyword">Set</span> RefMemberDirection = ObjPart.CreateReferenceFromObject(ObjRefMemberDirection)
+    ObjStrProfilePtLength.<strong>Direction</strong> = RefMemberDirection
+    <span class="comment">&#39;set length</span>
+    <span class="keyword">Set</span> LengthParm = ObjStrProfilePtLength.<strong>GetLength</strong>
+    LengthParm.<strong>ValuateFromString</strong> (&quot;20000mm&quot;)
+...</pre>
+				<p>In this step object of type <code>StrProfilePtLength</code> is 
+				retrieved in <code>ObjStrProfilePtLength</code>. Then <code>RefPoint</code>, 
+				which is created in the step above is assigned to the <code>StartPoint</code> 
+				property. Then it creates reference to the plane DECK.7 and is assigned 
+				to the <code>Direction</code> property. To set the length it retrieves 
+				the <code>LengthParm</code> by using method <code>GetLength</code> 
+				and its value is set to 20000mm. To set the value <code>ValuateFromString</code> 
+				method is used.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjMember
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>UpdateObject</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Creates a member using a curve</strong></p>
+			<p>Call <code>CreateMemberCrv</code> method to create member using a 
+			curve. <code>CreateMemberCrv</code> method takes a reference to the 
+			geometrical set as input parameter and it returns created member as 
+			output parameter in <code>ObjMemberCrv</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjMemberCrv <span class="keyword">As</span> SfdMember
+  <strong>CreateMemberCrv</strong> RefGeometricalSet, ObjMemberCrv
+...</pre>
+			<p>The method <code>CreateMemberCrv</code> is detailed as in the below 
+			sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberCrv</strong>(iRefGeometricalSet <span class="keyword">As</span> Reference, oObjMember <span class="keyword">As</span> SfdMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iRefGeometricalSet, &quot;SldMember&quot;, catStrProfileModeCrv, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member under given GeometricalSet and sets 
+				some of the properties of the member and return the created member 
+				in oObjMember. Third parameter of this method is catStrProfileModeCrv. 
+				Here catStrProfileModeCrv means profile is created using a curve.</p>
+				</li>
+				<li>
+				<p><strong>Creates two points and a line between them. Later this 
+				line will be used for member creation</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get HybridShapeFactory</span>
+    <span class="keyword">Set</span> ObjHybridShapeFactory = ObjPart.HybridShapeFactory
+    <span class="comment">&#39;Create a point</span>
+    <span class="keyword">Set</span> ObjHybridShapePointCoord = ObjHybridShapeFactory.<strong>AddNewPointCoord</strong>(5000, 5000, 0)
+    <span class="keyword">Set</span> RefPoint1 = ObjPart.CreateReferenceFromObject(ObjHybridShapePointCoord)
+    <span class="comment">&#39;Create one more point</span>
+    <span class="keyword">Set</span> ObjHybridShapePointCoord = ObjHybridShapeFactory.<strong>AddNewPointCoord</strong>(20000, 20000, 0)
+    <span class="keyword">Set</span> RefPoint2 = ObjPart.CreateReferenceFromObject(ObjHybridShapePointCoord)
+    <span class="comment">&#39;create line between two points</span>
+    <span class="keyword">Set</span> ObjHybridShapeLinePtPt = ObjHybridShapeFactory.<strong>AddNewLinePtPt</strong>(RefPoint2, RefPoint1)
+    <span class="keyword">Set</span> RefLine = ObjPart.CreateReferenceFromObject(ObjHybridShapeLinePtPt)
+...</pre>
+				<p>In this step Uc creates retrieves HybridShapeFactory, then it 
+				creates a point by calling method <code>AddNewPointCoord</code>. 
+				After creating point it creates reference to this point and stores 
+				it in <code>RefPoint1</code>. In the same manner it creates another 
+				point and stores its reference in <code>RefPoint2</code>. Then it 
+				creates a line between these two points and stores its reference 
+				in <code>RefLine</code>. This line will be used for member creation.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfileCrv and sets Curve</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfileCrv object</span>
+    <span class="keyword">Dim</span> ObjStrProfileCrv <span class="keyword">As</span> StrProfileCrv
+    <span class="keyword">Set</span> ObjStrProfileCrv = oObjMember.<strong>StrProfileCrv</strong>
+    <span class="comment">&#39;set the curve</span>
+    ObjStrProfileCrv.<strong>Curve</strong> = RefLine
+...</pre>
+				<p>In this step object of type <code>StrProfileCrv</code> is retrieved 
+				in <code>ObjStrProfileCrv</code>. Then <code>RefLine</code>, which 
+				is created in the step above is assigned to the <code>Curve</code> 
+				property. Along the path of this curve member is created.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjMember
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>UpdateObject</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step9"></a>Creates a member using a surface and 
+			two members(curves)</strong></p>
+			<p>Call <code>CreateMemberSurf2Crvs</code> method to create member using 
+			surface and two a curves. <code>CreateMemberSurf2Crvs</code> method 
+			takes a reference to the geometrical set, and two members as input parameters 
+			and it returns created member as output parameter in <code>ObjMemberSurf2Crv</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjMemberSurf2Crv <span class="keyword">As</span> SfdMember
+  <strong>CreateMemberSurf2Crvs</strong> RefGeometricalSet, ObjMemberPtLimit, ObjMemberPtLength, ObjMemberSurf2Crv
+...</pre>
+			<p>The method <code>CreateMemberSurf2Crvs</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberSurf2Crvs</strong>(iRefGeometricalSet <span class="keyword">As</span> Reference, iFirstMember <span class="keyword">As</span> SfdMember, iSecondMember <span class="keyword">As</span> SfdMember, oObjMember <span class="keyword">As</span> SfdMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iRefGeometricalSet, &quot;SldMember&quot;, catStrProfileModeSurf2Crvs, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member under given GeometricalSet and sets 
+				some of the properties of the member and return the created member 
+				in oObjMember. Third parameter of this method is catStrProfileModeSurf2Crvs. 
+				Here catStrProfileModeSurf2Crvs means profile is created using a 
+				surface and two curves.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfileSurf2Crvs and sets a surface and 
+				two curves</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfileSurf2Crvs object</span>
+    <span class="keyword">Dim</span> ObjStrProfileSurf2Crvs <span class="keyword">As</span> StrProfileSurf2Crvs
+    <span class="keyword">Set</span> ObjStrProfileSurf2Crvs = oObjMember.<strong>StrProfileSurf2Crvs</strong>
+    <span class="comment">&#39;Set Surface</span>
+    <span class="keyword">Set</span> ObjRefSurface = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.3&quot;)
+    <span class="keyword">Set</span> RefSurface = ObjPart.CreateReferenceFromObject(ObjRefSurface)
+    ObjStrProfileSurf2Crvs.<strong>Surface</strong> = RefSurface
+    <span class="comment">&#39;Set FirstCurve</span>
+    <span class="keyword">Set</span> RefFirstCrv = iFirstMember.<strong>GetDelimitedSupport</strong>
+    ObjStrProfileSurf2Crvs.<strong>FirstCurve</strong> = RefFirstCrv
+    <span class="comment">&#39;Set SecondCurve</span>
+    <span class="keyword">Set</span> RefSecondCrv = iSecondMember.<strong>GetDelimitedSupport</strong>
+    ObjStrProfileSurf2Crvs.<strong>SecondCurve</strong> = RefSecondCrv
+...</pre>
+				<p>This step sets a surface and two curves. Member will be created 
+				on the surface and between two given curves.</p>
+				<p>Uc first retrieves 
+				the object of type <code>StrProfileSurf2Crvs</code> in <code>ObjStrProfileSurf2Crvs</code>. 
+				To set the surface, it first retrieves the reference to the plane 
+				DECK.3 and assigns it to the <code>Surface</code> property. To set 
+				the FirstCurve, it retrieves the delimited support of the <code>
+				iFirstMember</code> by using method <code>GetDelimitedSupport</code> 
+				and assigns it to the <code>FirstCurve</code> property. In the same 
+				manner, it retrieves the delimited support of the <code>iSecondMember</code> 
+				and assigns it to the <code>SecondCurve</code> property.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjMember
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>UpdateObject</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step10"></a>Creates a member using two points</strong></p>
+			<p>Call <code>CreateMemberPtPt</code> method to create member using 
+			two points. <code>CreateMemberPtPt</code> method takes a reference to 
+			the geometrical set as input parameter and it returns created member 
+			as output parameter in <code>ObjMemberPtPt</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjMemberPtPt <span class="keyword">As</span> SfdMember
+  <strong>CreateMemberPtPt</strong> RefGeometricalSet, ObjMemberPtPt
+...</pre>
+			<p>The method <code>CreateMemberPtPt</code> is detailed as in the below 
+			sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a empty member and sets category, material, profile 
+				type and section parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberPtPt</strong>(iRefGeometricalSet <span class="keyword">As</span> Reference, oObjMember <span class="keyword">As</span> SfdMember)
+  <strong><a href="#CreateMemberAndSetData">CreateMemberAndSetData</a></strong> iRefGeometricalSet, &quot;SldMember&quot;, catStrProfileModePts, &quot;Steel A42&quot;, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;, oObjMember
+...</pre>
+				<p>In this step Uc calls a method <code>CreateMemberAndSetData</code> 
+				which creates a empty member under given GeometricalSet and sets 
+				some of the properties of the member and return the created member 
+				in oObjMember. Third parameter of this method is catStrProfileModePts. 
+				Here catStrProfileModePts means profile is created using two points.</p>
+				</li>
+				<li>
+				<p><strong>Creates two points and and references to these 
+				points. Later these points are used for member creation</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Create Start point</span>
+    <span class="keyword">Set</span> ObjHybridShapeFactory = ObjPart.HybridShapeFactory
+    <span class="keyword">Set</span> StartPoint = ObjHybridShapeFactory.<strong>AddNewPointCoord</strong>(25000, 25000, 0)
+    <span class="keyword">Set</span> RefStartPoint = ObjPart.CreateReferenceFromObject(StartPoint)
+    <span class="comment">&#39;Create End point</span>
+    <span class="keyword">Set</span> EndPoint = ObjHybridShapeFactory.<strong>AddNewPointCoord</strong>(25000, 25000, 20000)
+    <span class="keyword">Set</span> RefEndPoint = ObjPart.CreateReferenceFromObject(EndPoint)
+...</pre>
+				<p>This creates two points and stores its references in <code>RefStartPoint</code> 
+				and <code>RefEndPoint</code>. Member will be created between these 
+				two points.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrProfilePtPt object and sets StartPoint and 
+				EndPoint</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfilePtPt object</span>
+    <span class="keyword">Dim</span> ObjStrProfilePtPt As StrProfilePtPt
+    <span class="keyword">Set</span> ObjStrProfilePtPt = oObjMember.<strong>StrProfilePtPt</strong>
+    <span class="comment">&#39;Set StartPoint</span>
+    ObjStrProfilePtPt.<strong>StartPoint</strong> = RefStartPoint
+    <span class="comment">&#39;Set EndPoint</span>
+    ObjStrProfilePtPt.<strong>EndPoint</strong> = RefEndPoint
+...</pre>
+				<p>This step sets a two points. Member will be created in between 
+				these two points. Uc first retrieves the object of type <code>StrProfilePtPt</code> 
+				in <code>ObjStrProfilePtPt</code>. To set the StartPoint, it assigns 
+				the <code>RefStartPoint</code>(reference to the point) to the
+				<code>StartPoint</code> property. To set the EndPoint, it assigns 
+				the <code>RefEndPoint</code>(refernce to the point) to the <code>
+				EndPoint</code> property.</p>
+				</li>
+				<li>
+				<p><strong>Updates created member object</strong></p>
+				<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjMember
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>UpdateObject</code> updates the created member.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step11"></a>Updates the Part object</strong></p>
+			<pre class="code">...
+    ObjPart.<strong>Update</strong>
+<span class="keyword">End Sub</span>
+</pre>
+			<p><code>Update</code> method updates the <code>ObjPart</code></p>
+			</li>
+		</ol>
+		<p><strong>Detailed steps of method CreateMemberAndSetData</strong></p>
+		<ul class="task">
+			<li>
+			<p><strong><a name="CreateMemberAndSetData"></a>CreateMemberAndSetData 
+			method</strong></p>
+			<p>This method creates a new empty member, sets some properties of the 
+			member and returns the created member in <code>oObjMember</code> object. 
+			Properties which will set by this method are category, profile type, 
+			material, secion name and section&#39;s anchor point.</p>
+			<pre class="code"><span class="keyword">Sub</span> <strong>CreateMemberAndSetData</strong>(iRefGeometricalSet <span class="keyword">As</span> Reference, iCategory <span class="keyword">As String</span>, iProfileType <span class="keyword">As CATStrProfileMode</span>, iMaterial <span class="keyword">As String</span>,
+                           iSectionName <span class="keyword">As String</span>, iAnchorPoint <span class="keyword">As String</span>, oObjMember <span class="keyword">As</span> SfdMember)
+
+<span class="comment">&#39;   1- Retrieves SfdFactory object and creates a empty member</span>
+    <span class="keyword">Dim</span> ObjSfdFactory <span class="keyword">As</span> SfdFactory
+    <span class="keyword">Set</span> ObjSfdFactory = ObjPart.<strong>GetCustomerFactory</strong>(&quot;SfdFactory&quot;)
+    <span class="keyword">Set</span> oObjMember = ObjSfdFactory.<strong>AddMember</strong>(iRefGeometricalSet)
+
+<span class="comment">&#39;   2- Retrieves StrCategoryMngt object and sets category</span>
+    <span class="keyword">Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjStrCategoryMngt = oObjMember.<strong>StrCategoryMngt</strong>
+    ObjStrCategoryMngt.<strong>SetCategory</strong> iCategory
+
+<span class="comment">&#39;   3- Sets profile type</span>
+    oObjMember.<strong>ProfileType</strong> = iProfileType
+
+<span class="comment">&#39;   4- Retrieves StrMaterialMngt object and sets material</span>
+    <span class="keyword">Dim</span> ObjMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+    <span class="keyword">Set</span> ObjMaterialMngt = oObjMember.<strong>StrMaterialMngt</strong>
+    ObjMaterialMngt.<strong>SetMaterial</strong> iMaterial
+
+<span class="comment">&#39;   5- Retrieves StrSectionMngt object and sets section parameters</span>
+    <span class="keyword">Dim</span> ObjStrSectionMngt <span class="keyword">As</span> StrSectionMngt
+    <span class="keyword">Set</span> ObjStrSectionMngt = oObjMember.<strong>StrSectionMngt</strong>
+    ObjStrSectionMngt.<strong>SetSectionName</strong> iSectionName
+    ObjStrSectionMngt.<strong>AnchorPoint</strong> = iAnchorPoint
+
+<span class="keyword">End Sub</span></pre>
+			<p>In the first step of this method <code>SfdFactory</code> is retrieved 
+			in <code>ObjSfdFactory</code> by using method <code>GetCustomerFactory</code> 
+			from <code>ObjPart</code>. Then it calls method <code>AddMember</code> 
+			to create a new empty member and stores it in <code>oObjMember</code> 
+			which is a output parameter of this method. Method <code>AddMember </code>takes 
+			reference to the geometrical set as input parameter. Member will be 
+			aggregated under this.</p>
+			<p>In the second step, it retrieves the object of 
+			type <code>StrCategoryMngt</code> in <code>ObjStrCategoryMngt</code> 
+			and calls <code>SetCategory</code> method to set the category.</p>
+			<p>In the 
+			third step, it sets <code>ProfileType</code> property with <code>iProfileType</code>.</p>
+			<p>In the fourth step, it retrieves the object of type <code>StrMaterialMngt</code> 
+			in <code>ObjStrMaterialMngt</code> and calls <code>SetMaterial</code> 
+			method to set the material.</p>
+			<p>In the fifth step, it retrieves the object 
+			of type <code>StrSectionMngt</code> in <code>ObjStrSectionMngt</code> 
+			and calls <code>SetSectionName</code> method to set the secion name 
+			and sets the property <code>AnchorPoint</code> with <code>iAnchorPoint</code>.
+			</p>
+			</li>
+		</ul>
+		<table>
+			<caption><a name="Fig.1"></a>Fig.1: Member</caption>
+			<tr>
+				<td>
+				<img alt="Member" src="CAAScdSfdUcCreateMember.png" width="866" height="569"/></td>
+			</tr>
+		</table>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

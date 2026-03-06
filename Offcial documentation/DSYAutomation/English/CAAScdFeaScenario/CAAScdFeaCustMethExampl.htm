@@ -1,0 +1,316 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js"></script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js"></script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js"></script>
+<title>Custom Method Examples</title>
+<style type="text/css">
+.tableStyle1 {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.tableStyle1 th, .tableStyle1 td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 3px;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Custom Method Examples</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+
+<table class="abstract">
+	<tr>
+		<td>
+			<h3>Abstract</h3>
+			<p>This article presents xml examples for custom Methods.</p>
+		</td>
+	</tr>
+</table>
+
+<br/>
+
+<p>Examples in this article:</p>
+<p><b><a href="#Structural1">Structural Method with Configured Actions</a></b></p>
+<p><b><a href="#Structural2">Structural Method with Custom Actions</a></b></p>
+<p><b><a href="#Thermal1">Thermal Method with Configured Actions</a></b></p>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<h2><a name="Structural1">Structural Method with Configured Actions</a></h2>
+<p>This example is a complete definition of a Method for creating a structural Simulation, where all the Actions are configured Actions.
+</p>
+<p>In this example all the Actions use their built in name.</p>
+
+<pre class="code">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;Method  type="Structural" 
+         name="Structural Example"
+         schemaVersion="1"
+
+         xmlns="urn:com.dassault_systemes.Simulia.2014.SimulationMethod"
+         &gt;
+
+  &lt;Assistant&gt;
+    &lt;Elem&gt;
+      &lt;Text&gt;This Method creates a structural Simulation.&lt;/Text&gt;
+    &lt;/Elem&gt;
+    &lt;Expander title="More info" &gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Follow the steps above to create the Simulation.&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Expander&gt;
+  &lt;/Assistant&gt;        
+         
+  &lt;Action type="ManageFem"  id="ManageFem"  &gt;
+    &lt;Assistant&gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Create or assign a FEM Rep to the Simulation.&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Assistant&gt;
+  &lt;/Action&gt;
+
+  &lt;Action type="ManageMaterials"  id="ManageMaterials" &gt;
+    &lt;Assistant&gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Apply material if there are unmaterialed Parts.&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Assistant&gt;
+  &lt;/Action&gt;
+
+  &lt;Action type="InitialConditions"  id="InitialConditions"  /&gt;
+
+  &lt;Action type="StructuralProcedures"  id="StructuralProcedures"  &gt;
+    &lt;Assistant&gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Create the desired procedure.&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Assistant&gt;
+  &lt;/Action&gt;
+
+  &lt;Action type="ManageAmplitudes"  id="ManageAmplitudes"  /&gt;
+
+  &lt;Action type="Interactions"  id="Interactions"  /&gt;
+
+  &lt;Action type="StructuralControls"  id="StructuralControls"  /&gt;
+
+  &lt;Action type="StructuralRestraints"  id="StructuralRestraints"  &gt;
+    &lt;Assistant&gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Add restraints.&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Assistant&gt;
+  &lt;/Action&gt;
+
+  &lt;Action type="StructuralLoads"  id="StructuralLoads" &gt;
+    &lt;Assistant&gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Add loads.&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Assistant&gt;
+  &lt;/Action&gt;
+
+  &lt;Action type="Solve"  id="Solve" &gt;
+    &lt;Assistant&gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Solve the Simulation.&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Assistant&gt;
+  &lt;/Action&gt;
+
+  &lt;Action type="Results"  id="Results" &gt;
+    &lt;Assistant&gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Verify that the results are good.&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Assistant&gt;
+  &lt;/Action&gt;
+
+&lt;/Method&gt;
+</pre>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<h2><a name="Structural2">Structural Method with Custom Actions</a></h2>
+<p>This example is a complete definition of a Method for creating a structural Simulation, that contains custom Actions for the procedure, restraints, and loads.
+Also shows usage of the <b>name</b> attribute and the &lt;Description&gt; child of the &lt;CommandHeader&gt; element.
+</p>
+
+<pre class="code">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;Method  type="Structural" 
+         name="Structural Example"
+         schemaVersion="1"
+
+         xmlns="urn:com.dassault_systemes.Simulia.2014.SimulationMethod"
+         &gt;
+
+  &lt;Assistant&gt;
+    &lt;Elem&gt;
+      &lt;Text&gt;This Method creates a structural Simulation.&lt;/Text&gt;
+    &lt;/Elem&gt;
+    &lt;Expander title="More info" &gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Follow the steps above to create the Simulation.&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Expander&gt;
+  &lt;/Assistant&gt;         
+         
+  &lt;Action type="ManageFem"  id="ManageFem"  /&gt;
+
+  &lt;Action type="ManageMaterials"  id="ManageMaterials" /&gt;
+
+  &lt;Action name="Create Procedure" id="CreateProcedure" &gt;
+    &lt;Assistant&gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Create a Static Stress procedure.&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Assistant&gt;
+    &lt;Commands&gt;
+       &lt;CommandHeader headerId="SMAExsStaticStressHdr" /&gt;
+       &lt;CommandHeader headerId="SMAExsEditCurrentStepHdr" /&gt;
+       &lt;CommandHeader headerId="SMAExsDeleteCurrentStepHdr" /&gt;
+    &lt;/Commands&gt;
+  &lt;/Action&gt;
+
+  &lt;Action type="ManageAmplitudes"  id="ManageAmplitudes"  /&gt;
+
+  &lt;Action type="InitialConditions"  id="InitialConditions"  /&gt;
+
+  &lt;Action type="Interactions"  id="Interactions"  /&gt;
+
+  &lt;Action type="StructuralControls"  id="StructuralControls"  /&gt;
+
+  &lt;Action name="Apply Restraint" id="ApplyRestraint" &gt;
+    &lt;Assistant&gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Add restraints&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Assistant&gt;
+    &lt;Commands&gt;
+      &lt;CommandHeader headerId="SMAExsClampHdr" name="Clamp Face" &gt;
+          &lt;Description&gt;Apply a clamp to the face on the right side.&lt;/Description&gt;
+      &lt;/CommandHeader&gt;
+      &lt;CommandHeader headerId="SMAExsDisplacementRestraintHdr" /&gt;
+    &lt;/Commands&gt;
+  &lt;/Action&gt;
+
+  &lt;Action name="Apply Load" id="ApplyLoad" &gt;
+    &lt;Assistant&gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Add loads&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Assistant&gt;
+    &lt;Commands&gt;
+       &lt;CommandHeader headerId="SMAExsPressureHdr" name="Side Pressure" &gt;
+           &lt;Description&gt;Apply a pressure to the face on the left side.&lt;/Description&gt;
+       &lt;/CommandHeader&gt;
+       &lt;CommandHeader headerId="SMAExsRemoteForceHdr" /&gt;
+    &lt;/Commands&gt;
+  &lt;/Action&gt;
+
+  &lt;Action type="Solve"  id="Solve" /&gt;
+
+  &lt;Action type="Results"  id="Results" /&gt;
+
+&lt;/Method&gt;
+</pre>
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<h2><a name="Thermal1">Thermal Method with Configured Actions</a></h2>
+<p>This example is a complete definition of a Method for creating a thermal Simulation, where all the Actions are configured Actions.
+</p>
+<p>In this example all the Actions use their built in name.</p>
+
+<pre class="code">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+
+&lt;Method  type="Thermal" 
+         name="Thermal Example"
+         schemaVersion="1"
+
+         xmlns="urn:com.dassault_systemes.Simulia.2014.SimulationMethod"
+         &gt;
+
+   &lt;Assistant&gt;
+     &lt;Elem&gt;
+       &lt;Text&gt;This Method creates a thermal Simulation.&lt;/Text&gt;
+     &lt;/Elem&gt;
+    &lt;Expander title="More info" &gt;
+      &lt;Elem&gt;
+        &lt;Text&gt;Follow the steps above to create the Simulation.&lt;/Text&gt;
+      &lt;/Elem&gt;
+    &lt;/Expander&gt;
+   &lt;/Assistant&gt;
+
+   &lt;Action type="ManageFem"  /&gt;
+
+   &lt;Action type="ManageMaterials"  /&gt;
+
+   &lt;Action type="ThermalProcedures"  /&gt;
+
+   &lt;Action type="ManageAmplitudes"  /&gt;
+
+   &lt;Action type="ThermalInitialConditions"  /&gt;
+
+   &lt;Action type="ThermalInteractions"  /&gt;
+
+   &lt;Action type="ThermalConditions"  /&gt;
+
+   &lt;Action type="Solve"  /&gt;
+
+   &lt;Action type="Results"  /&gt;
+
+&lt;/Method &gt;
+</pre>
+
+
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<hr>
+
+<h2>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [Feb 2016]</td>
+		<td>Document created</td>
+  </tr>
+  <tr>  
+		<td>Version: <strong>1.1</strong> [Oct 2016]</td>
+		<td>Changed examples to match XSD tag sequence (Assistant first)</td>
+	</tr>
+</table>
+<br/>
+
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

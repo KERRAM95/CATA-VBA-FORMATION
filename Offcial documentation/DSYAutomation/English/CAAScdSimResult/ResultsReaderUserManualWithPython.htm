@@ -1,0 +1,384 @@
+<!DOCTYPE HTML>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><HTML
+lang="en" lang="en" xml:lang="en"
+xmlns="http://www.w3.org/1999/xhtml"><HEAD><META content="IE=11.0000"
+http-equiv="X-UA-Compatible">
+
+<META http-equiv="Content-Language" content="en-us">
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<META name="topictype" content="Uc">
+<META name="devlang" content="idl">
+ <link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+ <script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+ <script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+ <script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+ <TITLE>Reading SIM Results Using Python</TITLE>
+<META name="GENERATOR" content="MSHTML 11.00.10570.1001">
+<style type="text/css">
+.auto-style1 {
+	color: #990000;
+}
+.auto-style2 {
+	color: #990000;
+}
+.auto-style3 {
+	color: #006600;
+}
+.auto-style4 {
+	color: #006600;
+}
+.auto-style5 {
+	color: #990000;
+}
+.auto-style7 {
+	color: #990000;
+	font-weight: normal;
+}
+</style>
+</HEAD>
+<BODY onload="highlightSearchTerms();">
+<TABLE class="table1">
+  <TBODY>
+  <TR>
+    <TD class="DocHeader1">
+      <H1>Reading SIM Results Using Python</H1></TD></TR>
+  <TR>
+    <TD class="DocHeader3" style="width: 1807px;">
+      <TABLE class="DocHeaderIntro">
+        <TBODY>
+        <TR>
+          <TD class="Intro1">
+            <P class="header">This article explains how to read results
+            					from a SIM file using Python.</P>
+          </TD></TR>
+          </TBODY></TABLE></TD></TR></TBODY></TABLE>
+<TABLE class="indented">
+  <TBODY>
+  <TR>
+    <TD>
+      <P>This use case can be divided into the following steps:</P>
+      <OL>
+        <LI><A href="#Step1">Import
+        the required modules</A></LI>
+        <LI><A href="#Step2">Load
+        the SIM document</A></LI>
+          <LI><A href="#Step11">Get the unit system </A></LI>
+		  <LI><A href="#Step3">Read
+        and print the nodes and node set 			information</A></LI>
+		  <LI><A href="#Step4">Read
+        and print the elements and element set 			information</A></LI>
+		  <LI><A href="#Step5">Read
+        and print the steps and frames</A></LI>
+		  <LI><A href="#Step6">Read
+        the field variables</A></LI>
+		  <LI><A href="#Step7">Read
+        the field output data</A>
+		  <OL>
+			  <LI><A href="#Step7_1">Read
+          the orientation information</A></LI>
+			  <LI><A href="#Step7_2">Read
+          the drawer</A></LI>
+		  </OL>
+		  </LI>
+		  <LI><A href="#Step8">Read
+        the history variables</A></LI>
+		  <LI><A href="#Step9">Read
+        the history output data</A></LI>
+		  <LI><A href="#Step10">Samples</A></LI>
+	  </OL>
+	  </TD></TR></TBODY></TABLE>
+<TABLE class="table1">
+  <TBODY>
+  <TR>
+    <TD>
+      <OL class="task">
+        <LI>
+        <P><STRONG><A name="Step1">Import the required modules</A></STRONG></P>
+        <P>This step imports simResultsReader module which contains
+        			methods and classes needed for reading results. </P>
+<PRE class="code">...
+<font color="#3333CC"><b>import</b></font> simResultsReader
+...
+</PRE>
+		  </LI>
+        <LI>
+        <P><STRONG><A name="Step2">Load the SIM document</A></STRONG></P>
+        <P>This step loads the SIM document. To automatically upgrade/downgrade 
+		the SIM document, refer to 'SIM Utilities reference (python)'</P>
+<PRE class="code">...
+reader = simResultsReader.SIMResultsReader()
+reader.LoadDocument(simName)
+...
+</PRE>
+		  </LI>
+        <LI>
+        <P><STRONG><A name="Step11">Get the unit system </A></STRONG></P>
+        <P>This step reads the unit system.</P>
+<PRE class="code">...
+unitSys = reader.GetUnitSystem()
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'Unit System name:'</font>, unitSys.name)
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'Unit System conversion factors:'</font>, unitSys.convFactors)
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'Length to SI conversion factor'</font>, unitSys.lengthToSIConvFactor)
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'Mass to SI conversion factor'</font>, unitSys.massToSIConvFactor)
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'Time to SI conversion factor'</font>, unitSys.timeToSIConvFactor)
+...
+</PRE>
+		  </LI>
+        <LI>
+        <P><STRONG><A name="Step3">Read and print the nodes and node set
+        			information</A></STRONG></P>
+        <P>This step gets the space dimensions of the document, reads
+        			the nodes, coordinates and node set information from the SIM
+        document.</P>
+<PRE class="code">...
+dims = reader.GetSpaceDimensions()
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'Number of space dimensions: %d'</font> % dims)
+<span class="auto-style5"><em>#Read the nodes</em></span>
+nodes = reader.GetNodeIndices()
+<span class="auto-style5"><em>#Read the coordinates</em></span>
+coords = reader.GetNodeCoordinates(nodes)
+
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'Number of nodes: %d\n'</font> % len(nodes))
+counter = 0
+
+for node in nodes:
+    <span class="auto-style5"><em>#Read the user label for the node</em></span>
+    <font color="#3333CC"><b>print</b></font> reader.GetNodeUserLabel(node), <font color="#006600">': '</font>,
+    <font color="#3333CC"><b>print</b></font>(node, <font color="#006600">': '</font>, end=<font color="#006600">' '</font>)
+    for dim in range(dims):
+        print(coords[counter], ' ', end=' ')
+        counter += 1
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">''</font>)
+
+<span class="auto-style5"><em>#Read the node sets</em></span>
+nodeSets = reader.GetNodeSets()
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'\nNumber of node sets: '</font>, len(nodeSets))
+<font color="#3333CC"><b>for</b></font> nodeSet <font color="#3333CC"><b>in</b></font> nodeSets:
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">' Node set name: '</font>, nodeSet)
+    nodeMembers = reader.GetNodeSetMembers(nodeSet)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\tMembers: '</font>)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t'</font>, nodeMembers)</PRE>
+		<pre></pre>
+		  </LI>
+        <LI>
+        <P><STRONG><A name="Step4">Read and print the elements and 				element
+        set information</A></STRONG></P>
+        <P>This step reads the element specs, elements, element
+        			connectivity and element set information from the SIM document. </P>
+		<PRE class="code">...
+<span class="auto-style1"><em>#Read the element specs</em></span>    
+specs = reader.GetElementSpecs()<font color="#3333CC"><b>
+print</b></font>(<font color="#006600">'\nNumber of element specs: %d'</font> % len(specs))
+<font color="#3333CC"><b>for</b></font> spec <font color="#3333CC"><b>in</b></font> specs:
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">' Element spec: '</font>, spec)
+    elements = reader.GetElementIndices(spec)
+    <span class="auto-style4">#Read the element connectivity</span>
+    connectivity = reader.GetElementsConnectivity(elements)
+    nodesPerElement = len(connectivity)// len(elements)
+
+    counter = 0
+    <font color="#3333CC"><b>for</b></font> element <font color="#3333CC"><b>in</b></font> elements:
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t'</font>, end=<font color="#006600">' '</font>)
+        <span class="auto-style1"><em>#</em></span><span class="auto-style7"><em>print(</em></span><span class="auto-style1"><em>reader.GetElementUserLabel(element), ': ')</em></span>
+        <font color="#3333CC"><b>print</b></font>(element, <font color="#006600">': '</font>, end=<font color="#006600">' '</font>)
+        <font color="#3333CC"><b>for</b></font> i <font color="#3333CC"><b>in</b></font> range(nodesPerElement):
+            <font color="#3333CC"><b>print</b></font>(connectivity[counter], <font color="#006600">' '</font>, end=<font color="#006600">' '</font>)
+            counter += 1
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">''</font>)
+<span class="auto-style2">#Read the element sets</span>
+elementSets = reader.GetElementSets()
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'\nNumber of element sets: '</font>, len(elementSets))
+
+<font color="#3333CC"><b>for</b></font> elementSet <font color="#3333CC"><b>in</b></font> elementSets:
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">' Element set name: '</font>, elementSet)
+    <span class="auto-style3">#Read the element set members</span>
+    elementMembers = reader.GetElementSetMembers(elementSet)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\tMembers: '</font>)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t'</font>, elementMembers)
+...</PRE>
+		  </LI>
+        <LI>
+        <P><STRONG><A name="Step5">Read and print the steps and
+        frames</A></STRONG></P>
+        <P>This step reads the steps and frames from the SIM
+        			document.</P>
+<PRE class="code">...
+<span class="auto-style1"><em>#Read the step names</em></span>
+stepNames = reader.GetStepSequence()
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'\nNumber of steps: '</font>, len(stepNames))
+
+<font color="#3333CC"><b>for</b></font> stepName <font color="#3333CC"><b>in</b></font> stepNames:
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">' Step name: '</font>, stepName)
+    <span class="auto-style1"><em>#Read step type and description</em></span>
+    stepInfo = reader.GetStepTypeAndDescription(stepName)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'  Step type: %s'</font> % stepInfo[0])
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'  Step description: %s'</font> % stepInfo[1])
+
+    <span class="auto-style1"><em>#Read the frame indices and values</em></span>
+    frameIndices, frameValues = reader.GetFrames(stepName)
+
+    <font color="#3333CC"><b>if</b></font> <font color="#3333CC"><b>not</b></font> frameIndices <font color="#3333CC"><b>is</b></font> None:
+        numFrames = len(frameIndices)
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'  Number of frames: '</font>, numFrames)
+        <font color="#3333CC"><b>for</b></font> counter <font color="#3333CC"><b>in</b></font> range(numFrames):
+            <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t%d : %g'</font> % (frameIndices[counter], frameValues[counter]))
+...</PRE>
+		  </LI>
+        <LI>
+        <P><STRONG><A name="Step6">Read the field variables</A></STRONG></P>
+        <P>This step retrieves the field variables from the SIM
+        				document.</P>
+<PRE class="code">...
+    fieldResultsInventory = reader.GetFieldResultsInventory(stepName)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\n*****************************************************\n'</font>)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'  Number of fields: '</font>, len(fieldResultsInventory))
+
+    <i><font color="#990000">#Sort the list so that the output is consistent</font></i>
+    fieldResultsInventory.sort(key = <font color="#3333CC"><b>lambda</b></font> item: item.fieldVariableName)
+
+    <font color="#3333CC"><b>for</b></font> field <font color="#3333CC"><b>in</b></font> fieldResultsInventory:
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\n\n  Processing field: '</font> , field.fieldVariableName)
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\tField type: '</font> , field.fieldType)
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\tField index: '</font>, field.fieldIndex)
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\tField output position: '</font>, field.outputPosition)
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">''</font>)
+...
+				</PRE>
+		  </LI>
+        <LI>
+        <P><STRONG><A name="Step7">Read the field output data</A></STRONG></P>
+        <P>This step retrieves the field output data from the SIM
+        				document. In this example, this step retrieves UNIQUE NODAL data.</P>
+<PRE class="code">...
+<span class="auto-style2">#Initialize a field result</span>
+fieldObj = simResultsReader.UniqueNodalFieldReader()
+reader.InitFieldResult(stepName, field, fieldObj)
+numDrawers = fieldObj.GetNumberOfDrawers()
+...
+</PRE>
+        <OL class="task">
+          <LI>
+          <P><STRONG><A name="Step7_1">Read the orientation
+          					information</A></STRONG></P>
+          <P>This step reads the orientation information for 					this
+          field variable.</P>
+<PRE class="code">...
+ori = fieldObj.GetOrientationFieldInfo()
+<font color="#3333CC"><b>if</b></font> ori:
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\tField has orientation.'</font>)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Orientation field name:'</font> , ori.fieldVariableName)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Orientation field type: '</font> , ori.fieldType)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Orientation field index: '</font>, ori.fieldIndex)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Orientation field output position: '</font>, ori.outputPosition)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">''</font>)
+...</PRE>
+			</LI>
+          <LI>
+          <P><STRONG><A name="Step7_2">Read the drawer</A></STRONG></P>
+          <P>This step reads the drawer and prints the field
+					data</P>
+<PRE class="code">...
+    <font color="#3333CC"><b>for</b></font> nd <font color="#3333CC"><b>in</b></font> range(numDrawers):
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Processing drawer: '</font>, nd)
+        dims = fieldObj.GetDimensions(nd)
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Frames: '</font>, dims.frameIndices)
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Load cases: '</font>, dims.loadCases)
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Nodes: '</font>, dims.nodeIndices)
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Components: '</font>, dims.components)
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Invariants: '</font>, dims.invariants)
+
+        frames = dims.frameIndices
+        lcs = dims.loadCases
+        nodes = dims.nodeIndices
+        <font color="#3333CC"><b>if</b></font> frames <font color="#3333CC"><b>is</b></font> None:
+            frames = [-1]  <i><font color="#990000"># set frames to -1 so that you can loop over the frames</font></i>
+        <font color="#3333CC"><b>if</b></font> lcs <font color="#3333CC"><b>is</b></font> None:
+            lcs = [-1] <i><font color="#990000"># set load cases to -1 so that you can loop over the load cases</font></i>
+        <font color="#3333CC"><b>for</b></font> frame <font color="#3333CC"><b>in</b></font> frames:
+            <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\n\t  Processing frame: '</font> , frame)
+            <font color="#3333CC"><b>for</b></font> lc <font color="#3333CC"><b>in</b></font> lcs:
+                <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t    Processing load case: '</font>, lc)
+                data, imagData = fieldObj.GetFieldResultData(nd, frame, nodes, lc)
+                <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t    Real data: '</font>, data)
+                <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t    Imag data: '</font>, imagData)
+...</PRE>
+			</LI>
+		</OL></LI>
+        <LI>
+        <P><STRONG><A name="Step8">Read the history variables</A></STRONG></P>
+        <P>This step retrieves the history variables from the SIM
+        				document.</P>
+<PRE class="code">...
+historyResultsInventory = reader.GetHistoryResultsInventory(stepName)
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'\n*****************************************************\n'</font>)
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'  Number of history fields: '</font>, len(historyResultsInventory))
+
+<i><font color="#990000">#Sort the list so that the output is consistent</font></i>
+historyResultsInventory.sort(key = <font color="#3333CC"><b>lambda</b></font> item: item.fieldVariableName)
+<font color="#3333CC"><b>for</b></font> field <font color="#3333CC"><b>in</b></font> historyResultsInventory:
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\n\n  Processing history output: '</font> , field.fieldVariableName)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\tHistory output type: '</font> , field.fieldType)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\tHistory output index: '</font>, field.fieldIndex)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\tHistory output position: '</font>, field.outputPosition)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">''</font>)
+...				</PRE>
+		  </LI>
+        <LI>
+        <P><STRONG><A name="Step9">Read the history output data</A></STRONG></P>
+        <P>This step retrieves the history output data from the 				
+		SIM
+        document. In this example, this step retrieves UNIQUE NODAL data, 				reads the
+        drawer and prints the history data.</P>
+<PRE class="code">...
+fieldObj = simResultsReader.UniqueNodalFieldReader()
+reader.InitHistoryResult(stepName, field, fieldObj)
+numDrawers = fieldObj.GetNumberOfDrawers()
+
+<font color="#3333CC"><b>print</b></font>(<font color="#006600">'\tNumber of drawers: '</font>, numDrawers)
+<font color="#3333CC"><b>for</b></font> nd <font color="#3333CC"><b>in</b></font> range(numDrawers):
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Processing drawer: '</font>, nd)
+    dims = fieldObj.GetDimensions(nd)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Load cases: '</font>, dims.loadCases)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Nodes: '</font>, dims.nodeIndices)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Components: '</font>, dims.components)
+    <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t Invariants: '</font>, dims.invariants)
+
+    frames = dims.frameIndices
+    lcs = dims.loadCases
+    nodes = dims.nodeIndices
+    <font color="#3333CC"><b>if</b></font> frames <font color="#3333CC"><b>is</b></font> None:
+        frames = [-1]  <i><font color="#990000"># set frames to -1 so that you can loop over the frames</font></i>
+    <font color="#3333CC"><b>if</b></font> lcs <font color="#3333CC"><b>is</b></font> None:
+        lcs = [-1] <i><font color="#990000"># set load cases to -1 so that you can loop over the load cases</font></i>
+    <font color="#3333CC"><b>for</b></font> node <font color="#3333CC"><b>in</b></font> nodes:
+        <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\n\t  Processing node: '</font> , node)
+        <font color="#3333CC"><b>for</b></font> lc <font color="#3333CC"><b>in</b></font> lcs:
+            <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t    Processing load case: '</font>, lc)
+            <font color="#3333CC"><b>for</b></font> component <font color="#3333CC"><b>in</b></font> dims.components:
+<font color="#3333CC"><b>                print</b></font>(<font color="#006600">'\t    Processing component: '</font>, component)
+                data, imagData = fieldObj.GetHistoryResultData(nd, node, component, lc)
+                <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t    Real data: '</font>, data)
+                <font color="#3333CC"><b>print</b></font>(<font color="#006600">'\t    Imag data: '</font>, imagData)
+...
+					</PRE>
+		  </LI>
+        <LI>
+        <P><A name="Step10"><STRONG>Samples</STRONG></A></P>
+        <P>Read results from a SIM document:
+		<a href="samples/simResultsReaderSample1.py.txt">simResultsReaderSample1.py</a></P>
+        <P>Read mises stress values from a SIM document:
+		<a href="samples/misesFromSim.py.txt">misesFromSim.py</a></P>
+        <P>Read and write results to the same SIM document:
+		<a href="samples/resultsReadWriteSample1.py.txt">resultsReadWriteSample1.py</a>				</P>
+		  </LI>
+	  </OL></TD></TR>
+  <TR>
+    <TD>		
+	<P>&nbsp;</P>
+	  </TD></TR></TBODY></TABLE><!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<SCRIPT type="text/javascript">insertCopyright();</SCRIPT>
+
+<hr><p><i>
+Copyright © 1999-2018, Dassault Systèmes. All rights reserved.
+</i></p>
+ </BODY></HTML>

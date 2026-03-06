@@ -1,0 +1,219 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpExpressionFixerUpload (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpExpressionFixerUpload"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpExpressionFixerUpload<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpExpressionFixerUpload_42892','OlpExpressionFixerUpload','0');</script>
+<section id='maindesc'>
+<b><i> An object for translating expressions from the native robot language into DELMIA expressions.</i></b><br>
+<BR>
+ <font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ Download or Upload command</font>.<BR>
+ A new transform can be created with <script type="text/javascript"> activateLinkAnchor('DELMIAOlpTranslatorHelper','CreateExprFixerUpload','DELMIAOlpTranslatorHelper.CreateExprFixerUpload') </script>.<BR> You can find more information on the OLP Expression AST format in the documentation 
+ under Automation | Robotics | Robotics Offline Programming | Offline Programming Expression Translation.
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#SubsituteVariable"><b>SubsituteVariable</b></a>
+</td><td  id='tdright'>  Set the variable substitutions to make.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SubsituteVariableGetOrCreate"><b>SubsituteVariableGetOrCreate</b></a>
+</td><td  id='tdright'>  Set the variable substitutions to make.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SubsituteVariableGetOrCreateInStringType"><b>SubsituteVariableGetOrCreateInStringType</b></a>
+</td><td  id='tdright'>  Set the variable substitutions to make.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SubsituteVariableNameOnly"><b>SubsituteVariableNameOnly</b></a>
+</td><td  id='tdright'>  Set the variable substitutions to make.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="SubsituteVariable"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SubsituteVariable</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpAstNode','OlpAstNode')</script> <span class='param'>iNRLVar</span>,<script type="text/javascript"> activateLink('OlpVariable','OlpVariable')</script> <span class='param'>iBMVar</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the variable substitutions to make.<BR>
+ You only need to set a variable substitution for a variable one time and all
+ instances of the variable in the expression will be substituted. You can find
+ all variables in the expression using 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpExpressionFixer','Variables','DELMIAOlpExpressionFixer.Variables') </script>. This function must be called after setting 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpExpressionFixer','SetExpression','DELMIAOlpExpressionFixer.SetExpression') </script>  but before and 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpExpressionFixer','Fix','DELMIAOlpExpressionFixer.Fix') </script>.  Any variable substitutions are cleared after calling Fix.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iNRLVar</span></dt>
+   <dd>  The robot program variable to replace.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iBMVar</span></dt>
+   <dd>  The DELMIA variable to replace it with.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SubsituteVariableGetOrCreate"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SubsituteVariableGetOrCreate</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpAstNode','OlpAstNode')</script> <span class='param'>iNRLVar</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('DELOlpVariableType','DELOlpVariableType')</script> <span class='param'>iType</span>,<script type="text/javascript"> activateLink('DELOlpDataType','DELOlpDataType')</script> <span class='param'>iDataType</span>,<script type="text/javascript"> activateLink('DELOlpIODirection','DELOlpIODirection')</script> <span class='param'>iDirection</span>,<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iScope</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iDefaultValue</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the variable substitutions to make.<BR>
+ See 
+<script type="text/javascript"> activateLinkAnchor('','SubsituteVariable','SubsituteVariable') </script> for details on variable substitution.   Everything from there applies here.<BR>
+ Set all the variable parameters if the variable may not have been created yet.
+ This is most common for languages that don't have explicit variable declarations.
+ It will be created if it does not yet exist.  
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iNRLVar</span></dt>
+   <dd>  The robot program variable to replace.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd>  The new variable name.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd>  The variable type
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDataType</span></dt>
+   <dd>  The variable data type.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDirection</span></dt>
+   <dd>  Whether the variable is "in" or "out".
+ 
+ </ dd>
+    <dt><span class='paramitem'> iScope</span></dt>
+   <dd>  The scope is either a DELMIAOlpProcedure or a DELMIAOlpBehavior.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDefaultValue</span></dt>
+   <dd>  Default value can be an empty string.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SubsituteVariableGetOrCreateInStringType"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SubsituteVariableGetOrCreateInStringType</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpAstNode','OlpAstNode')</script> <span class='param'>iNRLVar</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('DELOlpVariableType','DELOlpVariableType')</script> <span class='param'>iType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iDataType</span>,<script type="text/javascript"> activateLink('DELOlpIODirection','DELOlpIODirection')</script> <span class='param'>iDirection</span>,<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iScope</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iDefaultValue</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the variable substitutions to make.<BR>
+ See 
+<script type="text/javascript"> activateLinkAnchor('','SubsituteVariable','SubsituteVariable') </script> for details on variable substitution.   Everything from there applies here.<BR>
+ Set all the variable parameters if the variable may not have been created yet.
+ This is most common for languages that don't have explicit variable declarations.
+ It will be created if it does not yet exist.  
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iNRLVar</span></dt>
+   <dd>  The robot program variable to replace.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd>  The new variable name.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd>  The variable type
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDataType</span></dt>
+   <dd>  The data type, in string, to get or create.  It is the same as the 
+<script type="text/javascript"> activateLinkAnchor('DELOlpDataType','','DELOlpDataType') </script> enum but  without the delOlp prefix. For example if the intended type is delOlpInteger, use string "Integer". 
+  Use string "Position" for position variable
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDirection</span></dt>
+   <dd>  Whether the variable is "in" or "out".
+ 
+ </ dd>
+    <dt><span class='paramitem'> iScope</span></dt>
+   <dd>  The scope is either a DELMIAOlpProcedure or a DELMIAOlpBehavior.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDefaultValue</span></dt>
+   <dd>  Default value can be an empty string.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SubsituteVariableNameOnly"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SubsituteVariableNameOnly</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpAstNode','OlpAstNode')</script> <span class='param'>iNRLVar</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the variable substitutions to make.<BR>
+ See 
+<script type="text/javascript"> activateLinkAnchor('','SubsituteVariable','SubsituteVariable') </script> for details on variable substitution.   Everything from there applies here.<BR>
+ This version of the function allows you to set the name if the variable 
+ that has been already created.  This is most likely the case for 
+ languages that have explicit variable declarations.  However, if the name 
+ used in DELMIA is the same as the robot program, then you don't need 
+ to call this function.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iNRLVar</span></dt>
+   <dd>  The robot program variable to replace.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd>  The new variable name.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

@@ -1,0 +1,94 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Flexible Circuit Board Design Object Model Map</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>Flexible Circuit Board Design Object Model Map</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p class="auto"><a href="../CAAScdInfInfrastructure/CAAInfObjService.htm">
+<img src="../CAAScdImages/Service.png" alt="Service Object" width="252" height="22"/></a><a href="../CAAScdInfInfrastructure/CAAInfTocApplication.htm"><img src="../CAAScdImages/uparrow.gif" alt="Foundation Object Model Map" width="18" height="7"/></a><br />
+		<img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATFCBoardIDLItf', 'interface', 'FCBService');return false;"><img src="../CAAScdImages/FCBService.png" alt="FCBService Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATFCBoardIDLItf', 'interface', 'FlexibleBoard');return false;"><img src="../CAAScdImages/FlexibleBoard.png" alt="FlexibleBoardObject" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATFCBoardIDLItf', 'interface', 'FlexibleArea');return false;"><img src="../CAAScdImages/FlexibleArea.png" alt="FlexibleArea Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATFCBoardIDLItf', 'interface', 'FCBHole');return false;"><img src="../CAAScdImages/FCBHole.png" alt="FCBHoleObject" width="252" height="22"/></a><br />
+</p>
+<p>Flexible Circuit Board Design objects can be managed using the <strong>FCBService</strong> 
+object. This object allows you to:</p>
+<ul>
+	<li>Create a <strong>FlexibleBoard</strong> object.</li>
+	<li>Retrieve a <strong>FlexibleBoard</strong> object.</li>
+</ul>
+<p>Use the <strong>CreateFlexibleBoard</strong> method to create a <strong>FlexibleBoard</strong> object with an Axis System in a 3D <strong>Part</strong> object of a 3D 
+shape representation:</p>
+<pre class="code">
+<span class="keyword">Dim</span> oFCBService <span class="keyword">As</span> FCBService
+<span class="keyword">Set</span> oFCBService = CATIA.ActiveEditor.GetService("FCBService")
+
+<span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+<span class="keyword">Set</span> oPart = CATIA.ActiveEditor.ActiveObject
+
+<span class="keyword">Dim</span> oFlexiBoard <span class="keyword">As</span> FlexibleBoard
+<span class="keyword">Set</span> oFlexiBoard = oFCBService.CreateFlexibleBoard(oPart, True)
+</pre>
+<p>When set to <strong>True</strong>, the Boolean defined as the second argument 
+of the <strong>CreateFlexibleBoard</strong> method allows you to create the Axis System.</p>
+
+
+<p>Use the <strong>create_FlexibleAreaArea</strong> method of the <strong>
+FlexibleBoard</strong> object to create a constraint area as a <strong>
+FlexibleArea</strong> object.</p>
+
+<pre class="code">
+<span class="keyword">Dim</span> oHybridBody <span class="keyword">As</span> HybridBody
+<span class="keyword">Set</span> oHybridBody = oPart.HybridBodies.Item("Constraint Area Profiles")
+<span class="keyword">Dim</span> oSketch <span class="keyword">As</span> Sketch
+<span class="keyword">Set</span> oSketch = oHybridBody.HybridSketches.Item("Sketch.17")
+
+<span class="keyword">Dim</span> oBody <span class="keyword">As</span> Body
+<span class="keyword">Set</span> oBody = oPart.Bodies.Item("Central")
+
+<span class="keyword">Dim</span> oArea <span class="keyword">As</span> FlexibleArea
+<span class="keyword">Set</span> oArea = oFlexiBoard.create_FlexibleAreaArea(oBody, "MfDefault3DView", oSketch, "ROUTE_OUTLINE", "All", "Ident", "MCAD", 10, 5)
+</pre>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

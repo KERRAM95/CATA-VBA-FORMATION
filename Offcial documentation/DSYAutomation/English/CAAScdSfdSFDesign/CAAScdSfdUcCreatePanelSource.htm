@@ -1,0 +1,475 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSfdUcCreatePanel.CATScript</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample demonstrates initialization of sfd system, creation of panel, splitting a panel, breaking a panel, </span>
+<span class="comment">'creation of advanced plate.</span>
+<span class="comment">'This script requires a empty part</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;VbPanel&quot;</span>
+<span class="comment">'   2- Retrieves Part object </span>
+<span class="comment">'   3- Retrieves Service manager (RfgServices)</span>
+<span class="comment">'   4- Init resources</span>
+<span class="comment">'   5- Initialize SFD system</span>
+<span class="comment">'   6- Creates a DeckPanel using DECK.1 as support plane</span>
+<span class="comment">'   7- Creates a TransversePanel using CROSS.90 as support plane</span>
+<span class="comment">'   8- Splits DeckPanel by using TransversePanel</span>
+<span class="comment">'   9- Creates a panel which will be later used for breaking DeckPanel</span>
+<span class="comment">'  10- Break the DeckPanel</span>
+<span class="comment">'  11- Creates Advanced panel</span>
+<span class="comment">'  12- Updates the Part object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+Language=&quot;VBSCRIPT&quot; 
+<span class="keyword">Dim </span>Manager<span class="keyword"> As </span>RfgService
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+
+<span class="keyword">Sub </span>CATMain()
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;VbPanel&quot;</span>
+<span class="keyword">    Dim </span>SFDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;VbPanel&quot;
+    OpenProduct prdName , SFDPrdEditor
+    
+<span class="comment">'   2- Retrieves Part object </span>
+<span class="keyword">    Set </span>ObjPart = SFDPrdEditor.ActiveObject
+
+<span class="comment">'   3- Retrieves Service manager (RfgService)</span>
+<span class="keyword">    Set </span>Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+    
+<span class="comment">'   4- Init resources</span>
+<span class="keyword">    Dim </span>ObjSfdFactory<span class="keyword"> As </span>SfdFactory
+<span class="keyword">    Set </span>ObjSfdFactory = ObjPart.GetCustomerFactory(&quot;SfdFactory&quot;)
+    ObjSfdFactory.InitResources
+    
+<span class="comment">'   5- Initialize SFD system</span>
+    InitializeSFDSystem SFDPrdEditor
+    
+<span class="comment">'   6- Creates a DeckPanel using DECK.1 as support plane</span>
+<span class="keyword">    Dim </span>ObjSfdPanel<span class="keyword"> As </span>SfdPanel
+    CreatePanel ObjSfdPanel
+    
+<span class="comment">'   7- Creates a TransversePanel using CROSS.90 as support plane</span>
+<span class="keyword">    Dim </span>ObjTransvSfdPanel<span class="keyword"> As </span>SfdPanel
+    CreateTransversalPanel ObjTransvSfdPanel
+    
+<span class="comment">'   8- Splits DeckPanel by using TransversePanel</span>
+    CreateSplitPlates ObjSfdPanel, ObjTransvSfdPanel
+    
+<span class="comment">'   9- Creates a panel which will be later used for breaking DeckPanel</span>
+<span class="keyword">    Dim </span>SplittingPanel<span class="keyword"> As </span>SfdPanel
+    CreatePanelForBreak SplittingPanel
+    
+<span class="comment">'   10- Break the DeckPanel</span>
+    BreakPlate ObjSfdPanel, SplittingPanel
+    
+<span class="comment">'   11- Creates Advanced panel</span>
+<span class="keyword">    Dim </span>ObjAdvancedPanel<span class="keyword"> As </span>SfdPanel
+    CreateAdvancedPanel ObjAdvancedPanel
+    
+<span class="comment">'   12- Updates the Part object</span>
+    ObjPart.Update
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'SFD system initialization</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   5.1- Creates Reference planes for SFD system</span>
+<span class="comment">'   5.2- Retrieves SfdPart and creates Hull</span>
+<span class="comment">'   5.3- Set this system as SFD system</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>InitializeSFDSystem(iSFDPrdEditor<span class="keyword"> As </span>Editor)
+<span class="comment">'   5.1- Creates Reference planes for SFD system</span>
+    Manager.CreateProjectData ObjPart
+    
+<span class="comment">'   5.2- Retrieves SfdPart and creates Hull</span>
+    <span class="comment">'Get SfdPart object</span>
+<span class="keyword">    Dim </span>ObjSfdPart<span class="keyword"> As </span>SfdPart
+<span class="keyword">    Set </span>SFDProdSel = iSFDPrdEditor.Selection
+    SFDProdSel.Add ObjPart
+<span class="keyword">    Set </span>ObjSfdPart = SFDProdSel.FindObject(&quot;CATIASfdPart&quot;)
+<span class="keyword">    Set </span>ObjSfdPartRef = ObjPart.CreateReferenceFromObject(ObjSfdPart)   
+<span class="keyword">    Set </span>ProjectData = ObjSfdPart.GetProjectData
+<span class="keyword">    Set </span>ProjectDataRef = ObjPart.CreateReferenceFromObject(ProjectData)
+    <span class="comment">'Create Hull</span>
+    Manager.CreateRefSurfaceFeature ObjSfdPartRef, ProjectDataRef
+    
+<span class="comment">'   5.3- Set this system as SFD system</span>
+<span class="keyword">    Dim </span>oDiagnosis<span class="keyword"> As </span>Long
+<span class="keyword">    Dim </span>oIncorrectDiscName<span class="keyword"> As </span>String
+    ObjSfdPart.SetAsSFDSystem oDiagnosis, oIncorrectDiscName
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Creates a DeckPanel using DECK.1 as support plane</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   6.1- Creates panel with no properties then set the properties category, support, material and thickness</span>
+<span class="comment">'   6.2- Retrieves StrPanelLimitMngt and sets panel limits</span>
+<span class="comment">'   6.3- Calls method Run to complete the creation panel</span>
+<span class="comment">'   6.4- Updates created panel object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreatePanel(oObjSfdPanel<span class="keyword"> As </span>SfdPanel)
+    
+<span class="comment">'   6.1- Creates panel with no properties then set the properties category, support, material and thickness</span>
+<span class="keyword">    Set </span>ObjPanelSupport = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.1&quot;)
+<span class="keyword">    Set </span>PanelSupport = ObjPart.CreateReferenceFromObject(ObjPanelSupport)
+    CreatePanelAndSetData False, &quot;DeckPanel&quot;, PanelSupport, &quot;Steel A42&quot;, &quot;12mm&quot;, 0, oObjSfdPanel 
+    
+<span class="comment">'   6.2- Retrieves StrPanelLimitMngt and sets panel limits</span>
+    <span class="comment">'Get StrPanelLimitMngt object</span>
+<span class="keyword">    Dim </span>ObjStrPanelLimitMngt<span class="keyword"> As </span>StrPanelLimitMngt
+<span class="keyword">    Set </span>ObjStrPanelLimitMngt = oObjSfdPanel.StrPanelLimitMngt
+    <span class="comment">'set limits</span>
+<span class="keyword">    Set </span>ObjLimit1 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.60&quot;)
+<span class="keyword">    Set </span>Limit1 = ObjPart.CreateReferenceFromObject(ObjLimit1)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit1, -1, 0, 2
+<span class="keyword">    Set </span>ObjLimit2 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.120&quot;)
+<span class="keyword">    Set </span>Limit2 = ObjPart.CreateReferenceFromObject(ObjLimit2)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit2, -1, 0, 2
+<span class="keyword">    Set </span>ObjLimit3 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-18&quot;)
+<span class="keyword">    Set </span>Limit3 = ObjPart.CreateReferenceFromObject(ObjLimit3)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit3, -1, 0, 2
+<span class="keyword">    Set </span>ObjLimit4 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.18&quot;)
+<span class="keyword">    Set </span>Limit4 = ObjPart.CreateReferenceFromObject(ObjLimit4)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit4, -1, 0, 2
+    
+<span class="comment">'   6.3- Calls method Run to complete the creation panel</span>
+    Run oObjSfdPanel
+    
+<span class="comment">'   6.4- Updates created panel object</span>
+    ObjPart.UpdateObject oObjSfdPanel
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Creates a TransversePanel using CROSS.90 as support plane</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   7.1- Creates panel with no properties then set the properties category, support, material and thickness</span>
+<span class="comment">'   7.2- Retrieves StrPanelLimitMngt and sets panel limits</span>
+<span class="comment">'   7.3- Retrieves StrPlateExtrusionMngt and reverse ThrowOrientation</span>
+<span class="comment">'   7.4- Calls method Run to complete the creation panel</span>
+<span class="comment">'   7.5- Updates created panel object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateTransversalPanel(oObjSfdPanel<span class="keyword"> As </span>SfdPanel)
+    
+<span class="comment">'   7.1- Creates panel with no properties then set the properties category, support, material and thickness</span>
+<span class="keyword">    Set </span>ObjPanelSupport = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.90&quot;)
+<span class="keyword">    Set </span>PanelSupport = ObjPart.CreateReferenceFromObject(ObjPanelSupport)
+    CreatePanelAndSetData False, &quot;TransversePanel&quot;, PanelSupport, &quot;Steel A42&quot;, &quot;12mm&quot;, 0, oObjSfdPanel 
+
+<span class="comment">'   7.2- Retrieves StrPanelLimitMngt and sets panel limits</span>
+    <span class="comment">'Get StrPanelLimitMngt object</span>
+<span class="keyword">    Dim </span>ObjStrPanelLimitMngt<span class="keyword"> As </span>StrPanelLimitMngt
+<span class="keyword">    Set </span>ObjStrPanelLimitMngt = oObjSfdPanel.StrPanelLimitMngt
+    <span class="comment">'set limits</span>
+<span class="keyword">    Set </span>ObjLimit1 = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.6&quot;)
+<span class="keyword">    Set </span>Limit1 = ObjPart.CreateReferenceFromObject(ObjLimit1)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit1, -1, 0, 2
+    ObjStrPanelLimitMngt.InvertLimit -1
+<span class="keyword">    Set </span>ObjLimit2 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-18&quot;)
+<span class="keyword">    Set </span>Limit2 = ObjPart.CreateReferenceFromObject(ObjLimit2)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit2, -1, 0, 2
+<span class="keyword">    Set </span>ObjLimit3 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.18&quot;)
+<span class="keyword">    Set </span>Limit3 = ObjPart.CreateReferenceFromObject(ObjLimit3)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit3, -1, 0, 2
+<span class="keyword">    Set </span>ObjLimit4 = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.0&quot;)
+<span class="keyword">    Set </span>Limit4 = ObjPart.CreateReferenceFromObject(ObjLimit4)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit4, -1, 0, 2
+
+<span class="comment">'   7.3- Retrieves StrPlateExtrusionMngt and reverse ThrowOrientation</span>
+<span class="keyword">    Dim </span>ObjStrPlateExtrusionMngt<span class="keyword"> As </span>StrPlateExtrusionMngt
+<span class="keyword">    Set </span>ObjStrPlateExtrusionMngt = oObjSfdPanel.StrPlateExtrusionMngt
+    ObjStrPlateExtrusionMngt.ReverseThrowOrientation
+    
+<span class="comment">'   7.4- Calls method Run to complete the creation panel</span>
+    Run oObjSfdPanel
+
+<span class="comment">'   7.5- Updates created panel object</span>
+    ObjPart.UpdateObject oObjSfdPanel
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Splits DeckPanel by using TransversePanel</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   8.1- Retrieves StrSfdPlatesMngt object</span>
+<span class="comment">'   8.2- Retrieves CuttingElements </span>
+<span class="comment">'   8.3- Adds the references of cutting elements in the list</span>
+<span class="comment">'   8.4- Sets the list of cutting elements</span>
+<span class="comment">'   8.5- Calls method Run to create split plates</span>
+<span class="comment">'   8.6- Updates panel object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateSplitPlates(iObjSfdPanel<span class="keyword"> As </span>SfdPanel, iCuttingPanel<span class="keyword"> As </span>SfdPanel)
+    
+<span class="comment">'   8.1- Retrieves StrSfdPlatesMngt object</span>
+<span class="keyword">    Dim </span>ObjSfdPlatesMngt<span class="keyword"> As </span>StrSfdPlatesMngt
+<span class="keyword">    Set </span>ObjSfdPlatesMngt = iObjSfdPanel.StrSfdPlatesMngt
+
+<span class="comment">'   8.2- Retrieves CuttingElements </span>
+<span class="keyword">    Dim </span>ListOfCuttingRefs<span class="keyword"> As </span>StrReferences
+<span class="keyword">    Set </span>ListOfCuttingRefs = ObjSfdPlatesMngt.CuttingElements
+    
+<span class="comment">'   8.3- Adds the references of cutting elements in the list</span>
+<span class="keyword">    Set </span>CuttingElemRef = ObjPart.CreateReferenceFromObject(iCuttingPanel)
+    ListOfCuttingRefs.Add CuttingElemRef
+
+<span class="comment">'   8.4- Sets the list of cutting elements</span>
+    ObjSfdPlatesMngt.CuttingElements = ListOfCuttingRefs
+    
+<span class="comment">'   8.5- Calls method Run to create split plates</span>
+    ObjSfdPlatesMngt.Run
+
+<span class="comment">'   8.6- Updates panel object</span>
+    ObjPart.UpdateObject iObjSfdPanel
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Creates a panel which will be later used for breaking DeckPanel</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   9.1- Creates panel with no properties then set the properties category, support, material and thickness</span>
+<span class="comment">'   9.2- Retrieves StrPanelLimitMngt and sets panel limits</span>
+<span class="comment">'   9.3- Calls method Run to complete the creation panel</span>
+<span class="comment">'   9.4- Updates created panel object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreatePanelForBreak(oObjSfdPanel<span class="keyword"> As </span>SfdPanel)
+    
+<span class="comment">'   9.1- Creates panel with no properties then set the properties category, support, material and thickness</span>
+<span class="keyword">    Set </span>ObjPanelSupport = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.115&quot;)
+<span class="keyword">    Set </span>PanelSupport = ObjPart.CreateReferenceFromObject(ObjPanelSupport)
+    CreatePanelAndSetData False, &quot;SldPanel&quot;, PanelSupport, &quot;Steel A42&quot;, &quot;12mm&quot;, 0, oObjSfdPanel 
+
+<span class="comment">'   9.2- Retrieves StrPanelLimitMngt and sets panel limits</span>
+    <span class="comment">'Get StrPanelLimitMngt object</span>
+<span class="keyword">    Dim </span>ObjStrPanelLimitMngt<span class="keyword"> As </span>StrPanelLimitMngt
+<span class="keyword">    Set </span>ObjStrPanelLimitMngt = oObjSfdPanel.StrPanelLimitMngt
+    <span class="comment">'set limits</span>
+<span class="keyword">    Set </span>ObjLimit1 = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.2&quot;)
+<span class="keyword">    Set </span>Limit1 = ObjPart.CreateReferenceFromObject(ObjLimit1)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit1, -1, 0, 2
+    ObjStrPanelLimitMngt.InvertLimit -1
+<span class="keyword">    Set </span>ObjLimit2 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-18&quot;)
+<span class="keyword">    Set </span>Limit2 = ObjPart.CreateReferenceFromObject(ObjLimit2)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit2, -1, 0, 2
+<span class="keyword">    Set </span>ObjLimit3 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.18&quot;)
+<span class="keyword">    Set </span>Limit3 = ObjPart.CreateReferenceFromObject(ObjLimit3)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit3, -1, 0, 2
+<span class="keyword">    Set </span>ObjLimit4 = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.0&quot;)
+<span class="keyword">    Set </span>Limit4 = ObjPart.CreateReferenceFromObject(ObjLimit4)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit4, -1, 0, 2
+
+<span class="comment">'   9.3- Calls method Run to complete the creation panel</span>
+    Run oObjSfdPanel
+
+<span class="comment">'   9.4- Updates created panel object</span>
+    ObjPart.UpdateObject oObjSfdPanel
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Break the DeckPanel</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   10.1- Retrieves StrBreak object</span>
+<span class="comment">'   10.2- Retrieves SplittingElements</span>
+<span class="comment">'   10.3- Creates reference to the splitting panel and adds it in the SplittingElements list</span>
+<span class="comment">'   10.4- Break the panel</span>
+<span class="comment">'   10.5- Calls method Run to complete the creation panel</span>
+<span class="comment">'   10.6- Updates created panel object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>BreakPlate(iPanelToBreak<span class="keyword"> As </span>SfdPanel, iSplittingPanel<span class="keyword"> As </span>SfdPanel)
+    
+<span class="comment">'   10.1- Retrieves StrBreak object</span>
+<span class="keyword">    Dim </span>ObjStrBreak<span class="keyword"> As </span>StrBreak
+<span class="keyword">    Set </span>ObjStrBreak = iPanelToBreak.StrBreak
+    
+<span class="comment">'   10.2- Retrieves SplittingElements</span>
+<span class="keyword">    Dim </span>CollOfSplitRef<span class="keyword"> As </span>StrReferences
+<span class="keyword">    Set </span>CollOfSplitRef = ObjStrBreak.SplittingElements
+    
+<span class="comment">'   10.3- Creates reference to the splitting panel and adds it in the SplittingElements list</span>
+<span class="keyword">    Set </span>SplittingElemRef = ObjPart.CreateReferenceFromObject(iSplittingPanel)
+    CollOfSplitRef.Add SplittingElemRef
+    
+<span class="comment">'   10.4- Break the panel</span>
+<span class="keyword">    Set </span>ListOfResults = ObjStrBreak.Break(CollOfSplitRef)
+    
+<span class="comment">'   10.5- Calls method Run to complete the creation panel</span>
+    Run iPanelToBreak
+    
+<span class="comment">'   10.6- Updates created panel object</span>
+    ObjPart.UpdateObject iPanelToBreak
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Creates Advanced panel</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   11.1- Creates panel with no properties then set the properties category, support, material and thickness</span>
+<span class="comment">'   11.2- Retrieves StrPanelLimitMngt and sets panel limits</span>
+<span class="comment">'   11.3- Sets the 3rd limit as the last limit of the panel</span>
+<span class="comment">'   11.4- Calls method Run to complete the creation panel</span>
+<span class="comment">'   11.5- Updates created panel object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateAdvancedPanel(oObjAdvancedPanel<span class="keyword"> As </span>SfdPanel)
+    
+<span class="comment">'   11.1- Creates panel with no properties then set the properties category, support, material and thickness</span>
+<span class="keyword">    Set </span>ObjPanelSupport = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.0&quot;)
+<span class="keyword">    Set </span>PanelSupport = ObjPart.CreateReferenceFromObject(ObjPanelSupport)
+    CreatePanelAndSetData True, &quot;SldPanel&quot;, PanelSupport, &quot;Steel A42&quot;, &quot;12mm&quot;, 0, oObjAdvancedPanel 
+
+<span class="comment">'   11.2- Retrieves StrPanelLimitMngt and sets panel limits</span>
+<span class="keyword">    Dim </span>ObjStrPanelLimitMngt<span class="keyword"> As </span>StrPanelLimitMngt
+<span class="keyword">    Set </span>ObjStrPanelLimitMngt = oObjAdvancedPanel.StrPanelLimitMngt
+    <span class="comment">'Sets panel limits</span>
+<span class="keyword">    Set </span>ObjLimit1 = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.8&quot;)
+<span class="keyword">    Set </span>Limit1 = ObjPart.CreateReferenceFromObject(ObjLimit1)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit1, -1, 0, 2
+    ObjStrPanelLimitMngt.InvertLimit -1
+<span class="keyword">    Set </span>ObjLimit2 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.10&quot;)
+<span class="keyword">    Set </span>Limit2 = ObjPart.CreateReferenceFromObject(ObjLimit2)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit2, -1, 0, 2
+    ObjStrPanelLimitMngt.InvertLimit -1
+<span class="keyword">    Set </span>ObjLimit3 = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.3&quot;)
+<span class="keyword">    Set </span>Limit3 = ObjPart.CreateReferenceFromObject(ObjLimit3)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit3, -1, 0, 2
+    ObjStrPanelLimitMngt.InvertLimit -1
+<span class="keyword">    Set </span>ObjLimit4 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-16&quot;)
+<span class="keyword">    Set </span>Limit4 = ObjPart.CreateReferenceFromObject(ObjLimit4)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit4, -1, 0, 2
+    ObjStrPanelLimitMngt.InvertLimit -1
+<span class="keyword">    Set </span>ObjLimit5 = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.1&quot;)
+<span class="keyword">    Set </span>Limit5 = ObjPart.CreateReferenceFromObject(ObjLimit5)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit5, -1, 0, 2
+<span class="keyword">    Set </span>ObjLimit6 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-18&quot;)
+<span class="keyword">    Set </span>Limit6 = ObjPart.CreateReferenceFromObject(ObjLimit6)
+    ObjStrPanelLimitMngt.SetLimitingObject Limit6, -1, 0, 2
+    
+<span class="comment">'   11.3- Sets the 3rd limit as the last limit of the panel</span>
+<span class="keyword">    Dim </span>ObjStrAdvPanel<span class="keyword"> As </span>StrAdvPanel
+<span class="keyword">    Set </span>ObjStrAdvPanel = oObjAdvancedPanel.StrAdvPanel
+    ObjStrAdvPanel.SetAsLastLimit 3
+    
+<span class="comment">'   11.4- Calls method Run to complete the creation panel</span>
+    Run oObjAdvancedPanel
+    
+<span class="comment">'   11.5- Updates created panel object</span>
+    ObjPart.UpdateObject oObjAdvancedPanel
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Creates panel with no properties then set the properties category, support, material and thickness</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Retrieves SfdFactory and creates a new empty panel</span>
+<span class="comment">'   2- Retrieves StrCategoryMngt and sets category</span>
+<span class="comment">'   3- Retrieves StrPanelSurf and sets support of the panel</span>
+<span class="comment">'   4- Retrieves StrMaterialMngt and sets material</span>
+<span class="comment">'   5- Retrieves StrPlateExtrusionMngt and sets plate geometry parameters such as thickness, throw orientation</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreatePanelAndSetData (iIsAdvPanel<span class="keyword"> As </span>Boolean, iCategory<span class="keyword"> As </span>String, iSupport<span class="keyword"> As </span>Reference, iMaterial<span class="keyword"> As </span>String, iThickness<span class="keyword"> As </span>String, iThrowOrientation<span class="keyword"> As </span>Long, oObjSfdPanel<span class="keyword"> As </span>SfdPanel)
+<span class="comment">'   1- Retrieves SfdFactory and creates a new empty panel</span>
+    <span class="comment">'Get SfdFactory object</span>
+<span class="keyword">    Dim </span>ObjSfdFactory<span class="keyword"> As </span>SfdFactory
+<span class="keyword">    Set </span>ObjSfdFactory = ObjPart.GetCustomerFactory(&quot;SfdFactory&quot;)
+    <span class="comment">'Create a new empty panel(with no data set)</span>
+<span class="keyword">    Set </span>DestPart = ObjPart.CreateReferenceFromObject(ObjPart)
+<span class="keyword">    Set </span>oObjSfdPanel = ObjSfdFactory.AddPanel(DestPart, iIsAdvPanel)
+ 
+<span class="comment">'   2- Retrieves StrCategoryMngt and sets category</span>
+    <span class="comment">'Get StrCategoryMngt object</span>
+<span class="keyword">    Dim </span>ObjStrCategoryMngt<span class="keyword"> As </span>StrCategoryMngt
+<span class="keyword">    Set </span>ObjStrCategoryMngt = oObjSfdPanel.StrCategoryMngt
+    <span class="comment">'Set Category and automatic naming true</span>
+    ObjStrCategoryMngt.SetCategory iCategory
+    ObjStrCategoryMngt.AutomaticName = True
+
+<span class="comment">'   3- Retrieves StrPanelSurf and sets support of the panel</span>
+    <span class="comment">'Get StrPanelSurf object</span>
+<span class="keyword">    Dim </span>ObjSfdPanelSupport<span class="keyword"> As </span>StrPanelSurf
+<span class="keyword">    Set </span>ObjSfdPanelSupport = oObjSfdPanel.StrPanelSurf
+    <span class="comment">'Set support</span>
+    ObjSfdPanelSupport.Support = iSupport
+    
+<span class="comment">'   4- Retrieves StrMaterialMngt and sets material</span>
+    <span class="comment">'Get StrMaterialMngt object</span>
+<span class="keyword">    Dim </span>ObjStrMaterialMngt<span class="keyword"> As </span>StrMaterialMngt
+<span class="keyword">    Set </span>ObjStrMaterialMngt = oObjSfdPanel.StrMaterialMngt
+    <span class="comment">'Set material</span>
+    ObjStrMaterialMngt.SetMaterial iMaterial
+
+<span class="comment">'   5- Retrieves StrPlateExtrusionMngt and sets plate geometry parameters such as thickness, throw orientation</span>
+    <span class="comment">'Get StrPlateExtrusionMngt object</span>
+<span class="keyword">    Dim </span>ObjStrPlateExtrusionMngt<span class="keyword"> As </span>StrPlateExtrusionMngt
+<span class="keyword">    Set </span>ObjStrPlateExtrusionMngt = oObjSfdPanel.StrPlateExtrusionMngt
+    <span class="comment">'Set thickness</span>
+<span class="keyword">    Set </span>ThicknessParm = ObjStrPlateExtrusionMngt.GetThickness
+    ThicknessParm.ValuateFromString iThickness
+    <span class="comment">'Set ThrowOrientation</span>
+    ObjStrPlateExtrusionMngt.ThrowOrientation = iThrowOrientation
+    <span class="comment">'Set orientation mode</span>
+    ObjStrPlateExtrusionMngt.OffsetMode = 0
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'call this method to create plates</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>Run(iObjSfdPanel<span class="keyword"> As </span>SfdPanel)
+    <span class="comment">'Get StrSfdPlatesMngt object</span>
+<span class="keyword">    Dim </span>ObjSfdPlatesMngt<span class="keyword"> As </span>StrSfdPlatesMngt
+<span class="keyword">    Set </span>ObjSfdPlatesMngt = iObjSfdPanel.StrSfdPlatesMngt
+    <span class="comment">'Call Run method to complete the creation of plate</span>
+    ObjSfdPlatesMngt.Run
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SFDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SFDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

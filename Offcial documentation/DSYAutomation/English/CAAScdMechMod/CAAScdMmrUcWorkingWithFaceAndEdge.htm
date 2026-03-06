@@ -1,0 +1,387 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Working with Face and Edge</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Working with Face and Edge</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates about working with Face and Edge. In this UC 
+						we learn how to retrieve Faces and Edge and create Fillets 
+						using it.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:
+						<ul>
+							<li>Launch CATIA </li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdMmrUcWorkingWithFaceAndEdgeSource.htm">CAAScdMmrUcWorkingWithFaceAndEdgeSource.htm</a></span></p><span class="run-in">
+						</span></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjSelection.htm">Selection Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrTocPart.htm">Part Object Model Map</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 3 steps</p>
+		<ol>
+			<li><a href="#Step1">Creates a 3D Shape with Faces and Edges</a></li>
+			<li><a href="#Step2">Creates face to face Fillet with constant radius</a></li>
+			<li><a href="#Step3">Creates Edge Fillet with constant radius</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"></a>Creates a 3D Shape with Faces and Edges</p>
+			<p>As a first step, this UC creates the geometry with a 2D Sketch which 
+			is extruded to a Pad creating Faces and Edges</p>
+			<pre class="code">... 
+    <span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+    <strong>CreatingGeometry</strong> <strong>oPart</strong>
+...</pre>
+			<p>A call to <em>CreatingGeometry</em> function creates a 3DShape, retrieves 
+			its <a href="CAAMmrObjPart.htm">Part Object</a>, <code>oPart</code>, 
+			creates a sketch with lines to form a bounded area to it and extrudes 
+			it to a Pad, forming Faces and Edges as depicted in the below 
+			figure, <a href="#Fig1">Fig1</a>.</p>
+			<table>
+				<caption><a name="Fig1"></a>Fig.1 Created Geometry with Faces and 
+				Edges</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Created Geometry with Faces and Edges" src="CAAScdMmrUcWorkingWithFaceAndEdge_image_in.jpg" width="491" height="402"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>We thus create the Geometry and we now proceed to selecting the faces 
+			and creating a Fillet between them.</p>
+			</li>
+			<li>
+			<p><a name="Step2"></a>Creates face to face Fillet</p>
+			<p>The Use Case prompts to user to select two faces one by one. Then 
+			from selection object Use Case retrieves Face objects. Next from two 
+			selected face object Use Case creates Face to Face fillet. For better 
+			understanding we divide this step in sub steps</p>
+			<ol class="task" style="list-style-type: upper-roman">
+				<li>
+				<p>Selects and retrieves first Face</p>
+				<p>Now we retrieve Selection object from active editor</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> oObjSelection
+<span class="keyword">Set</span> oObjSelection = CATIA.ActiveEditor.<strong>Selection</strong>
+...</pre>
+				<p>A call to <em>Selection</em> Property of the Active Editor returns
+				<code>oObjSelection</code>, a <em>Selection</em> object. It is significant 
+				to note here that we haven't declared a type for <code>oObjSelection</code> 
+				(as for several other variables, further ahead in this macro). The 
+				section &quot;Virtual Function Table Compatibility&quot; in the technical 
+				article &quot;About Automation Languages, Debug, and Compatibility&quot; [<a href="#References">1</a>] 
+				provides an explanation for why these variables are not typed.
+				</p>
+				<p>Then prompt the user to select the first Face, a 
+				Face type object</p>
+				<pre class="code">...
+oInputObjectType(0) = &quot;Face&quot;
+Status = oObjSelection.<strong>SelectElement</strong>(oInputObjectType, &quot;Select the first face&quot;, False)
+...</pre>
+				<p>&quot;<strong><em>Face</em></strong>&quot; type is appended to an array 
+				(<code>oInputObjectType</code>), which now represents the select 
+				criteria. The selection object (<code>oObjSelection</code>) is then 
+				updated with this select criteria, with a call to <code>SelectElement</code> 
+				method. </p>
+				<p>At this stage, the application prompts an end user to select 
+				a <em>Face</em> from the spec tree or the 3D Viewer (second argument 
+				of the <code>SelectElement</code> method, represents the prompt 
+				message)</p>
+				<p>Now that the user has made a selection in the spec tree or the 
+				3D Viewer, the current step retrieves it (a <em><strong>Face</strong></em>) 
+				from the Selection Object which contains it.</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> oFirstFace <span class="keyword">As</span> Face
+<span class="keyword">Set</span> oFirstFace = oObjSelection.Item(1).Value
+
+MsgBox (&quot;Selected First Face Name : &quot;) + oFirstFace.<strong>Name</strong>
+...</pre>
+				<p>A call to <em>Item</em> method on <code>oObjSelection</code> 
+				retrieves <code>oFirstFace</code> object of the <code>Face</code>.
+				</p>
+				<p>Then we display the <code>Face</code> object name 
+				using <em>Name</em> property of <code>Face</code> object,
+				<code>oFirstFace </code>. </p>
+				<table>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="Prompt" src="CAAScdMmrUcWorkingWithFaceAndEdge_image_1.jpg"/></td>
+					</tr>
+				</tbody>
+				</table>
+				</li>
+				<li>
+				<p>Selects and retrieves Second Face</p>
+				<p>Similarly next we select the second Face. Before 
+				new selection we need to clear the selection object. </p>
+				<pre class="code">...
+oObjSelection.Clear		
+..</pre>
+				<p>A <em>Clear</em> method of <code>Selection</code> 
+				object, <code>oObjSelection</code> clears the previously selected 
+				object (<code>Face</code> object) from this <code>
+				Selection</code> object.</p>
+				<p>Then prompt the user to select the Second Face, 
+				a Face type object</p>
+				<pre class="code">...
+Status = oObjSelection.<strong>SelectElement</strong>(oInputObjectType, &quot;Select the second face&quot;, False)
+...</pre>
+				<p>At this stage, the application prompts an end user to select 
+				a <em>Face</em> from the spec tree or the 3D Viewer (second argument 
+				of the <code>SelectElement</code> method, represents the prompt 
+				message)</p>
+				<p>Now that the user has made a selection in the spec tree or the 
+				3D Viewer, the current step retrieves it (a <em><strong>Face</strong></em>) 
+				from the Selection Object which contains it.</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> oSecondFace <span class="keyword">As</span> Face
+<span class="keyword">Set</span> oSecondFace = oObjSelection.Item(1).Value
+
+MsgBox (&quot;Selected second Face Name : &quot;) + oSecondFace.Name
+...</pre>
+				<p>A call to <em>Item</em> method on <code>oObjSelection</code> 
+				retrieves <code>oSecondFace </code>object of the <code>Face</code>.
+				</p>
+				<p>Then we display the <code>Face</code> object name 
+				using <em>Name</em> property of <code>Face</code> object,
+				<code>oSecondFace </code>.</p>
+				<table>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="Prompt" src="CAAScdMmrUcWorkingWithFaceAndEdge_image_2.jpg"/></td>
+					</tr>
+				</tbody>
+				</table>
+				</li>
+				<li>
+				<p>Creates face to face Fillet</p>
+				<p>Firstly we prompt the user to input the radius value for face 
+				fillet.</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> dFaceFilletRadius <span class="keyword">As</span> Double
+dFaceFilletRadius = InputBox(&quot;Please enter the Face Fillet Radius Value  &quot;, &quot;Enter Face Fillet Radius Value&quot;)
+...</pre>
+				<table>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="Enter Face Fillet Radius Value Dialog Box" src="CAAScdMmrUcWorkingWithFaceAndEdge_image_3.jpg"/></td>
+					</tr>
+				</tbody>
+				</table>
+				<p>Now we create the new face fillet based on two selected faces 
+				and input radius value.</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> oFaceFillet <span class="keyword">As</span> FaceFillet
+<span class="keyword">Set</span> oFaceFillet = <strong>oPart.ShapeFactory.AddNewSolidFaceFillet</strong>(oFirstFace, oSecondFace, dFaceFilletRadius)
+
+oPart.Update
+...</pre>
+				<p>A call to <code>ShapeFactory</code> property of 
+				Part on <code>oPart </code>returns the part shape factory object.</p>
+				<p>Next a call to <code>AddNewSolidFaceFillet</code> 
+				method of ShapeFactory creates a Face to Face fillet between input 
+				faces of solid with constant radius (<code>oFirstFace</code>,
+				<code>oSecondFace</code>) with input radius (<code>dFaceFilletRadius</code>).</p>
+				<p>Then we update the Part object (<code>oPart</code>) 
+				using call <em>Update</em> method. </p>
+				<table>
+					<caption><a name="Fig2"></a>Fig.2 Face to Face Fillet</caption>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="Face to Face Fillet" src="CAAScdMmrUcWorkingWithFaceAndEdge_image_4.jpg" width="459" height="380"/></td>
+					</tr>
+				</tbody>
+				</table>
+				<p>Above [<a href="#Fig2">Fig.2</a>] shows the created face to face 
+				fillet. </p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><a name="Step3"></a>Creates Edge Fillet</p>
+			<p>Now Use Case prompts to user for selection of Edge then creates Edge 
+			fillet with constant radius value. For better understanding we divide 
+			this step in sub steps</p>
+			<ol class="task" style="list-style-type: upper-roman">
+				<li>
+				<p>Selects and retrieves Edge</p>
+				<p>we select the Edge fillet to create Edge Fillet. 
+				Before new selection we need to clear the selection object. </p>
+				<pre class="code">...
+oObjSelection.Clear		
+..</pre>
+				<p>A <em>Clear</em> method of <code>Selection</code> 
+				object, <code>oObjSelection</code> clears the previously selected 
+				object (<code>Face</code> object) from this <code>Selection</code> object. </p>
+				<p>Then prompt the user to select the Edge type object</p>
+				<pre class="code">...
+oInputObjectType(0) = &quot;<strong>Edge</strong>&quot;
+Status = oObjSelection.<strong>SelectElement</strong>(oInputObjectType, &quot;Select the Edge&quot;, False)
+...</pre>
+				<p>&quot;<strong><em>Edge</em></strong>&quot; type is appended to an array 
+				(<code>oInputObjectType</code>), which now represents the select 
+				criteria. The selection object (<code>oObjSelection</code>) is then 
+				updated with this select criteria, with a call to <code>SelectElement</code> 
+				method.</p>
+				<p>At this stage, the application prompts an end user to select 
+				a <em>Edge</em> from the spec tree or the 3D Viewer (second argument 
+				of the <code>SelectElement</code> method, represents the prompt 
+				message).</p>
+				<p>Now that the user has made a selection in the spec tree or the 
+				3D Viewer, the current step retrieves it (a <em><strong>Edge</strong></em>) 
+				from the Selection Object which contains it.</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> oEdge <span class="keyword">As</span> Edge
+<span class="keyword">Set</span> oEdge = oObjSelection.Item(1).Value
+...</pre>
+				<p>The <em>Item</em> method on <code>oObjSelection</code>, 
+				returns the iIndex-th SelectedElement Object contained by the current 
+				selection, the first Object, <code>oEdge</code> in this case.</p>
+				</li>
+				<li>
+				<p>Creates Edge Fillet With Constant Radius</p>
+				<p>Now we create edge fillet on selected Edge with input radius.</p>
+				<p>Firstly we prompt the user to enter Edge fillet 
+				radius value. As shown in following fig. This fig also shows selected 
+				Edge.</p>
+				<pre class="code">...
+<span class="keyword">Dim</span>  dEdgeFilletRadius <span class="keyword">As</span> Double
+dEdgeFilletRadius = InputBox(&quot;Please enter the Edge Fillet Radius Value &quot;, &quot;Enter Edge Fillet Radius Value&quot;)
+...</pre>
+				<table>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="Enter Face Fillet Radius Value Dialog Box" src="CAAScdMmrUcWorkingWithFaceAndEdge_image_5.jpg" width="556" height="396"/></td>
+					</tr>
+				</tbody>
+				</table>
+				<pre class="code">...
+<span class="keyword">Dim</span> oEdgeFillet <span class="keyword">As</span> EdgeFillet
+<span class="keyword">Set</span> oEdgeFillet = oPart.ShapeFactory.AddNewEdgeFilletWithConstantRadius(oEdge, 1, dEdgeFilletRadius)
+
+oPart.Update
+...</pre>
+				<p>A call to <code>ShapeFactory</code> property of 
+				Part on <code>oPart </code>returns the part shape factory object.</p>
+				<p>Next a call to <code>AddNewEdgeFilletWithConstantRadius</code> 
+				method of ShapeFactory creates a Edge fillet with constant radius 
+				on selected edge (<code>oEdge</code>) with given input radius (<code>dEdgeFilletRadius</code>).</p>
+				<p>Then we update the Part object (<code>oPart</code>) 
+				using call <em>Update</em> method. </p>
+				<table>
+					<caption><a name="Fig3"></a>Fig.3 Edge Fillet</caption>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="Edge Fillet" src="CAAScdMmrUcWorkingWithFaceAndEdge_image_out.jpg" width="469" height="396"/></td>
+					</tr>
+				</tbody>
+				</table>
+				<p>Above [<a href="#Fig3">Fig.3</a>] shows the newly created Edge 
+				Fillet</p>
+				</li>
+			</ol>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[<a name="1"></a>1]</td>
+		<td><a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation Languages, Debug, and Compatibility</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

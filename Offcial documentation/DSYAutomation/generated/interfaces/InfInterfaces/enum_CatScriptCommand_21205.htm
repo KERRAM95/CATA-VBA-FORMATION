@@ -1,0 +1,88 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>InfInterfaces CatScriptCommandEnumeration </title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../InfInterfaces.htm" href="../InfInterfaces.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "InfInterfaces";	}
+		function getCurrentObjectName() { 
+ 	return "CatScriptCommand"; } 
+	function getCurrentType() { 
+ 	return "enum"; }  
+ </script><h1 class='title1'>CatScriptCommand <font style='font-size:small;'>(Enumeration)</font></h1></header><main id='main'> 
+ 
+<section id='maindesc'><section id='objdef'><dl>
+<dt class='dt1'>
+enum <b>CatScriptCommand</b> {<pre class='light'>
+  CatScriptCommandDefault,
+  CatScriptCommandStop,
+  CatScriptCommandStart
+</pre>}
+</dt><dd class='dd1'>
+<b><i> ScriptCommand values.</i></b><br>
+
+ Used for <script type="text/javascript"> activateLinkAnchor('CATIAApplication','ScriptCommand','CATIAApplication.ScriptCommand') </script> property, itself used when performing Selection from script.  
+<dl  class='desclist'>
+  <dt> <b>Values:</b></dt>
+  <dd>
+    <dl class='valuelist'>
+    <dt><span class='paramitem'> CatScriptCommandDefault</span></dt>
+   <dd>   The Select interactive command remains active during all the script execution. This is the default value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> CatScriptCommandStop</span></dt>
+   <dd>   Ends the previously activated fake command. The fake exclusive command instanciated goes out of its sleeping state.
+   This is also true for the shared command instanciated during the execution of 
+<script type="text/javascript"> activateLinkAnchor('CATIASelection','SelectElement','CATIASelection.SelectElement') </script>.   The Select command is instanciated and becomes active.
+ 
+ </ dd>
+    <dt><span class='paramitem'> CatScriptCommandStart</span></dt>
+   <dd>   Instanciates and activates a fake exclusive command:
+ <ul>
+ <li>the active command (the Select command in most cases) is deactivated</li>
+ <li>
+<script type="text/javascript"> activateLinkAnchor('CATIAApplication','StatusBar','CATIAApplication.StatusBar') </script> is emptied</li></ul> Then, if the user selects an external exclusive command such as the Pad command, the fake exclusive command
+ instanciated will enter a sleeping state. If the user selects an external exclusive command during the execution
+ of an interactive method such as 
+<script type="text/javascript"> activateLinkAnchor('CATIASelection','SelectElement','CATIASelection.SelectElement') </script>, the shared command enabling the selection will also enter a sleeping state.</li><br>
+ <b>Note</b>: Setting this property will fail (being followed by a script error) if one of the following error
+ occurs (CATIA.ScriptCommand current value is... it cannot be set to...):<tt>
+ <ul>
+ <li>... CatScriptCommandDefault => CatScriptCommandDefault</li>
+ <li>... CatScriptCommandDefault => CatScriptCommandStop</li><br>
+
+ <li>... CatScriptCommandStart   => CatScriptCommandDefault</li>
+ <li>... CatScriptCommandStart   => CatScriptCommandStart</li><br>
+
+ <li>... CatScriptCommandStop    => CatScriptCommandDefault</li>
+ <li>... CatScriptCommandStop    => CatScriptCommandStop</li>
+ <li>... CatScriptCommandStop    => CatScriptCommandStart</li>
+ </ul></tt>
+ </ dd>
+</dl></dd>
+</dl>
+</dd></dl></section></section >
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

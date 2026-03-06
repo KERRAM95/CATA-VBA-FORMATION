@@ -1,0 +1,657 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Positioning Product Instances</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>Positioning Product Instances</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This technical article primarily deals with the fundamentals of positioning 
+		the PLM entities inside an assembly model. The first section explains 
+		the basic positioning of a PLM entity followed by the concept of flexibility, 
+		an ability to overload the positions in various context. The second section 
+		details the APIs involved in the process.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Principles"></a>Instance Positioning Principles</h2>
+<p>Our article illustrates the concepts of positioning a product instance using 
+the model depicted below. Its what we call as the &quot;Double Skate&quot; model, since it 
+consists of two elementary skate assemblies. </p>
+<table>
+	<caption><a name="Fig.1"></a>Fig. 1 The Double Skate Model</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Double Skate Model" src="CAAPstPositioningProdInstimg6.gif" width="436" height="230"/></td>
+	</tr>
+</tbody>
+</table>
+<p>The model (rather fictional) consists of:</p>
+<ul>
+	<li>Two elementary Skates, each made up of two Axles (named AxleAssy) and a 
+	Board. The AxleAssy is made up of two wheels and an Axle (name Axle).</li>
+	<li>The right Skate (named S1) has its right (or Front) AxleAssy closer to the 
+	board's border with respect to the left Skate (named S2).</li>
+	<li>On Skate S2, the wheels of the rear AxleAssy are more on the periphery 
+	with respect to S1.</li>
+</ul>
+<p>Put on your helmet and Knee protection, we start.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Overloading"></a>Positioning Without Overloading</h3>
+<p>We begin by creating the Skate. </p>
+<p>The first step involves creating an AxleAssy, comprising of an Axle and two Wheel 
+instances at either end of the Axle.</p>
+<table>
+	<caption>Fig. 2 The AxleAssy</caption>
+	<tbody>
+	<tr>
+		<td><img alt="AxleAssy" src="CAAPstPositioningProdInstimg12.gif"/></td>
+	</tr>
+</tbody>
+</table>
+<p>On instantiation of the two wheels, they are seen as overlapped one over the 
+other in the AxleAssy. The two Wheels and the Axle are located at the position absolute 
+(0,0,0) in the global coordinate system of the AxleAssy.<br />
+</p>
+<table>
+	<caption>Fig. 3 AxleAssy On Initial Creation</caption>
+	<tbody>
+	<tr>
+		<td><img alt="AxleAssy On Initial Creation" src="CAAPstPositioningProdInstimg10.gif"/> </td>
+	</tr>
+</tbody>
+</table>
+<p>Now, it is known we have two distinct data models associated with a Product namely. 
+the Occurrence and the Ref-Inst model. Both these models for the AxleAssy are depicted 
+in the schema that follows.</p>
+<table>
+	<caption>Schema 1 AxleAssy Data Model</caption>
+	<tbody>
+	<tr>
+		<td><img alt="AxleAssy Data Model" src="CAAPstPositioningProdInstimg14.gif"/></td>
+	</tr>
+</tbody>
+</table>
+<p>We proceed to relocate the two Wheels at either end of the Axle. To accomplish 
+this, two possibilities exist. Either we position the wheel Occurrence or its related 
+Instance. In either case, the resulting model is as depicted in the Schema 2 that 
+follows.</p>
+<table>
+	<caption>Schema 2 Wheel Positioned at Ends of Axle</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Wheel Positioned at Ends of Axle" src="CAAPstPositioningProdInstimg16.jpg"/></td>
+	</tr>
+</tbody>
+</table>
+<ul>
+	<li>Position the left wheel at M1 and right wheel at M2, absolute positions 
+	relative to the global co-ordinate system of the AxleAssy. The associated occurrences 
+	and their related instances are seen positioned at M1 and M2.</li>
+</ul>
+<p>We next proceed to create the Skate. The Skate comprises of a board with two 
+AxleAssy positioned at either end of the board as depicted in the picture that follows.</p>
+<table>
+	<caption>Fig. 4 The Complete Skate</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Complete Skate" src="CAAPstPositioningProdInstimg17.gif"/></td>
+	</tr>
+</tbody>
+</table>
+<p>To begin with, we will have the two AxleAssy overlapping one another as seen 
+below. The AxleAssy and the Board are positioned at absolute (0,0,0) in the global 
+co-ordinate system of the Skate.</p>
+<table>
+	<caption>Fig. 5 Skate on Creation</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Skate on Creation" src="CAAPstPositioningProdInstimg22.gif"/> </td>
+	</tr>
+</tbody>
+</table>
+<p>The schema that follows, represents the data model of the Skate on creation.
+<br />
+</p>
+<table>
+	<caption>Schema 3. The Data Model of Skate on Creation</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Data Model of Skate on Creation" src="CAAPstPositioningProdInstimg1F.jpg"/> </td>
+	</tr>
+</tbody>
+</table>
+<ul>
+	<li>The Front and the Rear AxleAssy are positioned at the origin (the absence 
+	of the position matrix in the schema, indicates placement at Origin).</li>
+	<li>The Left and Right wheels were positioned at M1 and M2 respectively, in 
+	the earlier step for both models.</li>
+</ul>
+<p>We proceed further to reposition the two AxleAssy at either end of the Board. 
+That will create a complete Skate, as depicted in [Fig. 4] above. The schema representing 
+the data model of the complete skate follows.</p>
+<table>
+	<caption>Schema 4 The Data Model of the Complete Skate</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Data Model of the Complete Skate" src="CAAPstPositioningProdInstimg1C.jpg"/> </td>
+	</tr>
+</tbody>
+</table>
+<ul>
+	<li>M3/M4 is the absolute position matrix of the front and the rear AxleAssy 
+	in the global coordinate system of the Skate.</li>
+	<li>M1/M2 is the absolute position matrix of the left and the right wheel occurrences/instances.</li>
+	<li>The position of each wheel (in 3D Data model) is the product of the position 
+	matrix of each occurrence beginning with that under Root to the Wheel occurrence. 
+	Thus the position matrix for the rear left wheel in 3D (in red) is M4 (rear 
+	AxleAssy occurrence) X M1 (LeftWheel occurrence).</li>
+</ul>
+<p>Now let us proceed to reposition one of the wheels in the Skate assembly. We 
+will relocate the rear right wheel to <strong>M4xMX</strong> as depicted in the 
+3D Model within the figure that follows.</p>
+<table>
+	<caption>Schema 5. The Data Model of a Skate on Repositioning its Wheel Occurrence</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Repositioning Wheel Occurrence" src="CAAPstPositioningProdInstimg3.gif"/></td>
+	</tr>
+</tbody>
+</table>
+<ul>
+	<li>The rear right wheel was repositioned in 3D at <strong>M4xMX</strong> (in 
+	bold red in the 3D model).</li>
+	<li>It results in the right wheel occurrence and its related instance getting 
+	repositioned to MX. </li>
+	<li>This results in the front right wheel getting repositioned to <strong>M3xMX</strong> 
+	in 3D.</li>
+</ul>
+<p>To sum up, if an entity inside a 3D Model is repositioned, its associated Occurrence 
+(and related Instance) is relocated. The impact is then propagated to all 
+associated Occurrences in the 3D model.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Overloaded"></a>Introduction to Overloaded Position, Flexibility &amp;
+Repositionability Concept</h3>
+<p>Did you notice in the previous case, repositioning the rear right wheel resulted 
+in repositioning the front right wheel as well ? But, this may not be our expectation. 
+We may want for example, only the two front wheels to be drawn closer, without affecting 
+the rear wheels, as the picture that follows indicates.</p>
+<table>
+	<caption>Fig. 6 Skate with the Closer Front Wheels</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Skate with the Closer Front Wheels" src="CAAPstPositioningProdInstimg5.gif"/></td>
+	</tr>
+</tbody>
+</table>
+<p>In other words, the position of the front two wheel occurrences is specific to 
+the Skate context. Meaning, it is overloaded in the skate context. The schema that 
+follows represents the data model for the skate with its front wheels drawn 
+closer to one another.</p>
+<table>
+	<caption>Schema 6. Skate Data Model with Closer Front Wheels</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Skate Data Model with Closer Front Wheels" src="CAAPstPositioningProdInstimg7.gif"/></td>
+	</tr>
+</tbody>
+</table>
+<ul>
+	<li>The front left wheel is repositioned at M3x<strong>M1'</strong>, while the 
+	front right wheel is repositioned to M3X<strong>M2'</strong>, as depicted in 
+	the 3D model.</li>
+	<li><strong>M1'</strong> is the position matrix of the left wheel 
+	occurrence, locally in the Skate context (while that of its related instance 
+	is M1).</li>
+	<li><strong>M2'</strong> is the position matrix of the right wheel occurrence, 
+	locally in the Skate context (while that of its related instance is M2).</li>
+</ul>
+<p>When the matrix of an Occurrence is not the same as its related Instance, the 
+position of the Occurrence is said to be overloaded. Two obvious questions that 
+arise here:</p>
+<ul>
+	<li>Who stores this overloaded information? The answer is it is the Reference-Instance 
+	model which stores this information (M1', M2'), which is retrieved each time 
+	we recreate the Skate occurrence model, and other occurrences model which are 
+	built over the Skate occurrence model (like the &quot;Double Skate&quot; in the next section). 
+	Moreover please note that the Ref-Inst model is persistent (stored in database), 
+	while the Occurrence model is transient (not stored).</li>
+	<li>How is this overloading accomplished?
+	<p>This is possible if the AxleAssy Reference is made &quot;<strong>flexible</strong>&quot;, 
+	and the two wheel instances in it, are &quot;<strong>repositionable</strong>&quot;.
+	</p>
+	<p>You may either open AxleAssy reference standalone or in the Skate context, 
+	the AxleAssy be UI-Activated. The using the &quot;<strong>Properties</strong>&quot; command, 
+	the &quot;<strong>Mechanical Behavior</strong>&quot; page, you check the &quot;<strong>Flexible</strong>
+	<strong>at Instantiation</strong>&quot; button, and you check the two instances of 
+	Wheel as &quot;<strong>Repositionable</strong>&quot;.</p>
+	<table>
+		<caption>Fig. 7 Setting Flexibility to Reference Dialog</caption>
+		<tbody>
+		<tr>
+			<td><img alt="Setting Flexibility to Reference Dialog" src="CAAPstPositioningProdInstimg9.jpg"/></td>
+		</tr>
+	</tbody>
+	</table>
+	</li>
+</ul>
+<p>We proceed to a more generic explanation on this subject of &quot;<strong>Position 
+Overloading</strong>&quot;.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Detail"></a>Overloaded Position in detail</h3>
+<p>In order to introduce a genericity in our discussion, we'll have to introduce 
+another level in our Occurrence data model. It is why we propose a &quot;Double Skate&quot; 
+model, which consists of two elementary skate assemblies, as depicted in the Fig. 
+that follows.</p>
+<table>
+	<caption>Fig. 8 The Double Skate Model</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Double Skate Model" src="CAAPstPositioningProdInstimg6.gif" width="436" height="230"/></td>
+	</tr>
+</tbody>
+</table>
+<p>It simply consists of two instances of the Skate reference namely. S1 and S2.
+</p>
+<p>A significant point to note here is that in S1 (right skate assembly), the front 
+AxleAssy is closer to the skate board's border. Also in S2 (left skate assembly) 
+you'll notice the the wheels of the rear AxleAssy are more towards the periphery. 
+These are the two cases of &quot;overlaoded occurrences&quot; in the &quot;Double Skate&quot; context.
+</p>
+<p>To begin with, we create the &quot;Double Skate&quot; assembly, simply by positioning S1 
+at M5, and S2 at M6. The model is depicted in the schema that follows. Ofcourse, 
+you see the two skates distinctly (not overlapped) since we have located them at 
+distinct locations (M5, M6).</p>
+<table>
+	<caption>Schema 7 Data Model of a Double Skate on Creation</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Data Model of a Double Skate on Creation" src="CAAPstPositioningProdInstimgA.jpg"/></td>
+	</tr>
+</tbody>
+</table>
+<p>We next proceed to overload the occurrences in the &quot;Double Skate&quot; context, so 
+that we have the final model as depicted in the [Fig. 8] above.</p>
+<table>
+	<caption>Schema 8 Data Model of a Double Skate on Overloading</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Data Model of a Double Skate on Overloading" src="CAAPstPositioningProdInstimgC.jpg"/></td>
+	</tr>
+</tbody>
+</table>
+<p>The overloaded occurrences in the &quot;Double Skate&quot; context, are circled in red 
+above, in the Occurrences model. You will find that the two S2-rear AxleAssy 
+Wheels are overloaded (more towards the periphery, <strong>M1''</strong>,
+<strong>M2''</strong>) and the S1-Front AxleAssy is closer to the board (<strong>M3'</strong>).</p>
+<p>To realize this model you will have to do the steps listed below:</p>
+<ul>
+	<li>To move the S1-Front AxleAssy independently (in the &quot;Double Skate&quot; context), 
+	the Skate Reference will have to rendered flexible, and within it, the Front 
+	AxleAssy instance will have to be rendered repositionable.</li>
+	<li>To move the two S2-rear AxleAssy Wheels independently, we will have to:<ul>
+		<li>the AxleAssy Reference will have to be rendered flexible, and within 
+		it, the two Wheel instances will have to be further rendered repositionable.</li>
+		<li>The Skate Reference will have to be flexible and in the Skate context 
+		the Occurrence &quot;Wheel&quot; must be repositionable.</li>
+	</ul>
+	</li>
+</ul>
+<p>The above is effectively summed up by the schema that follows</p>
+<table>
+	<caption>Schema 9 Reference Flexibility and Instance/Occurrence 
+	Repositionability</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Reference Flexibility and Instance/Occurrence Repositionability" src="CAAPstPositioningProdInstimgD.gif"/></td>
+	</tr>
+</tbody>
+</table>
+<p>A significant point to note in the schema above is that when an occurrence at 
+first level (say the Front AxleAssy) is to be set repositionable, it is the related 
+instance which is set repositionable. This is because the instances are tightly 
+bound to the occurrences at the first level.</p>
+<p>Now with this configuration, the schema that follows represents the occurrences 
+which can be potentially overloaded and those which have been actually overloaded 
+resulting in our model depicted in [Fig. ] above.</p>
+<table>
+	<caption>Schema 10 Potentially Overloadable Occurrences 
+	and Overloaded Model</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Potentially Overloadable Occurrences and Overloaded Model" src="CAAPstPositioningProdInstimg4.gif"/></td>
+	</tr>
+</tbody>
+</table>
+<ul>
+	<li>On the left, we have the occurrence model which represents in green, those 
+	occurrences which can be potentially overloaded</li>
+	<li>On the right, we have the occurrence model after we have the occurrences 
+	overloaded, those represented in red. You'll find we have overloaded the Front 
+	AxleAssy of Skate1 and the two wheels of the rear AxleAssy of Skate2.</li>
+</ul>
+<p>To conclude, to overload an occurrence, the rule is for all the occurrences from 
+the one just below the root to the occurrence aggregating the one for overload:</p>
+<ul>
+	<li>The references of all these occurrences must be flexible.</li>
+	<li>In the occurrence model computed from these references, the occurrence/instance 
+	(for first occurrence) corresponding to the one to be repositioned, must 
+	also be repositionable.</li>
+</ul>
+<p>Attention: While reading this TA, you may have an impression that the person 
+who intends to overload an occurrence will render flexibility to references and 
+repositionability to instances/occurrences. It is possible, but it is usually not 
+the case. In fact, it is for the person responsible for a reference to decide the 
+flexibility status (on/off) for the reference, and further, which instances/occurrences 
+beneath it will be be rendered repositionable.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Removal"></a>Flexibility and Repositionability Removal</h3>
+<p>To finish this section, we have to explain the consequences of rendering a reference 
+inflexible or one of its instances/occurrences no longer repositionable, on an occurrence 
+which is overloaded. This section is too technical, and we recommend beginners skip 
+it, for the moment. </p>
+<p>When a reference is no more flexible, all its instances/occurrences which were 
+so far repositionable, cease to be so. We explain that with the schema 11 that follows.</p>
+<table>
+	<caption>Schema 11. Consequences of Disabling Flexibility</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Disabling Flexibility" src="CAAPstPositioningProdInstimg7.jpg"/></td>
+	</tr>
+</tbody>
+</table>
+<p>On schema 11. we consider an instance (e.g., a wheel) used across several occurrences 
+model. As we progress from left to right, we add a level to the occurrences data 
+model (AxleAssy, Skate, DoubleSkate, QuadSkate)</p>
+<p>In the first model, the position matrix for the wheel occurrence is represented 
+by M1. As we progress to the right M2, M3 and M4 are the overloaded matrices in 
+the respective contexts.</p>
+<p>Now we consider possible configurations on removing the flexibility of the references:</p>
+<ul>
+	<li>AxleAssy is not more flexible. In this case, M2 becomes M1 and so do, M3 
+	and M4.</li>
+	<li>Skate is no more flexible. In this case M2 remains M2, while M3 and M4 become 
+	M2.</li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="APIs"></a>Instance Position by APIs</h2>
+<p>Since this article is independent of a programming language, you'll not find 
+any reference to an API in it. The APIs are specifically dealt in various Use Cases 
+we have created for each. The focus here is on the common principles which follow:</p>
+<ul>
+	<li>Handling the position of an Occurrence or Instance.</li>
+	<li>Handling the position in an absolute coordinate system.</li>
+	<li>Handling the position in a local coordinate system.</li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Position"></a>Occurrence and Instance Position</h3>
+<p>In the instance/ reference model, only instances are movable, while in the occurrence 
+model, except for the root occurrence, all other occurrences are movable.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Matrix"></a>Position Matrix </h3>
+<p>A Position Matrix is an entity defined by 12 floats as depicted below:</p>
+<p>[0] [3] [6] [9] <br />
+[1] [4] [7] [10] <br />
+[2] [5] [8] [11]</p>
+<p>where:</p>
+<ul>
+	<li>coefficients from 0 to 8 define the (3x3) transformation matrix.</li>
+	<li>Coefficients from 9 to 11 define the (x,y,z) vector position.</li>
+</ul>
+<p>The matrix must be reversible and isometric.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Instance"></a>Instance Position </h3>
+<p>When you work with Instances in a Ref-Inst model, irrespective of the used 
+method (Absolute or not).</p>
+<p>When you work on instances (instance/reference model) whatever the used method, 
+absolute or not, you directly work on the instance. Have a look to this schema.
+</p>
+<table>
+	<caption>Schema 12 Handling Instance Matrix</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Handling Instance Matrix" src="CAAPstPositioningProdInstimg9.jpg"/> </td>
+	</tr>
+</tbody>
+</table>
+<ul>
+	<li>When you modify or retrieve the matrix of the Right Wheel, you modify or 
+	retrieve the Matrix of the instance (in this case, M2).</li>
+	<li>When you modify or retrieve the matrix of the Front AxleAssy, you modify 
+	or retrieve the matrix of the instance, yet again (in this case, M3).</li>
+</ul>
+<p>Working with an Ref-Inst model (handling positions, specifically) is relevant 
+while we build an assembly, but otherwise we recommend working with an occurrence 
+model, which is more accurate and safe, since the values of the overloaded matrices 
+are stored inside an occurrence model.</p>
+<p><strong>Example of a Dangerous Scenario: </strong>If the position of 
+the front left wheel (Skate Schema 6) is computed, using the Ref-Inst model, it 
+will work out to M1xM3, where M1 is the position matrix for the left wheel instance, 
+while M3 is that for the front AxleAssy instance. This result is incorrect, since 
+in the Skate context the front wheels were drawn closer to the centre and its position 
+is M1'xM3.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Occurrence"></a>Occurrence Position</h3>
+<p>The section deals with reading and writing the position of an Occurrence.</p>
+<h4><a name="Read"></a>Read an Occurrence Position</h4>
+<p>The position of an Occurrence is a function of the context in which it is sought. 
+We have two possible cases:</p>
+<ul>
+	<li>Absolute Context: The position retrieved is in the root context.</li>
+	<li>Intrinsic Context: The position retrieved is in the context of its aggregating 
+	parent.</li>
+</ul>
+<table>
+	<caption>Schema 13 Reading an Occurrence Position</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Reading an Occurrence Position" src="CAAPstPositioningProdInstimgA.jpg"/> </td>
+	</tr>
+</tbody>
+</table>
+<p>In the schema above, </p>
+<ul>
+	<li>You retrieve the position of the Right Wheel Rear Occurrence (bold yellow-dashed):<ul>
+		<li>In the absolute context it returns M4xM2.</li>
+		<li>In the intrinsic context it returns M2.</li>
+	</ul>
+	</li>
+	<li>You retrieve the position of the Left Wheel Front Occurrence (bold orange):<ul>
+		<li>In the absolute context it returns M3xM1' (M1' is the overloaded matrix in 
+		the Skate context).</li>
+		<li>In the intrinsic context it returns M1'.<br />
+		</li>
+	</ul>
+	</li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h4><a name="Write"></a>Write an Occurrence Position</h4>
+<p>An occurrence can be positioned in two contexts:</p>
+<ul>
+	<li>Absolute context: The new value of the Occurrence is computed such that 
+	it satisfies the equation: InputMatrix = NewMatrix of the Occurrence X 
+	Matrix[i] relative to Root.</li>
+	<li>Intrinsic context: The new value of the occurrence is the matrix input.</li>
+</ul>
+<table>
+	<caption>Schema 14 Writing an Occurrence Position</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Writing an Occurrence Position" src="CAAPstPositioningProdInstimgB.jpg"/> </td>
+	</tr>
+</tbody>
+</table>
+<ul>
+	<li>We intend to move the Right Wheel Rear Occurrence (yellow-dashed) to M8:<ul>
+		<li>In the absolute context, M2 is replaced by Mx, such that M8 = M4xMx.</li>
+		<li>In the intrinsic context, M2 is replaced by M8.</li>
+	</ul>
+	</li>
+	<li>We intend to move the Front Axle Occurrence (orange) to M9:<ul>
+		<li>In the absolute context, the identity matrix is replaced by Mx, such 
+		that M9 = M3 x Mx.</li>
+		<li>In the intrinsic context, the identity matrix is replaced by M9.</li>
+	</ul>
+	</li>
+</ul>
+<p>This discussion will be incomplete without a specific mention of the fact that:</p>
+<ul>
+	<li>When an Occurrence is repositionable, the write operation only modifies 
+	the Occurrence.</li>
+	<li>When an Occurrence is not repositionable, the write operation modifies the 
+	Occurrence as well as its related Instance.</li>
+</ul>
+<p>We describe specific cases based on the schema that follows which will help you 
+understand that better. </p>
+<table>
+	<caption>Schema 15 Impact on Repositioning an Occurrence<br />
+	</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Impact on Repositioning an Occurrence" src="CAAPstPositioningProdInstimgC.jpg"/> </td>
+	</tr>
+</tbody>
+</table>
+<ul>
+	<li>Irrespective of the context (Absolute or Intrinsic) when we move the rear 
+	right wheel occurrence (bold yellow dashed), to the position M8, since this 
+	occurrence is repositionable, the position of only the occurrence is changed. 
+	The Ref-Inst model remains unchanged.</li>
+	<li>Irrespective of the context (Absolute or Intrinsic) when we move the front 
+	Axle Occurrence (orange bold), to the position M9, since this occurrence is 
+	not repositionable, its related instance is repositioned to M9 and further all 
+	occurrences associated with this instance are also impacted (orange in the occurrence 
+	model). The two axles move on the Skate.</li>
+</ul>
+<p>To complete this discussion of &quot;Writing an Occurrence Position&quot; we must introduce 
+another level to this Occurrence Model. We now use the &quot;Double Skate&quot; model with 
+a slight difference, which will let us be more exhaustive in our examples that follow. 
+Please take a look at the schema that follows. </p>
+<table>
+	<caption>Schema 16 Impact on Modifying a Non-Repositionable Occurrence</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Impact on Modifying a Non-Repositionable Occurrence" src="CAAPstPositioningProdInstimg3.jpg"/> </td>
+	</tr>
+</tbody>
+</table>
+<p>In the schema above, we have three occurrence models. The color conventions we 
+have followed is:</p>
+<ul>
+	<li>If the coordinate system is not shown, it implies the occurrence cannot 
+	be overloaded.</li>
+	<li>A green coordinate system indicates the occurrence can be overloaded (potentially 
+	yes).</li>
+	<li>A red coordinate system indicates, the occurrence is overloaded.</li>
+</ul>
+<p>By consequence, you will observe that:</p>
+<ul>
+	<li>In the double skate, only the front AxleAssy can be overloaded, and S1-Front 
+	is overloaded.</li>
+	<li>On the simple skate all the wheels can be overloaded, and the ones on the 
+	front AxleAssy are overloaded.</li>
+</ul>
+<p>We will now present several configurations wherein we modify the position of 
+an occurrence within the &quot;Double Skate&quot; occurrence model. The first two are 
+based on the same concept as previously:</p>
+<ul>
+	<li>Irrespective of the context (Absolute or Intrinsic), when we move the front 
+	AxleAssy occurrence since these are repositionable, the position of only the 
+	modified occurrence is changed. (You'll notice the front AxleAssy of S1 is overloaded 
+	while not that of S2).</li>
+	<li>Irrespective of the context (Absolute or Intrinsic) when we move the rear 
+	Axle occurrence since these are not repositionable, the position of its related 
+	instance is changed and further all occurrences associated with this instance 
+	are impacted. The two rear AxleAssy move in the DoubleSkate context.</li>
+</ul>
+<p>Let us now consider a concrete example. We move the S1-Front LeftWheel, marked 
+in orange bold to the position M9, in Schema 17 that follows. The result is also 
+depicted in the following schema.</p>
+<table>
+	<caption>Schema 17 </caption>
+	<tbody>
+	<tr>
+		<td><img alt="Repositionning a Wheel" src="CAAPstPositioningProdInstimg4.jpg"/> </td>
+	</tr>
+</tbody>
+</table>
+<ul>
+	<li>Since the S1-Front LeftWheel occurrence cannot be overloaded, the position 
+	of its related instance updates to M9 (orange in the Axle model).</li>
+	<li>In the skate model, the non-overloaded left wheel repositions to M9 too 
+	(bold yellow in the skate occurrence).</li>
+	<li>In the DoubleSkate model, we have two occurrences at M9 (bold yellow in 
+	double skate), the instantiation of the non overloaded occurrences of the Skate 
+	model.</li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="InShort"></a>In Short</h2>
+<p>This TA primarily dealt with the fundamentals of positioning entities within 
+a product model and its corelation with the associated entities in the Occurrence 
+and the Ref-Inst model.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<h2><a name="References"></a>References</h2>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="History"></a>History</h2>
+<table class="history">
+	<tbody>
+	<tr>
+		<td>Version: <strong>1</strong> [Mar 2010]</td>
+		<td>Document created</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

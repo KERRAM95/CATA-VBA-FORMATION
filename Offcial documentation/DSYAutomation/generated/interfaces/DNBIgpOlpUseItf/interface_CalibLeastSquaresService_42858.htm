@@ -1,0 +1,504 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf CalibLeastSquaresService (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "CalibLeastSquaresService"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> CalibLeastSquaresService<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_CalibLeastSquaresService_42858','CalibLeastSquaresService','0');</script>
+<section id='maindesc'>
+<b><i> Service to calibrate a workpiece or resource.</i></b><br>
+<BR>
+ <dl>
+ <dt><b>Example: (VB.NET)</b>
+ <pre>
+ Dim robot As VPMOccurrence = ...
+ Dim cell As VPMOccurrence = ...
+ Dim nominal As TagGroup = ... 
+ Dim measured As TagGroup = ... 
+
+ Dim LSQService As CalibLeastSquaresService = CATIA.Application.GetSessionService("CalibLeastSquaresService")
+ Try
+   calibration.PartToCalibrate = robot
+   calibration.SetNominalPoints(nominal, cell, True)
+   calibration.SetMeasuredPoints(measured, cell, False)
+   calibration.DoCalibration(True, True)
+   If calibration.RMSError < 0.01 Then
+     calibration.ApplyCalibration()
+   End If
+ Catch ex As Exception
+   Dim errormsg As String = calibration.LastErrorMessage
+   If errormsg.Length > 0 Then
+     MsgBox(errormsg)
+   Else
+     MsgBox("calibration failed with no error")
+   End If
+ End Try
+ </pre>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#CalibrationDistance"><b>CalibrationDistance</b></a>
+</td><td  id='tdright'>  <B>Output</B>: Get the calibration distance.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CalibrationOffset"><b>CalibrationOffset</b></a>
+</td><td  id='tdright'>  <B>Output</B>: Get the calibration transform.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CalibrationRotation"><b>CalibrationRotation</b></a>
+</td><td  id='tdright'>  <B>Output</B>: Get the calibration rotation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#FreePitch"><b>FreePitch</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Get/Set if Pitch parameter is free.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#FreeRoll"><b>FreeRoll</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Get/Set if Roll parameter is free.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#FreeX"><b>FreeX</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Get/Set if X parameter is free.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#FreeY"><b>FreeY</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Get/Set if Y parameter is free.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#FreeYaw"><b>FreeYaw</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Get/Set if Yaw parameter is free.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#FreeZ"><b>FreeZ</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Get/Set if Z parameter is free.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#LastErrorMessage"><b>LastErrorMessage</b></a>
+</td><td  id='tdright'>  <B>Output</B>: Get the error message from the last function call, property set or get.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#MaxRotationUncertainty"><b>MaxRotationUncertainty</b></a>
+</td><td  id='tdright'>  <B>Output</B>: Get maximum rotational uncertainty.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#MaxTranslationUncertainty"><b>MaxTranslationUncertainty</b></a>
+</td><td  id='tdright'>  <B>Output</B>: Get maximum translation uncertainty.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#MeasurementNoise"><b>MeasurementNoise</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Get/Set the estimated measurement noise.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#NumIterations"><b>NumIterations</b></a>
+</td><td  id='tdright'>  <B>Output</B>: Get the number of iterations it took for the LSQ algorithm to converge.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PartPosition"><b>PartPosition</b></a>
+</td><td  id='tdright'>  <B>Output</B>: Get the current part position.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PartToCalibrate"><b>PartToCalibrate</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Get/Set the workpiece or resource to calibrate.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RMSError"><b>RMSError</b></a>
+</td><td  id='tdright'>  <B>Output</B>: Get root mean square fitting error.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#ApplyCalibration"><b>ApplyCalibration</b></a>
+</td><td  id='tdright'>  <B>Action</B>: Apply the calibration position to the part.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DoCalibration"><b>DoCalibration</b></a>
+</td><td  id='tdright'>  <B>Action</B>: Do the calibration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetMeasuredPoints"><b>GetMeasuredPoints</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Get measured calibration points.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetNominalPoints"><b>GetNominalPoints</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Get nominal calibration points.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetMeasuredPoints"><b>SetMeasuredPoints</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Set measured calibration points.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetNominalPoints"><b>SetNominalPoints</b></a>
+</td><td  id='tdright'>  <B>Input</B>: Set nominal calibration points.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="CalibrationDistance"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CalibrationDistance</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ <B>Output</B>: Get the calibration distance.<BR>
+
+ This is the translation distance the part will be or has been moved. 
+ This cannot be called before 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>. Value is in meters.
+</dd>
+<a id="CalibrationOffset"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CalibrationOffset</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELMIARscTransform','DELMIARscTransform')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ <B>Output</B>: Get the calibration transform.<BR>
+
+ This is the transform that will be or has been applied to the part position.
+ You can calculate the resulting part position before calling 
+<script type="text/javascript"> activateLinkAnchor('','ApplyCalibration','ApplyCalibration') </script> as follows:  <pre>
+
+ Dim PartPosition As RscTransform = LSQService.PartPosition
+ Dim CalibrationTransform As RscTransform = LSQService.CalibrationOffset
+ Dim CalibratedPosition as RscTransform = PartPosition.Multiply(CalibrationTransform)
+
+ </pre>
+ This cannot be called before 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>.
+</dd>
+<a id="CalibrationRotation"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CalibrationRotation</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ <B>Output</B>: Get the calibration rotation.<BR>
+
+ This is the amount the part will be rotated.  This rotation 
+ value is about an axis and incorporates the yaw pitch and roll values into a single
+ number.  This is useful if you want to ensure only a small rotation will be applied
+ by 
+<script type="text/javascript"> activateLinkAnchor('','ApplyCalibration','ApplyCalibration') </script>. This cannot be called before 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>. Value is in radians.
+</dd>
+<a id="FreePitch"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FreePitch</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Get/Set if Pitch parameter is free.<BR>
+
+ Specifies the directions in which the resource may be translated during adjustment.
+ Unless the resource is known to be aligned with an axis or on a plane, the [X, Y, Z] parameters should all be set Free during calibration.
+ If true, then the Pitch coordinate of the part is free to be adjusted during the calibration
+ Default value is True if not set.
+ This cannot be set after 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>.
+</dd>
+<a id="FreeRoll"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FreeRoll</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Get/Set if Roll parameter is free.<BR>
+
+ Specifies the directions in which the resource may be translated during adjustment.
+ Unless the resource is known to be aligned with an axis or on a plane, the [X, Y, Z] parameters should all be set Free during calibration.
+ If true, then the Roll coordinate of the part is free to be adjusted during the calibration
+ Default value is True if not set.
+ This cannot be set after 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>.
+</dd>
+<a id="FreeX"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FreeX</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Get/Set if X parameter is free.<BR>
+
+ Specifies the directions in which the resource may be translated during adjustment.  
+ Unless the resource is known to be aligned with an axis or on a plane, the [X, Y, Z] parameters should all be set Free during calibration.
+ If true, then the X coordinate of the part is free to be adjusted during the calibration
+ This cannot be set after 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>.
+</dd>
+<a id="FreeY"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FreeY</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Get/Set if Y parameter is free.<BR>
+
+ Specifies the directions in which the resource may be translated during adjustment.
+ Unless the resource is known to be aligned with an axis or on a plane, the [X, Y, Z] parameters should all be set Free during calibration.
+ If true, then the Y coordinate of the part is free to be adjusted during the calibration
+ Default value is True if not set.
+ This cannot be set after 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>.
+</dd>
+<a id="FreeYaw"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FreeYaw</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Get/Set if Yaw parameter is free.<BR>
+
+ Specifies the directions in which the resource may be translated during adjustment.
+ Unless the resource is known to be aligned with an axis or on a plane, the [X, Y, Z] parameters should all be set Free during calibration.
+ If true, then the Yaw coordinate of the part is free to be adjusted during the calibration
+ Default value is True if not set.
+ This cannot be set after 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>.
+</dd>
+<a id="FreeZ"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FreeZ</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Get/Set if Z parameter is free.<BR>
+
+ Specifies the directions in which the resource may be translated during adjustment.
+ Unless the resource is known to be aligned with an axis or on a plane, the [X, Y, Z] parameters should all be set Free during calibration.
+ If true, then the Z coordinate of the part is free to be adjusted during the calibration
+ Default value is True if not set.
+ This cannot be set after 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>.
+</dd>
+<a id="LastErrorMessage"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>LastErrorMessage</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ <B>Output</B>: Get the error message from the last function call, property set or get.<BR>
+ The message is translated into the user's current language settings.
+</dd>
+<a id="MaxRotationUncertainty"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>MaxRotationUncertainty</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ <B>Output</B>: Get maximum rotational uncertainty.<BR>
+
+ This value represents the maximum of the uncertainties for the fit on the parameters to be identified.
+ Large uncertainty values are an indication that the experimental observation strategy is flawed, even if the RMS fitting error is small.
+ This cannot be called before 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>.  This fails if Yaw, Pitch and Roll parameters are all fixed.
+ Value is in radians.
+</dd>
+<a id="MaxTranslationUncertainty"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>MaxTranslationUncertainty</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ <B>Output</B>: Get maximum translation uncertainty.<BR>
+
+ This value represents the maximum of the uncertainties for the fit on the parameters to be identified. 
+ Large uncertainty values are an indication that the experimental observation strategy is flawed, even if the RMS fitting error is small.
+ This cannot be called before 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>. This fails if X, Y, and Z parameters are all fixed.
+ Value is in meters.
+</dd>
+<a id="MeasurementNoise"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>MeasurementNoise</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Get/Set the estimated measurement noise.<BR>
+
+ An estimate of the uncertainty of the positional measurements during the calibration experiment. 
+ The measurement noise need only be an order of magnitude estimate, for example 0.0001m or 0.001m.
+ Min value for Noise Measurement is 0.0001m which is also the default value if not set.<BR>
+ Units are in meters.
+ This cannot be set after 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>.
+</dd>
+<a id="NumIterations"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>NumIterations</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ <B>Output</B>: Get the number of iterations it took for the LSQ algorithm to converge.<BR>
+
+ This cannot be called before 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>.
+</dd>
+<a id="PartPosition"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>PartPosition</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELMIARscTransform','DELMIARscTransform')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ <B>Output</B>: Get the current part position.<BR>
+
+ If called before 
+<script type="text/javascript"> activateLinkAnchor('','ApplyCalibration','ApplyCalibration') </script> this will be the original (uncalibrated) position. If called after 
+<script type="text/javascript"> activateLinkAnchor('','ApplyCalibration','ApplyCalibration') </script> this will be the newly calibrated position. This cannot be called before setting the 
+<script type="text/javascript"> activateLinkAnchor('','PartToCalibrate','PartToCalibrate') </script>.
+</dd>
+<a id="PartToCalibrate"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>PartToCalibrate</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> </span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Get/Set the workpiece or resource to calibrate.<BR>
+
+ This is the occurrence of the product, robot or other resource to move during the calibration.
+ This must be set before calling 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>.
+</dd>
+<a id="RMSError"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>RMSError</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ <B>Output</B>: Get root mean square fitting error.<BR>
+
+ The root mean square fitting error on the points after adjusting the part to the best fit possible.
+ This cannot be called before 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script>. Value is in meters.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="ApplyCalibration"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ApplyCalibration</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Action</B>: Apply the calibration position to the part.<BR>
+
+ This must be called after 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script> and can only be called 1 time.
+</dd>
+<a id="DoCalibration"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>DoCalibration</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iWith3Pt</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iOrderTags</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Action</B>: Do the calibration.<BR>
+
+ You must set the required inputs 
+<script type="text/javascript"> activateLinkAnchor('','PartToCalibrate','PartToCalibrate') </script>, 
+<script type="text/javascript"> activateLinkAnchor('SetNominalPoints','','SetNominalPoints') </script>, 
+<script type="text/javascript"> activateLinkAnchor('SetMeasueredPoints','','SetMeasueredPoints') </script> before calling DoCalibration.  After DoCalibration you can get output values.
+ You can repeat the calibration by changing input parameters and calling DoCalibration again.
+ If an error occurs this function will throw an exception and you can call 
+<script type="text/javascript"> activateLinkAnchor('','LastErrorMessage','LastErrorMessage') </script>  to get information about the problem.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iWith3Pt</span></dt>
+   <dd> Do a 3Pt calibration before the LSQ calibration.  The calibration is done with 3 points chosen from the 
+ input tag groups.  The purpose is to get the part closer to the target so the least squares algorithm has a better
+ chance of conversion.  If the parts are far apart or have a large rotation, it is recommended to set this to True.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iOrderTags</span></dt>
+   <dd>	 Automatically calculate the order of the measured and nominal tags.  If this is False, the tags are matched up in the order
+ they are in the tag group.  If True, a best fit will be computed to order the tags.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetMeasuredPoints"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetMeasuredPoints</span><span class='signature'>(<script type="text/javascript"> activateLink('DELMIATagGroup','DELMIATagGroup')</script> <span class='param'>oPoints</span>,<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>oTagGroupOwner</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Get measured calibration points.<BR>
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oPoints</span></dt>
+   <dd> The tag group with the measured points.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTagGroupOwner</span></dt>
+   <dd> The owner occurrence of the tag group.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetNominalPoints"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetNominalPoints</span><span class='signature'>(<script type="text/javascript"> activateLink('DELMIATagGroup','DELMIATagGroup')</script> <span class='param'>oPoints</span>,<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>oTagGroupOwner</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Get nominal calibration points.<BR>
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oPoints</span></dt>
+   <dd> The tag group with the nominal points.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTagGroupOwner</span></dt>
+   <dd> The owner occurrence of the tag group.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetMeasuredPoints"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetMeasuredPoints</span><span class='signature'>(<script type="text/javascript"> activateLink('DELMIATagGroup','DELMIATagGroup')</script> <span class='param'>iPoints</span>,<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iTagGroupOwner</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iForceDettach</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Set measured calibration points.<BR>
+
+ This is the location the nominal points need to be moved to.
+ This must be set before calling 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script> and after setting 
+<script type="text/javascript"> activateLinkAnchor('','PartToCalibrate','PartToCalibrate') </script>. The measured points cannot be attached to the part being calibrated.  
+ If the tag group is not valid, this function will throw an exception and you can call 
+<script type="text/javascript"> activateLinkAnchor('','LastErrorMessage','LastErrorMessage') </script>  to get information about the problem.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iPoints</span></dt>
+   <dd> The tag group with the measured points.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTagGroupOwner</span></dt>
+   <dd> The owner occurrence of the tag group.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iForceDettach</span></dt>
+   <dd> If set to true, the tag group will be detached from the part being calibrated if it is attached to it.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetNominalPoints"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetNominalPoints</span><span class='signature'>(<script type="text/javascript"> activateLink('DELMIATagGroup','DELMIATagGroup')</script> <span class='param'>iPoints</span>,<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iTagGroupOwner</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iForceAttachement</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Input</B>: Set nominal calibration points.<BR>
+
+ This is the current simulation location of the points to be calibrated. 
+ This must be set before calling 
+<script type="text/javascript"> activateLinkAnchor('','DoCalibration','DoCalibration') </script> and after setting 
+<script type="text/javascript"> activateLinkAnchor('','PartToCalibrate','PartToCalibrate') </script>. The nominal points must be attached to the part being calibrated.  When the part is moved,
+ by the calibration these points will then be moved to the same location.
+ If the tag group is not valid, this function will throw an exception and you can call 
+<script type="text/javascript"> activateLinkAnchor('','LastErrorMessage','LastErrorMessage') </script> to get information about the problem.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iPoints</span></dt>
+   <dd> The tag group with the nominal points.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTagGroupOwner</span></dt>
+   <dd> The owner occurrence of the tag group.  
+ 
+ </ dd>
+    <dt><span class='paramitem'> iForceAttachement</span></dt>
+   <dd> If set to true, the tag group will be attached to the part to calibrate, regardless if it is already attached.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

@@ -1,0 +1,282 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Opening 3DShape</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Opening 3DShape</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to open a 3DShape.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdMmrUcOpening3DShapeSource.htm">CAAScdMmrUcOpening3DShapeSource.htm</a></span></p>
+						<p>Attention the macro can request a slight change to 
+						take into account your own Product types. First read
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a> 
+						before using it.</p>
+						<p>&nbsp;</p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+					<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td></tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 4 steps</p>
+		<ol>
+		    <li><a href="#Step1">Retrieves the search service from CATIA session</a></li>
+			<li><a href="#Step2">Searches for a 3DShape, corresponding to the user 
+			input criteria</a></li>
+			<li><a href="#Step3">Opens a 3DShape</a></li>
+			<li><a href="#Step4">Retrieves its Part Object</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+		    <li>
+		    <p><strong><a name="Step1"></a>Retrieves the search service from CATIA session</strong></p>
+		    
+			
+				<pre class="code">...
+ <span class="keyword">Dim </span>oSearchService<span class="keyword"> As </span>SearchService
+ <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService("Search")
+...</pre>
+                <p>A call to the Application (CATIA) <em>GetSessionService</em> 
+				method returns the specified Service, SearchService, <code>oSearchService
+				</code>in this case.<code> </code></p>    
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Searches for a 3DShape, 
+			corresponding to the user input criteria</strong></p>
+			<pre class="code">... 
+<span class="keyword">Dim </span>oDBSearch<span class="keyword"> As </span>DatabaseSearch
+<span class="keyword">Set </span>oDBSearch = Search3DShape(oSearchService)
+...</pre>
+			<p>The function <strong><code>Search3DShape</code></strong> returns <strong><code>oDBSearch</code></strong>, 
+			a DatabaseSearch object. The function details are as in 
+			the below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+			    <li>
+			     <p>Retrives the DatabaseSearch property from the Search Service</p>
+                <pre class="code">...
+ <span class="keyword">Dim </span>oDBSearch<span class="keyword"> As </span>DatabaseSearch
+ <span class="keyword">Set </span>oDBSearch = oSearchService.<strong>DatabaseSearch</strong>
+...</pre>
+			    </li>
+				<li>
+				<p>Sets the type of objects to search for </p>
+				<pre class="code">
+<span class="keyword">Function </span>Search3DShape(oSearchService, oDBSearch)<span class="keyword"> As </span>DatabaseSearch
+
+    oDBSearch.<strong>BaseType</strong> = strTheProductRepresentationReferenceType
+    ...</pre>
+				<p>A call to the <code>BaseType </code>property sets the type of 
+				objects to search for. <code>strTheProductRepresentationReferenceType</code> 
+				is a global variable representing the Product Representation 
+				Reference type.</p>
+				</li>
+				<li>
+				<p>Updates the DatabaseSearch object with the attribute criteria provided by the user as an input</p>
+				<pre class="code">...		
+    oDBSearch.<strong>AddEasyCriteria</strong> &quot;<strong>PLM_ExternalID</strong>&quot;, <strong>strInputPLMIDName</strong>
+...</pre>
+				<p>A call to <em>AddEasyCriteria</em> method updates the 
+				DatabaseSearch object with the search criteria according 
+				to the users input as depicted in the figure below</p>
+				<table>
+					<caption>Fig.1: User Input for Searching 3DShape from Database</caption>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="" src="CAAScdMmrUcOpening3DShape_image1.jpg" width="374" height="163"/></td>
+					</tr>
+				</tbody>
+				</table>
+				<p>In this case, we prompt the user to provide a PLM_ExternalID 
+				value</p>
+				</li>
+				<li>
+				<p>Triggers the search</p>
+				<pre class="code">...
+    oSearchService.<strong>Search</strong>
+...
+<span class="keyword">End Function </span></pre>
+				<p>A call to <em>Search</em> method of the SearchService object 
+				actually searches for the objects which matches all the 
+				attributes of the set and matching the case of the values(i.e. 
+				search is Case Sensitive), and type. </p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Opens a 3DShape</strong></p>
+			<p>As a next step, the UC opens the first PLM Entity from the collection 
+			occurring in the new tab page within Search Editor retrieved in the 
+			last step.</p>
+			<pre class="code"> ...
+    <span class="keyword">Dim</span> oEditor3DShape <span class="keyword">As</span> Editor
+    <span class="keyword">Set</span> oEditor3DShape = <strong>Open3DShape</strong>(<strong>oDBSearch</strong>)
+ ...
+</pre>
+			<p>The function <code>Open3DShape</code> takes a DatabaseSearch, <code>oDBSearch</code>,
+			as its input. This argument 
+			was output by the Search on the underlying database, which occurred 
+			in the previous step.</p>
+			<p>The function <code>Open3DShape</code> is detailed as in the below 
+			sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Retrieves the root entities from the new tab page 
+				within the Search Editor</p>
+				<pre class="code"><span class="keyword">Function</span> Open3DShape(oDBSearch) <span class="keyword">As</span> Editor
+    <span class="keyword">Dim</span> o3DShapeAsPLMEntities <span class="keyword">As</span> PLMEntities
+    <span class="keyword">Set</span> o3DShapeAsPLMEntities = oDBSearch.<strong>Results</strong>
+...</pre>
+				<p>A call to the <em>Results</em> method of DatabaseSearch 
+				object, <code>oDBSearch,</code> returns a collection of root PLM 
+				Entities in the active (Search) editor.</p>
+				</li>
+				<li>
+				<p>Retrieves a PLM Entity object from its index</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> o3DShapeAsPLMEntity <span class="keyword">As</span> PLMEntity
+    <span class="keyword">Set</span> o3DShapeAsPLMEntity = o3DShapeAsPLMEntities.<strong>Item</strong>(<strong>1</strong>)
+...</pre>
+				<p>The first entity in the above collection is retrieved, 
+				thanks to the <em>Item</em> method on PLMEntities.</p>
+				</li>
+				<li>
+				<p>Retrieves the Open Service from CATIA Session</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set</span> oOpenService = CATIA.<strong>GetSessionService</strong>(&quot;<strong>PLMOpenService</strong>&quot;)
+...</pre>
+				<p>A call to the Application (CATIA) <em>GetSessionService</em> 
+				method returns the specified Service, PLMOpenService, <code>oOpenService
+				</code>in this case.</p>
+				</li>
+				<li>
+				<p>Opens in the authoring session the first element 
+				occurring in the new tab page within Search Editor (a 3D Shape)</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oEditor3DShape <span class="keyword">As</span> Editor
+    oOpenService.<strong>PLMOpen</strong> <strong>o3DShapeAsPLMEntity</strong> , <strong>oEditor3DShape</strong>
+...
+<span class="keyword">End Function </span></pre>
+				<p>The PLM Entity, <code>o3DShapeAsPLMEntity</code> 
+				retrieved in the above steps is then loaded in the current session 
+				with a call to the <em>PLMOpen</em> method of the PLMOpenService. 
+				The editor associated with the loaded 3DShape in the current session, 
+				is finally returned by the <em>PLMOpen</em> call in a 3D Shape Editor,
+				<code>oEditor3DShape</code>. The PLMEntity, <code>o3DShapeAsPLMEntity</code>,
+				is loaded in EDIT mode</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves its Part Object</strong></p>
+			<p>A 3DShape is now loaded in session.</p>
+			<pre class="code"> ... 
+  <span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+  <span class="keyword">Set</span> oPart = oEditor3DShape.<strong>ActiveObject</strong> 
+...</pre>
+			<p>A 3DShape is now loaded in the current session. The
+			<em>ActiveObject</em> method of 3D Shape Editor,
+			<code>oEditor3DShape </code>returns the <a href="CAAMmrObjPart.htm">
+			Part Object</a>, <code>oPart</code>. </p>
+			<p>A Part Object, is the root element of a 3DShape representation, which 
+			aggregates the features (Part Body ( seen in the figure below,
+			<a href="#Fig2">Fig. 2</a>), Hybrid Body, Ordered Geometrical Set etc.) 
+			under it. The Part object, being the root entity, it occurs at the top 
+			of the 3D Shape Representation specification tree.</p>
+			<table>
+				<caption><a name="Fig2"></a>Fig. 2: Opened 3D Shape</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="" src="CAAScdMmrUcOpening3DShape_image3.jpg" width="220" height="181"/>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			<p>The opened 3DShape is thus seen in CATIA as above</p>
+			</li>
+		</ol>
+			<script type="text/javascript">insertLinkToTop()</script>
+			<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+			<script type="text/javascript">insertCopyright();</script>
+		</td>
+	</tr>
+</tbody>
+</table>
+
+</body>
+
+</html>

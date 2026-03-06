@@ -1,0 +1,134 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="cpp" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>Overview</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1>Overview</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+		<h3>Abstract</h3>
+		<p>This article presents an overview of a kinematics simulation with a 
+		recorded excitation</p>
+		<ul>
+			<li><a href="#overview">Overview</a></li>
+			<li><a href="#APIs">APIs</a></li>
+			<li><a href="#References">References</a></li>
+		</ul>
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="overview">Overview</h2>
+<p>Starting with a kinematics simulation pointing a product with a mechanism,&nbsp; 
+a set of automation objects (<strong>KinScenarioSpec</strong>,<span><strong>KinRecordedExcitation</strong>)</span> will allow to create and handle a kinematics 
+scenario with a recorded excitation. </p>
+<p>
+<img alt="" height="477" src="images/Simulation_with_a_recorded_excitation.jpg" width="838"/></p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p>&nbsp;</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="APIs"></a>APIs</h2>
+<h3>KinScenarioSpec</h3>
+<p>This object identifies a kinematics scenario. It allows to get/set the 
+parameters of a kinematics scenario. The initialization of the link to the 
+mechanism is done thru the <strong>SimScenarioSpec</strong> object.&nbsp; </p>
+<p>APIs capabilities can be summarized as follows:&nbsp; </p>
+<ul>
+<li>Get the mechanism. </li>
+<li>Get/Set the Start time. 0s is the default value.</li>
+<li>Get/Set End time. 10s is the default value.</li>
+<li>Get/Set Time step. 1s is the default value.</li>
+<li>Add a recorded excitation. Only one recorded excitation can be created.</li>
+<li>Get a recorded excitation.</li>
+<li>Remove a recorded excitation.</li>
+</ul>
+<p>The defaults values are the same as during an interactive 3D Experience 
+session, respecting the following condition: &nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp; 0s&nbsp; &nbsp;&#8804;&nbsp;&nbsp; Start time &#8804; &nbsp;&nbsp;End time</p>
+<p>&nbsp;&nbsp;&nbsp; 0s&nbsp; &nbsp;&#8804;&nbsp;&nbsp; Time step &#8804; &nbsp;&nbsp;&nbsp;End time - Start time </p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><span>KinRecordedExcitation</span></h3>
+<p>This object inherits from the <strong>SimExcitation</strong> object. It allows to get/set the 
+parameters of the recorded excitation. This excitation can be seen as a time key 
+frames plus a set of key frames values associated for each kinematics command of 
+the mechanism. </p>
+<p><img alt="" height="241" src="images/KeyFramesExamples.jpg" width="431"/></p>
+<p>&nbsp;</p>
+<p>APIs capabilities can be summarized as follows:&nbsp; </p>
+<ul>
+<li>Get/Set the key frame values for the time. <br>
+The values of the key frames times should follow an ascending chronological order. 
+The first time and the last time will always be set as the start time and&nbsp; 
+the end time of the scenario.</li>
+<li>Get the size of the key frames.</li>
+<li>Get/Set a key frames values for a kinematics command.<br>
+</li>
+</ul>
+<p>During the creation of the recorded excitation, the key frame times should be 
+defined the first&nbsp; and then the others key frames. The size of each the key 
+frames must be the same and equal to size of the key frames times. &nbsp;</p>
+<p>&nbsp;Setting a new time key frames times &#8203;will reset the others key frames 
+values automatically.</p>
+<p>The scenario execution follows the time line and simulated the mechanism for 
+each time step. &nbsp; </p>
+<p>If a step does not appear in the time key frame, the missing time value will 
+be linearly interpolated between the two closest time values. That means that 
+giving just 2 values min and max for a kinematics command will allow to simulate 
+all the intermediate values between min and max values. </p>
+<p><img alt="" height="131" src="images/KeyFramesExamples2.jpg" width="389"/></p>
+<p>In the above example, assuming that the step of the scenario is 1s. The 
+kinematics simulation will be done by increasing the command value by 1mm from 
+100 mm up to 150 mm. </p>
+<p>It is noticeable that a way to improve the accuracy of the simulation is to 
+decrease the time step value, without changing the recorded excitation. </p>
+<p>&nbsp;</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tr>
+		<td>[1]</td>
+		<td><strong>SimScenarioSpec ,&nbsp; SimExcitation</strong> </td>
+	</tr>
+</table>
+</div>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="History"></a>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [Nov 2021]</td>
+		<td>Document created</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

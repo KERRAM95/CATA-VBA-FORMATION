@@ -1,0 +1,304 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAMpaStructuralModelIDLItf SimCompositeGrid (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAMpaStructuralModelIDLItf.htm" href="../SMAMpaStructuralModelIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAMpaStructuralModelIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimCompositeGrid"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimCompositeGrid<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimCompositeGrid_49951','SimCompositeGrid','0');</script>
+<section id='maindesc'>
+<b><i> Represents the Composite Grid object.</i></b><br>
+
+
+ <!-- @sample -->
+ Given a <code>SimCompositeShellSection</code> object, you can retrieve a <code>SimCompositeCells</code> as below:
+ Dim myCompShellSection As SimCompositeShellSection
+ ....
+ Refer SMAIAMpaCompositeShellSection.idl to create/retrieve a  SimCompositeShellSection.
+ ....
+ i)Dim myCompositeGrid As SimCompositeGrid
+ Set myCompositeGrid = myCompShellSection.CreateGrid
+			or
+ ii) Dim MyLinkServices As SimLinkServices
+	  ...
+	  Set MyLinkServices = oEditor.GetService("SimLinkServices")
+	  
+     Dim myCPDSupport As SimCompositeSupportDefinition
+	  Set myCPDSupport = myCompShellSection.CompositeSupport
+	  Dim mycpdLinkAccess As SimLinkAccess
+     Set mycpdLinkAccess = myCPDSupport.GetItem("SimLinkAccess")
+	  Dim AllLinks
+	  AllLinks = mycpdLinkAccess.GetAllLinks("ConnectorList")
+	  ...Loop for listSize = UBound(AllLinks) - LBound(AllLinks) + 1 if needed..
+	  Set CompSupport = AllLinks(0)
+	  Dim myCompositeGrid As SimCompositeGrid
+	  Set myCompositeGrid = MyLinkServices.GetTarget(CompSupport)<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AddNewRefGroup"><b>AddNewRefGroup</b></a>
+</td><td  id='tdright'>  Creates a new element reference group for the grid.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateCellsFromFile"><b>CreateCellsFromFile</b></a>
+</td><td  id='tdright'>  Creates cells in the grid with the reference elements and laminate from a file
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateFileFromCells"><b>CreateFileFromCells</b></a>
+</td><td  id='tdright'>  Writes the all the cells in the grid with the reference elements and lamina to a file.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetCell"><b>GetCell</b></a>
+</td><td  id='tdright'>  Retreives the cell in the grid corresponding to te index.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetCells"><b>GetCells</b></a>
+</td><td  id='tdright'>  Retreives the list of all the cells in the grid.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetCellsCount"><b>GetCellsCount</b></a>
+</td><td  id='tdright'>  Retreives the count of cells in the grid.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetDrapingDirection"><b>GetDrapingDirection</b></a>
+</td><td  id='tdright'>  Retreives the draping direction.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetElementRefGroups"><b>GetElementRefGroups</b></a>
+</td><td  id='tdright'>  Retreives all the element reference group of the grid.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetRosette"><b>GetRosette</b></a>
+</td><td  id='tdright'>  Retreives the Rosette of the grid.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetSurface"><b>GetSurface</b></a>
+</td><td  id='tdright'>  Retreives the surface of the grid.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetDrapingDirection"><b>SetDrapingDirection</b></a>
+</td><td  id='tdright'>  Sets the draping direction.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetRosette"><b>SetRosette</b></a>
+</td><td  id='tdright'>  Sets the Rosette of the grid.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetSplitElement"><b>SetSplitElement</b></a>
+</td><td  id='tdright'>  Split the cell in the grid with respect to the specified reference element.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AddNewRefGroup"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>AddNewRefGroup</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SimCompositeGridElemRefGroup','SimCompositeGridElemRefGroup')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a new element reference group for the grid.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     Created element reference group.
+ </ dd>
+</dl>
+</dd>
+<a id="CreateCellsFromFile"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>CreateCellsFromFile</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iPath</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Creates cells in the grid with the reference elements and laminate from a file
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iPath</span></dt>
+   <dd> [in]    Path to read the data eg. D:\GridData\GridData.xls
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="CreateFileFromCells"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>CreateFileFromCells</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iPath</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Writes the all the cells in the grid with the reference elements and lamina to a file.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iPath</span></dt>
+   <dd> [in]    Path to write the data eg. D:\GridData\GridData.xls
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetCell"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetCell</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iCellIndex</span>)</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retreives the cell in the grid corresponding to te index.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iCellIndex</span></dt>
+   <dd> [in]    Index of the cell in Grid.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     Grid cell correcponding to the index.
+ </ dd>
+</dl>
+</dd>
+<a id="GetCells"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetCells</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retreives the list of all the cells in the grid.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     All grid cells in the grid.
+ </ dd>
+</dl>
+</dd>
+<a id="GetCellsCount"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetCellsCount</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('short','short')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retreives the count of cells in the grid.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     Number of cells in the grid.
+ </ dd>
+</dl>
+</dd>
+<a id="GetDrapingDirection"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetDrapingDirection</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retreives the draping direction.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     Draping direction of grid.
+ </ dd>
+</dl>
+</dd>
+<a id="GetElementRefGroups"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetElementRefGroups</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retreives all the element reference group of the grid.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     List of all element reference group of the grid.
+ </ dd>
+</dl>
+</dd>
+<a id="GetRosette"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetRosette</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SimCompositeRosette','SimCompositeRosette')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retreives the Rosette of the grid.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     Rosette of the grid.
+ </ dd>
+</dl>
+</dd>
+<a id="GetSurface"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetSurface</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retreives the surface of the grid.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     Surface of the grid.
+ </ dd>
+</dl>
+</dd>
+<a id="SetDrapingDirection"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetDrapingDirection</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iDrapingDirecion</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the draping direction.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iDrapingDirecion</span></dt>
+   <dd> [in]    Draping direction to be set to the grid.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetRosette"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetRosette</span><span class='signature'>(<script type="text/javascript"> activateLink('SimCompositeRosette','SimCompositeRosette')</script> <span class='param'>iRosette</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the Rosette of the grid.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iRosette</span></dt>
+   <dd> [in]    Rosette of the grid.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetSplitElement"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetSplitElement</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> <span class='param'>iSplitElem</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Split the cell in the grid with respect to the specified reference element.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSplitElem</span></dt>
+   <dd> [in]    Reference/cutting geometry.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

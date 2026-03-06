@@ -1,0 +1,201 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample manages section objects into the FEM properties set.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'    1- Retrieving the active product</span>
+<span class="comment">'    2- Retrieving the Parts</span>
+<span class="comment">'    3- Retrieving the publications</span>
+<span class="comment">'    4- Creating the FEM representation and retrieving its root object</span>
+<span class="comment">'    5- Retrieving the properties set</span>
+<span class="comment">'    6- Creating individual properties</span>
+<span class="comment">'    7- Setting individual attributes</span>
+<span class="comment">'    8- Retrieving/Remove individual properties</span>
+<span class="comment">'    9- Retrieving Shell Section attributes : Thickness, Integration Method...</span>
+
+<span class="keyword">Sub</span> CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 1- Retrieving the active product</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim </span>myEditor<span class="keyword"> As </span>Editor
+<span class="keyword">Set </span>myEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim </span>myProdService<span class="keyword"> As </span>PLMProductService
+<span class="keyword">Set </span>myProdService = myEditor.GetService("PLMProductService")
+
+<span class="keyword">Dim </span>myEntities<span class="keyword"> As </span>PLMEntities
+<span class="keyword">Set </span>myEntities = myProdService.EditedContent
+
+<span class="keyword">Dim </span>myRootProduct<span class="keyword"> As </span>VPMReference
+<span class="keyword">Set </span>myRootProduct = myEntities.Item(1)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 2- Retrieving the Parts</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim </span>myProductInstance<span class="keyword"> As </span>VPMInstance
+<span class="keyword">Dim </span>myPartInstance<span class="keyword"> as </span>VPMRepInstance
+<span class="keyword">Dim </span>myPart<span class="keyword"> as </span>Part
+<span class="keyword">For Each </span>myProductInstance<span class="keyword"> in </span>myRootProduct.Instances
+<span class="keyword">    Dim </span>myProductInstanceRef<span class="keyword"> as </span>VPMReference
+<span class="keyword">    Set </span>myProductInstanceRef = myProductInstance.ReferenceInstanceOf
+
+<span class="keyword">    For Each </span>myPartInstance<span class="keyword"> in </span>myProductInstanceRef.RepInstances
+<span class="keyword">        Dim </span>myPartInstanceRef<span class="keyword"> as </span>VPMRepReference
+<span class="keyword">        Set </span>myPartInstanceRef = myPartInstance.ReferenceInstanceOf
+
+<span class="keyword">        If</span> (myPartInstanceRef.GetAttributeValue(&quot;V_discipline&quot;) = &quot;Design&quot;) <span class="keyword">Then</span>
+<span class="keyword">            Set </span>myPart = myPartInstanceRef.GetItem("Part")
+<span class="keyword">        End If</span>
+<span class="keyword">    Next</span>
+<span class="keyword">Next</span>
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 3- Retrieving the publications</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim </span>myPublications <span class="keyword"> As </span>VPMPublications
+<span class="keyword">Set </span>myPublications  = myRootProduct.Publications
+	
+<span class="keyword">Dim </span>myPublication<span class="keyword"> as </span>VPMPublication
+<span class="keyword">Set </span>myPublication = myPublications.GetItem("Pipe")
+
+<span class="keyword">Dim </span>myPublication_2<span class="keyword"> as </span>VPMPublication
+<span class="keyword">Set </span>myPublication_2 = myPublications.GetItem("Pump_Housing")
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 4- Creating the FEM representation and retrieving its root object</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyPrdRepFactory <span class="keyword">As</span> SimPrdRepFactory
+<span class="keyword">Set</span> MyPrdRepFactory = MyRootProduct.GetItem(&quot;SimPrdRepFactory&quot;)
+
+<span class="keyword">Dim</span> MyFemRepRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">Set</span> MyFemRepRef = MyPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+
+<span class="keyword">Dim</span> MyFemRepRoot <span class="keyword">As</span> SimFemRoot
+<span class="keyword">Set</span> MyFemRepRoot = MyFemRepRef.GetItem(&quot;SimFemRoot&quot;)
+
+<span class="keyword">Dim </span>myRootOccurrence<span class="keyword"> as </span>VPMRootOccurrence
+<span class="keyword">Set </span>myRootOccurrence = myProdService.RootOccurrence
+	
+<span class="keyword">Dim </span>myRepInstance<span class="keyword"> As </span>VPMRepInstance
+<span class="keyword">Set </span>myRepInstance = Nothing <span class="comment">' Because we use publications</span>
+	
+<span class="keyword">Dim</span> myLink <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> myLink = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myPublication)
+MyFemRepRoot.AddAssociatedRep MyLink
+
+<span class="keyword">Dim</span> myLink_2 <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> myLink_2 = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myPublication_2)
+MyFemRepRoot.AddAssociatedRep MyLink_2
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 5- Retrieving the properties set</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> MyPropertiesSet <span class="keyword">As</span> SimProperties
+<span class="keyword">Set</span> MyPropertiesSet = MyFemRepRoot.GetSet(&quot;SimProperties&quot;)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 6- Creating individual properties</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> mySolidSection <span class="keyword">As</span> SimSolidSection
+<span class="keyword">Set</span> mySolidSection = myPropertiesSet.Add(&quot;SimSolidSection&quot;)
+
+<span class="keyword">Dim</span> myShellSection <span class="keyword">As</span> SimShellSection
+<span class="keyword">Set</span> myShellSection = myPropertiesSet.Add(&quot;SimShellSection&quot;)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 7- Setting individual attributes</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' Sets the section support</span>
+<span class="keyword">Dim</span> myLinkAccess <span class="keyword">As</span> SimLinkAccess
+<span class="keyword">Set</span> myLinkAccess = myShellSection.GetItem(&quot;SimLinkAccess&quot;)
+myLinkAccess.AddLink &quot;MainSupport&quot;, myLink
+
+<span class="keyword">Set</span> myLinkAccess = mySolidSection.GetItem(&quot;SimLinkAccess&quot;)
+myLinkAccess.AddLink &quot;MainSupport&quot;, myLink_2
+
+<span class="comment">' Sets the material behavior</span>
+myShellSection.MaterialBehaviorByName = "Behavior.1"
+mySolidSection.MaterialBehaviorByName = "Behavior.1"
+
+<span class="comment">' Sets the orientation</span>
+<span class="keyword">Dim</span> myOrientation <span class="keyword">As</span> SimOrientation
+<span class="keyword">Set</span> myOrientation = myShellSection.Orientation
+
+<span class="keyword">Dim</span> myAxisSystem <span class="keyword">As</span> SimAxisSystem
+<span class="keyword">Set</span> myAxisSystem = myOrientation.AxisSystem
+myAxisSystem.CoordinateType = SimAxisSystemCartesian
+
+myOrientation.OrientationFlag = True
+myOrientation.AxisOfRotation = SimOrientationAxis2
+myOrientation.AngleOfRotation = 90
+	
+<span class="comment">' Sets others attributes</span>
+myShellSection.IntegrationScheme = SimShellSectionSimpsonIntegration
+myShellSection.PoissonMethod = SimShellSectionPoissonDefault
+myShellSection.UniformThickness = 0.002
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 8- Retrieving/Remove individual properties</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> myRetrievedSolidSection<span class="keyword"> As</span> SimSolidSection
+<span class="keyword">Set</span> myRetrievedSolidSection = myPropertiesSet.Item(1)
+
+<span class="keyword">Dim</span> myRetrievedShellSection<span class="keyword"> As</span> SimShellSection
+<span class="keyword">Set</span> myRetrievedShellSection = myPropertiesSet.Item(2)
+
+myPropertiesSet.Remove(1)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 9- Retrieving Shell Section attributes : Thickness, Integration Method...</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> myIntegrationScheme<span class="keyword"> As</span> SimShellSectionIntegrationScheme
+myIntegrationScheme = myRetrievedShellSection.IntegrationScheme
+
+<span class="keyword">Dim</span> myNumberOfIntegrationPoints<span class="keyword"> As</span> Long
+myNumberOfIntegrationPoints = myRetrievedShellSection.NumIntPoints
+
+<span class="keyword">If</span> myRetrievedShellSection.UniformThicknessFlag <span class="keyword">Then</span>
+<span class="keyword">    Dim</span> myUniformThickness<span class="keyword"> As</span> Double
+    myUniformThickness = myRetrievedShellSection.UniformThickness
+<span class="keyword">End If</span>
+
+<span class="keyword">Dim</span> myMaterialBehavior<span class="keyword"> As</span> MaterialBehavior
+<span class="keyword">Set</span> myMaterialBehavior = myRetrievedShellSection.MaterialBehavior
+
+<span class="keyword">Set</span> myOrientation = myRetrievedShellSection.Orientation
+
+<span class="keyword">If</span> myOrientation.OrientationFlag <span class="keyword">Then</span>
+<span class="keyword">    Dim</span> myRotationAxis <span class="keyword"> As</span> SimOrientationAxisOfRotation
+    myRotationAxis= myOrientation.AxisOfRotation
+    
+<span class="keyword">    Dim</span> myAngleOfRotation<span class="keyword"> As</span> Double
+    myAngleOfRotation= myOrientation.AngleOfRotation
+<span class="keyword">End If</span>
+
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>
+

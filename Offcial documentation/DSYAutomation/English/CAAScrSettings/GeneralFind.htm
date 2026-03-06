@@ -1,0 +1,208 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>GeneralFind Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>GeneralFind Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>GeneralFind</h2>
+<p><strong>Role:</strong> Setting to manage Find command and Power Input options</p>
+<p>The GeneralFind repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /General/Find</li>
+  <li><strong>Repository File</strong>: GeneralFind</li>
+  <li><strong>Version</strong>: 1</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+  <li><strong>Setting controller</strong>:
+    <ul>
+      <li>Framework_CPP: CATIAApplicationFrame</li>
+      <li>Framework_IDL: CATIAApplicationFrame</li>
+      <li>Interface_CPP: CATICafSearchSettingAtt</li>
+      <li>Interface_IDL: CATIASearchSettingAtt</li>
+      <li>LateType: CATCafSearchSettingCtrl</li>
+    </ul>
+  </li>
+</ul>
+<p>GeneralFind setting repository attributes:</p>
+<ul>
+  <li><a name="ContextPriority"></a><strong>ContextPriority</strong>
+    <br /><strong>Role</strong>: Flag to use the Default search scope when a favorite query is typed in Power Input
+    <br /><strong>Detailed role</strong>: Check this option to supersede the genuine context associated with a favorite query by the default context scope<br />when this favorite query is typed in Power Input.<br />
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="ContextScope"></a><strong>ContextScope</strong>
+    <br /><strong>Role</strong>: Default search scope implicitely used in Power Input
+    <br /><strong>Detailed role</strong>: Context scope to be used by default for search queries entered in Power Input<br />if none has been explicitly typed.<br />For example, choose InWorkbench if you search mainly in the active element,<br />this will avoid typing ",in" after each criterion.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Everywhere</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>InWorkbench</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>FromWorkbench</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>FromSelection</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>VisibleOnScreen</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="DeepSearch"></a><strong>DeepSearch</strong>
+    <br /><strong>Role</strong>: Flag to activate or deactivate the Deep search option in Find queries
+    <br /><strong>Detailed role</strong>: Check this option to activate the Deep search option in Find queries.<br />Then, documents in visualization mode will be transiently loaded in order to find elements.<br />
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="MaxDisplay"></a><strong>MaxDisplay</strong>
+    <br /><strong>Role</strong>: Maximum number of elements that can be displayed in the Search results page
+    <br /><strong>Detailed role</strong>: Displaying too many lines can stick more or less the results list so it is recommended to limit this number.<br />Set this number to 0 if you don't want any limitation and always want all the elements to be displayed.<br />
+    <ul>
+      <li><strong>Type</strong>: unsigned integer</li>
+      <li><strong>Default value</strong>: 100</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 5000</li>
+    <li><strong>Step</strong>: 10</li>
+    </ul>
+  </li>
+  <li><a name="MaxPSO"></a><strong>MaxPSO</strong>
+    <br /><strong>Role</strong>: Maximum number of elements that can be pre-highlighted
+    <br /><strong>Detailed role</strong>: Pre-highlighting too many elements can stick the session so it is strongly recommended to limit this number.<br />Set this number to 0 if you don't want any limitation and always want all the elements to be pre-highlighted.<br />
+    <ul>
+      <li><strong>Type</strong>: unsigned integer</li>
+      <li><strong>Default value</strong>: 1000</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 5000</li>
+    <li><strong>Step</strong>: 10</li>
+    </ul>
+  </li>
+  <li><a name="Prefix"></a><strong>Prefix</strong>
+    <br /><strong>Role</strong>: Default prefix implicitely used in Power Input
+    <br /><strong>Detailed role</strong>: Prefix to be used by default at the beginning of the string entered in Power Input<br />if none has been explicitly typed.<br />For example, choose c: if you use Power Input mainly to start commands,<br />this will avoid typing "c:" before each command name.<br />
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: none</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>none</td>
+            <td>none</td>
+          </tr>
+          <tr>
+            <td>s</td>
+            <td>set</td>
+          </tr>
+          <tr>
+            <td>Set_CAP</td>
+            <td>SET (set case sensitive)</td>
+          </tr>
+          <tr>
+            <td>col</td>
+            <td>color</td>
+          </tr>
+          <tr>
+            <td>vis</td>
+            <td>visibility</td>
+          </tr>
+          <tr>
+            <td>l</td>
+            <td>layer</td>
+          </tr>
+          <tr>
+            <td>d</td>
+            <td>dashed</td>
+          </tr>
+          <tr>
+            <td>w</td>
+            <td>weight</td>
+          </tr>
+          <tr>
+            <td>symb</td>
+            <td>symbol</td>
+          </tr>
+          <tr>
+            <td>last</td>
+            <td>last entered</td>
+          </tr>
+          <tr>
+            <td>c</td>
+            <td>command</td>
+          </tr>
+          <tr>
+            <td>f</td>
+            <td>favorite</td>
+          </tr>
+          <tr>
+            <td>t</td>
+            <td>type</td>
+          </tr>
+          <tr>
+            <td>n</td>
+            <td>name</td>
+          </tr>
+          <tr>
+            <td>Name_CAP</td>
+            <td>NAME (name case sensitive)</td>
+          </tr>
+          <tr>
+            <td>graph</td>
+            <td>name in graph</td>
+          </tr>
+          <tr>
+            <td>NameInGraph_CAP</td>
+            <td>NAME IN GRAPH (name in graph case sensitive)</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

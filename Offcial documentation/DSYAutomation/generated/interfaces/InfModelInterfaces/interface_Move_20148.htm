@@ -1,0 +1,133 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>InfModelInterfaces Move (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../InfModelInterfaces.htm" href="../InfModelInterfaces.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "InfModelInterfaces";	}
+		function getCurrentObjectName() { 
+ 	return "Move"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> Move<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_Move_20148','Move','0');</script>
+<section id='maindesc'>
+<b><i> Represents an object associated with any kind of objects which
+ retrieves the corresponding movable object.</i></b><br>
+
+ An object can be moved only if it is independent from other objects.
+ For example, a pad can be moved, and is as such a movable object,
+ while an edge cannot be moved individually.
+ It should be moved with all the objects making up the pad to which
+ it belongs as a whole.
+ In this case, the underlying edge's movable object is the pad.<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#MovableObject"><b>MovableObject</b></a>
+</td><td  id='tdright'>  Returns the movable object associated with the used object.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#Apply"><b>Apply</b></a>
+</td><td  id='tdright'>    Applies a move transformation to a movable object.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="MovableObject"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>MovableObject</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('Move','Move')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the movable object associated with the used object.
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example retrieves the <tt>myMovableObject</tt> from 
+ <tt>Move</tt> object associated with <tt>MyObject</tt>.
+ <pre>
+ Dim myMovableObject As Move
+ Set myMovableObject = MyObject.Move.<font color="red">MovableObject</font>
+ </pre>
+ </dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="Apply"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Apply</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iTransformationArray</span>)</span></span></dt>
+  <dd class='ddmethod'>
+   Applies a move transformation to a movable object.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> TransformationArray</span></dt>
+   <dd>   The linear transformation array initialized successively by the
+   four columns of the transformation matrix.
+   The first nine components represent the rotation matrix.
+   The last three components represent the translation vector.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example applies the transformation (45 degrees-rotation around
+ the x axis and a translation) stored in <tt>TransformationArray</tt>
+ to the <tt>Move</tt> object associated with <tt>myMovableObject</tt>:
+ <pre>
+ Dim TransformationArray( 11 )
+ 'Rotation( 45 degrees around the x axis) components
+ TransformationArray( 0 )  = 1.000
+ TransformationArray( 1 )  = 0
+ TransformationArray( 2 )  = 0
+ TransformationArray( 3 )  = 0
+ TransformationArray( 4 )  = 0.707
+ TransformationArray( 5 )  = 0.707
+ TransformationArray( 6 )  = 0
+ TransformationArray( 7 )  = -0.707
+ TransformationArray( 8 )  = 0.707
+ 'Translation Vector (10,20,30)
+ TransformationArray( 9 )  = 10.000
+ TransformationArray( 10 ) = 20.000
+ TransformationArray( 11 ) = 30.000
+ MyMovableObject.Apply TransformationArray
+ </pre>
+ </dl>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

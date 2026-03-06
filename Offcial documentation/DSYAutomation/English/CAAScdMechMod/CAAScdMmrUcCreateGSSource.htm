@@ -1,0 +1,103 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a Join Surface Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Creating Geometrical Set in 3DShape
+
+'
+'Mission: This use case creates a 3DShape with one Geometrical Set.
+'
+'Steps:
+
+'
+
+'  1. Creates a 3DShape
+
+'  2. Retrieves the Part Object
+
+'  3. Retrieves its Geometrical Set collection
+
+'  4. Creates a Geometrical Set 
+
+'  5. Updates the Part Object
+
+'--------------------------------------------------------------------------------------------------------------------
+
+ 
+
+Sub CreatingGeometricalSet()
+
+    
+
+    '1. Creates a 3DShape
+
+    Dim oPLMNewService As PLMNewService
+
+    Set oPLMNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+
+ 
+
+    Dim oEditor3DShape as Editor
+
+    oPLMNewService.PLMCreate &quot;3DShape&quot;, oEditor3DShape
+
+ 
+
+    '2. Retrieves the Part Object
+
+    Dim oPart As Part
+
+    Set oPart = oEditor3DShape.ActiveObject
+
+ 
+
+    MsgBox (&quot;Part Name :&quot;) + oPart.Name
+
+    
+
+    '3. Retrieves its Geometrical Set collection
+
+    Dim oHybridBodies As HybridBodies
+
+    Set oHybridBodies = oPart.HybridBodies
+
+    
+
+    '4. Creates a Geometrical Set 
+
+    Dim oGeometricalSet As HybridBody
+
+    Set oGeometricalSet = oHybridBodies.Add()
+
+      
+
+    ' 5. Updates the Part Object
+
+    oPart.Update
+
+    
+
+End Sub</pre>
+
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Layout2DRoot Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>Layout2DRoot Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse"><a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Drafting2DLIDLItf', 'interface', 'Layout2DRoot', 'PropertyIndex'); return false;">
+		Properties</a></td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Drafting2DLIDLItf', 'interface', 'Layout2DRoot', 'MethodIndex'); return false;">
+		Methods</a></td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p class="auto"><a href="#" onclick="javascript:CAAlink('IDL', 'Drafting2DLIDLItf', 'interface', 'Layout2DRoot');return false;">
+<img src="../CAAScdImages/Layout2DRoot.png" alt="Layout2DRoot Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'Drafting2DLIDLItf', 'interface', 'Layout2DServices');return false;"><img src="../CAAScdImages/Layout2DServices.png" alt="Layout2DServices Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/propActiveSheet.png" alt="Returns or Sets the 2D Layout Active Sheet" width="80" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'Drafting2DLIDLItf', 'interface', 'Layout2DSheet');return false;"><img src="../CAAScdImages/Layout2DSheet.png" alt="Layout2DSheet Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'Drafting2DLIDLItf', 'interface', 'Layout2DSheets');return false;"><img src="../CAAScdImages/Layout2DSheets.png" alt="Layout2DSheets Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'Drafting2DLIDLItf', 'interface', 'Layout2DSheet');return false;"><img src="../CAAScdImages/Layout2DSheet.png" alt="Layout2DSheet Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'KnowledgeIDLItf', 'interface', 'Parameters');return false;"><img src="../CAAScdImages/Parameters.png" alt="Parameters Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'KnowledgeIDLItf', 'interface', 'Parameter');return false;"><img src="../CAAScdImages/Parameter.png" alt="Parameter Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'KnowledgeIDLItf', 'interface', 'Relations');return false;"><img src="../CAAScdImages/Relations.png" alt="Relations Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'KnowledgeIDLItf', 'interface', 'Relation');return false;"><img src="../CAAScdImages/Relation.png" alt="Relation Object" width="252" height="22"/></a></p>
+<p>The <strong>Layout2DRoot</strong> object is the root object for 2D Layout 
+applications. It is retrieved from the <strong>Part</strong> root object thanks to the 
+<strong>GetItem</strong> method. Assume a 3D Part is active. If no <strong>Layout2DRoot</strong> object exists, you can create 
+it thanks to the <strong>Layout2DFactory</strong> object, as follows:<br />
+</p>
+<pre class="code"><span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+<span class="keyword">Set</span> oPart = CATIA.ActiveEditor.ActiveObject
+<span class="keyword">Dim</span> oLayRoot <span class="keyword">As</span> Layout2DRoot
+<span class="keyword">Set</span> oLayRoot = oPart.GetItem(&quot;CATLayoutRoot&quot;)
+<span class="keyword">If</span> oLayRoot <span class="keyword">Is Nothing Then</span>
+   <span class="keyword">Dim</span> oLayRootFact <span class="keyword">As</span> Layout2DFactory
+   <span class="keyword">Set</span> oLayRootFact = oPart .GetItem(&quot;CATLayoutRootFactory&quot;)
+   <span class="keyword">Set</span> oLayRoot = oLayRootFact.Create2DLayout(&quot;ISO_3D&quot;)
+<span class="keyword">End If</span></pre>
+<p>The <strong>Layout2DRoot</strong> object aggregates a <strong>Layout2DSheets</strong> 
+collection object that contains <strong>Layout2DSheet</strong> objects, one of them 
+being the active sheet. Each <strong>Layout2DSheet</strong> object contains a <strong>
+Layout2DViews</strong> collection object. This collection contains <strong>Layout2DView</strong> 
+objects, one of them being the active view.</p>
+<pre class="code"><span class="keyword">Dim</span> cLaySheets <span class="keyword">As</span> Layout2DSheets
+<span class="keyword">Set</span> cLaySheets = oLayRoot.Sheets
+
+<span class="keyword">Dim</span> oLaySheet1, oLaySheet2, oLaySheet3 <span class="keyword">As</span> Layout2DSheet
+<span class="keyword">Set</span> oLaySheet1 = oLayRoot.ActiveSheet       <span class="comment">&#39;Retrieves the active sheet from the 2D layout root object</span>
+<span class="keyword">Set</span> oLaySheet2 = cLaySheets.ActiveSheet     <span class="comment">&#39;Retrieves the active sheet from the sheet collection object</span>
+<span class="keyword">Set</span> oLaySheet3 = cLaySheets.Item(&quot;Sheet.2&quot;) <span class="comment">&#39;Retrieves a sheet using its name</span>
+
+<span class="keyword">Dim</span> cLayViews <span class="keyword">As</span> Layout2DViews
+<span class="keyword">Set</span> cLayViews = oLaySheet2.Views
+
+<span class="keyword">Dim</span> oLayView1, oLayView2 <span class="keyword">As</span> Layout2DView
+<span class="keyword">Set</span> oLayView1 = cLayViews.ActiveView    <span class="comment">    &#39;Retrieves the active view</span>
+<span class="keyword">Set</span> oLayView2 = cLayViews.Item(&quot;Front view&quot;)<span class="comment">&#39;Retrieves a view using its name</span></pre>
+<p>The <strong>Layout2DView</strong> object aggregates the same objects than the <strong>
+DrawingView</strong> object, except the generative object:
+<strong>DrawingGenView</strong>.</p>
+<p>Use the <strong>GetItem</strong> method of the <strong>Layout2DRoot</strong> 
+object to retrieve the <strong>Layout2DServices</strong> object.</p>
+<pre class="code"><span class="keyword">Dim</span> oLayRoot <span class="keyword">As</span> Layout2DRoot
+...
+<span class="keyword">Dim</span> oLayServices <span class="keyword">As</span> Layout2Services
+<span class="keyword">Set</span> oLayServices = Layout2DRoot.GetItem(&quot;CATLayout2DServices&quot;)</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Accessing the Category and Material on Accommodation Objects</title>
+</head>
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Accessing the Category and Material on Accommodation Objects</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case 
+              primarily focuses on the methodology to access to the category and material on 
+              insulation object.</p>
+
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span>
+            	Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdAgtUcInsulationModel.3dxml</div></code>files supplied in folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdAgtAccommodation\samples\</code> 
+							where <code>InstallRootFolder</code> is the directory 
+							where the CAA CD-ROM is installed.</li>
+						  </ul>
+						  <p><span class="run-in">Where to find the macro:
+						  <a href="CAAScdAgtUcAccessCategoryMaterialSource.htm">CAAScdAgtUcAccessCategoryMaterialSource.htm</a></span></p>
+            </td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic1</em>&gt;</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic2</em>&gt;</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in eight steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches<span lang="fr"> </span>and opens model which is named as &quot;InsulationModel&quot;</a> </li>
+			<li><a href="#Step2">Retrieves Part object</a> </li>
+			<li><a href="#Step3">Retrieves collection of Insulation from part object</a> </li>
+      <li><a href="#Step4">Retrieves a Insulation object from collection of insulation</a> </li>
+			<li><a href="#Step5">Retrieves AGTMaterialMngt object</a></li>
+			<li><a href="#Step6">Get the material &amp; Set the material</a></li>
+			<li><a href="#Step7">Retrieves AGTCategoryMngt object</a></li>
+			<li><a href="#Step8">Get the category &amp; Set the category</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens 
+			model which is named as &quot;InsulationModel&quot;</strong></p>
+			<p>As a first step, the UC 
+			retrieves a model &quot;Insulation 
+			Model&quot; from DB and loads it and 
+			returns object of the Editor.</p>
+			<pre class="code">... 
+<span class="keyword">Dim </span>AGTPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"></span><strong>OpenProduct</strong> AGTPrdEditor
+...</pre>
+			<p>The function <strong><code>
+			OpenProduct</code></strong> 
+			returns <strong><code>AGTPrdEditor</code></strong>, 
+			a Editor object. After searching 
+			and opening of Accommodation model from 
+			underlying database the current 
+			active editor is returned in
+<strong><code>AGTPrdEditor</code></strong> </p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>
+			Retrieves Part object</strong></p>
+			<p>In this step UC retrieves 
+			Part object ObjPart variable.</p>
+<pre class="code">... 
+<span class="keyword">Set</span> ObjPart = AGTPrdEditor.ActiveObject
+...</pre>
+
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>
+			Retrieves collection of Insulation from part object</strong></p>
+			<p>In this step UC retrieves colloction of insulation from part object.<br />
+        First, retrieves accommodation root object from part.<br />
+        Second, retrieves collocetion of insulation from root object.
+        </p>
+		<pre class="code">...
+<span class="keyword">Dim</span> MyRoot <span class="keyword">As</span> AGTRoot
+<span class="keyword">Set</span> MyRoot = ObjPart.GetItem(&quot;<strong>CATAGTRoot</strong>&quot;)
+<span class="keyword">Dim</span> InsulationCollection <span class="keyword">As</span> AGTInsulations
+<span class="keyword">Set</span> InsulationCollection = MyRoot.Insulations
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>
+			Retrieves a Insulation object from collection of insulation</strong></p>
+			<p>In this step UC retrieves Insulation object from collection of insulation.
+      </p>
+		<pre class="code">...
+<span class="keyword">Dim</span> ObjInsulationByIndex <span class="keyword">As</span> AGTInsulation
+<span class="keyword">Dim</span> ObjInsulationByName <span class="keyword">As</span> AGTInsulation
+<span class="keyword">Set</span> ObjInsulationByIndex = InsulationCollection.Item(<strong>1</strong>)              <span class="comment">'Index of Insulation object</span>
+<span class="keyword">Set</span> ObjInsulationByName = InsulationCollection.Item(&quot;<strong>Insulation.2</strong>&quot;)  <span class="comment">'Name of Insulation object</span>
+...</pre>
+      <p>
+        There are two ways. 
+        First is Index, and the other is Name.<br />
+        This index is the rank of the insulation in the collection. The index of the first insulation is 1.
+        The name is name of insulation object.
+      </p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieves AGTMaterialMngt object</strong></p>
+			<p>Get a AGTMaterialMngt object for the first insulation object.</p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> ObjMaterialMngt <span class="keyword">As</span> AGTMaterialMngt
+<span class="keyword">Set</span> ObjMaterialMngt = ObjInsulationByIndex.AGTMaterialMngt
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Get the material &amp; Set the material</strong></p>
+			<p>Get and Set the material of the first insulation object.</p>
+			<pre class="code">... 
+AGTMaterialName = ObjMaterialMngt.GetMaterial
+ObjMaterialMngt.SetMaterial &quot;<strong>A-800</strong>&quot;         <span class="comment">'Material name of insulation</span>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Retrieves AGTCategoryMngt object</strong></p>
+			<p>Get a AGTCategoryMngt object for the second insulation object.</p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> ObjCategoryMngt <span class="keyword">As</span> AGTCategoryMngt
+<span class="keyword">Set</span> ObjCategoryMngt = ObjInsulationByName.AGTCategoryMngt
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Get the category &amp; Set the category</strong></p>
+			<p>Get and Set the material of the second insulation object.</p>
+			<pre class="code">... 
+AGTCategoryName = ObjMaterialMngt.GetCategory
+ObjCategoryMngt.SetCategory &quot;<strong>DeckPanelInsulation</strong>&quot;     <span class="comment"> 'Category name of insulation</span>
+...</pre>
+			</li>
+		</ol>
+    <script type="text/javascript">    		  insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		<script type="text/javascript">		  insertCopyright();</script>
+		</td>
+	</tr>
+</table>
+
+</body>
+
+</html>
+

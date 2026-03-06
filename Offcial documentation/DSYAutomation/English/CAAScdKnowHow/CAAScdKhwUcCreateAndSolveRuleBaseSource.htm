@@ -1,0 +1,520 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdKhwUcCreateAndSolveRuleBaseSource</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Creating and Solving Know-how Reuse Rule Base
+'
+'Mission: This use case creates a Check under a rule base and then solves it
+'
+'Steps:
+'
+'  1. Creates a 3DShape with Holes
+'  2. Retrieves the KnowledgeObjects Object from the Part
+'  3. Creates a Set of Rule Base
+'  4. Creates a Rule Base    
+'  5. Adds the Part Feature as the Root of Facts to the Rule Base
+'  6. Creates Expert Checks for the Rule Base
+'  7. Determines whether the Rule Base to be solved or not
+'  8. Solves the Rule Base if the Rule Base is to be Solved     
+'  9. Highlights the Failed Items    
+' 10. Updates the Part Object
+'--------------------------------------------------------------------------------------------------------------------
+
+Sub CreateRuleBaseNChecks()
+  'Error handling
+  On Error GoTo ErrorSub
+    
+    '1- Creates 3DShape with Holes
+    'Holes have different diameters
+    Dim MyNewPart As Part
+    Create3DShape MyNewPart
+    
+    '2- Retrieves the KnowledgeObjects Object from the Part 
+    Dim oKnowledgeObjects As KnowledgeObjects
+    Set oKnowledgeObjects = MyNewPart.GetItem(&quot;KnowledgeObjects&quot;)
+       
+    '3- Creates a Set of Rule Base
+    'The rule base can be created only under a set of rule base, an ExpertRuleBasesSet object.
+    'So we first create the set of rule base and then attach the rule base, an ExpertRuleBase object to it.
+    Dim oExpertRuleBasesSet As ExpertRuleBasesSet
+    Set oExpertRuleBasesSet = oKnowledgeObjects.GetKnowledgeRootSet(True, 3) ' kweRuleBasesType = 3
+    
+    '4- Creates a Rule Base
+    Dim oExpertRuleBasesFactory As ExpertRuleBasesFactory
+    Set oExpertRuleBasesFactory = oExpertRuleBasesSet.Factory
+    Dim oExpertRuleBase As ExpertRuleBase
+    Set oExpertRuleBase = oExpertRuleBasesFactory.CreateRuleBase(&quot;RuleBase.1&quot;)
+    
+    '5- Adds the Part feature as the Root of Facts to the Rule Base
+    oExpertRuleBase.AddRootOfFacts MyNewPart
+    
+    '6- Creates Expert Checks for the Rule Base
+    'An expert checks is an ExpertCheck object aggregated under a rule sets
+    'By creating a Check we define a condition on Diameters of hole. The Check fails if given condition is not met
+    Dim oExpertRuleSet As ExpertRuleSet
+    Set oExpertRuleSet = oExpertRuleBase.RuleSet
+    Dim oExpertCheck As ExpertCheck
+    Set oExpertCheck = oExpertRuleSet.CreateCheck(&quot;HDiaCheck&quot;, &quot;Hole:Hole&quot;, &quot;Hole.Diameter&gt;12mm&quot;, &quot;RuleSet.1&quot;)
+    
+    
+    '7- Determines whether the Rule Base to be solved or not
+    'The Fingerprint value decides if the rule base is to be solved
+    'The Fingerprint value is 0 if the rule base is unsolved and it is 1 if it is already solved
+    If (oExpertRuleBase.Fingerprint = 0) Then
+    MsgBox &quot;The rule base must be solved - Click OK to solve the rule base&quot;
+    
+    '8- Solves the Rule Base if the Rule Base is to be Solved
+    oExpertRuleBase.Deduce
+
+    Else
+    MsgBox &quot;The Rule Base is solved&quot;
+    End If
+    
+    '9- Highlights the failed elements
+    'Items Who fail the condition defined in the Check are highlighted, here all holes having diameter less than 12mm fails
+    'Items are highlighted in the geometry area and in the specification tree as well
+    'Only one hole which has diameter less than 12 mm is highlighted after macro has finished running
+    oExpertCheck.Highlight
+    
+    '10- Updates the Part Object
+    MyNewPart.Update
+        
+    'Error Handling
+    GoTo EndSub
+        
+ErrorSub:
+        MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+        GoTo EndSub
+EndSub:
+        
+End Sub
+
+
+'--------------------------------------------------------------------------------------------------------------------
+'Creates 3DShape
+'
+'Steps:
+'
+'  1. Creates a 3DShape
+'  2. Creates Pad
+'       2.1 - Retrieves the part from the Active Editor
+'       2.2 - Retrieves the sketch from the Part body
+'       2.3 - Retrieves handle to the Sketch 2DFactory as Factory2D type
+'       2.4 - Creates with 2D Factory, four 2DPoints
+'       2.5 - Creates with 2D Factory,  four 2DLines passing through these four Points, which outputs a rectangle
+'       2.6 - Creates a Pad using the rectangular sketch
+'       2.6 - Creates 4 Holes of diameter 10mm, 20mm, 30mm and 40mm
+'--------------------------------------------------------------------------------------------------------------------
+
+Sub Create3DShape(oPart)
+
+  'Error handling
+  On Error GoTo ErrorSub
+
+    '1. Creates a Part
+    'Creates a new 3DShape Rep Ref
+    Dim oNewService As PLMNewService
+    Set oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+ 
+    Dim oEditor3DShape As Editor
+    oNewService.PLMCreate &quot;3DShape&quot;, oEditor3DShape
+
+    '2.1 - Retrieves the part from the Active Editor
+    Set oPart = oEditor3DShape.ActiveObject
+
+    MsgBox (&quot;Part Name :&quot;) + oPart.Name
+
+    'Retrieves Bodies from the part
+    Set bodies1 = oPart.Bodies
+
+    ' Set body1 = bodies1.Item(&quot;PartBody&quot;)
+    
+    Set body1 = bodies1.Item(1)
+
+    oPart.Update
+
+    '2.2 - Retrieves the sketch from the Part body
+    Set sketches1 = body1.Sketches
+
+    'Retrieves the Axis
+    Set originElements1 = oPart.OriginElements
+
+    'Retrieves the YZ plane
+    Set reference1 = originElements1.PlaneYZ
+
+    Set sketch1 = sketches1.Add(reference1)
+
+    Dim arrayOfVariantOfDouble1(8)
+    arrayOfVariantOfDouble1(0) = 0#
+    arrayOfVariantOfDouble1(1) = 0#
+    arrayOfVariantOfDouble1(2) = 0#
+    arrayOfVariantOfDouble1(3) = 0#
+    arrayOfVariantOfDouble1(4) = 1#
+    arrayOfVariantOfDouble1(5) = 0#
+    arrayOfVariantOfDouble1(6) = 0#
+    arrayOfVariantOfDouble1(7) = 0#
+    arrayOfVariantOfDouble1(8) = 1#
+
+    'Sets the absolute axis of the sketch in 3D space
+    sketch1.SetAbsoluteAxisData arrayOfVariantOfDouble1
+
+    'Sets the in work object of the part as the newly created sketch.
+    oPart.InWorkObject = sketch1
+
+    '2.3 - Retrieves handle to the Sketch 2DFactory as CATIAFactory2D type
+    Set factory2D1 = sketch1.OpenEdition()
+
+    'Returns the list of geometrical elements included in the sketch
+    Set geometricElements1 = sketch1.GeometricElements
+
+    'Returns the &quot;AbsoluteAxis&quot; item from the GeometricElements collection
+    Set axis2D1 = geometricElements1.Item(&quot;AbsoluteAxis&quot;)
+
+    '2.4 - Creates with 2D Factory, four 2DPoints
+
+    'Sets the Horizontal direction as line2D1 with reference to &quot;AbsoluteAxis&quot;
+    Set line2D1 = axis2D1.GetItem(&quot;HDirection&quot;)
+
+    line2D1.ReportName = 1
+
+    'Sets the Vertical direction as line2D2 with reference to &quot;AbsoluteAxis&quot;
+    Set line2D2 = axis2D1.GetItem(&quot;VDirection&quot;)
+
+    line2D2.ReportName = 2
+
+    'Creates with 2D Factory, 1st 2DPoint
+    Set point2D1 = factory2D1.CreatePoint(-60#, 40#)
+
+    point2D1.ReportName = 3
+
+    'Creates with 2D Factory, 2nd 2DPoint
+    Set point2D2 = factory2D1.CreatePoint(60#, 40#)
+
+    point2D2.ReportName = 4
+
+    'Creates with 2D Factory, 3rd 2DPoint
+    Set point2D3 = factory2D1.CreatePoint(60#, -50#)
+
+    point2D3.ReportName = 6
+
+    'Creates with 2D Factory, 4th 2DPoint
+    Set point2D4 = factory2D1.CreatePoint(-60#, -50#)
+
+    point2D4.ReportName = 8
+
+    '2.5 - Creates with 2D Factory,  four 2DLines passing through these four Points,which outputs a rectangle
+
+    'Creates and returns a 2D line between 1st Point and 2nd Point. We refer to it as Line.1 hereafter
+    Set line2D3 = factory2D1.CreateLine(-60#, 40#, 60#, 40#)
+
+    line2D3.ReportName = 5
+
+    line2D3.StartPoint = point2D1
+
+    line2D3.EndPoint = point2D2
+
+
+    'Creates and returns a 2D line between 2nd Point and 3rd Point. We refer to it as Line.2 hereafter
+    Set line2D4 = factory2D1.CreateLine(60#, 40#, 60#, -50#)
+
+    line2D4.ReportName = 7
+
+    line2D4.EndPoint = point2D2
+
+    line2D4.StartPoint = point2D3
+
+
+    'Creates and returns a 2D line between 3rd Point and 4th Point. We refer to it as Line.3 hereafter
+    Set line2D5 = factory2D1.CreateLine(60#, -50#, -60#, -50#)
+
+    line2D5.ReportName = 9
+
+    line2D5.StartPoint = point2D3
+
+    line2D5.EndPoint = point2D4
+
+
+    'Creates and returns a 2D line between 4th Point and 1st Point. We refer to it as Line.4 hereafter
+    Set line2D6 = factory2D1.CreateLine(-60#, -50#, -60#, 40#)
+
+    line2D6.ReportName = 10
+
+    line2D6.EndPoint = point2D4
+
+    line2D6.StartPoint = point2D1
+
+    'Sets sketch constraints
+    Set constraints1 = sketch1.Constraints
+
+    'Creates a reference from Line.1
+    Set reference2 = oPart.CreateReferenceFromObject(line2D3)
+
+    'Creates a reference from line2D1 (HDirection)
+    Set reference3 = oPart.CreateReferenceFromObject(line2D1)
+
+    'Adds Horizontality constraint on Line.1 in sketch constraints
+    Set constraint1 = constraints1.AddBiEltCst(catCstTypeHorizontality, reference2, reference3)
+
+    'Sets constraint driving mode
+    constraint1.Mode = catCstModeDrivingDimension
+
+    'Creates a reference from Line.3
+    Set reference4 = oPart.CreateReferenceFromObject(line2D5)
+
+    'Creates a reference from line2D1 (HDirection)
+    Set reference5 = oPart.CreateReferenceFromObject(line2D1)
+
+    'Adds Horizontality constraint on Line.3 in sketch constraints
+    Set constraint2 = constraints1.AddBiEltCst(catCstTypeHorizontality, reference4, reference5)
+
+    'Sets constraint driving mode
+    constraint2.Mode = catCstModeDrivingDimension
+
+    'Creates a reference from Line.2
+    Set reference6 = oPart.CreateReferenceFromObject(line2D4)
+
+    'Creates a reference from line2D2 (VDirection)
+    Set reference7 = oPart.CreateReferenceFromObject(line2D2)
+
+    'Adds Verticality constraint on Line.2 in sketch constraints
+    Set constraint3 = constraints1.AddBiEltCst(catCstTypeVerticality, reference6, reference7)
+
+    'Sets constraint driving mode
+    constraint3.Mode = catCstModeDrivingDimension
+
+    'Creates a reference from Line.4
+    Set reference8 = oPart.CreateReferenceFromObject(line2D6)
+
+    'Creates a reference from line2D2 (VDirection)
+    Set reference9 = oPart.CreateReferenceFromObject(line2D2)
+
+    'Adds Verticality constraint on Line.4 in sketch constraints
+    Set constraint4 = constraints1.AddBiEltCst(catCstTypeVerticality, reference8, reference9)
+
+    'Sets constraint driving mode
+    constraint4.Mode = catCstModeDrivingDimension
+
+    'Closes the sketch editor
+    sketch1.CloseEdition
+
+    'Sets the in work object of the part as the newly created sketch.
+    oPart.InWorkObject = sketch1
+
+    oPart.Update
+
+    'Returns the part shape factory
+    Set shapeFactory1 = oPart.ShapeFactory
+
+    '2.6 - Creates a Pad using the rectangular sketch (Sketch1)
+    Set pad1 = shapeFactory1.AddNewPad(sketch1, 20#)
+
+    oPart.Update
+
+    '2.7 - Creates 4 Holes
+
+    '2.7.1 - Creates 1st Hole
+    'Creates a reference from a GenericNaming label
+    Set reference10 = oPart.CreateReferenceFromBRepName(&quot;FSur:(Face:(Brp:(Pad.1;2);None:();Cf11:());WithTemporaryBody;WithoutBuildError;WithInitialFeatureSupport;MonoFond;MFBRepVersion_CXR15)&quot;, pad1)
+
+    'Creates hole1 from point
+    Set hole1 = shapeFactory1.AddNewHoleFromPoint(19.999996, -34.732544, 14.020008, reference10, 20#)
+
+    'Sets hole1 type
+    hole1.Type = catSimpleHole
+
+    'Sets the hole1 Anchor mode
+    hole1.AnchorMode = catExtremPointHoleAnchor
+
+    'Returns hole1 bottom type
+    hole1.BottomType = catFlatHoleBottom
+
+    'Sets hole1 bottom limit
+    Set limit1 = hole1.BottomLimit
+
+    'Sets the limit mode
+    limit1.LimitMode = catOffsetLimit
+
+    'Sets hole1 diameter
+    Set Length1 = hole1.Diameter
+
+    'Sets hole1 diameter value
+    Length1.Value = 10#
+
+    'Sets the hole1 threading mode
+    hole1.ThreadingMode = catSmoothHoleThreading
+
+    'Sets hole1 thread side
+    hole1.ThreadSide = catRightThreadSide
+
+    'Retrives sketch associated with hole1
+    Set sketch2 = hole1.Sketch
+
+    'Sets the in work object of the part as the newly created sketch
+    oPart.InWorkObject = sketch2
+
+    'Opens the sketch for edition and retrives the 2D Factory
+    Set factory2D2 = sketch2.OpenEdition()
+
+    'Closes the sketch edition
+    sketch2.CloseEdition
+
+    'Sets the in work object of the part as the hole1
+    oPart.InWorkObject = hole1
+
+    oPart.Update
+    
+    '2.7.2 - Creates 2nd Hole
+    'Creates a reference from a GenericNaming label
+    Set reference11 = oPart.CreateReferenceFromBRepName(&quot;FSur:(Face:(Brp:(Pad.1;2);None:();Cf11:());WithTemporaryBody;WithoutBuildError;WithInitialFeatureSupport;MonoFond;MFBRepVersion_CXR15)&quot;, pad1)
+
+    'Creates hole2 from point
+    Set hole2 = shapeFactory1.AddNewHoleFromPoint(20.000004, -36.660496, -24.496029, reference11, 20#)
+
+    'Sets hole2 type
+    hole2.Type = catSimpleHole
+
+    'Sets the hole2 Anchor mode
+    hole2.AnchorMode = catExtremPointHoleAnchor
+    
+    'Returns hole2 bottom type
+    hole2.BottomType = catFlatHoleBottom
+    
+    'Sets hole2 bottom limit
+    Set limit2 = hole2.BottomLimit
+    
+    'Sets the limit mode
+    limit2.LimitMode = catOffsetLimit
+    
+    'Sets hole2 diameter
+    Set Length2 = hole2.Diameter
+    
+    'Sets hole2 diameter value
+    Length2.Value = 15#
+    
+    'Sets the hole2 threading mode
+    hole2.ThreadingMode = catSmoothHoleThreading
+    
+    'Sets hole2 thread side
+    hole2.ThreadSide = catRightThreadSide
+    
+    'Retrives sketch associated with hole2
+    Set sketch3 = hole2.Sketch
+    
+    'Sets the in work object of the part as the newly created sketch
+    oPart.InWorkObject = sketch3
+    
+    'Opens the sketch for edition and retrives the 2D Factory
+    Set factory2D3 = sketch3.OpenEdition()
+    
+    'Closes the sketch edition
+    sketch3.CloseEdition
+    
+    'Sets the in work object of the part as the hole2
+    oPart.InWorkObject = hole2
+
+    oPart.Update
+
+    '2.7.3 - Creates 3rd Hole
+    'Creates a reference from a GenericNaming label
+    Set reference12 = oPart.CreateReferenceFromBRepName(&quot;FSur:(Face:(Brp:(Pad.1;2);None:();Cf11:());WithTemporaryBody;WithoutBuildError;WithInitialFeatureSupport;MonoFond;MFBRepVersion_CXR15)&quot;, pad1)
+    
+    'Creates hole3 from point
+    Set hole3 = shapeFactory1.AddNewHoleFromPoint(19.999996, 25.368683, 15.813278, reference12, 20#)
+    
+    'Sets hole3 type
+    hole3.Type = catSimpleHole
+
+    'Sets the hole3 Anchor mode
+    hole3.AnchorMode = catExtremPointHoleAnchor
+    
+    'Returns hole3 bottom type
+    hole3.BottomType = catFlatHoleBottom
+    
+    'Sets hole3 bottom limit
+    Set limit3 = hole3.BottomLimit
+    
+    'Sets the limit mode
+    limit3.LimitMode = catOffsetLimit
+    
+    'Sets hole3 diameter
+    Set length3 = hole3.Diameter
+    
+    'Sets hole3 diameter value
+    length3.Value = 20#
+    
+    'Sets the hole3 threading mode
+    hole3.ThreadingMode = catSmoothHoleThreading
+    
+    'Sets hole3 thread side
+    hole3.ThreadSide = catRightThreadSide
+
+    oPart.Update
+    
+    '2.7.4 - Creates 4th Hole
+    'Creates a reference from a GenericNaming label
+    Set reference13 = oPart.CreateReferenceFromBRepName(&quot;FSur:(Face:(Brp:(Pad.1;2);None:();Cf11:());WithTemporaryBody;WithoutBuildError;WithInitialFeatureSupport;MonoFond;MFBRepVersion_CXR15)&quot;, pad1)
+    
+    'Creates hole4 from point
+    Set hole4 = shapeFactory1.AddNewHoleFromPoint(20.000004, 18.797012, -25.826708, reference13, 20#)
+    
+    'Sets hole4 type
+    hole4.Type = catSimpleHole
+
+    'Sets the hole4 Anchor mode
+    hole4.AnchorMode = catExtremPointHoleAnchor
+    
+    'Returns hole4 bottom type
+    hole4.BottomType = catFlatHoleBottom
+    
+    'Sets hole4 bottom limit
+    Set limit4 = hole4.BottomLimit
+    
+    'Sets the limit mode
+    limit4.LimitMode = catOffsetLimit
+    
+    'Sets hole4 diameter
+    Set length4 = hole4.Diameter
+    
+    'Sets hole4 diameter value
+    length4.Value = 25#
+    
+    'Sets the hole4 threading mode
+    hole4.ThreadingMode = catSmoothHoleThreading
+    
+    'Sets hole4 thread side
+    hole4.ThreadSide = catRightThreadSide
+
+    oPart.Update
+
+    GoTo EndSub
+
+ErrorSub:
+        MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+        GoTo EndSub
+EndSub:
+
+End Sub
+</pre>
+
+</body>
+
+</html>

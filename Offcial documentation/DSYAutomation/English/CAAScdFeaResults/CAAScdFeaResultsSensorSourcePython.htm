@@ -1,0 +1,144 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcCreateSensor.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script> 
+<pre>
+<span class="comment">#---------------------------- Sample script written in Python ---------------------------------</span>
+<span class="comment">#This sample creates a sensor.</span>
+
+<span class="comment">#Steps:</span>
+<span class="comment">#    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">#    2- Retrieves the results analysis case</span>
+<span class="comment">#    3- Creates the sensor</span>
+<span class="comment">#    4- Sets the sensor attribites</span>
+<span class="comment">#    5- Creates the frame selector and sets it to the sensor</span>
+<span class="comment">#    6- Sets the sensor parameters and updates the sensor</span>
+<span class="comment">#    7- Show annotation on the sensor</span>
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+ENUM = win32com.client.constants
+
+oEditor = CATIA.ActiveEditor
+
+oProdService = oEditor.GetService("PLMProductService")
+
+oEntities = oProdService.EditedContent
+
+oEntity = oEntities.Item(1)
+
+oSimulationRoot = oEntity 
+    
+oResults = oSimulationRoot.Results
+
+oSimulationRepRes = oResults.Item(1)  
+
+oRootRepRes = oSimulationRepRes.Root    
+
+oResultsManager = oRootRepRes.GetItem("SimResultsManager") 
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    2- Retrieves the results analysis case</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oResultsAnalysisCases = oResultsManager.ResultsAnalysisCases
+
+oResultsAnalysisCase = oResultsAnalysisCases.Item(1)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    3- Creates the sensor</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oLocalSensor = oResultsAnalysisCase.CreateSensor()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    4- Sets the sensor attribites</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oLocalSensor.VariableType = ("S")
+oLocalSensor.ProcessingType = ENUM.SimQuantity
+oLocalSensor.Location = ENUM.SimCentroids
+oLocalSensor.TransformType = ENUM.SimUserModelAxis
+oLocalSensor.QuantityType = ("Tensor Component 11")
+
+<span class="comment"># Get the Product of the Simulation.</span>
+
+MyEntities = oProdService.EditedContent
+
+SimEntity = MyEntities.Item(1)
+
+MySimulationRoot = SimEntity
+
+MySimulationService = CATIA.ActiveEditor.GetService("SimSimulationService")
+
+myRootOccurrence = MySimulationService.GetProductRootOccurrence(MySimulationRoot)
+
+MyRootProduct = myRootOccurrence.PLMEntity
+  
+MyPartInstance = MyRootProduct.RepInstances.Item(1)
+
+<span class="comment"># Get the axis from the product and set it to the sensor.</span>
+
+MyPart = MyPartInstance.ReferenceInstanceOf.GetItem("Part")
+AxisSystems = MyPart.AxisSystems
+AxisSystem = AxisSystems.Item(2)
+
+<span class="comment"># Set the axis to the sensor.</span>
+
+oAxisSystemAxis = oLocalSensor.GetItem("SimResultsAxisSystemAccess")
+oAxisSystemAxis.Axis = (AxisSystem)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    5- Creates the frame selector and sets it to the sensor</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oFrameSelector = oResultsAnalysisCase.CreateFrameSelector()
+oFrameSelector.SymbolicFrameRange = ENUM.SimAllFrames
+oLocalSensor.FrameSelector = oFrameSelector
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    6- Sets the sensor parameters and updates the sensor</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oLocalSensor.SetParameters (True,True,True,False,False )
+
+oSensorOption = oLocalSensor.GetItem("SimSensorOptions")
+
+oSensorOption.SetSumParameter(True)
+oSensorOption.SetAverageParameter(True)
+
+oLocalSensor.Update()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    7-  Show annotation on the senso</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+oLocalSensor.Annotation=True
+
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

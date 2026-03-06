@@ -1,0 +1,268 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creation Late Types for Model Features</title>
+<style type="text/css">
+    .padded td, .padded th {
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Creation Late Types for Model Features</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+			<h3>Abstract</h3>
+			<p>The following reference article documents the different late 
+			types that can be used to create model features.</p>
+			<ul>
+				<li><a href="#Mesh">Mesh Parts Late Types</a></li>
+				<li><a href="#Properties">Properties Late Types</a></li>
+				<li><a href="#Connection">Connection Properties Late Types</a></li>
+				<li><a href="#Behaviors">Behaviors Late Types</a></li>
+				<li><a href="#Abstractions">Abstractions Late Types</a></li>
+			</ul>
+		</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdFeaObjSimProperties.htm">SimProperties Collection</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdFeaObjSimMCXProperties.htm">SimMCXProperties Collection</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdFeaObjSimAbstractions.htm">SimAbstractions Collection</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdFeaTocModeling.htm">Multiphysics Model Creation Object Model Map</a></td>
+					</tr>
+				</table>
+				</td>
+	</tr>
+</table>
+
+<h2><a name="Mesh"></a>Mesh Parts Late Types</h2>
+	<p>For further information about the mesh parts late types refer to the article &quot;<a href="CAAScdFeaMeshPartAttributes.htm">Mesh Parts and Their Attributes</a>&quot;</p>
+					
+<h2><a name="Properties"></a>Properties Late Types</h2>
+	<p>Properties creation is managed by the <strong>SimProperties</strong> 
+	collection by calling 
+		the <code>Add</code> method from it.</p>
+	<p>A &quot;late type&quot; must be given to indicate which type of property is to be created:</p>
+    <table class="padded">
+        <tr>
+            <th>Section</th>
+            <th>Late type</th>
+        </tr>
+        <tr>
+            <td>1D Link Section</td>
+            <td>Sim1DLinkSection</td>
+        </tr>
+        <tr>
+            <td>Beam Section</td>
+            <td>SimBeamSection</td>
+        </tr>
+        <tr>
+            <td>Composite Shell Section</td>
+            <td>SimCompositeShellSection</td>
+        </tr>
+        <tr>
+            <td>Continuum Shell Section</td>
+            <td>SimContinuumShellSection</td>
+        </tr>
+        <tr>
+            <td>Fluid Section</td>
+            <td>SimFluidSection</td>
+        </tr>
+        <tr>
+            <td>Gasket Property</td>
+            <td>SimGasketProperty</td>
+        </tr>
+        <tr>
+            <td>Meshed Bolt</td>
+            <td>SimMeshedBolt</td>
+        </tr>
+        <tr>
+            <td>Shell Section</td>
+            <td>SimShellSection</td>
+        </tr>
+        <tr>
+            <td>Solid Section</td>
+            <td>SimSolidSection</td>
+        </tr>
+        <tr>
+            <td>Cohesive Property</td>
+            <td>SimCohesiveProperty</td>
+        </tr>
+    </table>
+
+<h2><a name="Connection"></a>Connection Properties Late Types</h2>
+	<p>Connection properties creation is managed by the <strong>SimMCXProperties</strong> 
+	collection by calling the <code>Add</code> method from it.</p>
+	<p>A &quot;late type&quot; must be given to indicate which type of connection property 
+	is to be created:</p>
+	<table class="padded">
+    	<tr>
+        	<th>Connection property</th>
+       		<th>Late type</th>
+    	</tr>
+		<tr>
+     		<td>Connector</td>
+      		<td>SimConnector</td>
+    	</tr>
+		<tr>
+      		<td>Coupling</td>
+    		<td>SimCoupling</td>
+   		</tr>
+		<tr>
+      		<td>Line Fastener</td>
+    		<td>SimLineFastener<img alt="Asterisk" src="../CAAScdImages/astrix.gif" width="11" height="14"/></td>
+   		</tr>
+		<tr>
+      		<td>Point Fastener</td>
+    		<td>SimPointFastener<img alt="Asterisk" src="../CAAScdImages/astrix.gif" width="11" height="14"/></td>
+   		</tr>
+   		<tr>
+      		<td>Rigid Connection</td>
+    		<td>SimRigidConnection</td>
+   		</tr>
+		<tr>
+     		<td>Spring</td>
+      		<td>SimSpring</td>
+    	</tr>
+		<tr>
+     		<td>Tie</td>
+      		<td>SimTie<img alt="Asterisk" src="../CAAScdImages/astrix.gif" width="11" height="14"/></td>
+   		</tr>
+		<tr>
+      		<td>Virtual Bolt</td>
+    		<td>SimVirtualBolt</td>
+   		</tr>
+		<tr>
+      		<td>Virtual Pin</td>
+    		<td>SimVirtualPin</td>
+   		</tr>
+
+
+	</table>
+<p>
+<img alt="Asterisk" src="../CAAScdImages/astrix.gif" width="11" height="14"/> 
+Available with the <em>RBM - Simulation Scripting</em> product only.</p>
+<h2><a name="Behaviors"></a>Behaviors  Late Types</h2>
+	<p>Behaviors creation is managed by the <strong>SimBehaviors</strong> 
+	collection by calling the <code>Add</code> method from it.</p>
+	<p>A &quot;late type&quot; must be given to indicate which type of behavior 
+	is to be created:</p>
+	<table class="padded">
+    	<tr>
+        	<th>Behavior</th>
+       		<th>Late type</th>
+    	</tr>
+   		<tr>
+     		<td>Beam Profile</td>
+      		<td>SimBeamProfile</td>
+   		</tr>
+	</table>
+	
+<h2><a name="Abstractions"></a>Abstractions Late Types</h2>
+	<p>Abstractions creation is managed by the <strong>SimAbstractions</strong> 
+	collection by calling the <code>Add</code> method from it.</p>
+	<p>A &quot;late type&quot; must be given to indicate which type of abstraction 
+	is to be created:</p>
+	<table class="padded">
+    	<tr>
+        	<th>Abstraction</th>
+       		<th>Late type</th>
+    	</tr>
+    	<tr>
+     		<td>Acoustic Absorber</td>
+      		<td>SimAcousticAbsorber</td>
+   		</tr>
+		<tr>
+     		<td>Acoustic Coupling</td>
+      		<td>SimAcousticCoupling</td>
+   		</tr>
+    	<tr>
+     		<td>Analytic Rigid Surface</td>
+      		<td>SimAnalyticRigidSurface</td>
+    	</tr>
+   		<tr>
+      		<td>Mass Rotary Inertia</td>
+    		<td>SimMassRotaryInertia</td>
+   		</tr>
+   		<tr>
+      		<td>Cyclic Symmetry</td>
+    		<td>SimCyclicSymmetry</td>
+   		</tr>
+		<tr>
+      		<td>Fluid Cavity</td>
+    		<td>SimFluidCavity</td>
+   		</tr>
+   		<tr>
+      		<td>Mass Per Length</td>
+    		<td>SimMassPerLength</td>
+   		</tr>
+   		<tr>
+      		<td>Mass Per Area</td>
+    		<td>SimMassPerArea</td>
+   		</tr>
+   		<tr>
+      		<td>Mass Per Volume</td>
+    		<td>SimMassPerVolume</td>
+   		</tr>
+   		<tr>
+     		<td>Rigid Body Constraint</td>
+      		<td>SimRigidBodyConstraint</td>
+   		</tr>
+   		<tr>
+     		<td>Surface Fluid Cavity</td>
+      		<td>SimSurfaceFluidCavity</td>
+   		</tr>
+
+	</table>
+	
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [Jan 2015]</td>
+		<td>Document created</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

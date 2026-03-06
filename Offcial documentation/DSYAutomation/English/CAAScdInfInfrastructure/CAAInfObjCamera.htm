@@ -1,0 +1,106 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Camera Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Camera Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse"><a href="CAAInfArchitectureOverview.htm">Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Camera', 'PropertyIndex'); return false;">
+		Properties</a></td>
+		<td class="ofvbanavunused">Methods</td>
+	</tr>
+</tbody>
+</table>
+<p class="auto">
+<a href="CAAInfObjCameras.htm"><img src="../CAAScdImages/Cameras.png" alt="Cameras Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Camera');return false;"><img src="../CAAScdImages/Camera.png" alt="Camera Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parderim.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Camera2D');return false;"><img src="../CAAScdImages/Camera2D.png" alt="Camera2D Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Inheritance Symbol" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewpoint2D');return false;"><img src="../CAAScdImages/Viewpoint2D.png" alt="Viewpoint2D Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Camera3D');return false;"><img src="../CAAScdImages/Camera3D.png" alt="Camera3D Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAAInfObjViewpoint3D.htm"><img src="../CAAScdImages/Viewpoint3D.png" alt="Viewpoint3D Object" width="252" height="22"/></a></p>
+<p>&nbsp;</p>
+<p>Represents a camera.</p>
+<p>A camera is the persistent form of a viewpoint. </p>
+<p>You can create a
+camera from the current viewpoint using the <strong>NewCamera</strong> method of the <strong>Viewer</strong>
+object. </p>
+<p>The camera name is assigned by CATIA: <strong>Camera00</strong>, <strong>Camera01</strong>,
+and so forth, and the created camera is placed at the end of the camera
+collection and is displayed in the Named Views dialog box
+of the View menu. </p>
+<p>You can rename the cameras you create with your own names
+using the <strong>Name</strong> property. </p>
+<p>A created camera can then be assigned to a
+viewer to make its own viewpoint change to this of the camera. </p>
+<p>Two kinds of
+cameras exist: the <strong>Camera2D</strong> object for 2D viewpoints, that is for
+Drawing Representation objects, and the <strong>Camera3D</strong> object for 3D viewpoints representing
+the real world, that is for 3D Shape Representation and Product objects. </p>
+<p>A <strong>Camera2D</strong>
+object
+stores a <strong>Viewpoint2D</strong> object and a <strong>Camera3D</strong> object stores a <strong>Viewpoint3D</strong>
+object.</p>
+<p>&nbsp;</p>
+<h2>Creating a Camera</h2>
+<p>Use the <strong>NewCamera</strong> method of the <strong>Viewer</strong> object 
+to create a <strong>Camera</strong> object.</p>
+<pre class="auto-style1"><span class="auto-style2">Dim</span> oViewer <span class="auto-style2">As</span> Viewer
+<span class="auto-style2">Set</span> oViewer = CATIA.ActiveWindows.ActiveViewer
+
+<span class="auto-style2">Dim</span> oCamera <span class="auto-style2">As</span> Camera
+<span class="auto-style2">Set</span> oCamera = oViewer.NewCamera()</pre>
+<p>The created camera is added to the camera collection.</p>
+<p class="MsoNormal"><strong>Note : </strong>Created Camera for 3DPart scenario 
+is no more located under the 3DShape.<span style="color:#1F497D"><o:p></o:p></span></p>
+<p>&nbsp;</p>
+<h2>Retrieving an Existing Camera</h2>
+<p>Use the <strong>VisuServices</strong> object to retrieve a <strong>Cameras</strong> 
+collection object.</p>
+<pre class="code"><span class="keyword">Dim</span> oVisuServices <span class="keyword">As</span> VisuServices
+<span class="keyword">Set</span> oVisuServices = CATIA.GetSessionService(&quot;VisuServices&quot;)
+
+<span class="keyword">Dim</span> cCameras <span class="keyword">As</span> Cameras
+<span class="keyword">Set</span> cCameras = oVisuServices.Cameras</pre>
+<p>From this collection, you can either retrieve a built-in camera representing 
+a standard view, or a camera 
+you have created. </p>
+<pre class="code"><span class="keyword">Dim</span> oCamera <span class="keyword">As</span> Camera
+<span class="keyword">Set</span> oCamera = cCameras.Item(&quot;Camera05&quot;)</pre>
+<p>This retrieves the front camera.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

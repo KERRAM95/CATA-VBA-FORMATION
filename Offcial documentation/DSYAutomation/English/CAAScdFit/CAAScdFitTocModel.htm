@@ -1,0 +1,72 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Assembly Evaluation Object Model Map</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Assembly Evaluation Object Model Map</h1>
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p class="auto">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Service');return false;"><img src="../CAAScdImages/Service.png" alt="Service Abstract Object" width="252" height="22"/></a><a href="../CAAScdInfInfrastructure/CAAInfTocApplication.htm"><img src="../CAAScdImages/uparrow.gif" alt="Foundation Object Model Map" width="18" height="7"/></a><br />
+		<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'DNBFittingIDLInterfaces', 'interface', 'FittingService');return false;"><img src="../CAAScdImages/FittingService.png" alt="FittingService Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'DNBFittingIDLInterfaces', 'interface', 'FitTrack');return false;"><img src="../CAAScdImages/FitTrack.png" alt="FitTrack Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'DNBFittingIDLInterfaces', 'interface', 'FitTrackTPoints');return false;"><img src="../CAAScdImages/FitTrackTPoints.png" alt="FitTrackTPoints Collection Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/space3.png" alt="" width="60" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'DNBFittingIDLInterfaces', 'interface', 'FitTrackTPoint');return false;"><img src="../CAAScdImages/FitTrackTPoint.png" alt="FitTrackTPoint Object" width="252" height="22"/></a><br />
+</p>
+
+<p>Assembly Evaluation objects can be managed using the <strong>FittingService</strong> 
+object. This object allows you to:</p>
+<ul>
+	<li>Create or retrieve a <strong>FitTrack</strong> object.</li>
+	<li>Manage <strong>FitTrackTPoint</strong> objects.</li>
+</ul>
+<p>Use the <strong>GetService</strong> method 
+of the <strong>Service</strong> object to return the <strong>FittingService</strong> object:</p>
+<pre class="code">
+<span class="keyword">Dim</span> oFittingService <span class="keyword">As</span> FittingService
+<span class="keyword">Set</span> oFittingService = CATIA.ActiveEditor.GetService("FittingService")
+</pre>
+<p>Use the <strong>Item</strong> method 
+of the <strong>FittingService</strong> object to return an existing <strong>FitTrack</strong> object:</p>
+<pre class="code">
+<span class="keyword">Dim</span> objFitTrack <span class="keyword">As</span> FitTrack
+<span class="keyword">Set</span> objFitTrack = oFittingService.Item(objContext, 1)
+</pre>
+
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

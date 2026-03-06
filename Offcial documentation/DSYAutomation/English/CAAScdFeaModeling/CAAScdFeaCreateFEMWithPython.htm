@@ -1,0 +1,171 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a FEM rep and managing its associated shapes</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Creating a FEM rep and managing its associated shapes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This use case primarily 
+						focuses on the methodology to create a FEM representation 
+						and to manage associated shapes.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					Note that:<ul>
+						<li>You should first launch CATIA and import the
+						<code><div class=vb_sample_data>CAAScdFeaProductWithoutFEM.3dxml</div></code> file 
+						supplied in the folder <code>
+						InstallRootFolder\CAADoc\Doc\English\CAAScdFeaModeling\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder 
+						where the API CD-ROM is installed.</li>
+						<li>You should open the product called 
+						CAASCDFeaProductWithtoutFEM.</li>
+						<li>Launch the structural scenario App and create a 
+						structural simulation.</li>
+						</ul>
+					<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdFeaCreateFEMWithPythonSource.htm">CAAScdFeaCreateFEMWithPythonSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the simulation and its product</a></li>
+			<li><a href="#Step2">Retrieves the PartBody</a></li>
+			<li><a href="#Step3">Creates the FEM representation and retrieves its root object</a></li>
+			<li><a href="#Step4">Associates the PartBody with the FEM representation</a></li>
+			<li><a href="#Step5">Checks if the FEM representation have at least one associated shape</a></li>
+			<li><a href="#Step6">Removes an associated shapes</a></li>		
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">	
+			<li>
+			<p><strong><a name="Step1"></a>Retrieve the simulation and its product</strong></p>
+			<p>As a first step, the UC retrieves the simulation and its product 
+			from the simulation editor</p>
+<pre class="code"> ...
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves the PartBody</strong></p>
+			<p>In this step UC retrieves the main body of the 3D shape aggregated by the 
+			simulation's Model.</p>
+<pre class="code">...
+myModelRepInstances = myModel.RepInstances
+
+<span class="keyword">for </span> myPartRepInstance <span class="keyword">in</span> myModelRepInstances:
+     myPartInstanceRef = myPartRepInstance.ReferenceInstanceOf
+     attr = myPartInstanceRef.GetAttributeValue("V_discipline")
+     <span class="keyword">if</span> attr == &quot;Design&quot;:
+        myPart = myPartInstanceRef.GetItem(&quot;Part&quot;)
+        myPartInstance = myPartRepInstance
+        myBody = myPart.MainBody
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Creates the FEM representation and retrieve its root object</strong></p>
+			<p>In this step UC creates a new FEM representation object.</p>
+			<p> To perform the creation,
+			a simulation representation factory has to be retrieved on the reference object which 
+			will aggregate the FEM representation.</p>
+			<pre class="code">...
+MyPrdRepFactory = myModel.GetItem("SimPrdRepFactory")
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep("FEM")
+MyFemRepRoot = MyFemRepRef.GetItem("SimFemRoot")
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Associates the PartBody with the FEM representation</strong></p>
+			<p>In this step UC appends the main body previously retrieved to the associated shapes 
+			of the FEM representation.</p>
+			<p>First, the UC opens the model and retrieves the product editor 
+			and the root occurence</p>
+<pre class="code">...
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+myProductEditor = CATIA.ActiveEditor
+myRootOcc = myProductEditor.ActiveObject
+</pre>
+<p>Now it creates the link to associate with the FEM</p>
+<pre class="code">
+MyReference = myPart.CreateReferenceFromObject(myBody)
+
+MyLink = myProdService.ComposeLink(myRootOcc,myPartInstance,MyReference)
+MyFemRepRoot.AddAssociatedRep (MyLink)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Checks if the FEM representation have at least one 
+			associated shape</strong></p>
+			<p>In this step UC checks if the FEM representation has at least one associated shape.</p>
+<pre class="code">...
+bHasAnAssociatedRep = MyFemRepRoot.HasAnAssociatedRep
+<span class="keyword">if</span>  bHasAnAssociatedRep == False: 
+    <span class="keyword">print</span> &quot;Error while associating the part body to the fem rep !&quot;
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Removes an associated shapes</strong></p>
+			<p>In this step UC removes the main body previously retrieved from 
+			the associated shapes of the new FEM representation.</p>
+<pre class="code">...
+bHasAnAssociatedRep = MyFemRepRoot.HasAnAssociatedRep
+<span class="keyword">if</span>  bHasAnAssociatedRep == True: 
+    <span class="keyword">print</span> "Error while removing the associated shape from the FEM Rep!"
+...</pre>
+			</li>
+	</ol>
+	</td>
+	</tr>
+</table>	
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

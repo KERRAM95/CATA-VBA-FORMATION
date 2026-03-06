@@ -1,0 +1,172 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELResourceBuilderIDLItf RscIOSignalsExchange (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELResourceBuilderIDLItf.htm" href="../DELResourceBuilderIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELResourceBuilderIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RscIOSignalsExchange"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RscIOSignalsExchange<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RscIOSignalsExchange_49297','RscIOSignalsExchange','0');</script>
+<section id='maindesc'>
+<b><i> Interface to manage IO signals exchange.</i></b><br>
+
+
+ <strong>Role</strong>:
+  This interface provides methods to manages import-export of IO signals 
+on a resource.
+These API are specifically designated to manage home positions on a given 
+resource driven by a single mechanism.
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<dd>Let assume there is a robot opened as a root entity in a given editor.
+<pre>
+Dim MainResource As Variant
+Set MainResource = CATIA.ActiveEditor.ActiveObject
+
+Dim myIOExchange As RscIOSignalsExchange
+Set myIOExchange = MainResource.GetItem("<font color="red"><b>CAARscIOSignalsExchange</b></font>")
+If Not myIOExchange Is Nothing Then
+
+End If
+</pre>
+</dl>
+<b>Note:</b>API documentation will include sample code referring to 
+</b>myIOExchange</b> as a variable of type <b>RscIOSignalsExchange</b>.
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#ExportRscIOSignalMappings"><b>ExportRscIOSignalMappings</b></a>
+</td><td  id='tdright'>  Exports IO signals to a file.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ImportRscIOSignalMappings"><b>ImportRscIOSignalMappings</b></a>
+</td><td  id='tdright'>  Import IO signals from a file.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="ExportRscIOSignalMappings"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>ExportRscIOSignalMappings</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFullPath</span>)</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Exports IO signals to a file.
+<br>
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFullPath</span></dt>
+   <dd> Full path name for the file.
+
+
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The list of messages during export.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim mMessage <font color="green">'array for CATScript</font>
+ mMessage = myIOExchange.<font color="red"><b>ExportRscIOSignalMappings</b></font>("C:\TEMP\myfile.xls")
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax
+is slightly different for array declaration:
+<pre>
+ Dim mMessage() As Variant <font color="green">'array for VBA</font>
+ mMessage = myIOExchange.<font color="red"><b>ExportRscIOSignalMappings</b></font>("C:\TEMP\myfile.xls")
+</pre>
+</dl>
+
+ </ dd>
+</dl>
+</dd>
+<a id="ImportRscIOSignalMappings"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>ImportRscIOSignalMappings</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFullPath</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iWarning</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iDeleteMapping</span>)</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Import IO signals from a file.
+<br>
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFullPath</span></dt>
+   <dd> Full path name for the file.
+
+ </ dd>
+    <dt><span class='paramitem'> iWarning</span></dt>
+   <dd> Display warnings.
+
+ </ dd>
+    <dt><span class='paramitem'> iDeleteMapping</span></dt>
+   <dd> Delete existing mapping before import.
+
+
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The list of messages during import.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim mMessage <font color="green">'array for CATScript</font>
+ mMessage = myIOExchange.<font color="red"><b>ImportRscIOSignalMappings</b></font>("C:\TEMP\myfile.xls",1,0)
+</pre>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is slightly different for array declaration: 
+<pre>
+ Dim mMessage() As Variant <font color="green">'array for VBA</font>
+ mMessage = myIOExchange.<font color="red"><b>ImportRscIOSignalMappings</b></font>("C:\TEMP\myfile.xls",1,0)
+</pre>
+</dl>
+
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

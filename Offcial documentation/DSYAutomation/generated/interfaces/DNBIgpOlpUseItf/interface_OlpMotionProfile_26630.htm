@@ -1,0 +1,1366 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpMotionProfile (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpMotionProfile"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpMotionProfile<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpMotionProfile_26630','OlpMotionProfile','0');</script>
+<section id='maindesc'>
+<b><i> A motion profile used for translating a robot program.</i></b><br>
+<BR>
+ <P><font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ Download or Upload command</font>.</P>
+ 
+ <P>The behavior of this object depends on where it was retrieved from.
+ If the object was retrieved from an <script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotion','','DELMIAOlpRobotMotion') </script> or  
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotionTarget','','DELMIAOlpRobotMotionTarget') </script> then this object is used to configure the speed properties of that motion.  The parameters specified with the 
+ iMatch input equal to TRUE will be used to find an existing profile to reuse 
+ for this motion.  If no matching profile is found a new one will be created.  
+ If the object was retrieved from 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpController','MotionProfileList','DELMIAOlpController.MotionProfileList') </script> then any modifications to this object will change an existing or new
+ profile's values directly.</P>
+ 
+ <P>There are 2 types of methods on this object.
+ Some methods provide direct access to the motion profile
+ parameters as available in the dialog.  Other methods, called <B>Template Methods</B>,
+ get and set all the speed/acceleration parameters as a group.  Each 
+ template assumes there are fixed values for some of the parameters.
+ The get template methods generate messages if the parameters which 
+ would have fixed values are not correct.  The set template 
+ methods set all the fixed values in addition to the input arguments.</P>
+ 
+ <P>You cannot call methods which Get values for the incorrect Basis.
+ For example, if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns FALSE, then 
+<script type="text/javascript"> activateLinkAnchor('','GetTime','GetTime') </script>  will fail.  You should also not call a template method like 
+ 
+<script type="text/javascript"> activateLinkAnchor('','GetTCPAngular','GetTCPAngular') </script> if 
+<script type="text/javascript"> activateLinkAnchor('','TimeLinearAngularBasis','TimeLinearAngularBasis') </script> returned delOlpLinearBasis.</P> 
+ <P>You cannot call Get methods for profiles retrieved from a new
+ 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotion','','DELMIAOlpRobotMotion') </script> or 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotionTarget','','DELMIAOlpRobotMotionTarget') </script> until values have been set.</P>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#IsTimeBasis"><b>IsTimeBasis</b></a>
+</td><td  id='tdright'>  Query if the motion profile specifies the speed as a time.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TCPAccelAngularUnits"><b>TCPAccelAngularUnits</b></a>
+</td><td  id='tdright'>  TCP Angular Acceleration units.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TCPAccelLinearUnits"><b>TCPAccelLinearUnits</b></a>
+</td><td  id='tdright'>  Stored TCP linear acceleration units.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TCPDecelAngularUnits"><b>TCPDecelAngularUnits</b></a>
+</td><td  id='tdright'>  Stored TCP angular deceleration units.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TCPDecelLinearUnits"><b>TCPDecelLinearUnits</b></a>
+</td><td  id='tdright'>  Stored TCP linear deceleration units.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TCPSpeedAngularUnits"><b>TCPSpeedAngularUnits</b></a>
+</td><td  id='tdright'>  Stored TCP Angular speed units.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TCPSpeedLinearUnits"><b>TCPSpeedLinearUnits</b></a>
+</td><td  id='tdright'>  Stored TCP linear speed units.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TimeLinearAngularBasis"><b>TimeLinearAngularBasis</b></a>
+</td><td  id='tdright'>  Query if the motion profile specifies the speed as time, a linear speed, or an angular speed.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetJointAsPercent"><b>GetJointAsPercent</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Get the joint speed and acceleration as a percentage.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetJointAsPercentWithDecel"><b>GetJointAsPercentWithDecel</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Get the joint speed, acceleration and deceleration as a percentage.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPAccelAngular"><b>GetTCPAccelAngular</b></a>
+</td><td  id='tdright'>  Get TCP angular acceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPAccelLinear"><b>GetTCPAccelLinear</b></a>
+</td><td  id='tdright'>  Get TCP linear acceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPAngular"><b>GetTCPAngular</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Get the TCP angular speed and acceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPAngularWithDecel"><b>GetTCPAngularWithDecel</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Get the TCP angular speed, acceleration and deceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPDecelAngular"><b>GetTCPDecelAngular</b></a>
+</td><td  id='tdright'>  Get TCP angular deceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPDecelLinear"><b>GetTCPDecelLinear</b></a>
+</td><td  id='tdright'>  Get TCP linear deceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPLinear"><b>GetTCPLinear</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Get the TCP linear speed and acceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPLinearNoAccel"><b>GetTCPLinearNoAccel</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Get the TCP linear speed.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPLinearNoAccelWithUnits"><b>GetTCPLinearNoAccelWithUnits</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Get the TCP linear speed and the units it is specified in.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPLinearWithDecel"><b>GetTCPLinearWithDecel</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Get the TCP linear speed, acceleration and deceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPLinearWithUnits"><b>GetTCPLinearWithUnits</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Get the TCP linear speed and the units it is specified in and acceleration as a percentage.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPSpeedAngular"><b>GetTCPSpeedAngular</b></a>
+</td><td  id='tdright'>  Get TCP angular speed.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPSpeedLinear"><b>GetTCPSpeedLinear</b></a>
+</td><td  id='tdright'>  Get TCP linear speed.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPSpeedWithDecelWithAccelUnits"><b>GetTCPSpeedWithDecelWithAccelUnits</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Get the TCP linear and angular speed, acceleration, deceleration, and acceleration units.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPSpeedWithDecelWithSpeedUnits"><b>GetTCPSpeedWithDecelWithSpeedUnits</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Get the TCP linear speed, angular speed, acceleration, deceleration, linear speed units, and angular speed units.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTime"><b>GetTime</b></a>
+</td><td  id='tdright'>  Get motion speed as a time.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetJointAsPercent"><b>SetJointAsPercent</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Set the joint speed and acceleration as a percentage.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetJointAsPercentWithDecel"><b>SetJointAsPercentWithDecel</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Set the joint speed, acceleration and deceleration as a percentage.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPAccelAngular"><b>SetTCPAccelAngular</b></a>
+</td><td  id='tdright'>  Set TCP angular acceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPAccelLinear"><b>SetTCPAccelLinear</b></a>
+</td><td  id='tdright'>  Set TCP linear acceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPAngular"><b>SetTCPAngular</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Set the TCP angular speed and acceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPAngularWithDecel"><b>SetTCPAngularWithDecel</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Set the TCP angular speed, acceleration and deceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPDecelAngular"><b>SetTCPDecelAngular</b></a>
+</td><td  id='tdright'>  Set TCP angular deceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPDecelLinear"><b>SetTCPDecelLinear</b></a>
+</td><td  id='tdright'>  Set TCP linear deceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPLinear"><b>SetTCPLinear</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Set the TCP linear speed and acceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPLinearNoAccel"><b>SetTCPLinearNoAccel</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Set the TCP linear speed.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPLinearNoAccelWithUnits"><b>SetTCPLinearNoAccelWithUnits</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Set the TCP linear speed and the units it is specified in.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPLinearWithDecel"><b>SetTCPLinearWithDecel</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Set the TCP linear speed, acceleration and deceleration.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPLinearWithUnits"><b>SetTCPLinearWithUnits</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Set the TCP linear speed and the units it is specified in and acceleration as a percentage.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPSpeedAngular"><b>SetTCPSpeedAngular</b></a>
+</td><td  id='tdright'>  Set TCP angular speed.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPSpeedLinear"><b>SetTCPSpeedLinear</b></a>
+</td><td  id='tdright'>  Set TCP linear speed.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPSpeedWithDecelWithAccelUnits"><b>SetTCPSpeedWithDecelWithAccelUnits</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Set the TCP linear and angular speed, acceleration, deceleration, and acceleration units.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPSpeedWithDecelWithSpeedUnits"><b>SetTCPSpeedWithDecelWithSpeedUnits</b></a>
+</td><td  id='tdright'>  <B>Template Method:</B> Set the TCP linear speed, angular speed, acceleration, deceleration, linear speed units, and angular speed units.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTime"><b>SetTime</b></a>
+</td><td  id='tdright'>  Set motion speed as a time.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="IsTimeBasis"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IsTimeBasis</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Query if the motion profile specifies the speed as a time.<BR>
+ If FALSE, then the speed & acceleration are specified.
+ The basis cannot be set directly.  It is set automatically 
+ when setting the 
+<script type="text/javascript"> activateLinkAnchor('','GetTime','GetTime') </script> property or calling one of the other methods to set parameters.
+</dd>
+<a id="TCPAccelAngularUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TCPAccelAngularUnits</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ TCP Angular Acceleration units.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE.
+</dd>
+<a id="TCPAccelLinearUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TCPAccelLinearUnits</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Stored TCP linear acceleration units.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE.
+</dd>
+<a id="TCPDecelAngularUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TCPDecelAngularUnits</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Stored TCP angular deceleration units.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE.
+</dd>
+<a id="TCPDecelLinearUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TCPDecelLinearUnits</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Stored TCP linear deceleration units.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE.
+</dd>
+<a id="TCPSpeedAngularUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TCPSpeedAngularUnits</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Stored TCP Angular speed units.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE.
+</dd>
+<a id="TCPSpeedLinearUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TCPSpeedLinearUnits</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Stored TCP linear speed units.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE.
+</dd>
+<a id="TimeLinearAngularBasis"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TimeLinearAngularBasis</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpTimeLinearAngularBasis','DELOlpTimeLinearAngularBasis')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Query if the motion profile specifies the speed as time, a linear speed, or an angular speed.<BR>
+ This returns delOlpTimeBasis if a time is specified, 
+ returns delOlpAngularBasis if the linear speed is 100% (or maximum)
+ and the angular speed is less than 100%, and returns
+ delOlpLinearBasis in all other cases.  Use this method 
+ to determine which method to call (e.g. 
+<script type="text/javascript"> activateLinkAnchor('','GetTime','GetTime') </script>, 
+<script type="text/javascript"> activateLinkAnchor('','GetTCPSpeedLinear','GetTCPSpeedLinear') </script> or 
+<script type="text/javascript"> activateLinkAnchor('','GetTCPSpeedAngular)','GetTCPSpeedAngular)') </script>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetJointAsPercent"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetJointAsPercent</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oSpeedPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oAccelPercent</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Get the joint speed and acceleration as a percentage.<BR>
+ Joint speed/acceleration is equal to the linear TCP speed/acceleration.
+ The following rules are checked for other parameters
+ of the motion profile.
+ <UL>
+    <LI>Linear Speed and Acceleration are specified as a percentage. (Notice message posted if specified in absolute units)</LI>
+    <LI>Linear Acceleration is equal to Linear Deceleration. (Warning message posted if different)</LI>
+    <LI>Angular Speed, Angular Acceleration, Angular Deceleration are all 100% or device maximum (Warning message posted if different)</LI>
+    <LI>Basis is Speed/Acceleration (Error if different). You should check 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> before calling this method.</LI> </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oSpeedPercent</span></dt>
+   <dd>	Joint speed as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oAccelPercent</span></dt>
+   <dd>	Joint acceleration as a percentage (1.0 is 100%).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetJointAsPercentWithDecel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetJointAsPercentWithDecel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oSpeedPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oAccelPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oDecelPercent</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Get the joint speed, acceleration and deceleration as a percentage.<BR>
+ Joint speed/acceleration is equal to the linear TCP speed/acceleration.
+ The following rules are checked for other parameters
+ of the motion profile.
+ <UL>
+    <LI>Linear Speed and Acceleration are specified as a percentage. (Notice message posted if specified in absolute units)</LI>
+    <LI>Angular Speed, Angular Acceleration, Angular Deceleration are all 100% or device maximum (Warning message posted if different)</LI>
+    <LI>Basis is Speed/Acceleration (Error if different). You should check 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> before calling this method.</LI> </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oSpeed</span></dt>
+   <dd>	Joint speed as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oAccel</span></dt>
+   <dd>	Joint acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDecel</span></dt>
+   <dd>	Joint deceleration as a percentage (1.0 is 100%).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetTCPAccelAngular"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTCPAccelAngular</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get TCP angular acceleration.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units to get the value in.  
+   1.0 is 100% if Percent is specified.
+   Value is in rad/s^2 if Absolute is specified.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The acceleration in the specified units, converted if needed, but no messages are reported.
+ </ dd>
+</dl>
+</dd>
+<a id="GetTCPAccelLinear"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTCPAccelLinear</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get TCP linear acceleration.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units to get the value in.  
+   1.0 is 100% if Percent is specified.
+   Value is in m/s^2 if Absolute is specified.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The acceleration in the specified units, converted if needed, but no messages are reported.
+ </ dd>
+</dl>
+</dd>
+<a id="GetTCPAngular"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetTCPAngular</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPAccelPercent</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Get the TCP angular speed and acceleration.<BR>
+ The following rules are checked for other parameters
+ of the motion profile.
+ <UL>
+    <LI>Angular Speed is specified in absolute units. (Notice message posted if specified as a percentage)</LI>
+    <LI>Angular Acceleration is specified as a percentage. (Notice message posted if specified in absolute units)</LI>
+    <LI>Angular Acceleration is equal to Angular Deceleration. (Warning message posted if different)</LI>
+    <LI>Linear Speed, Linear Acceleration, Linear Deceleration are all 100% or device maximum (Warning message posted if different)</LI>
+    <LI>Basis is Speed/Acceleration (Error if different). You should check 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> before calling this method.</LI> </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oTCPSpeedAbs</span></dt>
+   <dd>	Angular TCP speed in absolute units (rad/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPAccelPercent</span></dt>
+   <dd>	Angular TCP acceleration as a percentage (1.0 is 100%).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetTCPAngularWithDecel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetTCPAngularWithDecel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPAccelPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPDecelPercent</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Get the TCP angular speed, acceleration and deceleration.<BR>
+ The following rules are checked for other parameters
+ of the motion profile.
+ <UL>
+    <LI>Angular Speed is specified in absolute units. (Notice message posted if specified as a percentage)</LI>
+    <LI>Angular Acceleration is specified as a percentage. (Notice message posted if specified in absolute units)</LI>
+    <LI>Linear Speed, Linear Acceleration, Linear Deceleration are all 100% or device maximum (Warning message posted if different)</LI>
+    <LI>Basis is Speed/Acceleration (Error if different). You should check 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> before calling this method.</LI> </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oTCPSpeedAbs</span></dt>
+   <dd>	Angular TCP speed in absolute units (rad/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPAccelPercent</span></dt>
+   <dd>	Angular TCP acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPDecelPercent</span></dt>
+   <dd>	Angular TCP deceleration as a percentage (1.0 is 100%).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetTCPDecelAngular"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTCPDecelAngular</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get TCP angular deceleration.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units to get the value in.  
+   1.0 is 100% if Percent is specified.
+   Value is in rad/s^2 if Absolute is specified.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The deceleration in the specified units, converted if needed, but no messages are reported.
+ </ dd>
+</dl>
+</dd>
+<a id="GetTCPDecelLinear"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTCPDecelLinear</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get TCP linear deceleration.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units to get the value in.  
+   1.0 is 100% if Percent is specified.
+   Value is in m/s^2 if Absolute is specified.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The deceleration in the specified units, converted if needed, but no messages are reported.
+ </ dd>
+</dl>
+</dd>
+<a id="GetTCPLinear"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetTCPLinear</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPAccelPercent</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Get the TCP linear speed and acceleration.<BR>
+ The following rules are checked for other parameters
+ of the motion profile.
+ <UL>
+    <LI>Linear Speed is specified in absolute units. (Notice message posted if specified as a percentage)</LI>
+    <LI>Linear Acceleration is specified as a percentage. (Notice message posted if specified in absolute units)</LI>
+    <LI>Linear Acceleration is equal to Linear Deceleration. (Warning message posted if different)</LI>
+    <LI>Angular Speed, Angular Acceleration, Angular Deceleration are all 100% or device maximum (Warning message posted if different)</LI>
+    <LI>Basis is Speed/Acceleration (Error if different). You should check 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> before calling this method.</LI> </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oTCPSpeedAbs</span></dt>
+   <dd>	Linear TCP speed in absolute units (m/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPAccelPercent</span></dt>
+   <dd>	Linear TCP acceleration as a percentage (1.0 is 100%).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetTCPLinearNoAccel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetTCPLinearNoAccel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPSpeedAbs</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Get the TCP linear speed.<BR>
+ The following rules are checked for other parameters
+ of the motion profile.
+ <UL>
+    <LI>Linear Speed is specified in absolute units. (Notice message posted if specified as a percentage)</LI>
+    <LI>Linear Acceleration, Linear Deceleration, Angular Speed, Angular Acceleration, and Angular Deceleration are all 100% or device maximum (Warning message posted if different)</LI>
+    <LI>Basis is Speed/Acceleration (Error if different). You should check 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> before calling this method.</LI> </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oTCPSpeedAbs</span></dt>
+   <dd>	Linear TCP speed in absolute units (m/s).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetTCPLinearNoAccelWithUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetTCPLinearNoAccelWithUnits</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPSpeed</span>,<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>oUnits</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Get the TCP linear speed and the units it is specified in.<BR>
+ The following rules are checked for other parameters
+ of the motion profile.
+ <UL>
+    <LI>Linear Acceleration, Linear Deceleration, Angular Speed, Angular Acceleration, and Angular Deceleration are all 100% or device maximum (Warning message posted if different)</LI>
+    <LI>Basis is Speed/Acceleration (Error if different). You should check 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> before calling this method.</LI> </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oTCPSpeed</span></dt>
+   <dd>	Linear TCP speed either as percentage or in absolute units.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oUnits</span></dt>
+   <dd>	Indicates if the speed is in percent (1.0 is 100%) or in absolute units (m/s).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetTCPLinearWithDecel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetTCPLinearWithDecel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPAccelPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPDecelPercent</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Get the TCP linear speed, acceleration and deceleration.<BR>
+ The following rules are checked for other parameters
+ of the motion profile.
+ <UL>
+    <LI>Linear Speed is specified in absolute units. (Notice message posted if specified as a percentage)</LI>
+    <LI>Linear Acceleration is specified as a percentage. (Notice message posted if specified in absolute units)</LI>
+    <LI>Angular Speed, Angular Acceleration, Angular Deceleration are all 100% or device maximum (Warning message posted if different)</LI>
+    <LI>Basis is Speed/Acceleration (Error if different). You should check 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> before calling this method.</LI> </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oTCPSpeedAbs</span></dt>
+   <dd>	Linear TCP speed in absolute units (m/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPAccelPercent</span></dt>
+   <dd>	Linear TCP acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPDecelPercent</span></dt>
+   <dd>	Linear TCP deceleration as a percentage (1.0 is 100%).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetTCPLinearWithUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetTCPLinearWithUnits</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPSpeed</span>,<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>oUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPAccelPercent</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Get the TCP linear speed and the units it is specified in and acceleration as a percentage.<BR>
+ The following rules are checked for other parameters
+ of the motion profile.
+ <UL>
+    <LI>Linear Acceleration is specified as a percentage. (Notice message posted if specified in absolute units)</LI>
+    <LI>Linear Acceleration is equal to Linear Deceleration. (Warning message posted if different)</LI>
+    <LI>Angular Speed, Angular Acceleration, and Angular Deceleration are all 100% or device maximum (Warning message posted if different)</LI>
+    <LI>Basis is Speed/Acceleration (Error if different). You should check 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> before calling this method.</LI> </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oTCPSpeed</span></dt>
+   <dd>	Linear TCP speed either as percentage or in absolute units.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oUnits</span></dt>
+   <dd>	Indicates if the speed is in percent (1.0 is 100%) or in absolute units (m/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPAccelPercent</span></dt>
+   <dd>	Linear TCP acceleration as a percentage (1.0 is 100%).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetTCPSpeedAngular"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTCPSpeedAngular</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get TCP angular speed.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units to get the value in.  
+   1.0 is 100% if Percent is specified.
+   Value is in rad/s if Absolute is specified.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The speed in the specified units, converted if needed, but no messages are reported.
+ </ dd>
+</dl>
+</dd>
+<a id="GetTCPSpeedLinear"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTCPSpeedLinear</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get TCP linear speed.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units to get the value in.  
+   1.0 is 100% if Percent is specified.
+   Value is in m/s if Absolute is specified.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The speed in the specified units, converted if needed, but no messages are reported.
+ </ dd>
+</dl>
+</dd>
+<a id="GetTCPSpeedWithDecelWithAccelUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetTCPSpeedWithDecelWithAccelUnits</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPLinSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPAngSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPLinAccel</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPLinDecel</span>,<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>oAccelDecelUnits</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Get the TCP linear and angular speed, acceleration, deceleration, and acceleration units.<BR>
+ The following rules are checked for other parameters
+ of the motion profile.
+ <UL>
+    <LI>Linear Speed is specified in absolute units. (Notice message posted if specified as a percentage)</LI>
+    <LI>Angular Speed is specified in absolute units. (Notice message posted if specified as a percentage)</LI>
+    <LI>Linear Acceleration and Deceleration both use the same units.  (Notice message posted if different and the acceleration units are used.)</LI>
+    <LI>Angular Acceleration and Angular Deceleration are 100% or device maximum (Warning message posted if different)</LI>
+    <LI>Basis is Speed/Acceleration (Error if different). You should check 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> before calling this method.</LI> </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oTCPLinSpeedAbs</span></dt>
+   <dd>	Linear TCP speed in absolute units (m/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPAngSpeedAbs</span></dt>
+   <dd>	Angular TCP speed in absolute units (rad/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPAccel</span></dt>
+   <dd>	Linear TCP acceleration in units specified by oAccelDecelUnits.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPDecel</span></dt>
+   <dd>	Linear TCP deceleration in units specified by oAccelDecelUnits.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oAccelDecelUnits</span></dt>
+   <dd>	Indicates if the acceleration and deceleration is in percent (1.0 is 100%) or in absolute units (m/s<sup>2</sup>).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetTCPSpeedWithDecelWithSpeedUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetTCPSpeedWithDecelWithSpeedUnits</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPLinSpeed</span>,<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>oLinSpeedUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPAngSpeed</span>,<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>oAngSpeedUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPLinAccelPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oTCPLinDecelPercent</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Get the TCP linear speed, angular speed, acceleration, deceleration, linear speed units, and angular speed units.<BR>
+ The following rules are checked for other parameters
+ of the motion profile.
+ <UL>
+    <LI>Linear Acceleration is specified as a percentage. (Notice message posted if specified in absolute units)</LI>
+    <LI>Linear Deceleration is specified as a percentage. (Notice message posted if specified in absolute units)</LI>
+    <LI>Angular Acceleration and Angular Deceleration are 100% or device maximum (Warning message posted if different)</LI>
+    <LI>Basis is Speed/Acceleration (Error if different). You should check 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> before calling this method.</LI> </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oTCPLinSpeed</span></dt>
+   <dd>	Linear TCP speed in units specified by oLinSpeedUnits.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oLinSpeedUnits</span></dt>
+   <dd>	Indicates if the linear speed is in percent (1.0 is 100%) or in absolute units (m/s<sup>2</sup>).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPAngSpeed</span></dt>
+   <dd>	Angular TCP speed in units specified by oAngSpeedUnits.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oAngSpeedUnits</span></dt>
+   <dd>	Indicates if the angular speed is in percent (1.0 is 100%) or in absolute units (m/s<sup>2</sup>).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPLinAccelPercent</span></dt>
+   <dd>	Linear TCP acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oTCPLinDecelPercent</span></dt>
+   <dd>	Linear TCP deceleration as a percentage (1.0 is 100%).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetTime"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTime</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get motion speed as a time.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns FALSE. 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd> 	The time in seconds.
+ </ dd>
+</dl>
+</dd>
+<a id="SetJointAsPercent"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetJointAsPercent</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iSpeedPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iAccelPercent</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Set the joint speed and acceleration as a percentage.<BR>
+ Joint speed/acceleration is equal to the linear TCP speed/acceleration.
+ The other parameters of the motion profile are set as follows.
+ <UL>
+    <LI>Linear Deceleration and Linear Acceleration are both set to iAccelPercent as a percentage.</LI>
+    <LI>Angular Speed, Angular Acceleration, Angular Deceleration are all set to 100%.</LI>
+    <LI>Basis is set to Speed/Acceleration</LI>
+ </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSpeedPercent</span></dt>
+   <dd>	Joint speed as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAccelPercent</span></dt>
+   <dd>	Joint acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, these parameters must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetJointAsPercentWithDecel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetJointAsPercentWithDecel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iSpeedPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iAccelPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iDecelPercent</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Set the joint speed, acceleration and deceleration as a percentage.<BR>
+ Joint speed/acceleration is equal to the linear TCP speed/acceleration.
+ The other parameters of the motion profile are set as follows.
+ <UL>
+    <LI>Angular Speed, Angular Acceleration, Angular Deceleration are all set to 100%.</LI>
+    <LI>Basis is set to Speed/Acceleration</LI>
+ </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSpeed</span></dt>
+   <dd>	Joint speed as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAccel</span></dt>
+   <dd>	Joint acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDecel</span></dt>
+   <dd>	Joint deceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, these parameters must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPAccelAngular"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPAccelAngular</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iAccel</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set TCP angular acceleration.<BR>
+ This fails if 
+<script type="text/javascript"> activateLinkAnchor('','IsTimeBasis','IsTimeBasis') </script> returns TRUE. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units the value is being set in.  
+   The units are also set.  
+   Value is between 0.0 and 1.0 if Percent is specified.
+   Value must be in rad/s^2 if Absolute is specified.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAccel</span></dt>
+   <dd>   The acceleration value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, this parameter must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPAccelLinear"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPAccelLinear</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iAccel</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set TCP linear acceleration.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units the value is being set in.  
+   The units are also set.  
+   Value is between 0.0 and 1.0 if Percent is specified.
+   Value must be in m/s^2 if Absolute is specified.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAccel</span></dt>
+   <dd>   The acceleration value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, this parameter must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPAngular"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPAngular</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPAccelPercent</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Set the TCP angular speed and acceleration.<BR>
+ The other parameters of the motion profile are set as follows.
+ <UL>
+    <LI>Angular Deceleration and Angular Acceleration are both set to iTCPAccelPercent as a percentage.</LI>
+    <LI>Linear Speed, Linear Acceleration, Linear Deceleration are all set to 100%.</LI>
+    <LI>Basis is set to Speed/Acceleration</LI>
+ </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTCPSpeedAbs</span></dt>
+   <dd>	Angular TCP speed in absolute units (rad/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPAccelPercent</span></dt>
+   <dd>	Angular TCP acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, these parameters must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPAngularWithDecel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPAngularWithDecel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPAccelPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPDecelPercent</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Set the TCP angular speed, acceleration and deceleration.<BR>
+ The other parameters of the motion profile are set as follows.
+ <UL>
+    <LI>Linear Speed, Linear Acceleration, Linear Deceleration are all set to 100%.</LI>
+    <LI>Basis is set to Speed/Acceleration</LI>
+ </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTCPSpeedAbs</span></dt>
+   <dd>	Angular TCP speed in absolute units (rad/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPAccelPercent</span></dt>
+   <dd>	Angular TCP acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPDecelPercent</span></dt>
+   <dd>	Angular TCP deceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, these parameters must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPDecelAngular"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPDecelAngular</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iDecel</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set TCP angular deceleration.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units the value is being set in.  
+   The units are also set.  
+   Value is between 0.0 and 1.0 if Percent is specified.
+   Value must be in rad/s^2 if Absolute is specified.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDecel</span></dt>
+   <dd>   The deceleration value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, this parameter must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPDecelLinear"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPDecelLinear</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iDecel</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set TCP linear deceleration.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units the value is being set in.  
+   The units are also set.  
+   Value is between 0.0 and 1.0 if Percent is specified.
+   Value must be in m/s^2 if Absolute is specified.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDecel</span></dt>
+   <dd>   The deceleration value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, this parameter must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPLinear"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPLinear</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPAccelPercent</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Set the TCP linear speed and acceleration.<BR>
+ The other parameters of the motion profile are set as follows.
+ <UL>
+    <LI>Linear Deceleration and Linear Acceleration are both set to iTCPAccelPercent as a percentage.</LI>
+    <LI>Angular Speed, Angular Acceleration, Angular Deceleration are all set to 100%.</LI>
+    <LI>Basis is set to Speed/Acceleration</LI>
+ </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTCPSpeedAbs</span></dt>
+   <dd>	Linear TCP speed in absolute units (m/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPAccelPercent</span></dt>
+   <dd>	Linear TCP acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, these parameters must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPLinearNoAccel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPLinearNoAccel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPSpeedAbs</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Set the TCP linear speed.<BR>
+ The other parameters of the motion profile are set as follows.
+ <UL>
+    <LI>Linear Acceleration, Linear Deceleration, Angular Speed, Angular Acceleration, and Angular Deceleration are all set to 100%.</LI>
+    <LI>Basis is set to Speed/Acceleration</LI>
+ </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTCPSpeedAbs</span></dt>
+   <dd>	Linear TCP speed in absolute units (m/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, these parameters must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPLinearNoAccelWithUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPLinearNoAccelWithUnits</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPSpeed</span>,<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Set the TCP linear speed and the units it is specified in.<BR>
+ The other parameters of the motion profile are set as follows.
+ <UL>
+    <LI>Linear Acceleration, Linear Deceleration, Angular Speed, Angular Acceleration, and Angular Deceleration are all set to 100%.</LI>
+    <LI>Basis is set to Speed/Acceleration</LI>
+ </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTCPSpeed</span></dt>
+   <dd>	Linear TCP speed either as percentage or in absolute units.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>	Indicates if the speed is in percent (1.0 is 100%) or in absolute units (m/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, these parameters must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPLinearWithDecel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPLinearWithDecel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPAccelPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPDecelPercent</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Set the TCP linear speed, acceleration and deceleration.<BR>
+ The other parameters of the motion profile are set as follows.
+ <UL>
+    <LI>Angular Speed, Angular Acceleration, Angular Deceleration are all set to 100%.</LI>
+    <LI>Basis is set to Speed/Acceleration</LI>
+ </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTCPSpeedAbs</span></dt>
+   <dd>	Linear TCP speed in absolute units (m/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPAccelPercent</span></dt>
+   <dd>	Linear TCP acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPDecelPercent</span></dt>
+   <dd>	Linear TCP deceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, these parameters must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPLinearWithUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPLinearWithUnits</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPSpeed</span>,<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPAccelPercent</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Set the TCP linear speed and the units it is specified in and acceleration as a percentage.<BR>
+ The other parameters of the motion profile are set as follows.
+ <UL>
+    <LI>Linear Deceleration and Linear Acceleration are both set to iTCPAccelPercent as a percentage.</LI>
+    <LI>Angular Speed, Angular Acceleration, Angular Deceleration are all set to 100%.</LI>
+    <LI>Basis is set to Speed/Acceleration</LI>
+ </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTCPSpeed</span></dt>
+   <dd>	Linear TCP speed either as percentage or in absolute units.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>	Indicates if the speed is in percent (1.0 is 100%) or in absolute units (m/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPAccelPercent</span></dt>
+   <dd>	Linear TCP acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, these parameters must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPSpeedAngular"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPSpeedAngular</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iSpeed</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set TCP angular speed.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units the value is being set in.  
+   The units are also set.  
+   Value is between 0.0 and 1.0 if Percent is specified.
+   Value must be in rad/s if Absolute is specified.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iSpeed</span></dt>
+   <dd>   The speed value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, this parameter must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPSpeedLinear"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPSpeedLinear</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iSpeed</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set TCP linear speed.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUnits</span></dt>
+   <dd>   The units the value is being set in.  
+   The units are also set.  
+   Value is between 0.0 and 1.0 if Percent is specified.
+   Value must be in m/s if Absolute is specified.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iSpeed</span></dt>
+   <dd>   The speed value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, this parameter must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPSpeedWithDecelWithAccelUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPSpeedWithDecelWithAccelUnits</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPLinSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPAngSpeedAbs</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPLinAccel</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPLinDecel</span>,<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iAccelDecelUnits</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Set the TCP linear and angular speed, acceleration, deceleration, and acceleration units.<BR>
+ The other parameters of the motion profile are set as follows.
+ <UL>
+    <LI>Angular Acceleration and Angular Deceleration are set to 100%.</LI>
+    <LI>Basis is set to Speed/Acceleration</LI>
+ </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTCPLinSpeedAbs</span></dt>
+   <dd>	Linear TCP speed in absolute units (m/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPAngSpeedAbs</span></dt>
+   <dd>	Angular TCP speed in absolute units (rad/s).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPAccelAbs</span></dt>
+   <dd>	Linear TCP acceleration in absolute units (m/s<sup>2</sup>).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPDecelAbs</span></dt>
+   <dd>	Linear TCP deceleration in absolute units (m/s<sup>2</sup>).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAccelDecelUnits</span></dt>
+   <dd>	Indicates if the acceleration and deceleration is in percent (1.0 is 100%) or in absolute units (m/s<sup>2</sup>).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, these parameters must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTCPSpeedWithDecelWithSpeedUnits"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTCPSpeedWithDecelWithSpeedUnits</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPLinSpeed</span>,<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iLinSpeedUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPAngSpeed</span>,<script type="text/javascript"> activateLink('DELOlpMotionProfileUnits','DELOlpMotionProfileUnits')</script> <span class='param'>iAngSpeedUnits</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPLinAccelPercent</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTCPLinDecelPercent</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ <B>Template Method:</B> Set the TCP linear speed, angular speed, acceleration, deceleration, linear speed units, and angular speed units.<BR>
+ The other parameters of the motion profile are set as follows.
+ <UL>
+    <LI>Angular Acceleration and Angular Deceleration are set to 100%.</LI>
+    <LI>Basis is set to Speed/Acceleration</LI>
+ </UL>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTCPLinSpeed</span></dt>
+   <dd>	Linear TCP speed in units specified by oLinSpeedUnits.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iLinSpeedUnits</span></dt>
+   <dd>	Indicates if the linear speed is in percent (1.0 is 100%) or in absolute units (m/s<sup>2</sup>).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPAngSpeed</span></dt>
+   <dd>	Angular TCP speed in units specified by oAngSpeedUnits.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAngSpeedUnits</span></dt>
+   <dd>	Indicates if the angular speed is in percent (1.0 is 100%) or in absolute units (m/s<sup>2</sup>).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPLinAccelPercent</span></dt>
+   <dd>	Linear TCP acceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTCPLinDecelPercent</span></dt>
+   <dd>	Linear TCP deceleration as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, these parameters must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetTime"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTime</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTime</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set motion speed as a time.<BR>
+ On set, the motion basis is set to time.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTime</span></dt>
+   <dd>   The time in seconds.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd>   If true, this parameter must match the values on an 
+   existing profile for that profile to be re-used.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

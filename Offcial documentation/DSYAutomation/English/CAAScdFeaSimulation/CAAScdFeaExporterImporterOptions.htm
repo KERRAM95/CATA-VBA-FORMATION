@@ -1,0 +1,794 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Exporter and Importer options</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>DS Exporter and Importer options</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+				<h3>Abstract</h3>
+				<p>The following reference article describes the different options for the DS importer/exporter and their usage.</p>
+				<p>This paper explains the options for:</p>
+				<ul>
+				    <li><a href="#ABAQUSImporterExporter">The ABAQUS Input File exporter/importer.</a>
+				        <ul>
+				            <li><a href="#ABAQUSImporterExporterKeys">The ABAQUS Input File exporter/importer Keys.</a></li>
+				            <li><a href="#ABAQUSExporterParamaterKeys">The ABAQUS Input File exporter parameters Keys.</a></li>
+				            <li><a href="#ABAQUSImporterParamaterKeys">The ABAQUS Input File importer parameters Keys.</a></li>
+				        </ul>
+				    </li>
+				    <li><a href="#NASTRANImporterExporter">The NASTRAN Bulk Data exporter/importer.</a>
+				        <ul>
+				            <li><a href="#NASTRANImporterExporterKeys">The NASTRAN Bulk Data exporter/importer Keys.</a></li>
+				            <li><a href="#NASTRANExporterParamaterKeys">The NASTRAN Bulk Data exporter parameters Keys.</a></li>
+				            <li><a href="#NASTRANImporterParamaterKeys">The NASTRAN Bulk Data importer parameters Keys.</a></li>
+				        </ul>
+				    </li>
+				</ul>
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="ABAQUSImporterExporter">ABAQUS Input File exporter/importer</a></h2>
+<p><a name="ABAQUSImporterExporterKeys"><strong>The ABAQUS Input File exporter/importer Keys</strong></a></p>
+<table class="fill">
+	<tr>
+		<th class="code">
+		    <p><b>Category</b></p>
+		</th>
+		<th>
+				<p><b>Exporter</b></p>
+		</th>
+		<th>
+				<p><b>Importer</b></p>
+		</th>
+	</tr>
+	<tr>
+		<td>
+		    <p>Model</p>
+		</td>
+		<td>
+				<p><i>Model2Abaqus</i></p>
+		</td>
+		<td>
+				<p><i>Abaqus2Model</i></p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>Scenario</p>
+		</td>
+		<td>
+				<p><i>Scenario2Abaqus</i></p>
+		</td>
+		<td>
+				<p><i>Abaqus2Scenario</i></p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>Results</p>
+		</td>
+		<td>
+				<p><i>Results2Odb</i></p>
+		</td>
+		<td>
+		</td>
+	</tr>
+
+</table>
+
+<p><a name="ABAQUSExporterParamaterKeys"><strong>The ABAQUS Input File exporter parameters Keys</strong></a></p>
+<table class="fill">
+	<tr>
+		<th>
+		    <p><b>Parameter Keys</b></p>
+		</th>
+		<th>
+				<p><b>Description</b></p>
+		</th>
+		<th>
+				<p><b>Type</b></p>
+		</th>
+		<th>
+				<p><b>Possible options</b></p>
+		</th>
+	</tr>
+	<tr>
+	  <td>
+	    <p>AllowOverwrite</p>
+	  </td>
+	  <td>
+	    <p>Allows to overwrite an existing file.</p>
+	  </td>
+	  <td>
+	    <p>Integer</p>
+	  </td>
+	  <td>
+	    <p><b>0</b> | 1</p>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    <p>CreateLogFile</p>
+	  </td>
+	  <td>
+	    <p>Create a Log File.</p>
+	  </td>
+	  <td>
+	    <p>Integer</p>
+	  </td>
+	  <td>
+	    <p><b>0</b> | 1</p>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    <p>LogFolderPath</p>
+	  </td>
+	  <td>
+	    <p>Log File Path.</p>
+	  </td>
+	  <td>
+	    <p>String</p>
+	  </td>
+	  <td>
+	  </td>
+	</tr>
+  <tr>
+	  <td>
+	    <p>FluidFormulation</p>
+	  </td>
+	  <td>
+	    <p>Changes the mesh element types exported to support appropriate use in an Abaqus input file.</p>
+	    <p><b>Only</b> for <b>Model2Abaqus</b> exporter.</p>
+	  </td>
+	  <td>
+	    <p>Integer</p>
+	  </td>
+	  <td>
+	    <p><b>0</b> | 1</p>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    <p>PrintPartName</p>
+	  </td>
+	  <td>
+	    <p>Export the mesh data for each mesh part separately for the &quot;Mesh of 
+		Assembly&quot; finite element representation.</p>
+		<p><b>Only</b> for <b>Model2Abaqus</b> exporter.</p>
+	  </td>
+	  <td>
+	    <p>Integer</p>
+	  </td>
+	  <td>
+	    <p><b>0</b> | 1</p>
+	  </td>
+	</tr>
+</table>
+<p><a name="ABAQUSImporterParamaterKeys"><strong>The ABAQUS Input File importer parameters Keys</strong></a></p>
+<table class="fill">
+	<tr>
+		<th>
+		    <p><b>Parameter Keys</b></p>
+		</th>
+		<th>
+				<p><b>Description</b></p>
+		</th>
+		<th>
+				<p><b>Type</b></p>
+		</th>
+		<th>
+				<p><b>Possible options</b></p>
+		</th>
+	</tr>
+	<tr>
+	  <td>
+	    <p>CreateLogFile</p>
+	  </td>
+	  <td>
+	    <p>Create a Log File.</p>
+	  </td>
+	  <td>
+	    <p>Integer</p>
+	  </td>
+	  <td>
+	    <p><b>0</b> | 1</p>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    <p>LogFolderPath</p>
+	  </td>
+	  <td>
+	    <p>Log File Path.</p>
+	  </td>
+	  <td>
+	    <p>String</p>
+	  </td>
+	  <td>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    <p>StructuringOption</p>
+	  </td>
+	  <td>
+	    <p>None :	Generates a mesh part per mesh dimension.</p>
+			<p>Section : Generates a mesh part per property.</p>
+	  </td>
+	  <td>
+	    <p>String</p>
+	  </td>
+	  <td>
+	    <p><b>None</b> | Section</p>
+	  </td>
+	</tr>
+  <tr>
+	  <td>
+	    <p>ConnectorImport</p>
+	  </td>
+	  <td>
+	    <p>Import all connector-related objects.</p>
+	  </td>
+	  <td>
+	    <p>Integer</p>
+	  </td>
+	  <td>
+	    <p><b>0</b> | 1</p>
+	  </td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="NASTRANImporterExporter">NASTRAN Bulk Data exporter/importer</a></h2>
+<p><a name="NASTRANImporterExporterKeys"><strong>The NASTRAN Bulk Data exporter/importer Keys</strong></a></p>
+<table class="fill">
+	<tr>
+		<th class="code">
+		    <p><b>Category</b></p>
+		</th>
+		<th>
+				<p><b>Exporter</b></p>
+		</th>
+		<th>
+				<p><b>Importer</b></p>
+		</th>
+	</tr>
+	<tr>
+		<td>
+		    <p>Model</p>
+		</td>
+		<td>
+				<p><i>Model2Nastran</i></p>
+		</td>
+		<td>
+				<p><i>Nastran2Model</i></p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>Scenario</p>
+		</td>
+		<td>
+				<p><i>Scenario2Nastran</i></p>
+		</td>
+		<td>
+				<p><i>Nastran2Scenario</i></p>
+		</td>
+	</tr>
+</table>
+<p><a name="NASTRANExporterParamaterKeys"><strong>The NASTRAN Bulk Data exporter parameters Keys</strong></a></p>
+<table class="fill">
+	<tr>
+		<th>
+		    <p><b>Parameter Keys</b></p>
+		</th>
+		<th>
+				<p><b>Description</b></p>
+		</th>
+		<th>
+				<p><b>Type</b></p>
+		</th>
+		<th>
+				<p><b>Possible options</b></p>
+		</th>
+	</tr>
+	<tr>
+		<td>
+		    <p>GranularityGroups</p>
+		</td>
+		<td>
+				<p>Export groups (Only elements and nodes groups are supported).</p>
+		</td>
+		<td>
+				<p>Integer</p>
+		</td>
+		<td>
+				<p><strong>1</strong> | 0</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>GroupsLabel</p>
+		</td>
+		<td>
+				<p>SET to write the groups before the bulk data in the output file.</p>
+				<p>SET1 to write the groups after the bulk data.</p>
+		</td>
+		<td>
+				<p>String</p>
+		</td>
+		<td>
+				<p><b>SET</b> | SET1</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>GranularityMaterials</p>
+		</td>
+		<td>
+				<p>Export materials.</p>
+		</td>
+		<td>
+				<p>Integer</p>
+		</td>
+		<td>
+				<p><strong>1</strong> | 0</p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>MaterialsStartingID</p>
+		</td>
+		<td>
+				<p>Starting index for the numbering of the exported materials.</p>
+		</td>
+		<td>
+				<p>Integer</p>
+		</td>
+		<td>
+				<p>&gt;=<b>1</b></p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>GranularityProperties</p>
+		</td>
+		<td>
+				<p>Export properties.</p>
+		</td>
+		<td>
+				<p>Integer</p>
+		</td>
+		<td>
+				<p><strong>1</strong> | 0</p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>PropertiesStartingID</p>
+		</td>
+		<td>
+				<p>Starting index for the numbering of the exported properties.</p>
+		</td>
+		<td>
+				<p>Integer</p>
+		</td>
+		<td>
+				<p>&gt;=<b>1</b></p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>GranularitySpecialElements</p>
+		</td>
+		<td>
+				<p>Element connectivity and specifications are exported according to hard-coded translation.</p>
+		</td>
+		<td>
+				<p>Integer</p>
+		</td>
+		<td>
+				<p><strong>1</strong> | 0</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>AnalysisCase</p>
+		</td>
+		<td>
+				<p>Export analysis case.</p>
+		</td>
+		<td>
+				<p>Integer</p>
+		</td>
+		<td>
+				<p><strong>1</strong> | 0</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>AnalysisCaseSteps</p>
+		</td>
+		<td>
+				<p>Specify list of steps to be exported.</p>
+		</td>
+		<td>
+				<p>Array of Integer</p>
+		</td>
+		<td>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>AnalysisCaseGranularityRestraints</p>
+		</td>
+		<td>
+				<p>Export restraints.</p>
+		</td>
+		<td>
+				<p>Integer</p>
+		</td>
+		<td>
+		    <p><strong>1</strong> | 0</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>AnalysisCaseGranularityLoads</p>
+		</td>
+		<td>
+				<p>Export loads.</p>
+		</td>
+		<td>
+				<p>Integer</p>
+		</td>
+		<td>
+		    <p><strong>1</strong> | 0</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>AnalysisCaseGranularityOutputs</p>
+		</td>
+		<td>
+				<p>Export outputs.</p>
+		</td>
+		<td>
+				<p>Integer</p>
+		</td>
+		<td>
+		    <p><strong>1</strong> | 0</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>AnalysisCaseGranularityInitials</p>
+		</td>
+		<td>
+				<p>Export initial conditions.</p>
+		</td>
+		<td>
+				<p>Integer</p>
+		</td>
+		<td>
+		    <p><strong>1</strong> | 0</p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>OptionsParamPost</p>
+		</td>
+		<td>
+				<p>Instruct Nastran about generation of output files.</p>
+		</td>
+		<td>
+				<p>String</p>
+		</td>
+		<td>
+		    <p>PARAM,POST,-1 $ original OP2</p>
+		    <p><b>PARAM,POST,-2 $ general OP2</b></p>
+		    <p>PARAM,POST,0 $ XDB</p>
+		    <p>PARAM,POST,1 $ implicit OP2</p>
+		    <p>Not Enabled</p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    OptionsExportFormat</td>
+		<td>
+				Sets the format for bulk data in exported file</td>
+		<td>
+				String</td>
+		<td>
+		    Free field|Fixed small field<br />
+			Fixed large field</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>OptionsBeamProperties</p>
+		</td>
+		<td>
+				<p>YES: Exports beam properties into CBEAM and PBEAM/PBEAML data cards only.</p>
+				<p>NO : Exports beam properties into a mix of BAR and BEAM data cards based on whether it is a Euler-Bernoulli or Timoshenko in Abaqus.</p>
+		</td>
+		<td>
+				<p>String</p>
+		</td>
+		<td>
+		    <p>YES | <b>NO</b></p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>OptionsAxialSpring</p>
+		</td>
+		<td>
+				<p>CELAS1/PELAS : Exports axial connectors and springs into CELAS1 elements and PELAS properties.</p>
+				<p>CELAS2: Exports axial connectors and springs into elements without reference to a property entry.</p>
+		</td>
+		<td>
+				<p>String</p>
+		</td>
+		<td>
+		    <p>CELAS2 | <b>CELAS1/PELAS</b></p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>OptionsComposite</p>
+		</td>
+		<td>
+				<p>Exports the composite properties to PCOMP or PCOMPG.</p>
+		</td>
+		<td>
+				<p>String</p>
+		</td>
+		<td>
+		    <p><b>PCOMP</b> | PCOMPG</p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>OptionsCompositeFailureTheory</p>
+		</td>
+		<td>
+				<p>Sets the failure theory for the FT field in PCOMP or PCOMPG.</p>
+		</td>
+		<td>
+				<p>String</p>
+		</td>
+		<td>
+		    <p><b>Blank</b> | Hill | Hoffman |</p>
+		    <p>Tsai-wu | Maximum Strain</p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>OptionsCompositeStressStrainOutputForPlies</p>
+		</td>
+		<td>
+				<p>Sets the stress/strain output request field for all the plies in all the PCOMP/PCOMPG cards.</p>
+		</td>
+		<td>
+				<p>String</p>
+		</td>
+		<td>
+		    <p><b>NO</b> | YES</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>OptionsCompositeMaximumStrainTheory</p>
+		</td>
+		<td>
+				<p>This determines Xt, Xc, Yt, Yc, and S fields at MAT8 are stress or strain allowables.</p>
+		</td>
+		<td>
+				<p>String</p>
+		</td>
+		<td>
+		    <p><b>STRESS</b> | STRAIN</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>OptionsTruss</p>
+		</td>
+		<td>
+				<p>Exports the truss elemens and associated properties into a CROD/PROD or a CONROD.</p>
+		</td>
+		<td>
+				<p>String</p>
+		</td>
+		<td>
+		    <p><b>CROD/PROB</b> | CONROD</p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>OptionsBeamConnector</p>
+		</td>
+		<td>
+				<p>Exports a beam connector to CBUSH/PBUSH or RBE2. If exporting to CBUSH/PBUSH data card, one can specify either translational stiffness or rotational stiffness or both, otherwise export would calculate high stiffness values.</p>
+		</td>
+		<td>
+				<p>String</p>
+		</td>
+		<td>
+		    <p><b>CBUSH/PBUSH</b> | RBE2</p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>OptionsPBUSHTranslationalStiffness</p>
+		</td>
+		<td>
+				<p>Specify translational stiffness to be used at CBUSH/PBUSH exporting from beam connectors.</p>
+		</td>
+		<td>
+				<p>Double</p>
+		</td>
+		<td>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>OptionsPBUSHRotationalStiffness</p>
+		</td>
+		<td>
+				<p>Specify rotational stiffness to be used at CBUSH/PBUSH exporting from beam connectors.</p>
+		</td>
+		<td>
+				<p>Double</p>
+		</td>
+		<td>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>OptionsUserDefinePBUSHTranslationalStiffness</p>
+		</td>
+		<td>
+				<p>Enable export to use user specified translational stiffness to be used at CBUSH/PBUSH exporting from beam connectors.</p>
+		</td>
+		<td>
+				<p>Int</p>
+		</td>
+		<td>
+		    <p>0 | 1</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		    <p>OptionsUserDefinePBUSHRotationalStiffness</p>
+		</td>
+		<td>
+				<p>Enable export to use user specified  rotational stiffness to be used at CBUSH/PBUSH exporting from beam connectors.</p>
+		</td>
+		<td>
+				<p>Int</p>
+		</td>
+		<td>
+		    <p>0 | 1</p>
+		</td>
+	</tr>
+  <tr>
+		<td>
+		    <p>OptionsMaximumIOTime</p>
+		</td>
+		<td>
+				<p>Specifies the maximum run time in CPU minutes.</p>
+		</td>
+		<td>
+				<p>Double</p>
+		</td>
+		<td>
+		    <p>&gt;=0 | <b>(No value)</b></p>
+		</td>
+	</tr>
+
+  </table>
+<p><a name="NASTRANImporterParamaterKeys"><strong>The NASTRAN Bulk Data importer parameters Keys</strong></a></p>
+<table class="fill">
+	<tr>
+		<th>
+		    <p><b>Parameter Keys</b></p>
+		</th>
+		<th>
+				<p><b>Description</b></p>
+		</th>
+		<th>
+				<p><b>Type</b></p>
+		</th>
+		<th>
+				<p><b>Possible options</b></p>
+		</th>
+	</tr>
+	<tr>
+	  <td>
+	    <p>CreateLogFile</p>
+	  </td>
+	  <td>
+	    <p>Create a Log File.</p>
+	  </td>
+	  <td>
+	    <p>Integer</p>
+	  </td>
+	  <td>
+	    <p><b>0</b> | 1</p>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    <p>LogFolderPath</p>
+	  </td>
+	  <td>
+	    <p>Log File Path.</p>
+	  </td>
+	  <td>
+	    <p>String</p>
+	  </td>
+	  <td>
+	  </td>
+	</tr>
+	<tr>
+	  <td>
+	    <p>StructuringOption</p>
+	  </td>
+	  <td>
+	    <p>None :	Generates a mesh part per mesh dimension.</p>
+			<p>Section : Generates a mesh part per property.</p>
+	  </td>
+	  <td>
+	    <p>String</p>
+	  </td>
+	  <td>
+	    <p><b>None</b> | Section</p>
+	  </td>
+	</tr>
+  <tr>
+	  <td>
+	    <p>ConnectorImport</p>
+	  </td>
+	  <td>
+	    <p>Import all connector-related objects.</p>
+	  </td>
+	  <td>
+	    <p>Integer</p>
+	  </td>
+	  <td>
+	    <p><b>0</b> | 1</p>
+	  </td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>

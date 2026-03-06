@@ -1,0 +1,236 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Managing FEM group features</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Managing FEM group features</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This use case primarily focuses on the 
+					methodology to create/delete FEM groups.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					Note that:<ul>
+						<li>You should first launch CATIA and import the
+						<code><div class=vb_sample_data>CAAScdFeaProductWithoutFEM.3dxml</div></code> file 
+						supplied in the folder <code>
+						InstallRootFolder\CAADoc\Doc\English\CAAScdFeaModeling\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder 
+						where the API CD-ROM is installed.</li>
+            <li>Note: Creation of new PLM objects via scripting, as in this 
+                use case, requires an enabling license in addition to the
+                interactive Roles needed to access the functionality.</li>            
+						</ul>
+					<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdFeaGroupsSource.htm">
+					CAAScdFeaGroupsSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in eight steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as 
+			&quot;CAAScdFeaProductWithoutFEM&quot;</a></li>
+			<li><a href="#Step2">Retrieves the root product</a></li>
+			<li><a href="#Step3">Retrieves the PartBody</a></li>
+			<li><a href="#Step4">Creates the FEM representation and retrieve its 
+			root object</a></li>
+			<li><a href="#Step5">Creates/Retrieves the group set</a></li>
+			<li><a href="#Step6">Creates a geometric group</a></li>
+			<li><a href="#Step7">Creates a proximity group</a></li>
+			<li><a href="#Step8">Remove the proximity group</a></li>			
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is 
+			named as &quot;CAAScdFeaProductWithoutFEM&quot;</strong></p>
+			<p>As a first step, the UC retrieves a model 
+			&quot;CAAScdFeaProductWithoutFEM&quot; from DB and loads it and returns object 
+			of the Editor. </p>
+<pre class="code">... 
+<span class="keyword">Dim </span>myEditor<span class="keyword"> As </span>Editor
+OpenProduct MyEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>MyEditor</code></strong>, an Editor object. After 
+			searching and opening of &quot;CAAScdFeaProductWithoutFEM&quot; product from 
+			underlying database the current active editor is returned in <strong><code>
+			MyEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves the root product</strong></p>
+			<p>As a next step, the UC retrieves the root product object from the 
+			returned editor.</p>
+<pre class="code"> ...
+<span class="keyword">Dim</span> MyRootOcc <span class="keyword">As</span> VPMRootOccurrence
+<span class="keyword">Set</span> MyRootOcc = MyEditor.ActiveObject
+
+<span class="keyword">Dim</span> MyRootProduct <span class="keyword">As</span>VPMReference
+<span class="keyword">Set</span> MyRootProduct = MyRootOcc.PLMEntity
+ ...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves the PartBody</strong></p>
+			<p>In this step UC retrieves the main body of the 3D shape 
+			aggregated by the root product.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> MyContext <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> MyContext = MyEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> MyPart <span class="keyword">As</span> Part
+<span class="keyword">Dim</span> MyPartInstance <span class="keyword">As</span> VPMRepInstance
+<span class="keyword">Dim</span> MyBody <span class="keyword">As</span> Body
+<span class="keyword">For Each</span> MyEntity <span class="keyword">In</span> MyContext.EditedContent
+     <span class="keyword">Dim</span> MyRef <span class="keyword">As</span> VPMReference
+     <span class="keyword">Set</span> MyRef = MyEntity
+     
+     <span class="keyword">Dim</span> MyReps <span class="keyword">As</span> VPMRepInstances
+     <span class="keyword">Set</span> MyReps = MyRef.RepInstances
+     
+     <span class="keyword">For Each</span> MyRep <span class="keyword">In</span> MyReps
+         <span class="keyword">Dim</span> MyRepRef <span class="keyword">As</span> VPMRepReference
+         <span class="keyword">Set</span> MyRepRef = MyRep.ReferenceInstanceOf
+         <span class="keyword">Dim</span> attr <span class="keyword">As String</span>
+         attr = MyRepRef.GatAttributValue(&quot;V_discipline&quot;)
+         
+         <span class="keyword">If</span> (attr = &quot;Design&quot;) <span class="keyword">Then</span>
+             <span class="keyword">Set</span> MyPart = MyRepRef.GetItem(&quot;Part&quot;)
+             <span class="keyword">Set</span> MyPartInstance = MyRep
+             <span class="keyword">Set</span> MyBody = MyPart.MainBody
+         <span class="keyword">End If</span>
+     <span class="keyword">Next</span>  
+<span class="keyword">Next</span>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Creates the FEM representation and 
+			retrieve its root object</strong></p>
+			<p>In this step UC creates a new FEM representation object. To 
+			perform the creation, a simulation representation factory have to be 
+			retrieved on the reference object on which the FEM rep will be 
+			aggregated.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> MyPrdRepFactory <span class="keyword">As</span> SimPrdRepFactory
+<span class="keyword">Set</span> MyPrdRepFactory = MyRootProduct.GetItem(&quot;SimPrdRepFactory&quot;)
+<span class="keyword">Dim</span> MyFemRepRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">Set</span> MyFemRepRef = MyPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+<span class="keyword">Dim</span> MyFemRepRoot <span class="keyword">As</span> SimFemRoot
+<span class="keyword">Set</span> MyFemRepRoot = MyFemRepRef.GetItem(&quot;SimFemRoot&quot;)
+</pre>
+			<p>The 3D Shape is linked to the FEM representation as assiocated shape.</p>
+<pre class="code">
+<span class="keyword">Dim</span> MyProductService <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> MyProductService = MyEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> MyReference <span class="keyword">As</span> Reference
+<span class="keyword">Set</span> MyReference = MyPart.CreateReferenceFromObject(MyBody)
+<span class="keyword">Dim</span> MyLink <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> MyLink = MyProductService.ComposeLink(MyRootOcc, MyPartInstance, MyReference)
+MyFemRepRoot.AddAssociatedRep MyLink
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Creates/Retrieves the group set</strong></p>
+			<p>In this step UC retrieves, or creates if doesn't exist, the group set. </p>
+<pre class="code">...
+<span class="keyword">Dim</span> MyGroupSet <span class="keyword">As</span> SimGroups
+<span class="keyword">Set</span> MyGroupSet = MyFemRepRoot.GetSet(&quot;SimGroups&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Creates a geometric group</strong></p>
+			<p>In this step UC creates a geometric group.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> MyGroupByAssociativity <span class="keyword">As</span> SimGroup
+<span class="keyword">Set</span> MyGroupByAssociativity = MyGroupSet.Add(&quot;CATFmtGroupByAssociativity&quot;)
+<span class="comment">' Set the group support</span>
+<span class="keyword">Set</span> MyPartSupp = MyPart.FindObjectByName(&quot;Fill.1&quot;)
+<span class="keyword">Set</span> MyReference = MyPart.CreateReferenceFromObject(MyPartSupp)
+<span class="keyword">Set</span> MyLink = MyProductService.ComposeLink(MyRootOcc, MyPartInstance, MyReference)
+<span class="keyword">Dim</span> MyLinkAccess <span class="keyword">As</span> SimLinkAccess
+<span class="keyword">Set</span> MyLinkAccess = MyGroupByAssociativity.GetItem(&quot;SimLinkAccess&quot;)
+MyLinkAccess.AddLink &quot;MainSupport&quot;, MyLink
+<span class="comment">' Set the group type</span>
+MyGroupByAssociativity.SetGroupType (&quot;CATFmtGroupTypeFace&quot;)
+<span class="comment">' Set the group name</span>
+MyGroupByAssociativity.Name = &quot;Geometric Group.1&quot;
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Creates a proximity group</strong></p>
+			<p>In this step UC creates a proximity group.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> MyGroupByProximity <span class="keyword">As</span> SimGroup
+<span class="keyword">Set</span> MyGroupByProximity = MyGroupSet.Add(&quot;CATFmtGroupByProximity&quot;)
+<span class="comment">' Set the group support</span>
+<span class="keyword">Set</span> MyPartSupp = MyPart.FindObjectByName(&quot;Fill.1&quot;)
+<span class="keyword">Set</span> MyReference = MyPart.CreateReferenceFromObject(MyPartSupp)
+<span class="keyword">Set</span> MyLink = MyProductService.ComposeLink(MyRootOcc, MyPartInstance, MyReference)
+<span class="keyword">Set</span> MyLinkAccess = MyGroupByAssociativity.GetItem(&quot;SimLinkAccess&quot;)
+MyLinkAccess.AddLink &quot;MainSupport&quot;, MyLink
+<span class="comment">' Set the group type</span>
+MyGroupByProximity.SetGroupType (&quot;CATFmtGroupTypeFace&quot;)
+<span class="comment">' Set the group tolerance</span>
+MyGroupByProximity.SetAttributeValue &quot;Tolerance&quot;, 3
+<span class="comment">' Set the group name</span>
+MyGroupByProximity.Name = &quot;Proximity Group.1&quot;
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Remove the proximity group</strong></p>
+			<p>In this step UC removes the proximity group.</p>
+<pre class="code">...
+MyGroupSet.Remove (2)
+...</pre>
+			</li>
+
+	</ol>
+	</td>
+	</tr>
+</table>	
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

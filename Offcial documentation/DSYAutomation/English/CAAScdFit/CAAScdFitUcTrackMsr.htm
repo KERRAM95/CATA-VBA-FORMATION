@@ -1,0 +1,251 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a Fitting Track in MSR</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating a Fitting Track in MSR</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a Fitting Track in MSR Context.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch DELMIA and import the
+							<code><div class=vb_sample_data>CAAScdFitMSR.3dxml</div></code> files supplied in 
+							the folder<br />
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdFit\samples\</code><br />
+							where <code>InstallRootFolder</code> is the 
+							folder 
+							where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdFitUcTrackMsrSource.htm">CAAScdFitUcTrackMsrSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the current Editor</a></li>
+			<li><a href="#Step2">Retrieves the Fitting Service from the Editor</a></li>
+            <li><a href="#Step3">Creates a new Fit Track</a></li>
+            <li><a href="#Step4">Applies properties to Track</a></li>
+            <li><a href="#Step5">Retrieve the FitTrackTPoints object</a></li>
+            <li><a href="#Step6">Creates new TPoints</a></li>
+            <li><a href="#Step7">Refreshes the Track</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"></a><strong>Retrieves the current Editor</strong></p>
+			<pre class="code">... 
+ <span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor
+ <span class="keyword">Set</span> oEditor = DELMIA.ActiveEditor<strong> </strong>
+...</pre>
+			</li>
+			<li>
+			<p><a name="Step2"></a><strong>Retrieves the Fitting Service from the Editor</strong></p>
+			<p>Then, retrieve the FittingService from Editor.</p>
+            <pre class="code"> ...
+<span class="keyword">Dim</span> oFittingService <span class="keyword">As</span> FittingService
+<span class="keyword">Set</span> oFittingService = oEditor.GetService(&quot;FittingService&quot;)<strong> </strong>
+ ...</pre>
+			</li>
+			<li>
+			<p><a name="Step3"></a><strong>Creates a new Fit Track</strong></p>
+			<p>Then, Add a new Track.</p>
+            <p>Provide 'Nothing' as context in MSR context.</p>
+            <p>Provide 'DNBFitTrack' as type of Track.</p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> oContext <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> oContext = Nothing<strong> </strong>
+<span class="keyword">Dim</span> sTrackType <span class="keyword">As</span> CATBSTR
+sTrackType = "DNBFitTrack"<strong> </strong>
+<span class="keyword">Dim</span> oFitTrack <span class="keyword">As</span> FitTrack
+<span class="keyword">Set</span> oFitTrack = oFittingService.Add(oContext, sTrackType)<strong> </strong>
+...</pre>
+            </li>
+            <li>
+			<p><a name="Step4"></a><strong>Applies properties to Track</strong></p>
+			<p>Apply the below properties to the newly creted Track:</p>
+            <p>Set Track Mode.</p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> eTrackMode <span class="keyword">As</span> DNBTrackMode
+<span class="keyword"></span> eTrackMode = FitTIME<strong> </strong>
+<span class="keyword"></span> oFitTrack.Mode = eTrackMode<strong> </strong>
+...</pre>
+            <p>Set Track Interpolation Type.</p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> eTrackInter <span class="keyword">As</span> DNBInterpolater
+<span class="keyword"></span> eTrackInter = FitSPLINE<strong> </strong>
+<span class="keyword"></span> oFitTrack.Interpolater = eTrackInter<strong> </strong>
+...</pre>
+            <p>Set Track Total default Duration. </p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> dTotalTime <span class="keyword">As</span> double
+<span class="keyword"></span> dTotalTime = 5.0<strong> </strong>
+<span class="keyword"></span> oFitTrack.TotalTime = dTotalTime<strong> </strong>
+...</pre>
+            <p>Set the Anchor Position to the Track. This is a set of twelve doubles.</p>
+            <p>Here we are setting the Anchor Position at the origin of the world.</p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> aAnchorPos(11) <span class="keyword">As</span> double
+<span class="keyword"></span> aAnchorPos(0) = 1<strong> </strong>
+<span class="keyword"></span> aAnchorPos(1) = 0<strong> </strong>
+<span class="keyword"></span> aAnchorPos(2) = 0<strong> </strong>
+<span class="keyword"></span> aAnchorPos(3) = 0<strong> </strong>
+<span class="keyword"></span> aAnchorPos(4) = 1<strong> </strong>
+<span class="keyword"></span> aAnchorPos(5) = 0<strong> </strong>
+<span class="keyword"></span> aAnchorPos(6) = 0<strong> </strong>
+<span class="keyword"></span> aAnchorPos(7) = 0<strong> </strong>
+<span class="keyword"></span> aAnchorPos(8) = 1<strong> </strong>
+<span class="keyword"></span> aAnchorPos(9) = 0<strong> </strong>
+<span class="keyword"></span> aAnchorPos(10) = 0<strong> </strong>
+<span class="keyword"></span> aAnchorPos(11) = 0<strong> </strong>
+<span class="keyword"></span> oFitTrack.SetAnchorPosition aAnchorPos<strong> </strong>
+...</pre>
+            </li>
+            <li>
+			<p><a name="Step5"></a><strong>Retrieve the FitTrackTPoints object</strong></p>
+            <p>Retrieve FitTrackTPoints object which is a collection of TPoints.</p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> cFitTPoints <span class="keyword">As</span> FitTrackTPoints
+<span class="keyword">Set</span> cFitTPoints = oFitTrack.TPoints<strong> </strong>
+...</pre>
+            </li>
+            <li>
+			<p><a name="Step6"></a><strong>Creates new TPoints</strong></p>
+			<p>Then, create TPoints with its positions. Here we will create three TPoints.</p>
+            <p>Note that the TPoints are relative to the Anchor Position.</p>
+            <p>First define the position of the First TPoint. Here, it is at the origin of the world.</p>
+			<pre class="code">... 
+<span class="keyword">ReDim</span> aTPointPos(11) <span class="keyword">As</span> double
+<span class="keyword"></span> aTPointPos(0) = 1<strong> </strong>
+<span class="keyword"></span> aTPointPos(1) = 0<strong> </strong>
+<span class="keyword"></span> aTPointPos(2) = 0<strong> </strong>
+<span class="keyword"></span> aTPointPos(3) = 0<strong> </strong>
+<span class="keyword"></span> aTPointPos(4) = 1<strong> </strong>
+<span class="keyword"></span> aTPointPos(5) = 0<strong> </strong>
+<span class="keyword"></span> aTPointPos(6) = 0<strong> </strong>
+<span class="keyword"></span> aTPointPos(7) = 0<strong> </strong>
+<span class="keyword"></span> aTPointPos(8) = 1<strong> </strong>
+<span class="keyword"></span> aTPointPos(9) = 0<strong> </strong>
+<span class="keyword"></span> aTPointPos(10) = 0<strong> </strong>
+<span class="keyword"></span> aTPointPos(11) = 0<strong> </strong>
+...</pre>
+            <p>Define the position of the Compass Offset from the TPoint. Here, there is no offset.</p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> TPointCompPos(11) <span class="keyword">As</span> double
+<span class="keyword"></span> TPointCompPos(0) = 1<strong> </strong>
+<span class="keyword"></span> TPointCompPos(1) = 0<strong> </strong>
+<span class="keyword"></span> TPointCompPos(2) = 0<strong> </strong>
+<span class="keyword"></span> TPointCompPos(3) = 0<strong> </strong>
+<span class="keyword"></span> TPointCompPos(4) = 1<strong> </strong>
+<span class="keyword"></span> TPointCompPos(5) = 0<strong> </strong>
+<span class="keyword"></span> TPointCompPos(6) = 0<strong> </strong>
+<span class="keyword"></span> TPointCompPos(7) = 0<strong> </strong>
+<span class="keyword"></span> TPointCompPos(8) = 1<strong> </strong>
+<span class="keyword"></span> TPointCompPos(9) = 0<strong> </strong>
+<span class="keyword"></span> TPointCompPos(10) = 0<strong> </strong>
+<span class="keyword"></span> TPointCompPos(11) = 0<strong> </strong>
+...</pre>
+            <p>Innsert the first TPoint with 'zero' duration.</p>
+			<pre class="code">... 
+<span class="keyword"></span> cFitTPoints.InsertTPoint 1, aTPointPos, TPointCompPos, 0<strong> </strong>
+...</pre>
+            <p>Define the position of the second TPoint.</p>
+			<pre class="code">... 
+<span class="keyword"></span> aTPointPos(9) = 100<strong> </strong>
+<span class="keyword"></span> aTPointPos(10) = 0<strong> </strong>
+<span class="keyword"></span> aTPointPos(11) = 0<strong> </strong>
+...</pre>
+            <p>Innsert the second TPoint with duration 2.5.</p>
+			<pre class="code">... 
+<span class="keyword"></span> cFitTPoints.InsertTPoint 2, aTPointPos, TPointCompPos, 2.5<strong> </strong>
+...</pre>
+            <p>Define the position of the third TPoint.</p>
+			<pre class="code">... 
+<span class="keyword"></span> aTPointPos(9) = 100<strong> </strong>
+<span class="keyword"></span> aTPointPos(10) =100<strong> </strong>
+<span class="keyword"></span> aTPointPos(11) = 0<strong> </strong>
+...</pre>
+            <p>Innsert the third TPoint with duration 2.5.</p>
+			<pre class="code">... 
+<span class="keyword"></span> cFitTPoints.InsertTPoint 3, aTPointPos, TPointCompPos, 2.5<strong> </strong>
+...</pre>
+            </li>
+            <li>
+			<p><a name="Step7"></a><strong>Refreshes the Track</strong></p>
+            <p>Refresh/update the Track with all the above set properties and TPoints.</p>
+            <p><strong>THIS IS A MANDATORY STEP. THE REFRESH MUST BE CALLED AT THE END OTHERWISE THE MODIFICATIONS WILL NOT BE REFLECTED ON THE TRACK.</strong></p>
+			<pre class="code">... 
+<span class="keyword"></span> oFitTrack.Refresh<strong> </strong>
+...</pre>
+            </li>
+		</ol>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>
+
+

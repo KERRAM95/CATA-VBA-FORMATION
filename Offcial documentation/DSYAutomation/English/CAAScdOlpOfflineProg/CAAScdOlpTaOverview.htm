@@ -1,0 +1,270 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Robotics Programming Overview</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Robotics Programming Overview</h1>
+		</td>
+	</tr>
+</table>
+<p>This article provides the basis for understanding how to customize the Robotics
+<strong>O</strong>ff<strong>l</strong>ine <strong>P</strong>rogramming (OLP) translation.</p>
+<p>OLP translation is the process of converting a DELMIA robot task into a native 
+robot program for a specific robot programming language or visa-versa. This translation 
+software is written using VB.NET VSTA macro libraries. You have access to the VB.NET 
+source code for the language translation process which means that you can customize 
+any aspect of the translation or even write a translator for which a DELMIA translator 
+is not available.</p>
+<p>For example, you may wish to modify how a robot program is created from a DELMIA 
+task (download) in order to:</p>
+<ul>
+	<li>Add comments to the top of a program. </li>
+	<li>Add a special instruction before every spot operation.</li>
+	<li>Modify how a specific instruction is translated. For example, you could 
+	generate the text for your own custom robot instruction for every robot motion 
+	instead of the standard motion syntax.</li>
+	<li>Validate that the robot program conforms to your template and programming 
+	guidelines.</li>
+</ul>
+<p>When importing a robot program into DELMIA (upload) you may wish to:</p>
+<ul>
+	<li>Create DELMIA instructions for non-standard robot instructions. </li>
+	<li>Modify attributes of DELMIA instructions when they are created.</li>
+</ul>
+<table class="Remark">
+	<tr>
+		<td class="Remark"><strong>Download: </strong>The process of generating 
+		a robot program text file from one or more DELMIA robot tasks.<br />
+		<strong>Upload: </strong>The process of creating a DELMIA robot task from 
+		a robot program text file.</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>Before you Start</h2>
+<p>This documentation assumes that you are already familiar with the OLP Upload 
+and Download commands. You can find information about those commands in the user 
+documentation under &quot;Content and Simulation Apps | Robotics | Robot Programming | Creating 
+and Importing Robot Programs&quot;.</p>
+<p>We also assume that you are familiar with VB, and specifically VB.NET and object 
+oriented programming.</p>
+<h2><a name="GettingStarted"></a>Getting Started</h2>
+<p>To get started with customizing an OLP translator, we recommend following these 
+steps.</p>
+<ol>
+	<li>Read this document, the OLP Overview. It includes background information 
+	on the translation process and the technologies and objects used during translation.</li>
+	<li>Follow the use case for <a href="CAAScdOlpUcTranslator.htm">Customizing 
+	a Translator</a>. This use case provides an overview of the steps involved in 
+	customizing a translator.</li>
+	<li>Follow the use case for <a href="CAAScdOlpUcInstruction.htm">Translating 
+	an Instruction</a>. This provides the detail from
+	<a href="CAAScdOlpUcTranslator.htm#WriteInstructionTranslator">step 4 in Customizing 
+	a Translator</a>. It walks you through the code which translates an instruction.</li>
+	<li>Follow the use case for <a href="CAAScdOlpUcIntegrate.htm">Integrating 
+	Your Customizations</a>. This provides the detail from
+	<a href="CAAScdOlpUcTranslator.htm#IntegrateInstructionTranslator">step 5 
+	in Customizing a Translator</a>. It walks you through the steps for calling 
+	the code written in <a href="CAAScdOlpUcInstruction.htm">Translating an Instruction</a>.</li>
+</ol>
+<h2><a name="Architecture"></a>Translation Architecture</h2>
+<p>The OLP Translators are VSTA macro libraries written in VB.NET. The macros are 
+executed during the Download and Upload translation processes. In V6 all macro libraries, 
+including the OLP translators, are stored in the ENOVIA database. This means you 
+have access to the translation source code to view and modify as needed. Also because 
+it is in the database, your modifications will be available to your entire enterprise.
+</p>
+<p>The translation is a multi-step process. </p>
+<table style="width: 60%" class="border">
+	<tr>
+		<td class="auto"><strong>Download</strong></td>
+		<td><strong>Upload</strong></td>
+	</tr>
+	<tr>
+		<td class="auto" valign="top">
+		<ol>
+			<li>Pre-process the DELMIA task(s) and robot controller to initialize 
+			the OLP automation objects.</li>
+			<li>Run the Download macro to generate the Abstract Syntax Tree (AST)</li>
+			<li>Dump the AST into the text file.</li>
+		</ol>
+		</td>
+		<td class="auto" valign="top">
+		<ol>
+			<li>Pre-process the DEMIA robot controller to initialize the OLP automation 
+			objects.</li>
+			<li>Run the Upload macro. This macro has 2 jobs<ol>
+				<li>Call the
+				<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpParser');return false;">OlpParser</a>
+				 object to parse the file. It returns the Abstract Syntax Tree (AST).</li>
+				<li>Convert the AST into DELMIA task(s) </li>
+			</ol>
+			</li>
+			<li>Post-process the created tasks.</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table>
+	<caption><a name="Fig1"></a>Fig.1: Translation Process</caption>
+	<tr valign="middle">
+		<td valign="top">
+		<img src="CAAScdOlpOverview_Architecture.jpg" alt="Image" width="519" height="323"/>
+		</td>
+	</tr>
+</table>
+<p>The translator macro library converts between 2 data structures, the Abstract 
+Syntax Tree (AST) and the DELMIA objects. The AST is a parsed version of the robot 
+program text file. Access to the DELMIA objects is provided through the
+<a href="#AutomationObjects">OLP Automation objects</a>. </p>
+<p>The parsers are written in C++. You do not need to modify them unless you are 
+creating a translator to upload a language for which no DELMIA translator exists. 
+If you need to create a new parser, you could write the parser in VB.NET to create 
+the AST. The parsers have been written to accept any valid syntax for the robot 
+language. In a procedure-oriented language like ABB RAPID, the AST structure for 
+a call will be created for any unknown instructions. In other languages that do 
+not have a well defined generic instruction grammar, like FANUC TP, the text of 
+any instruction which cannot be parsed, like a macro call, will be stored in the 
+AST as a generic statement.</p>
+<h2><a name="AST"></a>Abstract Syntax Tree (AST) Data Structure</h2>
+<p>The AST is organized into a tree format. You can programmatically access each 
+portion of an instruction based on its meaning. By traversing the tree, starting 
+at the 1st leaf node and proceeding to the last node, the text of the robot program 
+can be constructed. Below is an example of how a FANUC TP run instruction is represented 
+in AST.</p>
+<table>
+	<caption><a name="Fig2"></a>Fig.2: AST Example</caption>
+	<tr valign="middle">
+		<td valign="top">
+		<img src="CAAScdOlpOverview_AstExample.jpg" alt="Image" width="658" height="476"/>
+		</td>
+	</tr>
+</table>
+<p>The AST is composed of 2 types of nodes. Branches, represented by
+<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAstBranch');return false;">OlpAstBranch</a>, 
+are nodes with children. Leaves, represented by
+<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAstLeaf');return false;">OlpAstLeaf</a>, 
+contain the individual tokens from the robot program. Each node has 3 pieces of 
+data associated with it.</p>
+<ul>
+	<li>Type - This identifies the category of data stored in the node. For example 
+	Header, Instruction, Keyword, Comment, Operator, etc.</li>
+	<li>ID - This identifies the purpose of the node. For example Speed, LineNumber, 
+	etc.</li>
+	<li>Value OR Children<ul>
+		<li>Value - Leaf nodes have a value stored on them which is the text from 
+		the robot program.</li>
+		<li>Children - Branch nodes have a list of sub-nodes.</li>
+	</ul>
+	</li>
+</ul>
+<p>The ID and Type can be used to easily locate a particular piece of data in an 
+AST instruction.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Macros"></a>Translator Macros</h2>
+<p>There are several macros in an OLP translator VB.NET macro library. These macros 
+are called during different times of the translation process. Some macros are optional 
+and are ignored if missing.</p>
+<table cellpadding="4">
+	<tr>
+		<td><strong>Macro Name</strong></td>
+		<td><strong>Description</strong></td>
+	</tr>
+	<tr>
+		<td valign="top">MacroDownload</td>
+		<td>Called after the download pre-process step to translate the DELMIA objects 
+		into the AST. </td>
+	</tr>
+	<tr>
+		<td valign="top">MacroUpload</td>
+		<td>Called after the upload pre-process step. It parses the programs using 
+		OlpParser and then translates the AST into DELMIA objects.</td>
+	</tr>
+	<tr>
+		<td valign="top">MacroGetTranslatorInfo </td>
+		<td>(Optional) Called before a download or upload to get basic translator 
+		information. This includes the file extensions used for this robot programming 
+		language. This may also be used to identify features supported by a particular 
+		translator.</td>
+	</tr>
+	<tr>
+		<td valign="top">MacroSetConfigs</td>
+		<td>(Optional) Called during the upload post-process step. Some languages 
+		require inverse-kinematics calculations in order to compute the robot posture 
+		and turn numbers or turn signs. The post process step includes positioning 
+		tags in the DELMIA simulation which is required before inverse-kinematics 
+		can be performed. After the tags have been correctly located, MacroSetConfigs 
+		is called, if it exists, to allow the translator to compute the robot posture 
+		and turn information.</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="AutomationObjects"></a>OLP Automation Objects</h2>
+<p>During translation, access to the DELMIA task, instructions, and robot controller 
+is provided through the OLP Automation objects.
+<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTranslatorHelper');return false;">OlpTranslatorHelper</a> 
+is the main object which gives you access to all the objects required for translation. 
+See the <a href="CAAScdOlpTocRobOlp.htm">Robotics Programming Object 
+Model Map</a> and the
+<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf'); return false;">OLP Automation 
+Object Reference</a> for more details.</p>
+<table class="Remark">
+	<tr>
+		<td class="Remark"><span class="run-in">Warning:</span> The OLP automation 
+		objects can only be used by a macro which is called from the OLP Download 
+		or Upload commands. These objects do not exist outside the scope of an OLP 
+		translation.</td>
+	</tr>
+</table>
+<table class="Remark">
+	<tr>
+		<td class="Remark"><span class="run-in">Warning:</span> Use of automation 
+		objects other than the OLP automation objects could cause problems during 
+		upload or download. In general, you should not use any automation object 
+		for which there is an equivalent OLP object. For example, you should not 
+		use any other objects which manipulate tasks, instructions, variables, robot 
+		profiles, or robot controllers. There are a few exceptions to these rules. 
+		The following APIs are approved for use in an OLP translator:
+		<ul>
+			<li>RscApplicativeProfilesMgr</li>
+			<li>RscApplicativeProfilesGroup</li>
+			<li>RscApplicativeProfile</li>
+			<li>RscMotionProfile</li>
+			<li>RscAccuracyProfile</li>
+			<li>ArcWeldProfile</li>
+			<li>ArcWeldProfileSection</li>
+			<li>ArcWeldCSPProfiles</li>
+		</ul>
+		</td>
+	</tr>
+</table>
+<h2>Additional Information</h2>
+<p>For details on translating the expressions used in DELMIA instructions, please 
+see <a href="CAAScdOlpTaExpression.htm">OLP Expression Translation</a>.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

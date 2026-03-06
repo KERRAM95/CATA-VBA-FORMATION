@@ -1,0 +1,226 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaGenerateSurfTriaMeshParameters.catvbs</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">' &lt;!-- -------------- Sample macro written in VB ------------------------------------------ --&gt;</span>
+<span class="comment">' &lt;!-- This sample is an automated modeling procedure to creates parameter based surface triangle Mesh part. --&gt; </span>
+
+<span class="comment">' &lt;!-- Steps :--&gt; </span>
+<span class="comment">' &lt;!-- 1 - Inputs definitions --&gt; </span>
+<span class="comment">' &lt;!-- 2 - VB Script to create Mesh Part --&gt; </span>
+	<span class="comment">' &lt;!-- a - Retrieve created FEM Rep--&gt; </span>
+	<span class="comment">' &lt;!-- b - Create Mesh Part --&gt; </span>
+	<span class="comment">' &lt;!-- c - Create Shell Property --&gt; </span>
+
+<span class="comment">' &lt;!-- -------------------------------------------------------------------------- --&gt; </span>
+<span class="comment">' &lt;!-- 1 - Inputs definitions --&gt; </span>
+<span class="comment">' &lt;!-- -------------------------------------------------------------------------- --&gt; 
+'&lt;Lists&gt;
+  '&lt;List Name = "ThicknessDefinition"&gt;
+    '&lt;Member Name = "NoShellSection" Nls = "NoShellSection"/&gt;
+    '&lt;Member Name = "Specified" Nls = "Specified"/&gt;
+    '&lt;Member Name = "FromSolid" Nls = "FromSolid"/&gt;
+    '&lt;Member Name = "FromThinPartFeature" Nls = "FromThinPartFeature"/&gt;
+   '&lt;/List&gt;
+   '&lt;List Name = "SelectionDefinition"&gt;
+    '&lt;Member Name = "MainBody" Nls = "MainBody"/&gt;
+    '&lt;Member Name = "AllGeometries" Nls = "AllGeometries"/&gt;
+    '&lt;Member Name = "VisibleGeometries" Nls = "VisibleGeometries"/&gt;
+   '&lt;/List&gt;
+'&lt;/Lists&gt;
+'&lt;Enums&gt;
+  '&lt;Enum Name = "ElementOrder"&gt;
+    '&lt;Member Name = "Linear"    Nls ="Linear"/&gt;
+    '&lt;Member Name = "Quadratic" Nls ="Quadratic"/&gt;
+   '&lt;/Enum&gt;
+'&lt;/Enums&gt;
+'&lt;Inputs&gt;
+  '&lt;Input Name = "SelectionMode" Type = "List" SubType = "SelectionDefinition" Mand ="false" Nls ="SelectionMode"&gt;
+	'&lt;Input Name = "Support" Type ="Port" Visible = "1" Mand ="true" Nls ="Support"/&gt;
+  '&lt;/Input&gt;
+  '&lt;Input Name = "MeshSize" Type ="Dimension" SubType ="Length" Mand ="true" Nls ="MeshSize"/&gt;
+  '&lt;Input Name = "ElementOrder" Type ="Enum" SubType ="ElementOrder" Mand ="true" Nls ="ElementOrder"/&gt;
+  '&lt;Input Name = "SagValue" Type ="Dimension" SubType ="Length" Mand ="false" Nls ="SagValue"/&gt;
+  '&lt;Input Name = "ShellSection" Type = "List" SubType = "ThicknessDefinition" Mand ="true" Nls ="CreateShellSection"&gt;
+    '&lt;Input Name = "Specified" Type = "Dimension" SubType = "Length" Visible = "2" Mand ="true" Nls ="Specified" /&gt;
+    '&lt;Input Name = "FromSolid" Type = "Selection" SubType = "MonoSelectionSolids" Visible = "3" Mand ="true" Nls ="FromSolid" /&gt;
+  '&lt;/Input&gt;
+'&lt;/Inputs&gt;
+</span>
+
+<span class="comment">' &lt;!-- ---------------------------------------------------------------------------------------------------- --&gt;</span>
+<span class="comment">' &lt;!-- Remark on User-Driven Inputs definitions --&gt; </span>
+<span class="comment">' &lt;!-- ---------------------------------------------------------------------------------------------------- --&gt; </span>
+<span class="comment">' &lt;!-- In User-Driven method there is an additional input FromSolid for Shell sections definition --&gt; </span>
+
+<span class="comment">' &lt;!-- ---------------------------------------------------------------------------------------------------- --&gt;</span>
+<span class="comment">' &lt;!-- 2 - VB Script to create Mesh Part --&gt; </span>
+<span class="comment">' &lt;!-- ---------------------------------------------------------------------------------------------------- --&gt; </span>
+
+<span class="keyword">Sub</span> main(iMode, iSupport, iSize, iOrder, iSagValue, iProp, iSpecified, iSelection)
+  
+ <span class="comment">'Get Shape Ref and Part</span>
+ <span class="keyword">Dim</span> MyRepRef <span class="keyword">As</span> VPMRepReference
+ <span class="keyword">Set</span> MyRepRef = Shape.ReferenceInstanceOf
+ <span class="keyword">Dim</span> MyPart <span class="keyword">As</span> Part
+ <span class="keyword">Set</span> MyPart = MyRepRef.GetItem("Part")
+ <span class="comment">'Get the FEM</span>
+ <span class="keyword">Dim</span> MyFEMRoot <span class="keyword">As</span> SimFemRoot
+ <span class="keyword">Set</span> MyFEMRoot = FEM.GetItem("SimFemRoot")
+ <span class="comment">' Get AutomatedFEM Services</span>
+ <span class="keyword">Dim</span> AutomatedFEMServices <span class="keyword">As</span> SimAutoModServices
+ <span class="keyword">Set</span> AutomatedFEMServices = CATIA.ActiveEditor.GetService("SimAutoModServices")
+ <span class="comment">'Get the PLM Product Service</span>
+ <span class="keyword">Dim</span> MyProductService <span class="keyword">As</span> PLMProductService
+ <span class="keyword">Set</span> MyProductService = CATIA.ActiveEditor.GetService("PLMProductService")	
+  
+ <span class="comment">'Mode Single Body </span>
+ <span class="keyword">If</span> (iMode = "1") <span class="keyword">Then</span>
+   CreateMeshPart MyFEMRoot, iSupport, iSize, iOrder, iSagValue, iProp, iSpecified, iSelection
+ <span class="keyword">End If</span> 
+  
+ <span class="keyword">Dim</span> CheckVisibility <span class="keyword">As</span> Boolean
+ CheckVisibility = False
+ <span class="keyword">If</span>(iMode = "3") <span class="keyword">Then</span>
+   CheckVisibility = True
+ <span class="keyword">End If</span> 
+ <span class="keyword">Dim</span> myListSupport
+ <span class="keyword">Dim</span> countSupport <span class="keyword">As</span> Integer
+ countSupport = 0
+ <span class="comment">'Mode Multiple/Visible Bodies</span>
+ <span class="keyword">If</span> (iMode = "2") or (iMode = "3") <span class="keyword">Then</span>
+   <span class="comment">'Get all 2D results in 3DPart</span>
+   <span class="keyword">Dim</span> myListResults
+   On Error Resume <span class="keyword">Next</span>
+   myListResults = AutomatedFEMServices.GetAllResults(MyPart,2)
+   <span class="keyword">If</span> Err = 0 <span class="keyword">Then</span>
+     BuildListSupport myListResults, CheckVisibility, myListSupport
+     countSupport = UBound(myListSupport) - LBound(myListSupport) + 1
+   <span class="keyword">End If</span> 
+    On Error GoTo 0
+    <span class="keyword">If</span> countSupport = 0 <span class="keyword">Then</span>
+      Exit Sub 
+    <span class="keyword">End If</span>
+	
+   <span class="comment">'Loop on supports</span>
+   <span class="keyword">Dim</span> RefSupport <span class="keyword">As</span> Reference
+   <span class="keyword">For</span> i = 0 To countSupport - 1
+     <span class="keyword">Dim</span> Support <span class="keyword">As</span> Body
+     Set Support = myListSupport(i)
+     Set RefSupport = MyPart.CreateReferenceFromObject(Support)
+     Set Link = MyProductService.ComposeLink(OCCURRENCE, SHAPE, RefSupport)
+     CreateMeshPart MyFEMRoot, Link, iSize, iOrder, iSagValue, iProp, iSagValue, iSpecified, iSelection
+   <span class="keyword">Next</span>
+	
+ <span class="keyword">End If</span> 
+  
+<span class="keyword">End Sub</span>
+
+<span class="keyword">Function</span> StringToDouble (str <span class="keyword">As</span> String) <span class="keyword">As</span> Double
+  <span class="keyword">For</span> i=1 To Len(str)
+	<span class="keyword">If</span> Not IsNumeric(Mid(str,i,1)) And Not Mid(str,i,1)="." And Not Mid(str,i,1)="," <span class="keyword">Then</span>
+      StringToDouble=CDbl(Mid(str,1,Len(str)-2))*0.001
+    <span class="keyword">End If</span>
+  <span class="keyword">Next</span>
+<span class="keyword">End Function</span>
+
+<span class="keyword">Private Sub</span> BuildListSupport(ByVal myListResults <span class="keyword">As</span> AnyObject, ByVal CheckVisibility <span class="keyword">As</span> Boolean, ByRef myListSupport <span class="keyword">As</span> AnyObject)
+
+ <span class="keyword">Dim</span> countResults <span class="keyword">As</span> Integer
+ countResults = UBound(myListResults) - LBound(myListResults) + 1
+ <span class="keyword">Dim</span> countSupport <span class="keyword">As</span> Integer
+ countSupport = 0
+ <span class="keyword">ReDim</span> myListSupport(countResults)
+	
+ <span class="comment">'Loop on 3D Results</span>
+ <span class="keyword">For</span> i = 0 To countResults - 1
+   <span class="keyword">Dim</span> Support <span class="keyword">As</span> Body 
+   Set Support = myListResults(i)
+   <span class="keyword">Dim</span> Mysel <span class="keyword">As</span> Selection
+   Set Mysel = CATIA.ActiveEditor.Selection
+   <span class="keyword">Dim</span> visStatus <span class="keyword">As</span> CatVisPropertyShow
+   Mysel.Add Support
+   Mysel.VisProperties.GetShow visStatus
+   Mysel.Clear
+   <span class="keyword">If</span> (CheckVisibility = False) or ((CheckVisibility = True) and (visStatus = catVisPropertyShowAttr)) <span class="keyword">Then</span>
+     Set myListSupport(countSupport) = Support
+     countSupport = countSupport + 1
+   <span class="keyword">End If</span> 
+ <span class="keyword">Next</span>
+
+ <span class="comment">'Resize arrays</span>
+ countSupport = countSupport - 1
+ <span class="keyword">ReDim</span> Preserve myListSupport(countSupport)
+	
+<span class="keyword">End Sub</span>
+
+<span class="keyword">Private Sub</span> CreateMeshPart(ByVal FEMRoot <span class="keyword">As</span> CATIAFmtFemRoot, ByVal Support <span class="keyword">As</span> AnyObject, ByVal iSize <span class="keyword">As</span> String, ByVal iOrder <span class="keyword">As</span> Integer, ByVal iSagValue <span class="keyword">As</span> String, ByVal iProp <span class="keyword">As</span> Integer, ByVal iSpecified <span class="keyword">As </span> String, ByVal iSelection <span class="keyword">As</span> AnyObject)
+
+ <span class="keyword">Dim</span> MeshSet <span class="keyword">As</span> CATIAFmtMeshSet
+ Set MeshSet = FEMRoot.GetSet("SimNodesElements")
+ <span class="keyword">Dim</span> MyMeshParts <span class="keyword">As</span> CATIAFmtMeshParts
+ Set MyMeshParts = MeshSet.MeshParts
+ <span class="keyword">Dim</span> MyMeshPart <span class="keyword">As</span> CATIAFmtMeshPart
+ Set MyMeshPart = MyMeshParts.Add("CATFmtSurfTriaMesher")
+ MyMeshPart.AddSupport (Support)
+ MyMeshPart.SetAttributeValue "Mesh", "MeshSizeValue", iSize
+ MyMeshPart.SetAttributeValue "Mesh", "ElementOrder", iOrder
+ 
+ <span class="comment">' If sag requested</span>
+ <span class="keyword">If</span> (iSagValue = "") <span class="keyword">Then</span>
+   MyMeshPart.SetAttributeValue "Mesh", "AbsoluteSag", 1
+ <span class="keyword">Else</span>
+   MyMeshPart.SetAttributeValue "Mesh", "AbsoluteSag", 2
+   MyMeshPart.SetAttributeValue "Mesh", "AbsoluteSagValue", iSagValue
+ <span class="keyword">End If</span>
+ 
+ <span class="comment">'</span>
+ <span class="comment">'If requested Create Shell Property</span>
+ <span class="comment">'</span>
+ <span class="keyword">If</span> (iProp &gt; "1") <span class="keyword">Then</span>
+   <span class="keyword">Dim</span> PropertySet <span class="keyword">As</span> SimProperties
+   Set PropertySet = FEMRoot.GetSet("SimProperties")
+   <span class="keyword">Dim</span> ShellSection <span class="keyword">As</span> SimShellSection
+   Set ShellSection = PropertySet.Add("SimShellSection")
+   <span class="keyword">Dim</span> LinkAccess <span class="keyword">As</span> SimLinkAccess
+   Set LinkAccess = ShellSection.GetItem("SimLinkAccess")
+   LinkAccess.AddLink "MainSupport", Support
+
+   <span class="keyword">If</span> (iProp = "2") <span class="keyword">Then</span>
+     ShellSection.ThicknessType = SimShellSectionUser
+     ShellSection.UniformThickness = StringToDouble(iSpecified)
+   <span class="keyword">End If</span>
+   <span class="keyword">If</span> (iProp = "3") <span class="keyword">Then</span>
+     ShellSection.ThicknessType = SimShellSectionMid
+     <span class="keyword">For </span>Each selection In iSelection
+       LinkAccess.AddLink "SecondarySupport", selection
+     <span class="keyword">Next</span>
+   <span class="keyword">End If</span>
+   <span class="keyword">If</span> (iProp = "4") <span class="keyword">Then</span>    
+     ShellSection.ThicknessType = SimShellSectionThin
+   <span class="keyword">End If</span>
+ <span class="keyword">End If</span>
+	
+<span class="keyword">End Sub</span>
+
+</pre>
+  </body>
+</html>
+

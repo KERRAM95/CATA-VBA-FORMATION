@@ -1,0 +1,239 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATOpnsMeasureIDLItf MeasurableInContext (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATOpnsMeasureIDLItf.htm" href="../CATOpnsMeasureIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATOpnsMeasureIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "MeasurableInContext"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> MeasurableInContext<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_MeasurableInContext_39645','MeasurableInContext','0');</script>
+<section id='maindesc'>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetAxisSystemFromMeasurable"><b>GetAxisSystemFromMeasurable</b></a>
+</td><td  id='tdright'>  Get the position of the axis system of the object with respect to the absolute axis system.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetResultComputationMode"><b>GetResultComputationMode</b></a>
+</td><td  id='tdright'>  Deprecated R2011 - replace by GetResultComputationType
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetResultComputationType"><b>GetResultComputationType</b></a>
+</td><td  id='tdright'>  Get the resulting mode of computation of the object.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetAxisSystemOnMeasurable"><b>SetAxisSystemOnMeasurable</b></a>
+</td><td  id='tdright'>  Set the position of the axis system of the object with respect to the absolute axis system.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetMeasurableContextType"><b>SetMeasurableContextType</b></a>
+</td><td  id='tdright'>  Set the Measurable Context Type for Measure Calcualtion.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetAxisSystemFromMeasurable"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetAxisSystemFromMeasurable</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oAxisPositioning</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Get the position of the axis system of the object with respect to the absolute axis system.
+ This position corresponds to the product positioning matrix.
+ All coordinates are internally computed using the axis system of the object.
+ To provide these coordinates with respect to absolute axis system, it is required to know 
+ the position of the axis system of the object.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ioAxisPosition</span></dt>
+   <dd>    The information of the axis system with respect to the product coordinate system:
+    <ul>
+    <li>iAxisPositioning(0)  is the X coordinate of the origin of the axis system
+    <li>iAxisPositioning(1)  is the Y coordinate of the origin of the axis system
+    <li>iAxisPositioning(2)  is the Z coordinate of the origin of the axis system
+    <li>iAxisPositioning(3)  is the X coordinate of the first direction of the axis system
+    <li>iAxisPositioning(4)  is the Y coordinate of the first direction of the axis system
+    <li>iAxisPositioning(5)  is the Z coordinate of the first direction of the axis system
+    <li>iAxisPositioning(6)  is the X coordinate of the second direction of the axis system
+    <li>iAxisPositioning(7)  is the Y coordinate of the second direction of the axis system
+    <li>iAxisPositioning(8)  is the Z coordinate of the second direction of the axis system
+    <li>iAxisPositioning(9)  is the X coordinate of the third direction of the axis system
+    <li>iAxisPositioning(10) is the Y coordinate of the third direction of the axis system
+    <li>iAxisPositioning(11) is the Z coordinate of the third direction of the axis system
+    </ul>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example get the axis system of <tt>theMeasurable</tt> computation.
+   <pre>
+     Set theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+     Dim theMeasurable As Measurable
+     Set theMeasurable = theMeasureService.GetMeasurable(theSelection, CAAMeasurable)
+     Dim theAxisPositioning(11)
+     theMeasurable.<font color="red">GetAxisSystemFromMeasurable</font> theAxisPositioning
+   </pre>
+</dl>
+</dd>
+<a id="GetResultComputationMode"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetResultComputationMode</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATMeasurableModeOfCalc','CATMeasurableModeOfCalc')</script> </span></dt>
+  <dd class='ddmethod'>
+ Deprecated R2011 - replace by GetResultComputationType
+</dd>
+<a id="GetResultComputationType"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetResultComputationType</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATResultCalcType','CATResultCalcType')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the resulting mode of computation of the object. 
+ The computation mode of the object can be: Exact, Approximate or Mixed.
+
+ In case of measures item, this method can be called after GetMeasurable.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example get the computation mode of <tt>theMeasurableItem</tt>.
+   <pre>
+     Set theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+     Dim theMeasurableItem As MeasurableItem
+     Set theMeasurableItem = theMeasureService.GetMeasurable(theSelection, CAAMeasurableItem)
+     Dim theComputationType As CATResultCalcType
+     theComputationType = theMeasurableItem.<font color="red">GetResultComputationType</font>
+   </pre>
+
+ In case of measures between, this method must be called after distance or angle computation
+ 
+ </pre></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example set the axis system for <tt>theMeasurableItem</tt> computation.
+   <pre>
+     Set theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+     Dim theMeasurableBetween As MeasurableBetween
+     Set theMeasurableBetween = theMeasureService.GetMeasurable(theSelection, CAAMeasurableBetween)
+     ...
+     theMeasurableBetween.DistanceMinTo ...
+     Dim theComputationType As CATResultCalcType
+     theComputationType = theMeasurableBetween.<font color="red">GetResultComputationType</font>
+   </pre>
+</dl>
+</dd>
+<a id="SetAxisSystemOnMeasurable"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetAxisSystemOnMeasurable</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iAxisPositioning</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the position of the axis system of the object with respect to the absolute axis system.
+ This position corresponds to the product positioning matrix.
+ All coordinates are internally computed using the axis system of the object.
+ To provide these coordinates with respect to absolute axis system, it is required to know 
+ the position of the axis system of the object.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ioAxisPosition</span></dt>
+   <dd>    The information of the axis system with respect to the product coordinate system:
+    <ul>
+    <li>iAxisPositioning(0)  is the X coordinate of the origin of the axis system
+    <li>iAxisPositioning(1)  is the Y coordinate of the origin of the axis system
+    <li>iAxisPositioning(2)  is the Z coordinate of the origin of the axis system
+    <li>iAxisPositioning(3)  is the X coordinate of the first direction of the axis system
+    <li>iAxisPositioning(4)  is the Y coordinate of the first direction of the axis system
+    <li>iAxisPositioning(5)  is the Z coordinate of the first direction of the axis system
+    <li>iAxisPositioning(6)  is the X coordinate of the second direction of the axis system
+    <li>iAxisPositioning(7)  is the Y coordinate of the second direction of the axis system
+    <li>iAxisPositioning(8)  is the Z coordinate of the second direction of the axis system
+    <li>iAxisPositioning(9)  is the X coordinate of the third direction of the axis system
+    <li>iAxisPositioning(10) is the Y coordinate of the third direction of the axis system
+    <li>iAxisPositioning(11) is the Z coordinate of the third direction of the axis system
+    </ul>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example set the axis system for <tt>theMeasurable</tt> computation.
+   <pre>
+     Set theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+     Dim theMeasurable As Measurable
+     Set theMeasurable = theMeasureService.GetMeasurable(theSelection, CAAMeasurable)
+     Dim theAxisPositioning(11)
+     theAxisPositioning(0) = 0
+     theAxisPositioning(1) = 0
+     theAxisPositioning(2) = 0
+     theAxisPositioning(3) = 1
+     theAxisPositioning(4) = 0
+     theAxisPositioning(5) = 0
+     theAxisPositioning(6) = 0
+     theAxisPositioning(7) = 1
+     theAxisPositioning(8) = 0
+     theAxisPositioning(9) = 0
+     theAxisPositioning(10) = 0
+     theAxisPositioning(11) = 1
+     theMeasurable.<font color="red">SetAxisSystemOnMeasurable</font> theAxisPositioning
+   </pre>
+</dl>
+</dd>
+<a id="SetMeasurableContextType"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetMeasurableContextType</span><span class='signature'>(<script type="text/javascript"> activateLink('CATMeasurableContextType','CATMeasurableContextType')</script> <span class='param'>iContextType</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the Measurable Context Type for Measure Calcualtion.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iContextType</span></dt>
+   <dd>    The information of the Context Type for Measure Calcualtion.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example set the axis system for <tt>theMeasurable</tt> computation.
+   <pre>
+     Set theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+     Dim theMeasurable As Measurable
+     Set theMeasurable = theMeasureService.GetMeasurable(theSelection, CAAMeasurable)
+     Dim ContextType As CATMeasurableContextType
+		Set ContextType = ProductContext
+     theMeasurable.<font color="red">SetMeasurableContextType</font> ContextType
+   </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

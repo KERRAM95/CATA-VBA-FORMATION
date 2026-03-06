@@ -1,0 +1,149 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELCurveTrajectoryInterfaces CurveTrajectoryFactory (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELCurveTrajectoryInterfaces.htm" href="../DELCurveTrajectoryInterfaces.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELCurveTrajectoryInterfaces";	}
+		function getCurrentObjectName() { 
+ 	return "CurveTrajectoryFactory"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> CurveTrajectoryFactory<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_CurveTrajectoryFactory_68025','CurveTrajectoryFactory','0');</script>
+<section id='maindesc'>
+<b><i> Interface representing a Curve Trajectory factory to create and delete Curve Trajectory.</i></b><br>
+
+
+<br><b>Role</b>: This interface is used to create and delete Curve Trajectory.<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#CreateCurveTrajectory"><b>CreateCurveTrajectory</b></a>
+</td><td  id='tdright'>  This method creates a CurveTrajectory
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DestroyCurveTrajectory"><b>DestroyCurveTrajectory</b></a>
+</td><td  id='tdright'>  This method destroys a CurveTrajectory
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetGenericPrefix"><b>SetGenericPrefix</b></a>
+</td><td  id='tdright'>  This method must be called prior to CreateCurveTrajectory to define the prefix used for the feature name.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="CreateCurveTrajectory"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateCurveTrajectory</span><span class='signature'>(<script type="text/javascript"> activateLink('DNBTrajectoryType','DNBTrajectoryType')</script> <span class='param'>iTrajectoryType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>)</span> As <script type="text/javascript"> activateLink('CurveTrajectory','CurveTrajectory')</script> </span></dt>
+  <dd class='ddmethod'>
+ This method creates a CurveTrajectory
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTrajectoryType,</span></dt>
+   <dd> The trajectory type.  The approved list of trajectory type are:
+   Weld, Sealant, Adhesive, General
+ 
+ </ dd>
+    <dt><span class='paramitem'> iName,</span></dt>
+   <dd> Name of the Curve Trajectory to create. 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created Curve Trajectory. <dt><b>Example:</b>
+ <dd>
+ <pre>
+ Dim objCurveTrajectoryFactory As CurveTrajectoryFactory
+       ........
+ Dim TrajectoryName As String
+ TrajectoryName = "CurveTrajectory.VB"
+ Dim objCurveTrajectory As CurveTrajectory
+ Set objCurveTrajectory = objCurveTrajectoryFactory.<font color="red">CreateCurveTrajectory</font>("Weld", TrajectoryName)
+ </pre>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="DestroyCurveTrajectory"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>DestroyCurveTrajectory</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBaseUnknown','CATBaseUnknown')</script> <span class='param'>ispCurveTraj</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ This method destroys a CurveTrajectory
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ispCurveTraj</span></dt>
+   <dd>   CurveTrajectory to be deleted.
+ <dt><b>Example:</b>
+ <dd>
+ <pre>
+ Dim objCurveTrajectoryFactory As CurveTrajectoryFactory
+ Dim objCurveTrajectory As CurveTrajectory
+       ........
+ Call objCurveTrajectoryFactory.<font color="red">DestroyCurveTrajectory</font>(objCurveTrajectory)
+ </pre>
+ </dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetGenericPrefix"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetGenericPrefix</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibGeneric</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ This method must be called prior to CreateCurveTrajectory to define the prefix used for the feature name.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ibGeneric,</span></dt>
+   <dd> TRUE to define the prefix as "Arc".                   FALSE to define the prefix accordingly to the type. ex.: "Weld", "Sealant", "Adhesive"
+                   By default the value is FALSE.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  S_OK on success and E_FAIL on failure.
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

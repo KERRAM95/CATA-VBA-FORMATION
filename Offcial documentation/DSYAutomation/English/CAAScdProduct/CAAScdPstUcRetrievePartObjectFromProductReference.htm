@@ -1,0 +1,223 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Retrieving Part Object From Product Root Reference</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Retrieving Part Object From Product Root Reference</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">This use case primarily focuses on the 
+						methodology to retrieve the &quot;Part&quot; object, associated with 
+						a 3DShape representation in Product context. The UC actually 
+						navigates down a Product Reference which aggregates beneath 
+						it, this 3DShape Representation.
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdPstUcRetrievePartObjectFromProductReferenceSource.htm">
+						CAAScdPstUcRetrievePartObjectFromProductReferenceSource.htm</a></span></p>
+						<p>Attention the macro can request a slight change to 
+						take into account your own Product types. First read
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a> 
+						before using it.</p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+										<tr>
+					<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td></tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 2 steps</p>
+		<ol>
+			<li><a href="#Step1">Search and Retrieve the Product Reference (Root) 
+			from underlying database</a></li>
+			<li><a href="#Step2">Retrieve Part Object associated with the 3DShape 
+			aggregated beneath the Root</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"></a>Search and Retrieve the Product 
+			Reference (Root) from underlying database</p>
+			<pre class="code"> ...
+ <span class="keyword"> Dim</span> oVPMRootReference <span class="keyword">As</span> VPMReference
+  <span class="keyword">Set</span> oVPMRootReference = <strong>SearchAndRetrieveProdReference</strong>()
+...</pre>
+			<p>The function <em>SearchAndRetrieveProdReference</em>, returns
+			<code>oVPMRootReference</code>, a <code>VPMReference</code> type [<a href="#References">1</a>]. 
+			The PLM_ExternalID and revision values are sought as input from an 
+			end-user. A search criteria is built with those inputs and the PLM 
+			type as a Product Reference type. When this query is run on an underlying 
+			database, it typically returns a list of entities listed within a search 
+			editor. We retrieve the first element in this list, load it in the current 
+			session and retrieve the associated Product Reference. </p>
+			<p>Please note that the Product Reference object for which we are searching 
+			it should necessarily have 3DShape instance beneath it.</p>
+			</li>
+			<li>
+			<p><a name="Step2"></a>Retrieve Part Object associated with the 3DShape 
+			aggregated beneath the Root</p>
+			<pre class="code"> ...
+ <span class="keyword">Dim</span> oPart<span class="keyword">As</span> Part
+ <span class="keyword">Set</span> oPart = <strong>RetrievePart</strong>(oVPMRootReference)
+ ...
+</pre>
+			<p>This function <em>RetrievePart</em> returns <code>oPart</code>, a
+			<code>Part</code> type, a root object associated with a 3DShape.</p>
+			<p>This function navigates down the product hierarchy, to seek the first 
+			3DShape Representation Instance beneath Root. It further retrieves the 
+			&quot;Part&quot; Object associated with the 3DShape (Product Representation Reference).
+			</p>
+			<p>The function <em>RetrievePart</em> details are as in the below sub 
+			steps. </p>
+			<ol class="task" style="list-style-type: upper-roman">
+				<li>
+				<p>Retrieve list of Product Representation Instance beneath 
+				Product Reference</p>
+				<p>The subroutine begins with retrieving Product Representation 
+				Instance collection under Root. </p>
+				<pre class="code"><span class="keyword">Function </span> RetrievePart(oProdRef)<span class="keyword"> As </span>Part
+... 
+ <span class="keyword">Dim</span> oVPMRepInsts <span class="keyword">As</span> VPMRepInstances
+ <span class="keyword">Set</span> oVPMRepInsts = oProdRef.<strong>RepInstances</strong>
+...</pre>
+				<p>A call to the <em>RepInstances</em> method on the Root Reference,
+				<code>oProdRef,</code> a <code>VPMReference</code> type returns 
+				a collection of Product Representation Instances, <code>oVPMRepInsts,</code> 
+				a <code>VPMRepInstances</code> type under Root. </p>
+				</li>
+				<li>
+				<p>Retrieve the Product Representation Instance(First element among 
+				the list of instances retrieved earlier) </p>
+				<pre class="code">... 
+ <span class="keyword">Dim</span> oVPMRepInst <span class="keyword">As</span> VPMRepInstance
+ <span class="keyword">Set</span> oVPMRepInst = oVPMRepInsts.<strong>Item</strong>(1)
+...</pre>
+				<p>The call to <em>Item</em> method on <code>VPMRepInstances, oVPMRepInsts</code> 
+				returns the first Product Representation Instance <code>VPMRepInstance,oVPMRepInst</code> 
+				aggregated beneath it by giving 1 as input index.</p>
+				<p>If there is no Product Representation Instance beneath a Root 
+				Reference, it results in an error, which is handled exclusively 
+				at the end of this routine. Please note that here we consider that 
+				the first element in the list of Product Representation Instance 
+				is 3DShape, else macro will fail in further steps.</p>
+				</li>
+				<li>
+				<p>Retrieve the Representation Reference of the Representation instance 
+				(we suppose later it is a 3D Shape).</p>
+				<p>Next, we retrieve the Representation Reference associated with 
+				each Product Rep Instance, just retrieved.</p>
+				<pre class="code">... 
+ <span class="keyword">Dim</span> oVPMRepRef <span class="keyword">As</span> VPMRepReference
+ <span class="keyword">Set</span> oVPMRepRef = oVPMRepInst.<strong>ReferenceInstanceOf</strong>
+...</pre>
+				<p>The call to <em>ReferenceInstanceOf</em> property of <code>VPMRepInstance 
+				, oVPMRepInst</code> returns the Product Representation Reference
+				<code>oVPMRepRef</code> associated with it.</p>
+				</li>
+				<li>
+				<p>Retrieve Part object associated with the 3DShape </p>
+				<pre class="code">... 
+ <span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+ <span class="keyword">Set</span> oPart = oVPMRepRef.<strong>GetItem</strong>(&quot;<strong>Part</strong>&quot;)
+...</pre>
+				<p>A call to <em>GetItem</em> method of <code>AnyObject</code> 
+				on <code>oVPMRepRef</code>, returns the associated Part Object,
+				<code>oPart</code> (a Part type) for this we have given &quot;Part&quot; string 
+				as input. </p>
+				<p>Please note that Part is not an Object name but an Object Type. 
+				In addition, this call ensures that retrieved element is 3DShape 
+				since associated element is Part. </p>
+				</li>
+			</ol>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[1]</td>
+		<td><a href="CAAScdPstUcOpenProductReference.htm">Opening Product Reference</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

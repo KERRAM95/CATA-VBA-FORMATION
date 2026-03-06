@@ -1,0 +1,298 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="topictype" content="Uc" />
+    <meta name="devlang" content="idl" />
+    <meta name="devlang" content="idl" />
+    <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+    <title>History Plot</title>
+    <style type="text/css">
+        .padded td, .padded th {
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+    <table class="table1">
+        <tr>
+            <td class="DocHeader1">
+                <h1>Creating a history plot</h1>
+            </td>
+        </tr>
+        <tr>
+            <td class="DocHeader3" style="width: 1807px">
+                <table class="DocHeaderIntro">
+                    <tr>
+                        <td class="Intro1">
+                            <p class="header">This article explains how to open the results and create a history plot.</p>
+                            <hr class="header" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span class="run-in">Where to find the macro: <a href="CAAScdFeaResultsHistoryPlotSourcePython.htm">CAAScdFeaResultsHistoryPlotSourcePython.htm</a></span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="indented">
+        <tr>
+            <td>
+                <p>This use case can be divided in 13 steps:</p>
+                <ol>
+                    <li><a href="#Step1">Opens the document and retrieves the results analysis case</a></li>
+                    <li><a href="#Step2">Creates the history plot</a></li>
+                    <li><a href="#Step3">Get the step Id ,name and step description</a></li>
+                    <li><a href="#Step4">Sets the attributes to the history plot</a></li>
+                    <li><a href="#Step5">Sets the support for the history plot</a></li>
+                    <li><a href="#Step6">Sets step, frame and load case information</a></li>
+                    <li><a href="#Step7">Sets the complex type and angle</a></li>
+                    <li><a href="#Step8">Sets name to history plot</a></li>
+                    <li><a href="#Step9">Updates the history plot</a></li>
+                    <li><a href="#Step10">Returns the minimum and maximum values</a></li>
+                    <li><a href="#Step11">Gets the list of curves present in the history plot</a></li>
+                    <li><a href="#Step12">Exports the curve values in the specified file format</a></li>
+                    <li><a href="#Step13">Returns the minimum and maximum values of the curve</a></li>
+
+
+
+                </ol>
+            </td>
+        </tr>
+    </table>
+    <table class="table1">
+
+        <tr>
+            <td>
+                <ol class="task">
+                    <li>
+                        <p><strong><a name="Step1"></a>Opens the document and retrieves the results analysis case</strong></p>
+                        <p>
+                            As a first step, the following code will show how to open the simulation document and retrieve the 
+                            results analysis case.You can use  <code><div class=vb_sample_data>VB_HistoryPlot.SMASim</div></code>
+                            file supplied in the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaResults\samples\</code>
+                            where <code>InstallRootFolder</code> is the folder where the 
+					        API CD-ROM is installed.
+                        </p>
+                        <p>On opening the model,Select yes option from the dialogue to activate the results. </p>
+                        <a href="CAAScdFeaResultsOpenDocument.htm">Retrieve the analysis case</a>
+                    </li>
+                    <ul></ul>
+
+                    <li>
+
+                        <p><strong><a name="Step2"></a>Creates the history plot</strong></p>
+                        <p>This step shows how to create a history plot from the results analysis case retrieved from the earlier step.</p>
+                        <pre class="code">...
+
+oHistoryPlot1 = oResultsAnalysisCase.CreateHistoryPlot()
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step3"></a>Get the step Id ,name and step description</strong></p>
+                        <p>This step shows how to get the step Id,name and step description.</p>
+                        <pre class="code">...
+
+oSteps = oResultsAnalysisCase.ResultsSteps
+
+oResultsStep = oSteps.Item(1)
+
+stepId, stepName, stepDescription = oResultsStep.GetIdentifier ((), (), ())
+
+...
+</pre>
+                    </li>
+
+                    <li>
+
+                        <p><strong><a name="Step4"></a>Sets the attributes to the history plot</strong></p>                        
+                        <p>The following code sets the history plot attributes.In this step we set the history plot attributes.More options for history plot attributes can be found at <a href="CAAScdFeaResultsHistoryPlotEnum.htm"> HistoryplotEnums</a> 
+                            </p>
+
+
+                        <pre class="code">...
+oHistoryPlot1.Variable = ("UT")
+oHistoryPlot1.ComponentQuantity = ENUM.SimVector_Component_1
+...
+</pre>
+
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step5"></a>Sets the support for the history plot.</strong></p>
+                        <p>
+                            The following code sets support for creating the history plot such as regions and sub-regions.
+                            If user wants to select the whole model, no need to call this method.
+                        </p>
+                        <pre class="code">...
+	
+MySupports = ["INP2SIM_NSET_Nodal Probe2"]
+MySupports1 = [3]
+MySupports2 = ["Node 4", "Node 36", "Node 87"]
+
+oHistoryPlot1.SetSupport  (MySupports, MySupports1,  MySupports2)
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step6"></a>Sets the step, frame and load case information</strong></p>
+                        <p>Following code  sets the step,frame and load case information.</p>
+
+                        <p>stepId is the persistent ID of the step.</p>
+                        <p>The Frame index starts from 1. This option is needed only in case of multiple load cases.In the following code we have used 0 as the frame index.</p>
+                        <p>The load case index starts from 1. It is needed if a load case is present in the step.In the following code we have used 0 as the load case index. </p>
+
+                        <pre class="code">...
+oHistoryPlot1.SetStepAndFrame (stepId, 0, 0)
+...
+</pre>
+                        <p>Using following code we can set all available time based steps.</p>
+                        <pre class="code">...
+oHistoryPlot1.SetAllTimeBasedSteps()
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step7"></a>Sets the complex type and angle</strong></p>
+                        <p>
+                            Following code sets the complex type and angle.The complex options are dependent on the complex options that are set 
+                            while creating the step.
+                        </p>
+                        <p>More options for setting SimComplexValues can be found at <a href="CAAScdFeaResultsHistoryPlotEnum.htm"> HistoryplotEnums</a>.</p>
+                        <pre class="code">...
+
+ieComplexValue = ENUM.SimEnvelopeMax
+iValueAtAngle = 30
+
+oHistoryPlot1.SetComplex  (ieComplexValue, iValueAtAngle)
+...
+</pre>
+                    </li>
+
+
+
+                    <li>
+                        <p><strong><a name="Step8"></a>Sets name to history plot</strong></p>
+                        <p>Following code sets the name to history plot.</p>
+                        <pre class="code">...
+ oHistoryPlot1.Name = ("Test History Plot 1")
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step9"></a>Updates the history plot</strong></p>
+                        <p>
+                            Following code creates and displays the history plot in the XY viewer.This method needs to be called at the end after 
+     setting the attributes.
+                        </p>
+                        <pre class="code">...
+oHistoryPlot1.Update()
+...
+</pre>
+                    </li>
+                    <li>
+
+                        <p>
+                            <strong><a name="Step10"></a>Returns the minimum and maximum values. 
+                            </strong>
+                        </p>
+                        <p>
+                            This step returns the minimum and maximum values. It considers all the curves and gives the absolute 
+     min and max value.
+                        </p>
+                        <pre class="code">...
+
+dMin, dMax = oHistoryPlot1.GetMinMaxValues (0, 0) 
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step11"></a>Gets the list of curves present in the history plot</strong></p>
+                        <p>Following code returns the list of curves present in the history plot. </p>
+                        <pre class="code">...
+oHistCurveList = oHistoryPlot1.GetHistoryCurveList (())
+oHistCurve = oHistCurveList[0]
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step12"></a>Exports the curve values in the specified file format either to 
+                            disc or in the database as a VPMDocument</strong></p>
+                        <p>(a) Saving the file on disc: </p>
+                        <p>Following code exports the curve values in the specified file format at the given location.</p>
+                        <p>icsFileName is the file name. If not specified, the name of the curve will be taken by default.</p>
+                        <p>icsFileLocation is the The location at which the exported file needs to be created.</p>
+                        <p>More options for setting ieFileType can be found at <a href="CAAScdFeaResultsHistoryPlotEnum.htm"> HistoryplotEnums</a>.</p>
+                        <pre class="code">...
+
+iFileName = "History_Curve1"
+iFileLocation="C:\\temp"
+oHistCurve.Export (iFileName, iFileLocation, ENUM.SimXlsx)
+
+...
+</pre>
+
+                        <p>(b) Saving the file in data base as a VPMDocument: </p>
+                        <p>Following code exports the curve values in the specified file format in the data base.</p>
+                        <p>icsFileName is the file name. If not specified, the name of the curve will be taken by default.</p>
+                        <p>More options for setting ieFileType can be found at <a href="CAAScdFeaResultsHistoryPlotEnum.htm"> HistoryplotEnums</a>.</p>
+                        <pre class="code">...
+
+oHistCurve1 = oHistCurveList[1]
+iFileName1 = "History_Curve_PLM"
+oHistCurve1.ExportToPLMDoc (iFileName1, ENUM.SimCsv)
+
+...
+
+Note: The user will have save the document/session to see the exported file in the database.
+</pre>
+                    </li>
+
+                    <li>
+
+                        <p>
+                            <strong><a name="Step13"></a>Returns the minimum and maximum values of the curve 
+                            </strong>
+                        </p>
+                        <p>
+                            This step returns the minimum and maximum values of the curve.
+                        </p>
+                        <pre class="code">...
+
+dMin, dMax = oHistoryCurve1.GetMinMaxValues (0, 0 )
+</pre>
+                    </li>
+
+
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates and edits a Covering and Core material.</span>
+<span class="comment">'</span>
+<span class="comment"># Steps:</span>
+<span class="comment">#   1 - Create Covering and Core Material</span>
+<span class="comment">#   2 - Add domain </span>
+<span class="comment">#   3 - Edit Domain </span>
+</pre>
+<pre class="comment">
+
+<span class="keyword">import</span> sys, os
+<span class="keyword">from</span> com3dx <span class="keyword">import</span> *
+CATIA = get3dxClient()
+
+<span class="keyword">def</span> CreateCoreAndCoveringMaterial(MatService):
+    <span class="comment"># Create a core Material</span>
+    MyCoreMatRef, MyMaterialEditor = MatService.PLMCreate (&quot;dsc_matref_ref_Core&quot;, <span class="keyword">None</span>, <span class="keyword">None</span>)
+    <span class="comment"># Add Domain to Core Material</span>
+    MyListCoreMatDomains = MyCoreMatRef.GetDomains ()
+    MyDomain = MyListCoreMatDomains.Add (&quot;dsc_matref_rep_Rendering&quot;, <span class="keyword">None</span>)
+    MyDomain = MyListCoreMatDomains.Add (&quot;dsc_matref_rep_Composite&quot;, <span class="keyword">None</span>)
+    MyDomain = MyListCoreMatDomains.Add (&quot;dsc_matref_rep_Drafting&quot;, <span class="keyword">None</span>)
+    MyDomain = MyListCoreMatDomains.Add (&quot;dsc_matref_rep_SmaOptions&quot;, <span class="keyword">None</span>)
+    MyDomain = MyListCoreMatDomains.Add (&quot;dsc_matref_rep_Sample&quot;, <span class="keyword">None</span>)
+    <span class="comment"># Create a Covering Material</span>
+    MyCoveringMatRef, MyMaterialEditor = MatService.PLMCreate (&quot;dsc_matref_ref_Covering&quot;, <span class="keyword">None</span>, <span class="keyword">None</span>)
+    <span class="comment"># Add Domain to covering Material</span>
+    MyListCovMatDomains = MyCoveringMatRef.GetDomains()
+    MyDomain = MyListCovMatDomains.Add (&quot;dsc_matref_rep_Rendering&quot;, <span class="keyword">None</span>)
+    <span class="keyword">return</span> MyCoveringMatRef, MyCoreMatRef
+   
+<span class="keyword">def</span> EditMaterialAndDomain(iMyCoreMatRef):
+    <span class="comment"># Get domains material of material</span>
+    MyMatDomainsList = iMyCoreMatRef.GetDomains()
+    <span class="comment"># Get first domain of materials</span>
+    MyDomainMat = MyMatDomainsList.Item(1)
+    <span class="comment"># Get the V_Group of Domain</span>
+    MyMatDomName = MyDomainMat.GetAttributeValue(&quot;V_description&quot;)
+    <span class="comment"># Set the V_Group of Domain</span>
+    MyMatDomName = &quot;Modified by User&quot;
+    MyDomainMat.SetAttributeValue (&quot;V_description&quot;, MyMatDomName)
+    <span class="comment"># Retrieves the Rendering domain</span>
+    MyDomainListDisc=[]
+    MyDomainListDisc.append(&quot;dsc_matref_rep_Sample&quot;)
+    MyDomainsList = MyCoreMatRef.GetDomains()
+    MyFilteredDomainList = MyDomainsList.GetItemByDiscipline (MyDomainListDisc, <span class="keyword">None</span>)
+    MyDomainMat = MyFilteredDomainList.Item(1)
+    <span class="comment"># Retrieves the Material Domain Content</span>
+    MyMaterialDomainContent = MyDomainMat.MaterialDomainContent
+
+<span class="comment"># Retrieves the Material Service</span>
+MatService = CATIA.GetSessionService("MATPLMService")
+
+<span class="comment"># Create Covering and Core Material, and Add Domain</span>
+MyCoveringMatRef, MyCoreMatRef = CreateCoreAndCoveringMaterial(MatService)
+
+<span class="comment"># Edit Covering and Core Material</span>
+EditMaterialAndDomain(MyCoreMatRef)
+
+</pre>
+
+</body>
+
+</html>

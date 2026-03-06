@@ -1,0 +1,81 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Person Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>Person Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">Legend</td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavunused"><a href="#" onclick="javascript:CAAlink('IDL', 'PLMApplicationContextIDLItf', 'interface', 'Person', 'PropertyIndex'); return false;">
+		Properties</a></td>
+		<td class="ofvbanavreuse"> Methods</td>	</tr>
+</tbody>
+</table>
+
+
+<p>Represents the connected user.</p>
+<p>The <strong>Person</strong> object lets you retrieve :</p>
+<ul>
+<li>The connected person login (<b>3D</b>EXPERIENCE login username), </li>
+<li>The credentials information entered in the Select Credentials panel.</li>
+</p>
+ </ul>
+<h2>Retrieving the Person Object</h2>
+<p>See <a href="CAAScdPnoObjPnOService.htm">PnOService Object</a> page. </p>
+<h2>Using the Person Object</h2>
+<p>There are three information making up the 3DSpace credentials: a role, an organization and a collaborative space. You retrieve them as follows:</p>
+<pre class="code">...
+<span class="keyword">Dim</span> sCollabSpace <span class="keyword">As</span> CATBSTR 
+<span class="keyword">Set</span> sCollabSpace = oPerson.<strong>CollaborativeSpaceID</strong>
+...
+<span class="keyword">Dim</span> sRole <span class="keyword">As</span> CATBSTR
+<span class="keyword">Set</span> sRole = oPerson.<strong>RoleID</strong>
+...
+<span class="keyword">Dim</span> sOrganization <span class="keyword">As</span> CATBSTR
+<span class="keyword">Set</span> sOrganization = oPerson.<strong>OrganizationID</strong>
+...</pre>
+<p>From these three strings you can build the current security context as follow:</p>
+<pre class="code">
+<span class="keyword">Dim</span> sSC <span class="keyword">As</span> CATBSTR
+<span class="keyword">Set</span> sSC =  sRole + "." + sOrganization + "." + sCollabSpace 
+</pre>
+<p>The username of the person is retrieved as follows: </p>
+<pre class="code">...
+<span class="keyword">Dim</span> sUserId <span class="keyword">As</span> CATBSTR 
+<span class="keyword">Set</span> sUserId = oPerson.<strong>PersonID</strong>
+...
+</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

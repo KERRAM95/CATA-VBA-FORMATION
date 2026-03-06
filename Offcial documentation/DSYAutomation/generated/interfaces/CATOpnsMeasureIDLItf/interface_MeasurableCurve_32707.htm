@@ -1,0 +1,134 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATOpnsMeasureIDLItf MeasurableCurve (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATOpnsMeasureIDLItf.htm" href="../CATOpnsMeasureIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATOpnsMeasureIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "MeasurableCurve"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> MeasurableCurve<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_MeasurableCurve_32707','MeasurableCurve','0');</script>
+<section id='maindesc'>
+<b><i> Interface representing the measurement on a curve.</i></b><br>
+
+
+ Get the length and the characteristic points on the curve(start, middle and end points).
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetLength"><b>GetLength</b></a>
+</td><td  id='tdright'>  Retrieves the Length of the curve.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPoints"><b>GetPoints</b></a>
+</td><td  id='tdright'>  Retrieves the characteristic points of the curve : the start point, the middle point and the end point.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetLength"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetLength</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the Length of the curve.
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example retrieves the Length of <tt>theMeasurableCurve</tt> measure.
+   <pre>
+     Set theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+     Dim theMeasurableCurve As MeasurableCurve
+     Set theMeasurableCurve = theMeasureService.GetMeasurable(theSelection, CAAMeasurableCurve)
+     Dim theLength As Double
+     theLength = theMeasurableCurve.<font color="red">GetLength</font>
+   </pre>
+</dl>
+</dd>
+<a id="GetPoints"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetPoints</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>ioStartPoint</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>ioMidPoint</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>ioEndPoint</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the characteristic points of the curve : the start point, the middle point and the end point.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ioStartPoint</span></dt>
+   <dd>   The information of the start point of the curve with respect to the product coordinate system:
+   <ul>
+   <li>ioStartPoint(0) is the X coordinate of the startpoint of the curve
+   <li>ioStartPoint(1) is the Y coordinate of the startpoint of the curve
+   <li>ioStartPoint(2) is the Z coordinate of the startpoint of the curve
+   </ul>
+ 
+ </ dd>
+    <dt><span class='paramitem'> ioMidPoint</span></dt>
+   <dd>   The information of the middle point of the curve with respect to the product coordinate system:
+   <ul>
+   <li>oCoordinates(0) is the X coordinate of the midpoint of the curve
+   <li>oCoordinates(1) is the Y coordinate of the midpoint of the curve
+   <li>oCoordinates(2) is the Z coordinate of the midpoint of the curve
+   </ul>
+ 
+ </ dd>
+    <dt><span class='paramitem'> ioEndPoint</span></dt>
+   <dd>   The information of the end point of the curve with respect to the product coordinate system:
+   <ul>
+   <li>oCoordinates(0) is the X coordinate of the endpoint of the curve
+   <li>oCoordinates(1) is the Y coordinate of the endpoint of the curve
+   <li>oCoordinates(2) is the Z coordinate of the endpoint of the curve
+   </ul>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example retrieves the characteristic points of the curve of <tt>theMeasurableCurve</tt> measure.
+   <pre>
+     Set theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+     Dim theMeasurableCurve As MeasurableCurve
+     Set theMeasurableCurve = theMeasureService.GetMeasurable(theSelection, CAAMeasurableCurve)
+     Dim theStartPoint(2)
+     Dim theMidPoint(2)
+     Dim theEndPoint(2)
+     theMeasurableCurve.<font color="red">GetPoints</font> theStartPoint, theMidPoint, theEndPoint
+    </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

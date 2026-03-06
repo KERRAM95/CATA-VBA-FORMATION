@@ -1,0 +1,180 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdMatApplyMatWithPython.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">#-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">#This sample retrieves to create a 3DPart and apply material on Root, RepInstance and PartBody.</span>
+<span class="comment">#</span>
+<span class="comment">#Steps:</span>
+<span class="comment">#   1 - Retrieves the simulation, its model and creates the different links</span>
+<span class="comment">#   2 - Retrieves the Material Service</span>
+<span class="comment">#   3 - Create Covering and Core Material</span>
+<span class="comment">#   4 - Apply Covering and Core Material </span>
+<span class="comment">#   5 - Retrieve Covering and Core Material </span>
+<span class="comment">#   6 - Remove Applied Material</span>
+</pre>
+<pre class="comment">
+
+<span class="keyword">import</span> sys, os
+<span class="keyword">from</span> com3dx <span class="keyword">import</span> *
+CATIA = get3dxClient()
+
+<span class="keyword">def</span> CreateCoreAndCoveringMaterial():
+
+    <span class="comment"># Create a Covering Material</span>
+    MyCoveringMatRef, MyMaterialEditor = MyMaterialService.PLMCreate ("dsc_matref_ref_Covering", <span class="keyword">None</span>, <span class="keyword">None</span>)
+    <span class="comment"># Add Domain to coverin Material</span>
+    MyListCovMatDomains = MyCoveringMatRef.GetDomains(<span class="keyword">None</span>)
+    MyDomain = MyListCovMatDomains.Add ("dsc_matref_rep_Rendering", <span class="keyword">None</span>)
+    <span class="comment"># Create a core Material</span>
+    MyCoreMatRef, MyMaterialEditor = MyMaterialService.PLMCreate ("dsc_matref_ref_Core", <span class="keyword">None</span>, <span class="keyword">None</span>)
+    <span class="comment"># Add Domain to Core Material</span>
+    MyListCoreMatDomains = MyCoreMatRef.GetDomains (<span class="keyword">None</span>)
+    MyDomain = MyListCoreMatDomains.Add ("dsc_matref_rep_Rendering",  <span class="keyword">None</span>)
+    MyDomain = MyListCoreMatDomains.Add ("dsc_matref_rep_Composite",  <span class="keyword">None</span>)
+    MyDomain = MyListCoreMatDomains.Add ("dsc_matref_rep_Drafting",   <span class="keyword">None</span>)
+    MyDomain = MyListCoreMatDomains.Add ("dsc_matref_rep_SmaOptions", <span class="keyword">None</span>)
+    <span class="keyword">return</span> MyCoveringMatRef, MyCoreMatRef
+    
+    
+<span class="keyword">def</span> SetCoveringAndCoreMaterial(iMyCoveringMatRef, iMyCoreMatRef):
+
+    <span class="comment"># Apply a Core and Covering Material on Root Occurrence</span>
+    MyCoveringAppliedMat = MyMaterialService.SetMaterialCovering (myLinkOnRootOcc, iMyCoveringMatRef, <span class="keyword">None</span>)
+    MyCoreAppliedMat = MyMaterialService.SetMaterialCore (myLinkOnRootOcc, iMyCoreMatRef, <span class="keyword">None</span>)
+    
+    <span class="comment"># Apply a Core and Covering Material on RepInstance</span>
+    MyCoveringAppliedMat = MyMaterialService.SetMaterialCovering (myLinkOnRepInst, iMyCoveringMatRef, <span class="keyword">None</span>)
+    MyCoreAppliedMat = MyMaterialService.SetMaterialCore (myLinkOnRepInst, iMyCoreMatRef, <span class="keyword">None</span>)
+
+    <span class="comment"># Apply a Core and Covering Material on Feature</span>
+    MyCoveringAppliedMat = MyMaterialService.SetMaterialCovering (myLinkOnFeature, iMyCoveringMatRef, <span class="keyword">None</span>)
+    MyCoreAppliedMat = MyMaterialService.SetMaterialCore (myLinkOnFeature, iMyCoreMatRef, <span class="keyword">None</span>) 
+   
+<span class="keyword">def</span> GetCoveringAndCoreMaterial():
+
+    <span class="comment"># Retrieve Applied Material on Root Occurrence</span>
+    MyCoreMatRef, MyCoreAppliedMat = MyMaterialService.GetMaterialCore (myLinkOnRootOcc, <span class="keyword">None</span>, <span class="keyword">None</span>)
+    MyCoveringMatRefList, MyCoveringAppliedMatList = MyMaterialService.GetMaterialCovering (myLinkOnRootOcc, <span class="keyword">None</span>, <span class="keyword">None</span>)
+
+    <span class="comment"># Retrieve Applied Material on RepInstance</span>
+    MyCoreMatRef, MyCoreAppliedMat = MyMaterialService.GetMaterialCore (myLinkOnRepInst, <span class="keyword">None</span>, <span class="keyword">None</span>)
+    MyCoveringMatRefList, MyCoveringAppliedMatList = MyMaterialService.GetMaterialCovering (myLinkOnRepInst, <span class="keyword">None</span>, <span class="keyword">None</span>)
+    
+    <span class="comment"># Retrieve Applied Material on Feature</span>
+    MyCoreMatRef, MyCoreAppliedMat = MyMaterialService.GetMaterialCore (myLinkOnFeature, <span class="keyword">None</span>, <span class="keyword">None</span>)
+    MyCoveringMatRefList, MyCoveringAppliedMatList = MyMaterialService.GetMaterialCovering (myLinkOnFeature, <span class="keyword">None</span>, <span class="keyword">None</span>)
+    
+<span class="keyword">def</span> RemoveAppliedMaterial():
+
+    <span class="comment"># Retrieve Applied Material on Root Occurrence</span>
+    MyCoreMatRef, MyCoreAppliedMat = MyMaterialService.GetMaterialCore (myLinkOnRootOcc, <span class="keyword">None</span>, <span class="keyword">None</span>) 
+    MyCoveringMatRefList, MyCoveringAppliedMatList = MyMaterialService.GetMaterialCovering (myLinkOnRootOcc, <span class="keyword">None</span>, <span class="keyword">None</span>)
+
+    <span class="comment"># Remove Applied Core Material on Root Occurrence</span>
+    MyMaterialService.RemoveAppliedMaterial (MyCoreAppliedMat)
+
+    <span class="comment"># Remove Applied Covering Material on Root Occurrence</span>
+    iMaxCnx = MyCoveringAppliedMatList.Count
+
+    <span class="keyword">for</span> index <span class="keyword">in</span> <span class="keyword">range</span>(1, iMaxCnx+1):
+        MyCoveringAppliedMat = MyCoveringAppliedMatList.Item(index)
+        MyMaterialService.RemoveAppliedMaterial (MyCoveringAppliedMat)
+
+<span class="comment">#-----------------------------------------------------------------------------</span>
+<span class="comment"># 1 - Retrieves the simulation, its model and creates the different links</span>
+<span class="comment">#-----------------------------------------------------------------------------</span>
+
+<span class="comment"># As a first step, retrieves the simulation editor which is the actived one</span>
+myEditor = CATIA.ActiveEditor
+<span class="comment"># Then retrieves the product service</span>
+myProdService = myEditor.GetService("PLMProductService")
+<span class="comment"># Retrieves the PLMEntities</span>
+myEntities = myProdService.EditedContent
+<span class="comment"># Now retrieves the PLMEntity</span>
+myEntity = myEntities.Item(1)
+<span class="comment"># Gets the simulation Root</span>
+MySimulationRoot = myEntity
+<span class="comment"># Now retrieves the Model</span>
+myModel = MySimulationRoot.Model
+
+<span class="comment"># Opens the simulation model</span>
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+
+<span class="comment"># Retrieves the product root product and the root occurrence</span>
+myProductEditor = CATIA.ActiveEditor
+MyProductService = myProductEditor.GetService("PLMProductService")
+
+myEntities = MyProductService.EditedContent
+myRootProduct = myEntities.Item(1)
+
+myRootOccurrence = MyProductService.RootOccurrence
+
+<span class="comment"># Retrieves the active Object (it is the RepInst)</span>
+MyActiveObject = myProductEditor.ActiveObject
+<span class="comment"># Retrieves the VPMRepReference</span>
+MyVPMRepRef = MyActiveObject.Parent
+<span class="comment"># Retrieves the PartBody</span>
+MyPartBody = MyActiveObject.MainBody
+
+<span class="comment"># Retrieves the Reference of 3DPart</span>
+MyRootRef = MyVPMRepRef.Father
+<span class="comment"># Retrieves the RepInstance</span>
+ListInstance = MyRootRef.RepInstances
+MyRepInstance = ListInstance.Item(1)
+
+<span class="comment"># Compose links</span>
+MyReference     = MyActiveObject.CreateReferenceFromObject(MyPartBody)
+myLinkOnRootOcc = MyProductService.ComposeLink(myRootOccurrence, None, None)
+myLinkOnRepInst = MyProductService.ComposeLink(None, MyRepInstance, None)
+myLinkOnFeature = MyProductService.ComposeLink(None, MyRepInstance, MyReference)
+
+<span class="comment">#-----------------------------------------------------------------------------</span>
+<span class="comment"># 2 - Retrieves the Material Service</span>
+<span class="comment">#-----------------------------------------------------------------------------</span>
+MyMaterialService = CATIA.GetSessionService("MATPLMService")
+
+<span class="comment">#-----------------------------------------------------------------------------</span>
+<span class="comment"># 3 - Create Covering and Core Material</span>
+<span class="comment">#-----------------------------------------------------------------------------</span>
+oMyCoveringMatRef, oMyCoreMatRef = CreateCoreAndCoveringMaterial()
+
+<span class="comment">#-----------------------------------------------------------------------------</span>
+<span class="comment"># 4 - Apply Covering and Core Material</span>
+<span class="comment">#-----------------------------------------------------------------------------</span>
+SetCoveringAndCoreMaterial(oMyCoveringMatRef, oMyCoreMatRef)
+
+<span class="comment">#-----------------------------------------------------------------------------</span>
+<span class="comment"># 5 - Retrieve Covering and Core Material</span>
+<span class="comment">#-----------------------------------------------------------------------------</span>
+GetCoveringAndCoreMaterial()
+
+<span class="comment">#-----------------------------------------------------------------------------</span>
+<span class="comment"># 6 - Remove Applied Material</span>
+<span class="comment">#-----------------------------------------------------------------------------</span>
+RemoveAppliedMaterial()
+
+
+</pre>
+
+</body>
+
+</html>

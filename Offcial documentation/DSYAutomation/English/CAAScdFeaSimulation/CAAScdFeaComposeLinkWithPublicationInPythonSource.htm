@@ -1,0 +1,110 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdMpaLinkAccess.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+
+<pre class=>
+<span class="comment"># -------------- Sample script written in Python ------------------------------------------</span>
+<span class="comment"># This sample shows how to use the compose link method with publications.</span>
+
+<span class="comment"># Steps:</span>
+<span class="comment">#          1 - Retrieves the simulation and its product   										</span>
+<span class="comment">#          2 - Creates link 								</span>
+<span class="comment">#          3 - Associates representation to FEM								</span>
+<span class="comment">#          4 - Creates a Shell section					</span>
+<span class="comment">#          5 - Sets the shell section attributes									</span>
+<span class="comment">#============================================================================================</span>
+
+<span class="keyword">import</span> sys, os
+<span class="keyword">from</span> com3dx <span class="keyword">import</span> *
+CATIA = get3dxClient()
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  1 - Retrieves the simulation and its product  </span>
+<span class="comment"># =====================================================================</span>
+
+<span class="comment"># As a first step, retrieve the simulation editor which is the actived one</span>
+myEditor = CATIA.ActiveEditor
+
+<span class="comment"># Then retrieve the product service</span>
+myProdService = myEditor.GetService("PLMProductService")
+
+<span class="comment"># Retrieve the Root Occurrence</span>
+myRootOccurrence = myProdService.RootOccurrence
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  2 - Creates link</span>
+<span class="comment">#======================================================================</span>
+
+<span class="comment"># retrieve the publications set </span>
+myPublications = myRootOccurrence.ReferenceRootOccurrenceOf.Publications
+
+<span class="comment"># retrieve the Pipe_Extrude publication, it is a 3DShape publication</span>
+myPublication = myPublications.GetItem("Pipe_Extrude")
+
+<span class="comment"># Create the link with ComposeLink method </span>
+<span class="comment"># As we use publication, we do not need to give the first two arguments </span>
+<span class="comment"># Set as third argument the retrieved publication defining the feature needed to be linked </span>
+myLink = myProdService.ComposeLink(myRootOccurrence, <span class="keyword">None</span>, myPublication)
+
+<span class="comment"># =====================================================================</span>
+<span class="comment"># 3 - Associates representation to FEM</span>
+<span class="comment">#======================================================================</span>
+
+<span class="comment"># retrieve the Product representation factory to create a FEM</span>
+MyPrdRepFactory = myRootOccurrence.ReferenceRootOccurrenceOf.GetItem("SimPrdRepFactory")
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep("FEM")
+MyFemRepRoot = MyFemRepRef.GetItem("SimFemRoot")
+
+<span class="comment"># Add link to the FEM rep</span>
+MyFemRepRoot.AddAssociatedRep (myLink)
+
+<span class="comment"># When using publication, we do not need to create a link in memory. The publication can directly be setted as argument</span>
+<span class="comment"># MyFemRepRoot.AddAssociatedRep (myPublication)</span>
+
+<span class="comment"># =====================================================================</span>
+<span class="comment"># 4 - Creates a Shell section</span>
+<span class="comment">#======================================================================</span>
+
+<span class="comment"># Retrieve the properties set</span> 
+myPropertiesSet = MyFemRepRoot.GetSet("SimProperties")
+
+<span class="comment"># Create individual properties</span>
+myShellSection = myPropertiesSet.Add("SimShellSection")
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  5 - Sets the shell section attributes</span>
+<span class="comment">#======================================================================</span>
+
+<span class="comment"># Set the section support</span>
+myLinkAccess = myShellSection.GetItem("SimLinkAccess")
+<span class="comment"># Add the link created before</span>
+myLinkAccess.AddLink ("MainSupport", myLink)
+myShellSection.UniformThickness = 1.0
+
+<span class="comment"># When using publication, we do not need to create a link in memory. The publication can directly be setted as argument</span>
+<span class="comment"># myLinkAccess.AddLink ("MainSupport", myPublication)</span>
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

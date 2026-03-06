@@ -1,0 +1,306 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Customizing a Translator</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Customizing a Translator</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This example illustrates 
+						how to modify a translator to convert a non-standard robot 
+						language instruction into a DELMIA instruction and back 
+						again. </p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span><ul>
+							<li>You should have read
+							<a href="CAAScdOlpTaOverview.htm">Robotics Programming Overview</a>.</li>
+							<li>You can import a working version of the customized 
+							translator from the file <code><div class=vb_sample_data>MyFanucTranslatorR2016x.3dxml</div></code> 
+							supplied in the folder<br />
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdOlpOfflineProg\samples\</code><br />
+							where <code>InstallRootFolder</code> is the folder where 
+							the CAA CD-ROM is installed. That folder also has the sample FANUC robot program <div class=vb_sample_data>MAIN.txt</div>.</li>
+						</ul>
+						</td>
+					</tr>
+					<tr>
+						<td class="Intro2">
+						<p class="header">This example steps through how to customize 
+						the FANUC translator. To illustrate the example, we have 
+						invented a custom FANUC instruction &quot;IO_SYNC&quot;.</p>
+						<pre class="code" style="text-align: center">CALL IO_SYNC(&#39;0000000100000000&#39;) ;</pre>
+						<p class="header">IO_SYNC is a procedure to do IO handshaking. 
+						It sets a group output signal and waits for a group input 
+						signal. The group output is set to the string argument. 
+						The string is interpreted as a binary number. After setting 
+						the output, it waits for the input value to be equal to 
+						the output value.</p>
+						<p class="header">We are assuming that IO_SYNC is not a 
+						normal FANUC task. For example, it could be a KAREL program. 
+						This is a language that is sometimes used to write custom 
+						procedures for the FANUC controller. Each robot manufacturer 
+						offers a different way to customize their language. The 
+						basic philosophy for how to customize a DELMIA translator 
+						is the same for all languages.</p>
+						<p class="header">The FANUC translator without modification 
+						creates IO_SYNC as an empty procedure. It creates one input 
+						argument to that procedure. Then it creates a run instruction 
+						to call that procedure and pass in the input value. The 
+						result is that nothing happens for this instruction during 
+						simulation because the IO_SYNC task has no instructions. 
+						The goal of this customization is to have IO handshaking 
+						executed during simulation.</p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="CAAScdOlpTaOverview.htm">Robotics Programming Overview</a>
+						</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdOlpUcInstruction.htm">Translating an 
+						Instruction</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdOlpUcIntegrate.htm">Integrating Your 
+						Customizations</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>To customize a translator follow these steps:</p>
+		<ol>
+			<li><a href="#DetermineInstructions">Determine the DELMIA instruction 
+			structure</a></li>
+			<li><a href="#DetermineAST">Determine the AST structure</a></li>
+			<li><a href="#DuplicateTranslator">Make a copy of the translator</a></li>
+			<li><a href="#WriteInstructionTranslator">Write the class to translate 
+			the instruction</a></li>
+			<li><a href="#IntegrateInstructionTranslator">Modify the translator 
+			to use your class</a></li>
+			<li><a href="#UpdateOptions">Update options to use your translator</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="DetermineInstructions"></a>Determine the desired 
+			DELMIA instruction structure for CALL IO_SYNC</strong></p>
+			<p>Lets assume you want IO_SYNC to do the same IO handshaking during 
+			simulation as it does on the FANUC controller. We will create a task 
+			in DELMIA and then when a CALL IO_SYNC instruction is encountered, we 
+			will create an instruction to run the task and pass the input argument.</p>
+			<table>
+				<caption><a name="Fig1"></a>Fig.1: IO_SYNC Task</caption>
+				<tr valign="middle">
+					<td valign="top">
+					<img src="CAAScdOlpUseCaseTranslator_IO_SYNC.jpg" alt="Image"/>
+					</td>
+				</tr>
+			</table>
+			<ul class="task">
+				<li>IO_SYNC is a Task</li>
+				<li>IO_SYNC has 1 integer input (io_value)</li>
+				<li>The 1st instruction sets the group output (GO1) value</li>
+				<li>The 2nd instruction waits for the group input (GI1) value to 
+				be the same.</li>
+			</ul>
+			<p>The instruction to run the task will look like this:</p>
+			<table>
+				<caption><a name="Fig2"></a>Fig.2: Running IO_SYNC</caption>
+				<tr valign="middle">
+					<td valign="middle">
+					<img src="CAAScdOlpUseCaseTranslator_run.jpg" alt="Image"/>
+					</td>
+				</tr>
+			</table>
+			<ul class="task">
+				<li>The input is changed from a string to an integer in binary notation.</li>
+			</ul>
+			<p>There are many possible equivalent solutions in DELMIA. This is just 
+			one possible example.</p>
+			</li>
+			<li>
+			<p><a name="DetermineAST"></a><strong>Determine the AST structure for 
+			CALL IO_SYNC</strong></p>
+			<p>The AST structure is determined by the parser. Since the parser cannot 
+			be customized, you just need to identify the AST structure that the 
+			parser creates for the CALL IO_SYNC instruction. During the upload and 
+			download commands, there is an option to export the AST as an XML document. 
+			With this option you can observe the AST structure simply by uploading 
+			a FANUC TP program that calls IO_SYNC. </p>
+			<p><strong>NOTE</strong>: During translation, AST is <strong>not
+			</strong>an XML document but it can be exported to an XML document.</p>
+			<ol>
+				<li>
+				<p>Set the environment variable DNB_OLP_AST_FILE to a file path. 
+				The AST will be exported to that XML file. </p>
+				<pre class="code">set DNB_OLP_AST_FILE=C:\tmp\ast.xml</pre>
+				</li>
+				<li>
+				<p>Rename <div class=vb_sample_data>MAIN.txt</div> to MAIN.LS, and run the upload command using the DELMIA Fanuc Translator to upload 
+				the file MAIN.LS. <div class=vb_sample_data>MAIN.txt</div> can be found in the samples folder listed above.</p>
+				</li>
+				<li>
+				<p>Open the document C:\tmp\ast.xml. Within it, you will find the 
+				following XML notation for the CALL IO_SYNC instruction.</p>
+				</li>
+			</ol>
+			<pre class="code">&lt;<span class="keyword">Run</span>&gt;
+	&lt;<span class="keyword">Statement</span> id=&quot;LineNumber&quot;&gt;
+		&lt;<span class="keyword">ConstInteger</span>&gt;1&lt;<span class="keyword">/ConstInteger</span>&gt;
+		&lt;<span class="keyword">Operator</span>&gt;:&lt;<span class="keyword">/Operator</span>&gt;
+	&lt;<span class="keyword">Statement</span>&gt;
+	&lt;<span class="keyword">Format</span>&gt; &lt;<span class="keyword">/Format</span>&gt;
+	&lt;<span class="keyword">Statement</span> id=&quot;Call&quot;&gt;
+		&lt;<span class="keyword">Keyword</span>&gt;CALL&lt;<span class="keyword">/Keyword</span>&gt;
+		&lt;<span class="keyword">Format</span>&gt; &lt;<span class="keyword">/Format</span>&gt;
+		&lt;<span class="keyword">Identifier</span>&gt;IO_SYNC&lt;<span class="keyword">/Identifier</span>&gt;
+		&lt;<span class="keyword">Statement</span> id=&quot;Arguments&quot;&gt;
+			&lt;<span class="keyword">Operator</span>&gt;(&lt;<span class="keyword">/Operator</span>&gt;
+			&lt;<span class="keyword">Statement</span> id=&quot;Argument&quot;&gt;
+				&lt;<span class="keyword">String</span>&gt;&#39;0000000100000000&#39;&lt;<span class="keyword">/String</span>&gt;
+			&lt;<span class="keyword">/Statement</span>&gt;
+			&lt;<span class="keyword">Operator</span>&gt;)&lt;<span class="keyword">/Operator</span>&gt;
+		&lt;<span class="keyword">/Statement</span>&gt;
+	&lt;<span class="keyword">/Statement</span>&gt;
+	&lt;<span class="keyword">Format</span>&gt; &lt;<span class="keyword">/Format</span>&gt;
+	&lt;<span class="keyword">Operator</span>&gt;;&lt;<span class="keyword">/Operator</span>&gt;
+	&lt;<span class="keyword">NewLine</span>/&gt;
+&lt;<span class="keyword">/Run</span>&gt;</pre>
+			</li>
+			<li>
+			<p><a name="DuplicateTranslator"></a><strong>Create a copy of the translator</strong></p>
+			<p>We recommend creating your own copy of the macro library for your 
+			customizations. This way it is clear whether you are using the DELMIA 
+			standard translator or your custom version. Also, as soon as you save 
+			a change to a macro library, it is updated in the database so other 
+			users in your enterprise will get your changes.</p>
+			<ol>
+				<li>
+				<p>Search for the translator in the database. You can use the search 
+				string &quot;VSTA: *&quot; to find all VSTA macro libraries.</p>
+				</li>
+				<li>
+				<p>Use the PLM Access-&gt;Duplicate command to create a copy of &quot;DELMIA 
+				Fanuc Translator R2016x&quot; and rename it &quot;My Fanuc Translator R2016x&quot;.</p>
+				</li>
+				<li>
+				<p>Open your copy of the macro library for editing using the Tools-&gt;Macros 
+				dialog.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><a name="WriteInstructionTranslator"></a><strong>Write the class 
+			to convert between DELMIA Instruction(s) and AST</strong></p>
+			<p>We recommend putting all your modifications into new classes. This 
+			way it is clear what code has been customized and what is part of the 
+			DELMIA standard translator. This will also make it simple to move your 
+			customization to a new version of the DELMIA translator.</p>
+			<p>The translators have been written with Object Oriented design. With 
+			this approach, your class can inherit from an existing class in the 
+			DELMIA translator. You will only need to write code for your specific 
+			customization. This will make your development faster because you can 
+			make use of existing class methods to do much of the work. This will 
+			also mean that if the standard translator is improved, your customized 
+			class can also benefit.</p>
+			<p>In this case we will create a new class MyIO_SYNC which inherits 
+			from FanucCallInstruction.</p>
+			<p>For details on the code used to translate the IO_SYNC instruction, 
+			please see <a href="CAAScdOlpUcInstruction.htm">Translating an Instruction</a>.</p>
+			</li>
+			<li>
+			<p><a name="IntegrateInstructionTranslator"></a><strong>Modify the translator 
+			to use your class</strong></p>
+			<p>All translators have a class which identifies the instruction and 
+			determines which class to use to translate it. In FANUC translator this 
+			class is FanucInstructionList. By creating your own class, MyInstructionList, 
+			which inherits from FanucInstructionList, you can identify when an IO_SYNC 
+			instruction is being translated and create an object to translate it.
+			</p>
+			<p>You also need to modify the TranslatorFactory class to return MyInstructionList 
+			instead of FanucInstructionList. This is the <strong>only </strong>original 
+			translator file that you will ever need to modify.</p>
+			<p>For details on modifying the translator to use your class, please 
+			see <a href="CAAScdOlpUcIntegrate.htm">Integrating Your Customizations</a>.</p>
+			</li>
+			<li>
+			<p><a name="UpdateOptions"></a><strong>Update Options to use your translator.</strong></p>
+			<p>Each robot controller type is associated with a translator macro 
+			library. You can update this association to use your customized macro 
+			library &quot;My Fanuc Translator R2016x&quot;. </p>
+			<p>Depending on the robot manufacturer, there may be more than one controller 
+			type listed. In most cases, you will want to update the translator for 
+			all the controller types associated with your robot manufacturer. In 
+			the case of FANUC there are four entries to update.</p>
+			<table>
+				<caption><a name="Fig3"></a>Fig.3: OLP Tools-&gt;Options dialog.</caption>
+				<tr>
+					<td>
+					<img src="CAAScdOlpUseCaseTranslator_Settings.png" alt="Image"/></td>
+				</tr>
+			</table>
+			</li>
+		</ol>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

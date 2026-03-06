@@ -1,0 +1,152 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Working with Objects</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Working with Objects</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 Automation macros to take 
+		advantage of the Open <strong>3D</strong>EXPERIENCE platform PLM infrastructure. It focuses on generic methods 
+		inherited by most objects from the <strong>AnyObject</strong> object or 
+		the <strong>Collection</strong> object:</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Parent"></a>The Parent Property</h2>
+<p>As in V5, <strong>3D</strong>EXPERIENCE platform object are aggregated by a parent object, itself being aggregated 
+by its parent, this creating a tree whose root is the <strong>Application</strong> 
+object. The parent of an object can be obtained using its <code>Parent</code> property. 
+Depending on the object, the behavior of the <code>Parent</code> property may have 
+changed in <strong>3D</strong>EXPERIENCE platform. As a general rule:</p>
+<ul>
+	<li>The behavior of non persistent objects (windows, viewers, etc.) does not 
+	changed.</li>
+	<li>Objects that persist inside <strong>3D</strong>EXPERIENCE platform representation references like part or drawing 
+	data keep the same behavior, except when reaching the layer of PLM objects. 
+	For example:
+	<table>
+		<tbody>
+		<tr>
+			<th>V5 Automation</th>
+			<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+		</tr>
+		<tr>
+			<td>
+			<pre><span class="comment">' Accessing the parent of a Part object</span>
+<span class="keyword">Set </span>oObject = oPart.Parent
+
+<span class="comment">' This parent is a PartDocument object</span>
+msgbox typeName (oObject)</pre>
+			</td>
+			<td>
+			<pre><span class="comment">' Accessing the parent of a Part object</span>
+<span class="keyword">Set </span>oObject = oPart.Parent
+
+<span class="comment">' This parent is a VPMRepReference object</span>
+msgbox typeName (oObject)</pre>
+			</td>
+		</tr>
+	</tbody>
+	</table>
+	</li>
+	<li>PLM entities, meaning objects that can be queried through PLM queries in 
+	<strong>3D</strong>EXPERIENCE platform, like the V5 <strong>Product</strong> object, are replaced, even if the concept 
+	is kept. The way they are aggregated, and so the behavior of the <code>Parent</code> 
+	property, may have changed. Consult the <em>Details of modifications on V5 modelers</em> 
+	part of this <em>Adoption</em> section for more information.</li>
+</ul>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Name"></a>The Name property</h2>
+<p>The <code>Name</code> property allows you to identify objects, for example inside 
+collections. Here again only the behavior of V5 objects that become <strong>3D</strong>EXPERIENCE platform <strong>PLMEntity</strong> 
+objects is changed, mainly because <strong>PLMEntity</strong> objects are identified 
+by a customizable set of PLM attribute values, called the <em>PLM Identifier Set</em>, 
+and not anymore by a simple string. The most common usages of the <code>Name</code> 
+property are described below.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Adding"></a>Adding Attributes to an Object</h3>
+<p>Very often the name of a V5 document, for example, is made up of a concatenation 
+of attributes, allowing you to classify and retrieve objects:</p>
+<pre><code>&lt;part number&gt;_&lt;responsible&gt;.CATPart</code></pre>
+<p>In <strong>3D</strong>EXPERIENCE platform those attributes are typical PLM attributes, defined on the PLM representation 
+reference object.</p>
+<p>One specific type of attribute implemented this way is the extension of the document: 
+retrieving all <strong>Product</strong> documents in a folder in V5 is performed 
+through a query on product objects in <strong>3D</strong>EXPERIENCE platform.</p>
+<p><strong>Note</strong>: the <code>Path</code> property of the V5 <strong>Document</strong> 
+object is often used the same way. </p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Diaplsy"></a>Displaying a User Understandable Name</h3>
+<p>For example, in a macro that performs checks on V5 documents, when a problem 
+is discovered, the message must allow the end user to understand to which object 
+it applies. In V5, the name of the document was the obvious information to provide. 
+In <strong>3D</strong>EXPERIENCE platform this information could be part of, or the whole PLM Identifier Set and maybe 
+specific attributes. In any case this heavily depends on the customization applied 
+to PLM metadata, that itself aims to implement corporate processes.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="GetItem"></a>The GetItem Function</h2>
+<p>The <code>GetItem</code> function allows you to retrieve an aggregated object 
+from its name particularly when the aggregation is dynamic. For example, a
+<strong>Part</strong> object does not aggregate a <strong>Layout2DRoot</strong> 
+object if the <em>2D Layout for 3D Design</em> application was not used. Otherwise, 
+the <strong>Layout2DRoot</strong> object is retrieved this way:</p>
+<table>
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Accessing the 2D Layout root</span>
+<a name="ActiveSheet0"><span class="keyword">Dim</span> o2DRoot <span class="keyword">As</span> Layout2DRoot
+<span class="keyword">Set</span> o2DRoot = CATIA.ActiveDocument.Part.GetItem(&quot;CATLayout2DRoot&quot;</a>)</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>As for the <code>Parent</code> property, this may have changed depending on the 
+objects with which it was used when PLM objects are involved. Consult the <em>Details 
+of modifications on V5 modelers</em> part of this <em>Adoption</em> section for 
+more information.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpConveyorTrackingProfile (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpConveyorTrackingProfile"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpConveyorTrackingProfile<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpConveyorTrackingProfile_47963','OlpConveyorTrackingProfile','0');</script>
+<section id='maindesc'>
+<b><i> A conveyor tracking profile used for translating a robot program.</i></b><br>
+<BR>
+ <P><font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ Download or Upload command</font>.</P>
+
+ <P>This object contains the parameters for controlling the conveyor tracking.
+ Tracking is turned on and off with a property of the <script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotionTarget','','DELMIAOlpRobotMotionTarget') </script>.</P> 
+ <P>To get the profile from the motion you need to use the temporary interface OlpObjectAccess.
+ The profile is the 1st object (index 0) in the returned array.</P>
+      Dim move As OlpRobotMotion<BR>
+      Dim target As OlpRobotMotionTarget = move.GetTarget(motiongroup)<BR>
+      Dim TargetTemp As OlpObjectAccess = Target<BR>
+      Dim returnarray() As Object = TargetTemp.GetProperty("ConveyorTrackingProfile", Nothing)<BR>
+      Dim profile as OlpConveyorTrackingProfile = returnarray(0)<BR>
+
+ <P>The behavior of this object depends on where it was retrieved from.
+ If the object was retrieved from an 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotionTarget','','DELMIAOlpRobotMotionTarget') </script> then  this object is used to configure the properties of that motion.  
+ The parameters specified with the iMatch input equal to TRUE will be used 
+ to find an existing profile to reuse for this motion.  If no matching 
+ profile is found, a new one will be created.  If the object was retrieved 
+ from 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpController','GetApplicativeProfileList','DELMIAOlpController.GetApplicativeProfileList') </script> then any modifications to  this object will change an existing or new profile's values directly.</P>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Conveyor"><b>Conveyor</b></a>
+</td><td  id='tdright'>  The conveyor to track.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#InboundOffsetConstant"><b>InboundOffsetConstant</b></a>
+</td><td  id='tdright'>  The constant that can be used in expressions in the task.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Mode"><b>Mode</b></a>
+</td><td  id='tdright'>  The tracking mode.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RailDevice"><b>RailDevice</b></a>
+</td><td  id='tdright'>  Get/Set the rail device that is tracking the conveyor.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RailDirection"><b>RailDirection</b></a>
+</td><td  id='tdright'>  Get the rail direction relative to the conveyor for rail tracking scenarios.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetInboundOffset"><b>GetInboundOffset</b></a>
+</td><td  id='tdright'>  Get the inbound conveyor position.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetOutboundOffset"><b>GetOutboundOffset</b></a>
+</td><td  id='tdright'>  Get the outbound conveyor position.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetRailJointNumber"><b>GetRailJointNumber</b></a>
+</td><td  id='tdright'>  Get the joint number of the rail used to track the conveyor.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetInboundOffset"><b>SetInboundOffset</b></a>
+</td><td  id='tdright'>  Set the inbound conveyor position.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetOutboundOffset"><b>SetOutboundOffset</b></a>
+</td><td  id='tdright'>  Set the outbound conveyor position.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetRailJointNumber"><b>SetRailJointNumber</b></a>
+</td><td  id='tdright'>  Set the joint number of the rail used to track the conveyor.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Conveyor"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Conveyor</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpController','OlpController')</script> </span></dt>
+  <dd class='ddmethod'>
+ The conveyor to track.<BR>
+ <P>The conveyor is always matched.  To set the conveyor, retrieve it from
+ the 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpResourceControlDevice','','DELMIAOlpResourceControlDevice') </script> temporary interface OlpObjectAccess.</P> Dim ControlDev As OlpResourceControlDevice = TranslatorHelper.ResourceControlDevice<BR>
+ Dim ControlDevTmp as OlpObjectAccess = ControlDev<BR>
+ Dim ID As Object() = {"CNV1","Conveyor"} <BR>
+ Dim returnarray() As Object = ControlDev.GetProperty("DeviceByID", params)(0)<BR>
+ Dim conveyor As OlpController = returnarray(0)<BR>
+ profile.Conveyor = conveyor<BR>
+</dd>
+<a id="InboundOffsetConstant"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>InboundOffsetConstant</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpVariable','OlpVariable')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ The constant that can be used in expressions in the task.<BR>
+</dd>
+<a id="Mode"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Mode</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpConveyorTrackingMode','DELOlpConveyorTrackingMode')</script> </span></dt>
+  <dd class='ddmethod'>
+ The tracking mode.<BR>
+ <P>The mode is always matched.  If not set, rail tracking will be used if the robot is on a rail.
+ Otherwise, line tracking will be used.</P>
+</dd>
+<a id="RailDevice"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>RailDevice</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpController','OlpController')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the rail device that is tracking the conveyor.<BR>
+ This is NULL if not rail tracking.
+</dd>
+<a id="RailDirection"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>RailDirection</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('short','short')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Get the rail direction relative to the conveyor for rail tracking scenarios.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>    1 if same as conveyor -1 if opposite of conveyor
+
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetInboundOffset"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetInboundOffset</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the inbound conveyor position.<BR>
+ This is the conveyor position that the robot will wait for 
+ before starting the next move.  A conveyor wait instruction will reference
+ this value as a variable.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The conveyor position (in meters) relative to the conveyor zero position (referential).
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetOutboundOffset"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetOutboundOffset</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the outbound conveyor position.<BR>
+ This is the conveyor position that will cause the robot to stop tracking
+ because the part has moved too far down the conveyor.  (not currently used in simulation)
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The conveyor position (in meters) relative to the conveyor zero position (referential).
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetRailJointNumber"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetRailJointNumber</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('short','short')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the joint number of the rail used to track the conveyor.<BR>
+ This is the joint number of the rail device, not the joint number
+ in the motion group.  For example if a rail has 2 command joints and is 
+ an aux device of the robot in the same motion group as the robot,
+ 1 or 2 are valid values of the joint number (NOT 7 or 8).
+ This value is only valid if mode is set to rail tracking.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The joint number.
+
+ </ dd>
+</dl>
+</dd>
+<a id="SetInboundOffset"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetInboundOffset</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iOffset</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the inbound conveyor position.<BR>
+ This is the conveyor position that the robot will wait for 
+ before starting the next move.  A conveyor wait instruction will reference
+ this value as a variable.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iOffset</span></dt>
+   <dd> The conveyor position (in meters) relative to the conveyor zero position (referential).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetOutboundOffset"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetOutboundOffset</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iOffset</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the outbound conveyor position.<BR>
+ This is the conveyor position that will cause the robot to stop tracking
+ because the part has moved too far down the conveyor. (not currently used in simulation)
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iOffset</span></dt>
+   <dd> The conveyor position (in meters) relative to the conveyor zero position (referential).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetRailJointNumber"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetRailJointNumber</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iJointNumber</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the joint number of the rail used to track the conveyor.<BR>
+ This is the joint number of the rail device, not the joint number
+ in the motion group.  For example if a rail has 2 command joints and is 
+ an aux device of the robot in the same motion group as the robot,
+ 1 or 2 are valid values of the joint number (NOT 7 or 8).
+ This value is only valid if mode is set to rail tracking.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iJointNumber</span></dt>
+   <dd> The value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

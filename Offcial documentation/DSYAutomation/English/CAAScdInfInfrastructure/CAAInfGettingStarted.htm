@@ -1,0 +1,451 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Getting Started with VBA</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1><a name="Top"></a>Getting Started with VBA</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header">This task shows you how to get started 
+						with Automation using Visual Basic for Applications. 
+						It will show you how to use a scripting 
+						language to access CAA Automation objects to capture your 
+						own know-how and to increase your productivity. You can 
+						customize applications to automate repetitive tasks, and 
+						to make it fit your own process.</p>
+						<p class="header">You will discover here how to create a 
+						Visual Basic project, search for PLM data in the database, 
+						open the found PLM data, navigate this PLM data, and open 
+						a representation reference, namely a part.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span><ul>
+							<li>You should first log in to the <strong>3D</strong>EXPERIENCE 
+								platform.</li>
+							<li>You must have the role <kbd>Leader</kbd> to 
+							create macros.</li>
+							<li>This task assumes that you have not created any 
+							macro library. Otherwise, skip steps 1 to 8. </li>
+							<li>You should have PLM data stored in the database. 
+							You should know how to retrieve this PLM data using 
+							a query. This data should feature a specification 
+							tree like the following, with a root product 
+							aggregating 3D parts.<br />
+							<img alt="Specification Tree to Scan" src="CAAScdInfGettingStartedTree.png" width="232" height="182"/></li>
+							<li>The apps that make up the the <strong>3D</strong>EXPERIENCE 
+								platform share the same object model 
+							[<a href="#References">1</a>] which can be accessed, 
+							as well as their own objects, by scripts written in 
+							VB Script or Visual Basic for Applications with Windows. 
+							Refer to <em>About Automation Languages, Debug, and 
+							Compatibility</em> 
+							[<a href="#References">2</a>] to learn about the languages 
+							supported.</li>
+							<li>You can then find information about the scripting 
+							languages and environments, in <em>Running and Editing 
+							Macros</em>. This is located in the product documentation, 
+							Social and Collaborative Apps, Collaborative Apps Common Services, Native Apps Common Services, 
+								Other Services.
+						</li>
+						</ul>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Also in this Page...</td>
+					</tr>
+					<tr>
+						<td><a href="#hj-more">More About Getting Started 
+						with Automation</a></td>
+					</tr>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAInfTocApplication.htm">Foundation Object 
+						Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAInfHints.htm">About Microsoft Automation Languages, Debug, and Compatibility</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table>
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p class="task">Create a macro library.<br />
+			Hit <kbd>Alt</kbd> + <kbd>F8.</kbd><br />
+			The <kbd>Macros</kbd> dialog opens.</p>
+			</li>
+			<li>
+			<p class="task">Click <kbd>Macro libraries</kbd>.<br />
+			The <kbd>Macro libraries</kbd> dialog opens.</p>
+			</li>
+			<li>
+			<p class="task">In the <kbd>Library type</kbd> list, select
+			<img alt="PLM VBA Projects Icon" src="I_VBAProject.png" width="17" height="17"/> <kbd>PLM 
+			VBA projects</kbd>.</p>
+			</li>
+			<li>
+			<p class="task">Click <kbd>Create new library...</kbd><br />
+			The <kbd>Macro 
+			library VBA</kbd> 
+			dialog opens.</p>
+			</li>
+			<li>
+			<p class="task">In the <kbd>Title</kbd> box, type the title you want 
+			to assign to the macro library, or keep the default name.</p>
+			</li>
+			<li>
+			<p class="task">Click <kbd>OK</kbd>.</p>
+			</li>
+			<li>
+			<p class="task">Click <kbd>Close</kbd> in the <kbd>Macro libraries</kbd> dialog.</p>
+			</li>
+			<li>
+			<p class="task">Click <kbd>Create</kbd> in the <kbd>Macros</kbd> dialog.<br />
+			The <kbd>Create a new macro</kbd> dialog box opens.</p>
+			</li>
+			<li>
+			<p class="task">Click <kbd>OK</kbd>.<br />
+			The <kbd>Create a new macro</kbd> dialog box closes.</p>
+			</li>
+			<li>
+				<p class="task">Click <kbd>Edit</kbd>.<br />
+			The <kbd>Microsoft Visual Basic for Applications</kbd> window opens. 
+				The current project is opened, the new module is current, and 
+				the code window for this module is opened.</p>
+			</li>
+			<li>
+			<p class="task">In the right pane, create and run a Search Sub.<br />
+			The search enables you to find PLM data in the database according to 
+			your criteria.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<pre class="code">Sub Search()
+
+    <span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> SearchService
+    <span class="keyword">Set</span> oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    ...</pre>
+					<p>Return a <strong>SearchService</strong> object from the <strong>Application</strong> 
+					object using the <strong>GetSessionService</strong> method.</p>
+					<pre class="code">     ...
+    <span class="keyword">Dim</span> oDatabaseSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDatabaseSearch = oSearchService.DatabaseSearch 
+    ...</pre>
+					<p>Return the <strong>DatabaseSearch</strong> object 
+					aggregated to the <strong>
+					SearchService</strong> object using the <strong>DatabaseSearch</strong> property.</p>
+					<pre class="code">     ...
+&nbsp;&nbsp;  oDatabaseSearch.BaseType = &quot;VPMReference&quot;
+    oDatabaseSearch.AddEasyCriteria &quot;V_Name&quot;, &quot;Ship*&quot;
+    ...</pre>
+					<p>Create the search parameters:</p>
+					<ul>
+						<li>Using the <strong>BaseType</strong> property of the 
+							<strong>DatabaseSearch</strong> 
+						object, set the type of the products you want to 
+						retrieve from the database, such as VPMReference.</li>
+						<li>Using the <strong>AddEasyCriteria</strong> method, set a 
+						couple of attribute/value to search for against the  
+						product type in the database. Use a value that match your PLM 
+						data. You can use as many calls as you need to the <strong>AddEasyCriteria</strong> 
+						method to refine the search.</li>
+					</ul>
+					<table class="Remark" id="table1">
+						<tbody>
+						<tr>
+							<td class="Remark"><span class="run-in">Important:</span> 
+							The value can make use of the '*' wild character.
+							</td>
+						</tr>
+					</tbody>
+					</table>
+					<pre class="code">     ...
+    oSearchService.Search
+
+End Sub</pre>
+					<p>Launch the search thanks to the <strong>Search</strong> method of the
+					<strong>SearchService</strong> object.</p>
+					<p>Click the macro name, and click
+					<img alt="VB Run" src="../CAAScdImages/I_VBRun.gif" width="20" height="20"/> 
+					to run the macro. If data matching the search parameters is found 
+					in the database, a window showing the found data opens.</p>
+	<p>
+		<img onmouseover="this.style.cursor='pointer'" onclick="showImg('CAAScdInfQueryResult.png', 707, 556)" title="PLM Query Results Window.
+Click to enlarge" alt="PLM Query Results Window" src="CAAScdInfQueryResultSmall.png" width="400" height="315"/></p>
+				</td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Open the found PLM data.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<pre class="code">    oSearchService.Search
+    <strong>OpenData oDatabaseSearch</strong>
+
+End Sub
+
+Sub OpenData(oDBSearch)
+
+    <span class="keyword">Dim</span> cPLMEntities <span class="keyword">As</span> PLMEntities
+    <span class="keyword">Set</span> cPLMEntities = oDBSearch.Results
+    ...</pre>
+					<p>To chain the search with the open, insert a call the OpenData 
+					Sub at the end of the Search Sub.</p>
+					<p>Return a <strong>PLMEntities</strong> collection object containing 
+					the found data from the <strong>DatabaseSearch</strong> object passed as argument 
+					of the OpenData Sub, using the <strong>Results</strong> property.</p>
+					<pre class="code">    ...
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set</span> oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    ...</pre>
+					<p>Return a <strong>PLMOpenService</strong> object from the <strong>Application</strong> 
+					object thanks to the <strong>GetSessionService</strong> method.</p>
+					<pre class="code">    ...
+    <span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor
+    <span class="keyword">Dim</span> oPLMEntity <span class="keyword">As</span> PLMEntity
+    <span class="keyword">For Each</span> oPLMEntity <span class="keyword">In</span> cPLMEntities
+        oPLMOpenService.PLMOpen oPLMEntity, oEditor
+    <span class="keyword">Next</span>
+
+End Sub</pre>
+					<p>Loop through the <strong>PLMEntities</strong> collection object to 
+					open each of its items using the <strong>PLMOpen</strong> method of the
+					<strong>PLMOpenService</strong> object that opens each <strong>PLMEntity</strong> 
+					object in the collection and associates it with an <strong>Editor</strong> 
+					object.</p>
+					<p>Click the Search Sub name, and click
+					<img alt="VB Run" src="../CAAScdImages/I_VBRun.gif" width="20" height="20"/> 
+					to run the Search Sub chained with the OpenData Sub. In addition 
+					to the Search window, a window for each item opens.</p>
+	<p>
+		<img onmouseover="this.style.cursor='pointer'" onclick="showImg('CAAScdInfGettingStartedProduct.png', 707, 556)" title="Product to Scan Window.
+Click to enlarge" alt="Product to Scan" src="CAAScdInfGettingStartedProductSmall.png" width="400" height="315"/></p>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p class="task">Navigate the opened PLM data.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<pre class="code">     ...
+    <span class="keyword">For Each</span> oPLMEntity <span class="keyword">In</span> cPLMEntities
+        oPLMOpenService.PLMOpen oPLMEntity, oEditor
+        <strong>Navigate oEditor</strong> 
+    <span class="keyword">Next</span>
+
+End Sub
+
+Sub Navigate(oEditor)
+
+    <span class="keyword">Dim</span> oActiveObject <span class="keyword">As</span> VPMRootOccurrence
+    <span class="keyword">Set</span> oActiveObject = oEditor.ActiveObject
+    ...</pre>
+					<p>To chain the OpenData Sub with the Navigate Sub, insert a call 
+					to the Navigate Sub at the end of the OpenData Sub.</p>
+					<p>Then, return the active object, which is also the root object, 
+					as a <strong>VPMReference</strong> object, from the <strong>Editor</strong> object 
+					passed as argument of the Navigate Sub.</p>
+					<pre class="code">     ...
+    <span class="keyword">Dim</span> cVPMOccurrences <span class="keyword">As</span> VPMOccurrences
+    <span class="keyword">Set</span> cVPMOccurrences = oActiveObject.Occurrences
+    <span class="keyword">Dim</span> oVPMOccurrence  <span class="keyword">As</span> VPMOccurrence
+    <span class="keyword">Set</span> oVPMOccurrence  = cVPMOccurrences.Item(2)
+    ...</pre>
+					<p>Return the <strong>VPMOccurrences</strong> collection object from the 
+					active <strong>VPMRootOccurrence</strong> object using its <strong>Occurrences</strong> 
+					property. Then return, as a <strong>oVPMOccurrence</strong> object, the second item of 
+					the <strong>VPMOccurrences</strong> collection using its <strong>Item</strong> method.</p>
+					<pre class="code">    ...
+    <span class="keyword">Dim</span> oVPMInstance <span class="keyword">As</span> VPMInstance
+    <span class="keyword">Set</span> oVPMInstance = oVPMOccurrence.InstanceOccurrenceOf
+    ...</pre>
+					<p>Return, as a <strong>VPMInstance</strong> object from  
+					the <strong>VPMOccurrence</strong> object using its <strong>InstanceOccurrenceOf</strong> property.</p>
+					<pre class="code">    ...
+    <span class="keyword">Dim</span> oVPMReference <span class="keyword">As</span> VPMReference
+    <span class="keyword">Set</span> oVPMReference = oVPMInstance.ReferenceInstanceOf
+    ...</pre>
+					<p>Return the <strong>VPMReference</strong> object the <strong>VPMInstance</strong> 
+					object is an instance of, using its <strong>ReferenceInstanceOf</strong> 
+					property.</p>
+					<pre class="code">    ...
+    <span class="keyword">Dim</span> oVPMRepInstance <span class="keyword">As</span> VPMRepInstance
+    <span class="keyword">Set</span> oVPMRepInstance = oVPMReference.RepInstances.Item(1)
+    ...</pre>
+					<p>Return the <strong>VPMRepInstances</strong> collection object of the
+					<strong>VPMReference</strong> object using its <strong>RepInstances</strong> property, 
+					and using the collection <strong>Item</strong> method, return the first
+					<strong>VPMRepInstance</strong> object.</p>
+					<pre class="code">    ...
+    <span class="keyword">Dim</span> oVPMRepReference <span class="keyword">As</span> VPMRepReference
+    <span class="keyword">Set</span> oVPMRepReference = oVPMRepInstance.ReferenceInstanceOf
+
+End Sub</pre>
+					<p>Return the <strong>VPMRepReference</strong> object of the <strong>VPMRepInstance</strong> 
+					object using its <strong>ReferenceInstanceOf</strong> property.</p>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p class="task">Open the <strong>VPMRepReference</strong> object, that is the 
+			Part root object.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<pre class="code">    ...
+    <span class="keyword">Dim</span> oVPMRepReference <span class="keyword">As</span> VPMRepReference
+    <span class="keyword">Set</span> oVPMRepReference = oVPMRepInstance.ReferenceInstanceOf
+
+    <strong>OpenPart oVPMRepReference</strong>
+
+End Sub
+
+Sub OpenPart(oVPMRepReference)
+
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set</span> oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    ...</pre>
+					<p>To chain the Navigate Sub with the OpenPart Sub, insert a 
+					call to the OpenPart Sub at the end of the Navigate Sub.</p>
+					<p>Then, return again a <strong>PLMOpenService</strong> from the <strong>Application</strong> 
+					object using the <strong>GetSessionService</strong> method.</p>
+					<pre class="code">    ...
+    <span class="keyword">Dim</span> oPartEditor <span class="keyword">As</span> Editor
+    oPLMOpenService.PLMOpen oVPMRepReference, oPartEditor
+    ...</pre>
+					<p>Open the <strong>VPMRepReference</strong> object using the <strong>PLMOpen</strong> 
+					method of the <strong>PLMOpenService</strong> object, and retrieve the
+					<strong>Editor</strong> object.</p>
+					<pre class="code">    ...
+    <span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+    <span class="keyword">Set</span> oPart = oPartEditor.ActiveObject
+    ...</pre>
+					<p>Return the active <strong>Part</strong> object using the <strong>ActiveObject</strong> 
+					method of the <strong>Editor</strong> object. You can know navigate the 
+					part. For example:</p>
+					<pre class="code">    ...
+    <span class="keyword">Dim</span> oBody <span class="keyword">As</span> Body
+    <span class="keyword">Set</span> oBody = oPart.Bodies.Item(1)
+
+    <span class="keyword">Dim</span> oSketch <span class="keyword">As</span> Sketch
+    <span class="keyword">Set</span> oSketch = oBody.Sketches.Item(1)
+    ...</pre>
+					<p>Return the first <strong>Body</strong> object of the active <strong>Part</strong> 
+					object, and then retrieve the first <strong>Sketch</strong> object of 
+					this <strong>Body</strong> object.</p>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+		</ol>
+		</td>
+	</tr>
+	<tr>
+		<td><a name="hj-more"></a>
+		<h2>More About Getting Started with Automation</h2>
+		<p>The Subs shown here are chained together. You can run the first Sub Search 
+		standalone by commenting out the call to the next Sub Open using the ' character.</p>
+		<pre class="code">    oSearch.Search
+    <span class="comment">'Open oSearch</span>
+
+End Sub</pre>
+		<p>In the same way, you can run the first two Subs standalone by commenting 
+		out the call to the third Sub Navigate, and so on. </p>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="InShort"></a>In Short</h2>
+<p>This use case has shown how to create a VBA project, search for PLM data in the 
+database, open the found PLM data, navigate the PLM data, and open a shape representation 
+(part) from a PLM representation reference.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[1]</td>
+		<td><a href="CAAInfTocApplication.htm">Foundation Object Model Map</a></td>
+	</tr>
+	<tr>
+		<td>[2]</td>
+		<td><a href="CAAInfHints.htm">About Microsoft Automation Languages, Debug, and Compatibility</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

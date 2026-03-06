@@ -1,0 +1,418 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Space Analysis Changes</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Space Analysis Changes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 automation macros to take 
+		advantage of the Open <strong>3D</strong>EXPERIENCE platform PLM2.0 infrastructure. If focuses on how macros 
+		using V5 measures and sections should be modified to accommodate the new 
+		<strong>3D</strong>EXPERIENCE platform object model.</p>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="10"></a>Working with Sections</h2>
+<p>Part of the functionality accessible by the V5 Section object is available in 
+the current release. <strong>Section</strong> objects were retrieved in V5: </p>
+<ul>
+	<li>either through the <strong>SPAWorkbench</strong> object that aggregated 
+	a collection of all section objects of the active document</li>
+	<li>or through the <strong>GetItem</strong> method applied to the root
+	<strong>Product</strong> object of a Product document, that allowed to retrieve 
+	the same collection.</li>
+</ul>
+<p>In <strong>3D</strong>EXPERIENCE platform, the <strong>SectionService</strong> objects behaves like a collection 
+and allows to retrieve any <strong>Section</strong> object visible in the editor 
+on which the <strong>SectionService</strong> object has been requested.</p>
+<table class="border">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre>
+<span class="comment">' Retrieve the Sections collection from the active document</span>
+  <span class="keyword">Dim</span> cSections <span class="keyword">As</span> Sections
+  <span class="keyword">Set</span> cSections = _ 
+    CATIA.ActiveDocument.Product.GetTechnologicalObject(&quot;Sections&quot;)
+    
+<span class="comment">' Retrieve the first Section object</span>
+  <span class="keyword">Dim</span> oSection <span class="keyword">As</span> Section
+  <span class="keyword">Set</span> oSection = cSections.Item(1)</pre>
+		</td>
+		<td>
+		<pre>
+<span class="comment">' Retrieve the SectionService from the active editor</span>
+  <span class="keyword">Dim </span>oSectionService <span class="keyword">As</span> SectionService
+  <span class="keyword">Set </span>oSectionService = _
+    CATIA.ActiveEditor.GetService(&quot;SectionService&quot;)
+    
+<span class="comment">' Retrieve the first Section object</span>
+  <span class="keyword">Dim</span> oSection <span class="keyword">As</span> Section
+  <span class="keyword">Set</span> oSection = oSectionService.Item(1)</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>On the Section object itself, the <strong>GetPosition</strong> and the
+<strong>SetPosition</strong> methods remain the same, the <strong>Export</strong> 
+method now creates curve in a 3DShape representation identified by its <strong>Part</strong> 
+object, instead of a <strong>PartDocument</strong> object in V5, and the <strong>
+CutMode</strong> property has been renamed into a <strong>SceneRender</strong> property.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>Working with Measures</h2>
+<p>The <strong>Measurable</strong> object allowed to analyze dimensions related 
+to an objects or between two objects. A <strong>Measurable</strong> object was obtained 
+from an object through <strong>GetMeasurable</strong> method of the <strong>SPAWorkbench</strong> 
+object. Depending on the measured object, methods of the <strong>Measurable</strong> 
+object worked or not. For example the <strong>GetDirection</strong> method worked 
+when the underlying object could be seen as a line and failed otherwise</p>
+<p>In <strong>3D</strong>EXPERIENCE platform, a Measurable object from a predefined type can be retrieved through the
+<strong>GetMeasurable</strong> method of the <strong>MeasurableService</strong> 
+object. For example a <strong>MeasurableLine</strong> object has to be requested 
+on an object in order to use the <strong>GetDirection</strong> method. If the underlying 
+object cannot be seen as a line, the <strong>GetMeasurable</strong> method will 
+fail.</p>
+<table class="border">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Retrieve the SPA workbench</span>
+  <span class="keyword">Dim</span> oSPAWorkbench <span class="keyword">As</span> SPAWorkbench
+  <span class="keyword">Set</span> oSPAWorkbench = _
+    CATIA.ActiveDocument.GetWorkbench(&quot;SPAWorkbench&quot;)
+
+' <span class="comment">Get a Reference object from a Line object</span>
+  <span class="keyword">Dim</span> oReferenceOnLine <span class="keyword">As</span> Reference
+  <span class="keyword">Set</span> oReferenceOnLine = part1.CreateReferenceFromObject(oMyLine)
+
+' <span class="comment">Get a Measurable object on this line through the reference</span> 
+  <span class="keyword">Dim</span> oMeasurable <span class="keyword">As</span> Measurable
+  <span class="keyword">Set</span> oMeasurable = oSPAWorkbench.GetMeasurable(oReferenceOnLine)
+  
+<span class="comment">' Get the direction of the line as an array of coordinates</span>
+  <span class="keyword">Dim</span> aDirection (2)
+  <span class="keyword">Set</span> oMeasurable.GetDirection aDirection</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Retrieve the MeasurableService from the active editor</span>
+  <span class="keyword">Dim</span> oMeasurableService <span class="keyword">As</span> MeasurableService
+  <span class="keyword">Set</span> oMeasurableService = _
+     CATIA.ActiveEditor.GetService(&quot;MeasurableService&quot;)
+
+
+<span class="comment">' Get a MeasurableLine object from a Line object</span>
+  <span class="keyword">Dim</span> oMeasurableLine <span class="keyword">As</span> MeasurableLine
+  <span class="keyword">Set</span> oMeasurableLine = _
+    oMeasurableService.GetMeasurable(oMyLine, CAAMeasurableLine)
+  
+<span class="comment">
+
+' Get the direction of the line as an array of coordinates</span>
+  <span class="keyword">Dim</span> aDirection (2)
+  <span class="keyword">Set</span> oMeasurableLine.GetDirection aDirection</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>The <strong>GeometryName</strong> property allowed, by returning a <strong>CATMeasurableName</strong> 
+enumerated value, to retrieved how to the underlying object was seen by the Measurable 
+object: <strong>CatMeasurableLine</strong> for lines, <strong>CatMeasurablePlane</strong> 
+for planes and so on.</p>
+<p>In <strong>3D</strong>EXPERIENCE platform equivalent values have been provided as arguments of the <strong>GetMeasurable</strong> 
+method: <strong>CAAMeasurableLine</strong> for lines, <strong>CAAMeasurablePlane</strong> 
+for planes and so on. The measure type is so now requested by the programmer and 
+not anymore deduced by the API, the property has so been removed. This has three 
+consequences:</p>
+<ol>
+	<li>There is no equivalent to the <strong>CatMeasurableUnknown</strong> V5 value 
+	that was returned when underlying object was not measurable. If an object does 
+	not support the requested measure, the <strong>GetMeasurable</strong> method 
+	fails</li>
+	<li><strong>GetGeometryName</strong> cannot be used anymore in <strong>3D</strong>EXPERIENCE platform to determine 
+	how the object will be seen by the Measurable object. This is however still 
+	possible by requesting alternatively all possible measures on the object and 
+	processing failures</li>
+	<li>Methods available in V5 on the Measurable object have been dispatched in 
+	<strong>3D</strong>EXPERIENCE platform in the different types of measurable objects. The names have sometimes been 
+	slightly changed to homogeneity purpose.</li>
+</ol>
+<p>The following array give a correspondence between the V5 methods of the Measurable 
+object and the available <strong>3D</strong>EXPERIENCE platform methods.</p>
+<table class="border">
+	<tbody>
+	<tr>
+		<th>V5 Objects</th>
+		<th>V5 Methods or Properties</th>
+		<th>Applied to GeometryName</th>
+		<th><strong>3D</strong>EXPERIENCE platform Methods</th>
+		<th><strong>3D</strong>EXPERIENCE platform Objects</th>
+	</tr>
+	<tr>
+		<td rowspan="31">CATIAMeasurable</td>
+		<td>GeometryName</td>
+		<td>any</td>
+		<td>None</td>
+		<td>None</td>
+	</tr>
+	<tr>
+		<td>GetAngleBetween</td>
+		<td>any</td>
+		<td>AngleTo</td>
+		<td>CATIAMeasurableBetween</td>
+	</tr>
+	<tr>
+		<td>GetMinimumDistance</td>
+		<td>any</td>
+		<td rowspan="2">DistanceMinTo</td>
+		<td rowspan="2">CATIAMeasurableBetween</td>
+	</tr>
+	<tr>
+		<td>GetMinimumDistancePoints</td>
+		<td>any</td>
+	</tr>
+	<tr>
+		<td rowspan="2">GetAngle</td>
+		<td>CatMeasurableCircle</td>
+		<td rowspan="2">GetAngle</td>
+		<td>CATIAMeasurableCircle</td>
+	</tr>
+	<tr>
+		<td>CatMeasurableCone</td>
+		<td>CATIAMeasurableCone</td>
+	</tr>
+	<tr>
+		<td rowspan="2">Area</td>
+		<td>catMeasurableSurface</td>
+		<td rowspan="2">GetArea</td>
+		<td>CATIAMeasurableSurface</td>
+	</tr>
+	<tr>
+		<td>CatMeasurableVolume</td>
+		<td>CATIAMeasurableVolume</td>
+	</tr>
+	<tr>
+		<td rowspan="4">GetAxisSystem</td>
+		<td>CatMeasurableAxisSystem</td>
+		<td rowspan="4">GetAxis</td>
+		<td>CATIAMeasurableAxisSystem</td>
+	</tr>
+	<tr>
+		<td>CatMeasurableCircle</td>
+		<td>CATIAMeasurableCircle</td>
+	</tr>
+	<tr>
+		<td>CatMeasurableCone</td>
+		<td>CATIAMeasurableCone</td>
+	</tr>
+	<tr>
+		<td>catMeasurableCylinder</td>
+		<td>CATIAMeasurableCylinder</td>
+	</tr>
+	<tr>
+		<td rowspan="2">GetCenter</td>
+		<td>CatMeasurableCircle</td>
+		<td rowspan="2">GetCenter</td>
+		<td>CATIAMeasurableCircle</td>
+	</tr>
+	<tr>
+		<td>CatMeasurableSphere</td>
+		<td>CATIAMeasurableSphere</td>
+	</tr>
+	<tr>
+		<td rowspan="2">GetCOG</td>
+		<td>catMeasurableSurface</td>
+		<td rowspan="2">GetCOfG</td>
+		<td>CATIAMeasurableSurface</td>
+	</tr>
+	<tr>
+		<td>CatMeasurableVolume</td>
+		<td>CATIAMeasurableVolume</td>
+	</tr>
+	<tr>
+		<td>GetDirection</td>
+		<td>CatMeasurableLine</td>
+		<td>GetDirection</td>
+		<td>CATIAMeasurableLine</td>
+	</tr>
+	<tr>
+		<td>Length</td>
+		<td>CatMeasurableCurve</td>
+		<td>GetLength</td>
+		<td>CATIAMeasurableCurve</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>CatMeasurableLine</td>
+		<td>GetOrigin</td>
+		<td>CATIAMeasurableLine</td>
+	</tr>
+	<tr>
+		<td>Perimeter</td>
+		<td>catMeasurableSurface</td>
+		<td>GetPerimeter</td>
+		<td>CATIAMeasurableSurface</td>
+	</tr>
+	<tr>
+		<td>GetPlane</td>
+		<td>CatMeasurablePlane</td>
+		<td>GetPlane</td>
+		<td>CATIAMeasurablePlane</td>
+	</tr>
+	<tr>
+		<td rowspan="3">GetPoint</td>
+		<td>CatMeasurableCone</td>
+		<td rowspan="3">GetPoint</td>
+		<td>CATIAMeasurableCone</td>
+	</tr>
+	<tr>
+		<td>catMeasurableCylinder</td>
+		<td>CATIAMeasurableCylinder</td>
+	</tr>
+	<tr>
+		<td>CatMeasurablePoint</td>
+		<td>CATIAMeasurablePoint</td>
+	</tr>
+	<tr>
+		<td>GetPointsOnCurve</td>
+		<td>CatMeasurableCurve</td>
+		<td rowspan="3">GetPoints</td>
+		<td>CATIAMeasurableCurve</td>
+	</tr>
+	<tr>
+		<td rowspan="2">GetPointsOnAxis</td>
+		<td>CatMeasurableCone</td>
+		<td>CATIAMeasurableCone</td>
+	</tr>
+	<tr>
+		<td>catMeasurableCylinder</td>
+		<td>CATIAMeasurableCylinder</td>
+	</tr>
+	<tr>
+		<td rowspan="3">Radius</td>
+		<td>CatMeasurableCircle</td>
+		<td rowspan="3">GetRadius</td>
+		<td>CATIAMeasurableCircle</td>
+	</tr>
+	<tr>
+		<td>catMeasurableCylinder</td>
+		<td>CATIAMeasurableCylinder</td>
+	</tr>
+	<tr>
+		<td>CatMeasurableSphere</td>
+		<td>CATIAMeasurableSphere</td>
+	</tr>
+	<tr>
+		<td>Volume</td>
+		<td>CatMeasurableVolume</td>
+		<td>GetVolume</td>
+		<td>CATIAMeasurableVolume</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>Working with Distances.</h2>
+<p>The V5 <strong>Distance</strong> object and its associated collection, allowed 
+to calculate distances between <strong>Produc</strong>t objects or groups of Product. 
+Only the first one is available in <strong>3D</strong>EXPERIENCE platform. It has been extended to any measurable object 
+and has been provided thought a specific type of measurable: the MeasurableBetween 
+object. </p>
+<p>The V5 <strong>Distances</strong> collection wat aggregated by the <strong>SPAWorkbench</strong> 
+object. See upper how to retrieve a measurable object in <strong>3D</strong>EXPERIENCE platform through the <strong>
+MeasurableService</strong> object.</p>
+<p>The table below shows which V5 methods are supported in the current <strong>3D</strong>EXPERIENCE platform release.</p>
+<table class="border">
+	<tbody>
+	<tr>
+		<th>V5 Object</th>
+		<th>V5 Methods or Properties</th>
+		<th><strong>3D</strong>EXPERIENCE platform Methods</th>
+		<th><strong>3D</strong>EXPERIENCE platform Objects</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td rowspan="6">CATIADistance</td>
+	</tr>
+	<tr>
+		<td>ComputationType</td>
+		<td>none</td>
+		<td>none</td>
+		<td>Only the functionality equivalent to CatDistanceMeasureType::catDistanceMeasureTypeMinimum 
+		value is supported</td>
+	</tr>
+	<tr>
+		<td>MethodType</td>
+		<td>none</td>
+		<td>none</td>
+		<td>Only the functionality equivalent to CatDistanceComputationMode::catDistanceComputationTypeInsideOne 
+		value is supported</td>
+	</tr>
+	<tr>
+		<td>MinimumDistance</td>
+		<td>DistanceMinToPoint</td>
+		<td>CATIAMeasurableBetween</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Compute</td>
+		<td>none</td>
+		<td>none</td>
+		<td>Now useless. In <strong>3D</strong>EXPERIENCE platform computation is launched at each method call.</td>
+	</tr>
+	<tr>
+		<td>All other Methods</td>
+		<td>none</td>
+		<td>none</td>
+		<td>Not Supported yet</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

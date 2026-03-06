@@ -1,0 +1,251 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>CATStatisticsActivity Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>CATStatisticsActivity Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>CATStatisticsActivity</h2>
+<p><strong>Role:</strong> Settings for Activity Statistics</p>
+<p><strong>Detailed role:</strong> The Activity statistics controler manages the values of all or only a part of the attributes available for the thematic</p>
+<p>The CATStatisticsActivity repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /General/General/Statistics</li>
+  <li><strong>Repository File</strong>: CATStatistics</li>
+  <li><strong>Version</strong>: 1</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+<li><strong>Root tab page</strong> /General/Activity Statistics Management reused as /ProductStructure/Activity Statistics Management</li>
+</ul>
+<p>CATStatisticsActivity setting repository attributes:</p>
+<ul>
+  <li><a name="ACTIVITY_Activation"></a><strong>ACTIVITY_Activation</strong>
+    <br /><strong>Role</strong>: Activation state of the Activity statistics
+    <br /><strong>Detailed role</strong>: Value of Activity statistics activation<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_CPUS"></a><strong>ACTIVITY_CPUS</strong>
+    <br /><strong>Role</strong>: If activated, the cpu duration field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_Cumulate"></a><strong>ACTIVITY_Cumulate</strong>
+    <br /><strong>Role</strong>: Cumulation mode state of the Activity statistics
+    <br /><strong>Detailed role</strong>: Value of Activity statistics cumulation mode<br />							if false there is one file per session<br />							if true all sessions are outputted in one file<br />
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_DateFormat"></a><strong>ACTIVITY_DateFormat</strong>
+    <br /><strong>Role</strong>: Format for the date and time field.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td>standard : Mon Jan 1 08:00.00 2000 </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td> numerical : 2000.001.08.00.00</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td> numerical with millisecond : 2000.001.08.00.00.000</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_ELPS"></a><strong>ACTIVITY_ELPS</strong>
+    <br /><strong>Role</strong>: If activated, the elapsed duration field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_Formating"></a><strong>ACTIVITY_Formating</strong>
+    <br /><strong>Role</strong>: Format of the Activity statistics
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td>Standart output format (ie : field="value") </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td> Field is not outputed (ie : "value" )</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td> Common Base Event (CBE) format</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td> WMI EventLog integration</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_HOST"></a><strong>ACTIVITY_HOST</strong>
+    <br /><strong>Role</strong>: If activated, the host name field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_OutputDirectory"></a><strong>ACTIVITY_OutputDirectory</strong>
+    <br /><strong>Role</strong>: Output directory for the statistic
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: default_directory</li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_OutputFile"></a><strong>ACTIVITY_OutputFile</strong>
+    <br /><strong>Role</strong>: Name of the output file
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: default_file</li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_OutputFormat"></a><strong>ACTIVITY_OutputFormat</strong>
+    <br /><strong>Role</strong>: Output format of the Activity statistics
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td> standard output</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td> the thematic name is not repeated on each line</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_OutputType"></a><strong>ACTIVITY_OutputType</strong>
+    <br /><strong>Role</strong>: Format of the Activity statistics
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 2</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td>Console : log is outputed in the console (not use) </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td> File : log is outputed in a file</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_RTIM"></a><strong>ACTIVITY_RTIM</strong>
+    <br /><strong>Role</strong>: If activated, the response time field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_THEM"></a><strong>ACTIVITY_THEM</strong>
+    <br /><strong>Role</strong>: If activated, the thematic name field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_TIME"></a><strong>ACTIVITY_TIME</strong>
+    <br /><strong>Role</strong>: If activated, the time field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_TimeUnit"></a><strong>ACTIVITY_TimeUnit</strong>
+    <br /><strong>Role</strong>: Time unit for the cpu, elaped and response time.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td>millisecond </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td> second</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_UPID"></a><strong>ACTIVITY_UPID</strong>
+    <br /><strong>Role</strong>: If activated, the process id field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="ACTIVITY_USER"></a><strong>ACTIVITY_USER</strong>
+    <br /><strong>Role</strong>: If activated, the user name field is outputed.
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="Version"></a><strong>Version</strong>
+    <br /><strong>Role</strong>: Internal use - statistics settings version level.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

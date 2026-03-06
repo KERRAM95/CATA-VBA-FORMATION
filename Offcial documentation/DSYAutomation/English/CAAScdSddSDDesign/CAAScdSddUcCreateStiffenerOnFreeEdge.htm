@@ -1,0 +1,552 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SDD Stiffener on Free Edge</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SDD Stiffener on Free Edge</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SDD stiffener On Free Edge.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSddUcCreateStiffenerOnFreeEdge.3dxml</div></code>, 
+                            <code><div class=vb_sample_data>CAAScdSddUcWT18x179_5.3dxml</div></code>,
+							<code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div></code> and <code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div></code> 
+							files supplied in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcCreateStiffenerOnFreeEdgeSource.htm">CAAScdSddUcCreateStiffenerOnFreeEdgeSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSddTocSDDesign.htm">Structure Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in nine steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SDDProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves a SddPlate </a></li>
+			<li><a href="#Step5">Retrieves SddStiffenerMngt </a></li>
+			<li><a href="#Step6">Creates a Stiffener On Free Edge on a Plate Limit</a></li>
+			<li><a href="#Step7">Creates a Stiffener On Free Edge on an opening on the Plate</a></li>
+			<!--<li><a href="#Step8">Edits the Stiffener On Free Edge on a Plate Limit</a></li>
+			<li><a href="#Step9">Edits the Stiffener On Free Edge on an opening on the Plate</a></li>-->
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SDDProduct&quot;</strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SDDProduct&quot; from DB and 
+			loads it and returns object of the Editor.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>SDDPrdEditor  <span class="keyword">As </span> Editor
+ <span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+  prdName = &quot;SddProduct&quot;
+  OpenProduct prdName , SDDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SDDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SDD model from underlying database the current active 
+			editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			
+			
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+			<p>As a next step, the UC retrieves the representation variable. To 
+			retrieve the Selection object <strong><code>SDDPrdEditor</code>
+			</strong>is used.</p>
+			<pre class="code"> ...
+  <span class="keyword">Set</span> SDDProdSel = SDDPrdEditor<strong>.Selection </strong>
+...
+			</pre>
+			</li>
+			
+			
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> product1Service <span class="keyword">As</span> PLMProductService
+  <span class="keyword">Set</span> product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+  <span class="keyword">Dim</span> ObjVPMRootOccurrence <span class="keyword">As</span> VPMRootOccurrence
+  <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+  <span class="keyword">Dim</span> ObjVPMReference <span class="keyword">As</span> VPMReference
+  <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+  <span class="keyword">Dim</span> ObjVPMRepInstances <span class="keyword">As</span> VPMRepInstances
+  <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+  <span class="keyword">Set</span> ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			
+			
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves a SddPlate object</strong></p>
+			<p>In this step UC retrieves a SddPlate from SddProductPlate which is 
+			retrieved using Selection object.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> PlateRef = ListOfInstances.Item(2).ReferenceInstanceOf
+  SDDProdSel.Add PlateRef
+  <span class="keyword">Set</span> ObjSddProductPlate1 = SDDProdSel.FindObject("CATIASddProductPlate")
+  <span class="keyword">Set</span> ObjSddPlate1 = ObjSddProductPlate1.SddPlate
+...</pre> 
+			<p>In above lines, <em>FindObject</em> method finds the object &quot;CATIASddProductPlate&quot; 
+			and returns it to &quot;ObjSddProductPlate1&quot;. To retrieve <code>SddPlate</code> object, call <em>
+			SddPlate</em> property as shown above. This will give the <code>SddPlate</code> 
+			object.</p>
+			</li>
+			
+			
+			<li>
+			<p><strong><a name="Step5"></a>Retrieves a SddStiffenerMngt object</strong></p>
+			<p>In this step UC retrieves a SddStiffenerMngt object using Selection 
+			object.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjSddStiffenerMngt <span class="keyword">As</span> SddStiffenerMngt
+  SDDProdSel.<strong>Add </strong>ObjVPMRootOccurrence 
+  <span class="keyword">Set</span> ObjSddStiffenerMngt = SDDProdSel.<strong>FindObject(&quot;</strong>CATIASddStiffenerMngt<strong>&quot;)</strong> 
+...</pre>
+			<p>In above lines, <em>FindObject</em> method finds the object &quot;CATIASddStiffenerMngt&quot; 
+			and returns it to &quot;ObjSddStiffenerMngt&quot;. This will give the <code>SddStiffenerMngt</code> 
+			object.</p>
+			</li>
+			
+
+			<li>
+			<p><strong><a name="Step6"></a>Creates a Stiffener On Free Edge on a Plate Limit</strong></p>
+			<p>Now plate is available to create stiffener on it. Call <code>CreateStiffenerOnFreeEdge_PlateLimit</code> 
+			method to create stiffener. Inputs to <code>CreateStiffenerOnFreeEdge_PlateLimit</code> method are a SddStiffenerMngt object and an empty SddProductStiffenerOnFreeEdge object.
+			When the function executes, <code>ObjSddProductStiffenerOnFreeEdge_PlateLimit</code> stores the Stiffener On Free Edge object created on on of the Limits of the Plate.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjSddProductStiffenerOnFreeEdge_PlateLimit <span class="keyword">As </span>SddProductStiffenerOnFreeEdge 			
+  <strong>CreateStiffenerOnFreeEdge_PlateLimit</strong> ObjSddStiffenerMngt, ObjSddProductStiffenerOnFreeEdge_PlateLimit
+...</pre>
+			<p>The method <code>CreateStiffenerOnFreeEdge_PlateLimit</code> is detailed as in the below 
+			sub steps.</p>
+			<pre class="code">...
+<span class="keyword">Sub</span> CreateStiffenerOnFreeEdge_PlateLimit(iObjSddStiffenerMngt <span class="keyword">As</span> SddStiffenerMngt, oObjProdStiffener <span class="keyword">As</span> SddProductStiffenerOnFreeEdge)
+...</pre>
+			
+					
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Create a new empty stiffener by the method <code>AddStiffenerOnFreeEdge</code> 
+				from object <code>SddStiffenerMngt</code> </p>
+				<pre class="code">...
+  <span class="keyword">Sub</span> CreateStiffenerOnFreeEdge(iObjSddStiffenerMngt <span class="keyword">As</span> SddStiffenerMngt, oObjProductStiffener <span class="keyword">As</span> SddProductStiffenerOnFreeEdge)
+    <span class="comment">&#39; Add Stiffener On Free Edge</span>
+    <span class="keyword">Set</span> oObjProductStiffener = iObjSddStiffenerMngt.<strong>AddStiffenerOnFreeEdge</strong>
+  <span class="keyword">End Sub</span>
+...</pre>
+				<p>On <code>iObjSddStiffenerMngt</code> object <code>AddStiffenerOnFreeEdge</code> 
+				method is called to create the empty stiffener. Now UC needs to 
+				set the different properties of the stiffener like material, category 
+				etc.</p>
+				</li>
+				
+				<li>
+				<p>Set different properties of the stiffener on free edge like material. Withing the script, we call the subroutine SetMaterial which Retrieve 
+				the <code>StrMaterialMngt</code> object from <code>SddProductStiffenerOnFreeEdge</code> 
+				object and set the material for the stiffener using <code>SetMaterial</code> 
+				method on the <code>StrMaterialMngt</code> object. Below we show what is done within the subroutine. Although, this could be done within the
+				<code>CreateStiffenerOnFreeEdge</code> subroutine, we are using a separate <code>SetMaterial</code> as we can use it when we create a <code>StrSddStiffenerOnFreeEdge</code> on an Opening and an Extracted Edge.
+				<br/>Here is what is done within the SetMaterial method:</p>
+				<pre class="code">...
+<span class="keyword">Sub</span> SetMaterial(iObjProductStiffener <span class="keyword">As</span> SddProductStiffenerOnFreeEdge, iStrMaterial <span class="keyword">As String</span>)
+    <span class="comment">&#39; Get StrMaterialMngt object</span>
+  <span class="keyword">  Dim</span> ObjMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+  <span class="keyword">  Set</span> ObjMaterialMngt = iObjProductStiffener.<strong>StrMaterialMngt</strong>
+    <span class="comment">&#39; Set material of the stiffener</span>
+    ObjMaterialMngt.<strong>SetMaterial</strong> iStrMaterial
+<span class="keyword">End Sub</span>
+...</pre>
+				<p>A <code>SddProductStiffenerOnFreeEdge</code> and a <code>String</code> indicating the name of the Material are the inputs to the <code>SetMaterial</code> subroutine.
+				<br/><code>ObjMaterialMngt</code> object is of type <code>StrMaterialMngt</code>. 
+				It is retrieved from the stiffener <code>iObjProductStiffener</code>.
+				<code>SetMaterial</code> method is called to set the material on 
+				object <code>ObjMaterialMngt</code>. </p>
+				</li>
+				
+				<li>
+				<p>Similar to setting the material, to set the category, we use the <code>SetCategory</code> subroutine in the script.
+				This method retrieves the <code>StrCategoryMngt</code> 
+				object from <code>StrSddStiffenerOnFreeEdge</code> object and sets the category using
+				<code>SetCategory</code> method on the <code>StrCategoryMngt</code> object.</p>
+				<pre class="code">...
+    <span class="comment">&#39; Get StrSddStiffenerOnFreeEdge object</span>
+  <span class="keyword">  Dim</span> ObjStrSddStiffenerOnFreeEdge <span class="keyword">As</span> StrSddStiffenerOnFreeEdge
+  <span class="keyword">  Set</span> ObjStrSddStiffenerOnFreeEdge = oObjProdStiffener.<strong>StrSddStiffenerOnFreeEdge</strong>
+    <span class="comment">&#39; Set Category</span>
+    SetCategory ObjStrSddStiffenerOnFreeEdge, "SddStiffenerOnFreeEdge"
+...
+</pre><p>The <code>SetCategory</code> subroutine</p>
+<pre class="code">...
+<span class="keyword">Sub</span> SetCategory(iObjStrSddStiffenerOnFreeEdge <span class="keyword">As</span> StrSddStiffenerOnFreeEdge, iCategory <span class="keyword">As String</span>)
+    <span class="comment">&#39; Get the StCategoryMngt object</span>
+  <span class="keyword">  Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+  <span class="keyword">  Set</span> ObjStrCategoryMngt = iObjStrSddStiffenerOnFreeEdge.<strong>StrCategoryMngt</strong>
+    <span class="comment">&#39; Set category of the stiffener on free edge</span>
+    ObjStrCategoryMngt.<strong>SetCategory</strong> iCategory
+<span class="keyword">End Sub</span>
+...</pre>
+<p>A <code>SddProductStiffenerOnFreeEdge</code> and a <code>String</code> indicating the Category are the inputs to the <code>SetCategory</code> subroutine.</p>
+				</li>
+				
+				<li>
+				<p>Set the <code>ProfileType</code> property of the stiffener on free edge to 
+				catStrProfileModeOnLimits (here catStrProfileModeOnLimits means 
+				profile is created on the limit of a plate).</p>
+				<pre class="code">...
+  <span class="comment">&#39; Set profile type</span>
+  SetProfileType ObjStrSddStiffenerOnFreeEdge, catStrProfileModeOnLimits
+...
+</pre>
+<p>The <code>SetProfileTpye</code> subroutine.</p>
+<pre class="code">...
+<span class="keyword">Sub</span> SetProfileType(iObjStrSddStiffenerOnFreeEdge <span class="keyword">As</span> StrSddStiffenerOnFreeEdge, iType <span class="keyword">As Long</span>)
+    <span class="comment">&#39; Set the profile type on the StrSddStiffenerOnFreeEdge</span>
+    iObjStrSddStiffenerOnFreeEdge.<strong>ProfileType </strong>= iType
+<span class="keyword">End Sub</span>
+...</pre>
+<p>A <code>SddProductStiffenerOnFreeEdge</code> and a <code>Long</code> indicating the Profile type are the inputs to the <code>SetProfileType</code> subroutine. Pre-defined constants can be used as the second parameter.
+<br/>For e.g. Here we have used <code>catStrProfileModeOnLimits</code></p>
+				</li>
+				
+				<li>
+				<p>Next step is to set the section parameters of the Stiffener On Free Edge. We use the <code>SetSectionParameters</code> subroutine to achieve this.
+				The subroutine retrieves the <code>StrSectionMngt</code> object from the created 
+				stiffener on free edge object and sets the different section parameters like 
+				section name, anchor point, web orientation, flange orientation.</p>
+				<pre class="code">...
+  <span class="comment">&#39; Set section parameters</span>
+  SetSectionParameters ObjStrSddStiffenerOnFreeEdge, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;
+...
+</pre>
+<p>The <code>SetSectionParameters</code> subroutine</p>
+<pre class="code">...
+<span class="keyword">Sub</span> SetSectionParameters(iObjStrSddStiffenerOnFreeEdge <span class="keyword">As</span> StrSddStiffenerOnFreeEdge, iStrSecName <span class="keyword">As String</span>, iAnchorPoint <span class="keyword">As String</span>)
+    <span class="comment">&#39; Get StrSectionMngt object</span>
+  <span class="keyword">  Dim</span> ObjStrSectionMngt <span class="keyword">As</span> StrSectionMngt
+  <span class="keyword">  Set</span> ObjStrSectionMngt = iObjStrSddStiffenerOnFreeEdge	.<strong>StrSectionMngt</strong>
+    <span class="comment">&#39; Set different section parameters</span>
+    ObjStrSectionMngt.<strong>SetSectionName </strong> iStrSecName
+    ObjStrSectionMngt.<strong>AnchorPoint </strong>= iAnchorPoint
+	
+    <span class="comment">&#39; Set the rest as deault</span>
+    ObjStrSectionMngt.<strong>WebOrientation </strong>= 1
+    ObjStrSectionMngt.<strong>FlangeOrientation </strong>= 1
+    ObjStrSectionMngt.<strong>WebOrientation </strong>= 1
+    ObjStrSectionMngt.<strong>AngleMode </strong>= 0
+<span class="keyword">End Sub</span>
+...</pre>
+				<p>The <code>SetSectionParameters</code> takes a StrSddStiffenerOnFreeEdge, a string indicating the section name and another string indicating the anchor point
+				for the stiffener on free edge as its inputs. The other parameters, as seen, are set to their default values. The <code>SetSectionParameters</code> could
+				however, be extended to receive more parameter to make the script more versatile.
+				<br/>Within the subroutine, <code>ObjStrSectionMngt</code> object which is of type <code>
+				StrSectionMngt</code> is used to set the different section properties 
+				of the stiffener. <code>SetSectionName</code> method sets the section 
+				name for the stiffener. <code>AnchorPoint</code> property is used 
+				to set anchor point to &quot;catStrTopCenter&quot;. Similarly <code>WebOrientation
+				</code>and <code>FlangeOrientation</code> properties are set to 
+				1. </p>
+				</li>
+				
+				<li>
+				<p>Further, we set the support plate and select the limit on which we wish to create the stiffener on free edge.
+				We use the <code>SetSupportPlate</code> subroutine. It retrieves the <code>StrProfileOnLimits</code> object from the 
+				created stiffener on free edge object and sets the support plate and the limit.</p>
+				<pre class="code">...
+<span class="keyword">Sub</span> SetSupportPlate(iObjStrSddStiffenerOnFreeEdge <span class="keyword">As</span> StrSddStiffenerOnFreeEdge, iObjSddPlate1 <span class="keyword">As</span> SddPlate)
+  <span class="comment">&#39; Get the StrProfileOnLimits object</span>
+  <span class="keyword">  Dim</span> ObjStrProfileOnLimits <span class="keyword">As</span> StrProfileOnLimits
+  <span class="keyword">  Set</span> ObjStrProfileOnLimits = iObjStrSddStiffenerOnFreeEdge.<strong>StrProfileOnLimits</strong>
+  
+   <span class="comment">&#39; Set the support plate</span>
+   <span class="keyword">Dim</span> ObjStrPlate <span class="keyword">As</span> StructurePlate
+   <span class="keyword">Set</span> ObjStrPlate = <strong>iObjSddPlate1</strong>
+   ObjStrProfileOnLimits.<strong>ReferenceSupportPlate</strong> = <strong>ObjStrPlate</strong>
+   
+   <span class="comment">&#39; Set the edge Limit</span>
+   <span class="keyword">Dim</span> LimList(0) <span class="keyword">As Variant</span>
+   LimList(0) = 4
+   ObjStrProfileOnLimits.SetLimits (<strong>LimList</strong>)
+<span class="keyword">End Sub</span>
+...</pre>
+             <p><code>StrProfileOnLimits</code> is obtained from <code>iObjStrSddStiffenerOnFreeEdge</code> and <code>ObjStrPlate</code> is obtained from <code>iObjSddPlate1</code>.
+			<br/>Now, <code>ObjStrPlate</code> is set as the support to <code>ObjStrProfileOnLimits</code> using the <code>ReferenceSupportPlate</code> property.
+			Further, to set the limit, we create a list of limit indices and call the <code>SetLimits</code> method with the list as the parameter.
+			The Stiffener On Free Edge will be created on every edge mentioned through the list of indices.
+			</p>
+				</li>
+				
+				<li>
+				<p>By now the Stiffener On Free Edge gets created. However, it is created upto the limits of the plate.
+				<br/>In case we wish to set the limits
+				explicitly, we can obtain the reference planes from the <code>RfgService</code> service and apply as limits to stiffener on free edge.
+				<br/>The code below shows how this can be done:</p>
+				<pre class="code">...
+  <span class="comment">  &#39; Get Service manager</span>
+  <span class="keyword">  Dim</span> Manager <span class="keyword">As</span> RfgService
+  <span class="keyword">  Set</span> Manager = CATIA.ActiveEditor.<strong>GetService(&quot;RfgService&quot;)</strong>
+  <span class="comment">  &#39; Set the limits</span>
+  <span class="keyword">  Dim</span> StartLimit <span class="keyword">As</span> Reference 
+  <span class="keyword">  Dim</span> EndLimit <span class="keyword">As</span> Reference 
+  <span class="keyword">  Set</span> ObjStartLimit = Manager.<strong>GetReferencePlane</strong>(ObjPart, 3, &quot;LONG.14&quot;)
+  <span class="keyword">  Set</span> StartLimit = ObjPart.CreateReferenceFromObject(ObjStartLimit)
+  <span class="keyword">  Set</span> ObjEndLimit = Manager.<strong>GetReferencePlane</strong>(ObjPart, 3, &quot;LONG.-14&quot;)
+  <span class="keyword">  Set</span> EndLimit = ObjPart.CreateReferenceFromObject(ObjEndLimit)
+  <span class="comment">  &#39; Set the limits on stiffener on free edge</span>
+    SetLimits ObjStrSddStiffenerOnFreeEdge, StartLimit, EndLimit
+...
+</pre>
+<p>The <code>SetLimits</code> subroutine</p>
+<pre class="code">...
+<span class="keyword">Sub</span> SetLimits(iObjStrSddStiffenerOnFreeEdge <span class="keyword">As</span> StrSddStiffenerOnFreeEdge, iStartLimit <span class="keyword">As</span> Reference, iEndLimit <span class="keyword">As</span> Reference )
+    <span class="comment">&#39; Get the StrProfileLimitMngt object</span>
+    <span class="keyword">Dim</span> ObjStrProfileLimitMngt <span class="keyword">As</span> StrProfileLimitMngt
+    <span class="keyword">Set</span> ObjStrProfileLimitMngt = iObjStrSddStiffenerOnFreeEdge.StrProfileLimitMngt
+	
+    <span class="comment">  &#39; Set the two limits</span>
+    ObjStrProfileLimitMngt.SetLimitingObject 1, iStartLimit
+    ObjStrProfileLimitMngt.SetLimitingObject 2, iEndLimit
+<span class="keyword">End Sub</span>
+...</pre>
+				
+				<p>
+				Input to the <code>SetLimits</code> subroutine is a StrSddStiffenerOnFreeEdge, a Reference to start limit and a Reference to end limit.
+				<br/>The subroutine obtains the StrProfileLimitMngt object and calls the <code>SetLimitingObject</code> method on it to set the two limits as shown above.
+				</p>
+				</li>
+				<li>
+				<p>Updates the created stiffener on free edge before exiting subroutine CreateStiffenerOnFreeEdge_PlateLimit. </p>
+				<pre class="code">...
+  oObjProdStiffener.<strong>Update</strong>
+<span class="keyword">End Sub</span>
+...</pre>
+				</li>
+			</ol>
+			</li>
+			
+			
+			
+			
+			
+			
+			<li>
+			<p><strong><a name="Step7"></a>Creates a Stiffener On Free Edge on an opening on the Plate</strong></p>
+			<p>Call <code>CreateStiffenerOnFreeEdge_PlateOpening</code> 
+			method to create stiffener. Inputs to <code>CreateStiffenerOnFreeEdge_PlateOpening</code> method are a SddStiffenerMngt object and an empty SddProductStiffenerOnFreeEdge object.
+			When the function executes, <code>ObjSddProductStiffenerOnFreeEdge_PlateOpening</code> stores the Stiffener On Free Edge object created on on of the Limits of the Plate.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjSddProductStiffenerOnFreeEdge_PlateOpening <span class="keyword">As </span>SddProductStiffenerOnFreeEdge 			
+  <strong>CreateStiffenerOnFreeEdge_PlateOpening</strong> ObjSddStiffenerMngt, ObjSddProductStiffenerOnFreeEdge_PlateOpening
+...</pre>
+			<p>The method <code>CreateStiffenerOnFreeEdge_PlateOpening</code> is detailed as in the below 
+			sub steps.</p>
+			
+			<pre class="code">...
+  <span class="keyword">Sub</span> CreateStiffenerOnFreeEdge_PlateOpening(iObjSddStiffenerMngt <span class="keyword">As</span> SddStiffenerMngt, oObjProdStiffener <span class="keyword">As</span> SddProductStiffenerOnFreeEdge)
+...</pre>
+			
+					
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Create a new empty stiffener by the method <code>AddStiffenerOnFreeEdge</code> 
+				from object <code>SddStiffenerMngt</code> </p>
+				<pre class="code">...
+  <span class="keyword">Sub</span> CreateStiffenerOnFreeEdge(iObjSddStiffenerMngt <span class="keyword">As</span> SddStiffenerMngt, oObjProductStiffener <span class="keyword">As</span> SddProductStiffenerOnFreeEdge)
+  <span class="comment">&#39; Add Stiffener On Free Edge</span>
+  <span class="keyword">Set</span> oObjProductStiffener = iObjSddStiffenerMngt.<strong>AddStiffenerOnFreeEdge</strong>
+...</pre>
+				<p>On <code>iObjSddStiffenerMngt</code> object <code>AddStiffenerOnFreeEdge</code> 
+				method is called to create the empty stiffener. Now UC needs to 
+				set the different properties of the stiffener like material, category 
+				etc.</p>
+				</li>
+				
+				<li>
+				<p>Similar to the ObjSddProductStiffenerOnFreeEdge_PlateLimit properties set above, we set the properties for ObjSddProductStiffenerOnFreeEdge_PlateOpening.
+				<br/>Set the material.</p>
+				<pre class="code">...
+  <span class="comment">&#39; Set material</span>
+  SetMaterial oObjProdStiffener, "Steel A42"
+...</pre>
+				<p>The <code>SetMaterial</code> subroutine has been detailed above under Step 6.</p>
+				</li>
+				
+				<li>
+				<p>We now move on to setting the category.</p>
+				<pre class="code">...
+  <span class="comment">&#39; Set category</span>
+  SetCategory ObjStrSddStiffenerOnFreeEdge, "SddStiffenerOnFreeEdge"
+...
+</pre>
+<p>The <code>SetCategory</code> subroutine has been detailed above under Step 6.</p>
+				</li>
+				
+				<li>
+				<p>Set the <code>ProfileType</code> property of the stiffener on free edge to 
+				catStrProfileModeOnOpening (here catStrProfileModeOnOpening means 
+				profile is created on an opening present on the plate).</p>
+				<pre class="code">...
+  <span class="comment">&#39; Set profile type</span>
+  SetProfileType ObjStrSddStiffenerOnFreeEdge, catStrProfileModeOnOpening
+...
+</pre>
+<p>The <code>SetProfileTpye</code> subroutine has been detailed above under Step 6.</p>
+<p>A <code>SddProductStiffenerOnFreeEdge</code> and a <code>Long</code> indicating the Profile type are the inputs to the <code>SetProfileType</code> subroutine. Pre-defined constants can be used as the second parameter.
+<br/>For e.g. Here we have used <code>catStrProfileModeOnOpening</code></p>
+				</li>
+				
+				<li>
+				<p>Next step is to set the section parameters of the Stiffener On Free Edge. We use the <code>SetSectionParameters</code> subroutine to achieve this.
+				The subroutine retrieves the <code>StrSectionMngt</code> object from the created 
+				stiffener on free edge object and sets the different section parameters like 
+				section name, anchor point, web orientation, flange orientation.</p>
+				<pre class="code">...
+  <span class="comment">&#39; Set section parameters</span>
+  SetSectionParameters ObjStrSddStiffenerOnFreeEdge, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;
+...
+</pre>
+<p>The <code>SetSectionParameters</code> subroutine has been detailed above under Step 6.</p>
+				<p>The <code>SetSectionParameters</code> takes a StrSddStiffenerOnFreeEdge, a string indicating the section name and another string indicating the anchor point
+				for the stiffener on free edge as its inputs. The other parameters, as seen, are set to their default values. The <code>SetSectionParameters</code> could
+				however, be extended to receive more parameter to make the script more versatile.</p>
+				</li>
+				
+				<li>
+				<p>Further, we set the support opening on which we wish to create the stiffener on free edge.
+				We use the <code>SetSupportOpening</code> subroutine. It retrieves the <code>StrProfileOnOpening</code> object from the 
+				created stiffener on free edge object and sets the opening as the support.</p>
+				<pre class="code">...
+<span class="keyword">Sub</span> SetSupportOpening(iObjStrSddStiffenerOnFreeEdge <span class="keyword">As</span> StrSddStiffenerOnFreeEdge, iObjSddPlate1 <span class="keyword">As</span> SddPlate)
+  <span class="comment">&#39; Get the StrProfileOnOpening object</span>
+  <span class="keyword">Dim</span> ObjStrProfileOnLimits <span class="keyword">As</span> StrProfileOnOpening
+  <span class="keyword">Set</span> ObjStrProfileOnLimits = iObjStrSddStiffenerOnFreeEdge.<strong>StrProfileOnOpening</strong>
+  
+  <span class="comment">&#39; Get the opening form the plate</span>
+  <span class="keyword">Dim</span> ObjStrOpenings <span class="keyword">As</span> StrOpenings
+  <span class="keyword">Set</span> ObjStrOpenings = iObjSddPlate1.<strong>GetOpenings</strong>(0)
+  <span class="keyword">Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+  <span class="keyword">Set</span> ObjStrOpening = ObjStrOpenings.<strong>Item</strong>(1)
+  ObjStrProfileOnOpening.<strong>Opening = ObjStrOpening</strong>
+...</pre>
+             <p><code>StrProfileOnOpening</code> is obtained from <code>iObjStrSddStiffenerOnFreeEdge</code> and <code>ObjStrOpening</code> us obtained from <code>GetOpenings</code> method on <code>iObjSddPlate1</code> object.
+			This <code>ObjStrOpening</code> is set as the <code>Opening</code> property of <code>ObjStrProfileOnOpening</code>.
+			</p>
+				</li>
+				<li>
+				<p>Updates the created stiffener on free edge before exiting subroutine CreateStiffenerOnFreeEdge_PlateOpening. </p>
+				<pre class="code">...
+  oObjProdStiffener.<strong>Update</strong>
+<span class="keyword">End Sub</span>
+...</pre>
+				</li>
+			</ol>
+			</li>
+			
+			
+			
+			
+			
+			
+			
+			
+		</ol>
+		</td>
+	</tr>
+</table>
+<table>
+	<tr>
+		<td><a name="Fig.1"></a><strong>Fig.1: Stiffener On Free Edge on a Plate Limit with limits</strong>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img alt="Stiffener with Limits" src="CAAScdSddUcCreateStiffenerOnFreeEdge.png"/>
+		</td>
+	</tr>
+	<tr>
+		<td><a name="Fig.1"></a><strong>Fig.2: Stiffener On Free Edge on an opening on the Plate</strong>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<img alt="Stiffener with Limits" src="CAAScdSddUcCreateStiffenerOnFreeEdge1.png"/>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

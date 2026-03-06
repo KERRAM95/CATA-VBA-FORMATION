@@ -1,0 +1,154 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFitUcCreateTrackInMsr.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates a Track in MSR Context with three TPoints </span>
+<span class="comment">'</span>
+<span class="comment">'Before starting this macro, open a Simulation Object wiht a product.</span>
+<span class="comment">'Steps:</span>
+<span class="comment">'   1 - Retrieves the current Editor</span>
+<span class="comment">'   2 - Retrieves the Fitting Service from the Editor</span>
+<span class="comment">'   3 - Creates a new Fit Track</span>
+<span class="comment">'   4 - Applies properties to Track</span>
+<span class="comment">'   5 - Retrieve the FitTrackTPoints object</span>
+<span class="comment">'   6 - Creates new TPoints</span>
+<span class="comment">'   7 - Refreshes the Track</span>
+</pre>
+<pre>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Sub </span>CATMain()
+<span class="comment">'   1- Gets the current Editor </span>
+<span class="keyword">        Dim </span>oEditor <span class="keyword">As  </span>Editor
+<span class="keyword">        Set </span>oEditor = CATIA.ActiveEditor
+
+<span class="comment">'   2- Gets the Fitting Service from the Editor </span>
+<span class="keyword">        Dim </span>oFittingService   <span class="keyword">As  </span>FittingService
+<span class="keyword">        Set </span>oFittingService = oEditor.GetService(&quot;FittingService&quot;)
+
+<span class="comment">'   3- Creates a new Fit Track</span>
+<span class="keyword">        Dim </span> oContext <span class="keyword">As</span> AnyObject
+<span class="keyword">        Set </span> oContext = Nothing<strong> </strong>
+<span class="keyword">        Dim </span> sTrackType <span class="keyword">As</span> CATBSTR
+<span class="keyword">        </span>sTrackType = &quot;DNBFitTrack&quot;<strong> </strong>
+<span class="keyword">        Dim </span> oFitTrack <span class="keyword">As</span> FitTrack
+<span class="keyword">        Set </span> oFitTrack = oFittingService.Add(oContext, sTrackType)
+
+<span class="comment">'   4 - Applies properties to Track</span>
+<span class="keyword">        Dim </span> eTrackMode <span class="keyword">As</span> DNBTrackMode
+                              eTrackMode = FitTIME
+                              oFitTrack.Mode = eTrackMode
+<span class="keyword">        Dim </span> eTrackInter <span class="keyword">As</span> DNBInterpolater
+                              eTrackInter = FitSPLINE
+                              oFitTrack.Interpolater = eTrackInter
+<span class="keyword">        Dim </span> dTotalTime <span class="keyword">As</span> double
+                              dTotalTime = 5.0
+                              oFitTrack.TotalTime = dTotalTime
+<span class="keyword">        Dim </span> aAnchorPos(11) <span class="keyword">As</span> double
+                              aAnchorPos(0) = 1
+	                          aAnchorPos(1) = 0
+	                          aAnchorPos(2) = 0
+	                          aAnchorPos(3) = 0
+	                          aAnchorPos(4) = 1
+	                          aAnchorPos(5) = 0
+	                          aAnchorPos(6) = 0
+	                          aAnchorPos(7) = 0
+	                          aAnchorPos(8) = 1
+	                          aAnchorPos(9) = 0
+	                          aAnchorPos(10) = 0
+	                          aAnchorPos(11) = 0
+	                          oFitTrack.SetAnchorPosition aAnchorPos
+
+<span class="comment">'   5 - Retrieve the FitTrackTPoints object</span>
+<span class="keyword">        Dim </span> cFitTPoints <span class="keyword">As</span> FitTrackTPoints
+<span class="keyword">        Set </span> cFitTPoints = oFitTrack.TPoints
+
+<span class="comment">'   6 - Creates new TPoints</span>
+<span class="keyword">        ReDim </span> aTPointPos(11) <span class="keyword">As</span> double
+                              aTPointPos(0) = 1
+	                          aTPointPos(1) = 0
+	                          aTPointPos(2) = 0
+	                          aTPointPos(3) = 0
+	                          aTPointPos(4) = 1
+	                          aTPointPos(5) = 0
+	                          aTPointPos(6) = 0
+	                          aTPointPos(7) = 0
+	                          aTPointPos(8) = 1
+	                          aTPointPos(9) = 0
+	                          aTPointPos(10) = 0
+	                          aTPointPos(11) = 0
+<span class="keyword">        Dim </span> TPointCompPos(11) <span class="keyword">As</span> double
+                              TPointCompPos(0) = 1
+	                          TPointCompPos(1) = 0
+	                          TPointCompPos(2) = 0
+	                          TPointCompPos(3) = 0
+	                          TPointCompPos(4) = 1
+	                          TPointCompPos(5) = 0
+	                          TPointCompPos(6) = 0
+	                          TPointCompPos(7) = 0
+	                          TPointCompPos(8) = 1
+	                          TPointCompPos(9) = 0
+	                          TPointCompPos(10) = 0
+	                          TPointCompPos(11) = 0
+
+<span class="comment">'        Insert First TPoint</span>
+                              cFitTPoints.InsertTPoint 1, aTPointPos, TPointCompPos, 0
+
+                              aTPointPos(9) = 100
+	                          aTPointPos(10) = 0
+	                          aTPointPos(11) = 0
+
+<span class="comment">'        Insert Second TPoint</span>
+                              cFitTPoints.InsertTPoint 2, aTPointPos, TPointCompPos, 2.5
+
+                              aTPointPos(9) = 100
+	                          aTPointPos(10) = 100
+	                          aTPointPos(11) = 0
+
+<span class="comment">'        Insert Third TPoint</span>
+                              cFitTPoints.InsertTPoint 3, aTPointPos, TPointCompPos, 2.5
+
+<span class="comment">'        Set names to the TPoints</span>
+<span class="keyword">          Dim </span>oTPoint <span class="keyword">As </span>  FitTrackTPoint
+<span class="keyword">          For </span>i = 1 <span class="keyword">to</span> cFitTPoints.Count
+<span class="keyword">              Set </span>oTPoint = cFitTPoints.Item(i)
+                                    oTPoint.Name = &quot;TPoint&quot; &amp; i
+<span class="keyword">          Next </span>
+
+<span class="comment">'        Set name to the Track</span>
+                                oFitTrack.Name = &quot;Track.VB.MSR&quot;
+
+<span class="comment">'   7 - Refreshes the Track</span>
+<span class="comment">'   THIS IS A MANDATORY STEP TO FINISH WITH AFTER ANY MODIFICATION AND UPDATE DONE TO THE TRACK.</span>
+<span class="comment">'   THE REFRESH MUST BE CALLED AT THE END OTHERWISE THE MODIFICATIONS WILL NOT BE REFLECTED ON THE TRACK.</span>
+
+                                oFitTrack.Refresh
+
+<span class="keyword">End Sub</span>
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>
+

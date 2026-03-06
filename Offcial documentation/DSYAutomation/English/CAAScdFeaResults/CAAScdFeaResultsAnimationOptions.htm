@@ -1,0 +1,263 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="topictype" content="Uc" />
+    <meta name="devlang" content="idl" />
+    <meta name="devlang" content="idl" />
+    <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+    <title>Animation Options</title>
+    <style type="text/css">
+        .padded td, .padded th {
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+    <table class="table1">
+        <tr>
+            <td class="DocHeader1">
+                <h1>Setting animation options and creating video</h1>
+            </td>
+        </tr>
+        <tr>
+            <td class="DocHeader3" style="width: 1807px">
+                <table class="DocHeaderIntro">
+                    <tr>
+                        <td class="Intro1">
+                            <p class="header">This article explains how to set animation options and create a movie file.</p>
+                            <hr class="header" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span class="run-in">Where to find the macro: <a href="CAAScdFeaResultsAnimationOptionsSource.htm">CAAScdFeaResultsAnimationOptionsSource.htm</a></span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="indented">
+        <tr>
+            <td>
+                <p>This use case can be divided in 8 steps:</p>
+                <ol>
+                    <li><a href="#Step1">Opens the document and retrieves the results analysis case</a></li>
+                    <li><a href="#Step2">Retrieves the animation options object</a></li>
+                    <li><a href="#Step3">Retrieves the available animation options</a></li>
+                    <li><a href="#Step4">Sets the animation options</a></li>
+                    <li><a href="#Step5">Retrieves the animation video object</a></li>
+                    <li><a href="#Step6">Retrieves the available codec options</a></li>
+                    <li><a href="#Step7">Sets the video options</a></li>
+                    <li><a href="#Step8">Creates the video</a></li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+    <table class="table1">
+
+        <tr>
+            <td>
+                <ol class="task">
+                    <li>
+                        <p><strong><a name="Step1"></a>Opens the document and retrieves the results analysis case</strong></p>
+                        <p>
+                            As a first step, the following code will show how to open the simulation document and retrieve the 
+                            results analysis case.You can use  <code><div class=vb_sample_data>VB_HistoryPlot.SMASim</div></code>
+                            file supplied in the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaResults\samples\</code>
+                            where <code>InstallRootFolder</code> is the folder where the 
+					        API CD-ROM is installed.
+                        </p>
+                        <p>On opening the model,Select yes option from the dialogue to activate the results. </p>
+                        <a href="CAAScdFeaResultsOpenDocument.htm">Retrieve the analysis case</a>
+                    </li>
+
+                    <li>
+
+                        <p><strong><a name="Step2"></a>Retrieves the animation options object</strong></p>
+                        <p>This step retrieves the animation options object from the results analysis case. Each case can have its own animation option object</p>
+                        <pre class="code">...
+
+Dim oAnimationOptions As SimResultsAnimationOptions
+oAnimationOptions = oResultsAnalysisCase.GetItem("SimResultsAnimationOptions")
+
+...
+</span></pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step3"></a>Retrieves the available animation types</strong></p>
+                        <p>This step shows how to get the available animation types for the current plot. It will be a list of strings. 
+                       </p>
+                        <pre class="code">...
+
+Dim ocsAnimTypes()
+oAnimationOptions.GetAvailableAnimationTypes ocsAnimTypes
+
+...
+</pre>
+                    </li>
+
+                    <li>
+
+                        <p><strong><a name="Step4"></a>Sets the animation types</strong></p>                        
+                        <p>It is mandatory to call the SetType method at the beginning and Update method at the end after all the 
+                        values are set.</p>
+
+
+                        <pre class="code">...
+
+a) Its is mandatory to set the type. User can set attributes for all the animation types
+
+Following are the different animation types. The avaialablity of the type depends on the current plot type. 
+The GetAvailableAnimationTypes() method can be called to get the list of avaialable animation types.
+  1) SimScaleFactor
+  2) SimTimeHistory
+  3) SimLoopOverModes
+  4) SimScanSingleFrame
+  5) SimTimeHistoryAndLoopover
+  6) SimFrameBased
+  7) SimStreamline
+  8) SimEventSeries
+  9) SimHarmonic
+
+Dim oAnimType As SimAnimationTypes
+oAnimType = SimTimeHistory
+oAnimationOptions.SetType oAnimType
+
+b) Frame selector needs to be set only for time history and loop over mode
+
+Dim FrameSelector As SimFramesSelection
+Set FrameSelector = oResultsAnalysisCase.CreateFrameSelector
+FrameSelector.SymbolicFrameRange = SimAllFrames
+oAnimationOptions.SetFrameSelector FrameSelector
+
+c) Specifies whether to animate over all the frames or with specific intervals
+
+Dim oSamplingType As SimSamplingRateTypes
+oSamplingType = SimAllSelectedFrames
+Dim oSamplingFilterType As SimSamplingFilterTypes
+oSamplingFilterType = SimTotalFrames
+oAnimationOptions.SetSamplingRate oSamplingType, oSamplingFilterType, 10
+
+d) Specifies the speed of animation
+
+Dim eTargetSpeedType As SimTargetSpeedTypes
+eTargetSpeedType = SimTargetSpeedMax
+oAnimationOptions.SetTargetSpeed eTargetSpeedType, 10
+
+e) Updates the options. It has to be called at the end
+
+oAnimationOptions.Update
+
+...
+</pre>
+
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step5"></a>Retrieves the animation video object.</strong></p>
+                        <p>
+                            The following code retrieves the animation video object from the SimResultsManager.
+                        </p>
+                        <pre class="code">...
+
+Dim oAnimationVideo As SimResultsAnimationVideo
+Set oAnimationVideo = oRootRepRes.GetItem("SimResultsAnimationVideo")
+
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step6"></a>Retrieves the available codec options</strong></p>
+                        <p>The codec options may be system specific. The different codecs are IntelIYUV, MicrosoftVideo1, FullFrames(compressed), "H.264 / MPEG-4 AVC"</p>
+                        <pre class="code">...
+
+Dim lsCodecs()
+oAnimationVideo.GetListOfCodecOptions lsCodecs
+
+...
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step7"></a>Sets the video options</strong></p>
+                        <p>
+                            Following code sets the video options.
+                        </p>
+                        <pre class="code">...
+
+a) The following enums are avaialble for SimAnimPlaybackTypes in SMAIAMpaAnimationOptionsEnums:
+    SimPlaybackFramesPerSec,
+    SimPlaybackTotalTime
+
+Dim oPlaybackType As SimAnimPlaybackTypes
+oPlaybackType = SimPlaybackTotalTime
+oAnimationVideo.SetPlayback oPlaybackType, 10
+
+b) The codecs can be set as below.
+
+    i) Microsoft Video 1 codec:
+        Dim csCodec As String
+        csCodec = "Microsoft Video 1"
+        oAnimationVideo.SetCodec csCodec
+        oAnimationVideo.SetCompressionOptions 88, True, 1, 100
+
+    ii) H.264 / MPEG-4 AVC codec:
+        Dim csCodec As String
+        csCodec = "H.264 / MPEG-4 AVC"
+        oAnimationVideo.SetCodec csCodec
+        oAnimationVideo.SetRayTraceOptions 5, True, 1, True, True, True, 20
+
+    iii) IntelIYUV and FullFrames(compressed) codecs:
+Dim csCodec As String
+csCodec = "FullFrames(compressed)"
+
+c) Setting the XY plot options. Only the activated or opened history plot will be added in the video.
+oAnimationVideo.SetXYPlotOptions True, 40, 40, 0, 100
+
+...
+</pre>
+                    </pre></li>
+
+
+
+                    <li>
+                        <p><strong><a name="Step8"></a>Creates the video</strong></p>
+                        <p>Following code sets the path and file name to create the video.</p>
+                        <pre class="code">...
+ 
+Dim ofilePath As String
+Dim ofileName As String
+ofilePath = "D:\temp"
+ofileName = "HistoryAnimationMovie.avi"
+oResAnimVideo.CreateMovie ofilePath, ofileName
+
+...
+</pre>
+                    </li>
+
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

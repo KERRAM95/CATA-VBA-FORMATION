@@ -1,0 +1,216 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>IG2 Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>IG2 Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>IG2</h2>
+<p><strong>Role:</strong> Handling of IGES 2D Data Exchange Import and Export parameters</p>
+<p><strong>Detailed role:</strong> Handling of IGES 2D Data Exchange Import and Export parameters</p>
+<p>The IG2 repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /General/Compatibility/IGES 2D</li>
+  <li><strong>Repository File</strong>: IG2</li>
+  <li><strong>Version</strong>: 1</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+<li><strong>Root tab page</strong> /x reused as /x</li>
+</ul>
+<p>IG2 setting repository attributes:</p>
+<ul>
+  <li><a name="ExportMode"></a><strong>ExportMode</strong>
+    <br /><strong>Role</strong>: Export Mode semantic, strucured or graphic
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 2</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Export semantic.</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Export structured.</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Export graphic.</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ExportSheets"></a><strong>ExportSheets</strong>
+    <br /><strong>Role</strong>: Which sheets to export
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Export All sheets. One File is generated per none empty sheet.</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Export only the current sheet in a single file.</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ExportViewAsViewport"></a><strong>ExportViewAsViewport</strong>
+    <br /><strong>Role</strong>: Export View as Viewport
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="ImportDftStandard"></a><strong>ImportDftStandard</strong>
+    <br /><strong>Role</strong>: name of the Drafting standard that defines the standard of the resulting Drawing
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: ISO</li>
+    </ul>
+  </li>
+  <li><a name="ImportDimensions"></a><strong>ImportDimensions</strong>
+    <br /><strong>Role</strong>: How to import dimensions
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Convert dimensions as dimensions</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>The Convert dimensions as details</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Convert dimensions as geometry</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ImportEndPoints"></a><strong>ImportEndPoints</strong>
+    <br /><strong>Role</strong>: When create end points
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Never create end points.</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Create end points only for few entities.</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Always create end points.</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ImportKeepModelSpace"></a><strong>ImportKeepModelSpace</strong>
+    <br /><strong>Role</strong>: Keep the Model Space even if referenced by Viewports
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="ImportMapColor"></a><strong>ImportMapColor</strong>
+    <br /><strong>Role</strong>: Map entities's colors depending background
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="ImportMapLayerOn2DL"></a><strong>ImportMapLayerOn2DL</strong>
+    <br /><strong>Role</strong>: Map Layer on 2DLlayout Sheet
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="ImportPaperSpacesInBackground"></a><strong>ImportPaperSpacesInBackground</strong>
+    <br /><strong>Role</strong>: Put the Paper Spaces in Background View
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="ImportUnit"></a><strong>ImportUnit</strong>
+    <br /><strong>Role</strong>: the unit of the input file
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 5</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>The unit of the input file is Millimeter</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>The unit of the input file is Centimeter</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>The unit of the input file is Meter</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>The unit of the input file is Inch</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>The unit of the input file is Foot</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>The unit of the input file is determined Automatically</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

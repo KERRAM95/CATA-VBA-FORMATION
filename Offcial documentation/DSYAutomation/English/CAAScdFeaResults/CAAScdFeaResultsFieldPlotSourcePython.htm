@@ -1,0 +1,137 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaResultsFieldPlotSourcePython.py</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+    #--------------------------------------------------------------------------
+<pre>
+<span class="comment">#---------------------------- Sample MACRO written in Basic Script ---------------------------------</span>
+<span class="comment">#This sample creates a field plot.</span>
+
+<span class="comment">#Steps:</span>
+<span class="comment">#    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">#    2- Retrieves the results analysis case</span>
+<span class="comment">#    3- Retrieves the plot from the results set</span>
+<span class="comment">#    4- Creates the field plot through template</span>
+<span class="comment">#    5- Sets the display group to the plot</span>
+<span class="comment">#    6- Sets the deformation scale factor</span>
+<span class="comment">#    7- Retrieves the legend from the plot</span>
+<span class="comment">#    8- Retrieves the step and frame from the plot</span> 
+<span class="comment">#    9- Deletes the plot</span>
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+ENUM = win32com.client.constants
+
+oEditor = CATIA.ActiveEditor
+
+oProdService = oEditor.GetService("PLMProductService")
+
+oEntities = oProdService.EditedContent
+
+oEntity = oEntities.Item(1)
+
+oSimulationRoot = oEntity 
+    
+oResults = oSimulationRoot.Results
+
+oSimulationRepRes = oResults.Item(1)  
+
+oRootRepRes = oSimulationRepRes.Root    
+
+oResultsManager = oRootRepRes.GetItem("SimResultsManager") 
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    2- Retrieves the results analysis case</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oResultsAnalysisCases = oResultsManager.ResultsAnalysisCases
+oResultsAnalysisCase = oResultsAnalysisCases.Item(1)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    3- Retrieves the plot from the results set</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oFieldPlots = oResultsAnalysisCase.GetSet("FieldPlot")
+
+oFieldPlots = oFieldPlots[0]
+oFieldPlot = oFieldPlots.Item(1)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    4- Retrieves plot ID#s and creates the field plots through template</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+    
+sIdList = oResultsAnalysisCase.GetListOfFieldPlotIDs ((), True, True, ())
+
+sId1 = sIdList[2]
+oPlot = oResultsAnalysisCase.CreateFieldPlotByID(sId1, True)
+oPlot = oPlot[0]
+sId2 = "Contour_Von_Mises"
+oPlot1 = oResultsAnalysisCase.CreateFieldPlotByID(sId2, False)
+oPlot1 = oPlot1[0]
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    5- Sets support to the sensor</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oDisplayGroupSet = oResultsAnalysisCase.GetSet("DisplayGroupSet")
+oDisplayGroupSet = oDisplayGroupSet[0]
+oDisplayGroup = oDisplayGroupSet.Item(1)
+             
+MyDispatch = oDisplayGroup
+MySupports = [MyDispatch]
+oPlot.DisplayGroup = (MyDispatch)
+oPlot.Refresh()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    6- Sets the deformation scale factor</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oPlot.SetDeformationScaleFactors (2, 2, 2)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    7- Retrieves the legend form the plot</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oPlotLegend = oPlot.Legend
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    8- Retrieves the step and frame from the plot</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+nbFrame = oPlot.GetCurrentFrame (True)
+
+sStep, nbframe, nbLoadCase = oPlot.GetStepAndFrame ("", 0, 0, False)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    9- Deletes the plot</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oResultsAnalysisCase.DeleteFeature (oPlot1)
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Parsing a Robot Program Using VB.NET</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Parsing a Robot Program Using VB.NET</h1>
+		</td>
+	</tr>
+</table>
+<p>Parsing is the process of programmatically reading text and
+identifying the components of it that make up individual instructions and
+arguments. In most 3DExperience translators, this is accomplished by a C++
+parser associated with that translator. This parser constructs an Abstract Syntax Tree (AST) out
+of the items it identifies, which will then be read by the VB.NET upload
+process for that translator. See Robotics Programming Overview for an explanation of the AST.</p>
+<p>The Example Translator is designed to use VB.NET for parse
+in order to provide a demonstration of how the parse process works. In this
+translator, ExampleTranslator.Parse() will call ExampleTask.Parse(), similar to
+the Upload/Download process (link) in most translators. The ExampleTask.Parse()
+method checks each line for the keywords that would identify a motion
+instruction and calls a function to parse the line based on what it finds. If
+it finds the appropriate keywords, it calls ExampleMotionInstruction.Parse().
+If it does not find those keywords, it defaults to calling ExampleCommentInstruction.Parse(). 
+This is the method where additional logic would need to be added to parse
+non-motion, non-comment lines with the Example Translator, by adding another
+possibility to the If statement. Note that the terms being checked for are defined
+in ExampleKeywords.vb; this assures consistency in the keywords used in the
+code, as well as improving convenience by allowing all instances of each
+keyword to be changed in one location.</p>
+<p>To assist with debugging translators, the TranslatorUtils class contains the method TranslatorUtils.OutputASTForDebug().
+ This method will output the AST structure as an .xml file. This method expects two arguments -
+ the first is the AST structure to output, an OlpAstBranch variable, and the second is a string, 
+ which the method will use to name the output file. You can use the AST XML-file while debugging 
+ to identify problems with the parsing logic.  For more information on how to debug a translator with breakpoints, see the
+ Simulation | Robotics | Robot Programming | Translator Prerequisites | Debugging Translators section of the User Assistance. </p>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

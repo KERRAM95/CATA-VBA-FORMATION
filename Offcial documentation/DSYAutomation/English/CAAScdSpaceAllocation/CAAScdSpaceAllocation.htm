@@ -1,0 +1,387 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Language" content="en-us" />
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+  <meta name="GENERATOR" content="Microsoft FrontPage 12.0" />
+  <meta name="ProgId" content="FrontPage.Editor.Document" />
+  <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+  <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+  <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+  <title>Retrieving Space Allocation Data</title>
+</head>
+<body onload="highlightSearchTerms();">
+  <table class="table1">
+    <tr>
+      <td class="DocHeader3">
+        <table>
+          <tr>
+            <td class="DocHeader1" colspan="2">
+              <h1>Retrieving Space Allocation Data</h1>
+            </td>
+          </tr>
+          <tr>
+            <td class="DocHeader4" colspan="2">
+              &nbsp;
+            </td>
+          </tr>
+          <tr>
+            <td class="DocHeader3">
+              <table class="DocHeaderIntro">
+                <tr>
+                  <td class="Intro1">
+                    <p class="header">
+                      <a name="hj-top"></a>This use case primarily focuses on the methodology to retrieve
+                      and edit Space Allocation data.</p>
+                    <div id="toc">
+                    </div>
+                    <hr class="header" />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="Intro2">
+                    <span class="run-in">Before you begin:</span> Note that:<ul>
+                          <li>Launch CATIA</li>
+                          <li>Open a SPL product structure from database or create one before launching the macro. A sample <code><div class=vb_sample_data>CAASplUcAssembly.3dxml</div> </code>file is supplied in folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdSpaceAllocation\samples\</code>
+                        where <code>InstallRootFolder</code> is the folder where the CAA CD-ROM is installed.</li>   
+                          <li>Keep product editor active before launching the macro</li>
+                    </ul>
+                    <p>
+                      <span class="run-in">Where to find the macro: <a href="CAAScdSpaceAllocationSource.htm">
+                        CAAScdSpaceAllocationSource.htm</a></span></p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSsmTocSpaceAllocation.htm">Space Allocation Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <table class="indented">
+    <tr>
+      <td>
+        <p>
+          This use case can be divided in 15 steps:</p>
+        <ol>
+          <li><a href="#Step1">Open model in the editor</a></li>
+          <li><a href="#Step2">Retrieves active object</a></li>
+          <li><a href="#Step3">Retrieves Space Root</a></li>
+          <li><a href="#Step4">Retrieves Space Folder and Spaces</a></li>
+          <li><a href="#Step5">Retrieves Space System</a></li>
+          <li><a href="#Step6">Retrieves Space Manager</a></li>
+          <li><a href="#Step7">Retrieves Bounding Box and External Volume</a></li>
+          <li><a href="#Step8">Retrieves SpaceCell Set,Cutting Set and family</a></li>
+          <li><a href="#Step9">Retrieves Molded Surface</a></li>
+          <li><a href="#Step10">Retrieves Molded Surface Internal Attributes</a></li>
+          <li><a href="#Step11">Retrieves Molded Surface Limit Internal Attributes</a></li>
+          <li><a href="#Step12">Retrieves Space Concept Root</a></li>
+          <li><a href="#Step13">Retrieves Space Concept Node</a></li>
+          <li><a href="#Step14">Retrieves Space Reference</a></li>
+          <li><a href="#Step15">Retrieves Design or Manufacturing Space Reference</a></li>
+        </ol>
+      </td>
+    </tr>
+  </table>
+  <table class="table1">
+    <tr>
+      <td>
+        <ol class="task">
+          <li>
+            <p>
+              <strong><a name="Step1"></a>User should opens model in the editor</strong></p>
+            <p>
+              As a first step, open a SPL product structure. The supplied sample &quot;<div class=vb_sample_data>CAASplUcAssembly.3dxml</div>&quot; can be imported and open the product named &quot;Root&quot;. </p>
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step2"></a>Retrieves active Object</strong></p>
+            <p>
+              As a next step, the UC retrieves the active object in oUIActiveObject variable. To
+              retrieve the active object, the active editor <strong><code>SSMPrdEditor </code></strong>is used.</p>
+            <pre class="code"> ...
+  Set SSMPrdEditor = CATIA.ActiveEditor
+  Set oUIActiveObject = SSMPrdEditor.ActiveObject
+ ...
+</pre>
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step3"></a>Retrieves Space Root</strong></p>
+            <p>
+              In this step UC retrieves Space Root Object.</p>
+            <pre class="code">... 
+  Dim objectOccur As VPMOccurrence
+  Set objectOccur = oUIActiveObject 
+
+  Dim oListChildrenOccurrences As VPMOccurrences
+  Set oListChildrenOccurrences = objectOccur.Occurrences
+
+  Dim SsmSpaceRootObj As SsmSpaceRoot
+
+  objectcount = oListChildrenOccurrences.Count
+  For j = 1 To objectcount
+    Set TempVPMOccur = oListChildrenOccurrences.Item(j)
+    Set TempVPMInst = TempVPMOccur.InstanceOccurrenceOf
+    Set TempVPMReference = TempVPMInst.ReferenceInstanceOf
+
+    Dim name As String
+
+    name = TempVPMReference.GetCustomType
+
+    If TempVPMReference.GetCustomType = "SPP_SpaceRoot" Then
+      Set SsmSpaceRootObj = TempVPMReference
+    End If
+  Next
+...</pre>
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step4"></a>Retrieves Space Folder and Spaces</strong></p>
+            <p>
+              In this step UC retrieves Space Folder.</p>
+            <pre class="code"> ...
+  Dim Spacefolder As SsmSpaceFolder
+  Set Spacefolder = SsmSpaceRootObj.Spacefolder
+
+  Dim SpaceList As SsmSpaces
+  Set SpaceList = Spacefolder.Spaces
+ ...
+</pre>
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step5"></a>Retrieves Space System</strong></p>
+            <p>
+              In this step UC retrieves Space System.</p>
+            <pre class="code">... 
+  Dim SsmSpaceSys As SsmSpaceSystem
+  Dim SpaceSysList As SsmSpaceSystems
+
+  Set SpaceSysList = SsmSpaceRootObj.SpaceSystems
+
+  Set SsmSpaceSys = SpaceSysList.Item(1)
+...</pre>
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step6"></a>Retrieves Space Manager</strong></p>
+            <p>
+              Now, retrieve the Space manager from Space System VPM Reference.</p>
+            <pre class="code">... 
+    
+  Dim SsmManager As SsmSpaceManager
+  Set SsmManager = SsmSpaceSys.SpaceManager
+...</pre>
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step7"></a>Retrieves Bounding Box and External Volume</strong></p>
+            <p>
+              In this step UC retrieves Bounding Box and External Volume from Space Manager.</p>
+            <pre class="code">...
+  Dim SpaceExtrVol As SsmSpaceInput
+  Set SpaceExtrVol = SsmManager.ExternalVolume
+  Set extrvolume   = SpaceExtrVol.SpaceElement
+
+  Dim SpaceboundingBox As SsmSpaceInput
+  Set SpaceboundingBox = SsmManager.BoundingBox
+  Set boundBox         = SpaceboundingBox.SpaceElement
+...</pre>
+            <p>
+              These methods will give user the access to the Bounding box and External Volume.</p>
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step8"></a>Retrieves SpaceCell Set,Cutting Set and family</strong></p>
+            <p>
+              In this step UC retrieves SpaceCell Set,Cutting Set and family from Space Manager.</p>
+            <pre class="code">...
+  Dim SpaceCellTool As SsmToolSet
+  Dim SpaceCellChild As References
+  Set SpaceCellTool = SsmManager.SpaceCellSet
+  SpaceCellTool.GetChildren SpaceCellChild
+
+  Dim CuttingCellTool As SsmCuttingSet
+  Dim CuttingSetChild As SsmCuttingFamilys
+  Dim CuttigFamilychild As SsmCuttingInputs
+  Set CuttingCellTool = SsmManager.CuttingSet
+  CuttingCellTool.GetChildren CuttingSetChild
+
+  Dim cuttingfamily As SsmCuttingFamily
+  Set cuttingfamily = CuttingSetChild.Item(1)
+    
+  cuttingfamily.GetChildren CuttigFamilychild
+    
+  Dim cuttingelementInput As SsmCuttingInput
+  Set cuttingelementInput = CuttigFamilychild.Item(1)
+    
+  Set cuttingelement = cuttingelementInput
+...</pre>
+            <p>
+              These methods will give user the access to the Space Cells and Cutting elements.</p>
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step9"></a>Retrieves Molded Surfaces Molded Surface</strong></p>
+            <p>
+              In this step UC retrives Molded Surface. Same as in Retrieving Space Mananger, User
+              can reach to the part whcih contain Molded Surface</p>
+            <pre class="code">...
+  Dim oVPMRepInsts As VPMRepInstances
+  Set oVPMRepInsts = SpaceSysVPMReference.RepInstances
+    
+  Dim oVPMRepInst As VPMRepInstance
+  Set oVPMRepInst = oVPMRepInsts.Item(1)
+
+  Dim oVPMRepRef As VPMRepReference
+  Set oVPMRepRef = oVPMRepInst.ReferenceInstanceOf
+ 
+  Dim oPart As Part
+    
+  Set oPart = oVPMRepRef.GetItem("Part")
+  Dim MoldedSurface As SsmDelimitedMoldedSurface
+  Set MoldedSurface = oPart.FindObjectByName(&quot;D.2")
+...</pre>
+            <p>
+              Using this method, user can reach to the desired molded surface</p>
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step10"></a>Retrieves Molded Surface Internal Attributes</strong></p>
+            <pre class="code">...
+  Dim Orientation As Long
+  Set MSSupport = MoldedSurface.Support
+  Orientation   = MoldedSurface.SupportOrientation
+  Set MSOffset  = MoldedSurface.SupportOffset
+...</pre>
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step11"></a>Retrieves Molded Surface Limit Internal Attributes</strong></p>
+            <p>
+              Molded Surface Limit Interface can be retrieved from Molded Surface and then it
+              can be used to access internal attributes</p>
+            <pre class="code">...
+  Dim MoldedSurfaceLmt As SsmMoldedSurfaceLmt
+  Set MoldedSurfaceLmt = MoldedSurface
+
+  Orientation = MoldedSurfaceLmt.GetOrientation(index)
+  Set limitingObj = MoldedSurfaceLmt.GetLimitingObject(index)
+...</pre>
+            <script type="text/javascript">              insertLinkToTop()</script>
+            <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step12"></a>Retrieves Space Concept Root</strong></p>
+            <p>
+              In this step UC retrieves Space Concept Root.</p>
+            <pre class="code">... 
+  Dim SsmSpaceConRoot As SsmSpaceConceptRoot
+  Dim SpaceConRootList As SsmSpaceConceptRoots
+  Set SpaceConRootList = SsmSpaceRootObj.SpaceConceptRoots
+ 
+  Set SsmSpaceConRoot = SpaceConRootList.Item(1)
+...</pre>
+            <p>
+              User can get aggregated Space concept nodes from this interface</p>
+            <pre class="code">... 
+  Dim SpaceConNodeList As SsmSpaceConceptNodes
+  Set SpaceConNodeList = SsmSpaceConRoot.SpaceConceptNodes
+...</pre>
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step13"></a>Retrieves Space Concept Node</strong></p>
+            <p>
+              In this step UC retrieves Space Concept Node</p>
+            <pre class="code">...
+  Dim Size As Long
+  Dim SpaceConNode As SsmSpaceConceptNode
+
+  Size = SpaceConNodeList.Count
+    
+  For i = 1 To Size
+      Set SpaceConNode = SpaceConNodeList.Item(i)
+  Next
+...</pre>
+            <p>
+              User can get aggregated Space concept nodes from this interface</p>
+            <pre class="code">...
+  Dim SpaceConNodeList2 As SsmSpaceConceptNodes
+  Set SpaceConNodeList2 = SpaceConNode.SpaceConceptNodes
+...</pre>
+            <script type="text/javascript">              insertLinkToTop()</script>
+            <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step14"></a>Retrieves Space Reference</strong></p>
+            <p>
+              In this step UC retrieves the Space Reference from Space Concept node.</p>
+            <pre class="code">...
+  Dim SpaceRef As SsmSpace
+  Set SpaceRef = SpaceConNode.Space
+...</pre>
+            <p>
+              User can then access all its attributes from this Interface</p>
+            <pre class="code">...
+  Set SpaceRefGeo = SpaceRef.VolumeGeom
+  SpaceVolume = SpaceRef.Volume
+
+...</pre>
+            <script type="text/javascript">              insertLinkToTop()</script>
+            <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+          </li>
+          <li>
+            <p>
+              <strong><a name="Step15"></a>Retrieves Design or Manufacturing Space Reference</strong></p>
+            <p>
+              In this step UC retrieves the Design or Manufacturing Space Reference from Space
+              Reference.</p>
+            <pre class="code">...
+  Dim SpaceRefDesign As SsmDesignSpace
+  Dim SpaceRefManuf  As SsmManufacturingSpace
+
+  Set SpaceRefDesign = SpaceRef
+
+...</pre>
+            <p>
+              It can be either Design or Manufacturing Space Reference. User can then access all
+              its attributes from this Interface</p>
+            <pre class="code">...
+
+  SpaceFloorArea = SpaceRefDesign.FloorArea
+
+...</pre>
+            <script type="text/javascript">              insertLinkToTop()</script>
+            <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+          </li>
+        </ol>
+      </td>
+    </tr>
+  </table>
+  <script type="text/javascript">    insertCopyright();</script>
+</body>
+</html>

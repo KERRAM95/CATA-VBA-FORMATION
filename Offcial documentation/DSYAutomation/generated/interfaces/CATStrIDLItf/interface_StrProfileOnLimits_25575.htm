@@ -1,0 +1,154 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATStrIDLItf StrProfileOnLimits (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATStrIDLItf.htm" href="../CATStrIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATStrIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "StrProfileOnLimits"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> StrProfileOnLimits<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_StrProfileOnLimits_25575','StrProfileOnLimits','0');</script>
+<section id='maindesc'>
+<b><i> Object to manage a Profile built on Limits</i></b><br>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#ReferenceSupportPlate"><b>ReferenceSupportPlate</b></a>
+</td><td  id='tdright'>  Set the reference support plate whose limits will be applied.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetLimits"><b>GetLimits</b></a>
+</td><td  id='tdright'>      Returns the list of limits on which profile is built.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTraceOffset"><b>GetTraceOffset</b></a>
+</td><td  id='tdright'>   Returns the offset used to perform a geodesic parallel curve from the Limits.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetLimits"><b>SetLimits</b></a>
+</td><td  id='tdright'>  Sets the Limits indexes on which this Profile will be built.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="ReferenceSupportPlate"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ReferenceSupportPlate</span><span class='signature'>(<script type="text/javascript"> activateLink('StructurePlate','StructurePlate')</script> <span class='param'>iStrPlate</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Set the reference support plate whose limits will be applied.
+ In the two methods GetLimits & SetLimits, the limits of this reference plate are used.
+
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example sets the reference plate on the profileonlimits.
+ <pre>
+  ObjStrProfileOnLimits.<font color="red">ReferenceSupportPlate</font> = ObjStrPlate
+ </pre>
+</dd>
+</dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetLimits"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetLimits</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAReferences','CATIAReferences')</script> </span></dt>
+  <dd class='ddmethod'>
+     Returns the list of limits on which profile is built.
+   The limits has to be mono domain.  
+
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example retrieves limits of profile.
+ <pre>
+  Dim ObjStrProfileOnLimits As StrProfileOnLimits
+  Set ObjStrProfileOnLimits = ObjSfdStiffenerOnFreeEdge.StrProfileOnLimits
+  Set ListOfLimitRefs = ObjStrProfileOnLimits.<font color="red">GetLimits</font>
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="GetTraceOffset"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTraceOffset</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAParameter','CATIAParameter')</script> </span></dt>
+  <dd class='ddmethod'>
+  Returns the offset used to perform a geodesic parallel curve from the Limits.  
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example retrieves in limit offset.
+ <pre>
+  Dim OffsetParm As Parameter
+  Set OffsetParm = ObjStrProfileOnLimits.<font color="red">GetTraceOffset</font>
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="SetLimits"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetLimits</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iListOfLimitIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the Limits indexes on which this Profile will be built.    
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iListOfLimitIndex</span></dt>
+   <dd>      List of Limits indexes. Array should contain long values like 1, 2...
+     <br>These values corresponds to the limits of the panel.
+     <br>1 corresponds to the 1st limit
+     <br>2 corresponds to the 2nd limit ...  
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example sets limits indexes on which this profile will be created.
+ <pre>
+  Dim LimitIndexList(1) As Variant
+  LimitIndexList(0) = 1
+  LimitIndexList(1) = 4
+  ObjStrProfileOnLimits.<font color="red">SetLimits</font> (LimitIndexList)
+ </pre>
+ </dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

@@ -1,0 +1,190 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js"></script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js"></script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js"></script>
+<title>Method Index XML Schema</title>
+<style type="text/css">
+.tableStyle1 {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.tableStyle1 th, .tableStyle1 td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 3px;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Method Index XML Schema</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+
+<table class="abstract">
+	<tr>
+		<td>
+			<h3>Abstract</h3>
+			<p>This article details the schema of the custom Method index file.</p>
+		</td>
+	</tr>
+</table>
+
+<p>The custom Method index file is used in deploying custom Methods. 
+Its use is covered in the "Physics Methods Reuse - Administration" 
+section of the Installation and Administration guide 
+(Installation and Administration | Content and Simulation | Physics Methods Reuse - Administration). </p>
+
+<br/>
+<p><a href="CAAScdFeaCustMethIndxExampl.htm">Example index file.</a></p>
+
+<p>
+<h4>Summary</h4>
+<p>
+&lt;Index ... &gt;<br/>
+&nbsp;&nbsp;&nbsp;&lt;Method ... /&gt;+<br/>
+&lt;/Index&gt;<br/>
+</p>
+<p>&lt;Index  name?  nlsFile? &gt;</p>
+<p>&lt;Method  name?  description?  nlsFile?  file /&gt;</p>
+</p>
+
+<h4>Details</h4>
+
+<table class="tableStyle1">
+<tr>
+<td>
+&lt;Index
+</td>
+<td>
+The document root element.<br/>
+Required.
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;name
+</td>
+<td>
+type=xs:string<br/>
+Specifies the Method-group name that is displayed in the Method selection dialog.<br/>
+The value is first treated as an NLS lookup key. (See nlsFile.) If the NLS lookup fails, the value is used as given. Therefore, it is not necessary to specify an NLS key.<br/>
+Optional - defaults to the name of the index file. (The default value is also used as a NLS key.)<br/>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;nlsFile
+</td>
+<td>
+type=xs:string<br/>
+The name/path of the CATNls file for NLS lookups. (Extension omitted.) May include a relative sub-directory path. <br/>
+The location of the CATNls file is relative to the following:<br/>
+<ul>
+<li>The directory of the index file.</li>
+<li>The standard "resources/msgcatalog" runtime directory.</li>
+</ul>
+Optional - defaults to the basename of the index file.<br/>
+A CATNls file is not necessary if NLS lookups are not needed.<br/>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&lt;Method
+</td>
+<td>
+A declaration of a custom Method.<br/>
+minOccurs=1 maxOccurs=unbounded<br/>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name
+</td>
+<td>
+type=xs:string<br/>
+Specifies the Method name that is displayed in the Method selection dialog.<br/>
+The value is first treated as an NLS lookup key. (See nlsFile.) If the NLS lookup fails, the value is used as given. Therefore, it is not necessary to specify an NLS key.<br/>
+Optional - defaults to the basename of the Method file. (The default value is also used as a NLS key.)<br/>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description
+</td>
+<td>
+type=xs:string<br/>
+Specifies a description for the Method that is displayed in the Method selection dialog.<br/>
+The value is first treated as an NLS lookup key. (See nlsFile.) If the NLS lookup fails, the value is used as given. Therefore, it is not necessary to specify a NLS key.<br/>
+Optional - defaults to "&lt;basename of the Method file&gt;.Description". (The default value is used only as an NLS key. If the NLS lookup fails, the description field is left empty.)<br/>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nlsFile
+</td>
+<td>
+type=xs:string<br/>
+The name/path of the CATNls file for NLS lookups. (Extension omitted.) May include a relative sub-directory path. <br/>
+The location of the CATNls file is relative to the following:<br/>
+<ul>
+<li>The directory of the Method file.</li>
+<li>The standard "resources/msgcatalog" runtime directory.</li>
+</ul>
+Optional - defaults to the basename of the Method file. <br/>
+Additionally the CATNls file associated with the &lt;Index&gt; element is also used. Therefore, the Method level CATNls entries can be put in the &lt;Index&gt; level CATNls file.<br/>
+A CATNls file is not necessary if NLS lookups are not needed.<br/>
+</td>
+</tr>
+<tr>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file
+</td>
+<td>
+type=xs:string<br/>
+The path of the corresponding custom Method file. Can be either an absolute or a relative path. A relative path is relative to the path of the index file.<br/>
+Required.<br/>
+</td>
+</tr>
+</table>
+
+
+<script type="text/javascript">insertLinkToTop();</script>
+
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [Jan 2016]</td>
+		<td>Document created</td>
+	</tr>
+	<tr>
+		<td>Version: <strong>1.1</strong> [Feb 2016]</td>
+		<td>Added link to example index file.</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

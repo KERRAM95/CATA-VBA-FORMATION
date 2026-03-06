@@ -1,0 +1,627 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>About Microsoft Automation Languages, Debug, and Compatibility</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>About Microsoft Automation Languages, Debug, and Compatibility</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<p>You will find in this section an overview of the different types of Automation 
+		languages provided by Microsoft, their main differences, and some language limitations, how to 
+		use the Script Debugger, and some tips when upgrading your installation 
+		to a new release.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Languages"></a>Supported Scripting Languages</h2>
+<p>The supported scripting languages are:</p>
+<ul>
+	<li>V6 native: CATScript and VBScript (VBS).</li>
+	<li>Visual Basic for Applications: VBA.</li>
+	<li>Visual Studio Tools for Applications (VSTA): VB.Net and C#.</li>
+	<li>Python which is not addressed in this article. See
+	<a href="CAAInfWorkingWithPython.htm">About Python</a>.</li>
+</ul>
+<p>The Automation objects can be accessed using any of these languages. </p>
+<p>CATScript is a Dassault Syst&#232;mes specific language kept for compatibility reasons, but CATScript macros are converted 
+to VBScript by removing the typing information whenever they are run.</p>
+<p>These languages differ from one another. For example, returning the active printer 
+using the <strong>ActivePrinter</strong> property of the <strong>Application</strong> 
+object is written as follows, depending on the language:</p>
+<table class="horborder">
+	<tbody>
+	<tr>
+		<th>Languages</th>
+		<th>Code</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>CATScript</td>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oPrinter <span class="keyword">As</span> Printer
+<span class="keyword">Set</span> oPrinter = CATIA.ActivePrinter</pre>
+		</td>
+		<td>The variable <code>oPrinter</code> is declared using the <strong>Dim</strong> 
+		keyword and typed using the <strong>As</strong> keyword. Nevertheless, this type is removed when running the macro as a VBScript one.</td>
+	</tr>
+	<tr>
+		<td>VBScript</td>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oPrinter
+<span class="keyword">Set</span> oPrinter = CATIA.ActivePrinter</pre>
+		</td>
+		<td>The variable <code>oPrinter</code> is declared using the <strong>Dim</strong> 
+		keyword, but not typed.</td>
+	</tr>
+	<tr>
+		<td>VBA</td>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oPrinter <span class="keyword">As</span> Printer
+<span class="keyword">Set</span> oPrinter = CATIA.ActivePrinter</pre>
+		</td>
+		<td>The variable <code>oPrinter</code> is declared using the <strong>Dim</strong> 
+		keyword and typed using the <strong>As</strong> keyword.</td>
+	</tr>
+	<tr>
+		<td>VB.Net</td>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oPrinter <span class="keyword">As</span> INFITF.Printer
+oPrinter = CATIA.ActivePrinter</pre>
+		</td>
+		<td>The variable <code>oPrinter</code> is declared using the <strong>Dim</strong> 
+		keyword and typed using the <strong>As</strong> keyword by using the name 
+		of the type library containing the object as namespace. The variable value 
+		is assigned without using the <strong>Set</strong> keyword.</td>
+	</tr>
+	<tr>
+		<td>C#</td>
+		<td>
+		<pre class="code"><span class="keyword">private</span> INFITF.Printer oPrinter;
+...
+<span class="keyword">private void</span> GetActivePrinter() {
+  oPrinter = CATIA.ActivePrinter;</pre>
+		</td>
+		<td>The variable <code>oPrinter</code> is declared and typed outside of 
+		the function using the private keyword and by using the name of the type 
+		library containing the object as namespace. The variable value is assigned 
+		without using the <strong>Set</strong> keyword.</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="AbstractObjects"></a>Abstract Objects</h3>
+<p>An abstract object [<a href="#References">1</a>] represents an object you cannot 
+handle, but used as a parent type for objects of the same kind. When a <strong>
+<a name="VBAbstractObject0"></a></strong>property or a method returns an abstract 
+object<strong> </strong>like the <strong>ActiveViewer</strong> property of the
+<strong>Application</strong> object that returns a <strong>Viewer</strong> object, 
+the different languages behave as follows. Assume the active viewer is a 3D viewer.</p>
+<table class="horborder">
+	<tbody>
+	<tr>
+		<th>Languages</th>
+		<th>Code</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>CATScript</td>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oViewer <span class="keyword">As</span> Viewer
+<span class="keyword">Set</span> oViewer = CATIA.ActiveWindow.ActiveViewer</pre>
+		</td>
+		<td>The variable <code>oViewer</code> must be declared as specified in the 
+		property or method signature, that is, as <strong>Viewer</strong> object, 
+		but the returned <code>oViewer</code> is a <strong>Viewer3D</strong> object.
+		Nevertheless, this type is removed when running the macro as a VBScript one.
+		</td>
+	</tr>
+	<tr>
+		<td>VBScript</td>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oViewer
+<span class="keyword">Set</span> oViewer = CATIA.ActiveWindow.ActiveViewer</pre>
+		</td>
+		<td>The variable <code>oViewer</code> is not typed, and the returned
+		<code>oViewer</code> is a <strong>Viewer3D</strong> object.</td>
+	</tr>
+	<tr>
+		<td rowspan="2">VBA</td>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oViewer <span class="keyword">As</span> Viewer3D
+<span class="keyword">Set</span> oViewer= CATIA.ActiveWindow.ActiveViewer</pre>
+		</td>
+		<td>The variable <code>oViewer</code> should be declared as a <strong>Viewer3D</strong> 
+		object. In this case, the returned <code>oViewer</code> is a <strong>Viewer3D</strong> 
+		object. When editing macros using VBA, this sets the Intellisense with 
+		the <strong>Viewer3D</strong> object properties and methods.&nbsp;&nbsp; </td>
+	</tr>
+	<tr>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oViewer <span class="keyword">As</span> Viewer
+<span class="keyword">Set</span> oViewer = CATIA.ActiveWindow.ActiveViewer</pre>
+		</td>
+		<td>Nevertheless, the variable <code>oViewer</code> can be declared as a
+		<strong>Viewer</strong> object. In this case, the returned <code>oViewer</code> 
+		is a <strong>Viewer</strong> object, and you can either convert it to, 
+		or use it as a <strong>Viewer3D</strong> object.</td>
+	</tr>
+	<tr>
+		<td rowspan="2">VB.Net</td>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oViewer <span class="keyword">As</span> INFITF.Viewer3D
+oViewer = CATIA.ActiveWindow.ActiveViewer</pre>
+		</td>
+		<td>The variable <code>oViewer</code> should be declared as a <strong>Viewer3D</strong> 
+		object. In this case, the returned <code>oViewer</code> is a <strong>Viewer3D</strong> 
+		object.</td>
+	</tr>
+	<tr>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oViewer <span class="keyword">As</span> INFITF.Viewer
+oViewer = CATIA.ActiveWindow.ActiveViewer
+<span class="keyword">Dim</span> oViewer3D <span class="keyword">As</span> INFITF.Viewer3D
+oViewer3D = DirectCast(oViewer, INFITF.Viewer3D)</pre>
+		</td>
+		<td>Nevertheless, the variable <code>oViewer</code> can be declared as a
+		<strong>Viewer</strong> object. In this case, the returned <code>oViewer</code> 
+		is a <strong>Viewer</strong> object. You can convert (cast) <code>oViewer</code> 
+		to a <strong>Viewer3D</strong> object thanks to the <code>DirectCast</code> 
+		function.</td>
+	</tr>
+	<tr>
+		<td rowspan="2">C#</td>
+		<td>
+		<pre class="code"><span class="keyword">private</span> INFITF.Viewer3D oViewer;
+...
+<span class="keyword">private void</span> Macro1() {
+  this.oViewer = CATIA.ActiveWindow.ActiveViewer;</pre>
+		</td>
+		<td>The variable <code>oViewer</code> should be declared as a <strong>Viewer3D</strong> 
+		object. In this case, the returned <code>oViewer</code> is a <strong>Viewer3D</strong> 
+		object.</td>
+	</tr>
+	<tr>
+		<td>
+		<pre class="code"><span class="keyword">private</span> INFITF.Viewer oViewer;
+<span class="keyword">private</span> INFITF.Viewer3D oViewer3D;
+...
+<span class="keyword">private void</span> GetActiveViewer() {
+  this.oViewer = CATIA.ActiveWindow.ActiveViewer;
+  this.oViewer3D = (INFITF.Viewer3D) oViewer;</pre>
+		</td>
+		<td>Nevertheless, the variable <code>oViewer</code> can be declared as a
+		<strong>Viewer</strong> object. In this case, the returned <code>oViewer</code> 
+		is a <strong>Viewer</strong> object. You can convert (cast) <code>oViewer</code> 
+		to a <strong>Viewer3D</strong> object.</td>
+	</tr>
+</tbody>
+</table>
+<p>If the returned object <code>oViewer</code> is a <strong>Viewer3D</strong> object, 
+you can call the properties and methods of the <strong>Viewer</strong> object in 
+addition to those of the <strong>Viewer3D</strong> object. If the returned object
+<code>oViewer</code> is a <strong>Viewer</strong> object, even if in this case the 
+real underlying object is a 3D viewer, you can call the properties and methods of 
+the <strong>Viewer</strong> object only, and not those specific to the <strong>Viewer3D</strong> 
+object. With VB.Net and C#, again in this case where the real object is a 3D viewer, 
+you can convert (cast) the returned <strong>Viewer</strong> object to a <strong>
+Viewer3D</strong> object. The resulting variable <code>oViewer3D</code> is a
+<strong>Viewer3D</strong> object. You can now call the properties and methods of 
+the <strong>Viewer3D</strong> object in addition to those inherited from the
+<strong>Viewer</strong> object.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="AnyObject"></a>Case of the AnyObject Object</h3>
+<p>When an <strong>AnyObject</strong> object is returned, it is advised not to 
+type the object declaration.</p>
+<table class="horborder">
+	<tbody>
+	<tr>
+		<th>Languages</th>
+		<th>Code</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>CATScript</td>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oRoot <span class="keyword">As</span> Viewer
+<span class="keyword">Set</span> oRoot = CATIA.ActiveEditor.ActiveObject</pre>
+		</td>
+		<td>The variable <code>oRoot</code> must be declared as specified in the 
+		property or method signature to match CATScript rules, but this type is 
+		removed when running the macro as a VBScript one.
+		</td>
+	</tr>
+	<tr>
+		<td>VBScript</td>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oRoot 
+<span class="keyword">Set</span> oRoot = CATIA.ActiveEditor.ActiveObject</pre>
+		</td>
+		<td>The variable <code>oRoot</code> is not typed, and the returned
+		<code>oViewer</code> is a <strong>Viewer3D</strong> object.</td>
+	</tr>
+	<tr>
+		<td>VBA</td>
+		<td>
+		<pre class="code"><span class="keyword">Dim</span> oRoot <span class="comment">&#39; As AnyObject</span>
+<span class="keyword">Set</span> oRoot = CATIA.ActiveEditor.ActiveObject</pre>
+		</td>
+		<td>The variable <code>oRoot</code> is 
+		declared, but not typed. Depending on the active object, a <strong>Part</strong>,
+		<strong>DrawingRoot</strong>, or <strong>VPMReference</strong> object is 
+		returned, and can be used. In this case, when editing macros using VBA, this 
+		does not set the Intellisense with 
+		any properties and methods.</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Arrays"></a>Arrays</h3>
+<p>You will also have to take care of <strong>methods with array parameters</strong> 
+like in the following example where we extract and display the multiple possible 
+values of a <strong>StringParameter </strong>in VBScript or CATScript:</p>
+<pre class="code"><span class="keyword">Dim</span> strParam1 <span class="keyword">As</span> StrParam
+<span class="keyword">Set</span> strParam1 = parameters1.Item(&quot;STRING&quot;)
+
+iSize = strParam1.GetEnumerateValuesSize()
+
+<span class="keyword">Redim</span> myArray(iSize-1)
+strParam.GetEnumerateValues myArray
+
+<span class="keyword">For </span>i = 0 <span class="keyword">To</span> iSize-1
+  msgbox myArray(i)
+<span class="keyword">Next</span></pre>
+<p>Copying/pasting this piece of code in a VB project may lead, depending on your 
+VBA level to a compilation error because VB may be unable to deal with the signatures 
+that we use for our array types and issues the following message:</p>
+<p><code>Function or interface marked as restricted, or the function uses an Automation 
+type not supported in Visual Basic.</code></p>
+<p><img src="warningVBA.png" alt="Warning VBA" width="617" height="133"/></p>
+<p>A simple workaround is to untype the variable on which the method is applied, 
+that is, strParam1, the type of which is commented out below.</p>
+<pre class="code"><span class="keyword">Dim</span> strParam1 <span class="comment">' As StrParam</span>
+<span class="keyword">Set</span> strParam1 = parameters1.Item(&quot;STRING&quot;)
+
+iSize = strParam1.GetEnumerateValuesSize()
+
+<span class="keyword">Redim</span> myArray(iSize-1)
+strParam1.GetEnumerateValues myArray
+
+<span class="keyword">For </span>i = 0 <span class="keyword">To </span>iSize-1
+    msgbox myArray(i)
+<span class="keyword">Next</span></pre>
+<p>In some case, the above workround will not work as the actual type of the untyped item 
+may not be the expected one. Following example shows a variable <code>ncrepman</code> that must be untyped as per workaround above, 
+but the affection will retrieve an object of type <code>VPMReference</code> instead of 
+its derived type 
+<code>ManufacturingNCRepManagement</code>. 
+<pre class="code"> <span class="keyword">Sub </span>CATMain()
+<span class="keyword">    Dim </span>myEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Set </span>myEditor = CATIA.ActiveEditor
+<span class="keyword">    Dim </span>MyPrdService<span class="keyword"> As </span>PLMProductService
+ <span class="keyword">   Set </span>MyPrdService = myEditor.GetService("PLMProductService")
+ <span class="keyword">   Dim </span>myRootOccurrence<span class="keyword"> As </span>VPMRootOccurrence
+ <span class="keyword">   Set </span>myRootOccurrence = MyPrdService.RootOccurrence
+ <span class="keyword">   Dim </span>myinstance<span class="keyword"> As </span>VPMInstance
+ <span class="keyword">   Set </span>myinstance = myRootOccurrence.ReferenceRootOccurrenceOf.Instances.Item(1)
+ 
+ <span class="keyword">   Dim </span>refinst<span class="keyword"> As </span>VPMReference
+ <span class="keyword">   Set </span>refinst = myinstance.ReferenceInstanceOf
+ <span class="keyword">   Dim </span>ncrepman <span class="comment"><strong>'As ManufacturingNCRepManagement</strong></span>
+ <span class="keyword">   Set </span>ncrepman = refinst
+ <span class="keyword">   <strong>Set </strong></span><strong>newncrep = ncrepman.CreateNCRep("12345678", 2, listFiles)</strong>                                     
+ <span class="keyword"> End Sub</span>
+</pre>
+<code>CreateNCRep</code> method is specific to type <code>ManufacturingNCRepManagement</code>, so calling it 
+on a <code>VPMReference</code> will 
+trigger this error:<p>
+<img alt="Object doesn't support this property or method" src="I_ObjectDoesntSupportProperty.png"/></p>
+<p>To avoid such issue, the variable can be typed the same way as in the previous case 
+using an intemediary function as below:</p>
+<pre class="code"><span class="keyword">Sub </span>CATMain()
+ ...
+ <span class="keyword">   Dim </span>ncrepman <span class="comment">'As ManufacturingNCRepManagement</span>
+    <strong><span class="keyword">Set </span>ncrepman = getManufacturingNCRepMgt(refinst)</strong>
+
+        <span class="keyword">ReDim</span> listFiles(3)
+        <span class="keyword">Set</span> newncrep = ncrepman.CreateNCRep("12345678", 2, listFiles)
+End Sub
+
+<span class="keyword">Function</span> <strong>getManufacturingNCRepMgt</strong>(<span class="keyword">ByRef</span> refinst <span class="keyword">As</span> VPMReference) <span class="keyword">As</span> ManufacturingNCRepManagement
+    <span class="keyword">Dim</span> ncrepman <span class="keyword">As</span> ManufacturingNCRepManagement
+    <span class="keyword">Set</span> ncrepman = refinst
+    <span class="keyword">Set</span> getManufacturingNCRepMgt = ncrepman
+<span class="keyword">End Function</span>
+</pre>
+
+<p>If the problematic object is not declared but retrieved through a property, VBA may be able to find its type. This is for example the case for the Selection object in the following code that will not compile in VBA:</p>
+<pre class="code"><span class="keyword">Redim</span> sTypesFilter(&#8230;)
+sTypesFilter(0)=&#8230;
+sStatus = CATIA.ActiveEditor.Selection.SelectedElement2(sTypeFilter, &#8230;) 
+</pre>
+
+<p>To avoid this, a non-typed intermediary object should be used:</p>
+<pre class="code"><span class="keyword">Redim</span> sTypesFilter(&#8230;)
+sTypesFilter(0)=&#8230;
+<strong><span class="keyword">Dim </span>oSelection
+<span class="keyword">Set </span>oSelection = CATIA.ActiveEditor.Selection</strong>
+sStatus = oSelection.SelectedElement2(sTypeFilter, &#8230;) 
+</pre>
+<p><strong>When the array is the only argument of a method</strong>, the following syntax, 
+using parenthesis, 
+should be avoided:</p>
+<pre class="code"><span class="keyword">Redim</span> myArray(15)
+strParam.GetEnumerateValues (myArray)
+</pre>
+<p>For methods that are not functions (meaning that they do not have a return value), this 
+syntax requires to pass the argument by reference which may not work in some cases. The right syntax uses 
+either no parenthesis:
+</p>
+<pre class="code">strParam.GetEnumerateValues myArray</pre>
+<p>or the call keyword:</p> 
+<pre class="code"><span class="keyword">call</span> strParam.GetEnumerateValues (myArray)</pre>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<!--
+<h3><a name="boolean"></a>Support of Boolean Type in VBA</h3>
+<p>There is a known limitation concerning the usage of the Boolean type in the V6 
+Automation methods invoked from VBA. In V6 applications, the Boolean type is defined 
+as an 'unsigned char' whereas the VBA definition is a short. When a V6 Automation 
+method returns True, the returned integer value is 1, though VBA is expecting -1. 
+Because of this difference, the following VBA code will not work as expected.</p>
+<p>For example, when the V6 method <code>boolMethod</code> returns True, it in fact 
+returns 1 and VBA tests True as -1. So the following test fails when it should succeed:</p>
+<pre class="code"><span class="keyword">If </span>myObj.boolMethod() = True <span class="keyword">Then</span> <span class="comment">// This test will fail</span>
+  ...
+<span class="keyword">End If</span></pre>
+<p>To overcome this limitation, write the test like this:</p>
+<pre class="code"><span class="keyword">If </span>myObj.boolMethod() <span class="keyword">Then</span> 
+  ...
+<span class="keyword">End If</span>
+</pre>
+<p>or like this:</p>
+<pre class="code"><span class="keyword">If </span>myObj.boolMethod() != False <span class="keyword">Then</span>
+  ...
+<span class="keyword">End If</span></pre>
+<p>For the same reason, the 'Not' operator cannot be directly applied to the returned 
+value of such method:</p>
+<pre class="code"><span class="keyword">Not</span>(myObj.boolMethod())</pre>
+<p>This will return True instead of returning False. To correctly use the 'Not' 
+operator, use a variable to store the boolean value before applying the operator:</p>
+<pre class="code"><span class="keyword">Dim</span> myBool
+myBool = myObj.boolMethod()
+<span class="keyword">Not</span>(myBool)</pre>
+<p>will correctly return False.</p>
+<p>Note that this limitation is specific to VBA and does not concern VBScript.</p>
+<p>Another very specific problem may occur when using a VBA class featuring a function that returns a boolean. In the following example:</p>
+<pre class="code">
+<span class="keyword">Sub</span> CATMain()
+    <span class="keyword">Dim</span> oClass1 <span class="keyword">As</span> Class1
+    <span class="keyword">Set</span> oCLass1 = <span class="keyword">New</span> Class1    
+    <span class="keyword">Dim</span> bReture <span class="keyword">As</span> Boolean
+    bReture = oClass.IsRetureBooleanFunction()
+    
+    <span class="keyword">Dim</span> RefreshDisp <span class="keyword">As</span> Boolean
+    CATIA.RefreshDisplay = False
+    RefreshDisp = CATIA.RefreshDisplay
+    Debug.Print " CASE FALSE : False expected=" &amp; CInt(False) &amp; " False returned=" &amp; CInt(RefreshDisp)
+    CATIA.RefreshDisplay = True
+    RefreshDisp = CATIA.RefreshDisplay
+    Debug.Print " CASE TRUE : True expected=" &amp; CInt(True) &amp; " True returned= " &amp; CInt(RefreshDisp)
+<span class="keyword">End</span> <span class="keyword">Sub</span>
+</pre>
+<p>The class <code>Class1</code> offers the <code>IsRetureBooleanFunction</code> function:</p>
+<pre class="code"><span class="keyword">Function</span> IsRetureBooleanFunction() <span class="keyword">As</span> Boolean
+    IsRetureBooleanFunction = True
+<span class="keyword">End</span> <span class="keyword">Function</span>
+</pre>
+<p>The execution of <code>CATMain</code> shows that the value returned by <code>CATIA.RefreshDisplay</code> is always invalid.
+A simple workaround consists in declaring the <code>IsRetureBooleanFunction</code> function this way:</p>
+<pre class="code"><span class="keyword">Function</span> IsRetureBooleanFunction() <span class="keyword">As</span> <strong>Variant</strong>
+    IsRetureBooleanFunction = True
+<span class="keyword">End</span> <span class="keyword">Function</span>
+</pre>
+-->
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Debugger"></a>Script Debugger</h2>
+<p>When developing in-process macros, you can use Microsoft (R) Script Debugger 
+than you can freely download from the Microsoft (R) web site. Once installed, an 
+error or a <strong>Stop </strong>order in the script will give hand to the debugger:</p>
+<pre class="code"><span class="keyword">For </span>i = 0 <span class="keyword">To </span>Ubound(myArray)
+    <strong><span class="keyword">Stop</span></strong>
+    msgbox myArray(i)
+<span class="keyword">Next</span></pre>
+<p>To make the <strong>Stop</strong> order active, add to, or locate in the registry 
+the JITDebug key in:</p>
+<p>HKEY_CURRENT_USER\Software\Microsoft\Windows Script\Settings</p>
+<p>and set it to 1 thanks to the contextual menu.</p>
+<p>
+<img alt="JITDebug Registry Key" src="CAAScdInfJITDebug.png" width="329" height="61"/></p>
+<p>See the Microsoft (R) Script Debugger's documentation for more information on how to proceed.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Compatibility"></a>Inter Release Compatibility</h2>
+<h3><a name="vtableCompatibility"></a>Virtual Function Table Compatibility</h3>
+<p>The Automation object model evolves with each new release. Namely, new properties 
+and methods may be added to an existing object. Depending on the way VBA calls those 
+methods this may have an impact on your application even if a new method has been 
+added. </p>
+<p>The following code for example:</p>
+<pre class="code"><span class="keyword">Dim</span> oObject
+oObject.DoThis</pre>
+<p><code>oObject</code> is not typed and will perform a late binding call to 
+<code>DoThis</code>, using 
+the <code>Invoke</code> method at build time and leaving <code>oObject</code> perform the actual 
+call to <code>DoThis</code> at runtime inside its implementation of <code>Invoke</code>.</p>
+<p>The following code however:</p>
+<pre class="code"><span class="keyword">Dim</span> oObject <span class="keyword">As</span> SpecificTypeOfObject
+oObject.DoThis</pre>
+<p>will perform an early binding call, meaning basically that a description of the 
+virtual function table of <code>oObject</code> will be re-created from the information 
+available in the type library describing the <strong>SpecificTypeOfObject</strong> type and 
+the call will be made using a position in this table. </p>
+<p>If, on a new release, the order of methods in this virtual function table changes, 
+which may be the case when adding new methods, the application will call the wrong 
+method leading to difficult-to-debug runtime problems. </p>
+<p>Moreover, the description extracted by VBA from the type library does not seem 
+to be always refreshed when the type library changes. Meaning that recompiling the 
+project may not correct the problem. Here is a method that solves this problem:</p>
+<ul>
+	<li>Open you VBA or VSTA project.</li>
+	<li>Remove all references to V6/<strong>3D</strong>EXPERIENCE type libraries using the 
+	<kbd>Project/References</kbd> 
+	or <kbd>Tools/References</kbd> menu items.</li>
+	<li>Save and close the project.</li>
+	<li>Re-open the project and add again the needed references. </li>
+</ul>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="ObsoleteTypelibs"></a>Obsolete Type Libraries</h3>
+<p>Some type libraries may become obsolete and disappear on a new V6/<strong>3D</strong>EXPERIENCE release. If 
+an existing VBA project has references to a type library that does not exist anymore, 
+and if your access rights allow you to modify the Windows Registry, references to 
+those type libraries are automatically removed when opening the VBA project. Otherwise, 
+the following message may be experienced when launching a macro: </p>
+<pre class="code">CNEXT CATScriptError Message Scripting ERR_1000
+Execute the script &quot;XXXXX&quot; |XXXXX=
+The script entry point could not be found.
+XXXXX
+Define a &quot;CATMain&quot; procedure which will be the entry point of the script.</pre>
+<p>To avoid this, launch VBA (Alt-F11) and use the <kbd>Tools/References</kbd> menu 
+item to launch the <kbd>References</kbd> dialog window. In this dialog window, uncheck the reference 
+to the concerned type library and click OK. </p>
+<p>This problem may also occur in VBA projects of non V6/<strong>3D</strong>EXPERIENCE applications. </p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="TwoVersions"></a>Running Two Versions or Releases on the Same Machine</h3>
+<p>You may need to run two, for example, CATIA or DELMIA versions on the same machine. 
+For example, you want to run V5R27 and V5R28, or V5R27 and <strong>3D</strong>EXPERIENCER2017x. If you want 
+to run macros, note that CATIA or DELMIA use a scripting server associated with 
+a given version/release, and so you cannot concurrently run macros in two different 
+CATIA or DELMIA application windows running two different versions.</p>
+<p>To switch running macros from one version to another one, say from V5R27 to 
+<strong>3D</strong>EXPERIENCER2017x, 
+do the following:</p>
+<ul>
+	<li>Close all CATIA or DELMIA windows.</li>
+	<li>Unset the V5R27 scripting server: 	<ol>
+		<li>Open a prompt window in administrator mode.</li>
+		<li>Change to the folder in which you installed CATIA or DELMIA.<p>By default, 
+		this folder is:</p>
+		<p><code>C:\Program Files\Dassault Systemes\B27\win_b64\code\bin</code></p>
+		<p>Replace <code>win_b64</code> with <code>intel_a</code> if you run a 32 bit version.</p>
+<!--
+		<ul>
+			<li><code>C:\Program Files\Dassault Systemes\B27\intel_a\code\bin</code> 
+			if you run a 32 bit version</li>
+			<li><code>C:\Program Files\Dassault Systemes\B27\win_b64\code\bin</code> 
+			if you run a 64 bit version.</li>
+		</ul>
+-->
+		</li>
+		<li>Run the following command:
+		<pre class="code">catstart -run &quot;V5RegServer -unset CATIA&quot;</pre>
+		</li>
+		<li>This command is a silent command. Wait about for one minute to let it 
+		complete.</li>
+	</ol>
+	</li>
+	<li>Set the <strong>3D</strong>EXPERIENCER2017x scripting server:
+	<ol>
+		<li>Open a prompt window in administrator mode.</li>
+		<li>Change to the folder in which you installed CATIA or DELMIA.<p>By default, 
+		this folder is:</p>
+		<p><code>C:\Program Files\Dassault Systemes\B419\win_b64\code\bin</code></p>
+		<p>Replace <code>win_b64</code> with <code>intel_a</code> if you run a 32 bit version.</p>
+<!--
+		<ul>
+			<li><code>C:\Program Files\Dassault Systemes\B419\intel_a\code\bin</code> 
+			if you run a 32 bit version</li>
+			<li><code>C:\Program Files\Dassault Systemes\B419\win_b64\code\bin</code> 
+			if you run a 64 bit version.</li>
+		</ul>
+-->
+		</li>
+		<li>Run the following command:<pre class="code">catstart -run &quot;DSYAdmRegSrv -set CATIA&quot; [ -env MyV6Environment -DirEnv MyV6EnvDirectory]</pre>
+		</li>
+		<li>This command is a silent command. Wait about for one minute to let it 
+		complete before starting CATIA or DELMIA V6R2011.</li>
+	</ol>
+	</li>
+</ul>
+<p>To unset a V6/<strong>3D</strong>EXPERIENCE scripting server, use the -unset option of the DSYAdmRegSrv command. 
+In the same way, to set a V5 scripting server, use the -set option of the V5RegServer 
+command.</p>
+<p>In V5 many environment files can be created in any folders, so it is recommended to use
+the <code>-end</code> and the <code>-direnv</code> options. In V6/<strong>3D</strong>EXPERIENCE only one environment file
+is created at installation time and is located in the CATEnv folder of the installation folder,
+so those options can be omitted unless you are using Apps created with the CAA C++ API.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<!--
+<h3><a name="64BitLib"></a>Limitation for VBA in a 64 bit Context when a Macro Program
+Declares a Function</h3>
+<p>The following kind of declaration:
+</p>
+<pre class="code"><span class="keyword">Private Declare Function </span>MyFunctionNameInDll <span class="keyword">Lib</span> &quot;E:\My.dll&quot; (...) <span class="keyword">As</span> ...<code></code></pre>
+<p>is not possible in a 64 bit context if the <code>My.dll</code> is a 64 bit dll.
+The V5 VBA integration for 64 bit applications is based on a separate
+32 bit application dedicated to VBA. A DLL referenced by a VBA macro must so be a 32 bit one. 
+Moreover, such a 32-bit dll cannot use the dlls from the V5 installation that are, in that case, 64 ones.
+</p>
+-->
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="DoEvent"></a>Usage of the VBA DoEvent Function</h3>
+<p>The general purpose of the VBA function <code>DoEvent</code> is to allow the 
+system
+ to manage input events so that the UI becomes more responsive.</p>
+<p>Beside this function is generally dangerous because it can generate
+unexpected reentrancy. CATIA infrastructure is not designed to manage
+ event treatment while the process is blocked into a VBA macro execution.
+ Calling <code>DoEvent</code> while a macro is executed can so lead to an 
+unpredictable behavior.</p>
+<p>Using <code>DoEvent</code> in VBA macros is not recommended.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[1]</td>
+		<td><a href="CAAInfArchitectureOverview.htm">Object Architecture Overview</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

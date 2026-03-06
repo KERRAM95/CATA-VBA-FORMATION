@@ -1,0 +1,846 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningStandard.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample creates standard openings using different positioing strategies.</span>
+<span class="comment">'This script requires sdd model which contains a panel</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="comment">'   2- Retrieves Selection object</span>
+<span class="comment">'   3- Retrieves Part object</span>
+<span class="comment">'   4- Retrieves service of type RfgService</span>
+<span class="comment">'   5- Retrieves a plate object</span>
+<span class="comment">'   6- Create standard Opening using Offset/Offset positioning strategy</span>
+<span class="comment">'   7- Create Standard opening with half height offset strategy</span>
+<span class="comment">'   8- Create Standard opening with mid dist offset strategy</span>
+<span class="comment">'   9- Create Standard opening with mid dist mid dist strategy</span>
+<span class="comment">'  10- Create Standard opening with Half height mid dist strategy</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Dim </span>Manager<span class="keyword"> As </span>RfgService
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>SDDProdSel<span class="keyword"> As </span>Selection
+
+
+<span class="keyword">Sub </span>CATMain()
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="keyword">    Dim </span>SDDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SddProduct&quot;
+    OpenProduct prdName , SDDPrdEditor
+    
+<span class="comment">'   2- Retrieves Selection object</span>
+<span class="keyword">    Set </span>SDDProdSel = SDDPrdEditor.Selection
+    
+<span class="comment">'   3- Retrieves Part object</span>
+<span class="keyword">    Dim </span>product1Service  <span class="keyword"> As </span>PLMProductService
+<span class="keyword">    Set </span>product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+<span class="keyword">    Dim </span>ObjVPMRootOccurrence  <span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">    Set </span>ObjVPMRootOccurrence = product1Service.RootOccurrence
+<span class="keyword">    Dim </span>ObjVPMReference<span class="keyword"> As </span>VPMReference
+<span class="keyword">    Set </span>ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+<span class="keyword">    Dim </span>ObjVPMRepInstances<span class="keyword"> As </span>VPMRepInstances
+<span class="keyword">    Set </span>ObjVPMRepInstances = ObjVPMReference.RepInstances
+<span class="keyword">    Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+<span class="keyword">    If </span>ObjPart Is Nothing<span class="keyword"> Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve part&quot;
+<span class="keyword">        Exit Sub</span>
+<span class="keyword">    End If</span>
+    
+<span class="comment">'   4- Retrieves service of type RfgService</span>
+<span class="keyword">    Set </span>Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+<span class="keyword">    If </span>Manager Is Nothing<span class="keyword"> Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot retrieve Service Manager&quot;
+<span class="keyword">        Exit Sub</span>
+<span class="keyword">    End If</span>
+    
+  
+<span class="comment">'   5- Retrieves a plate object</span>
+<span class="keyword">    Set </span>ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">    Set </span>PlateRef = ListOfInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>PlateRepInstances = PlateRef.RepInstances
+<span class="keyword">    Set </span>PlateRepInstReference = PlateRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>PlatePart = PlateRepInstReference.GetItem(&quot;Part&quot;)
+    <span class="comment">'get Sdd plate</span>
+<span class="keyword">    Dim </span>ObjSddProductPlate<span class="keyword"> As </span>SddProductPlate
+    SDDProdSel.Add PlateRef
+<span class="keyword">    Set </span>ObjSddProductPlate = SDDProdSel.FindObject(&quot;CATIASddProductPlate&quot;)
+<span class="keyword">    Dim </span>ObjSddPlate<span class="keyword"> As </span>SddPlate
+<span class="keyword">    Set </span>ObjSddPlate = ObjSddProductPlate.SddPlate
+
+<span class="comment">'   6- Create standard Opening using Offset/Offset positioning strategy</span>
+<span class="keyword">    Dim </span>ObjStrOpeningOffsetOffset<span class="keyword"> As </span>StrOpening
+    CreateStandardOpeningOffsetOffset ObjSddPlate, ObjStrOpeningOffsetOffset
+    ObjSddProductPlate.Update
+    
+<span class="comment">'   7- Create Standard opening with half height offset strategy</span>
+<span class="keyword">    Dim </span>ObjStrOpeningHalfHtOffset<span class="keyword"> As </span>StrOpening
+    CreateStandardOpeningHalfHtOffset ObjSddPlate, ObjStrOpeningHalfHtOffset
+    ObjSddProductPlate.Update
+    
+<span class="comment">'   8- Create Standard opening with mid dist offset strategy</span>
+<span class="keyword">    Dim </span>ObjStrOpeningMidDistOffset<span class="keyword"> As </span>StrOpening
+    CreateStandardOpeningMidDistOffset ObjSddPlate, ObjStrOpeningMidDistOffset
+    ObjSddProductPlate.Update
+    
+<span class="comment">'   9- Create Standard opening with mid dist mid dist strategy</span>
+<span class="keyword">    Dim </span>ObjStrOpeningMidDistMidDist<span class="keyword"> As </span>StrOpening
+    CreateStandardOpeningMidDistMidDist ObjSddPlate, ObjStrOpeningMidDistMidDist
+    ObjSddProductPlate.Update
+    
+<span class="comment">'  10- Create Standard opening with Half height mid dist strategy</span>
+<span class="keyword">    Dim </span>ObjStrOpeningHalfHtMidDist<span class="keyword"> As </span>StrOpening
+    CreateStandardOpeningHalfHtMidDist ObjSddPlate, ObjStrOpeningHalfHtMidDist
+    ObjSddProductPlate.Update
+    
+
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create standard Opening with half height mid dist strategy</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   10.1- Retrieves all contour names and selects round contour name</span>
+<span class="comment">'   10.2- Retrieves contour params</span>
+<span class="comment">'   10.3- Sets contour parameter's data</span>
+<span class="comment">'   10.4- Retrieves all standard positiong strategy names and selects Half height mid dist positioning strategy</span>
+<span class="comment">'   10.5- Retrieves standard positioning strategy parameters</span>
+<span class="comment">'   10.6- Sets standard positioing strategy parameter's data</span>
+<span class="comment">'   10.7- Create an opening and set its type, category, standard opening parameters</span>
+<span class="comment">'   10.8- Updates created opening object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateStandardOpeningHalfHtMidDist(iObjSddPlate<span class="keyword"> As </span>SddPlate, oObjStrOpening<span class="keyword"> As </span>StrOpening)
+
+<span class="comment">'   10.1- Retrieves all contour names and selects round contour name</span>
+<span class="keyword">    Dim </span>ContourName<span class="keyword"> As </span>String
+<span class="keyword">    Dim </span>StdContourParms<span class="keyword"> As </span>StrStandardContourParameters
+    <span class="comment">'get contour names</span>
+<span class="keyword">    Dim </span>ContourNames()<span class="keyword"> As </span>Variant
+    GetContourNames iObjSddPlate, ContourNames
+    <span class="comment">'select contour name</span>
+    ContourName = ContourNames(0)
+    
+<span class="comment">'   10.2- Retrieves contour params</span>
+    GetContourParams iObjSddPlate, ContourName, StdContourParms
+    
+<span class="comment">'   10.3- Sets contour parameter's data</span>
+    SetContourParamsData StdContourParms, &quot;1000mm&quot;
+    
+    <span class="comment">'Get positioning strategy</span>
+<span class="keyword">    Dim </span>PosStratName<span class="keyword"> As </span>String
+<span class="keyword">    Dim </span>PosStratParms<span class="keyword"> As </span>StrStandardPosStrategyParameters
+    
+<span class="comment">'   10.4- Retrieves all standard positiong strategy names and selects Half height mid dist positioning strategy</span>
+<span class="keyword">    Dim </span>StdPosStrategyNames()<span class="keyword"> As </span>Variant
+    GetStdPosStrategyNames iObjSddPlate, StdPosStrategyNames
+    <span class="comment">'select positiong strategy mid dist dist</span>
+    PosStratName = StdPosStrategyNames(4)
+    
+<span class="comment">'   10.5- Retrieves standard positioning strategy parameters</span>
+    GetStdPosStrategyParams iObjSddPlate, PosStratName, PosStratParms
+    
+<span class="comment">'   10.6- Sets standard positioing strategy parameter's data</span>
+    SetStdPosStrategyParamsDataForHalfHtMidDist PosStratParms
+    
+<span class="comment">'   10.7- Create an opening and set its type, category, standard opening parameters</span>
+    AddOpening iObjSddPlate, oObjStrOpening
+    
+    <span class="comment">'set opening type catStrOpeningModeStandard for standard opening</span>
+    SetOpeningType oObjStrOpening, catStrOpeningModeStandard
+    
+    <span class="comment">'set category</span>
+    SetCategory oObjStrOpening
+
+    <span class="comment">'set standard opening parameters</span>
+    SetStandardOpeningParameters oObjStrOpening, ContourName, StdContourParms, PosStratName, PosStratParms
+   
+   <span class="comment">'   10.8- Updates created opening object</span>
+    ObjPart.UpdateObject oObjStrOpening
+
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create standard Opening with mid dist mid dist strategy</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   9.1- Retrieves all contour names and selects round contour name</span>
+<span class="comment">'   9.2- Retrieves contour params</span>
+<span class="comment">'   9.3- Sets contour parameter's data</span>
+<span class="comment">'   9.4- Retrieves all standard positiong strategy names and selects Mid Dist Mid Dist positioning strategy</span>
+<span class="comment">'   9.5- Retrieves standard positioning strategy parameters</span>
+<span class="comment">'   9.6- Sets standard positioing strategy parameter's data</span>
+<span class="comment">'   9.7- Create an opening and set its type, category, standard opening parameters</span>
+<span class="comment">'   9.8- Updates created opening object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateStandardOpeningMidDistMidDist(iObjSddPlate<span class="keyword"> As </span>SddPlate, oObjStrOpening<span class="keyword"> As </span>StrOpening)
+
+<span class="comment">'   9.1- Retrieves all contour names and selects round contour name</span>
+<span class="keyword">    Dim </span>ContourName<span class="keyword"> As </span>String
+<span class="keyword">    Dim </span>StdContourParms<span class="keyword"> As </span>StrStandardContourParameters
+    <span class="comment">'get contour names</span>
+<span class="keyword">    Dim </span>ContourNames()<span class="keyword"> As </span>Variant
+    GetContourNames iObjSddPlate, ContourNames
+    <span class="comment">'select contour name</span>
+    ContourName = ContourNames(0)
+    
+<span class="comment">'   9.2- Retrieves contour params</span>
+    GetContourParams iObjSddPlate, ContourName, StdContourParms
+    
+<span class="comment">'   9.3- Sets contour parameter's data</span>
+    SetContourParamsData StdContourParms, &quot;1000mm&quot;
+    
+    <span class="comment">'Get positioning strategy</span>
+<span class="keyword">    Dim </span>PosStratName<span class="keyword"> As </span>String
+<span class="keyword">    Dim </span>PosStratParms<span class="keyword"> As </span>StrStandardPosStrategyParameters
+    
+<span class="comment">'   9.4- Retrieves all standard positiong strategy names and selects Mid Dist Mid Dist positioning strategy</span>
+<span class="keyword">    Dim </span>StdPosStrategyNames()<span class="keyword"> As </span>Variant
+    GetStdPosStrategyNames iObjSddPlate, StdPosStrategyNames
+    <span class="comment">'select positiong strategy mid dist dist</span>
+    PosStratName = StdPosStrategyNames(3)
+    
+<span class="comment">'   9.5- Retrieves standard positioning strategy parameters</span>
+    GetStdPosStrategyParams iObjSddPlate, PosStratName, PosStratParms
+    
+<span class="comment">'   9.6- Sets standard positioing strategy parameter's data</span>
+    SetStdPosStrategyParamsDataForMidDistMidDist PosStratParms
+    
+<span class="comment">'   9.7- Create an opening and set its type, category, standard opening parameters</span>
+    AddOpening iObjSddPlate, oObjStrOpening
+    
+    <span class="comment">'set opening type catStrOpeningModeStandard for standard opening</span>
+    SetOpeningType oObjStrOpening, catStrOpeningModeStandard
+    
+    <span class="comment">'set category</span>
+    SetCategory oObjStrOpening
+
+    <span class="comment">'set standard opening parameters</span>
+    SetStandardOpeningParameters oObjStrOpening, ContourName, StdContourParms, PosStratName, PosStratParms
+   
+<span class="comment">'   9.8- Updates created opening object</span>
+    ObjPart.UpdateObject oObjStrOpening
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create standard Opening with mid dist offset strategy</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   8.1- Retrieves all contour names and selects round contour name</span>
+<span class="comment">'   8.2- Retrieves contour params</span>
+<span class="comment">'   8.3- Sets contour parameter's data</span>
+<span class="comment">'   8.4- Retrieves all standard positiong strategy names and selects Mid Dist offset positioning strategy</span>
+<span class="comment">'   8.5- Retrieves standard positioning strategy parameters</span>
+<span class="comment">'   8.6- Sets standard positioing strategy parameter's data</span>
+<span class="comment">'   8.7- Create an opening and set its type, category, standard opening parameters</span>
+<span class="comment">'   8.8- Updates created opening object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateStandardOpeningMidDistOffset(iObjSddPlate<span class="keyword"> As </span>SddPlate, oObjStrOpening<span class="keyword"> As </span>StrOpening)
+
+<span class="comment">'   8.1- Retrieves all contour names and selects round contour name</span>
+<span class="keyword">    Dim </span>ContourName<span class="keyword"> As </span>String
+<span class="keyword">    Dim </span>StdContourParms<span class="keyword"> As </span>StrStandardContourParameters
+    <span class="comment">'get contour names</span>
+<span class="keyword">    Dim </span>ContourNames()<span class="keyword"> As </span>Variant
+    GetContourNames iObjSddPlate, ContourNames
+    <span class="comment">'select contour name</span>
+    ContourName = ContourNames(0)
+    
+<span class="comment">'   8.2- Retrieves contour params</span>
+    GetContourParams iObjSddPlate, ContourName, StdContourParms
+    
+<span class="comment">'   8.3- Sets contour parameter's data</span>
+    SetContourParamsData StdContourParms, &quot;1000mm&quot;
+    
+    
+    <span class="comment">'Get positioning strategy</span>
+<span class="keyword">    Dim </span>PosStratName<span class="keyword"> As </span>String
+<span class="keyword">    Dim </span>PosStratParms<span class="keyword"> As </span>StrStandardPosStrategyParameters
+    
+<span class="comment">'   8.4- Retrieves all standard positiong strategy names and selects Mid Dist offset positioning strategy</span>
+<span class="keyword">    Dim </span>StdPosStrategyNames()<span class="keyword"> As </span>Variant
+    GetStdPosStrategyNames iObjSddPlate, StdPosStrategyNames
+    <span class="comment">'select positiong strategy mid dist offset</span>
+    PosStratName = StdPosStrategyNames(2)
+    
+<span class="comment">'   8.5- Retrieves standard positioning strategy parameters</span>
+    GetStdPosStrategyParams iObjSddPlate, PosStratName, PosStratParms
+    <span class="comment">'set std pos strategy parameters data</span>
+    SetStdPosStrategyParamsDataForMidDistOffset PosStratParms
+    
+<span class="comment">'   8.7- Create an opening and set its type, category, standard opening parameters</span>
+    AddOpening iObjSddPlate, oObjStrOpening
+    
+    <span class="comment">'set opening type catStrOpeningModeStandard for standard opening</span>
+    SetOpeningType oObjStrOpening, catStrOpeningModeStandard
+    
+    <span class="comment">'set category</span>
+    SetCategory oObjStrOpening
+
+    <span class="comment">'set standard opening parameters</span>
+    SetStandardOpeningParameters oObjStrOpening, ContourName, StdContourParms, PosStratName, PosStratParms
+   
+<span class="comment">'   8.8- Updates created opening object</span>
+    ObjPart.UpdateObject oObjStrOpening
+
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Standard opening with half height offset strategy</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   7.1- Retrieves all contour names and selects round contour name</span>
+<span class="comment">'   7.2- Retrieves contour params</span>
+<span class="comment">'   7.3- Sets contour parameter's data</span>
+<span class="comment">'   7.4- Retrieves all standard positiong strategy names and selects half height offset positioning strategy</span>
+<span class="comment">'   7.5- Retrieves standard positioning strategy parameters</span>
+<span class="comment">'   7.6- Sets standard positioing strategy parameter's data</span>
+<span class="comment">'   7.7- Create an opening and set its type, category, standard opening parameters</span>
+<span class="comment">'   7.8- Updates created opening object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateStandardOpeningHalfHtOffset(iObjSddPlate<span class="keyword"> As </span>SddPlate, oObjStrOpening<span class="keyword"> As </span>StrOpening)
+
+<span class="comment">'   7.1- Retrieves all contour names and selects round contour name</span>
+<span class="keyword">    Dim </span>ContourName<span class="keyword"> As </span>String
+<span class="keyword">    Dim </span>StdContourParms<span class="keyword"> As </span>StrStandardContourParameters
+    <span class="comment">'get contour names</span>
+<span class="keyword">    Dim </span>ContourNames()<span class="keyword"> As </span>Variant
+    GetContourNames iObjSddPlate, ContourNames
+    <span class="comment">'select contour name</span>
+    ContourName = ContourNames(0)
+    
+<span class="comment">'   7.2- Retrieves contour params</span>
+    GetContourParams iObjSddPlate, ContourName, StdContourParms
+    
+<span class="comment">'   7.3- Sets contour parameter's data</span>
+    SetContourParamsData StdContourParms, &quot;1000mm&quot;
+    
+    <span class="comment">'Get positioning strategy</span>
+<span class="keyword">    Dim </span>PosStratName<span class="keyword"> As </span>String
+<span class="keyword">    Dim </span>PosStratParms<span class="keyword"> As </span>StrStandardPosStrategyParameters
+    
+<span class="comment">'   7.4- Retrieves all standard positiong strategy names and selects half height offset positioning strategy</span>
+<span class="keyword">    Dim </span>StdPosStrategyNames()<span class="keyword"> As </span>Variant
+    GetStdPosStrategyNames iObjSddPlate, StdPosStrategyNames
+    <span class="comment">'select positiong strategy half height offset</span>
+    PosStratName = StdPosStrategyNames(1)
+    
+<span class="comment">'   7.5- Retrieves standard positioning strategy parameters</span>
+    GetStdPosStrategyParams iObjSddPlate, PosStratName, PosStratParms
+    
+<span class="comment">'   7.6- Sets standard positioing strategy parameter's data</span>
+    SetStdPosStrategyParamsDataForHalfHtOffset PosStratParms
+    
+<span class="comment">'   7.7- Create an opening and set its type, category, standard opening parameters</span>
+    AddOpening iObjSddPlate, oObjStrOpening
+    
+    <span class="comment">'set opening type catStrOpeningModeStandard for standard opening</span>
+    SetOpeningType oObjStrOpening, catStrOpeningModeStandard
+    
+    <span class="comment">'set category</span>
+    SetCategory oObjStrOpening
+
+    <span class="comment">'set standard opening parameters</span>
+    SetStandardOpeningParameters oObjStrOpening, ContourName, StdContourParms, PosStratName, PosStratParms
+   
+<span class="comment">'   7.8- Updates created opening object</span>
+    ObjPart.UpdateObject oObjStrOpening
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Standard Opening with Offset/Offset positioning strategy</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   6.1- Retrieves all contour names and selects rectangle contour name</span>
+<span class="comment">'   6.2- Retrieves contour params</span>
+<span class="comment">'   6.3- Sets contour parameter's data</span>
+<span class="comment">'   6.4- Retrieves all standard positiong strategy names and selects offset offset positioning strategy</span>
+<span class="comment">'   6.5- Retrieves standard positioning strategy parameters</span>
+<span class="comment">'   6.6- Sets standard positioing strategy parameter's data</span>
+<span class="comment">'   6.7- Create an opening and set its type, category, standard opening parameters</span>
+<span class="comment">'   6.8- Updates created opening object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateStandardOpeningOffsetOffset(iObjSddPlate<span class="keyword"> As </span>SddPlate, oObjStrOpening<span class="keyword"> As </span>StrOpening)
+
+<span class="comment">'   6.1- Retrieves all contour names and selects rectangle contour name</span>
+<span class="keyword">    Dim </span>ContourName<span class="keyword"> As </span>String
+    <span class="comment">'get contour names</span>
+<span class="keyword">    Dim </span>ContourNames()<span class="keyword"> As </span>Variant
+    GetContourNames iObjSddPlate, ContourNames
+    <span class="comment">'select rectangle contour name</span>
+    ContourName = ContourNames(1)
+    
+<span class="comment">'   6.2- Retrieves contour params</span>
+<span class="keyword">    Dim </span>StdContourParms<span class="keyword"> As </span>StrStandardContourParameters
+    GetContourParams iObjSddPlate, ContourName, StdContourParms
+    
+<span class="comment">'   6.3- Sets contour parameter's data</span>
+    SetRectContourParamsData StdContourParms, &quot;1000mm&quot;, &quot;400mm&quot;, &quot;50mm&quot;
+    
+<span class="comment">'   6.4- Retrieves all standard positiong strategy names and selects offset offset positioning strategy</span>
+<span class="keyword">    Dim </span>PosStratName<span class="keyword"> As </span>String
+    <span class="comment">'get std positiong strategy names</span>
+<span class="keyword">    Dim </span>StdPosStrategyNames()<span class="keyword"> As </span>Variant
+    GetStdPosStrategyNames iObjSddPlate, StdPosStrategyNames
+    <span class="comment">'select positiong strategy offset offset</span>
+    PosStratName = StdPosStrategyNames(0)
+    
+<span class="comment">'   6.5- Retrieves standard positioning strategy parameters</span>
+<span class="keyword">    Dim </span>PosStratParms<span class="keyword"> As </span>StrStandardPosStrategyParameters
+    GetStdPosStrategyParams iObjSddPlate, PosStratName, PosStratParms
+    
+<span class="comment">'   6.6- Sets standard positioing strategy parameter's data</span>
+    SetStdPosStrategyParamsDataForOffsetOffset PosStratParms
+    
+<span class="comment">'   6.7- Create an opening and set its type, category, standard opening parameters</span>
+    <span class="comment">'create opening with no parameters</span>
+    AddOpening iObjSddPlate, oObjStrOpening
+    
+    <span class="comment">'set opening type catStrOpeningModeStandard for standard opening</span>
+    SetOpeningType oObjStrOpening, catStrOpeningModeStandard
+    
+    <span class="comment">'set category</span>
+    SetCategory oObjStrOpening
+
+    <span class="comment">'set standard opening parameters</span>
+    SetStandardOpeningParameters oObjStrOpening, ContourName, StdContourParms, PosStratName, PosStratParms
+   
+   
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Set Standard positioing strategy data for half height mid dist strategy</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetStdPosStrategyParamsDataForHalfHtMidDist(iStdPosStrategyParms<span class="keyword"> As </span>StrStandardPosStrategyParameters)
+    <span class="comment">'get the count of Standard Positioning Strategy Parms</span>
+<span class="keyword">    Dim </span>SizeOfStdPosStratParms<span class="keyword"> As </span>Long
+    SizeOfStdPosStratParms = iStdPosStrategyParms.Count
+    
+<span class="keyword">    For </span>i = 1<span class="keyword"> To </span>SizeOfStdPosStratParms
+<span class="keyword">        Set </span>ObjStrStdPosStParam = iStdPosStrategyParms.Item(i)
+<span class="keyword">        If </span>(TypeName(ObjStrStdPosStParam) = &quot;StrPosDualRef&quot;) Then
+            <span class="comment">'get role of the parameter</span>
+            StrRole = ObjStrStdPosStParam.Role
+            <span class="comment">'Set data for U</span>
+<span class="keyword">            If </span>StrRole = &quot;PosSpecUCurve&quot; Then
+<span class="keyword">              Dim </span>ObjStrReference1<span class="keyword"> As </span>StrReference
+<span class="keyword">              Dim </span>ObjStrReference2<span class="keyword"> As </span>StrReference
+<span class="keyword">              Set </span>ObjStrReference1 = ObjStrStdPosStParam.GetRef1Data
+<span class="keyword">              Set </span>ObjStrReference2 = ObjStrStdPosStParam.GetRef2Data
+<span class="keyword">              Set </span>ObjRefU1 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.80&quot;)
+<span class="keyword">              Set </span>RefU1 = ObjPart.CreateReferenceFromObject(ObjRefU1)
+<span class="keyword">              Set </span>ObjRefU2 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.100&quot;)
+<span class="keyword">              Set </span>RefU2 = ObjPart.CreateReferenceFromObject(ObjRefU2)
+              ObjStrReference1.SetSpecification Nothing, RefU1
+              ObjStrReference2.SetSpecification Nothing, RefU2
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+<span class="keyword">    Next</span>
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set Standard positioing strategy data for mid dist mid dist strategy</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetStdPosStrategyParamsDataForMidDistMidDist(iStdPosStrategyParms<span class="keyword"> As </span>StrStandardPosStrategyParameters)
+    <span class="comment">'get the count of Standard Positioning Strategy Parms</span>
+<span class="keyword">    Dim </span>SizeOfStdPosStratParms<span class="keyword"> As </span>Long
+    SizeOfStdPosStratParms = iStdPosStrategyParms.Count
+    
+<span class="keyword">    For </span>i = 1<span class="keyword"> To </span>SizeOfStdPosStratParms
+<span class="keyword">        Set </span>ObjStrStdPosStParam = iStdPosStrategyParms.Item(i)
+<span class="keyword">        If </span>(TypeName(ObjStrStdPosStParam) = &quot;StrPosDualRef&quot;) Then
+            <span class="comment">'get role of the parameter</span>
+            StrRole = ObjStrStdPosStParam.Role
+            
+<span class="keyword">            Dim </span>ObjStrReference1<span class="keyword"> As </span>StrReference
+<span class="keyword">            Dim </span>ObjStrReference2<span class="keyword"> As </span>StrReference
+<span class="keyword">            Set </span>ObjStrReference1 = ObjStrStdPosStParam.GetRef1Data
+<span class="keyword">            Set </span>ObjStrReference2 = ObjStrStdPosStParam.GetRef2Data
+            <span class="comment">'Set data for U</span>
+<span class="keyword">            If </span>StrRole = &quot;PosSpecUCurve&quot; Then
+<span class="keyword">              Set </span>ObjRefU1 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.80&quot;)
+<span class="keyword">              Set </span>RefU1 = ObjPart.CreateReferenceFromObject(ObjRefU1)
+<span class="keyword">              Set </span>ObjRefU2 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.100&quot;)
+<span class="keyword">              Set </span>RefU2 = ObjPart.CreateReferenceFromObject(ObjRefU2)
+<span class="keyword">            End If</span>
+            
+            <span class="comment">'set data for V</span>
+<span class="keyword">            If </span>StrRole = &quot;PosSpecVCurve&quot; Then
+<span class="keyword">              Set </span>ObjRefU1 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-10&quot;)
+<span class="keyword">              Set </span>RefU1 = ObjPart.CreateReferenceFromObject(ObjRefU1)
+<span class="keyword">              Set </span>ObjRefU2 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-5&quot;)
+<span class="keyword">              Set </span>RefU2 = ObjPart.CreateReferenceFromObject(ObjRefU2)
+<span class="keyword">            End If</span>
+            ObjStrReference1.SetSpecification Nothing, RefU1
+            ObjStrReference2.SetSpecification Nothing, RefU2
+<span class="keyword">        End If</span>
+<span class="keyword">    Next</span>
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set Standard positioing strategy data for mid dist Offset strategy</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetStdPosStrategyParamsDataForMidDistOffset(iStdPosStrategyParms<span class="keyword"> As </span>StrStandardPosStrategyParameters)
+    <span class="comment">'get the count of Standard Positioning Strategy Parms</span>
+<span class="keyword">    Dim </span>SizeOfStdPosStratParms<span class="keyword"> As </span>Long
+    SizeOfStdPosStratParms = iStdPosStrategyParms.Count
+    
+<span class="keyword">    For </span>i = 1<span class="keyword"> To </span>SizeOfStdPosStratParms
+<span class="keyword">        Set </span>ObjStrStdPosStParam = iStdPosStrategyParms.Item(i)
+        <span class="comment">'get role of the parameter</span>
+        StrRole = ObjStrStdPosStParam.Role
+<span class="keyword">        If </span>(TypeName(ObjStrStdPosStParam) = &quot;StrRefOffset&quot;) Then
+            <span class="comment">'set data for V</span>
+<span class="keyword">            If </span>StrRole = &quot;PosSpecVCurve&quot; Then
+<span class="keyword">              Set </span>ObjRefVShift = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-12&quot;)
+<span class="keyword">              Set </span>RefVShift = ObjPart.CreateReferenceFromObject(ObjRefVShift)
+              ObjStrStdPosStParam.SetSpecification Nothing, RefVShift
+              <span class="comment">'set relevant side to Port</span>
+              ObjStrStdPosStParam.SetRelevantSide (4)
+<span class="keyword">              Dim </span>OffsetParm<span class="keyword"> As </span>Parameter
+<span class="keyword">              Set </span>OffsetParm = ObjStrStdPosStParam.GetOffsetParm
+              OffsetParm.ValuateFromString (&quot;1000mm&quot;)
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+    
+<span class="keyword">        If </span>(TypeName(ObjStrStdPosStParam) = &quot;StrPosDualRef&quot;) Then
+            <span class="comment">'Set data for U</span>
+<span class="keyword">            If </span>StrRole = &quot;PosSpecUCurve&quot; Then
+<span class="keyword">              Dim </span>ObjStrReference1<span class="keyword"> As </span>StrReference
+<span class="keyword">              Dim </span>ObjStrReference2<span class="keyword"> As </span>StrReference
+<span class="keyword">              Set </span>ObjStrReference1 = ObjStrStdPosStParam.GetRef1Data
+<span class="keyword">              Set </span>ObjStrReference2 = ObjStrStdPosStParam.GetRef2Data
+<span class="keyword">              Set </span>ObjRefU1 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.80&quot;)
+<span class="keyword">              Set </span>RefU1 = ObjPart.CreateReferenceFromObject(ObjRefU1)
+<span class="keyword">              Set </span>ObjRefU2 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.100&quot;)
+<span class="keyword">              Set </span>RefU2 = ObjPart.CreateReferenceFromObject(ObjRefU2)
+              ObjStrReference1.SetSpecification Nothing, RefU1
+              ObjStrReference2.SetSpecification Nothing, RefU2
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+<span class="keyword">    Next</span>
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set Standard positioing strategy data for half height Offset strategy</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetStdPosStrategyParamsDataForHalfHtOffset(iStdPosStrategyParms<span class="keyword"> As </span>StrStandardPosStrategyParameters)
+    <span class="comment">'get the count of Standard Positioning Strategy Parms</span>
+<span class="keyword">    Dim </span>SizeOfStdPosStratParms<span class="keyword"> As </span>Long
+    SizeOfStdPosStratParms = iStdPosStrategyParms.Count
+<span class="keyword">    For </span>i = 1<span class="keyword"> To </span>SizeOfStdPosStratParms
+<span class="keyword">        Set </span>ObjStrStdPosStParam = iStdPosStrategyParms.Item(i)
+<span class="keyword">        If </span>(TypeName(ObjStrStdPosStParam) = &quot;StrRefOffset&quot;) Then
+            <span class="comment">'get role of the parameter</span>
+            StrRole = ObjStrStdPosStParam.Role
+            <span class="comment">'set Specification</span>
+<span class="keyword">            If </span>StrRole = &quot;PosSpecUCurve&quot; Then
+<span class="keyword">              Set </span>ObjRefUShift = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-15&quot;)
+<span class="keyword">              Set </span>RefUShift = ObjPart.CreateReferenceFromObject(ObjRefUShift)
+              ObjStrStdPosStParam.SetSpecification Nothing, RefUShift
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+<span class="keyword">    Next</span>
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set Standard positioing strategy data for Offset Offset strategy</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetStdPosStrategyParamsDataForOffsetOffset(iStdPosStrategyParms<span class="keyword"> As </span>StrStandardPosStrategyParameters)
+    <span class="comment">'get the count of Standard Positioning Strategy Parms</span>
+<span class="keyword">    Dim </span>SizeOfStdPosStratParms<span class="keyword"> As </span>Long
+    SizeOfStdPosStratParms = iStdPosStrategyParms.Count
+    
+<span class="keyword">    For </span>i = 1<span class="keyword"> To </span>SizeOfStdPosStratParms
+<span class="keyword">        Set </span>ObjStrStdPosStParam = iStdPosStrategyParms.Item(i)
+<span class="keyword">        If </span>(TypeName(ObjStrStdPosStParam) = &quot;StrPosSupportFace&quot;) Then
+            <span class="comment">'get role of the parameter</span>
+            StrRole = ObjStrStdPosStParam.Role
+            <span class="comment">'get face side</span>
+            lFaceSide = ObjStrStdPosStParam.GetFaceSide
+<span class="keyword">        End If</span>
+    
+<span class="keyword">        If </span>(TypeName(ObjStrStdPosStParam) = &quot;StrRefOffset&quot;) Then
+            <span class="comment">'get role of the parameter</span>
+            StrRole = ObjStrStdPosStParam.Role
+            <span class="comment">'set Specification</span>
+<span class="keyword">            If </span>StrRole = &quot;PosSpecUCurve&quot; Then
+<span class="keyword">              Set </span>ObjRefUShift = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-7&quot;)
+<span class="keyword">              Set </span>RefUShift = ObjPart.CreateReferenceFromObject(ObjRefUShift)
+              ObjStrStdPosStParam.SetSpecification Nothing, RefUShift
+              <span class="comment">'set relevant side to Port</span>
+              ObjStrStdPosStParam.SetRelevantSide (4)
+<span class="keyword">            End If</span>
+<span class="keyword">            If </span>StrRole = &quot;PosSpecVCurve&quot; Then
+<span class="keyword">              Set </span>ObjRefVShift = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.94&quot;)
+<span class="keyword">              Set </span>RefVShift = ObjPart.CreateReferenceFromObject(ObjRefVShift)
+              ObjStrStdPosStParam.SetSpecification Nothing, RefVShift
+              <span class="comment">'set relevant side to Fore</span>
+              ObjStrStdPosStParam.SetRelevantSide (2)
+<span class="keyword">              Dim </span>OffsetParm<span class="keyword"> As </span>Parameter
+<span class="keyword">              Set </span>OffsetParm = ObjStrStdPosStParam.GetOffsetParm
+              OffsetParm.ValuateFromString (&quot;1000mm&quot;)
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+    
+<span class="keyword">        If </span>(TypeName(ObjStrStdPosStParam) = &quot;StrPosAxisAdjustment&quot;) Then
+            <span class="comment">'get role of the parameter</span>
+            StrRole = ObjStrStdPosStParam.Role
+            <span class="comment">'get angle parameter</span>
+<span class="keyword">            Dim </span>AngleParm<span class="keyword"> As </span>Parameter
+<span class="keyword">            Set </span>AngleParm = ObjStrStdPosStParam.GetAngleParameter
+            StrAngleParm = AngleParm.ValueAsString
+            AngleParm.ValuateFromString (&quot;45deg&quot;)
+<span class="keyword">        End If</span>
+
+<span class="keyword">    Next</span>
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'get Stadard positioning strategy parameters</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>GetStdPosStrategyParams(iObjSddPlate<span class="keyword"> As </span>SddPlate, iStdPosStrategyName<span class="keyword"> As </span>String, oStdPosStrategyParms<span class="keyword"> As </span>StrStandardPosStrategyParameters)
+<span class="keyword">    Dim </span>ObjStrOpeningsMgr<span class="keyword"> As </span>StrOpeningsMgr
+<span class="keyword">    Set </span>ObjStrOpeningsMgr = iObjSddPlate.StrOpeningsMgr
+    <span class="comment">'get standard positioining strategy parameters</span>
+<span class="keyword">    Set </span>oStdPosStrategyParms = ObjStrOpeningsMgr.GetStandardPositioningStrategyParms(iStdPosStrategyName)
+<span class="keyword">    If </span>oStdPosStrategyParms.Count = 0<span class="keyword"> Then</span>
+        Err.Raise 1, Err.Source, &quot;Positioning strategy parameters cannot found&quot;
+<span class="keyword">        Exit Sub</span>
+    
+<span class="keyword">    End If</span>
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'get available standard Positioning strategy names</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>GetStdPosStrategyNames(iObjSddPlate<span class="keyword"> As </span>SddPlate, oStdPosStrategyNames()<span class="keyword"> As </span>Variant)
+<span class="keyword">    Dim </span>ObjStrOpeningsMgr<span class="keyword"> As </span>StrOpeningsMgr
+<span class="keyword">    Set </span>ObjStrOpeningsMgr = iObjSddPlate.StrOpeningsMgr
+    <span class="comment">'get available standard positioning strategy names</span>
+    ObjStrOpeningsMgr.GetAvailableStandardPositioningStrategies oStdPosStrategyNames
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'get available contour names</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>GetContourNames(iObjSddPlate<span class="keyword"> As </span>SddPlate, oContourNames()<span class="keyword"> As </span>Variant)
+<span class="keyword">    Dim </span>ObjStrOpeningsMgr<span class="keyword"> As </span>StrOpeningsMgr
+<span class="keyword">    Set </span>ObjStrOpeningsMgr = iObjSddPlate.StrOpeningsMgr
+    <span class="comment">'get available contour names</span>
+    ObjStrOpeningsMgr.GetAvailableStandardContours oContourNames
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'get contour params of a contour</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>GetContourParams(iObjSddPlate<span class="keyword"> As </span>SddPlate, iContourName<span class="keyword"> As </span>String, oContourParms<span class="keyword"> As </span>StrStandardContourParameters)
+<span class="keyword">    Dim </span>ObjStrOpeningsMgr<span class="keyword"> As </span>StrOpeningsMgr
+<span class="keyword">    Set </span>ObjStrOpeningsMgr = iObjSddPlate.StrOpeningsMgr
+    <span class="comment">'get parameters of contour</span>
+<span class="keyword">    Set </span>oContourParms = ObjStrOpeningsMgr.GetStandardContourParms(iContourName)
+<span class="keyword">    If </span>oContourParms.Count = 0<span class="keyword"> Then</span>
+        Err.Raise 1, Err.Source, &quot;No contour params found&quot;
+<span class="keyword">        Exit Sub</span>
+<span class="keyword">    End If</span>
+<span class="keyword">End Sub</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set contour params data</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetRectContourParamsData(iContourParms<span class="keyword"> As </span>StrStandardContourParameters, iStrW<span class="keyword"> As </span>String, iStrH<span class="keyword"> As </span>String, iStrCR<span class="keyword"> As </span>String)
+    <span class="comment">'access parameters of contour param</span>
+<span class="keyword">    Dim </span>NbOfContourParams<span class="keyword"> As </span>Long
+    NbOfContourParams = iContourParms.Count
+<span class="keyword">    Dim </span>ContourParam<span class="keyword"> As </span>Parameter
+<span class="keyword">    Dim </span>ObjStrParameter<span class="keyword"> As </span>StrParameter
+    
+<span class="keyword">    For </span>i = 1<span class="keyword"> To </span>NbOfContourParams
+<span class="keyword">      Set </span>ObjStrParameter = iContourParms.Item(i)
+      <span class="comment">'get role of the parameter</span>
+      StrRole = ObjStrParameter.Role
+<span class="keyword">      Set </span>ContourParam = ObjStrParameter.Parameter
+      
+      <span class="comment">'set width</span>
+<span class="keyword">      If </span>StrRole = &quot;Str_Width&quot; Then
+<span class="keyword">        Dim </span>StrW<span class="keyword"> As </span>String
+        StrW = ContourParam.ValueAsString
+        <span class="comment">'set value</span>
+        ContourParam.ValuateFromString (iStrW)
+<span class="keyword">      End If</span>
+      
+      <span class="comment">'set height</span>
+<span class="keyword">      If </span>StrRole = &quot;Str_Height&quot; Then
+<span class="keyword">        Dim </span>StrH<span class="keyword"> As </span>String
+        StrH = ContourParam.ValueAsString
+        <span class="comment">'set value</span>
+        ContourParam.ValuateFromString (iStrH)
+<span class="keyword">      End If</span>
+      
+      <span class="comment">'set corner radius</span>
+<span class="keyword">      If </span>StrRole = &quot;Str_CornerRadius&quot; Then
+<span class="keyword">        Dim </span>StrCR<span class="keyword"> As </span>String
+        StrCR = ContourParam.ValueAsString
+        <span class="comment">'set value</span>
+        ContourParam.ValuateFromString (iStrCR)
+<span class="keyword">      End If</span>
+<span class="keyword">    Next</span>
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set contour params data</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetContourParamsData(iContourParms<span class="keyword"> As </span>StrStandardContourParameters, iStrRadius<span class="keyword"> As </span>String)
+    <span class="comment">'access parameters of contour param</span>
+<span class="keyword">    Dim </span>NbOfContourParams<span class="keyword"> As </span>Long
+    NbOfContourParams = iContourParms.Count
+    
+<span class="keyword">    Dim </span>ContourParam<span class="keyword"> As </span>Parameter
+<span class="keyword">    For </span>i = 1<span class="keyword"> To </span>NbOfContourParams
+<span class="keyword">      Dim </span>ObjStrParameter<span class="keyword"> As </span>StrParameter
+<span class="keyword">      Set </span>ObjStrParameter = iContourParms.Item(i)
+      <span class="comment">'get role of the parameter</span>
+      StrRole = ObjStrParameter.Role
+      
+<span class="keyword">      If </span>StrRole = &quot;Str_Radius&quot; Then
+<span class="keyword">        Set </span>ContourParam = ObjStrParameter.Parameter
+<span class="keyword">        Dim </span>Radius<span class="keyword"> As </span>String
+        Radius = ContourParam.ValueAsString
+        <span class="comment">'set value</span>
+        ContourParam.ValuateFromString (iStrRadius)
+<span class="keyword">      End If</span>
+<span class="keyword">    Next</span>
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set standard opening parameters</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetStandardOpeningParameters(iObjStrOpening<span class="keyword"> As </span>StrOpening, iContourName<span class="keyword"> As </span>String, iStdContourParms<span class="keyword"> As </span>StrStandardContourParameters, iPosStratName<span class="keyword"> As </span>String, iPosStratParms<span class="keyword"> As </span>StrStandardPosStrategyParameters)
+<span class="keyword">    Dim </span>ObjStrOpeningStandard<span class="keyword"> As </span>StrOpeningStandard
+<span class="keyword">    Set </span>ObjStrOpeningStandard = iObjStrOpening.StrOpeningStandard
+<span class="keyword">    If </span>ObjStrOpeningStandard Is Nothing<span class="keyword"> Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot create StrOpeningStandard object&quot;
+<span class="keyword">        Exit Sub</span>
+<span class="keyword">    End If</span>
+     <span class="comment">'set direction</span>
+<span class="keyword">    Set </span>ObjDirectionRef = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.6&quot;)
+<span class="keyword">    Set </span>DirectionRef = ObjPart.CreateReferenceFromObject(ObjDirectionRef)
+    ObjStrOpeningStandard.Direction = DirectionRef
+    
+    <span class="comment">'set limit mode</span>
+    ObjStrOpeningStandard.LimitMode = 0
+    
+    <span class="comment">'set contour and positiong strategy parameters</span>
+    ObjStrOpeningStandard.SetContourAndPosStrategy iContourName, iStdContourParms, iPosStratName, iPosStratParms
+    
+    <span class="comment">'get opening contour parameters</span>
+<span class="keyword">    Dim </span>OpngContourName<span class="keyword"> As </span>String
+<span class="keyword">    Dim </span>ContourParams<span class="keyword"> As </span>StrStandardContourParameters
+    <span class="comment">'ObjStrOpeningStandard.GetContour OpngContourName, ContourParams</span>
+    <span class="comment">'get Positioing strategy params</span>
+<span class="keyword">    Dim </span>PosStName<span class="keyword"> As </span>String
+<span class="keyword">    Dim </span>PosStParams<span class="keyword"> As </span>StrStandardPosStrategyParameters
+    
+    <span class="comment">'ObjStrOpeningStandard.GetPositioningStrategy PosStName, PosStParams</span>
+    
+    <span class="comment">'set forming mode</span>
+<span class="keyword">    Set </span>ObjStrOpeningExtrusionMngt = iObjStrOpening.StrOpeningExtrusionMngt
+    <span class="comment">'1 = catStrOpeningExtrusionNormal</span>
+    ObjStrOpeningExtrusionMngt.ExtrusionMode = 1
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set category</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetCategory(iObjStrOpening<span class="keyword"> As </span>StrOpening)
+<span class="keyword">    Dim </span>ObjStrCategoryMngt<span class="keyword"> As </span>StrCategoryMngt
+<span class="keyword">    Set </span>ObjStrCategoryMngt = iObjStrOpening.StrCategoryMngt
+<span class="keyword">    If </span>ObjStrCategoryMngt Is Nothing<span class="keyword"> Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot create StrCategoryMngt object&quot;
+<span class="keyword">        Exit Sub</span>
+<span class="keyword">    End If</span>
+    
+    ObjStrCategoryMngt.SetCategory &quot;CATSfmOpeningExt&quot;
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set Opening Type</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetOpeningType(iObjStrOpening<span class="keyword"> As </span>StrOpening, iOpeningType<span class="keyword"> As </span>Long)
+    iObjStrOpening.OpeningType = iOpeningType
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Adds a new opening</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>AddOpening(iObjSddPlate<span class="keyword"> As </span>SddPlate, oObjStrOpening<span class="keyword"> As </span>StrOpening)
+<span class="keyword">    Dim </span>ObjStrOpenings<span class="keyword"> As </span>StrOpenings
+<span class="keyword">    Set </span>ObjStrOpenings = iObjSddPlate.GetOpenings(0)
+    <span class="comment">'Add opening</span>
+<span class="keyword">    Set </span>oObjStrOpening = ObjStrOpenings.Add
+    
+<span class="keyword">    If </span>oObjStrOpening Is Nothing<span class="keyword"> Then</span>
+        Err.Raise 1, Err.Source, &quot;Cannot Create opening&quot;
+<span class="keyword">        Exit Sub</span>
+<span class="keyword">    End If</span>
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SDDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SDDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

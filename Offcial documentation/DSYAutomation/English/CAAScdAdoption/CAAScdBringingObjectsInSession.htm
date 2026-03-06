@@ -1,0 +1,152 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Bringing Objects into Session and Saving Objects</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Bringing Objects into Session And Saving Objects</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 Automation macros to take 
+		advantage of the Open <strong>3D</strong>EXPERIENCE platform PLM infrastructure. It explains how the V5 document 
+		centric model and more precisely the <strong>Documents</strong> collection has 
+		been replaced to to accommodate database persistency.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p>In V5 the <strong>Document</strong> object is the key object that allows persistency. Through 
+the <strong>Documents</strong> collection objects, new <strong>Document</strong> 
+objects can be created as a repository for persistent 
+data, modifications performed in session can be saved on disk, and existing 
+<strong>Document</strong> 
+objects loaded data into session.</p>
+<p>In <strong>3D</strong>EXPERIENCE platform persistent data is stored in the PLM server, either as a PLM object and 
+its attributes and links or as the black box content of a specific PLM objects: 
+the representation references.</p>
+<p>This article explains how to bring objects into session, save objects, and related 
+considerations. Creation of objects is described in the
+<a href="CAAScdCreatingObjects.htm">Creating Objects</a> article.</p>
+<h2><a name="10"></a>Bringing Objects into Session</h2>
+<p>In V5, documents are stored on file systems and identified through a path. This 
+path, including the document name, is often used to classify and add attributes 
+on the document. The <code>Open</code> method of the <strong>Documents</strong> collection 
+allows you to load a document in memory from its path. The content of the document can 
+then be edited or browsed.</p>
+<p>In <strong>3D</strong>EXPERIENCE platform, the PLM server contains PLM entities that can be queried against a set 
+of PLM attributes, using the <strong>SearchService</strong> service object. The result of a query 
+is a set of PLM entities that must be opened using the <code>PLMOpen</code> method 
+of the <strong>PLMOpenService</strong><code> </code>object before being browsed or edited through 
+specific editors.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' A Product document is known by its path</span>
+sIdentifier=&quot;E:/myDocument.CATProduct&quot;
+
+<span class="comment">' Its content is loaded through the Documents collection</span>
+<span class="keyword">Set </span>oProductDocument = CATIA.Documents.Open(&quot;sIdentifier')</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Get the SearchService object</span>
+<span class="keyword">Dim</span> oSearchService <span class="keyword">As</span> SearchService
+<span class="keyword">Set</span> oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+<span class="comment">
+
+' Create a query using the DatabaseSearch object</span>
+<span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+<span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+
+<span class="comment">' Set the type of object to query, a criterion, and trigger the search</span>
+oDBSearch.BaseType = &quot;VPMReference&quot;
+oDBSearch.AddEasyCriteria &quot;PLM_ExternalID&quot;, &quot;Product*&quot;
+
+<span class="comment">' Launch the search</span>
+oSearchService.Search
+
+<span class="comment">' Retrieve the listed entities</span>
+<span class="keyword">Dim</span> cPLMEntities <span class="keyword">As</span> PLMEntities
+<span class="keyword">Set</span> cPLMEntities = oDBSearch.Results 
+
+<span class="comment">' Get the PLMOpen service &amp; Open the first retrieved entity</span>
+<span class="keyword">Set</span> oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;) 
+<span class="keyword">Set</span> oEditor = oPLMOpenService.PLMOpen (cPLMEntities.Item(1))</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p><strong>Note</strong>: depending on the query, the list of retrieved PLM entities 
+may contain more than one object.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Save"></a>Saving Objects</h2>
+<p>In <strong>3D</strong>EXPERIENCE platform, the save operation applies to all PLM objects opened in the active editor and is performed through the
+<code>PLMPropagate</code> method of the <strong>PLMPropagateService</strong> object.</p>
+<table class="fill">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+		<th><strong>3D</strong>EXPERIENCE platform Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre><span class="comment">' Saving the active Document</span>
+CATIA.ActiveDocument.Save</pre>
+		</td>
+		<td>
+		<pre><span class="comment">' Saving All data in Session</span>
+CATIA.GetSessionService(&quot;PLMPropagateService&quot;).PLMPropagate</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="FileSelection"></a>Using the File Selection Box</h2>
+<p>The <code>FileSelectionBox</code> property of the <strong>Application</strong> object 
+allows to display a window where the path of a file can be selected. In <strong>3D</strong>EXPERIENCE platform, this 
+can still be used to retrieve documents stored on a file system but PLM entities 
+must be retrieved either through the <strong>SearchService</strong> service object, or using the 
+interactive <em>Search</em> command.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

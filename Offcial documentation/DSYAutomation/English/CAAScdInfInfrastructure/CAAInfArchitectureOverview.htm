@@ -1,0 +1,589 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocScript.js">/* */</script>
+<title>Object Architecture Overview</title>
+</head>
+
+<body onload="initCode();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Object Architecture Overview</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+  <tbody>
+  <tr>
+    <td>
+    <p>You will find in this section how the Automation objects are 
+    described, and get information about:</p>
+    <ul>
+      <li><a href="#Diagrams">Object Diagrams, Object Descriptions and Object 
+        References</a> shows you where and how objects are described</li>
+      <li><a href="#Objects">About Objects, Collections, Properties, and Methods</a>
+        helps you understand the basics of the object model required by 
+        scripting</li>
+      <li><a href="#Inheritance">About Inheritance and Aggregation</a> describes the two object 
+		model mechanisms you need to know to write macros.</li>
+    </ul>
+    </td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Diagrams"></a>Object Diagrams, Object Descriptions and Object References</h2>
+<p>To describe objects, their properties and methods, and the relationships between 
+objects, we use object diagrams and object descriptions.</p>
+<p><a name="ODiagram"></a>Object diagrams describe the overall structure and how 
+objects are linked together:</p>
+<p class="auto"><a href="CAAInfObjApplication.htm"><img src="../CAAScdImages/Application.png" alt="Application Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAAInfObjWindows.htm"><img src="../CAAScdImages/Windows.png" alt="Windows Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAAInfObjWindow.htm"><img src="../CAAScdImages/Window.png" alt="Window Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'SpecsAndGeomWindow');return false;"><img src="../CAAScdImages/SpecsAndGeomWindow.png" alt="SpecsAndGeomWindow Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'SpecsViewer');return false;"><img src="../CAAScdImages/SpecsViewer.png" alt="SpecsViewer Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewers');return false;"><img src="../CAAScdImages/Viewers.png" alt="Viewers Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAAInfObjViewer.htm"><img src="../CAAScdImages/Viewer.png" alt="Viewer Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parderim.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewer2D');return false;"><img src="../CAAScdImages/Viewer2D.png" alt="Viewer2D Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Inheritance Symbol" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'SpecsViewer');return false;"><img src="../CAAScdImages/SpecsViewer.png" alt="SpecsViewer Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Inheritance Symbol" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewpoint2D');return false;"><img src="../CAAScdImages/Viewpoint2D.png" alt="Viewpoint2D Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewer3D');return false;"><img src="../CAAScdImages/Viewer3D.png" alt="Viewer3D Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAAInfObjViewpoint3D.htm"><img src="../CAAScdImages/Viewpoint3D.png" alt="Viewpoint3D Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'LightSources');return false;"><img src="../CAAScdImages/LightSources.png" alt="LightSources Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'LightSource');return false;"><img src="../CAAScdImages/LightSource.png" alt="LightSource Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup');return false;"><img src="../CAAScdImages/PageSetup.png" alt="PageSetup Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'SettingControllers');return false;"><img src="../CAAScdImages/SettingControllers.png" alt="SettingControllers Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="CAAInfObjSettingCtrl.htm"><img src="../CAAScdImages/SettingController.png" alt="SettingController Abstract Object" width="252" height="22"/></a></p>
+<p>Objects are depicted using colored boxes, linked together using symbols. You can learn from the diagram above that the <strong>Application</strong> object aggregates 
+a <strong>Windows </strong>collection object because the boxes that represent 
+them in the diagram are linked using the aggregation symbol:</p>
+<p>
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/></p>
+<p>Objects are depicted using a blue background color, collections objects using 
+a yellow one, and abstract objects using a purple one. </p>
+<p>The <strong>Windows</strong> collection object aggregates any number 
+of <strong>Window</strong> objects. The <strong>Window</strong> object aggregates in turn a <strong>Viewers</strong> 
+collection object and a <strong>PageSetup</strong> object.</p>
+<p>The <strong>Viewers</strong> collection aggregates <strong>Viewer</strong> objects. The <strong>Viewer</strong> 
+objects is an abstract object, depicted using a purple background color, and only its derived 
+objects can actually be created, that is:</p>
+<ul>
+  <li>The <strong>Viewer2D</strong> object</li>
+  <li>The <strong>Viewer3D</strong> object</li>
+  <li>The <strong>SpecsViewer</strong> object.</li>
+</ul>
+<p>Abstract objects and their derived objects are linked using the inheritance 
+symbol:</p>
+<p><img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="17" height="25"/></p>
+<p>The
+<img src="../CAAScdImages/rtarrow.gif" alt="Right Arrow" width="11" height="14"/> 
+symbol indicates that the object to which it refers, that is the object located just 
+left of the symbol, is the root of an object structure expanded in another object 
+diagram. The symbol
+<img src="../CAAScdImages/uparrow.gif" alt="Up Arrow" width="18" height="7"/> 
+shows that the root object near it can be found in one or several object diagrams 
+as an object to expand.</p>
+<p>For main objects, the object descriptions describe the object and how to use it. Here is 
+the <em>Application Object</em> description [<a href="#References">1</a>]. </p>
+<p>For all objects, the object references contain complete reference of inheritance, 
+properties and methods, thus encompassing all other link types between objects. 
+Here is the <em>Application (Object)</em> reference [<a href="#References">2</a>].</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Objects"></a>About Objects, Collections, Properties, and Methods</h2>
+<p>Scripting languages such as Visual Basic rely on objects. Most pieces of data 
+you can access are objects. Editors, windows, viewers,  
+parts, sketches, pads, even lines and curves, are represented as objects in Visual 
+Basic.</p>
+<p>An <em>object</em> is depicted using a blue box in the object diagrams, such 
+as:</p>
+<p>
+<img src="../CAAScdImages/Application.png" alt="Application Object" width="252" height="22"/></p>
+<p>A <em>collection</em> is an object that contains other objects. Like with stamps 
+collecting, where all objects in the collection are stamps, a collection contains 
+usually objects of the same type. For example a window collection contains 
+windows. 
+A collection is always denoted as a plural name to easily help recognize a collection 
+among other objects. The window collection is thus named <strong>Windows</strong>. A collection 
+is depicted using a yellow box in the object diagrams, such as</p>
+<p>
+<img src="../CAAScdImages/Windows.png" alt="Windows Collection Objecs" width="252" height="22"/></p>
+<p>The collection index begins at 1, and not 0. Usually, an object in the collection 
+is reached using its index, but it can also be reached using the name you assign 
+to it. This ability of referring to an object using its name in the collection is 
+stated in the documentation of each collection object, such as <strong>Windows</strong>, 
+when the index type is Variant, for example in the <strong>Item</strong> method.</p>
+<p>A <em>property</em> is part of an object and helps to characterize it. For example, 
+the <strong>Window</strong> object has the <strong>ActiveViewer</strong> property, that returns the 
+viewer that is currently used in the window, and the <strong>PageSetup</strong> property 
+that contains all the parameters required to print the window. 
+Retrieving property values of an object makes it possible to distinguish it among 
+other objects of the same type. Modifying property values of an object changes the 
+object characteristics and implies that the object itself is thus modified. To prevent 
+from non-desired property modifications, an object can have read-only properties 
+from which you can retrieve their values, but never set them. This is the case 
+of the <strong>ActiveViewer</strong> property of the <strong>Window</strong> object. On the 
+opposite, the <strong>PageSetup</strong> property is a read/write property.</p>
+<p>To retrieve or set the value of a property of a given object, write the object 
+reference followed by a period and the property name. For example, you can retrieve 
+in the <strong>oPgSetup</strong> variable the value of the <strong>PageSetup</strong> value of 
+the active window as follows:</p>
+
+
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> oPgSetup
+oPgSetup = CATIA.ActiveWindow.ActiveViewer.PageSetup</pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> oPgSetup <span class="keyword">As</span> PageSetup
+oPgSetup = CATIA.ActiveWindow.ActiveViewer.PageSetup</pre>
+</div>
+<div>
+<!-- C# -->
+<pre><span class="keyword">private</span> INFITF.PageSetup oPgSetup
+...
+<span class="keyword">private void</span> UsePageSetup() {
+  oPgSetup = CATIA.ActiveWindow.ActiveViewer.PageSetup</pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> oPgSetup <span class="keyword">As</span> INFITF.PageSetup
+oPgSetup = CATIA.ActiveWindow.ActiveViewer.PageSetup</pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oPgSetup = CATIA.ActiveWindow.ActiveViewer.PageSetup</pre>
+</div>
+</div>
+
+
+
+
+
+<p>Or you can set this property as follows:</p>
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<!--
+<th>C#</th>
+-->
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> opgSetup
+oPgSetup.Banner = &quot;This is my print banner&quot;
+oPgSetup.BannerPosition = catBannerPositionTop
+... <span class="comment">&#39; go on setting you own printing parameters</span>
+CATIA.ActiveWindow.ActiveViewer.PageSetup = oPgSetup</pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> opgSetup <span class="keyword">As</span> PageSetup
+oPgSetup.Banner = &quot;This is my print banner&quot;
+oPgSetup.BannerPosition = catBannerPositionTop
+... <span class="comment">&#39; go on setting you own printing parameters</span>
+CATIA.ActiveWindow.ActiveViewer.PageSetup = oPgSetup</pre>
+</div>
+<!--
+<div>
+<!-- C# -->
+<!--
+<pre><span class="keyword">private</span> INFITF.PageSetup oPgSetup
+...
+<span class="keyword">private void</span> SetPageSetup() {
+  oPgSetup.Banner = &quot;This is my print banner&quot;
+  oPgSetup.BannerPosition = catBannerPositionTop
+  ... <span class="comment">&#39; go on setting you own printing parameters</span>
+  CATIA.ActiveWindow.ActiveViewer.PageSetup = oPgSetup</pre>
+</div>
+-->
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> opgSetup <span class="keyword">As</span> INFITF.PageSetup
+opgSetup.Banner = &quot;This is my print banner&quot;
+opgSetup.BannerPosition = catBannerPositionTop
+... <span class="comment">&#39; go on setting you own printing parameters</span>
+CATIA.ActiveWindow.ActiveViewer.PageSetup = opgSetup</pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oPgSetup.Banner = &quot;This is my print banner&quot;
+oPgSetup.BannerPosition = catBannerPositionTop
+...<span class="comment">&#39; go on setting you own printing parameters</span>
+CATIA.ActiveWindow.ActiveViewer.PageSetup = oPgSetup</pre>
+</div>
+</div>
+
+<p>Note that the keywords, such as <code><span class="keyword">Dim</span></code> and <code><span class="keyword">As</span></code>,
+are colored in blue, and that the comment, starting with the single quote 
+character, is colored in green, as in the VBA or VSTA editors.</p>
+<p>The root object for all macros is the <strong>Application</strong> object. This corresponds
+to the entire application including its frame window. The application is always named <strong>CATIA</strong>
+for in-process access, and you should only refer to it since it already exists
+when you run an in-process macro. </p>
+<p>An object reference always starts from the root object, that is the <strong>Application</strong> 
+object which is always set to <strong>CATIA</strong> with in-process access. Then you use 
+the <strong>Application</strong> object's properties to access the objects. In this case, the application 
+object has the <strong>ActiveWindow</strong> property that holds the active window. You 
+simply need to write <strong>CATIA.ActiveWindow</strong> to refer to the active window. 
+Then the <strong>Window</strong> object has the <strong>ActiveViewer</strong> property to hold its 
+active viewer. 
+Simply add a period followed by <strong>ActiveViewer</strong>, and you get this active 
+viewer.</p>
+<p>In the same way, you can request to maximize the active window 
+by setting the value of its <strong>WindowState</strong> property to <strong>catWindowStateMaximized</strong>, as 
+follows:</p>
+<pre class="code">CATIA.ActiveWindow.WindowState = catWindowStateMaximized</pre>
+<p>A <em>method</em> is an action that you can request an object to do. For example, 
+you can request the active window to close. To do this, the <strong>Window</strong> object 
+includes the <strong>Close</strong> method. Simply request the window to close itself as follows:</p>
+<pre class="code">CATIA.ActiveWindow.Close</pre>
+<p>Methods have often arguments requested by the action. For example, the <strong>
+PutDirection</strong> 
+method of the <strong>LightSource</strong> object carries out the action of setting the 
+lighting direction of a light source. This lighting direction must be provided to perform this action, otherwise the
+<strong>PutDirection</strong> 
+method cannot work. This direction is passed as an argument of the <strong>
+PutDirection</strong> method. 
+To set the lighting direction of the first light source in the collection of 
+light sources attached to the active viewer parallel to the X vector of the main 
+coordinate system, proceed as follows:</p>
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre><span class="keyword">Dim</span> oLiSource
+<span class="keyword">Set</span> oLiSource = CATIA.ActiveViewer.LightSources.Item(1)
+oLiSource.PutDirection Array(1, 0, 0)</pre>
+</div>
+<div>
+<!-- VBA -->
+<pre><span class="keyword">Dim</span> oLiSource <span class="keyword">As</span> LightSource
+<span class="keyword">Set</span> oLiSource = CATIA.ActiveViewer.LightSources.Item(1)
+oLiSource.PutDirection Array(1, 0, 0)</pre>
+</div>
+<div>
+<!-- C# -->
+<pre><span class="keyword">private</span> INFITF.PageSetup oLiSource
+...
+<span class="keyword">private void</span> SetLightSource() {
+  oLiSource = CATIA.ActiveViewer.LightSources.Item(1)
+  oLiSource.PutDirection Array(1, 0, 0)</pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre><span class="keyword">Dim</span> oLiSource <span class="keyword">As</span> INFITF.LightSource
+<span class="keyword">Set</span> oLiSource = CATIA.ActiveViewer.LightSources.Item(1)
+oLiSource.PutDirection Array(1, 0, 0)</pre>
+</div>
+<div>
+<!-- Python -->
+<pre>oLiSource = CATIA.ActiveViewer.LightSources.Item(1)
+oLiSource.PutDirection Array(1, 0, 0)</pre>
+</div>
+</div>
+<p>The first item of the light source collection is returned using the <strong>
+Item</strong> method of the <strong>LightSources</strong> collection object. 
+Then the <strong>PutDirection</strong> method of the <strong>LightSource</strong> 
+object is called. The argument passed to this method is an array of three 
+integers (1, 0, 0) to designate the X vector of the main coordinate system.</p>
+<p>You will find in the <strong>object reference</strong> that each method is qualified as 
+either a <strong>Function</strong> or a <strong>Sub</strong>, and with parentheses, even if they have 
+no arguments, as follows:</p>
+<pre class="code"><span class="keyword">Function</span> NewWindow() <span class="keyword">As</span> Window
+
+<span class="keyword">Sub</span> Update()
+</pre>
+<p>This is a Visual Basic notation to distinguish a method that returns a value, 
+or <strong>Function</strong>, from one that does not, or <strong>Sub</strong>. Note that the returned 
+value of a <strong>Function</strong> is indicated using the <strong>As</strong> keyword. In the example 
+above, the <strong>NewWindow</strong> method is a <strong>Function</strong> because it returns a 
+<strong>
+Window</strong> object. See also <em>Some Tips about Subs 
+and Functions</em> to know more about <strong>Sub</strong>s and <strong>Function</strong>s 
+[<a href="#References">3</a>].</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Inheritance"></a>About Inheritance, Aggregation, and Object Model</h2>
+<p>Inheritance and aggregation are the two main kinds of relationships between objects.</p>
+<p><em>Inheritance</em> is the ability of an object to be a specialization of 
+another object. An object that inherits from another object, named the <em>base</em> object, inherits 
+the properties and the methods of this base object and adds them to its own properties 
+and methods. Inheritance helps to specialize objects while gathering common properties 
+and methods in the base object. Inheritance is a iterative process, since an object 
+can inherit from an object which itself inherits from another object which itself 
+inherits, and so forth, and the lowest object in the inheritance tree inherits the 
+properties and methods of all the objects above it. Inheritance is depicted using 
+the following symbol
+<img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="17" height="25"/> 
+in the object diagrams.</p>
+<p>Some objects are depicted with a purple box, such as:</p>
+<p>
+<img src="../CAAScdImages/Viewer.png" alt="Viewer Abstract Object" width="252" height="22"/></p>
+<p>These are abstract objects. An <em>abstract object</em> owns properties and 
+methods like any other object, but it cannot be created. Only objects which 
+inherits from it and which are not abstract objects can be created.</p>
+<p class="auto">
+<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewer');return false;"><img src="../CAAScdImages/Viewer.png" alt="Viewer Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parderim.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewer2D');return false;"><img src="../CAAScdImages/Viewer2D.png" alt="Viewer2D Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewer3D');return false;"><img src="../CAAScdImages/Viewer3D.png" alt="Viewer3D Object" width="252" height="22"/></a></p>
+<p>For example, the <strong>Viewer</strong> 
+object is an abstract object which owns properties and methods shared by all viewers, 
+whatever their type 2D or 3D, 
+but cannot be created as such. Only objects of types <strong>Viewer2D</strong> and
+<strong>Viewer3D</strong> which inherit from it can actually be created.</p>
+<p class="auto">
+<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewers');return false;"><img src="../CAAScdImages/Viewers.png" alt="Viewers Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchildHigh1.png" alt="Aggregation Symbol" width="20" height="58"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewer');return false;"><img src="../CAAScdImages/ViewerWithMethods.png" alt="Viewer Abstract Object" width="252" height="56"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parderivHigh2.png" alt="Inheritance Symbol" width="20" height="58"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewer2D');return false;"><img src="../CAAScdImages/Viewer2DWithMethods.png" alt="Viewer2D Object" width="252" height="56"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchildHigh1.png" alt="Inheritance Symbol" width="20" height="58"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewer3D');return false;"><img src="../CAAScdImages/Viewer3DWithMethods.png" alt="Viewer3D Object" width="252" height="56"/></a></p>
+<p>In the above diagram, the <strong>Viewer2D</strong> object is a specialized viewer that 
+is dedicated to 2D, and which inherits the properties and methods of the <strong>Viewer</strong> 
+object. In addition, the <strong>Viewer2D</strong> object has its own properties and methods. 
+For example, the <strong>Viewer2D</strong> object inherits the <strong>Height</strong> and <strong>Width</strong> 
+properties from the <strong>Viewer</strong> object, like the <strong>Viewer3D</strong> object, and owns the
+<strong>Viewpoint2D</strong> property, which is a specific 
+property for a 2D viewer, but which does not make sense for the <strong>Viewer</strong> 
+base object the properties and methods of which must also match the <strong>Viewer3D</strong> 
+object needs.</p>
+<p>Assume that <strong>My2DViewer</strong> is a <strong>Viewer2D</strong> object and is the active 
+viewer or the active window. 
+The example below assigns a new view point, <strong>My2DViewpoint</strong>, to this viewer.</p>
+
+<div class="codeSample">
+<table>
+<tr>
+<th>VB</th>
+<th>VBA</th>
+<th>C#</th>
+<th>VB.NET</th>
+<th>Python</th>
+<th>&nbsp;</th>
+</tr>
+</table>
+<div>
+<!-- VB -->
+<pre>
+<span class="keyword">Dim</span> o2DViewpoint
+o2DViewpoint.PutOrigin Array(0, 0)
+o2DViewpoint.Zoom = 1
+
+<span class="keyword">Dim</span> o2DViewer
+o2DViewer = CATIA.ActiveWindow.ActiveViewer
+o2DViewer.Viewpoint2D = My2DViewpoint
+o2DViewer.Height = 300
+o2DViewer.Width = 500</pre>
+</div>
+<div>
+<!-- VBA -->
+<pre>
+<span class="keyword">Dim</span> o2DViewpoint <span class="keyword">As</span> Viewpoint2D
+o2DViewpoint.PutOrigin Array(0, 0)
+o2DViewpoint.Zoom = 1
+
+<span class="keyword">Dim</span> o2DViewer <span class="keyword">As</span> Viewer2D
+o2DViewer = CATIA.ActiveWindow.ActiveViewer
+o2DViewer.Viewpoint2D = My2DViewpoint
+o2DViewer.Height = 300
+o2DViewer.Width = 500</pre>
+</div>
+<div>
+<!-- C# -->
+<pre>
+<span class="keyword">private</span> INFITF.Viewpoint2D o2DViewpoint
+...
+<span class="keyword">private void</span> SetViewPoint2D() {
+  o2DViewpoint.PutOrigin Array(0, 0)
+  o2DViewpoint.Zoom = 1
+...
+<span class="keyword">private</span> INFITF.Viewer2D o2DViewer
+o2DViewer = CATIA.ActiveWindow.ActiveViewer
+o2DViewer.Viewpoint2D = My2DViewpoint
+o2DViewer.Height = 300
+o2DViewer.Width = 500</pre>
+</div>
+<div>
+<!-- VB.NET -->
+<pre>
+<span class="keyword">Dim</span> o2DViewpoint <span class="keyword">As</span> INFITF.Viewpoint2D
+o2DViewpoint.PutOrigin Array(0, 0)
+o2DViewpoint.Zoom = 1
+
+<span class="keyword">Dim</span> o2DViewer <span class="keyword">As</span> INFITF.Viewer2D
+o2DViewer = CATIA.ActiveWindow.ActiveViewer
+o2DViewer.Viewpoint2D = My2DViewpoint
+o2DViewer.Height = 300
+o2DViewer.Width = 500</pre>
+</div>
+<div>
+<!-- Python -->
+<pre>
+o2DViewpoint.PutOrigin Array(0, 0)
+o2DViewpoint.Zoom = 1
+
+o2DViewer = CATIA.ActiveWindow.ActiveViewer
+o2DViewer.Viewpoint2D = My2DViewpoint
+o2DViewer.Height = 300
+o2DViewer.Width = 500</pre>
+</div>
+</div>
+
+
+
+<p>In this example, a <strong>Viewpoint2D</strong> object is created, initialized with an 
+origin and a zoom factor, and set as the <strong>Viewer2D</strong> object view point 
+thanks to the <strong>Viewpoint2D</strong> property dedicated to <strong>Viewer2D</strong> objects. 
+Then the height and width, expressed in pixels, of the <strong>Viewer2D</strong> object 
+are set thanks to the <strong>Height</strong> and <strong>Width</strong> properties inherited from 
+the <strong>Viewer</strong> base object.</p>
+<p><em>Aggregation</em> is the ability of an object to contain another one. For example, 
+the <strong>Application</strong> object contains (aggregates) a <strong>Printers</strong> collection object. Within 
+CAA Automation objects models, the aggregation of a series of objects of the 
+same type is usually reserved to collection objects. For example, the <strong>Printers</strong> 
+collection contains (aggregates) a series of <strong>Printer</strong> objects. Aggregation is depicted 
+in object diagrams using the following symbol<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="17" height="25"/> 
+between the aggregating object and the aggregated object.</p>
+<p class="auto"><a href="CAAInfObjApplication.htm"><img src="../CAAScdImages/Application.png" alt="Application Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Printers');return false;"><img src="../CAAScdImages/Printers.png" alt="Printers Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Printer');return false;"><img src="../CAAScdImages/Printer.png" alt="Printer Object" width="252" height="22"/></a></p>
+<p>You may find a <em>role</em> description on this symbol. For example, the <strong>Prism</strong> object aggregates two <strong>Limit</strong> objects: its first limit and its second limit.</p>
+<p class="auto"><a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'SketchBasedShape');return false;"><img src="../CAAScdImages/SketchBasedShape.png" alt="SketchBasedShape Abstract Object" width="252" height="22"/><br />
+<img src="../CAAScdImages/parderil.png" alt="Inheritance Symbol" width="20" height="24"/><img src="../CAAScdImages/parchila.png" alt="Mono-Directional Relation Symbol" width="20" height="24"/></a><a href="#" onclick="javascript:CAAlink('IDL', 'CATSketcherIDLItf', 'interface', 'Sketch');return false;"><img src="../CAAScdImages/Sketch.png" alt="Sketch Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="../CAAScdPriPartDesign/CAAPriObjPrism.htm"><img src="../CAAScdImages/Prism.png" alt="Prism Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/propFirstLimit.png" alt="Property to Return or Set the First Limit Object" width="80" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'Limit');return false;"><img src="../CAAScdImages/Limit.png" alt="Limit Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/propSecondLimit.png" alt="Property to Return or Set the Second Limit Object" width="80" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'Limit');return false;"><img src="../CAAScdImages/Limit.png" alt="Limit Object" width="252" height="22"/></a></p>
+<p>This role is usually set as the property that returns and possibly set s the 
+object. For example, the <strong>FirstLimit</strong> property of the <strong>Prism</strong> object returns 
+the prism first limit. The aggregation link is usually bi-directional because the <strong>Parent</strong> property of 
+each object allows you to retrieve its aggregating object. For clarification purpose, 
+mono-directional relationships may be visible on a diagram. They are depicted using 
+the following symbol
+<img src="../CAAScdImages/parchila.png" alt="Aggregation Symbol" width="17" height="25"/>.
+Here, for example, the <strong>Sketch</strong> object is aggregated by a <strong>Sketches</strong> 
+collection object that is not visible but is referred to by the <strong>SketchBasedShape</strong> 
+object.</p>
+<p>In addition to this functional view, we can superimpose another view to help
+understand some basic mechanisms:</p>
+<p class="auto">
+<a href="#" onclick="javascript:CAAlink('IDL', 'SystemTS', 'interface', 'IUnknown');return false;"><img src="../CAAScdImages/IUnknown.png" alt="IUnknown Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'IDispatch');return false;"><img src="../CAAScdImages/IDispatch.png" alt="IDispatch Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'CATBaseUnknown');return false;"><img src="../CAAScdImages/CATBaseUnknown.png" alt="CATBaseUnknown Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'CATBaseDispatch');return false;"><img src="../CAAScdImages/CATBaseDispatch.png" alt="CATBaseDispatch Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'Collection');return false;"><img src="../CAAScdImages/parderim.png" alt="Inheritance Symbol" width="20" height="24"/></a><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'AnyObject');return false;"><img src="../CAAScdImages/AnyObject.png" alt="AnyObject Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space2.png" alt="" width="40" height="24"/><img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'Collection');return false;"><img src="../CAAScdImages/Collection.png" alt="Collection Abstract Object" width="252" height="22"/></a>
+</p>
+<p>Any objects derive from the <strong>AnyObject</strong> abstract object, and any 
+collections derive from the <strong>Collection</strong> abstract object. Both of them 
+derive from the <strong>CATBaseDispatch</strong> abstract object, which derives from the
+<strong>CATBaseUnknown</strong> abstract object, which in turn derive from the <strong>
+IDispatch</strong> abstract object that derives from the root <strong>IUnknown</strong> 
+abstract object. You will never deal with these last four abstract objects that 
+enable the Automation object model to a COM object model. But the <strong>AnyObject</strong> 
+and the <strong>Collection</strong> abstract object bring important properties to their 
+child objects.</p>
+<p class="auto">
+<a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'AnyObject');return false;"><img src="../CAAScdImages/AnyObjectWithMethods.png" alt="AnyObject Abstract Object" width="252" height="60"/></a><br />
+<img src="../CAAScdImages/parderim.png" alt="Inheritance Symbol" width="20" height="24"/><a href="CAAInfObjApplication.htm"><img src="../CAAScdImages/Application.png" alt="Application Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="CAAInfObjEditor.htm"><img src="../CAAScdImages/Editor.png" alt="Editor Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'LightSource');return false;"><img src="../CAAScdImages/LightSource.png" alt="LightSource Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="CAAInfObjSelection.htm"><img src="../CAAScdImages/Selection.png" alt="Selection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'SystemService');return false;"><img src="../CAAScdImages/SystemService.png" alt="SystemService Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="CAAInfObjViewer.htm"><img src="../CAAScdImages/Viewer.png" alt="Viewer Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewer2D');return false;"><img src="../CAAScdImages/Viewer2D.png" alt="Viewer2D Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewer3D');return false;"><img src="../CAAScdImages/Viewer3D.png" alt="Viewer3D Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="CAAInfObjWindow.htm"><img src="../CAAScdImages/Window.png" alt="Window Abstract Object" width="252" height="22"/></a>
+</p>
+<p>Any objects derive from the <strong>AnyObject</strong> abstract object which supplies the <strong>Application</strong>,
+<strong>Parent</strong>, and <strong>Name</strong> properties. You can then use these properties against any object, 
+since any object features them:</p>
+<ul>
+	<li>The <strong>Application</strong> property returns the application to which an object
+belongs. When running in-process macros, there is only one application named <strong>CATIA</strong></li>
+	<li>The <strong>Name</strong> property allows any object to be assigned a name</li>
+	<li>The <strong>Parent</strong>
+property allows the parent object to be retrieved, the parent object being the
+object which aggregates the current one.</li>
+</ul>
+<p class="auto">
+<a href="#" onclick="javascript:CAAlink('IDL', 'System', 'interface', 'Collection');return false;"><img src="../CAAScdImages/CollectionWithMethods.png" alt="Collection Abstract Object" width="252" height="73"/></a><br />
+<img src="../CAAScdImages/parderim.png" alt="Inheritance Symbol" width="20" height="24"/><a href="CAAInfObjEditors.htm"><img src="../CAAScdImages/Editors.png" alt="Editors Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Inheritance Symbol" width="20" height="24"/><a href="CAAInfObjWindows.htm"><img src="../CAAScdImages/Windows.png" alt="Windows Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parlower.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Viewers');return false;"><img src="../CAAScdImages/Viewers.png" alt="Viewers Collection Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'LightSources');return false;"><img src="../CAAScdImages/LightSources.png" alt="LightSources Collection Object" width="252" height="22"/></a>
+</p>
+<p>Any collections derive from the <strong>Collection</strong> abstract object which 
+supplies the
+<strong>Count</strong> property in addition to the <strong>Application</strong>,
+<strong>Parent</strong>, and
+<strong>Name</strong> properties. The <strong>Count</strong> property of the <strong>Collection</strong>
+object returns the number of items in the collection. In addition, a <strong>Collection</strong>
+object can supply an <strong>Item</strong>, an <strong>Add</strong>, and a <strong>Remove</strong> methods to 
+return an object from, add an object in, or remove an object from the collection.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="References"></a>References</h3>
+<table>
+  <tbody>
+  <tr>
+    <td>[1]</td>
+    <td><a href="CAAInfObjApplication.htm">Application Object</a> Description</td>
+  </tr>
+  <tr>
+    <td>[2]</td>
+    <td><a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'Application'); return false;">Application (Object)</a> Reference</td>
+  </tr>
+  <tr>
+    <td>[3]</td>
+    <td><a href="CAAInfSubFunction.htm">About Subs and Functions</a></td>
+  </tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

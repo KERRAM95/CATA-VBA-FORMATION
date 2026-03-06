@@ -1,0 +1,607 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a Standard Opening</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating a Standard Opening</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create Standard Opening.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSfdUcPart.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSfdUcCGR.3dxml</div></code> 
+							and <code><div class=vb_sample_data>CAAScdSfdUcSR.3dxml</div></code> files supplied 
+							in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSfdSFDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where 
+								the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSfdUcCreateOpeningStandardSource.htm">CAAScdSfdUcCreateOpeningStandardSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSfdTocSFDesign.htm">Structure Functional Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in six steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves service of type RfgService</a></li>
+			<li><a href="#Step5">Retrieves a SFD panel object</a></li>
+			<li><a href="#Step6">Create standard Opening using Offset/Offset positioning 
+			strategy</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SFD_VB_TEST&quot;</strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SFD_VB_TEST&quot; from DB and 
+			loads it and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SFDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SFD_VB_TEST&quot;
+ OpenProduct prdName , SFDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SFD model from underlying database the current active 
+			editor is returned in <strong><code>SFDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection object</strong></p>
+			<p>In this step UC retrieves Selection object in <code>SFDProdSel</code> 
+			variable.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> SFDProdSel = SFDPrdEditor.<strong>Selection</strong>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object in <code>ObjPart</code> variable.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> ObjPart = SFDPrdEditor.<strong>ActiveObject</strong>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves service of type RfgService</strong></p>
+			<p>In this step UC retrieves <code>RfgService</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.<strong>GetService</strong>(&quot;RfgService&quot;)
+...</pre>
+			<p><code>GetService</code> method returns <code>RfgService</code>. This 
+			service provides methods such GetReferencePlane, CreateProjectData, 
+			CreateRefSurfaceFeature.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieves a SFD panel object</strong></p>
+			<p>In this step UC retrieves panel object.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> RefObjPanel = ObjPart.<strong>FindObjectByName</strong>(&quot;Panel.1&quot;)
+  <span class="keyword">Dim</span> ObjSfdPanel <span class="keyword">As</span> SfdPanel
+  SFDProdSel.<strong>Add</strong> RefObjPanel
+<span class="keyword">  Set</span> ObjSfdPanel = SFDProdSel.<strong>FindObject</strong>(&quot;CATIASfdPanel&quot;)
+...</pre>
+			<p><code>FindObjectByName</code> method finds object whose name is &quot;Panel.1&quot; 
+			and returns reference to it. Here RefObjPanel is of type <code>Reference</code>. 
+			To retrieve <code>SfdPanel</code> object from <code>Reference</code> 
+			add retrieved reference to the selection and call <code>FindObject</code> 
+			method as shown above. This will return the <code>SfdPanel</code> object 
+			variable.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Create Standard Opening with Offset/Offset 
+			positioning strategy</strong></p>
+			<p>Call <code>CreateStandardOpeningOffsetOffset</code> method to create 
+			a standard opening with offset/offset positioning strategy. <code>CreateStandardOpeningOffsetOffset</code> 
+			method takes a panel object as input parameter and returns created opening 
+			as output parameter in <code>ObjStrOpeningOffsetOffset</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjStrOpeningOffsetOffset <span class="keyword">As</span> StrOpening
+  <strong>CreateStandardOpeningOffsetOffset</strong> ObjSfdPanel, ObjStrOpeningOffsetOffset
+  ObjPart.<strong>Update</strong>
+...</pre>
+			<p>The method <code>CreateStandardOpeningOffsetOffset</code> is detailed 
+			as in the below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Retrieves all contour names and selects rectangle contour 
+				name</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateStandardOpeningOffsetOffset</strong>(iObjSfdPanel <span class="keyword">As</span> SfdPanel, oObjStrOpening <span class="keyword">As</span> StrOpening)
+    <span class="keyword">Dim</span> ContourNames() <span class="keyword">As Variant</span>
+    <strong>GetContourNames</strong> iObjSfdPanel, ContourNames
+    <span class="keyword">Dim</span> ContourName <span class="keyword">As String</span>
+    ContourName = ContourNames(1)
+...</pre>
+				<p>In this step Uc retrieves all the contour names available, by 
+				calling method <code>GetContourNames</code>. This method takes a 
+				panel as input parameter and returns the names in an array as output 
+				parameter. Then Rectangle contour name which is at index 1 is stored 
+				in <code>ContourName</code> variable.</p>
+				<p>The method <code>GetContourNames</code> is detailed as in the 
+				below sub steps.</p>
+				<ol class="task" style="list-style-type: lower-roman">
+					<li>
+					<pre class="code"><span class="keyword">Sub</span> <strong>GetContourNames</strong>(iObjSfdPanel <span class="keyword">As</span> SfdPanel, oContourNames() <span class="keyword">As Variant</span>)
+    <span class="comment">&#39;Get StrOpeningsMgr object</span>
+    <span class="keyword">Dim</span> ObjStrOpeningsMgr <span class="keyword">As</span> StrOpeningsMgr
+    <span class="keyword">Set</span> ObjStrOpeningsMgr = iObjSfdPanel.<strong>StrOpeningsMgr</strong>
+    <span class="comment">&#39;Get available contour names</span>
+    ObjStrOpeningsMgr.<strong>GetAvailableStandardContours</strong> oContourNames
+<span class="keyword">End Sub</span></pre>
+					<p>In this method object <code>ObjStrOpeningsMgr</code> of type
+					<code>StrOpeningsMgr</code> is retrieved from iObjSfdPanel. 
+					Then method <code>GetAvailableStandardContours</code> is called 
+					to get the contour names.</p>
+					</li>
+				</ol>
+				</li>
+				<li>
+				<p><strong>Retrieves contour params</strong></p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> StdContourParms <span class="keyword">As</span> StrStandardContourParameters
+    <strong>GetContourParams</strong> iObjSfdPanel, ContourName, StdContourParms
+...</pre>
+				<p>In this step Uc retrieves the parameters of a particular contour. 
+				To do this Uc calls a method <code>GetContourParams</code>. This 
+				method takes a panel object and name of the contour as input parameter 
+				and it returns the collection of contour parameters as output parameter 
+				in <code>StdContourParms</code>. Here <code>StdContourParms</code> 
+				is a collection object of type <code>StrStandardContourParameters</code>, 
+				which is a collection of <code>StrParameter</code>.</p>
+				<p>The method <code>GetContourParams</code> is detailed as in the 
+				below sub steps.</p>
+				<ol class="task" style="list-style-type: lower-roman">
+					<li>
+					<pre class="code"><span class="keyword">Sub</span> <strong>GetContourParams</strong>(iObjSfdPanel <span class="keyword">As</span> SfdPanel, iContourName <span class="keyword">As String</span>, oContourParms <span class="keyword">As</span> StrStandardContourParameters)
+    <span class="comment">&#39;Get StrOpeningsMgr object</span>
+    <span class="keyword">Dim</span> ObjStrOpeningsMgr <span class="keyword">As</span> StrOpeningsMgr
+    <span class="keyword">Set</span> ObjStrOpeningsMgr = iObjSfdPanel.<strong>StrOpeningsMgr</strong>
+    
+    <span class="comment">&#39;Get parameters of contour</span>
+    <span class="keyword">Set</span> oContourParms = ObjStrOpeningsMgr.<strong>GetStandardContourParms</strong>(iContourName)
+    <span class="keyword">If</span> oContourParms.Count = 0 <span class="keyword">Then</span>
+        Err.Raise 1, Err.Source, &quot;No contour params found&quot;
+        <span class="keyword">Exit Sub
+    End If
+End Sub</span></pre>
+					<p>In this method object <code>ObjStrOpeningsMgr</code> of type
+					<code>StrOpeningsMgr</code> is retrieved from iObjSfdPanel. 
+					Then method <code>GetStandardContourParms</code> is called to 
+					get the contour parameters. Method <code>GetStandardContourParms</code> 
+					takes contour name as input parameter. Contour parameters related 
+					to this name will be returned in <code>oContourParms</code>.</p>
+					</li>
+				</ol>
+				</li>
+				<li>
+				<p><strong>Sets contour parameter&#39;s data</strong></p>
+				<pre class="code">...
+    <strong><a href="#SetRectContourParamsData">SetRectContourParamsData</a></strong> StdContourParms, &quot;1000mm&quot;, &quot;400mm&quot;, &quot;50mm&quot;
+...</pre>
+				<p>In this step Uc sets the data of contour parameters by calling 
+				method <code>SetRectContourParamsData</code>. Method <code>SetRectContourParamsData</code> 
+				takes contour parameters collection object, width, height and corner 
+				radius as input parameters.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves all standard positiong strategy names and selects 
+				offset offset positioning strategy</strong></p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> StdPosStrategyNames() <span class="keyword">As Variant</span>
+    <strong>GetStdPosStrategyNames</strong> iObjSfdPanel, StdPosStrategyNames
+    <span class="comment">&#39;Select Positioning strategy offset offset</span>
+    <span class="Keyword">Dim</span> PosStratName <span class="keyword">As String</span>
+    PosStratName = StdPosStrategyNames(0)
+...</pre>
+				<p>In this step Uc retrieves all the standard positioning strategy 
+				names available, by calling method <code>GetStdPosStrategyNames</code>. 
+				This method takes a panel as input parameter and returns the names 
+				in an array as output parameter. Then &quot;Offset/Offset&quot; contour name 
+				which is at index 0 is stored in <code>PosStratName</code> variable.</p>
+				<p>The method <code>GetStdPosStrategyNames</code> is detailed as 
+				in the below sub steps.</p>
+				<ol class="task" style="list-style-type: lower-roman">
+					<li>
+					<pre class="code"><span class="keyword">Sub</span> <strong>GetStdPosStrategyNames</strong>(iObjSfdPanel <span class="keyword">As</span> SfdPanel, oStdPosStrategyNames() <span class="keyword">As Variant</span>)
+    <span class="comment">&#39;Get StrOpeningsMgr object</span>
+    <span class="keyword">Dim</span> ObjStrOpeningsMgr <span class="keyword">As</span> StrOpeningsMgr
+    <span class="keyword">Set</span> ObjStrOpeningsMgr = iObjSfdPanel.<strong>StrOpeningsMgr</strong>
+    <span class="comment">&#39;Get available standard positioning strategy names</span>
+    ObjStrOpeningsMgr.<strong>GetAvailableStandardPositioningStrategies</strong> oStdPosStrategyNames
+<span class="keyword">End Sub</span></pre>
+					<p>In this method object <code>ObjStrOpeningsMgr</code> of type
+					<code>StrOpeningsMgr</code> is retrieved from iObjSfdPanel. 
+					Then method <code>GetAvailableStandardPositioningStrategies</code> 
+					is called to get the standard positioning strategy names.</p>
+					</li>
+				</ol>
+				</li>
+				<li>
+				<p><strong>Retrieves standard positioning strategy parameters</strong></p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> PosStratParms <span class="keyword">As</span> StrStandardPosStrategyParameters
+    <strong>GetStdPosStrategyParams</strong> iObjSfdPanel, PosStratName, PosStratParms
+...</pre>
+				<p>In this step Uc retrieves the parameters of a particular standard 
+				positioning strategy. To do this Uc calls a method <code>GetStdPosStrategyParams</code>. 
+				This method takes a panel object and name of the standard positioing 
+				strategy as input parameter and it returns the collection of standard 
+				positioning strategy parameters as output parameter in <code>PosStratParms</code>.
+				<code>PosStratParms</code> is a collection object of type <code>
+				StrStandardPosStrategyParameters</code>, which is collection parameters 
+				required for defining positioing strategy.</p>
+				<p>The method <code>GetStdPosStrategyParams </code>is detailed as in the 
+				below sub steps.</p>
+				<ol class="task" style="list-style-type: lower-roman">
+					<li>
+					<pre class="code"><span class="keyword">Sub</span> <strong>GetStdPosStrategyParams</strong>(iObjSfdPanel <span class="keyword">As</span> SfdPanel, iStdPosStrategyName <span class="keyword">As String</span>, _
+                            oStdPosStrategyParms <span class="keyword">As</span> StrStandardPosStrategyParameters)
+    <span class="comment">&#39;Get StrOpeningsMgr object</span>
+    <span class="keyword">Dim</span> ObjStrOpeningsMgr <span class="keyword">As</span> StrOpeningsMgr
+    <span class="keyword">Set</span> ObjStrOpeningsMgr = iObjSfdPanel.<strong>StrOpeningsMgr</strong>
+    
+    <span class="comment">&#39;Get standard positioining strategy parameters</span>
+    <span class="keyword">Set</span> oStdPosStrategyParms = ObjStrOpeningsMgr.<strong>GetStandardPositioningStrategyParms</strong>(iStdPosStrategyName)
+    <span class="keyword">If</span> oStdPosStrategyParms.Count = 0 <span class="keyword">Then</span>
+        Err.Raise 1, Err.Source, &quot;Positioning strategy parameters cannot found&quot;
+        <span class="keyword">Exit Sub
+    End If
+End Sub</span></pre>
+					<p>In this method object <code>ObjStrOpeningsMgr</code> of type
+					<code>StrOpeningsMgr</code> is retrieved from iObjSfdPanel. 
+					Then method <code>GetStandardPositioningStrategyParms</code> 
+					is called to get the positioning strategy parameters. Method
+					<code>GetStandardPositioningStrategyParms</code> takes positioning 
+					strategy name as input parameter. Positioning strategy parameters 
+					related to this name will be returned in <code>oStdPosStrategyParms</code>.</p>
+					</li>
+				</ol>
+				</li>
+				<li>
+				<p><strong>Sets standard positioing strategy parameter&#39;s data</strong></p>
+				<pre class="code">...
+    <strong><a href="#SetStdPosStrategyParamsDataForOffsetOffset">SetStdPosStrategyParamsDataForOffsetOffset</a></strong> PosStratParms
+...</pre>
+				<p>In this step Uc sets the data of &quot;offset/offset&quot; positioning 
+				strategy parameters by calling method <code>SetStdPosStrategyParamsDataForOffsetOffset</code>. 
+				Method <code>SetStdPosStrategyParamsDataForOffsetOffset</code> takes 
+				positioning strategy parameters collection object(<code>PosStratParms</code>) 
+				as input parameters.</p>
+				</li>
+				<li>
+				<p><strong>Create an opening and set its type, category, standard 
+				opening parameters</strong></p>
+				<pre class="code">...
+    <strong><a href="#CreateOpeningAndSetData">CreateOpeningAndSetData</a></strong> iObjSfdPanel, catStrOpeningModeStandard, &quot;SldOpening&quot;, ContourName, StdContourParms, PosStratName, PosStratParms, _
+                            oObjStrOpening
+...</pre>
+				<p>In this step Uc creates an opening with no data set. Then it 
+				sets some of its data and returns created opening in <code>oObjStrOpening</code> 
+				as output parameter. First parameter is panel on which opening will 
+				be created, second parameter is opening type (catStrOpeningModeStandard is for standard opening), 
+				third parameter is category, fourth parameter is contour name, 
+				fifth parameter is contour 
+				parameters, sixth parameter is positioning strategy name and 
+				seventh 
+				parameter is positioning strategy parameters. </p>
+				</li>
+				<li>
+				<p><strong>Updates created opening object</strong></p>
+				<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjStrOpening
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>UpdateObject</code> updates the created opening.</p>
+				</li>
+			</ol>
+			</li>
+		</ol>
+		<p><strong><br />
+		Detailed steps of methods called in Uc</strong></p>
+		<ul class="task">
+			<li>
+			<p><strong><a name="SetRectContourParamsData"></a>SetRectContourParamsData 
+			method</strong></p>
+			<p>This method sets width, height and corner radius for Rectangle type 
+			of contour. This method takes collection of contour parameters, width, 
+			height and corner radius as input parameters.</p>
+			<ol>
+				<li>
+				<p><strong>Retrieves total number of contour parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>SetRectContourParamsData</strong>(iContourParms <span class="keyword">As</span> StrStandardContourParameters, iStrW <span class="keyword">As String</span>, iStrH <span class="keyword">As String</span>, iStrCR <span class="keyword">As String</span>)
+    <span class="keyword">Dim</span> NbOfContourParams <span class="keyword">As Long</span>
+    NbOfContourParams = iContourParms.Count
+...</pre>
+				<p>Here size of the of the contour parameters is retrieved.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves a parameter from collection and set width/height/CornerRadius</strong></p>
+				<pre class="code">...
+    <span class="keyword">For</span> i = 1 <span class="keyword">To</span> NbOfContourParams
+      <span class="comment">&#39;Get a StrParameter from the collection</span>
+      <span class="keyword">Dim</span> ObjStrParameter <span class="keyword">As</span> StrParameter
+      <span class="keyword">Set</span> ObjStrParameter = iContourParms.<strong>Item</strong>.(i)
+      <span class="comment">&#39;Get role of the parameter</span>
+      StrRole = ObjStrParameter.<strong>Role</strong>
+      <span class="comment">&#39;Get parameter from StrParameter</span>
+      <span class="keyword">Dim</span> ContourParam <span class="keyword">As</span> Parameter
+      <span class="keyword">Set</span> ContourParam = ObjStrParameter.<strong>Parameter</strong>
+      
+      <span class="comment">&#39;Sets width</span>
+      <span class="keyword">If</span> StrRole = &quot;Str_Width&quot; <span class="keyword">Then</span>
+        ContourParam.ValuateFromString (iStrW)
+      <span class="keyword">End If</span>
+      
+      <span class="comment">&#39;Sets height</span>
+      <span class="keyword">If</span> StrRole = &quot;Str_Height&quot; <span class="keyword">Then</span>
+        ContourParam.ValuateFromString (iStrH)
+      <span class="keyword">End If</span>
+      
+      <span class="comment">&#39;Sets corner radius</span>
+      <span class="keyword">If</span> StrRole = &quot;Str_CornerRadius&quot; <span class="keyword">Then</span>
+        ContourParam.ValuateFromString (iStrCR)
+<span class="keyword">      End If
+    Next
+End Sub</span></pre>
+				<p>Here collection object <code>iContourParms</code> which is of 
+				type <code>StrStandardContourParameters</code> is collection of
+				<code>StrParameter</code>. So here in for loop Uc retrieves a StrParameter 
+				then its role and parameter is retrieved and by checking its role(width/height/CornerRadius) 
+				its value is set.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="SetStdPosStrategyParamsDataForOffsetOffset"></a>
+			SetStdPosStrategyParamsDataForOffsetOffset method</strong></p>
+			<p>This method sets U, V references and angle parameter value for &quot;offset/offset&quot; 
+			positioning strategy. This method takes collection of positioning strategy 
+			parameters(<code>StrStandardPosStrategyParameters</code>) as input parameters.</p>
+			<ol>
+				<li>
+				<p><strong>Retrieves the number of Standard Positioning Strategy 
+				Parameters</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>SetStdPosStrategyParamsDataForOffsetOffset</strong>(iStdPosStrategyParms <span class="keyword">As</span> StrStandardPosStrategyParameters)
+    <span class="keyword">Dim</span> SizeOfStdPosStratParms <span class="keyword">As Long</span>
+    SizeOfStdPosStratParms = iStdPosStrategyParms.Count
+...</pre>
+				<p>Here size of the collection of positioning strategy parameters 
+				is retrieved.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves a positioning strategy parameter from the list</strong></p>
+				<pre class="code">...
+    <span class="keyword">For</span> i = 1 <span class="keyword">To</span> SizeOfStdPosStratParms
+        <span class="keyword">Set</span> ObjStrStdPosStParam = iStdPosStrategyParms.<strong>Item</strong>(i)
+...</pre>
+				<p>Here a For loop is running through the collection of positioning 
+				strategy parameters. A positioning strategy parameter is retrieved 
+				in <code>ObjStrStdPosStParam</code>.</p>
+				</li>
+				<li>
+				<p><strong>Sets U and V references</strong></p>
+				<pre class="code">...
+        <span class="keyword">If</span> (TypeName(ObjStrStdPosStParam) = &quot;StrRefOffset&quot;) <span class="keyword">Then</span>
+            <span class="comment">&#39;Retrieves role of the parameter</span>
+            StrRole = ObjStrStdPosStParam.<strong>Role</strong>
+            <span class="comment">&#39;Sets reference for U</span>
+            <span class="keyword">If</span> StrRole = &quot;PosSpecUCurve&quot; <span class="keyword">Then</span>
+              Set ObjRefUShift = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-7&quot;)
+              Set RefUShift = ObjPart.CreateReferenceFromObject(ObjRefUShift)
+              ObjStrStdPosStParam.<strong>SetSpecification</strong> Nothing, RefUShift
+              <span class="comment">&#39;set relevant side to Port</span>
+              ObjStrStdPosStParam.<strong>SetRelevantSide</strong> (4)
+            <span class="keyword">End If</span>
+            <span class="comment">&#39;Sets reference for V</span>
+            <span class="keyword">If</span> StrRole = &quot;PosSpecVCurve&quot; <span class="keyword">Then</span>
+              Set ObjRefVShift = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.94&quot;)
+              Set RefVShift = ObjPart.CreateReferenceFromObject(ObjRefVShift)
+              ObjStrStdPosStParam.<strong>SetSpecification</strong> Nothing, RefVShift
+              <span class="comment">&#39;set relevant side to Fore</span>
+              ObjStrStdPosStParam.<strong>SetRelevantSide</strong> (2)
+              <span class="comment">&#39;Set offset</span>
+              Set OffsetParm = ObjStrStdPosStParam.<strong>GetOffsetParm</strong>
+              OffsetParm.ValuateFromString (&quot;1000mm&quot;)
+            <span class="keyword">End If
+        End If</span>
+...</pre>
+				<p>Here if parameter is of type <code>StrRefOffset</code> then U 
+				and V references are set. First role of the parameter is retrieved.</p>
+				<p>If the role is of type <strong>&quot;PosSpecUCurve&quot;</strong> then it 
+				is U reference. To set the U reference, first the reference to the 
+				plane LONG.-7 is created and then it is set by using method
+				<code>SetSpecification</code>. After setting the U reference its 
+				side is set to Port side by calling method <code>SetRelevantSide(4)</code>. 
+				Here 4 means the port side.</p>
+				<p>If the role is of type <strong>&quot;PosSpecVCurve&quot;</strong> 
+				then it is V reference. To set the V reference, first the reference 
+				to the plane CROSS.94 is created and then it is set by using method
+				<code>SetSpecification</code>. After setting the V reference its 
+				side is set to Fore side by calling method <code>SetRelevantSide(2)</code>. 
+				Here 2 means the Fore side. To set the offset for the V reference, 
+				first offset parameter is retrieved by calling method <code>GetOffsetParm</code> 
+				then its value set to 1000mm.</p>
+				</li>
+				<li>
+				<p><strong>Sets Angle parameter&#39;s value</strong></p>
+				<pre class="code">...
+        <span class="keyword">If</span> (TypeName(ObjStrStdPosStParam) = &quot;StrPosAxisAdjustment&quot;) <span class="keyword">Then</span>
+            <span class="comment">&#39;get angle parameter and set its value</span>
+            <span class="keyword">Dim</span> AngleParm <span class="keyword">As</span> Parameter
+            <span class="keyword">Set</span> AngleParm = ObjStrStdPosStParam.<strong>GetAngleParameter</strong>
+            AngleParm.ValuateFromString (&quot;45deg&quot;)
+        <span class="keyword">End If
+    Next
+End Sub</span></pre>
+				<p>To set the angle first angle parameter is retrieved by using 
+				method <code>GetAngleParameter</code>. Then its value is set to 
+				45deg.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="CreateOpeningAndSetData"></a>CreateOpeningAndSetData 
+			method</strong></p>
+			<p>This method first creates opening with no data set. Then it sets 
+			its type, category, contour name, contour parameters, positioning strategy 
+			name and positioning strategy parameters.</p>
+			<ol>
+				<li>
+				<p><strong>Retrieves StrOpenings and creates a opening with no properties 
+				set</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreateOpeningAndSetData</strong>(iObjSfdPanel <span class="keyword">As</span> SfdPanel, iOpeningType <span class="keyword">As Long</span>, iCategory <span class="keyword">As String</span>, _
+                            iContourName <span class="keyword">As String</span>, iStdContourParms <span class="keyword">As</span> StrStandardContourParameters, _
+                            iPosStratName <span class="keyword">As String</span>, iPosStratParms <span class="keyword">As</span> StrStandardPosStrategyParameters, _
+                            oObjStrOpening <span class="keyword">As</span> StrOpening)
+<span class="comment">&#39;   1- Retrieves StrOpenings and creates a opening with no properties set</span>
+    <span class="keyword">Set</span> ObjStrOpenings = iObjSfdPanel.<strong>GetOpenings(0)</strong>
+    <span class="keyword">Set</span> oObjStrOpening = ObjStrOpenings.<strong>Add</strong>
+...</pre>
+				<p>To create opening first Uc retrieves the object <code>ObjStrOpenings</code> 
+				of type <code>StrOpenings</code>. Then <code>Add</code> method is 
+				called. This opening has no data set on it. Uc needs to set it. 
+				The data is opening type, category contour parameters etc. </p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrCategoryMngt and sets category</strong></p>
+				<pre class="code">...
+    <span class="keyword">Set</span> ObjStrCategoryMngt = oObjStrOpening.<strong>StrCategoryMngt</strong>
+    ObjStrCategoryMngt.<strong>SetCategory</strong> iCategory
+...</pre>
+				<p>In this step object <code>ObjStrCategoryMngt</code> is retrieved. 
+				Then method <code>SetCategory</code> is called to set the category. 
+				This method takes category as input parameter.</p>
+				</li>
+				<li>
+				<p><strong>Sets opening type</strong></p>
+				<pre class="code">...
+    oObjStrOpening.<strong>OpeningType</strong> = iOpeningType
+...</pre>
+				<p>In this step object opening type value is assigned to property
+				<code>OpeningType</code>.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrOpeningExtrusionMngt and sets forming extrusion 
+				mode</strong></p>
+				<pre class="code">...
+    <span class="keyword">Set</span> ObjStrOpeningExtrusionMngt = oObjStrOpening.<strong>StrOpeningExtrusionMngt</strong>
+    ObjStrOpeningExtrusionMngt.<strong>ExtrusionMode</strong> = 1
+...</pre>
+				<p>In this step object forming mode is set. To set the forming mode, 
+				forming mode value is assigned to property <code>ExtrusionMode</code>. 
+				Here 1 defines Before Forming Extrusion Mode..</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrOpeningStandard and sets Direction, LimitMode 
+				and contour and positiong strategy parameters</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrOpeningStandard object</span>
+    <span class="keyword">Dim</span> ObjStrOpeningStandard <span class="keyword">As</span> StrOpeningStandard
+    <span class="keyword">Set</span> ObjStrOpeningStandard = oObjStrOpening.<strong>StrOpeningStandard</strong>
+    <span class="comment">&#39;set direction</span>
+    <span class="keyword">Set</span> ObjDirectionRef = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.1&quot;)
+    <span class="keyword">Set</span> DirectionRef = ObjPart.CreateReferenceFromObject(ObjDirectionRef)
+    ObjStrOpeningStandard.<strong>Direction</strong> = DirectionRef
+    <span class="comment">&#39;set limit mode</span>
+    ObjStrOpeningStandard.<strong>LimitMode</strong> = 0
+    <span class="comment">&#39;set contour and positiong strategy parameters</span>
+    ObjStrOpeningStandard.<strong>SetContourAndPosStrategy</strong> iContourName, iStdContourParms, iPosStratName, iPosStratParms
+<span class="keyword">End Sub</span></pre>
+				<p>In this step object <code>ObjStrOpeningStandard</code> of type
+				<code>StrOpeningStandard</code> is retrieved. Then reference to 
+				the DECK.1 plane is retrieved and it set as <code>Direction</code>.
+				<code>LimitMode</code> property is set to 0. Here 0 means After 
+				forming mode. Then to set the contour name contour parameters, positioning 
+				strategy name and positioning strategy parameters method <code>SetContourAndPosStrategy</code> 
+				is called on object <code>ObjStrOpeningStandard</code>.</p>
+				</li>
+			</ol>
+			</li>
+		</ul>
+		<br />
+		<strong>&nbsp;&nbsp; Note:</strong> The source also includes standard opening creation using positioning 
+				strategies Half Height/Offset, Mid Dist/Offset, Mid Dist/Mid Dist, 
+				Half Height/Mid Dist. To see the<br />
+&nbsp;&nbsp; source go to
+				<a href="CAAScdSfdUcCreatePanelSource.htm">CAAScdSfdUcCreatePanelSource.htm</a>.
+		<table>
+			<caption><a name="Fig.1"></a>Fig.1: Standard Opening</caption>
+			<tr>
+				<td>
+				<img alt="Standard Opening" src="CAAScdSfdUcCreateOpeningStandard.png" width="1055" height="662"/></td>
+			</tr>
+		</table>
+            <script type="text/javascript">insertLinkToTop()</script><!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= --></td>
+	</tr>
+</table>
+
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

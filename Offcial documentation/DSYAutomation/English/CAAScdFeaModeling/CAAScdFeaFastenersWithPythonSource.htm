@@ -1,0 +1,217 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaNumbering.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment"># -------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment"># This sample creates a fastener connection property.</span>
+
+<span class="comment"># Steps:</span>
+<span class="comment">#    1 - Retrieves the simulation and its product</span>
+<span class="comment">#    2 - Retrieves the publications and composing links</span>
+<span class="comment">#    3 - Creates and initializes a core material</span>
+<span class="comment">#    4 - Creates an engineering connection</span>
+<span class="comment">#    5 - Creates the FEM representation and retrieves its root object</span>
+<span class="comment">#    6 - Creates and initializes a line fastener connection property</span>
+<span class="comment">#    7 - Creates and initializes a point fastener connection property</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 1 - Retrieves the simulation and its product</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+
+myProductEditor = CATIA.ActiveEditor
+MyProductService = myProductEditor.GetService("PLMProductService")
+
+myEntities = MyProductService.EditedContent
+myRootProduct = myEntities.Item(1)
+
+myRootOccurrence = MyProductService.RootOccurrence
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 2 - Retrieves the publications and composing links</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+myPublications  = myRootProduct.Publications
+
+myPumpHousing = myPublications.GetItem("Pump_Housing")
+myCover = myPublications.GetItem("Cover")
+myLine = myPublications.GetItem("Pump_Housing_Internal_Lines")
+ 
+<span class="comment"># Composing links to the publication</span>
+myLinkToPumpHousing = myProdService.ComposeLink(myRootOccurrence, None, myPumpHousing)
+ 
+myLinkToCover = myProdService.ComposeLink(myRootOccurrence, None, myCover)
+
+myLinkToLine = myProdService.ComposeLink(myRootOccurrence, None, myLine)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 3 - Creates and initializes a core material</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># Creating a core material</span>
+myMaterialService = CATIA.GetSessionService(&quot;MATPLMService&quot;)
+
+myCoreMatRef, myMaterialEditor = myMaterialService.PLMCreate (&quot;dsc_matref_ref_Core&quot;, None, None)
+
+myDomainList = myCoreMatRef.GetDomains (None)
+
+myDomain = myDomainList.Add (&quot;dsc_matref_rep_SmaOptions&quot;, None)
+
+mySimDomain = myDomain.MaterialDomainContent
+
+<span class="comment"># Creating a density material option</span>
+myMaterialOptions = mySimDomain.Options
+
+myDensity = myMaterialOptions.Add(&quot;SimDensity&quot;)
+
+myDensityColumn = myDensity.GetMaterialTableColumn(win32com.client.constants.SimDensityDensity)
+
+myDensityColumn.SetCellData (1, 7870)
+
+<span class="comment"># Creating an elasticity material option</span>
+myElastic = myMaterialOptions.Add(&quot;SimElasticity&quot;)
+
+myElastic.ElasticType = win32com.client.constants.SimElasticIsotropic
+myElastic.ModuliTimeScaletype = win32com.client.constants.SimElasticLongTerm
+
+myYoungsModulusColumn = myElastic.GetMaterialTableColumn(win32com.client.constants.SimElasticYoungsModulus)
+
+myYoungsModulusColumn.SetCellData (1, 211000000000.0)
+
+myPoissonsRatioColumn = myElastic.GetMaterialTableColumn(win32com.client.constants.SimElasticPoissonsRatio)
+myPoissonsRatioColumn.SetCellData (1, 0.291)
+
+<span class="comment"># Creating a material behavior</span>
+myBehaviors = mySimDomain.Behaviors
+myBehavior = myBehaviors.Add()
+myBehaviorOptions = myBehavior.BehaviorOptions
+
+myBehaviorOptions.Add (myDensity, 1)
+myBehaviorOptions.Add (myElastic, 2)
+
+mySimDomain.SyncAllBehaviors
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 4 - Creates an engineering connection</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Creating a free engineering connection</span>
+myEngineeringConnections = myRootProduct.GetItem("CATEngConnections")
+
+<span class="comment"># Create the list of impacted product</span>
+myImpacted = []
+myImpacted.append("ws3_pump_housing_part.1")
+myImpacted.append("ws3_cover_part.1")
+
+<span class="comment"># Create a rigid engineering connection</span>
+myEngineeringConnection = myEngineeringConnections.Add(win32com.client.constants.catFree, myImpacted)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 5 - Creates the FEM representation and retrieves its root object</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+MyPrdRepFactory = myRootProduct.GetItem("SimPrdRepFactory")
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep("FEM")
+MyFemRepRoot = MyFemRepRef.GetItem("SimFemRoot")
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 6 - Creates and initializes a line fastener connection property</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Creating the line fastener connection property</span>
+myMCXProperties = myEngineeringConnection.GetItem("SimMCXProperties")
+myLineFastener = myMCXProperties.Add("SimLineFastener", MyFemRepRoot)
+
+<span class="comment"># Setting the line fastener connection property supports </span>
+myLineFastenerLinkAccess = myLineFastener.GetItem("SimLinkAccess")
+
+<span class="comment"># PRD1 attribute is for master surface </span>
+myLineFastenerLinkAccess.AddLink ("PRD1", myLinkToPumpHousing)
+
+<span class="comment"># PRD2 attribute is for slave surface </span>
+myLineFastenerLinkAccess.AddLink ("PRD2", myLinkToCover)
+
+<span class="comment"># Handler1D attribute is for fasteners placements </span>
+myLineFastenerLinkAccess.AddLink ("Handler1D", myLinkToLine)
+
+<span class="comment"># Setting the line fastener connection property material </span>
+myLinkToLineFastener = myProdService.ComposeLink(myRootOccurrence, None, myLineFastener)
+
+myCoreAppliedMaterial = myMaterialService.SetMaterialCore (myLinkToLineFastener, myCoreMatRef, None)
+
+<span class="comment"># Setting the line fastener connection property attributes </span>
+
+myLineFastener.ConstructType = win32com.client.constants.SimLineFastenerShell
+myLineFastener.CouplingType = win32com.client.constants.SimCouplingKinematic
+myLineFastener.MeshCompatibility = win32com.client.constants.SimLineFastenerNonCompatible
+myLineFastener.Height = 0.001
+myLineFastener.MaximumAngle = 2
+myLineFastener.Spacing = 0.003
+myLineFastener.Width = 0.004
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 7 - Creates and initializes a point fastener connection property</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"> # Creating the point fastener connection property </span>
+myPointFastener = myMCXProperties.Add("SimPointFastener", MyFemRepRoot)
+
+<span class="comment"> # Setting the point fastener connection property supports </span>
+myPointFastenerLinkAccess = myPointFastener.GetItem("SimLinkAccess")
+
+<span class="comment"> # PRD1 attribute is for master surface </span>
+myPointFastenerLinkAccess.AddLink ("PRD1", myLinkToPumpHousing)
+
+<span class="comment"> # PRD2 attribute is for slave surface </span>
+myPointFastenerLinkAccess.AddLink ("PRD2", myLinkToCover)
+
+<span class="comment"> # Handler0D attribute is for fasteners placements </span>
+myPointFastenerLinkAccess.AddLink ("Handler0D", myLinkToLine)
+
+<span class="comment"> # Setting the point fastener connection property material </span>
+myLinkToPointFastener = myProdService.ComposeLink(myRootOccurrence, None, myPointFastener)
+
+myCoreAppliedMaterial = myMaterialService.SetMaterialCore (myLinkToPointFastener, myCoreMatRef, None)
+
+<span class="comment"> # Setting the point fastener connection property attributes </span>
+myPointFastener.ConstructType = win32com.client.constants.SimPointFastenerRigid
+myPointFastener.CouplingType = win32com.client.constants.SimCouplingKinematic
+myPointFastener.FastenerDiameter = 0.002
+
+myPointFastenerPlacement = myPointFastener.PointFastenerPlacement
+
+myPointFastenerPlacement.FastenerPlacementMethod = win32com.client.constants.SimPointFastenerPlacementLine
+myPointFastenerPlacement.NumberOfFastenersAlongLines = 20
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

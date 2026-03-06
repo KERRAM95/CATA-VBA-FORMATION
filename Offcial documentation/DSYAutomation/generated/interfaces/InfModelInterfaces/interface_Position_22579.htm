@@ -1,0 +1,225 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>InfModelInterfaces Position (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../InfModelInterfaces.htm" href="../InfModelInterfaces.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "InfModelInterfaces";	}
+		function getCurrentObjectName() { 
+ 	return "Position"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> Position<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_Position_22579','Position','0');</script>
+<section id='maindesc'>
+<b><i> Interface to manage object position.</i></b><br>
+
+ <b>Role:</b>The position object is the 3D-axis system associated with an object.
+ This interface provides methods to retrieve or set the relative or absolue position
+ of the item, in the coordinate space of the context.<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetAbsComponents"><b>GetAbsComponents</b></a>
+</td><td  id='tdright'>  Returns the object's position in a global context.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetComponents"><b>GetComponents</b></a>
+</td><td  id='tdright'>  Returns relative object's position.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetAbsComponents"><b>SetAbsComponents</b></a>
+</td><td  id='tdright'>  Sets the object's position in an absolute 3D-coordinates space (global context).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetComponents"><b>SetComponents</b></a>
+</td><td  id='tdright'>  Sets the relative object's position.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetAbsComponents"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetAbsComponents</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oAxisComponentsArray</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Returns the object's position in a global context.
+ This returns the 3D-axis system associated with the object.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oAxisComponentsArray</span></dt>
+   <dd>   The array used to store the twelve components retrieved from
+   the objet's position.
+   The first nine represent succcessively the components of the x-axis,
+   y-axis, and z-axis.
+   The last three represent the coordinates of the origin point.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example retrieves in <tt>oAxisComponentsArray</tt>
+ the 3D-axis system components from 
+ the <tt>Position</tt> object associated with <tt>MyObject</tt>:
+ <pre>
+ Dim oAxisComponentsArray ( 11 )
+ MyObject.Position.GetAbsComponents oAxisComponentsArray
+ </pre>
+ </dl>
+</dl>
+</dd>
+<a id="GetComponents"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetComponents</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oAxisComponentsArray</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Returns relative object's position.
+ This returns the 3D-axis system associated with the object.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oAxisComponentsArray</span></dt>
+   <dd>   The array used to store the twelve components retrieved from
+   the objet's position.
+   The first nine represent succcessively the components of the x-axis,
+   y-axis, and z-axis.
+   The last three represent the coordinates of the origin point.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example retrieves in <tt>oAxisComponentsArray</tt>
+ the 3D-axis system components from 
+ the <tt>Position</tt> object associated with <tt>MyObject</tt>:
+ <pre>
+ Dim oAxisComponentsArray ( 11 )
+ MyObject.Position.GetComponents oAxisComponentsArray
+ </pre>
+ </dl>
+</dl>
+</dd>
+<a id="SetAbsComponents"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetAbsComponents</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iAxisComponentsArray</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the object's position in an absolute 3D-coordinates space (global context).
+ This sets the 3D-axis system associated with the object.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAxisComponentsArray</span></dt>
+   <dd>   The array initialized with the components to set to the
+   object's position.
+   The first nine represent succcessively the components of the x-axis,
+   y-axis, and z-axis.
+   The last three represent the coordinates of the origin point.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example sets the 3D-axis system components stored in
+ <tt>iAxisComponentsArray</tt> to
+ the <tt>Position</tt> object associated with <tt>MyObject</tt>:
+ <pre>
+ Dim iAxisComponentsArray( 11 )
+ ' x axis components
+ iAxisComponentsArray( 0 )  = 1.000
+ iAxisComponentsArray( 1 )  = 0
+ iAxisComponentsArray( 2 )  = 0
+ ' y axis components
+ iAxisComponentsArray( 3 )  = 0
+ iAxisComponentsArray( 4 )  = 1.000
+ iAxisComponentsArray( 5 )  = 0
+ ' z axis components
+ iAxisComponentsArray( 6 )  = 0
+ iAxisComponentsArray( 7 )  = 0
+ iAxisComponentsArray( 8 )  = 1.000
+ ' origin point coordinates
+ iAxisComponentsArray( 9 )  = 1.000
+ iAxisComponentsArray( 10 ) = 2.000
+ iAxisComponentsArray( 11 ) = 3.000
+ MyObject.Position.SetAbsComponents iAxisComponentsArray
+ </pre>
+</dl>
+</dd>
+<a id="SetComponents"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetComponents</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iAxisComponentsArray</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the relative object's position.
+ This sets the 3D-axis system associated with the object.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAxisComponentsArray</span></dt>
+   <dd>   The array initialized with the components to set to the
+   object's position.
+   The first nine represent succcessively the components of the x-axis,
+   y-axis, and z-axis.
+   The last three represent the coordinates of the origin point.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example sets the 3D-axis system components stored in
+ <tt>iAxisComponentsArray</tt> to
+ the <tt>Position</tt> object associated with <tt>MyObject</tt>:
+ <pre>
+ Dim iAxisComponentsArray( 11 )
+ ' x axis components
+ iAxisComponentsArray( 0 )  = 1.000
+ iAxisComponentsArray( 1 )  = 0
+ iAxisComponentsArray( 2 )  = 0
+ ' y axis components
+ iAxisComponentsArray( 3 )  = 0
+ iAxisComponentsArray( 4 )  = 1.000
+ iAxisComponentsArray( 5 )  = 0
+ ' z axis components
+ iAxisComponentsArray( 6 )  = 0
+ iAxisComponentsArray( 7 )  = 0
+ iAxisComponentsArray( 8 )  = 1.000
+ ' origin point coordinates
+ iAxisComponentsArray( 9 )  = 1.000
+ iAxisComponentsArray( 10 ) = 2.000
+ iAxisComponentsArray( 11 ) = 3.000
+ MyObject.Position.SetComponents iAxisComponentsArray
+ </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

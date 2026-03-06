@@ -1,0 +1,282 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<meta content="Microsoft FrontPage 12.0" name="GENERATOR" />
+<meta content="FrontPage.Editor.Document" name="ProgId" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>Creating an SDD Opening On Profile using 3D Objects</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SDD Opening On Profile using 3D Objects</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SDD Opening on profile 
+						using 3D object.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+								<code><div class=vb_sample_data>CAAScdSddUcCreateOpeningOnProfile.3dxml</div></code>,
+								<code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div></code> and <code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div></code> 
+								files supplied in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code> 
+								where 
+							<code>InstallRootFolder</code> is the folder where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcCreateOpeningOnProfile3DObjectSource.htm">
+						CAAScdSddUcCreateOpeningOnProfile3DObjectSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSddTocSDDesign.htm">Structure Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SddProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves Service manager</a></li>
+			<li><a href="#Step5">Retrieves a Stiffener object</a></li>
+			<li><a href="#Step6">Get 3D Object for creating opening on profile</a></li>
+			<li><a href="#Step7">Creates opening on profile</a></li>
+			<li><a href="#Step8">Removes opening on profile</a></li>
+			<li><a href="#Step9">Updates the Product Stiffener object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+				<p><strong><a name="Step1"></a>Searches and opens model which is 
+				named as &quot;SddProduct&quot; </strong></p>
+				<p>As a first step, the UC retrieves a model &quot;SddProduct&quot; 
+				from DB and loads it and returns object of the Editor. </p>
+				<pre class="code">... 
+ <span class="keyword">Dim </span>SDDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SddProduct&quot;
+ OpenProduct prdName , SDDPrdEditor
+...</pre>
+				<p>The function <strong><code>OpenProduct</code></strong> returns
+				<strong><code>SDDPrdEditor</code></strong>, a Editor object. After 
+				searching and opening of SDD model from underlying database the 
+				current active editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+				<p>As a next step, the UC retrieves Selection object in SFDProdSel 
+				variable. To retrieve the Selection object <strong><code>SDDPrdEditor
+				</code></strong>is used.</p>
+				<pre class="code"> ...
+<span class="keyword">    Set</span> SDDProdSel = SDDPrdEditor<strong>.Selection </strong>
+ ...
+</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step3"></a>Retrieves the part object</strong></p>
+				<p>In this step UC retrieves part object.</p>
+				<pre class="code">...
+  
+    <span class="keyword">Dim</span> product1Service <span class="keyword">As</span> PLMProductService
+    <span class="keyword">Set</span> product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+    <span class="keyword">Dim</span> ObjVPMRootOccurrence <span class="keyword">As</span> VPMRootOccurrence
+    <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+    <span class="keyword">Dim</span> ObjVPMReference <span class="keyword">As</span> VPMReference
+    <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+    <span class="keyword">Dim</span> ObjVPMRepInstances <span class="keyword">As</span> VPMRepInstances
+    <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+    <span class="keyword">Set</span> ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+    <span class="keyword">Set</span> ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step4"></a>Retrieves Service manager</strong></p>
+				<p>In this step UC retrieves Service manager variable.</p>
+				<pre class="code">...
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step5"></a>Retrieves a Stiffener object</strong></p>
+				<p>In this step UC retrieves stiffener object.</p>
+				<pre class="code">...
+<span class="keyword">  Set</span> ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">  Set</span> StiffenerRef = ListOfInstances.Item(2).ReferenceInstanceOf
+<span class="keyword">  Set</span> StiffenerRepInstances = StiffenerRef.RepInstances
+<span class="keyword">  Set</span> StiffenerRepInstReference = StiffenerRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">  Set</span> StiffenerPart = StiffenerRepInstReference.GetItem("Part")
+  'get Sdd Stiffener
+<span class="keyword">  Dim</span> ObjSddProductStiffener <span class="keyword">As</span> SddProductStiffener
+  SFDProdSel.Add StiffenerRef
+<span class="keyword">  Set</span> ObjSddProductStiffener = SFDProdSel.FindObject("CATIASddProductStiffener")
+ <span class="keyword"> Dim</span> ObjSddStiffener <span class="keyword">As</span> SddStiffener
+<span class="keyword">  Set</span> ObjSddStiffener = ObjSddProductStiffener.SddStiffener  
+...</pre>
+				<p><code>FindObject</code> method finds object whose type is &quot;SddProductStiffener&quot; 
+				and returns it. To retrieve <code>SddStiffener</code> object from
+				<code>ObjSddProductStiffener</code> call <code>SddStiffener</code> 
+				property as shown above. This will return the <code>SddStiffener</code> 
+				object variable. </p>
+			</li>
+			<li>
+				<p><strong><a name="Step6"></a>Get 3D Object for creating opening 
+				on profile</strong></p>
+				<pre class="code">...
+<span class="keyword">    Set</span> Obj3DOpeningOnProfileDimensions = StiffenerPart.FindObjectByName("Extrude.1")
+<span class="keyword">    Dim</span> Ref3DObjectOpeningOnProfileDimensions <span class="keyword">As</span> Reference
+<span class="keyword">    Set</span> Ref3DObjectOpeningOnProfileDimensions = StiffenerPart.CreateReferenceFromObject(Obj3DOpeningOnProfileDimensions)
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step7"></a>Creates opening on profile</strong></p>
+				<p>Now, stiffener is available to create opening on it. Call
+				<code>CreateOpeningOnProfile3DObject</code> method to create opening 
+				on profile. <code>CreateOpeningOnProfile3DObject</code> method takes 
+				a SddStiffener as input parameter and it returns created opening 
+				as output parameter in <code>ObjStrOpeningOnProfile</code>.</p>
+				<pre class="code">...
+  <span class="keyword">Dim</span> ObjStrOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile
+  <strong>CreateOpeningOnProfile3DObject</strong> ObjSddStiffener, Ref3DObjectOpeningOnProfileDimensions, ObjStrOpeningOnProfile
+...</pre>
+				<pre class="code">...
+<span class="keyword">Sub</span> CreateOpeningOnProfile3DObject(iObjSddStiffener <span class="keyword">As</span> SddStiffener, Ref3DObject <span class="keyword">As</span> Reference, oObjStrOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile)
+    
+<span class="comment">    'Add Opening On Profile</span>
+    AddOpening iObjSddStiffener, oObjStrOpeningOnProfile
+	
+<span class="comment">   'Get StrOpening from StrOpeningOnProfile</span>
+<span class="keyword">    Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+<span class="keyword">    Set</span> ObjStrOpening = oObjStrOpeningOnProfile.<strong>StrOpening</strong>
+    
+<span class="comment">    'Set opening type catStrOpeningMode3DObject for 3dobject opening</span>
+    ObjStrOpening.<strong>OpeningType</strong> = catStrOpeningMode3DObject
+    
+<span class="comment">    'Set category</span>
+<span class="keyword">    Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+<span class="keyword">    Set</span> ObjStrCategoryMngt = ObjStrOpening.StrCategoryMngt
+    ObjStrCategoryMngt.<strong>SetCategory</strong> "ManHole"
+
+<span class="comment">    'Set intersecting element for opening creation</span>
+<span class="keyword">    Dim</span> ObjStrOpening3DObject <span class="keyword">As</span> StrOpening3DObject
+<span class="keyword">    Set</span> ObjStrOpening3DObject = ObjStrOpening.StrOpening3DObject
+    ObjStrOpening3DObject.<strong>IntersectingElement</strong> = Ref3DObject
+    
+<span class="comment">    'Set forming mode and extrusion mode</span>
+<span class="keyword">    Set</span> ObjStrOpeningExtrusionMngt = ObjStrOpening.StrOpeningExtrusionMngt
+    ObjStrOpeningExtrusionMngt.<strong>ExtrusionMode</strong> = 1
+    'ObjStrOpening.<strong>FormingMode</strong> = 0
+	
+<span class="comment">    'Update the opening on profile object</span>
+    ObjPart.UpdateObject oObjStrOpeningOnProfile
+ 
+End Sub
+...</pre>
+				<pre class="code">...
+<span class="keyword">Sub</span> AddOpening(iObjSddStiffener <span class="keyword">As</span> SddStiffener, oObjSddOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile)
+<span class="keyword">    Dim</span> ObjStrOpeningsOnProfile <span class="keyword">As</span> StrOpeningsOnProfile
+ <span class="keyword">   Set</span> ObjStrOpeningsOnProfile = iObjSddStiffener.<strong>GetOpeningsOnProfile</strong>(0)
+    'Add opening
+<span class="keyword">    Set</span> oObjSddOpeningOnProfile = ObjStrOpeningsOnProfile.Add
+    
+<span class="keyword">End Sub</span>
+...</pre>
+				<p>Here get the <code>StrOpening</code> object from <code>StrOpeningOnProfile</code> 
+				and then set the various parameters to get the desired opening on 
+				profile. </p>
+			</li>
+			<li>
+				<p><strong><a name="Step8"></a>Removes opening on profile</strong></p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> ObjStrOpeningsOnProfile <span class="keyword">As</span> StrOpeningsOnProfile
+    <span class="keyword">Set</span> ObjStrOpeningsOnProfile = ObjSddStiffener.<strong>GetOpeningsOnProfile(0)</strong>
+    ObjStrOpeningsOnProfile.<strong>Remove</strong> ObjStrOpeningOnProfile
+...</pre>
+				<p>Object of <code>StrOpeningsOnProfile</code> is retrieved in
+				<code>ObjStrOpeningsOnProfile</code>. Then on <code>ObjStrOpeningsOnProfile</code> 
+				object <code>Remove</code> method is called to remove the opening 
+				on profile. This method takes a input parameter opening object to 
+				remove.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step9"></a>Updates the Product Stiffener object</strong></p>
+				<pre class="code">...
+  ObjPart.<strong>UpdateObject</strong> oObjStrOpeningOnProfile
+<span class="keyword">End Sub</span>
+</pre>
+				<p><code>UpdateObject</code> method updates the OpeningOnProfile 
+				object.</p>
+			</li>
+		</ol>
+            <table>
+                <caption><a name="Fig.1"></a>Fig.1: Profile opening using 3D object</caption>
+                <tr>
+                    <td>
+                        <img alt="Stiffener with Limits" src="CAAScdSddUcCreateOpeningOnProfile3DObject.png"/></td>
+                </tr>
+            </table>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

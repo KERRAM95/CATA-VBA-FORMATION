@@ -1,0 +1,150 @@
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<title>CAAScdVPMInertia.CATScript</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'------------------ Sample MACRO written in CATScript -------------------------</span>
+<span class="comment">' This macro computes and display inertia data.</span>
+<span class="comment">' It expects a selection of a product, a part, a part body,</span>
+<span class="comment">' or a mechanical feature, such as a pad.</span>
+<span class="comment">' You can import as reference <div class=vb_sample_data>CAAScdVPMUcInertia.3dxml</div> located in </span>
+<span class="comment">' InstallRootFolder\CAADoc\Doc\English\CAAScdVPMDigitalReview\samples</span>
+<span class="comment">' where InstallRootFolder is the folder where the API CD-ROM is installed.</span>
+<span class="comment">' Then open the product, and in the created tab, select the product,</span>
+<span class="comment">' the part, the part body, or pad, and run the macro.</span>
+<span class="comment">'</span>
+<span class="comment">' Steps</span>
+<span class="comment">'   1- Retrieving the Inertia Object</span>
+<span class="comment">'   2- Computing the Inertia Data</span>
+<span class="comment">'   3- Displaying the Inertia Data</span>
+<span class="comment">'------------------------------------------------------------------------------</span>
+
+
+<span class="keyword">Sub </span>CATMain()
+
+<span class="keyword">Dim </span>theEditor<span class="keyword"> As </span>Editor
+<span class="keyword">Set </span>theEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim </span>theSelection<span class="keyword"> As </span>Selection
+<span class="keyword">Set </span>theSelection = theEditor.Selection
+
+<span class="keyword">If </span>theSelection.Count2 &lt;&gt; 0<span class="keyword"> Then</span>
+
+<span class="keyword">    Dim </span>theElement<span class="keyword"> As </span>AnyObject
+<span class="keyword">    Set </span>theElement = theSelection.Item2(1).Value
+
+<span class="keyword">    Dim </span>theInertiaService<span class="keyword"> As </span>InertiaService
+<span class="keyword">    Set </span>theInertiaService = theEditor.GetService("InertiaService")
+<span class="keyword">    Dim </span>theInertiaBoxService<span class="keyword"> As </span>InertiaBoxService
+<span class="keyword">    Set </span>theInertiaBoxService = theEditor.GetService("InertiaBoxService")
+
+<span class="keyword">    Dim </span>theInertiaElement<span class="keyword"> As </span>Inertia
+<span class="keyword">    Set </span>theInertiaElement = theInertiaService.GetInertiaElement(theElement)
+<span class="keyword">    Dim </span>theInertiaBoxElement<span class="keyword"> As </span>InertiaBox
+<span class="keyword">    Set </span>theInertiaBoxElement = theInertiaBoxService.GetInertiaBoxElement(theElement)
+
+    theInertiaElement.OnlyMainBody
+
+<span class="keyword">    Dim </span>theArea<span class="keyword"> As </span>Double
+    theArea = theInertiaElement.GetArea
+
+<span class="keyword">    Dim </span>theVolume<span class="keyword"> As </span>Double
+    theVolume = theInertiaElement.GetVolume
+
+<span class="keyword">    Dim </span>theMass<span class="keyword"> As </span>Double
+    theMass = theInertiaElement.GetMass
+
+<span class="keyword">    Dim </span>theCOG(2)<span class="keyword"> As </span>Double
+    theInertiaElement.GetCOGPosition theCOG(0), theCOG(1), theCOG(2)
+
+<span class="keyword">    Dim </span>theMatrix(8)<span class="keyword"> As </span>Double
+    theInertiaElement.GetInertiaMatrix theMatrix
+
+<span class="keyword">    Dim </span>theAxes(8)<span class="keyword"> As </span>Double
+    theInertiaElement.GetPrincipalAxes theAxes
+
+<span class="keyword">    Dim </span>theMoments(2)<span class="keyword"> As </span>Double
+    theInertiaElement.GetPrincipalMoments theMoments
+
+<span class="keyword">    Dim </span>theBoundingBoxOrigin(2)<span class="keyword"> As </span>Double
+<span class="keyword">    Dim </span>theBoundingBoxLengths(2)<span class="keyword"> As </span>Double
+    theInertiaBoxElement.GetBoundingBox theBoundingBoxOrigin, theBoundingBoxLengths
+
+    DisplayResults theArea, theVolume, theMass, theCOG, TheMatrix, theBoundingBoxOrigin, theBoundingBoxLengths
+
+<span class="keyword">End If</span>
+<span class="keyword">End Sub</span>
+
+<span class="comment">' --------------------</span>
+<span class="comment">'DisplayResult Service</span>
+<span class="comment">' --------------------</span>
+Private Sub DisplayResults(theArea, theVolume, theMass, theCOG, TheMatrix, theBoundingBoxOrigin, theBoundingBoxLengths)
+
+    <span class="comment">' Texts to Display</span>
+<span class="keyword">    Dim </span>AreaTxt<span class="keyword"> As </span>String, VolumeTxt<span class="keyword"> As </span>String, MassTxt<span class="keyword"> As </span>String, CofGTxt<span class="keyword"> As </span>String, InMxTxt<span class="keyword"> As </span>String, BBoxOriginTxt<span class="keyword"> As </span>String, BBoxLengthsTxt<span class="keyword"> As </span>String
+    AreaTxt   = "Area" &amp; vbTab &amp; vbTab
+    VolumeTxt = "Volume" &amp; vbTab &amp; vbTab
+    MassTxt   = "Mass" &amp; vbTab &amp; vbTab
+    CofGTxt = "Center of Gravity"
+    InMxTxt = "Inertia Matrix / G"
+    BBoxOriginTxt =  "BBox Origin"
+    BBoxLengthsTxt = "BBox Lengths"
+
+<span class="keyword">    Dim </span>AreaUnit<span class="keyword"> As </span>String, VolumeUnit<span class="keyword"> As </span>String, MassUnit<span class="keyword"> As </span>String, CofGUnit<span class="keyword"> As </span>String, InMxUnit<span class="keyword"> As </span>String 
+    AreaUnit = " m2"
+    VolumeUnit = " m3"
+    MassUnit = " kg"
+    CofGUnit = " m"
+    InMxUnit = " kgxm2"  
+
+    <span class="comment">' Display format</span>
+<span class="keyword">    Dim </span>DisplayFmt<span class="keyword"> As </span>Integer
+    DisplayFmt = 12
+
+    <span class="comment">' Message to display</span>
+<span class="keyword">    Dim </span>strMessage<span class="keyword"> As </span>String
+    strMessage = AreaTxt &amp; FormatNumber(theArea, DisplayFmt) &amp; AreaUnit &amp; vbLf
+    strMessage = strMessage &amp; VolumeTxt &amp; FormatNumber(theVolume, DisplayFmt) &amp; VolumeUnit &amp; vbLf
+    strMessage = strMessage &amp; MassTxt &amp; FormatNumber(theMass, DisplayFmt) &amp; MassUnit &amp; vbLf
+    strMessage = strMessage &amp; CofGTxt &amp; vbTab &amp; "X = " &amp; FormatNumber(theCOG(0), DisplayFmt) &amp; CofGUnit &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "Y = " &amp; FormatNumber(theCOG(1), DisplayFmt) &amp; CofGUnit &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "Z = " &amp; FormatNumber(theCOG(2), DisplayFmt) &amp; CofGUnit &amp; vbLf &amp; vbLf
+
+    strMessage = strMessage &amp; InMxTxt &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "IoxG  = " &amp; FormatNumber(TheMatrix(0), DisplayFmt) &amp; InMxUnit &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "IoyG  = " &amp; FormatNumber(TheMatrix(4), DisplayFmt) &amp; InMxUnit &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "IozG  = " &amp; FormatNumber(TheMatrix(8), DisplayFmt) &amp; InMxUnit &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "IoxyG = " &amp; FormatNumber(TheMatrix(3), DisplayFmt) &amp; InMxUnit &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "IoxzG = " &amp; FormatNumber(TheMatrix(6), DisplayFmt) &amp; InMxUnit &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "IoyzG = " &amp; FormatNumber(TheMatrix(7), DisplayFmt) &amp; InMxUnit &amp; vbLf &amp; vbLf
+
+    strMessage = strMessage &amp; BBoxOriginTxt &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "OriginX  = " &amp; FormatNumber(theBoundingBoxOrigin(0), DisplayFmt) &amp; CofGUnit &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "OriginY  = " &amp; FormatNumber(theBoundingBoxOrigin(1), DisplayFmt) &amp; CofGUnit &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "OriginZ  = " &amp; FormatNumber(theBoundingBoxOrigin(2), DisplayFmt) &amp; CofGUnit &amp; vbLf
+
+    strMessage = strMessage &amp; BBoxLengthsTxt &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "LengthX  = " &amp; FormatNumber(theBoundingBoxLengths(0), DisplayFmt) &amp; CofGUnit &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "LengthY  = " &amp; FormatNumber(theBoundingBoxLengths(1), DisplayFmt) &amp; CofGUnit &amp; vbLf
+    strMessage = strMessage &amp; vbTab &amp; vbTab &amp; "lengthZ  = " &amp; FormatNumber(theBoundingBoxLengths(2), DisplayFmt) &amp; CofGUnit &amp; vbLf
+    MsgBox strMessage, vbInformation
+
+
+<span class="keyword">End Sub</span>
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

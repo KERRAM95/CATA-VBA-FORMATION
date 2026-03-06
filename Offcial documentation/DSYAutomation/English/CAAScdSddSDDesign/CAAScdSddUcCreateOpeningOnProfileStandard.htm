@@ -1,0 +1,319 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<meta content="Microsoft FrontPage 12.0" name="GENERATOR" />
+<meta content="FrontPage.Editor.Document" name="ProgId" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>Creating Standard Opening On Profile</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating Standard Opening On Profile</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create Standard Opening On 
+						Profile.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+								<code><div class=vb_sample_data>CAAScdSddUcCreateOpeningStandard.3dxml</div></code>,
+								<code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div></code> and <code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div></code> 
+								files supplied in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code> 
+								where 
+							<code>InstallRootFolder</code> is the folder where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcCreateOpeningOnProfileStandardSource.htm">
+						CAAScdSddUcCreateOpeningOnProfileStandardSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSddTocSDDesign.htm">Structure Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in six steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SddProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves service of type RfgService</a></li>
+			<li><a href="#Step5">Retrieves a SDD stiffener object</a></li>
+			<li><a href="#Step6">Create standard Opening on profile using Offset/Offset 
+				positioning strategy</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+				<p><strong><a name="Step1"></a>Searches and opens model which is 
+				named as &quot;SddProduct&quot;</strong></p>
+				<p>As a first step, the UC retrieves a model &quot;SddProduct&quot; 
+				from DB and loads it and returns object of the Editor.</p>
+				<pre class="code">... 
+ <span class="keyword">Dim </span>SDDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SddProduct&quot;
+ OpenProduct prdName , SDDPrdEditor
+...</pre>
+				<p>The function <strong><code>OpenProduct</code></strong> returns
+				<strong><code>SDDPrdEditor</code></strong>, a Editor object. After 
+				searching and opening of SDD model from underlying database the 
+				current active editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step2"></a>Retrieves Selection object</strong></p>
+				<p>In this step UC retrieves Selection object in <code>SDDProdSel</code> 
+				variable.</p>
+				<pre class="code">...
+  <span class="keyword">Set</span> SDDProdSel = SDDPrdEditor.<strong>Selection</strong>
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+				<p>In this step UC retrieves Part object ObjPart variable.</p>
+				<pre class="code">... 
+  <span class="keyword">Dim </span>product1Service <span class="keyword"> As </span> PLMProductService
+  <span class="keyword">Set</span> product1Service = DDPrdEditor.GetService(&quot;PLMProductService&quot;)
+  <span class="keyword">Dim </span>ObjVPMRootOccurrence <span class="keyword"> As </span> VPMRootOccurrence
+  <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+  <span class="keyword">Dim </span>ObjVPMReference <span class="keyword"> As </span> VPMReference
+  <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+  <span class="keyword">Dim </span>ObjVPMRepInstances <span class="keyword"> As </span> VPMRepInstances
+  <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+  <span class="keyword">Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step4"></a>Retrieves service of type RfgService</strong></p>
+				<p>In this step UC retrieves <code>RfgService</code>.</p>
+				<pre class="code">...
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.<strong>GetService</strong>(&quot;RfgService&quot;)
+...</pre>
+				<p><code>GetService</code> method returns <code>RfgService</code>. 
+				This service provides methods such GetReferencePlane, CreateProjectData, 
+				CreateRefSurfaceFeature.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step5"></a>Retrieves a SDD Stiffener object</strong></p>
+				<p>In this step UC finds a SDD stiffener in the part.</p>
+				<pre class="code">... 
+<span class="keyword">  Set</span> ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">  Set</span> StiffenerRef = ListOfInstances.Item(2).ReferenceInstanceOf
+<span class="keyword">  Set</span> StiffenerRepInstances = StiffenerRef.RepInstances
+<span class="keyword">  Set</span> StiffenerRepInstReference = StiffenerRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">  Set</span> StiffenerPart = StiffenerRepInstReference.GetItem("Part")
+<span class="comment">' get Sdd Stiffener</span>
+<span class="keyword">  Dim</span> ObjSddProductStiffener <span class="keyword">As</span> SddProductStiffener
+  SDDProdSel.Add StiffenerRef
+<span class="keyword">  Set</span> ObjSddProductStiffener = SDDProdSel.FindObject("CATIASddProductStiffener")
+<span class="keyword">  Dim</span> ObjSddStiffener <span class="keyword">As</span> SddStiffener
+<span class="keyword">  Set</span> ObjSddStiffener = ObjSddProductStiffener.SddStiffener
+<span class="comment">' Get reference of stiffener</span>
+<span class="keyword">  Dim</span> RefObjSddStiffener <span class="keyword">As</span> Reference
+<span class="keyword">  Set</span> RefObjSddStiffener = StiffenerPart.CreateReferenceFromObject(ObjSddStiffener)
+...</pre>
+				<p>In above lines, <code>FindObject</code> method finds object whose 
+				type is &quot;CATIASddProductStiffener&quot; and returns to it. 
+				To retrieve <code>SddStiffener</code> object from it, call <code>
+				SddStiffener </code>property as shown above. This will give the
+				<code>SddStiffener</code> object.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step6"></a>Create Standard Opening On Profile 
+				with Offset/Offset positioning strategy</strong></p>
+				<p>Call <code>CreateStandardOpeningOnProfileOffsetOffset</code> 
+				method to create a standard opening on profile with offset/offset 
+				positioning strategy. <code>CreateStandardOpeningOnProfileOffsetOffset</code> 
+				method takes a panel object as input parameter and returns created 
+				opening as output parameter in <code>ObjStrOpeningOnProfile</code>.</p>
+				<pre class="code">...
+  <span class="keyword">Dim</span> ObjStrOpeningOnProfileOffsetOffset <span class="keyword">As</span> StrOpeningOnProfile
+  <strong>CreateStandardOpeningOnProfileOffsetOffset</strong> ObjSddStiffener, RefObjSddStiffener, ObjStrOpeningOnProfileOffsetOffset
+  ObjSddProductStiffener.<strong>Update</strong>
+...</pre>
+				<p>The method <code>CreateStandardOpeningOnProfileOffsetOffset</code> 
+				is detailed as in the below sub steps.</p>
+				<pre class="code">...
+<span class="keyword">Sub</span> CreateStandardOpeningOnProfileOffsetOffset(iObjSddStiffener <span class="keyword">As</span> SddStiffener, iRefObjSddStiffener <span class="keyword">As</span> Reference, oObjStrOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile)
+
+<span class="comment">    'Add Opening On Profile</span>
+    AddOpening iObjSddStiffener, oObjStrOpeningOnProfile
+	
+<span class="comment">    'Get StrOpening from StrOpeningOnProfile</span>
+<span class="keyword">    Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+<span class="keyword">    Set</span> ObjStrOpening = oObjStrOpeningOnProfile.<strong>StrOpening</strong>
+	
+<span class="comment">    'set opening type catStrOpeningModeStandard for standard opening</span>
+    ObjStrOpening.<strong>OpeningType</strong> = catStrOpeningModeStandard
+	
+<span class="comment">    'set category</span>
+<span class="keyword">    Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+<span class="keyword">    Set</span> ObjStrCategoryMngt = ObjStrOpening.StrCategoryMngt
+    ObjStrCategoryMngt.<strong>SetCategory</strong> "ManHole"
+	
+<span class="comment">    'Get StrOpeningStandard from StrOpening</span>
+<span class="keyword">    Dim</span> ObjStrOpeningStandard <span class="keyword">As</span> StrOpeningStandard
+    Set ObjStrOpeningStandard = ObjStrOpening.<strong>StrOpeningStandard</strong>
+	
+<span class="comment">    'set standard mode type</span>
+    ObjStrOpeningStandard.<strong>StandardModeType</strong> = catStrOpeningSTDRectMode
+	
+<span class="comment">    'Get contour and set parameters data</span>
+<span class="keyword">    Dim</span> ContourName <span class="keyword">As</span> String
+<span class="keyword">    Dim</span> StdContourParms <span class="keyword">As</span> StrStandardContourParameters
+<span class="comment">    'get contour names</span>
+<span class="keyword">    Dim</span> ContourNames() <span class="keyword">As</span> Variant
+<span class="keyword">    Dim</span> ObjStrOpeningsMgr <span class="keyword">As</span> StrOpeningsMgr
+<span class="keyword">    Set</span> ObjStrOpeningsMgr = iObjSddStiffener.StrOpeningsMgr
+<span class="comment">    'get available contour names</span>
+    ObjStrOpeningsMgr.<strong>GetAvailableStandardContours</strong> ContourNames
+    ContourName = ContourNames(1)
+<span class="comment">   'get parameters of contour</span>
+<span class="keyword">    Set</span> StdContourParms = ObjStrOpeningsMgr.<strong>GetStandardContourParms</strong>(ContourName)
+<span class="comment">    'set contour parameters data</span>
+    SetRectContourParamsData StdContourParms, "100mm", "50mm", "5mm"
+	
+<span class="comment">    'Get positioning strategy and set parameters data</span>
+<span class="keyword">    Dim</span> PosStratName <span class="keyword">As</span> String
+<span class="keyword">    Dim</span> PosStratParms <span class="keyword">As</span> StrStandardPosStrategyParameters
+<span class="comment">    'get std positiong strategy names</span>
+<span class="keyword">    Dim</span> StdPosStrategyNames() <span class="keyword">As</span> Variant
+<span class="comment">    'get available standard positioning strategy names</span>
+    ObjStrOpeningsMgr.<strong>GetAvailableStandardPositioningStrategiesForProfile</strong> StdPosStrategyNames
+<span class="comment">    'select positiong strategy offset offset</span>
+    PosStratName = StdPosStrategyNames(2)
+<span class="comment">    'get standard positioining strategy parameters</span>
+<span class="keyword">    Set</span> PosStratParms = ObjStrOpeningsMgr.<strong>GetStandardPositioningStrategyParmsForProfile</strong>(PosStratName)
+	
+<span class="comment">    'set standard opening remaining parameters</span>
+<span class="comment">    'set direction</span>
+    ObjStrOpeningStandard.<strong>DirectionForOpeningOnProfile</strong> = FALSE	
+<span class="comment">    'set extrusion mode</span>
+    'Set ObjStrOpeningExtrusionMngt = ObjStrOpening.StrOpeningExtrusionMngt
+    'ObjStrOpeningExtrusionMngt.<strong>ExtrusionMode</strong> = 0
+<span class="comment">    'set limit mode</span>
+    ObjStrOpeningStandard.LimitMode = 0
+<span class="comment">    'set contour and position strategy for profile</span>
+    ObjStrOpeningStandard.<strong>SetContourAndPosStrategyForProfile</strong> ContourName, StdContourParms, PosStratName, PosStratParms
+
+<span class="comment">    'set Offset Offset Position Strategy Parameters</span>
+<span class="keyword">    Set</span> ObjRefElem = Manager.GetReferencePlane(ObjPart, 3, "LONG.4")
+<span class="keyword">    Set</span> RefElem = ObjPart.CreateReferenceFromObject(ObjRefElem)
+    ObjStrOpeningStandard.<strong>SetOffsetOffsetPosStratParms</strong> iRefObjSddStiffener, RefElem, "0mm", "0mm", "Gravity", "0deg"
+    
+<span class="comment">    'Update created opening on profile object</span>	
+    ObjPart.UpdateObject oObjStrOpeningOnProfile
+
+<span class="keyword">End Sub</span>			
+...</pre>
+				<p class="task"><code>DirectionForOpeningOnProfile</code>: Sets 
+				the direction for opening on profile.</p>
+				<p class="task"><code>StandardModeType</code>: Sets the mode for 
+				standard opening on profile. 0 -&gt; catStrOpeningSTDUndefinedMode, 
+				1 -&gt; catStrOpeningSTDRoundMode, 2 -&gt; catStrOpeningSTDRectMode, 
+				3 -&gt; catStrOpeningSTDOblongMode, 4 -&gt; catStrOpeningSTDCatalogMode</p>
+				<p class="task"><code>SetContourAndPosStrategyForProfile</code>: 
+				Sets the contour and position strategy for opening on profile.</p>
+				<p class="task"><code>SetOffsetOffsetPosStratParms</code>: There 
+				are in all 6 parameters for this method. 1. The reference of the 
+				profile, 2.The reference element used, 3. The horizontal offset 
+				distance from reference element, 4. The vertical offset distance 
+				from anchor point, 5. The anchor point type, 6. The axis angle.</p>
+				<p class="task">Simillarly, for <strong>Mid Dist/Offset</strong> 
+				and <strong>Spacing/Offset</strong> Position Strategy cases
+				<code>SetMidDistOffsetPosStratParms</code> and <code>SetSpacingOffsetPosStratParms</code> 
+				methods are called respectively.</p>
+				<p class="task"><code>SetMidDistOffsetPosStratParms</code>: There 
+				are in all 6 parameters for this method. 1. The reference of the 
+				profile, 2.The first reference element used, 3. The second reference 
+				element used, 4. The vertical offset distance from anchor point, 
+				5. The anchor point type, 6. The axis angle.</p>
+				<p class="task"><code>SetSpacingOffsetPosStratParms</code>: There 
+				are in all 7 parameters for this method. 1. The reference of the 
+				profile, 2. Whether reference point is from start or end, 3. The 
+				horizontal offset distance, 4. Whether mode is absolute or relative, 
+				5. The vertical offset distance from anchor point, 6. The anchor 
+				point type, 7. The axis angle.</p>
+			</li>
+			<li>
+				<p>The source also includes standard opening on profile creation 
+				using positioning strategies Mid Dist/Offset, Spacing/Offset. To 
+				see the source go to
+				<a href="CAAScdSddUcCreateOpeningOnProfileStandardSource.htm">CAAScdSddUcCreateOpeningOnProfileStandardSource.htm.</a>
+				</p>
+
+                <table>
+                    <caption><a name="Fig.1"></a>Fig.1: Opening on Profile</caption>
+                    <tr>
+                        <td>
+                            <img alt="Opening on Profile" src="CAAScdSddUcCreateOpeningOnProfileStandard.png"/></td>
+                    </tr>
+                </table>
+				<script type="text/javascript">insertLinkToTop()</script>
+				<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

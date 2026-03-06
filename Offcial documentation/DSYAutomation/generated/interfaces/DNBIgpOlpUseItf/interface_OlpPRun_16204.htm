@@ -1,0 +1,197 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpPRun (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpPRun"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpPRun<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpPRun_16204','OlpPRun','0');</script>
+<section id='maindesc'>
+<b><i> An instruction that calls another procedure to be run in parallel.</i></b><br>
+<BR>
+ <font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ Download or Upload command</font>.<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Arguments"><b>Arguments</b></a>
+</td><td  id='tdright'>  The arguments passed to the procedure.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#JobId"><b>JobId</b></a>
+</td><td  id='tdright'>  The parallel job ID.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Procedure"><b>Procedure</b></a>
+</td><td  id='tdright'>  The procedure that is run from this instruction.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SustainSimulation"><b>SustainSimulation</b></a>
+</td><td  id='tdright'>  Get/Set whether to continue simulation if the parallel task has not yet finished.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AssignUndefinedProcedure"><b>AssignUndefinedProcedure</b></a>
+</td><td  id='tdright'>  Assign a procedure that is not defined in the robot program.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AssignUndefinedProcedureInStringType"><b>AssignUndefinedProcedureInStringType</b></a>
+</td><td  id='tdright'>  Assign a procedure that is not defined in the robot program.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Arguments"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Arguments</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpAstBranch','OlpAstBranch')</script> </span></dt>
+  <dd class='ddmethod'>
+ The arguments passed to the procedure.<BR>
+ Procedures called in parallel can only have input arguments,
+ no output arguments.
+ The order of the arguments corresponds to the order of the
+ procedure inputs retrieved from 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpProcedure','LocalVariables','DELMIAOlpProcedure.LocalVariables') </script>. The AST format is an "Arguments" node
+ which contains a list of "Expression" and "Operator" nodes.
+ Each "Expression" node has the id "Argument" and is in the
+ proper format to be used with 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpExpressionFixerDownload','','DELMIAOlpExpressionFixerDownload') </script>. The operator nodes are just commas.<BR>
+ When set, each child node with id="Argument" will be taken
+ as an argument, in order.
+ You can find more information on the OLP Expression AST format in the documentation
+ under Automation | Robotics | Robotics Offline Programming | Offline Programming Expression Translation.
+ The AST Arguments format used in function expressions as described in that document
+ is the same as the AST Arguments format used here.
+</dd>
+<a id="JobId"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>JobId</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ The parallel job ID.  If waiting for the parallel task to finish, this ID is used to identify the other thread.
+</dd>
+<a id="Procedure"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Procedure</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpProcedure','OlpProcedure')</script> </span></dt>
+  <dd class='ddmethod'>
+ The procedure that is run from this instruction.
+</dd>
+<a id="SustainSimulation"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SustainSimulation</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set whether to continue simulation if the parallel task has not yet finished.
+ If not set, the simulation will not be sustained.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AssignUndefinedProcedure"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AssignUndefinedProcedure</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('DELOlpDataType','DELOlpDataType')</script> <span class='param'>iDataType</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Assign a procedure that is not defined in the robot program.<BR>
+ This method is used to assign a procedure to this run
+ instruction which is not defined in the robot programs
+ selected for upload.  If a procedure with this name
+ already exists that has the correct number of arguments, it
+ will be reused.  If it does not exists, it will be created.
+ When created, the procedure will have the same number of arguments
+ as those set on this instruction.  You must have set the arguments
+ before calling this method.<BR>
+ <B>Note:</B> Do not use this method to create a procedure
+ which you will upload as normal.  That will bypass
+ any user options for creating new tasks on upload vs.
+ overwriting existing tasks.
+ <B>Note:</B> Do not use this method to assign a procedure
+ that you have already uploaded by name.  The name assigned
+ to procedures you upload may not match if there was already
+ an existing procedure with that name.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd>	The name of the procedure.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDataType</span></dt>
+   <dd>	The data type to use for all arguments.<BR>
+  This is only used when creating a new procedure.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="AssignUndefinedProcedureInStringType"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AssignUndefinedProcedureInStringType</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iDataType</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Assign a procedure that is not defined in the robot program.<BR>
+ This method is used to assign a procedure to this run
+ instruction which is not defined in the robot programs
+ selected for upload.  If a procedure with this name
+ already exists that has the correct number of arguments, it
+ will be reused.  If it does not exists, it will be created.
+ When created, the procedure will have the same number of arguments
+ as those set on this instruction.  You must have set the arguments
+ before calling this method.<BR>
+ <B>Note:</B> Do not use this method to create a procedure
+ which you will upload as normal.  That will bypass
+ any user options for creating new tasks on upload vs.
+ overwriting existing tasks.
+ <B>Note:</B> Do not use this method to assign a procedure
+ that you have already uploaded by name.  The name assigned
+ to procedures you upload may not match if there was already
+ an existing procedure with that name.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd>	The name of the procedure.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDataType</span></dt>
+   <dd>	The data type to use for all arguments. Note that the other
+   method with the same name cannot be used for Position type.<BR>
+  This is only used when creating a new procedure.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

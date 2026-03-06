@@ -1,0 +1,173 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaResultsHistoryPlotSourcePython.py</title> 
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+<pre>
+<span class="comment">#---------------------------- Sample script written in Python ---------------------------------</span>
+<span class="comment">#This sample shows how to create the history plot. 
+ </span>
+<span class="comment">#Steps:</span>
+<span class="comment">#    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">#    2- Retrieves the results analysis case  </span>
+<span class="comment">#    3- Creates the history plot1 </span>   
+<span class="comment">#    4- Get the step Id ,name and step description</span>     
+<span class="comment">#    5- Sets the attributes to the history plot1</span>
+<span class="comment">#    6- Sets the support for the history plot</span>
+<span class="comment">#    7- Set all time based steps</span>
+<span class="comment">#    8- Creates the history plot2 </span>   
+<span class="comment">#    9- Sets the attributes to the history plot2</span>
+<span class="comment">#    10- Sets the step, frame and load case information</span>
+<span class="comment">#    11- Set name to history plot</span>
+<span class="comment">#    12- Updates the history plot</span>
+<span class="comment">#    13- Return the minimum and maximum values</span>
+<span class="comment">#    14- Retrieves and exports the curve</span>
+
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+ENUM = win32com.client.constants
+
+oEditor = CATIA.ActiveEditor
+
+oProdService = oEditor.GetService("PLMProductService")
+
+oEntities = oProdService.EditedContent
+
+oEntity = oEntities.Item(1)
+
+oSimulationRoot = oEntity 
+    
+oResults = oSimulationRoot.Results
+
+oSimulationRepRes = oResults.Item(1)  
+
+oRootRepRes = oSimulationRepRes.Root    
+
+oResultsManager = oRootRepRes.GetItem("SimResultsManager") 
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    2- Retrieves the results analysis case</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oResultsAnalysisCases = oResultsManager.ResultsAnalysisCases
+
+oResultsAnalysisCase = oResultsAnalysisCases.Item(1)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    3- Creates the history plot</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oHistoryPlot1 = oResultsAnalysisCase.CreateHistoryPlot()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    4- Get the step Id ,name and step description</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oSteps = oResultsAnalysisCase.ResultsSteps
+oResultsStep = oSteps.Item(2)
+
+stepId, stepName, stepDescription = oResultsStep.GetIdentifier ((), (), ())
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    5- Sets the attributes to the history plot1</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oHistoryPlot1.Variable = ("U")
+oHistoryPlot1.ComponentQuantity = ENUM.SimVector_Component_1
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    6- Sets the support for the history plot</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+MySupports = ["INP2SIM_NSET_Nodal Probe2"]
+MySupports1 = [3]
+MySupports2 = ["Node 4", "Node 36", "Node 87"]
+oHistoryPlot1.SetSupport  (MySupports, MySupports1,  MySupports2)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    7- Set all time based steps</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oHistoryPlot1.SetAllTimeBasedSteps()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    8-  Creates the history plot2 </span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oHistoryPlot2 = oResultsAnalysisCase.CreateHistoryPlot()
+    
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    9- Sets the attributes to the history plot2</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oHistoryPlot2.Variable  = ("ALLIE")
+oHistoryPlot2.ComponentQuantity = ENUM.SimScalar
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    10- Sets the step, frame and load case information</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oHistoryPlot2.SetStepAndFrame (stepId, 0, 0)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    11- Set name to history plot</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oHistoryPlot1.Name = ("Test History Plot 1")
+oHistoryPlot2.Name = ("Test History Plot 2")
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    12- Updates the history plot</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oHistoryPlot1.Update()
+oHistoryPlot2.Update()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    13- Return the minimum and maximum values</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+dMin, dMax = oHistoryPlot1.GetMinMaxValues (0, 0)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#    12- Retrieves and exports the curve</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+oHistCurveList = oHistoryPlot1.GetHistoryCurveList (())
+oHistCurve = oHistCurveList[0]
+
+iFileName = "History_Curve1"
+iFileLocation="C:\\temp"
+oHistCurve.Export (iFileName, iFileLocation, ENUM.SimXlsx)
+
+oHistCurve1 = oHistCurveList[1]
+iFileName1 = "History_Curve_PLM"
+oHistCurve1.ExportToPLMDoc (iFileName1, ENUM.SimCsv)
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

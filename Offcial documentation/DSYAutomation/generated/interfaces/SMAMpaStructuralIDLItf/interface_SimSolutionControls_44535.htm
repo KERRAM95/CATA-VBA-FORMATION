@@ -1,0 +1,807 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAMpaStructuralIDLItf SimSolutionControls (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAMpaStructuralIDLItf.htm" href="../SMAMpaStructuralIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAMpaStructuralIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimSolutionControls"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimSolutionControls<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimSolutionControls_44535','SimSolutionControls','0');</script>
+<section id='maindesc'>
+<b><i> Represents the Solution Controls object.</i></b><br>
+
+ 
+ <!-- @sample -->
+ <dl>
+ <dt><strong>Example:</strong></dt>
+ <dd> Given a <code>SimFeatures</code> object, you can create a <code>SimSolutionControls</code> as following:
+ <pre>
+ Dim MyFeatures As SimFeatures
+ ...
+ Dim MySolutionControls As SimSolutionControls
+ Set MySolutionControls = MyFeatures.Add("SimSolutionControls")
+ </pre>
+ 
+ Given a <code>SimFeatures</code> object, you can retrieve a <code>SimSolutionControls</code> named "Solution Controls.1" as following:
+ <pre>
+ Dim MyFeatures As SimFeatures
+ ...
+ Dim MySolutionControls As SimSolutionControls
+ Set MySolutionControls = MyFeatures.Item("Solution Controls.1")
+ </pre>
+ </dd>
+ <dt><strong>Example in Python:</strong></dt>
+ <dd> Given a <code>SimFeatures</code> object <code>myFeatures</code>, you can create a <code>SimSolutionControls</code> as following:
+ <pre>
+ ...
+ mySolutionControls = myFeatures.Add("SimSolutionControls")
+ </pre>
+ 
+ Given a <code>SimFeatures</code> object <code>myFeatures</code>, you can retrieve a <code>SimSolutionControls</code> named "Solution Controls.1" as following:
+ <pre>
+ ...
+ mySolutionControls = myFeatures.Item("Solution Controls.1")
+ </pre>
+ </dd>
+ </dl>
+ <dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('SMAIAMpaFeatureSet','','SMAIAMpaFeatureSet') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Activated"><b>Activated</b></a>
+</td><td  id='tdright'>  Returns or sets the activation status.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DA"><b>DA</b></a>
+</td><td  id='tdright'>  Returns or sets the cutback factor used when the time integration accuracy tolerance is exceeded.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DB"><b>DB</b></a>
+</td><td  id='tdright'>  Returns or sets the cutback factor for the next increment when too many equilibrium iterations are used in the current increment.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DC"><b>DC</b></a>
+</td><td  id='tdright'>  Returns or sets the cutback factor used when the logarithmic rate of convergence predicts that too many equilibrium iterations will be needed.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DD"><b>DD</b></a>
+</td><td  id='tdright'>  Returns or sets the increase factor when two consecutive increments converge in a small number of equilibrium iterations.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DE"><b>DE</b></a>
+</td><td  id='tdright'>  Returns or sets the minimum ratio of proposed next time increment to the last successful time increment for extrapolation of the solution vector to take place.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DFs"><b>DFs</b></a>
+</td><td  id='tdright'>  Returns or sets the fraction of stability limit used as current time increment when the time increment exceeds the above factor times the stability</br>
+ limit.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DG"><b>DG</b></a>
+</td><td  id='tdright'>  Returns or sets the increase factor for the next time increment, as a ratio of the average integration accuracy measure over I<sub>T</sub></br>
+ increments to the corresponding tolerance, when the time integration accuracy measure is less than W<sub>G</sub> of the tolerance during</br>
+ I<sub>T</sub> consecutive increments.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DH"><b>DH</b></a>
+</td><td  id='tdright'>  Returns or sets the cutback factor used when element calculations have problems such as excessive distortion in large-displacement problems.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DL"><b>DL</b></a>
+</td><td  id='tdright'>  Returns or sets the minimum ratio of proposed next time increment to D<sub>M</sub> times the current time increment for the proposed time</br>
+ increment to be used in a linear transient problem.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DM"><b>DM</b></a>
+</td><td  id='tdright'>  Returns or sets the maximum time increment increase factor for all cases except dynamic stress analysis and diffusion-dominated processes.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DMdif"><b>DMdif</b></a>
+</td><td  id='tdright'>  Returns or sets the maximum time increment increase factor for diffusion-dominated processes (creep, transient heat transfer, soils</br>
+ consolidation, transient mass diffusion).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DMdyn"><b>DMdyn</b></a>
+</td><td  id='tdright'>  Returns or sets the maximum time increment increase factor for dynamic stress analysis.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DR"><b>DR</b></a>
+</td><td  id='tdright'>  Returns or sets the maximum allowable ratio of time increment to stability limit for conditionally stable time integration procedures.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DS"><b>DS</b></a>
+</td><td  id='tdright'>  Returns or sets the cutback factor used when too many iterations arise because of severe discontinuities.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DT"><b>DT</b></a>
+</td><td  id='tdright'>  Returns or sets the increase factor for the time increment directly before a time point or end time of a step is reached.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Definition"><b>Definition</b></a>
+</td><td  id='tdright'>  Returns or sets the solution controls definition.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Df"><b>Df</b></a>
+</td><td  id='tdright'>  Returns or sets cutback factor used when the solution appears to be diverging.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DiscontinuousAnalysisFlag"><b>DiscontinuousAnalysisFlag</b></a>
+</td><td  id='tdright'>  Returns or sets the discontinuous analysis flag.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#FeatureHistory"><b>FeatureHistory</b></a>
+</td><td  id='tdright'>  Returns the feature history.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IA"><b>IA</b></a>
+</td><td  id='tdright'>  Returns or sets the maximum number of attempts allowed for an increment.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IC"><b>IC</b></a>
+</td><td  id='tdright'>  Returns or sets the upper limit on the number of consecutive equilibrium iterations (without severe discontinuities), based on prediction of<br/>
+ the logarithmic rate of convergence.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ICA"><b>ICA</b></a>
+</td><td  id='tdright'>  Returns or sets the maximum number of allowed contact augmentations if the augmented Lagrange contact constraint enforcement method is specified.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ICJ"><b>ICJ</b></a>
+</td><td  id='tdright'>  Returns or sets the maximum number of equilibrium and severe discontinuity iterations allowed in two consecutive increments<br/>
+ for the time increment to be increased if CONVERT SDI=YES.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ICS"><b>ICS</b></a>
+</td><td  id='tdright'>  Returns or sets the maximum number of equilibrium and severe discontinuity iterations allowed in an increment if CONVERT SDI=YES.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IG"><b>IG</b></a>
+</td><td  id='tdright'>  Returns or sets the maximum number of consecutive equilibrium iterations (without severe discontinuities) allowed in consecutive increments<br/>
+ for the time increment to be increased.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IJ"><b>IJ</b></a>
+</td><td  id='tdright'>  Returns or sets the maximum number of severe discontinuity iterations allowed in two consecutive increments for the<br/>
+ time increment to be increased if CONVERT SDI=NO.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IL"><b>IL</b></a>
+</td><td  id='tdright'>  Returns or sets the number of consecutive equilibrium iterations (without severe discontinuities) above which the size of the next increment will be reduced.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IP"><b>IP</b></a>
+</td><td  id='tdright'>  Returns or sets the number of consecutive equilibrium iterations (without severe discontinuities) after which the residual tolerance is used.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IR"><b>IR</b></a>
+</td><td  id='tdright'>  Returns or sets the number of consecutive equilibrium iterations (without severe discontinuities) at which logarithmic rate of convergence check begins.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IS"><b>IS</b></a>
+</td><td  id='tdright'>  Returns or sets the maximum number of severe discontinuity iterations allowed in an increment if CONVERT SDI=NO.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IT"><b>IT</b></a>
+</td><td  id='tdright'>  Returns or sets the minimum number of consecutive increments in which the time integration accuracy measure must be satisfied<br/>
+ without any cutbacks to allow a time increment increase.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Io"><b>Io</b></a>
+</td><td  id='tdright'>  Returns or sets the number of equilibrium iterations (without severe discontinuities) after which the check is made whether<br/>
+ the residuals are increasing in two consecutive iterations.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#TimeValuesDefaultFlag"><b>TimeValuesDefaultFlag</b></a>
+</td><td  id='tdright'>  Returns the flag that determines whether the time incrementation values are default or not.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#WG"><b>WG</b></a>
+</td><td  id='tdright'>  Returns or sets the ratio of average time integration accuracy measure over increments to the corresponding tolerance for the<br/>
+ next allowable time increment to be increased.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#ClearInitialAverageFluxValue"><b>ClearInitialAverageFluxValue</b></a>
+</td><td  id='tdright'>  Clears the initial average flux value.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ClearTotalAverageFluxValue"><b>ClearTotalAverageFluxValue</b></a>
+</td><td  id='tdright'>  Clears the total average flux value.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetAverageFlux"><b>GetAverageFlux</b></a>
+</td><td  id='tdright'>  Retrieves the average flux for the field.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetCAlphaEps"><b>GetCAlphaEps</b></a>
+</td><td  id='tdright'>  Retrieves the convergence criterion for the ratio of the largest solution correction to the largest corresponding incremental solution</br>
+ value when there is zero flux in the model.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetCAlphaN"><b>GetCAlphaN</b></a>
+</td><td  id='tdright'>  Retrieves the convergence criterion for the ratio of the largest solution correction to the largest corresponding incremental solution value.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetConversionRatio"><b>GetConversionRatio</b></a>
+</td><td  id='tdright'>  Retrieves the field conversion ratio used in scaling the relationship between two active fields when one is of negligible magnitude.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetEpsAlpha"><b>GetEpsAlpha</b></a>
+</td><td  id='tdright'>  Retrieves the criterion for zero flux compared to average flux.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetEpsAlphaD"><b>GetEpsAlphaD</b></a>
+</td><td  id='tdright'>  Retrieves the criterion for zero displacement increment (and/or zero penetration if CONVERT SDI=YES) compared to the characteristic element</br>
+ length in the model.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetEpsAlphaL"><b>GetEpsAlphaL</b></a>
+</td><td  id='tdright'>  Retrieves the criterion for zero flux compared to the time averaged value of the largest flux in the model during the current step.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetFieldValuesDefaultFlag"><b>GetFieldValuesDefaultFlag</b></a>
+</td><td  id='tdright'>  Retrieves the flag that determines whether the field equation values are default or not.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetInitialAverageFlux"><b>GetInitialAverageFlux</b></a>
+</td><td  id='tdright'>  Retrieves the initial average flux for the field.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetInitialAverageFluxHasValueFlag"><b>GetInitialAverageFluxHasValueFlag</b></a>
+</td><td  id='tdright'>  Retrieves the flag that determines whether the initial average flux has a value.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetRAlphaL"><b>GetRAlphaL</b></a>
+</td><td  id='tdright'>  Retrieves the convergence criterion for the ratio of the largest (scaled) residual to the corresponding average flux norm for convergence</br>
+ to be accepted in one iteration (that is, for a linear case).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetRAlphaN"><b>GetRAlphaN</b></a>
+</td><td  id='tdright'>  Retrieves the convergence criterion for the ratio of the largest (scaled) residual to the corresponding average flux norm for convergence.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetRAlphaP"><b>GetRAlphaP</b></a>
+</td><td  id='tdright'>  Retrieves the alternative residual convergence criterion to be used after I<sub>P</sub> iterations.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTotalAverageFlux"><b>GetTotalAverageFlux</b></a>
+</td><td  id='tdright'>  Retrieves the total average flux for the field.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTotalAverageFluxHasValueFlag"><b>GetTotalAverageFluxHasValueFlag</b></a>
+</td><td  id='tdright'>  Retrieves the flag that determines whether the total average flux has a value.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PropagateFromPrevious"><b>PropagateFromPrevious</b></a>
+</td><td  id='tdright'>  Propagates all the values from the previous solution controls feature into this feature.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ResetFieldValues"><b>ResetFieldValues</b></a>
+</td><td  id='tdright'>  Resets all the field equation values to default values.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ResetTimeValues"><b>ResetTimeValues</b></a>
+</td><td  id='tdright'>  Resets all the time incrementation values to default values.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetAverageFlux"><b>SetAverageFlux</b></a>
+</td><td  id='tdright'>  Sets the average flux for the field.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetCAlphaEps"><b>SetCAlphaEps</b></a>
+</td><td  id='tdright'>  Sets the convergence criterion for the ratio of the largest solution correction to the largest corresponding incremental solution</br>
+ value when there is zero flux in the model.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetCAlphaN"><b>SetCAlphaN</b></a>
+</td><td  id='tdright'>  Sets the convergence criterion for the ratio of the largest solution correction to the largest corresponding incremental solution value.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetConversionRatio"><b>SetConversionRatio</b></a>
+</td><td  id='tdright'>  Sets the field conversion ratio used in scaling the relationship between two active fields when one is of negligible magnitude.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetEpsAlpha"><b>SetEpsAlpha</b></a>
+</td><td  id='tdright'>  Sets the criterion for zero flux compared to average flux.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetEpsAlphaD"><b>SetEpsAlphaD</b></a>
+</td><td  id='tdright'>  Sets the criterion for zero displacement increment (and/or zero penetration if CONVERT SDI=YES) compared to the characteristic element</br>
+ length in the model.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetEpsAlphaL"><b>SetEpsAlphaL</b></a>
+</td><td  id='tdright'>  Sets the criterion for zero flux compared to the time averaged value of the largest flux in the model during the current step.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetInitialAverageFlux"><b>SetInitialAverageFlux</b></a>
+</td><td  id='tdright'>  Sets the initial average flux for the field.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetRAlphaL"><b>SetRAlphaL</b></a>
+</td><td  id='tdright'>  Sets the convergence criterion for the ratio of the largest (scaled) residual to the corresponding average flux norm for convergence</br>
+ to be accepted in one iteration (that is, for a linear case).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetRAlphaN"><b>SetRAlphaN</b></a>
+</td><td  id='tdright'>  Sets the convergence criterion for the ratio of the largest (scaled) residual to the corresponding average flux norm for convergence.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetRAlphaP"><b>SetRAlphaP</b></a>
+</td><td  id='tdright'>  Sets the alternative residual convergence criterion to be used after I<sub>P</sub> iterations.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTotalAverageFlux"><b>SetTotalAverageFlux</b></a>
+</td><td  id='tdright'>  Sets the total average flux for the field.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Activated"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Activated</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the activation status.
+</dd>
+<a id="DA"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DA</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the cutback factor used when the time integration accuracy tolerance is exceeded.
+</dd>
+<a id="DB"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DB</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the cutback factor for the next increment when too many equilibrium iterations are used in the current increment.
+</dd>
+<a id="DC"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DC</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the cutback factor used when the logarithmic rate of convergence predicts that too many equilibrium iterations will be needed.
+</dd>
+<a id="DD"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DD</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the increase factor when two consecutive increments converge in a small number of equilibrium iterations.
+</dd>
+<a id="DE"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DE</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the minimum ratio of proposed next time increment to the last successful time increment for extrapolation of the solution vector to take place.
+</dd>
+<a id="DFs"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DFs</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the fraction of stability limit used as current time increment when the time increment exceeds the above factor times the stability</br>
+ limit. This value cannot exceed 1.0.
+</dd>
+<a id="DG"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DG</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the increase factor for the next time increment, as a ratio of the average integration accuracy measure over I<sub>T</sub></br>
+ increments to the corresponding tolerance, when the time integration accuracy measure is less than W<sub>G</sub> of the tolerance during</br>
+ I<sub>T</sub> consecutive increments.
+</dd>
+<a id="DH"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DH</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the cutback factor used when element calculations have problems such as excessive distortion in large-displacement problems.
+</dd>
+<a id="DL"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DL</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the minimum ratio of proposed next time increment to D<sub>M</sub> times the current time increment for the proposed time</br>
+ increment to be used in a linear transient problem. This parameter is intended to avoid excessive decomposition of the system matrix</br>
+ and should be less than 1.0.
+</dd>
+<a id="DM"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DM</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the maximum time increment increase factor for all cases except dynamic stress analysis and diffusion-dominated processes.
+</dd>
+<a id="DMdif"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DMdif</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the maximum time increment increase factor for diffusion-dominated processes (creep, transient heat transfer, soils</br>
+ consolidation, transient mass diffusion).
+</dd>
+<a id="DMdyn"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DMdyn</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the maximum time increment increase factor for dynamic stress analysis.
+</dd>
+<a id="DR"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DR</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the maximum allowable ratio of time increment to stability limit for conditionally stable time integration procedures.
+</dd>
+<a id="DS"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DS</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the cutback factor used when too many iterations arise because of severe discontinuities.
+</dd>
+<a id="DT"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DT</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the increase factor for the time increment directly before a time point or end time of a step is reached.</br>
+ This parameter is used to avoid the small time increment that is sometimes necessary to hit a time point or to complete</br>
+ a step and must be greater than or equal to 1.0. If output or restart data are requested at exact times in a step, the default = 1.25;</br>
+ otherwise, the default = 1.0.
+</dd>
+<a id="Definition"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Definition</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SimSolutionControlsDefinition','SimSolutionControlsDefinition')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the solution controls definition.
+</dd>
+<a id="Df"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Df</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets cutback factor used when the solution appears to be diverging.
+</dd>
+<a id="DiscontinuousAnalysisFlag"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>DiscontinuousAnalysisFlag</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the discontinuous analysis flag.
+ <br/>TRUE: the analysis has discontinuous behavior.
+ <br/>FALSE: the analysis does not have discontinuous behavior.
+</dd>
+<a id="FeatureHistory"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FeatureHistory</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SMAIAMpaFeatureHistory','SMAIAMpaFeatureHistory')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the feature history.
+</dd>
+<a id="IA"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IA</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the maximum number of attempts allowed for an increment.
+</dd>
+<a id="IC"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IC</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the upper limit on the number of consecutive equilibrium iterations (without severe discontinuities), based on prediction of<br/>
+ the logarithmic rate of convergence.
+</dd>
+<a id="ICA"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ICA</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the maximum number of allowed contact augmentations if the augmented Lagrange contact constraint enforcement method is specified.
+</dd>
+<a id="ICJ"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ICJ</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the maximum number of equilibrium and severe discontinuity iterations allowed in two consecutive increments<br/>
+ for the time increment to be increased if CONVERT SDI=YES. This parameter is not used if CONVERT SDI=NO.
+</dd>
+<a id="ICS"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ICS</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the maximum number of equilibrium and severe discontinuity iterations allowed in an increment if CONVERT SDI=YES.</br>
+ This parameter serves only as a protection against failure of the default convergence criteria and should rarely</br>
+ needs to be changed. This parameter is not used if CONVERT SDI=NO.
+</dd>
+<a id="IG"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IG</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the maximum number of consecutive equilibrium iterations (without severe discontinuities) allowed in consecutive increments<br/>
+ for the time increment to be increased.
+</dd>
+<a id="IJ"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IJ</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the maximum number of severe discontinuity iterations allowed in two consecutive increments for the<br/>
+ time increment to be increased if CONVERT SDI=NO. This parameter is not used if CONVERT SDI=YES.
+</dd>
+<a id="IL"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IL</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the number of consecutive equilibrium iterations (without severe discontinuities) above which the size of the next increment will be reduced.
+</dd>
+<a id="IP"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IP</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the number of consecutive equilibrium iterations (without severe discontinuities) after which the residual tolerance is used.
+</dd>
+<a id="IR"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IR</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the number of consecutive equilibrium iterations (without severe discontinuities) at which logarithmic rate of convergence check begins.
+</dd>
+<a id="IS"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IS</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the maximum number of severe discontinuity iterations allowed in an increment if CONVERT SDI=NO.</br>
+ This parameter is not used if CONVERT SDI=YES.
+</dd>
+<a id="IT"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IT</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the minimum number of consecutive increments in which the time integration accuracy measure must be satisfied<br/>
+ without any cutbacks to allow a time increment increase.
+</dd>
+<a id="Io"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Io</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the number of equilibrium iterations (without severe discontinuities) after which the check is made whether<br/>
+ the residuals are increasing in two consecutive iterations.
+</dd>
+<a id="TimeValuesDefaultFlag"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>TimeValuesDefaultFlag</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the flag that determines whether the time incrementation values are default or not.
+ <br/>TRUE: the values are default.
+ <br/>FALSE: the values are not default.
+</dd>
+<a id="WG"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>WG</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the ratio of average time integration accuracy measure over increments to the corresponding tolerance for the<br/>
+ next allowable time increment to be increased.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="ClearInitialAverageFluxValue"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ClearInitialAverageFluxValue</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Clears the initial average flux value.
+</dd>
+<a id="ClearTotalAverageFluxValue"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ClearTotalAverageFluxValue</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Clears the total average flux value.
+</dd>
+<a id="GetAverageFlux"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetAverageFlux</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('SimSolutionControlsAverageFlux','SimSolutionControlsAverageFlux')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the average flux for the field.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iDOFField[in]</span></dt>
+   <dd>    The field.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oAverageFlux[out]</span></dt>
+   <dd>    The average flux.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetCAlphaEps"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetCAlphaEps</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the convergence criterion for the ratio of the largest solution correction to the largest corresponding incremental solution</br>
+ value when there is zero flux in the model.
+</dd>
+<a id="GetCAlphaN"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetCAlphaN</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the convergence criterion for the ratio of the largest solution correction to the largest corresponding incremental solution value.
+</dd>
+<a id="GetConversionRatio"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetConversionRatio</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the field conversion ratio used in scaling the relationship between two active fields when one is of negligible magnitude.
+</dd>
+<a id="GetEpsAlpha"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetEpsAlpha</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the criterion for zero flux compared to average flux.
+</dd>
+<a id="GetEpsAlphaD"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetEpsAlphaD</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the criterion for zero displacement increment (and/or zero penetration if CONVERT SDI=YES) compared to the characteristic element</br>
+ length in the model. This item is used only when FIELD=DISPLACEMENT.
+</dd>
+<a id="GetEpsAlphaL"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetEpsAlphaL</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the criterion for zero flux compared to the time averaged value of the largest flux in the model during the current step.
+</dd>
+<a id="GetFieldValuesDefaultFlag"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetFieldValuesDefaultFlag</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the flag that determines whether the field equation values are default or not.
+</dd>
+<a id="GetInitialAverageFlux"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetInitialAverageFlux</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the initial average flux for the field.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iDOFField[in]</span></dt>
+   <dd>    The field.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oInitialAverageFlux[out]</span></dt>
+   <dd>    The initial average flux.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetInitialAverageFluxHasValueFlag"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetInitialAverageFluxHasValueFlag</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the flag that determines whether the initial average flux has a value.
+</dd>
+<a id="GetRAlphaL"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetRAlphaL</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the convergence criterion for the ratio of the largest (scaled) residual to the corresponding average flux norm for convergence</br>
+ to be accepted in one iteration (that is, for a linear case).
+</dd>
+<a id="GetRAlphaN"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetRAlphaN</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the convergence criterion for the ratio of the largest (scaled) residual to the corresponding average flux norm for convergence.
+</dd>
+<a id="GetRAlphaP"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetRAlphaP</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the alternative residual convergence criterion to be used after I<sub>P</sub> iterations.
+</dd>
+<a id="GetTotalAverageFlux"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTotalAverageFlux</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the total average flux for the field.
+</dd>
+<a id="GetTotalAverageFluxHasValueFlag"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTotalAverageFluxHasValueFlag</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the flag that determines whether the total average flux has a value.
+</dd>
+<a id="PropagateFromPrevious"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>PropagateFromPrevious</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Propagates all the values from the previous solution controls feature into this feature.
+</dd>
+<a id="ResetFieldValues"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ResetFieldValues</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Resets all the field equation values to default values.
+</dd>
+<a id="ResetTimeValues"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ResetTimeValues</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Resets all the time incrementation values to default values.
+</dd>
+<a id="SetAverageFlux"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetAverageFlux</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('SimSolutionControlsAverageFlux','SimSolutionControlsAverageFlux')</script> <span class='param'>iAverageFlux</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the average flux for the field.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iDOFField[in]</span></dt>
+   <dd>    The field.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAverageFlux[in]</span></dt>
+   <dd>    The average flux.
+    ... .
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetCAlphaEps"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetCAlphaEps</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iCAlphaEps</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the convergence criterion for the ratio of the largest solution correction to the largest corresponding incremental solution</br>
+ value when there is zero flux in the model.
+</dd>
+<a id="SetCAlphaN"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetCAlphaN</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iCAlphaN</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the convergence criterion for the ratio of the largest solution correction to the largest corresponding incremental solution value.
+</dd>
+<a id="SetConversionRatio"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetConversionRatio</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iConversionRatio</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the field conversion ratio used in scaling the relationship between two active fields when one is of negligible magnitude.
+</dd>
+<a id="SetEpsAlpha"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetEpsAlpha</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iEpsAlpha</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the criterion for zero flux compared to average flux.
+</dd>
+<a id="SetEpsAlphaD"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetEpsAlphaD</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iEpsAlphaD</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the criterion for zero displacement increment (and/or zero penetration if CONVERT SDI=YES) compared to the characteristic element</br>
+ length in the model. This item is used only when FIELD=DISPLACEMENT.
+</dd>
+<a id="SetEpsAlphaL"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetEpsAlphaL</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iEpsAlphaL</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the criterion for zero flux compared to the time averaged value of the largest flux in the model during the current step.
+</dd>
+<a id="SetInitialAverageFlux"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetInitialAverageFlux</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iInitialAverageFlux</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the initial average flux for the field.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iDOFField[in]</span></dt>
+   <dd>    The field.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iInitialAverageFlux[in]</span></dt>
+   <dd>    The initial average flux.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetRAlphaL"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetRAlphaL</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iRAlphaL</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the convergence criterion for the ratio of the largest (scaled) residual to the corresponding average flux norm for convergence</br>
+ to be accepted in one iteration (that is, for a linear case).
+</dd>
+<a id="SetRAlphaN"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetRAlphaN</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iRAlphaN</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the convergence criterion for the ratio of the largest (scaled) residual to the corresponding average flux norm for convergence.
+</dd>
+<a id="SetRAlphaP"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetRAlphaP</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iRAlphaP</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the alternative residual convergence criterion to be used after I<sub>P</sub> iterations.
+</dd>
+<a id="SetTotalAverageFlux"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetTotalAverageFlux</span><span class='signature'>(<script type="text/javascript"> activateLink('SimSolutionControlsDOFField','SimSolutionControlsDOFField')</script> <span class='param'>iDOFField</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTotalAverageFlux</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the total average flux for the field.
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

@@ -1,0 +1,208 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>V4Writing Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>V4Writing Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>V4Writing</h2>
+<p><strong>Role:</strong> Setting to handle the V5-&gt;V4 options</p>
+<p>The V4Writing repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /General/Compatibility/Saving As V4 Data</li>
+  <li><strong>Repository File</strong>: V4Writing</li>
+  <li><strong>Version</strong>: 1</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+  <li><strong>Setting controller</strong>:
+    <ul>
+      <li>Framework_CPP: CATIAV4Interfaces</li>
+      <li>Framework_IDL: CATIAV4Interfaces</li>
+      <li>Interface_CPP: CATIV4IV4WritingSettingAtt</li>
+      <li>Interface_IDL: CATIAV4WritingSettingAtt</li>
+      <li>LateType: CATV4IV4WritingSettingCtrl</li>
+    </ul>
+  </li>
+</ul>
+<p>V4Writing setting repository attributes:</p>
+<ul>
+  <li><a name="CleanTolButton"></a><strong>CleanTolButton</strong>
+    <br /><strong>Role</strong>: The cleaning tolerance mode setting parameter manages the cleaning of small elements in V4 model.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Use a default tolerance for small V4 elements cleaning.</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Use a customized tolerance for small V4 elements cleaning.</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="CleanTolEditor"></a><strong>CleanTolEditor</strong>
+    <br /><strong>Role</strong>: The cleaning tolerance value setting parameter manages the cleaning of small elements in V4 model.
+    <ul>
+      <li><strong>Type</strong>: double</li>
+      <li><strong>Default value</strong>: 0.0</li>
+    </ul>
+  </li>
+  <li><a name="Code_page_Dest"></a><strong>Code_page_Dest</strong>
+    <br /><strong>Role</strong>: The Writing Code Page setting parameter manages the format related with the language used by the customer.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 11</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 16</li>
+    </ul>
+  </li>
+  <li><a name="ModeCreateDisplay"></a><strong>ModeCreateDisplay</strong>
+    <br /><strong>Role</strong>: The Curve Display Mode setting parameter manages the mode of creation of V4 curves (between faces).
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: NeverCreate</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>NeverCreate</td>
+            <td>Never create curves associated to V4 faces boundaries</td>
+          </tr>
+          <tr>
+            <td>KeepConics</td>
+            <td>Create conic curves associated to V4 faces boundaries</td>
+          </tr>
+          <tr>
+            <td>AlwaysCreate</td>
+            <td>Always create curves associated to V4 faces boundaries</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ModeErrorDisplay"></a><strong>ModeErrorDisplay</strong>
+    <br /><strong>Role</strong>: The Error Feature Display setting parameter manages the creation of an error feature when the save is not complete.
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: Refuse</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>Refuse</td>
+            <td>Never create error features</td>
+          </tr>
+          <tr>
+            <td>Ask</td>
+            <td>Ask for error features creation</td>
+          </tr>
+          <tr>
+            <td>Accept</td>
+            <td>Systematic creation of error features</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="Model_Dimension"></a><strong>Model_Dimension</strong>
+    <br /><strong>Role</strong>: The Model Dimension Value setting parameter manages the value of the model dimension usually used in V4.
+    <ul>
+      <li><strong>Type</strong>: double</li>
+      <li><strong>Default value</strong>: 10</li>
+    </ul>
+  </li>
+  <li><a name="Model_Factor"></a><strong>Model_Factor</strong>
+    <br /><strong>Role</strong>: The Multiplication Factor setting parameter manages the conversion of model dimension in millimeters.
+    <br /><strong>Detailed role</strong>:  This parameter is used with the Model Dimension Unit parameter in order to stock the value in millimeter in the CATSetting. The Multiplication factor is the ratio between millimeters and the unit selected. For example if the unit selected is Meter, then the Multiplication Factor is 1000. Note that no option is available for this value : it is automatically computed<br />
+    <ul>
+      <li><strong>Type</strong>: double</li>
+      <li><strong>Default value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="Model_File_Name"></a><strong>Model_File_Name</strong>
+    <br /><strong>Role</strong>: The Capital Letters setting parameter manages the mode of creation of the V4 model name (in capital letters or not)
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: Normal</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>Normal</td>
+            <td>Use the characters given for the V4 saved model name</td>
+          </tr>
+          <tr>
+            <td>CapitalLetter</td>
+            <td>Convert all letters of the V4 saved model name into capital letters </td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="Model_File_NameCheckBox"></a><strong>Model_File_NameCheckBox</strong>
+    <br /><strong>Role</strong>: The Capital Letters setting parameter manages the mode of creation of the V4 model name (in capital letters or not)
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: Normal</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>Normal</td>
+            <td>Use the characters given for the V4 saved model name</td>
+          </tr>
+          <tr>
+            <td>CapitalLetter</td>
+            <td>Convert all letters of the V4 saved model name into capital letters </td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="Model_Unit"></a><strong>Model_Unit</strong>
+    <br /><strong>Role</strong>: The Model Dimension Unit setting parameter manages the unit used for save as model. As the reference unit used in CATSettings is millimeters, a factor to convert units chosen is necessary. This factor is the Multiplication Factor parameter.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 11</li>
+    </ul>
+  </li>
+  <li><a name="StartUp_Model_File_Path"></a><strong>StartUp_Model_File_Path</strong>
+    <br /><strong>Role</strong>: The Initial Model File Path setting parameter manages the location of a V4 model which will be used during save as model.
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>:</li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

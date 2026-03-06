@@ -1,0 +1,180 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="topictype" content="Uc" />
+    <meta name="devlang" content="idl" />
+    <meta name="devlang" content="idl" />
+    <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+    <title>Plot Legend</title>
+    <style type="text/css">
+        .padded td, .padded th
+        {
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+    <table class="table1">
+        <tr>
+            <td class="DocHeader1">
+                <h1>Retrieving and managing plot legend</h1>
+            </td>
+        </tr>
+        <tr>
+            <td class="DocHeader3" style="width: 1807px">
+                <table class="DocHeaderIntro">
+                    <tr>
+                        <td class="Intro1">
+                            <p class="header">This article explains how to retrieve and manage the field plot legend.</p>
+                            <hr class="header" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span class="run-in">Where to find the macro: <a href="CAAScdFeaResultsPlotLegendSource.htm">CAAScdFeaResultsPlotLegendSource.htm</a></span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="indented">
+        <tr>
+            <td>
+                <p>This use case can be divided in 9 steps:</p>
+                <ol>
+                    <li><a href="#Step1">Opens the document and retrieves the results analysis case</a></li>
+                    <li><a href="#Step2">Creates the field plot through template</a></li>
+                    <li><a href="#Step3">Retrieves the legend from the plot</a></li>
+                    <li><a href="#Step4">Gets and sets the minimum and maximum value for the legend</a></li>
+                    <li><a href="#Step5">Gets and Sets the color modifiers</a></li>
+                    <li><a href="#Step6">Gets and Sets the legend style</a></li>
+                    <li><a href="#Step7">Gets and sets the number of legend colors</a></li>
+                    <li><a href="#Step8">Sets the number format</a></li>
+                    <li><a href="#Step9">Specifies the animation range</a></li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+    <table class="table1">
+
+        <tr>
+            <td>
+                <ol class="task">
+                    <li>
+                        <p><strong><a name="Step1"></a>Opens the document and retrieves the results analysis case</strong></p>
+                        <p>As a first step, the following code will show how to open the simulation document and retrieve the 
+                            results analysis case. </p>
+                        <a href="CAAScdFeaResultsOpenDocument.htm">Retrieve the analysis case</a>
+                    </li>
+                    <ul></ul>
+                    <li>
+
+                        <p><strong><a name="Step2"></a>Creates the field plot through template</strong></p>
+                        <p>This step shows how to create a field plot from the results analysis case retrieved from the earlier step.</p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>sId<span class="keyword"> As </span>String
+sId = "Contour_Stress_Tresca"
+<span class="keyword">Dim </span>oPlot<span class="keyword"> As </span>SimFieldPlot
+<span class="keyword">Set </span>oPlot = oResultsAnalysisCase.CreateFieldPlotByID(sId, True)
+...
+</pre>
+
+                    </li>
+                    <li>
+                        <p><strong><a name="Step3"></a>Retrieves the legend form the plot</strong></p>
+                        <p>Here we retrieve the plot legend. </p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>oPlotLegend<span class="keyword"> As </span>SimLegend
+<span class="keyword">Set </span>oPlotLegend = oPlot.Legend
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step4"></a>Gets and sets the minimum and maximum value for the legend</strong></p>
+                        <p>In this step we retrieve the minimum and maximum values for the legend.</p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>nbMinvalue<span class="keyword"> As </span>double
+<span class="keyword">Dim </span>nbMaxvalue<span class="keyword"> As </span>double
+
+oPlotLegend.SetMinMaxValue 100, 10000, True
+oPlotLegend.GetMinMaxValue nbMinvalue, nbMaxvalue, True, False
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step5"></a>Gets and Sets the color modifiers</strong></p>
+                        <p>Following code gets and sets the smooth and inverse colors options.</p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>bSmooth<span class="keyword"> As </span>boolean
+<span class="keyword">Dim </span>bInverse<span class="keyword"> As </span>boolean
+
+oPlotLegend.GetColorModifiers bSmooth, bInverse
+oPlotLegend.SetColorModifiers True, True
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step6"></a>Gets and Sets the legend style</strong></p>
+                        <p>The legend styles can be either SMAMpaLegendStyle_Detailed or SMAMpaLegendStyle_Simplified.</p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>sStyle<span class="keyword"> As </span>String
+sStyle = oPlotLegend.Style 
+oPlotLegend.Style = "SMAMpaLegendStyle_Detailed"
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step7"></a>Gets and sets the number of legend colors</strong></p>
+                        <p>In the following code we get and set the number of colors for the legend.</p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>nbColors<span class="keyword"> As </span>Long
+nbColors = oPlotLegend.NbColors
+oPlotLegend.NbColors = nbColors * 2
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step8"></a>Sets the number format</strong></p>
+                        <p>The below code sets the numerical format used for result values to scientific. The various options are </p>
+                        <p>Automatic = 0,
+                           Scientific = 1,
+                           Decimal = 2</p>
+                        <pre class="code">...                                                                              
+oPlotLegend.NumberFormat = 1                                                                                               
+...
+</pre>
+
+                    </li>
+                    <li>
+                        <p><strong><a name="Step9"></a>Specifies the animation range</strong></p>
+                        <p>Sets the legend animation range.</p>
+                        <pre class="code">...
+oPlotLegend.StartAnimationRange 200, 5000, True
+...
+</pre>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

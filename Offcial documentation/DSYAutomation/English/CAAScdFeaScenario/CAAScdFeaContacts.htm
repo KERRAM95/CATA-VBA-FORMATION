@@ -1,0 +1,230 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a Contact Feature</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Creating a Contact Feature</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This article explains how to create a contact feature.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					<ul>
+						<li>Launch CATIA and then import and 
+						open the
+						<code><div class=vb_sample_data>CAAScdFeaPumpModel.3dxml</div></code> file supplied in 
+						the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaScenario\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder where 
+						the API CD-ROM is installed.</li>
+            <li>Note: Creation of new PLM objects via scripting, as in this 
+                use case, requires an enabling license in addition to the
+                interactive Roles needed to access the functionality.</li>                                                            
+            </ul>
+					<p><span class="run-in">Where to find the macro: <a href="CAAScdFeaContactsSource.htm">
+					CAAScdFeaContactsSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided into six steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieving the active Product</a></li>
+			<li><a href="#Step2">Initializing and Creating the Simulation PLM Object</a></li>
+			<li><a href="#Step3">Retrieving the Features Set</a></li>
+			<li><a href="#Step4">Creating and Initializing a Contact property feature</a></li>
+			<li><a href="#Step5">Creating a Surface-based Contact feature</a></li>
+			<li><a href="#Step6">Creating a General Contact feature</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieving the active Product</strong></p>
+			<p>As a first step, the UC retrieves the active product. </p>
+			<pre class="code">... 
+<span class="keyword">Dim </span>myEditor<span class="keyword"> As </span>Editor
+<span class="keyword">Set </span>myEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim </span>myProdService<span class="keyword"> As </span>PLMProductService
+<span class="keyword">Set </span>myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim </span>myEntities<span class="keyword"> As </span>PLMEntities
+<span class="keyword">Set </span>myEntities = myProdService.EditedContent
+
+<span class="keyword">Dim </span>myRootProduct<span class="keyword"> As </span>VPMReference
+<span class="keyword">Set </span>myRootProduct = myEntities.Item(1)
+...
+			</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step2"></a>Initializing and Creating the Simulation PLM Object</strong></p>
+				<p>In this step UC initializes and creates a simulation PLM object with a static step.</p>
+				<p>For further information about initializing and creating a simulation PLM object with a static step, refer to the article
+				<a href="../CAAScdFeaScenario/CAAScdFeaStaticSimulation.htm">
+					Creating and Executing a Simulation</a>.
+				</p>
+			</li>
+			<li>
+				<p><strong><a name="Step3"></a>Retrieving the Features Set</strong></p>
+				<p>In this step UC retrieves the features set.</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> myFeatures <span class="keyword">As</span> SimFeatures
+<span class="keyword">Set</span> myFeatures = myAnalysisCase.Features
+
+<span class="keyword">Dim</span> myFeatureStates <span class="keyword">As</span> SimFeatureStates
+<span class="keyword">Set</span> myFeatureStates = myStaticStep.FeatureStates
+...
+				</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step4"></a>Creating and Initializing a Contact property feature</strong></p>
+				<p>In this step UC creates and initializes a Contact property feature.</p>
+				<pre class="code">...
+<span class="comment">' Creating a contact property</span>
+<span class="comment">'----------------------------</span>
+
+<span class="keyword">Dim</span> mySurfaceBasedContactProperty <span class="keyword">As</span> SimSurfaceBasedContactProperty
+<span class="keyword">Set</span> mySurfaceBasedContactProperty = myFeatures.Add(&quot;SimSurfaceBasedContactProperty&quot;)
+
+<span class="comment">' Adding a tangential behavior</span>
+<span class="comment">'-----------------------------</span>
+
+mySurfaceBasedContactProperty.TangentialBehaviorFlag = TRUE
+
+<span class="keyword">Dim</span> myTangentialBehavior <span class="keyword">As</span> SimTangentialBehavior
+<span class="keyword">Set</span> myTangentialBehavior = mySurfaceBasedContactProperty.TangentialBehavior
+
+myTangentialBehavior.FrictionType = SimTangentialBehaviorCoulomb
+
+<span class="keyword">Dim</span> myFrictionColumn <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myFrictionColumn = myTangentialBehavior.GetTableColumn(SimTangentialBehaviorFriction)
+
+myFrictionColumn.SetCellData 1, 0.33
+myFrictionColumn.SetCellData 2, 0.66
+
+myTangentialBehavior.ContactPressureDependentFlag = TRUE
+
+<span class="keyword">Dim</span> myContactPressureColumn <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myContactPressureColumn = myTangentialBehavior.GetTableColumn(SimTangentialBehaviorContactPressure)
+
+myContactPressureColumn.SetCellData 1, 3
+myContactPressureColumn.SetCellData 2, 4
+
+<span class="comment">' Adding a normal behavior</span>
+<span class="comment">'-------------------------</span>
+
+mySurfaceBasedContactProperty.NormalBehaviorFlag = TRUE
+
+<span class="keyword">Dim</span> myNormalBehavior <span class="keyword">As</span> SimNormalBehavior
+<span class="keyword">Set</span> myNormalBehavior = mySurfaceBasedContactProperty.NormalBehavior
+
+myNormalBehavior.PressureOverClosureType = SimNormalBehaviorHard
+...
+				</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step5"></a>Creating a Surface-based Contact feature</strong></p>
+				<p>In this step UC creates and initializes a Surface-based Contact feature.</p>
+				<pre class="code">...
+<span class="comment">' Creating a Surface-based contact feature</span>
+<span class="comment">'------------------------------------------</span>
+
+<span class="keyword">Dim</span> mySurfaceBasedContact <span class="keyword">As</span> SimSurfaceBasedContact
+<span class="keyword">Set</span> mySurfaceBasedContact = myFeatures.Add(&quot;SimSurfaceBasedContact&quot;)
+
+myFeatureStates.CreateFeatureState mySurfaceBasedContact
+
+<span class="comment">' Setting attributes</span>
+<span class="comment">'-------------------</span>
+
+<span class="keyword">Dim</span> myMainSurface <span class="keyword">As</span> SimLinkAccess
+<span class="keyword">Set</span> myMainSurface = mySurfaceBasedContact.MainSurface
+myMainSurface.AddLink &quot;MainSupport&quot;, myLinkToContactSurface1
+
+<span class="keyword">Dim</span> mySecondarySurface <span class="keyword">As</span> SimLinkAccess
+<span class="keyword">Set</span> mySecondarySurface = mySurfaceBasedContact.SecondarySurface
+mySecondarySurface.AddLink &quot;MainSupport&quot;, myLinkToContactSurface2
+
+mySurfaceBasedContact.ContactProperty = mySurfaceBasedContactProperty 
+...
+				</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step6"></a>Creating a General Contact feature</strong></p>
+				<p>In this step UC creates and initializes a General contact feature.</p>
+				<pre class="code">...
+<span class="comment">' Creating a General contact feature</span>
+<span class="comment">'------------------------------------</span>
+
+<span class="keyword">Dim</span> mySimGeneralContact <span class="keyword">As</span> SimGeneralContact
+<span class="keyword">Set</span> mySimGeneralContact = myFeatures.Add(&quot;SimGeneralContact&quot;)
+
+myFeatureStates.CreateFeatureState mySimGeneralContact
+
+<span class="comment">' Setting attributes</span>
+<span class="comment">'-------------------</span>
+
+mySimGeneralContact.SpecifyExcludedSurfacesFlag = TRUE
+
+<span class="keyword">Dim</span> mySurfaceExclusions <span class="keyword">As</span> SimSurfaceExclusions
+<span class="keyword">Set</span> mySurfaceExclusions = mySimGeneralContact.SurfaceExclusions
+
+<span class="keyword">Dim</span> mySurfaceExclusion <span class="keyword">As</span> SimSurfaceToSurfacePair
+<span class="keyword">Set</span> mySurfaceExclusion = mySurfaceExclusions.Add()
+
+<span class="keyword">Dim</span> myFirstSurface <span class="keyword">As</span> SimLinkAccess
+<span class="keyword">Set</span> myFirstSurface = mySurfaceExclusion.FirstSurface
+myFirstSurface.AddLink &quot;MainSupport&quot;, myLinkToContactSurface1
+
+<span class="keyword">Dim</span> mySecondSurface <span class="keyword">As</span> SimLinkAccess
+<span class="keyword">Set</span> mySecondSurface = mySurfaceExclusion.SecondSurface
+mySecondSurface.AddLink &quot;MainSupport&quot;, myLinkToContactSurface2
+...
+				</pre>
+			</li>
+	</ol>
+	</td>
+	</tr>
+</table>	
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an Assembly of FEMs</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Creating an Assembly of FEMs</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This use case primarily focuses on the 
+					methodology to create an assembly of FEMs.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					Note that:<ul>
+						<li>You should first launch CATIA and import the
+						<code><div class=vb_sample_data>CAAScdFeaFEMAssembly.3dxml</div></code> file supplied in 
+						the folder <code>
+						InstallRootFolder\CAADoc\Doc\English\CAAScdFeaModeling\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder 
+						where the API CD-ROM is installed.</li>
+						<li>Then, you should open the &quot;CAAScdFeaFEMAssembly&quot; 
+						physical product as advanced with all representations.</li>
+						<li>Create a structural simulation with launching the 
+						structural scenario apps.</li>
+            <li>Note: Creation of new PLM objects via scripting, as in this 
+                use case, requires an enabling license in addition to the
+                interactive Roles needed to access the functionality.</li>            
+						</ul>
+					<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdFeaFEMAssemblyWithPythonSource.htm">
+					CAAScdFeaFEMAssemblyWithPythonSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in six steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the simulation and its product</a></li>
+			<li><a href="#Step2">Gets the root occurrence</a></li>
+			<li><a href="#Step3">Creates a FEM Rep and retrieve its root object</a></li>
+			<li><a href="#Step4">Creates a link between the created FEM and the first occurrence FEM</a></li>
+			<li><a href="#Step5">Creates a link between the created FEM and the second occurrence FEM</a></li>
+			<li><a href="#Step6">Updates the assembly FEM Rep</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the simulation and its product</strong></p>
+			<p>As a first step, the UC retrieves the simulation and its product 
+			from the simulation editor.</p>
+<pre class="code"> ...
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2">Gets the root occurrence</a></strong></p>
+			<p>In the next step, the UC retrieves the root occurence and the 
+			root product from the 
+			product editor and gets the PLMProductService associated with this 
+			editor.</p>
+<pre class="code"> ...
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+myProductEditor = CATIA.ActiveEditor
+myRootOcc = myProductEditor.ActiveObject
+myRootProduct = myRootOcc.PLMEntity
+myProductService = myProductEditor.GetService("PLMProductService")
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Creates the FEM representation and retrieves its root object.</strong></p>
+			<p>In the next step the UC creates the assembly FEM Rep which contains links to the other
+			FEM Rep. The assembly FEM Rep is aggregated under the root product.</p>
+<pre class="code">...
+MyPrdRepFactory = myRootProduct.GetItem("SimPrdRepFactory")
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep("FEM")
+MyFemRepRoot = MyFemRepRef.GetItem("SimFemRoot")
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Creates a link between the created FEM and the 
+			first occurrence FEM</strong></p>
+			<p>In this step the UC retrieves the FEM Rep which is aggregated by the first product
+			occurrence. Then the UC creates a path element that will be used to create the link
+			between the retrieved FEM Rep and the assembly FEM Rep.</p>
+			<pre class="code">...
+<span class="comment"># Retrieves the first product occurrence</span>
+myOccurrence = myRootOccurrences.Item(1)
+
+<span class="comment"># Retrieve the occurrence representation instance</span>
+MyRepInstances = myOccurrence.InstanceOccurrenceOf.ReferenceInstanceOf.RepInstances
+
+<span class="comment"># Retrieves the FEM Rep</span>
+<span class="keyword">for</span> myRep <span class="keyword">in</span> MyRepInstances :
+    myRepRef = myRep.ReferenceInstanceOf
+    attr = myRepRef.GetAttributeValue("V_discipline")
+    <span class="keyword">if</span> attr == "FEM":
+       <span class="comment"># Create a path object from the root occurrence to the FEM Rep</span>
+       MyLink = myProductService.ComposeLink(myOccurrence, myRep, None)
+       
+<span class="comment"># Create the link between the assembly FEM Rep and the retrieved FEM Rep</span>
+MyFemRepRoot.AddChild (MyLink)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Creates a link between the created FEM and the 
+			second occurrence FEM</strong></p>
+			<p>In a manner similar to the one shown above, the UC retrieves the FEM Rep which 
+			is aggregated by the second product and creates the path element from the root occurence 
+			to the retrieved FEM Rep.</p>
+						<pre class="code">...
+<span class="comment"># Retrieves the second product occurrence</span>
+myOccurrence2 = myRootOccurrences.Item(2)
+
+<span class="comment"># Retrieve the occurrence representation instance</span>
+MyRepInstances2 = myOccurrence2.InstanceOccurrenceOf.ReferenceInstanceOf.RepInstances
+
+<span class="comment"># Retrieves the FEM Rep</span>
+<span class="keyword">for</span> myRep2 <span class="keyword">in</span> MyRepInstances2 :
+    myRepRef2 = myRep2.ReferenceInstanceOf
+    attr = myRepRef2.GetAttributeValue("V_discipline")
+    <span class="keyword">if</span> attr == "FEM":
+       <span class="comment"># Create a path object from the root occurrence to the FEM Rep</span>
+       MyLink2 = myProductService.ComposeLink(myOccurrence2, myRep2, None)
+       
+<span class="comment"># Create the link between the assembly FEM Rep and the retrieved FEM Rep</span>
+MyFemRepRoot.AddChild (MyLink2)
+...</pre>
+
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Updates the assembly FEM Rep</strong></p>
+			<p>In this step the UC updates the assembly FEM Rep.</p>
+<pre class="code">...
+MyFemRepRoot.Update
+...</pre>
+			</li>
+
+	</ol>
+	</td>
+	</tr>
+</table>
+<table class="table1">
+	<caption><a name="Fig.1"></a>Fig.1: Generated FEM Rep</caption>
+	<tr>
+		<td align="center"><img src="images/CAAScdFeaFEMAssemblyFinal.jpg"/></td>
+	</tr>
+</table>		
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>
+
+

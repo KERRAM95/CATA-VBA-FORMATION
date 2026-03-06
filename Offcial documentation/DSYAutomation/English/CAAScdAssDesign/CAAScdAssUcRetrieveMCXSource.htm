@@ -1,0 +1,65 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample retrieves the Engineering Connection from a current product Structure.</span>
+<span class="comment">'</span>
+<span class="comment">'Before starting this macro, opens a product structure containing Engineering Connections.</span>
+<span class="comment">'Steps:</span>
+<span class="comment">'   1 - Retrieves the current Editor</span></pre>
+<pre>
+<span class="comment">'   2 - Retrieves the Product Reference Root from the Editor</span></pre>
+<pre>
+<span class="comment">'   3 - Retrieves the collection of the Engineering Connections</span>
+<span class="comment">'   4 - Loop on the Engineering Connections and retrieves the name of the current Engineering Connection</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Sub </span>CATMain()
+<span class="comment">'   1- Gets the current Editor </span>
+<span class="keyword">        Dim </span>myEditor <span class="keyword">As  </span>Editor
+<span class="keyword">        Set </span>myEditor = CATIA.ActiveEditor
+
+<span class="comment">'   2- Gets the Product Reference Root from the Editor </span>
+<span class="keyword">        Dim </span>MyPrdService   <span class="keyword">As  </span>PLMProductService
+<span class="keyword">        Set </span>MyPrdService = myEditor.GetService(&quot;PLMProductService&quot;)
+<span class="keyword">        Dim </span>myRootOccurrence <span class="keyword">As </span> VPMRootOccurrence
+<span class="keyword">        Set </span>myRootOccurrence = MyPrdService.RootOccurrence
+<span class="keyword">        Set </span>myMCXParent = myRootOccurrence.ReferenceRootOccurrenceOf
+
+<span class="comment">'   3- Gets the Collection of Engineering Connections from Product Reference</span>
+<span class="keyword">        Dim </span>myEngConnections <span class="keyword">As  </span>EngConnections
+<span class="keyword">        Set </span>myEngConnections = myMCXParent.GetItem(&quot;CATEngConnections&quot;)
+
+<span class="comment">'   4- Loop on the Engineering Connections and gets the Engineering Connection names </span>
+<span class="keyword">        Dim </span>myEngConnection <span class="keyword">As  </span>EngConnection
+<span class="keyword">        Dim </span>i <span class="keyword"> As  </span>Integer
+<span class="keyword">        For </span>i = 1 To myEngConnections.Count
+<span class="keyword">          Set </span>myEngConnection = myEngConnections.Item(i)
+<span class="keyword">          MsgBox</span> &quot; my Engineering Connection name = &quot; &amp; myEngConnection.Name
+<span class="keyword">        Next</span>
+<span class="keyword">End Sub</span>
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

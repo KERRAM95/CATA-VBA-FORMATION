@@ -1,0 +1,436 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>What&#39;s New with V6R2009x Automation</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>What's New with V6R2009x Automation</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article presents Automation objects, methods, and properties that 
+		are added since V6R2009 GA to enhance V6 Automation capabilities, support 
+		functional evolutions, and correct defects. Some of those modifications 
+		already exist in V6RXX service packs. A few properties and methods might 
+		have been modified or removed. VB and VBScripts code using those methods 
+		may have to be modified. VB projects using the corresponding objects must 
+		be recompiled.</p>
+		<p>Consult
+		<a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation 
+		Languages, Debug, and Compatibility</a> 
+		for details on manual adjustments 
+		that may be required for existing VB/VBA and VSTA projects to be usable 
+		on a new release.</p>
+		<ul>
+			<li><a href="#NewClass">New Classes</a></li>
+			<li><a href="#NewMethod">New Methods</a></li>
+			<li><a href="#NewEnum">New Enums</a></li>
+			<li><a href="#NewProperty">New Properties</a></li>
+			<li><a href="#Modif">Modified Methods and Properties</a></li>
+			<li><a href="#Suppress">Removed Objects, Collections, Methods and Properties</a></li>
+		</ul>
+		<p>Deprecated APIs can be found in
+		<a href="#" onclick="javascript:CAAlink('IDL', 'Deprecated');return false;">
+		V6 IDL API Deprecated Index</a>.</p>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewClass"></a>New Objects</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATBehaviorIDLItf', 'interface', 'DPCOperation');return false;">
+		Behavior</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATBehaviorIDLItf', 'interface', 'DPCOperationVBScript');return false;">
+		BehaviorVBScript</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATBehaviorIDLItf', 'interface', 'DPCOperations');return false;">
+		Behaviors</a></td>
+	</tr>
+<!--
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DNBD5IInterfaces', 'interface', 'ImportD5SettingAtt');return false;">
+		ImportD5SettingAtt</a></td>
+	</tr>
+-->
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableAxisSystem');return false;">
+		MeasurableAxisSystem</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableBetween');return false;">
+		MeasurableBetween</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableCircle');return false;">
+		MeasurableCircle</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableCone');return false;">
+		MeasurableCone</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableCurve');return false;">
+		MeasurableCurve</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableCylinder');return false;">
+		MeasurableCylinder</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableInContext');return false;">
+		MeasurableInContext</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableLine');return false;">
+		MeasurableLine</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurablePlane');return false;">
+		MeasurablePlane</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurablePoint');return false;">
+		MeasurablePoint</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableService');return false;">
+		MeasurableService</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableSphere');return false;">
+		MeasurableSphere</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableSurface');return false;">
+		MeasurableSurface</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableVolume');return false;">
+		MeasurableVolume</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMModelerBaseIDLItf', 'interface', 'PLMOccurrence');return false;">
+		PLMOccurrence</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMModelerBaseIDLItf', 'interface', 'PLMOccurrences');return false;">
+		PLMOccurrences</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PlayerServices');return false;">
+		PlayerServices</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'interface', 'Section');return false;">
+		Section</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'interface', 'SectionService');return false;">
+		SectionService</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMOccurrence');return false;">
+		VPMOccurrence</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMOccurrences');return false;">
+		VPMOccurrences</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMRootOccurrence');return false;">
+		VPMRootOccurrence</a></td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewMethod"></a>New Methods</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationFactory', 'CreateTextOnAnnot');return false;">
+		AnnotationFactory::CreateTextOnAnnot</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingGenView', 'GetViewLinks');return false;">
+		DrawingGenView::GetViewLinks</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingGenView', 'SetViewLinks');return false;">
+		DrawingGenView::SetViewLinks</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'KnowHowIDLItf', 'interface', 'ExpertRuleBaseRuntime', 'Solve');return false;">
+		ExpertRuleBaseRuntime::Solve</a></td>
+	</tr>
+	<tr>
+		<td>
+		PLMProductContext::ComposeLink - Deprecated in V6R2012 - Replaced with <a href="#" onclick="javascript:CAAlink('IDL', 'VPMEditorContextIDLItf', 'interface', 'PLMProductService', 'ComposeLink');return false;">PLMProductService::ComposeLink</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'ShapeFactory', 'AddNewSurfacicAutoFillet');return false;">
+		ShapeFactory::AddNewSurfacicAutoFillet</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'UserSurfaces', 'Generate2');return false;">
+		UserSurfaces::Generate2</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'UserSurfaces', 'MakeUserSurfaceNode2');return false;">
+		UserSurfaces::MakeUserSurfaceNode2</a></td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewEnum"></a>New Enums</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'enum', 'CATMeasurableModeOfCalc');return false;">
+		CATMeasurableModeOfCalc</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'enum', 'CATMeasurableType');return false;">
+		CATMeasurableType</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'enum', 'CatPrintLineCap');return false;">
+		CatPrintLineCap</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'enum', 'CatPrintLineSpecification');return false;">
+		CatPrintLineSpecification</a></td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="NewProperty"></a>New Properties</th>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationSet', 'ActiveView');return false;">
+		AnnotationSet::ActiveView</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'AnnotationSet', 'TPSViews');return false;">
+		AnnotationSet::TPSViews</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPartIDLItf', 'interface', 'AutoFillet', 'SupportSurface');return false;">
+		AutoFillet::SupportSurface</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATTPSIDLItf', 'interface', 'Capture', 'ManageHideShowBody');return false;">
+		Capture::ManageHideShowBody</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATAnnotationIDLItf', 'interface', 'DrawingDimension', 'Parameters');return false;">
+		DrawingDimension::Parameters</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingView', 'DrawingGenView');return false;">
+		DrawingView::DrawingGenView</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingViews', 'DrawingDefineGenView');return false;">
+		DrawingViews::DrawingDefineGenView</a></td>
+	</tr>
+	<tr>
+		<td>PLMProductContext::RootOccurrence - Deprecated in V6R2012 - Replaced with <a href="#" onclick="javascript:CAAlink('IDL', 'VPMEditorContextIDLItf', 'interface', 'PLMProductService', 'RootOccurrence');return false;">PLMProductService::RootOccurrence</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup', 'BannerSize');return false;">
+		PageSetup::BannerSize</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup', 'Gamma');return false;">
+		PageSetup::Gamma</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup', 'LineCap');return false;">
+		PageSetup::LineCap</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup', 'LineTypeOverlappingCheck');return false;">
+		PageSetup::LineTypeOverlappingCheck</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup', 'LineTypeSpecification');return false;">
+		PageSetup::LineTypeSpecification</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup', 'LineWidthSpecification');return false;">
+		PageSetup::LineWidthSpecification</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup', 'LogoVisibility');return false;">
+		PageSetup::LogoVisibility</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup', 'TextBlanking');return false;">
+		PageSetup::TextBlanking</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup', 'TextScaling');return false;">
+		PageSetup::TextScaling</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup', 'Use3DAccuracy');return false;">
+		PageSetup::Use3DAccuracy</a></td>
+	</tr>
+	<tr>
+		<td>
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfInterfaces', 'interface', 'PageSetup', 'WhiteVectorsInBlack');return false;">
+		PageSetup::WhiteVectorsInBlack</a></td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="border1">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="Modif"></a>Modified Methods and Properties</th>
+	</tr>
+	<tr>
+		<td>DrawingDefineGenView::DefineFrontView, DefineIsometricView, DefineProjectionView, 
+		DefineSectionView DefineCircularDetailView, DefinePolygonalDetailView, DefineAuxiliaryView, 
+		DefineUnfoldedView, DefineStandAloneSection.</td>
+		<td>Those methods were not implemented in V6R2009. Their signatures have 
+		been modified in V6R2009x to return the created view. See the
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingDefineGenView');return false;">
+		DrawingDefineGenView</a> Object for more information.</td>
+	</tr>
+	<tr>
+		<td>DrawingGenView::ViewLinks (Property Read/Write)</td>
+		<td>This property was not implemented in V6R2009. It has been replaced by 
+		the
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingGenView', 'GetViewLinks');return false;">
+		GetViewLinks</a> and
+		<a href="#" onclick="javascript:CAAlink('IDL', 'DraftingIDLItf', 'interface', 'DrawingGenView', 'SetViewLinks');return false;">
+		SetViewLinks</a> methods in V6R2009x.</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="border1">
+	<tbody>
+	<tr>
+		<th colspan="2"><a name="Suppress"></a>Removed Objects, Collections, Methods, 
+		and Properties </th>
+	</tr>
+	<tr>
+		<td>DMUTolSettingAtt, FTAInfraSettingAttm CATIAFTASettingAttm DraftingSettingAtt.</td>
+		<td>Those objects have been replaced by the generic
+		<a href="#" onclick="javascript:CAAlink('IDL', 'InfOSIDLItf', 'interface', 'SettingControllers');return false;">
+		SettingControllers</a> object.</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

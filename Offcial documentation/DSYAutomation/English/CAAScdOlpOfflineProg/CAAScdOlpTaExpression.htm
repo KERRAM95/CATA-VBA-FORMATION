@@ -1,0 +1,310 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>OLP Expression Translation</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>OLP Expression Translation</h1>
+		</td>
+	</tr>
+</table>
+<p>This article provides details on translating expressions and the expression AST 
+format used by the OLP Automation objects.</p>
+<p>Many of the OLP Instructions have an expression as a property. An
+<a href="CAAScdOlpTaOverview.htm#AST">Abstract Syntax Tree (AST)</a> is used to describe 
+the expression. An AST is simply a parsed copy of the code so the AST format for 
+one language is different from other languages. The OLP Expression AST format is 
+used for DELMIA expressions. Please see the &quot;DELMIA | Automation | Module &amp; Block 
+for Library | Reference Information | Predefined Types and Functions&quot; in the user 
+documentation for a description of the operators and function which are valid in 
+a DELMIA expression.</p>
+<p>The following instructions are examples of the ones that use expressions:</p>
+<ul>
+	<li><a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpAssign');return false;">OlpAssign</a></li>
+	<li><a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpFor');return false;">OlpFor</a></li>
+	<li><a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpIf');return false;">OlpIf</a></li>
+	<li><a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpLoop');return false;">OlpLoop</a></li>
+	<li><a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpRun');return false;">OlpRun</a></li>
+	<li><a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpWait');return false;">OlpWait</a></li>
+</ul>
+<p>The translator needs to convert between the robot language expression and the 
+DELMIA expression. In the translator both are represented in an AST format, so the 
+translator needs to just make modifications to the AST structure to do the translation. 
+There are 2 classes which help with this translation:
+<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpExpressionFixerDownload');return false;">
+OlpExpressionFixerDownload</a> and
+<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpExpressionFixerUpload');return false;">
+OlpExpressionFixerUpload</a>. Please see the reference documentation for how to 
+use those classes.</p>
+<p>In general, the translator is responsible for the entire conversion from the Robot Language expression syntax to the DELMIA expression syntax.
+Using the expression fixer makes some of these transformations easier and validates that the expression conforms to the target language's limitations.
+There are a few cases where the OLP IDL interfaces directly manipulate and transform the expression such as for data type 
+conversion and unit conversions.</p>
+<p><b>Data Type Conversion:</b> All the OLP instruction properties and methods where an expression can be set or retrieved, automatically add
+any data type conversion functions (e.g. NumberToBoolean, DoubleToInteger) that are necessary to prevent logic errors.  Those data type conversion
+functions are removed automatically in the expression retrieved by the translator.  For string concatenation, DELMIA uses the "++" operator.  
+The "++" operator for string concatenation is always converted to "+" when the translator retrieves an expression.</p>
+<p><b>Unit Conversions:</b> Likewise, all the OLP instruction properties and methods automatically add or remove unit conversion functions 
+if the robot language units differ from the DELMIA units.  DELMIA always uses meters and radians for the units.  The translator can 
+specify the units used by the robot language by setting the properties PositionVariableRobotLanguageLengthUnits, 
+PositionVariableRobotLanguageRotationUnits, and TrigFunctionRobotLanguageRotationUnits on 
+<a href="#" onclick="javascript:CAAlink('IDL', 'DNBIgpOlpUseItf', 'interface', 'OlpTranslatorHelper');return false;">OlpTranslatorHelper</a>.</p>
+<h2>Expression AST Format</h2>
+<p>The OlpExpressionFixer objects assume require that the AST conforms to a standard 
+expression structure. The OLP Automation objects which use expressions also expect 
+the expressions to be in this format when it is assigned. Expressions retrieved 
+from the OLP Automation objects are also in this AST format. </p>
+<p>The top level node of an expression of type <em>Expression</em>. An expression 
+can contain any of the following nodes. Any of the following nodes can be used interchangeably 
+in an expression. For example, anywhere that a <em>ConstInteger</em> is allowed 
+you could have an <em>Identifier</em> or even a <em>BinaryExp</em>. Formatting nodes 
+can be contained anywhere in the expression and are completely ignored when translating 
+an expression but the formatting is preserved.</p>
+<table style="width: 40%">
+	<tr>
+		<td colspan="2"><strong>Leaf Nodes</strong></td>
+	</tr>
+	<tr>
+		<td><a href="#Integer">ConstInteger</a></td>
+		<td>an integer number</td>
+	</tr>
+	<tr>
+		<td><a href="#Double">ConstDouble</a></td>
+		<td>a floating point number</td>
+	</tr>
+	<tr>
+		<td><a href="#Boolean">ConstBoolean</a> </td>
+		<td>a Boolean</td>
+	</tr>
+	<tr>
+		<td><a href="#String">String</a></td>
+		<td>a string</td>
+	</tr>
+	<tr>
+		<td><a href="#Identifier">Identifier</a></td>
+		<td>a variable name</td>
+	</tr>
+	<tr>
+		<td colspan="2"><strong>Branch Nodes</strong></td>
+	</tr>
+	<tr>
+		<td><a href="#Binary">BinaryExp</a></td>
+		<td>An expression involving 1 operator with 2 operands</td>
+	</tr>
+	<tr>
+		<td><a href="#Unary">UnaryExp</a></td>
+		<td>An expression involving 1 operator with just 1 operand</td>
+	</tr>
+	<tr>
+		<td><a href="#Group">GroupExp</a></td>
+		<td>A grouping expression (parentheses).</td>
+	</tr>
+	<tr>
+		<td><a href="#Variable">Variable</a></td>
+		<td>A compound variable</td>
+	</tr>
+	<tr>
+		<td><a href="#Function">Function</a></td>
+		<td>A function call</td>
+	</tr>
+	<tr>
+		<td><a href="#Conditional">ConditionalExp</a></td>
+		<td>A conditional (if) expression.</td>
+	</tr>
+</table>
+<p>Here is a sample AST for the simple expression A+B</p>
+<pre class="code">    &lt;<span class="keyword">Expression</span>&gt;
+        &lt;<span class="keyword">BinaryExp</span>&gt;
+            &lt;<span class="keyword">Identifier</span> <span class="attribute">id</span>=<span class="string">&quot;Operand1&quot;</span>&gt;A&lt;/<span class="keyword">Identifier</span>&gt;
+            &lt;<span class="keyword">Operator</span>&gt;+&lt;/<span class="keyword">Operator</span>&gt;
+            &lt;<span class="keyword">Identifier</span> <span class="attribute">id</span>=<span class="string">&quot;Operand2&quot;</span>&gt;B&lt;/<span class="keyword">Identifier</span>&gt;
+        &lt;/<span class="keyword">BinaryExp</span>&gt;        
+    &lt;/<span class="keyword">Expression</span>&gt;</pre>
+<h2>Leaf Expression Parts</h2>
+<p>These can be used in the place of any expression. For example A+B and A+1 are 
+both valid. Technically A+true is a valid AST format but the resulting expression 
+would be in error.</p>
+<h3><a name="Integer"></a>Integer</h3>
+<p>Any integer in a format allowed by DELMIA: 1, 0x1A, 0b1001, etc.</p>
+<pre class="code">&lt;<span class="keyword">ConstInteger</span>&gt;100&lt;/<span class="keyword">ConstInteger</span>&gt;</pre>
+<h3><a name="Double"></a>Double</h3>
+<p>Any double in a format allowed by DELMIA: 1.0, 3.14, 1e10, etc.</p>
+<pre class="code">&lt;<span class="keyword">ConstDouble</span>&gt;-2.3E5&lt;/<span class="keyword">ConstDouble</span>&gt;</pre>
+<h3><a name="Boolean"></a>Boolean</h3>
+<p>A Boolean value: &quot;true&quot; or &quot;false&quot;.</p>
+<pre class="code">&lt;<span class="keyword">ConstBoolean</span>&gt;true&lt;/<span class="keyword">ConstBoolean</span>&gt;</pre>
+<h3><a name="String"></a>String</h3>
+<p>A string, including the double quotes.</p>
+<pre class="code">&lt;<span class="keyword">String</span>&gt;&quot;hello&quot;&lt;/<span class="keyword">String</span>&gt;</pre>
+<h3><a name="Identifier"></a>Identifier</h3>
+<p>A variable name.</p>
+<pre class="code">&lt;<span class="keyword">Identifier</span>&gt;A&lt;/<span class="keyword">Identifier</span>&gt;</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>Branch Expression Parts</h2>
+<p>Each of these is an expression. An expression is composed of other expressions. 
+Between any 2 nodes there can be a &quot;Format&quot; node.</p>
+<h3><a name="Binary"></a>Binary Expression</h3>
+<p>An expression involving 1 operator with 2 operands in the format &quot;expression 
+operator expression&quot;. Expressions are grouped in execution priority order. For example 
+A+B+C would be grouped as ((A+B)+C). The expressions must have the &quot;operand1&quot; and 
+&quot;operand2&quot; IDs set in order to easily identify the operands. </p>
+<p>A+B+C is expressed as:</p>
+<pre class="code">&lt;<span class="keyword">BinaryExp</span>&gt;
+    &lt;<span class="keyword">BinaryExp </span><span class="attribute">id</span>=<span class="string">&quot;Operand1&quot;</span>&gt;
+        &lt;<span class="keyword">Identifier</span> <span class="attribute">id</span>=<span class="string">&quot;Operand1&quot;</span>&gt;A&lt;/<span class="keyword">Identifier</span>&gt;
+        &lt;<span class="keyword">Operator</span>&gt;+&lt;/<span class="keyword">Operator</span>&gt;
+        &lt;<span class="keyword">Identifier</span> <span class="attribute">id</span>=<span class="string">&quot;Operand2&quot;</span>&gt;B&lt;/<span class="keyword">Identifier</span>&gt;
+    &lt;/<span class="keyword">BinaryExp</span>&gt;
+    &lt;<span class="keyword">Operator</span>&gt;+&lt;/<span class="keyword">Operator</span>&gt;
+    &lt;<span class="keyword">Identifier</span> <span class="attribute">id</span>=<span class="string">&quot;Operand2&quot;</span>&gt;C&lt;/<span class="keyword">Identifier</span>&gt;  
+&lt;/<span class="keyword">BinaryExp</span>&gt;</pre>
+<h3><a name="Unary"></a>Unary Expression</h3>
+<p>An expression involving 1 operator with just 1 operand in the format &quot;operator 
+expression&quot;. For example &quot;-X&quot;. The expression must have the ID set to &quot;Operand&quot;.</p>
+<p>-X is expressed as: </p>
+<pre class="code">    &lt;<span class="keyword">UnaryExp</span>&gt;
+        &lt;<span class="keyword">Operator</span>&gt;-&lt;/<span class="keyword">Operator</span>&gt;
+        &lt;<span class="keyword">Identifier</span> <span class="attribute">id</span>=<span class="string">&quot;Operand&quot;</span>&gt;X&lt;/<span class="keyword">Identifier</span>&gt;
+    &lt;/<span class="keyword">UnaryExp</span>&gt;</pre>
+<h3><a name="Group"></a>Group Expression</h3>
+<p>A grouping expression in the format &quot; ( Expression ) &quot;. The expression must have 
+the ID &quot;Expression&quot; set.</p>
+<p>(X+1) is expressed as:</p>
+<pre class="code">    &lt;<span class="keyword">GroupExp</span>&gt;
+        &lt;<span class="keyword">Operator</span>&gt;(&lt;/<span class="keyword">Operator</span>&gt;
+        &lt;<span class="keyword">BinaryExp</span> <span class="attribute">id</span>=<span class="string">&quot;Expression&quot;</span>&gt;
+            &lt;<span class="keyword">Identifier</span>&gt;X&lt;/<span class="keyword">Identifier</span>&gt;
+            &lt;<span class="keyword">Operator</span>&gt;+&lt;/<span class="keyword">Operator</span>&gt;
+            &lt;<span class="keyword">ConstInteger</span>&gt;1&lt;/<span class="keyword">ConstInteger</span>&gt;
+        &lt;/<span class="keyword">BinaryExp</span>&gt;
+        &lt;<span class="keyword">Operator</span>&gt;)&lt;/<span class="keyword">Operator</span>&gt;
+    &lt;/<span class="keyword">GroupExp</span>&gt;</pre>
+<h3><a name="Variable"></a>Variable Expression</h3>
+<p>A variable expression can be more complicated than a single identifier in the case of subscripted variables (e.g. x[1]) or data member access (e.g. P.x).</p>
+<p>x[1] is expressed as follow.&nbsp; If <span>FixSubscriptedVariables=True (the 
+default) then this variable node (e.g. &quot;x[1]&quot;) is treated as a unique variable  
+including the subscripts in the Variables list of the expression fixer.&nbsp; If 
+FixSubscriptedVariables=False then the array variable identifier (e.g. &quot;x&quot;) is 
+added to the Variables list. </span></p>
+<pre class="code">    &lt;Variable&gt;
+      &lt;Identifier&gt;x&lt;/Identifier&gt;
+      &lt;Operator&gt;[&lt;/Operator&gt;
+      &lt;Arguments&gt;
+         &lt;ConstInteger id=&quot;Argument&quot;&gt;1&lt;/ConstInteger&gt;
+      &lt;/Arguments&gt;
+      &lt;Operator&gt;]&lt;/Operator&gt;
+   &lt;/Variable&gt;</pre>
+<p>P.x is expressed as follows where each side of the &quot;.&quot; operator must be 
+tagged with the ID &quot;Operand1&quot; or &quot;Operand2&quot;.&nbsp; Operand1 could be a 
+subscripted variable in the structure as described above.&nbsp; Operand2 could 
+be a identifier in the case of simple data member access, a function (e.g. 
+inv()), or another variable node (e.g. j[2]) </p>
+<pre class="code">    &lt;Variable&gt;
+      &lt;Identifier id=&quot;Operand1&quot;&gt;varL1&lt;/Identifier&gt;
+      &lt;Operator&gt;.&lt;/Operator&gt;
+      &lt;Identifier id=&quot;Operand2&quot;&gt;x&lt;/Identifier&gt;
+   &lt;/Variable&gt;</pre>
+<h3><a name="Function"></a>Function</h3>
+<p>A function call in the format &quot; function ( expression , expression ) &quot;. There 
+can be 0 or more expressions in the argument list. Each argument has the id set 
+to &quot;Argument&quot; because it can be of any expression type. The function branch must 
+contain an &quot;Identifier&quot; for the function name and an Arguments branch. The arguments 
+branch can be empty. The parentheses around the arguments are specified as operator 
+leaf nodes.</p>
+<p>max(theta,x) is expressed as:</p>
+<pre class="code">    &lt;<span class="keyword">Function</span>&gt;
+        &lt;<span class="keyword">Identifier</span>&gt;max&lt;/<span class="keyword">Identifier</span>&gt;
+        &lt;<span class="keyword">Operator</span>&gt;(&lt;/<span class="keyword">Operator</span>&gt;
+        &lt;<span class="keyword">Arguments</span>&gt;
+            &lt;<span class="keyword">Identifier</span> <span class="attribute">id</span>=<span class="string">&quot;Argument&quot;</span>&gt;theta&lt;/<span class="keyword">Identifier</span>&gt;
+            &lt;<span class="keyword">Operator</span>&gt;,&lt;/<span class="keyword">Operator</span>&gt;
+            &lt;<span class="keyword">Identifier</span> <span class="attribute">id</span>=<span class="string">&quot;Argument&quot;</span>&gt;x&lt;/<span class="keyword">Identifier</span>&gt;
+        &lt;/<span class="keyword">Arguments</span>&gt;
+        &lt;<span class="keyword">Operator</span>&gt;)&lt;/<span class="keyword">Operator</span>&gt;
+    &lt;/<span class="keyword">Function</span>&gt;</pre>
+<h3><a name="Conditional"></a>Conditional Expression</h3>
+<p>A conditional expression in the format &quot;if expression then expression else expression&quot;. 
+The <em>else</em> is required. The <em>Condition</em>, <em>ThenExp</em>, and <em>
+ElseExp</em> IDs must be set.</p>
+<p>if x=2 then 100 else 200 is expressed as:</p>
+<pre class="code">    &lt;<span class="keyword">ConditionalExp</span>&gt;
+        &lt;<span class="keyword">Keyword</span>&gt;if&lt;/<span class="keyword">Keyword</span>&gt;
+        &lt;<span class="keyword">BinaryExp</span> <span class="attribute">id</span>=<span class="string">&quot;Condition&quot;</span>&gt;
+            &lt;<span class="keyword">Format</span>&gt; &lt;/<span class="keyword">Format</span>&gt;
+            &lt;<span class="keyword">Identifier</span>&gt;x&lt;/<span class="keyword">Identifier</span>&gt;
+            &lt;<span class="keyword">Operator</span>&gt;=&lt;/<span class="keyword">Operator</span>&gt;
+            &lt;<span class="keyword">ConstInteger</span>&gt;2&lt;/<span class="keyword">ConstInteger</span>&gt;
+        &lt;/<span class="keyword">BinaryExp</span>&gt;
+        &lt;<span class="keyword">Format</span>&gt; &lt;/<span class="keyword">Format</span>&gt;
+        &lt;<span class="keyword">Keyword</span>&gt;then&lt;/<span class="keyword">Keyword</span>&gt;
+        &lt;<span class="keyword">Format</span>&gt; &lt;/<span class="keyword">Format</span>&gt;
+        &lt;<span class="keyword">ConstInteger</span> <span class="attribute">id</span>=<span class="string">&quot;ThenExp&quot;</span>&gt;100&lt;/<span class="keyword">ConstInteger</span>&gt;
+        &lt;<span class="keyword">Format</span>&gt; &lt;/<span class="keyword">Format</span>&gt;
+        &lt;<span class="keyword">Keyword</span>&gt;else&lt;/<span class="keyword">Keyword</span>&gt;
+        &lt;<span class="keyword">Format</span>&gt; &lt;/<span class="keyword">Format</span>&gt;
+        &lt;<span class="keyword">ConstInteger</span> <span class="attribute">id</span>=<span class="string">&quot;ElseExp&quot;</span>&gt;200&lt;/<span class="keyword">ConstInteger</span>&gt;
+    &lt;/<span class="keyword">ConditionalExp</span>&gt;</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>Complicated Example</h2>
+<p>Below is a more complex example of nested expressions. The expression below is 
+(X+mod(X,Y))/Y.</p>
+<pre class="code">&lt;<span class="keyword">Expression</span>&gt;
+    &lt;<span class="keyword">BinaryExp</span>&gt;
+        &lt;<span class="keyword">GroupExp</span> <span class="attribute">id</span>=<span class="string">&quot;Operand1&quot;</span>&gt;
+            &lt;<span class="keyword">Operator</span>&gt;(&lt;/<span class="keyword">Operator</span>&gt;
+            &lt;<span class="keyword">BinaryExp</span> <span class="attribute">id</span>=<span class="string">&quot;Expression&quot;</span>&gt;
+                &lt;<span class="keyword">Identifier</span>&gt;X&lt;/<span class="keyword">Identifier</span>&gt;
+                &lt;<span class="keyword">Operator</span>&gt;+&lt;/<span class="keyword">Operator</span>&gt;
+                &lt;<span class="keyword">Function</span>&gt;
+                    &lt;<span class="keyword">Identifier</span>&gt;mod&lt;/<span class="keyword">Identifier</span>&gt;
+                    &lt;<span class="keyword">Operator</span>&gt;(&lt;/<span class="keyword">Operator</span>&gt;
+                    &lt;<span class="keyword">Arguments</span>&gt;
+                        &lt;<span class="keyword">Identifier</span>&gt;X&lt;/<span class="keyword">Identifier</span>&gt;
+                        &lt;<span class="keyword">Operator</span>&gt;,&lt;/<span class="keyword">Operator</span>&gt;
+                        &lt;<span class="keyword">Identifier</span>&gt;Y&lt;/<span class="keyword">Identifier</span>&gt;
+                    &lt;/<span class="keyword">Arguments</span>&gt;
+                    &lt;<span class="keyword">Operator</span>&gt;)&lt;/<span class="keyword">Operator</span>&gt;
+                &lt;/<span class="keyword">Function</span>&gt;
+            &lt;/<span class="keyword">BinaryExp</span>&gt;
+            &lt;<span class="keyword">Operator</span>&gt;)&lt;/<span class="keyword">Operator</span>&gt;
+        &lt;/<span class="keyword">GroupExp</span>&gt;
+        &lt;<span class="keyword">Operator</span>&gt;/&lt;/<span class="keyword">Operator</span>&gt;
+        &lt;<span class="keyword">Identifier</span>&gt;Y&lt;/<span class="keyword">Identifier</span>&gt;
+    &lt;/<span class="keyword">BinaryExp</span>&gt;
+&lt;/<span class="keyword">Expression</span>&gt;</pre>
+<h2>Error Cases</h2>
+<p>An expression can be empty, which will result in an error during simulation or 
+it can contain only formatting, which is also an error. If there is a problem parsing 
+a DELMIA instruction on download the invalid expression text is stored as formatting 
+when the expression is retrieved from the instruction. The following are examples 
+of error cases which could be produced.</p>
+<pre class="code">    &lt;<span class="keyword">Expression</span>&gt;&lt;/<span class="keyword">Expression</span>&gt;</pre>
+<pre class="code">    &lt;<span class="keyword">Expression</span>&gt;
+          &lt;<span class="keyword">Format</span>&gt;Invalid Expression+&lt;/<span class="keyword">Format</span>&gt;  
+    &lt;/<span class="keyword">Expression</span>&gt;</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

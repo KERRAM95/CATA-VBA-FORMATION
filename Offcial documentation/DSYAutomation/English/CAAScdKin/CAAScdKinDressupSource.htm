@@ -1,0 +1,150 @@
+<!DOCTYPE html 
+	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<head>
+		<meta http-equiv="Content-Language" content="en-us" />
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+		<meta name="topictype" content="Uc" />
+		<meta name="devlang" content="idl" />
+		<meta name="devlang" content="idl" />
+		<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+		<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+		<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+		<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+		<title> TITLE </title>
+	</head>
+
+	<body onload="highlightSearchTerms();"> 
+		<pre>
+Attribute VB_Name = &quot;Kin_Dressup_sample&quot; 
+'-------------- Sample MACRO written in Basic Script ------------------------------------------ 
+<span class="comment">' vba00000018_76A10EBA-0000-2314-5CF527E8000414A2 </span>
+'This sample retrieves a Mechanism from a Product 
+'It calls the dressup methods GetDressupProducts, AttachDressupProduct , DetachDressupProduc 
+<span class="comment">' and the MehanismProducts Properties </span>
+<span class="comment">' </span>
+'Before starting this macro, opens SliderCrankMechanism product 
+'Steps: 
+<span class="comment">' 1 Gets the current editor </span>
+<span class="comment">' 2 Gets the product Service from the editor </span>
+<span class="comment">' 3 Gets all the occurrences under the root occurrence </span>
+<span class="comment">' 4 Gets the context </span>
+<span class="comment">' 5 Gets the discipline of all representation of the tree </span>
+<span class="comment">' 6 Gets the mechanism representation if the V_discipline is a mechanism </span>
+<span class="comment">' 7 Gets Part3.1, an occurrence of the mechanism </span>
+<span class="comment">' 8 Gets all the occurrences attached to Part3.1 </span>
+<span class="comment">' 9 Detaches all the products previously attached to Part3.1 </span>
+<span class="comment">' 10 Gets Product1.1 VPMOccurrence </span>
+<span class="comment">' 11 Attaches Product1.1 to Part3.1 </span>
+<span class="comment">' 12 Lists all the products attached to Part3.1 </span>
+<span class="comment">' 13 Lists all the mechanism products </span>
+'----------------------------------------------------------------------------------------------- 
+
+Option Explicit 
+
+<span class="keyword">Sub</span> CATMain() 
+
+   <span class="comment">' 1 Gets the current editor </span>
+   <span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor 
+   <span class="keyword">Set</span> oEditor = CATIA.ActiveEditor 
+
+   <span class="comment">' 2 Gets the product Service from the Editor </span>
+   <span class="keyword">Dim</span> MyPrdService <span class="keyword">As</span> PLMProductService 
+   <span class="keyword">Set</span> MyPrdService = oEditor.GetService(&quot;PLMProductService&quot;) 
+   <span class="keyword">Dim</span> myRootOccurrence <span class="keyword">As</span> VPMRootOccurrence 
+   <span class="keyword">Set</span> myRootOccurrence = MyPrdService.RootOccurrence 
+
+   <span class="comment">' 3 Gets all the occurrences under the root occurrence </span>
+   <span class="keyword">Dim</span> cOccs <span class="keyword">As</span> VPMOccurrences 
+   <span class="keyword">Set</span> cOccs = myRootOccurrence.Occurrences 
+
+   <span class="comment">' 4 Gets the context </span>
+   <span class="keyword">Dim</span> MyContext 
+   <span class="keyword">Set</span> MyContext = oEditor.GetService(&quot;PLMProductContext&quot;) 
+
+   <span class="comment">' 5 Gets the discipline of all representation of the tree </span>
+   <span class="keyword">Dim</span> MyEntity 
+   <span class="keyword">For</span> Each MyEntity In MyContext.EditedContent 
+      <span class="keyword">Dim</span> MyRef <span class="keyword">As</span> VPMReference 
+      <span class="keyword">Set</span> MyRef = MyEntity 
+      <span class="keyword">Dim</span> MyReps <span class="keyword">As</span> VPMRepInstances 
+      <span class="keyword">Set</span> MyReps = MyRef.RepInstances 
+      <span class="keyword">Dim</span> MyRep 
+      <span class="keyword">For</span> Each MyRep In MyReps 
+         <span class="keyword">Dim</span> MyRepRef <span class="keyword">As</span> VPMRepReference 
+         <span class="keyword">Set</span> MyRepRef = MyRep.ReferenceInstanceOf 
+         <span class="keyword">Dim</span> attr <span class="keyword">As</span> String 
+         attr = MyRepRef.GetAttributeValue(&quot;V_discipline&quot;) 
+
+         <span class="comment">' 6 Gets the mechanism representation if the V_discipline is a mechanism </span>
+         <span class="keyword">If</span> (attr = &quot;Mechanism&quot;) <span class="keyword">Then</span> 
+            <span class="keyword">Dim</span> MyMechRep <span class="keyword">As</span> KinMechanism 
+            <span class="keyword">Set</span> MyMechRep = MyRepRef.GetItem(&quot;MECHRep&quot;) 
+
+            MsgBox &quot; The mechanism name is &quot; &amp; MyMechRep.Name 
+
+            <span class="comment">' 7 Gets Part3.1, an occurrence of the mechanism </span>
+            <span class="keyword">Dim</span> Part31 <span class="keyword">As</span> VPMOccurrence 
+            <span class="keyword">Set</span> Part31 = cOccs.GetItem(&quot;Part3.1&quot;) 
+
+            <span class="comment">' 8 Gets all the occurrences attached to Part3.1 </span>
+            <span class="keyword">Dim</span> ListAttached 
+            ListAttached = MyMechRep.GetDressupProducts(Part31) 
+            MsgBox &quot; call of GetDressupProducts &quot; 
+
+            <span class="comment">' 9 Detaches all the products previously attached to Part3.1 </span>
+            <span class="keyword">Dim</span> Maxi 
+            Maxi = UBound(ListAttached) 
+            MsgBox &quot; Number of dressup attached product to Part3.1 = &quot; &amp; (Maxi + 1) 
+            <span class="keyword">Dim</span> j <span class="keyword">As</span> Integer 
+            <span class="keyword">For</span> j = 0 <span class="keyword">To</span> Maxi 
+               <span class="keyword">Dim</span> Product <span class="keyword">As</span> VPMOccurrence 
+               <span class="keyword">Set</span> Product = ListAttached(j) 
+               Call MyMechRep.DetachDressupProduct(Product) 
+               MsgBox Product.Name &amp; &quot; is detached from &quot; &amp; Part31.Name 
+            <span class="keyword">Next</span> 
+
+            <span class="comment">' 10 Gets Product1.1 VPMOccurrence </span>
+            <span class="keyword">Dim</span> Product11 <span class="keyword">As</span> VPMOccurrence 
+            <span class="keyword">Set</span> Product11 = cOccs.GetItem(&quot;Product1.1&quot;) 
+            MsgBox &quot; Get Product1.1 &quot; 
+
+            <span class="comment">' 11 Attaches Product1.1 to Part3.1 </span>
+            Call MyMechRep.AttachDressupProduct(Part31, Product11) 
+            MsgBox &quot; Attach Product1.1 to Part3.1&quot; 
+
+            <span class="comment">' 12 Lists all the products attached to Part3.1 </span>
+            ListAttached = MyMechRep.GetDressupProducts(Part31) 
+            Maxi = UBound(ListAttached) 
+            MsgBox &quot; Number of attached products to in Part3.1 the dressup = &quot; &amp; (Maxi + 1) 
+
+            <span class="keyword">For</span> j = 0 <span class="keyword">To</span> Maxi 
+               <span class="keyword">Set</span> Product = ListAttached(j) 
+               MsgBox &quot; Attached product = &quot; &amp; Product.Name 
+            <span class="keyword">Next</span> 
+
+            <span class="comment">' 13 Lists all the mechanism products </span>
+            <span class="keyword">Dim</span> MechProducts 
+            MechProducts = MyMechRep.MechanismProducts 
+
+            <span class="keyword">Dim</span> Msg <span class="keyword">As</span> String 
+            <span class="keyword">Dim</span> i <span class="keyword">As</span> Integer 
+            <span class="keyword">For</span> i = 0 <span class="keyword">To</span> UBound(MechProducts) 
+               <span class="keyword">Dim</span> MecProduct <span class="keyword">As</span> VPMOccurrence 
+               <span class="keyword">Set</span> MecProduct = MechProducts(i) 
+               Msg = Msg &amp; MecProduct.Name 
+            <span class="keyword">Next</span> 
+            MsgBox &quot; The mechanism contains the following product : &quot; &amp; Msg 
+
+         <span class="keyword">End If </span>
+      <span class="keyword">Next</span> 
+   <span class="keyword">Next</span> 
+
+<span class="keyword">End Sub </span>
+
+
+		</pre>
+	</body>
+</html>

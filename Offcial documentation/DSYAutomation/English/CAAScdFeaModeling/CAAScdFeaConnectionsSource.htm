@@ -1,0 +1,234 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcCreateConnectionProperty.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample creates a Spring Connection Property.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'    1- Retrieving the active product</span>
+<span class="comment">'    2- Retrieving the publications and composing links</span>
+<span class="comment">'    3- Creating a rigid engineering connection</span>
+<span class="comment">'    4- Creates a FEM representation and retrieve its root object</span>
+<span class="comment">'    5- Retrieving the MCX Property Manager</span>
+<span class="comment">'    6- Creating a spring connection property</span>
+<span class="comment">'    7- Setting the spring connection attributes</span>
+
+<span class="keyword">Sub</span> CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 1- Retrieving the active product</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim</span> myEditor <span class="keyword">As</span> Editor
+<span class="keyword">Set</span> myEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim</span> myProdService <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> myEntities <span class="keyword">As</span> PLMEntities
+<span class="keyword">Set</span> myEntities = myProdService.EditedContent
+
+<span class="keyword">Dim</span> myRootProduct <span class="keyword">As</span> VPMReference
+<span class="keyword">Set</span> myRootProduct = myEntities.Item(1)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 2- Retrieving the publications and composing links</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>myPublications<span class="keyword"> As </span>VPMPublications
+<span class="keyword">Set </span>myPublications = myRootProduct.Publications
+	
+<span class="keyword">Dim </span>myCoverContactFace<span class="keyword"> As </span>VPMPublication
+<span class="keyword">Set </span>myCoverContactFace = myPublications.GetItem(&quot;Cover_Contact_Face&quot;)
+
+<span class="keyword">Dim </span>myPumpHousingContactFace<span class="keyword"> As </span>VPMPublication
+<span class="keyword">Set </span>myPumpHousingContactFace = myPublications.GetItem(&quot;Pump_Housing_Contact_Face&quot;)
+  
+<span class="comment">' Composing link to the publication</span>
+
+<span class="keyword">Dim </span>myRootOccurrence<span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">Set </span>myRootOccurrence = myProdService.RootOccurrence
+	
+<span class="keyword">Dim </span>myRepInstance<span class="keyword"> As </span>VPMRepInstance
+<span class="keyword">Set </span>myRepInstance = Nothing <span class="comment">' Because we use publications</span>
+	
+<span class="keyword">Dim</span> myLinkToCoverContactFace <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> myLinkToCoverContactFace = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myCoverContactFace)
+
+<span class="keyword">Dim</span> myLinkToPumpHousingContactFace<span class="keyword"> As</span> AnyObject
+<span class="keyword">Set</span> myLinkToPumpHousingContactFace = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myPumpHousingContactFace)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 3- Creating a rigid engineering connection</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="comment">' Retrieve the engineering connection manager</span>
+
+<span class="keyword">Dim </span>myEngineeringConnections <span class="comment">' As EngConnections</span>
+<span class="keyword">Set </span>myEngineeringConnections = myRootProduct.GetItem(&quot;CATEngConnections&quot;)
+
+<span class="comment">' Create the list of impacted product</span>
+
+<span class="keyword">Dim </span>myImpacted(1)
+myImpacted(0) = &quot;ws3_cover_part.1&quot;
+myImpacted(1) = &quot;ws3_pump_housing_part.1&quot;
+
+<span class="comment">' Create a rigid engineering connection</span>
+
+<span class="keyword">Dim </span>myNewRigidEngineeringConnection<span class="keyword"> As </span>EngConnection
+<span class="keyword">Set </span>myNewRigidEngineeringConnection = myEngineeringConnections.Add(catRigid, myImpacted)
+
+<span class="comment">' Retrieve the assembly constraint manager</span>
+
+<span class="keyword">Dim </span>myAssemblyConstraints <span class="comment">' As AssemblyConstraints</span>
+<span class="keyword">Set </span>myAssemblyConstraints = myNewRigidEngineeringConnection.AssemblyConstraints
+
+<span class="comment">' Create coincidence constraint between two hole axis</span>
+
+<span class="keyword">Dim </span>myGeometries(1)
+myGeometries(0) = &quot;Cover_Hole2_Axis&quot;
+myGeometries(1) = &quot;Pump_Housing_Hole2_Axis&quot;
+
+<span class="keyword">Dim </span>myCoincidenceConstraint1<span class="keyword"> As </span>AssemblyConstraint
+<span class="keyword">Set </span>myCoincidenceConstraint1 = myAssemblyConstraints.Add(catCoincidenceLineLine, myGeometries)
+
+<span class="comment">' Create coincidence constraint between two other hole axis</span>
+
+myGeometries(0) = &quot;Cover_Hole4_Axis&quot;
+myGeometries(1) = &quot;Pump_Housing_Hole4_Axis&quot;
+
+<span class="keyword">Dim </span>myCoincidenceConstraint2<span class="keyword"> As </span>AssemblyConstraint
+<span class="keyword">Set </span>myCoincidenceConstraint2 = myAssemblyConstraints.Add(catCoincidenceLineLine, myGeometries)
+
+<span class="comment">' Create distance plan/plan constraint</span>
+
+myGeometries(0) = &quot;Cover_Contact_Face&quot;
+myGeometries(1) = &quot;Pump_Housing_Contact_Face&quot;
+
+<span class="keyword">Dim </span>myDistanceConstraint<span class="keyword"> As </span>AssemblyConstraint
+<span class="keyword">Set </span>myDistanceConstraint = myAssemblyConstraints.Add(catDistancePlanePlane, myGeometries)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 4- Creates a FEM representation and retrieve its root object</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim</span> MyPrdRepFactory <span class="keyword">As</span> SimPrdRepFactory
+<span class="keyword">Set</span> MyPrdRepFactory = MyRootProduct.GetItem(&quot;SimPrdRepFactory&quot;)
+
+<span class="keyword">Dim</span> MyFemRepRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">Set</span> MyFemRepRef = MyPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+
+<span class="keyword">Dim</span> MyFemRepRoot <span class="keyword">As</span> SimFemRoot
+<span class="keyword">Set</span> MyFemRepRoot = MyFemRepRef.GetItem(&quot;SimFemRoot&quot;)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 5- Retrieving the MCX Property Manager</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim</span> myMCXProperties <span class="keyword">As</span> SimMCXProperties
+<span class="keyword">Set</span> myMCXProperties = myNewRigidEngineeringConnection.GetItem(&quot;SimMCXProperties&quot;)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 6- Creating a spring connection property</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim</span> mySpringConnection <span class="keyword">As</span> SimSpring
+<span class="keyword">Set</span> mySpringConnection = myMCXProperties.Add(&quot;SimSpring&quot;, myFemRepRoot)
+
+<span class="comment">' Setting of the Tie connection property supports</span>
+
+<span class="keyword">Dim</span> myLinkAccess <span class="keyword">As</span> SimLinkAccess
+<span class="keyword">Set</span> myLinkAccess = mySpringConnection.GetItem(&quot;SimLinkAccess&quot;)
+
+myLinkAccess.AddLink &quot;PRD1&quot;, myLinkToCoverContactFace <span class="comment">' PRD1 attribute is for master surface</span>
+myLinkAccess.AddLink &quot;PRD2&quot;, myLinkToPumpHousingContactFace <span class="comment">' PRD2 attribute is for slave surface</span>
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 7- Setting the connection attributes</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="comment">' Retrieving the connector section</span>
+
+mySpringConnection.SpringType = SimGeneralSpring
+
+<span class="keyword">Dim</span> myConnectionSection <span class="keyword">As</span> SimConnectorSection
+<span class="keyword">Set</span> myConnectionSection = mySpringConnection.ConnectorSection
+
+<span class="comment">' Retrieving the behavior</span>
+
+<span class="keyword">Dim</span> myConnectionBehavior <span class="keyword">As</span> SimConnectorBehavior
+<span class="keyword">Set</span> myConnectionBehavior = myConnectionSection.ConnectorBehavior
+
+<span class="comment">' Retrieving the elasticities</span>
+
+<span class="keyword">Dim</span> myConnectorElasticities <span class="comment">'As SimConnectorElasticities</span>
+<span class="keyword">Set</span> myConnectorElasticities = myConnectionBehavior.ConnectorElasticities
+
+<span class="comment">' Retrieving the first elasticity</span>
+
+<span class="keyword">Dim</span> myConnectorElasticity1 <span class="keyword">As</span> SimConnectorElasticity
+<span class="keyword">Set</span> myConnectorElasticity1 = myConnectorElasticities.Item(1)
+
+myConnectorElasticity1.ElasticityOrder = SimConnectorElasticityNonLinear
+
+<span class="comment">' Retrieving the stiffness column</span>
+
+<span class="keyword">Dim</span> myStiffnessColumn1 <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myStiffnessColumn1 = myConnectorElasticity1.GetTableColumn(SimConnectorElasticityStiffness)
+
+<span class="comment">' Retrieving the position column</span>
+
+<span class="keyword">Dim</span> myPositionColumn1 <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myPositionColumn1 = myConnectorElasticity1.GetTableColumn(SimConnectorElasticityPosition)
+
+<span class="comment">' Setting data</span>
+
+myStiffnessColumn1.SetCellData 1, 0.17
+myPositionColumn1.SetCellData 1, 0.008
+
+<span class="comment">' Retrieving the second elasticity</span>	
+
+<span class="keyword">Dim</span> myConnectorElasticity2 <span class="keyword">As</span> SimConnectorElasticity
+<span class="keyword">Set</span> myConnectorElasticity2 = myConnectorElasticities.Item(2)
+
+myConnectorElasticity2.ElasticityOrder = SimConnectorElasticityNonLinear
+
+<span class="comment">' Retrieving the stiffness column</span>
+
+<span class="keyword">Dim</span> myStiffnessColumn2 <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myStiffnessColumn2 = myConnectorElasticity2.GetTableColumn(SimConnectorElasticityStiffness)
+
+<span class="comment">' Retrieving the position column</span>
+
+<span class="keyword">Dim</span> myPositionColumn2 <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myPositionColumn2 = myConnectorElasticity2.GetTableColumn(SimConnectorElasticityPosition)
+
+<span class="comment">' Setting data</span>
+
+myStiffnessColumn2.SetCellData 1, 0.15
+myPositionColumn2.SetCellData 1, 0.004
+
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>
+

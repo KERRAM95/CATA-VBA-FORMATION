@@ -1,0 +1,214 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSfdUcCreateSFEOnLimits.CATScript</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates a StiffenerOnFreeEdge using panel limits and edit it.</span>
+<span class="comment">'This script requires sfd model which contains a panel </span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</span>
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="comment">'   4- Retrieves a SFD panel object</span>
+<span class="comment">'   5- Creates SFE on panel limits</span>
+<span class="comment">'   6- Edits SFE</span>
+<span class="comment">'   7- Updates the Part object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+Language=&quot;VBSCRIPT&quot; 
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+
+<span class="keyword">Sub </span>CATMain()
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</span>
+<span class="keyword">    Dim </span>SFDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SFD_VB_TEST&quot;
+    OpenProduct prdName , SFDPrdEditor
+    
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="keyword">    Set </span>SFDProdSel = SFDPrdEditor.Selection
+
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="keyword">    Set </span>ObjPart = SFDPrdEditor.ActiveObject
+    
+<span class="comment">'   4- Retrieves a SFD panel object</span>
+<span class="keyword">    Set </span>RefSfdPanel = ObjPart.FindObjectByName(&quot;Panel.1&quot;)
+<span class="keyword">    Dim </span>ObjSfdPanel<span class="keyword"> As </span>SfdPanel
+    SFDProdSel.Add RefSfdPanel
+<span class="keyword">    Set </span>ObjSfdPanel = SFDProdSel.FindObject(&quot;CATIASfdPanel&quot;)
+   
+<span class="comment">'   5- Creates SFE on panel limits</span>
+<span class="keyword">    Dim </span>ObjSfdStiffenerOnFreeEdge<span class="keyword"> As </span>StrSfdStiffenerOnFreeEdge
+    CreateSFE ObjSfdPanel, ObjSfdStiffenerOnFreeEdge
+
+<span class="comment">'   6- Edits SFE</span>
+    EditStiffenerOnFreeEdge ObjSfdStiffenerOnFreeEdge
+
+<span class="comment">'   7- Updates the Part object</span>
+    ObjPart.Update
+    
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'create SFE on plate limit</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   5.1- Retrieves StrSfdStiffeners and creates a empty SFE</span>
+<span class="comment">'   5.2- Retrieves StrCategoryMngt and sets category</span>
+<span class="comment">'   5.3- Retrieves StrMaterialMngt and sets material</span>
+<span class="comment">'   5.4- Sets section parameters</span>
+<span class="comment">'   5.5- Sets profile type</span>
+<span class="comment">'   5.6- Retrieves StrProfileOnLimits and sets limits.</span>
+<span class="comment">'   5.7- Updates created SFE object.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateSFE(iObjSfdPanel<span class="keyword"> As </span>SfdPanel, oObjSfdStiffenerOnFreeEdge<span class="keyword"> As </span>StrSfdStiffenerOnFreeEdge)
+    
+<span class="comment">'   5.1- Retrieves StrSfdStiffeners and creates a empty SFE</span>
+    <span class="comment">'Get StrSfdStiffeners object</span>
+<span class="keyword">    Dim </span>ObjSfdStiffeners<span class="keyword"> As </span>StrSfdStiffeners
+<span class="keyword">    Set </span>ObjSfdStiffeners = iObjSfdPanel.StrSfdStiffeners
+    <span class="comment">'Create StiffenerOnFreeEdge</span>
+<span class="keyword">    Set </span>oObjSfdStiffenerOnFreeEdge = ObjSfdStiffeners.AddStiffenerOnFreeEdge
+    
+<span class="comment">'   5.2- Retrieves StrCategoryMngt and sets category</span>
+    <span class="comment">'Get StrCategoryMngt object</span>
+<span class="keyword">    Dim </span>ObjStrCategoryMngt<span class="keyword"> As </span>StrCategoryMngt
+<span class="keyword">    Set </span>ObjStrCategoryMngt = oObjSfdStiffenerOnFreeEdge.StrCategoryMngt
+    <span class="comment">'set category</span>
+    ObjStrCategoryMngt.SetCategory &quot;SldStiffenerOnFreeEdge&quot;
+    <span class="comment">'set automatic naming to true</span>
+    ObjStrCategoryMngt.AutomaticName = True
+    
+<span class="comment">'   5.3- Retrieves StrMaterialMngt and sets material</span>
+    <span class="comment">'Get StrMaterialMngt object</span>
+<span class="keyword">    Dim </span>ObjMaterialMngt<span class="keyword"> As </span>StrMaterialMngt
+<span class="keyword">    Set </span>ObjMaterialMngt = oObjSfdStiffenerOnFreeEdge.StrMaterialMngt
+    <span class="comment">'Set material</span>
+    ObjMaterialMngt.SetMaterial (&quot;Steel A42&quot;)
+    
+<span class="comment">'   5.4- Sets section parameters</span>
+    SetSectionParameters oObjSfdStiffenerOnFreeEdge, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;
+    
+<span class="comment">'   5.5- Sets profile type</span>
+    <span class="comment">'Set profile type (catStrProfileModeOnLimits = profile on limits)</span>
+    oObjSfdStiffenerOnFreeEdge.ProfileType = catStrProfileModeOnLimits
+    
+<span class="comment">'   5.6- Retrieves StrProfileOnLimits and sets limits.</span>
+    <span class="comment">'Get StrProfileOnLimits object</span>
+<span class="keyword">    Dim </span>ObjStrProfileOnLimits<span class="keyword"> As </span>StrProfileOnLimits
+<span class="keyword">    Set </span>ObjStrProfileOnLimits = oObjSfdStiffenerOnFreeEdge.StrProfileOnLimits
+    <span class="comment">'Store indices of plate limits on which SFE should be created in an array</span>
+<span class="keyword">    Dim </span>LimitIndexList(1)<span class="keyword"> As </span>Variant
+    LimitIndexList(0) = 1
+    LimitIndexList(1) = 4
+    <span class="comment">'Set limits</span>
+    ObjStrProfileOnLimits.SetLimits (LimitIndexList)
+    
+<span class="comment">'   5.7- Updates created SFE object.</span>
+    ObjPart.UpdateObject oObjSfdStiffenerOnFreeEdge
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Set Section parameters</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   5.4.1- Retrieves StrSectionMngt </span>
+<span class="comment">'   5.4.2- Sets section parameters</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetSectionParameters(iObjSfdStiffenerOnFreeEdge<span class="keyword"> As </span>StrSfdStiffenerOnFreeEdge, iStrSecName<span class="keyword"> As </span>String, iAnchorPoint<span class="keyword"> As </span>String)
+    
+<span class="comment">'   5.4.1- Retrieves StrSectionMngt </span>
+<span class="keyword">    Dim </span>ObjStrSectionMngt<span class="keyword"> As </span>StrSectionMngt
+<span class="keyword">    Set </span>ObjStrSectionMngt = iObjSfdStiffenerOnFreeEdge.StrSectionMngt
+
+<span class="comment">'   5.4.2- Sets section parameters</span>
+    ObjStrSectionMngt.SetSectionName (iStrSecName)
+    ObjStrSectionMngt.AnchorPoint = iAnchorPoint
+    ObjStrSectionMngt.WebOrientation = 1
+    ObjStrSectionMngt.InvertWebOrientation
+    ObjStrSectionMngt.FlangeOrientation = 1
+    ObjStrSectionMngt.InvertFlangeOrientation
+    <span class="comment">'set angle</span>
+<span class="keyword">    Dim </span>AngleParm<span class="keyword"> As </span>Parameter
+<span class="keyword">    Set </span>AngleParm = ObjStrSectionMngt.GetAngle
+    AngleParm.ValuateFromString (&quot;60deg&quot;)
+    
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Edit created StiffenerOnFreeEdge</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'create SFE on plate limit</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   6.1- Retrieves StrProfileOnLimits</span>
+<span class="comment">'   6.2- Set limit indices on which SFE will be created </span>
+<span class="comment">'   6.3- Updates SFE object.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>EditStiffenerOnFreeEdge(iObjSfdStiffenerOnFreeEdge<span class="keyword"> As </span>StrSfdStiffenerOnFreeEdge)
+<span class="comment">'   6.1- Retrieves StrProfileOnLimits</span>
+<span class="keyword">    Dim </span>ObjStrProfileOnLimits<span class="keyword"> As </span>StrProfileOnLimits
+<span class="keyword">    Set </span>ObjStrProfileOnLimits = iObjSfdStiffenerOnFreeEdge.StrProfileOnLimits
+
+<span class="comment">'   6.2- Set limit indices on which SFE will be created </span>
+<span class="keyword">    Dim </span>LimitIndexList(1)<span class="keyword"> As </span>Variant
+    LimitIndexList(0) = 2
+    LimitIndexList(1) = 3
+    ObjStrProfileOnLimits.SetLimits (LimitIndexList)
+
+<span class="comment">'   6.3- Updates SFE object.</span>
+    ObjPart.UpdateObject iObjSfdStiffenerOnFreeEdge 
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SFDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SFDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

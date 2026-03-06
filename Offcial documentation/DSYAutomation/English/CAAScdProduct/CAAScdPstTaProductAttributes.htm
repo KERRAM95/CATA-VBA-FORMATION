@@ -1,0 +1,153 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Product Modeler Attributes</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Product Modeler Attributes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article shows you what are the attributes you can handle, and how 
+		you can dot it. </p>
+		<ul>
+			<li><a href="#Product">Product Modeler Attributes</a></li>
+			<li><a href="#InternalName">Internal versus External Name</a></li>
+			<li><a href="#Accessing">Accessing Attributes</a></li>
+			<li><a href="#InShort">In Short</a></li>
+			<li><a href="#References">References</a></li>
+		</ul>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Product"></a>Product Modeler Attributes</h2>
+<p>For the four following entities of the Product Modeler (<em>VPMReference, VPMInstance, 
+VPMRepReference, VPMRepInstance</em>) [<a href="#References">1</a>] you can handle 
+their attributes by VB. To distinguish them from other attributes, we also called 
+them, <strong>PLM Attributes</strong>. </p>
+<p>The accessible PLM Attributes are only the public attributes, and only the read/write 
+attributes are modifiable.</p>
+<p>The API to access them (see the next chapter for more details), does not work 
+with UI mask: you have a full access to the public attributes, but still according 
+to read/write right defined by the metadata.</p>
+<p>You can access the modeler's attributes (DS defined), like yours. </p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="InternalName"></a>Internal versus External Name</h2>
+<p>In the Edit Properties dialog box, the PLM Attributes are displayed with their 
+NLS names, while in the API the internal name is required. The following documents, 
+one for each Product Entity type, list their PLM attributes. Inside, you will retrieve 
+a conversion from the NLS name to the internal name. But be carefull, this conversion 
+has some limitations:</p>
+<ul>
+	<li>NLS version is only english</li>
+	<li>NLS version can be customized on your site - In other words, the NLS name 
+	of an attribute can be different between the name given by DS and your customization.
+	</li>
+</ul>
+<p>To reach the appropriate document for the below mentioned Types, you will 
+have to go through the Product Documentation i.e. End-User Documentation <br />
+The path to reach the desired article is as follows</p>
+<p>End-User Doc --&gt; Enovia Development and Configuration --&gt; Unified Live 
+collaboration --&gt; V6 Data reference Dictionary --&gt; Modelers --&gt; PRODUCT TYPES</p>
+<ul>
+	<li>VPMReference Attributes</li>
+	<li>VPMInstance Attributes</li>
+	<li>VPMRepReference Attributes</li>
+	<li>VPMRepInstance Attributes</li>
+</ul>
+<p>When you handle a simple occurrence, VPMOccurence, retrieve its instance (VPMInstance), 
+and when you handle the root occurence, a VPMRootOccurence, retrieve its reference. 
+The referenced use case [<a href="#References">2</a>] explains to you how to do.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Accessing"></a>Accessing PLM Attributes</h2>
+<p>The API to handle a PLM attributes, is defined by the <em>PLMEntity</em> object 
+through the <code>GetAttributeValue</code> and <code>SetAttributeValue</code> methods 
+[<a href="#References">2</a>]. </p>
+<p>An example for Getting:</p>
+<pre class="code">...
+<span class="keyword">Dim </span> strValue <span class="keyword">As</span> String
+Dim oVPMEntityOnMyObject as PLMEntity
+...
+strValue = oVPMEntityOnMyObject.<strong>GetAttributeValue</strong>(&quot;<strong>V_description</strong>&quot;)
+...</pre>
+<p>An example for Setting:</p>
+<pre class="code">...
+<span class="keyword">Dim </span>strValuePID <span class="keyword">As </span>String
+Dim oVPMEntityOnMyObject as PLMEntity
+...
+oVPMEntityOnMyObject.<strong>SetAttributeValue </strong>&quot;<strong>V_description</strong>&quot;, &quot;My new description&quot;
+...</pre>
+<p>If the type of the attribute is a list, values must be provided as a string with semi colon separators, like in the following:</p>
+<pre class="code">...
+oVPMEntityOnMyObject.<strong>SetAttributeValue </strong>&quot;<strong>V_myListString</strong>&quot;, &quot;value1;value2;&quot;
+oVPMEntityOnMyObject.<strong>SetAttributeValue </strong>&quot;<strong>V_myListInteger</strong>&quot;, &quot;1;2;&quot;
+...</pre>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="InShort"></a>In Short</h2>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[1]</td>
+		<td>Product Modeler Presentation</td>
+	</tr>
+	<tr>
+		<td>[2]</td>
+		<td><a href="CAAScdPstUcDisplayAndModifyProductAttrFromSelection.htm">Modifying 
+		PLM Attributes of a Selected Product Object</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="History"></a>History</h2>
+<table class="history">
+	<tbody>
+	<tr>
+		<td>Version: <strong>1</strong> [May 2010]</td>
+		<td>Document created</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

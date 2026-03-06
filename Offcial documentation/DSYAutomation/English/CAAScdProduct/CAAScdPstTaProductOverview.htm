@@ -1,0 +1,601 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Product Modeler Overview</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Product Modeler Overview</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>The Product modeler is one of the main V6 PLM modelers. This article 
+		gradually introduces the concepts onto which the Product modeler relies, 
+		along with its objects and their inheritances from the PLM Core modeler 
+		(root of any PLM modeler), using a simple assembly example as red wire. 
+		After a first chapter showing what the industrial world requires from a 
+		Product modeler, the two others describe the two models making up the V6 
+		Product modeler: the instance/reference model used to store product data 
+		in the database, and the occurrence model used to display and edit it in 
+		session.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Industrial"></a>The Industrial Requirements</h2>
+<p>The industrial world main requirements against a modeler intended to handle industrial 
+products are to enable:</p>
+<ul>
+	<li>The assembled physical model, that is, the parts, their relative locations 
+	in the assembly, and the constraints that can be necessary between some objects.</li>
+	<li>Versioning: the different products that can be manufactured, assembled, 
+	and sold from a single physical model.</li>
+	<li>Configuration: the changes brought to the physical model during its life 
+	time and these changes effectivities.</li>
+	<li>Part manufacturing.</li>
+	<li>Simulations.</li>
+	<li>Bill of materials.</li>
+	<li>Assembly process.</li>
+</ul>
+<p>This article deals with the first of these requirements. Also, if a modeler includes 
+objects and their behaviors, this article focuses on the objects only.</p>
+<p>The Skateboard below is used throughout this article to illustrate the models.</p>
+<table>
+	<caption>Fig. 1: The Skateboard</caption>
+	<tbody>
+	<tr>
+		<td><img alt="Skateboard" src="CAAPst0000.png" width="452" height="189"/></td>
+	</tr>
+</tbody>
+</table>
+<p>This simplified skateboard chosen here is made up of seven assembled <strong>
+physical parts</strong> belonging to three types:</p>
+<ol>
+	<li>A deck (pink).</li>
+	<li>Two trucks (gray).</li>
+	<li>Four wheels (green).</li>
+</ol>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Persistent"></a>From the Industrial Actual Model to the Persistent 
+Model</h2>
+<p>These seven physical parts can be schematically represented as a tree shown below.</p>
+<table>
+	<caption><a name="Fig._2">Fig. 2</a>: The Skateboard Made up of Physical Parts</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard Physycal Parts" src="CAAPst0001.png" width="427" height="210"/></td>
+	</tr>
+</tbody>
+</table>
+<p>Each part is linked with those that are assembled on it. For example, the front 
+truck is linked with the two front wheels assembled on it. This chapter shows how 
+the persistent data structure is built from this assembly. It first describes how 
+to model the assembly, then how to link the assembly to the parts, how to set up 
+constraints between parts, and finally how a part can publish one of its internal 
+elements for some others to rely on.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Assembly"></a>Modeling an Assembly</h3>
+<p>The skateboard is created by assembling seven parts. This assembly itself is 
+an object. In the same way, to handle a truck and wheel assembly as a whole, an 
+object is required in addition to the truck and the two wheels. Such objects called
+<strong>assembly parts</strong> are made up of named sets of physical parts. Assembly 
+parts have many qualities, such as holding a part number to order it as a whole 
+assembled subset rather than ordering each part individually and assembling them.
+</p>
+<p>In the skateboard, the assembly part named Truck &amp; Wheel assembly (<kbd>T&amp;W Asm</kbd>) 
+is made up of a truck, a left wheel, and a right wheel. In the same way, the assembly 
+part <kbd>Skateboard</kbd> is made up a deck, a front <kbd>T&amp;W Asm</kbd>, and a 
+rear <kbd>T&amp;W Asm</kbd>.</p>
+<table>
+	<caption><a name="Fig._3">Fig. 3</a>: The Skateboard with Assembly Parts</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard with Assembly Parts" src="CAAPst0002.png" width="426" height="275"/></td>
+	</tr>
+</tbody>
+</table>
+<p>There is now a clear distinction between the deck, which is a physical part, 
+and the skateboard as an assembly of seven physical parts. This distinction did 
+not appear on the [<a href="#Fig._2">Fig. 2</a>]. Note that the relation between 
+the parts has changed, moving from &quot;is assembled on&quot; to &quot;is composed of&quot;.</p>
+<p>The seven initial parts and the three added assembly parts make up now a ten 
+part model.</p>
+<p>Note also that on the [<a href="#Fig._3">Fig. 3</a>], assembly parts have no 
+associated image compared with physical parts. They could be represented only using 
+a combination of the images of the physical part they aggregate.</p>
+<p>When looking closer at the model, you can see that the two Truck &amp; Wheel Assemblies 
+are identical. Only their respective locations differ.</p>
+<table>
+	<caption><a name="Fig._4">Fig. 4</a>: The Skateboard with Common Parts</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard with Common Parts" src="CAAPst0003.png" width="372" height="285"/></td>
+	</tr>
+</tbody>
+</table>
+<p>The model above highlights these two identical sets enclosed by thick boxes. 
+(Such symbols with thick outlines will show the model evolutions throughout this 
+article.)</p>
+<p>These two identical sets enable a model simplification, avoiding object duplication.</p>
+<table>
+	<caption><a name="Fig._5">Fig. 5</a>: The Skateboard First Simplification</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard Model First Simplification" src="CAAPst0004.png" width="533" height="181"/></td>
+	</tr>
+</tbody>
+</table>
+<p>The two <kbd>Front T&amp;W Asm</kbd> and <kbd>Rear T&amp;W Asm</kbd> of the [<a href="#Fig._4">Fig. 
+4</a>] become two <strong>instances</strong>, <kbd>Front I</kbd> and <kbd>Rear I</kbd> 
+of the same <kbd>T&amp;W Asm R</kbd> <strong>reference</strong>, this reference being 
+the assembly part. The two instances differ only by their locations symbolized using 
+the coordinate systems the origins and director vectors of which are expressed in 
+the absolute coordinate system associated with the <kbd>Skateboard</kbd>. These 
+instance and reference objects build an instance/reference model graphically shown 
+as a graph that will progressively replace the initial tree.</p>
+<p>Note that the instances <kbd>I</kbd> are represented with an oval, and the references
+<kbd>R</kbd> with a rectangle.</p>
+<p>Another simplification is possible.</p>
+<table>
+	<caption>Fig. 6: The Skateboard Second Simplification</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard Model Second Simplification" src="CAAPst0005.png" width="517" height="188"/></td>
+	</tr>
+</tbody>
+</table>
+<p>The two <kbd>Right Wheel</kbd> and <kbd>Left Wheel</kbd> parts become two instances,
+<kbd>Right I</kbd> and <kbd>Left I</kbd> of the same wheel reference <kbd>Wheel 
+R</kbd>. The two instances have their own locations in the <kbd>T&amp;W Asm R</kbd> 
+context, another way to say &quot;expressed in the <kbd>T&amp;W Asm R</kbd> coordinate system&quot;.</p>
+<p>This model clearly shows up a single wheel reference describing the wheel whatever 
+its instance locations in the assembly. This is not obvious in the first model on 
+[<a href="#Fig._2">Fig. 2</a>] where nothing shows that the four wheels are identical. 
+The wheel reference holds reference wheel data, such as its part number, and points 
+to the wheel <strong>representation</strong> (yellow box) that gives shape and geometry.
+</p>
+<p>The reference objects, common to the assembly and physical parts, enable the 
+model consistence. The reference of an assembly part that aggregates instances, 
+or the reference of a physical part that points to a representation are of the same 
+nature. If the first one will still be called an assembly part, the second one will 
+simply be called part.</p>
+<p>Generalizing the reference addition to the other parts replaces all the physical 
+parts with instances, references, and representations.</p>
+<table>
+	<caption><a name="Fig._7">Fig. 7</a>: The Skateboard Instance/Reference/Representation 
+	Model</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard Instance/Reference/Representation Model" src="CAAPst0006.png" width="551" height="186"/></td>
+	</tr>
+</tbody>
+</table>
+<p>The physical part <kbd>Deck</kbd> is replaced with a set of objects: a <kbd>Deck</kbd> 
+instance, aggregated by the <kbd>Skateboard</kbd> reference, and instance of a
+<kbd>Deck</kbd> reference that in turn points to a <kbd>Deck</kbd> representation. 
+The same replacement happens with the <kbd>Truck</kbd> physical parts. In addition, 
+the <kbd>Skateboard</kbd> part is replaced with a <kbd>Skateboard</kbd> reference, 
+root of the assembly.</p>
+<p>Starting from a physical model containing only geometric and duplicated data 
+and applying the different changes described above lead to the resulting current 
+model describing the assembly, and pointing to the part geometry, with a minimum 
+of non redundant objects.</p>
+<p>The data model representing the real model begins to take shape. It uses the 
+conventions below in the following:</p>
+<table>
+	<caption><a name="Fig._8">Fig. 8</a>: The Skateboard Product Instance/Reference/Representation 
+	Model</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard Product Instance/Reference/Representation Model" src="CAAPst0007.png" width="540" height="183"/></td>
+	</tr>
+</tbody>
+</table>
+<p>To summarize, this model features:</p>
+<ul>
+	<li><strong>References</strong> to model either a part or an assembly part.</li>
+	<li><strong>Instances</strong> to model the presence of a reference at a given 
+	location with respect to the reference it is assembled with.</li>
+	<li><strong>Representations</strong> to model the shape and geometry of a part.</li>
+	<li><strong>Links</strong> between instances and references:<ul>
+		<li><strong>Aggregation</strong>: an instance is always aggregated by a 
+		reference. ( where previously we said &quot;is Composed of&quot;</li>
+		<li><strong>Is Instance of</strong>: an instance is always related to a 
+		reference.</li>
+	</ul>
+	</li>
+	<li><strong>Pointers</strong> from references to their representations.</li>
+</ul>
+<p>This last link shall now be detailed.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Representations"></a>Modeling Representations</h3>
+<p>The main mission of representations is to embody the parts by describing their 
+shapes and geometries. Since these shapes and geometries do not belong to the Product 
+modeler, but to the Part modeler, the representation object is split into a
+<strong>representation reference</strong> in the Product modeler and a <strong>shape</strong> 
+object in the Part modeler.</p>
+<table>
+	<caption><a name="Fig._9">Fig. 9</a>: Representation Reference and Shape</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Representation Reference and Part" src="CAAPst0008.png" width="346" height="41"/></td>
+	</tr>
+</tbody>
+</table>
+<p>These two objects are not logically distinct. Even if the representation reference 
+is an access handle to the shape, that is, a pointer, it actually encapsulates the 
+shape with an aggregation behavior. If the representation reference is deleted, 
+the shape is also deleted.</p>
+<p>The representation reference is a leaf object, and thus is not semantically identical 
+to the reference which is a structuring object. </p>
+<p>To integrate the representation reference in the instance/reference model, it 
+is naturally instantiated thanks to a dedicated instance: the <strong>representation 
+instance</strong>.</p>
+<table>
+	<caption>Fig. 10: The Skateboard Full Instance/Reference Model</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard Full Instance/Reference Model" src="CAAPst0009.png" width="539" height="235"/></td>
+	</tr>
+</tbody>
+</table>
+<p>The representations in [<a href="#Fig._7">Fig. 7</a>] are replaced with a representation 
+instance, aggregated by a reference, and the instantiated representation reference 
+that aggregates the shape. The word representation is used to designate these three 
+object as a whole.</p>
+<p>Representation reference objects enable references:</p>
+<ol>
+	<li>To only aggregate instances, that is, to be either node objects aggregating 
+	instances from references or leaf objects aggregating representation instances.</li>
+	<li>To have a dedicated life cycle. They may be versioned, changed, or deleted 
+	independently of the representation references. For example, deleting a reference 
+	must not delete the representation reference and its aggregated shape.</li>
+	<li>To be multi-represented. A reference can aggregate several representations, 
+	such as an exact representation of the actual part, and a light representation 
+	for display and interference checks. As an example of the multi-representation, 
+	the wheel can have an exact representation, a light representation such as a 
+	cylinder representing its bounding block, graphics data for an exact but light 
+	display, the results of a simulation, or a drawing. Note that all the representations 
+	are equivalent for the Product modeler. The difference between them is set by 
+	the applications.</li>
+</ol>
+<p>To summarize, the seven physical objects in [<a href="#Fig._2">Fig. 2</a>] are 
+now 17 Product modeler objects of four types:</p>
+<ol>
+	<li>Two <strong>references</strong> for the assembly parts: <kbd>Skateboard 
+	R</kbd> and <kbd>T&amp;W Asm R</kbd>, and three <strong>references</strong> for 
+	the parts: <kbd>Deck R</kbd>, <kbd>Truck R</kbd>, and <kbd>Wheel R</kbd>.</li>
+	<li>Six <strong>instances</strong>: <kbd>Deck I</kbd> for the deck, <kbd>Front 
+	I </kbd>and <kbd>Rear I</kbd> for the Truck &amp; Wheel assemblies, <kbd>Truck I</kbd> 
+	for the truck, <kbd>Right I</kbd> and <kbd>Left I</kbd> for the wheels.</li>
+	<li>Three <strong>representation instances</strong>: <kbd>Deck RI</kbd>,
+	<kbd>Truck RI</kbd>, and <kbd>Wheel RI</kbd>.</li>
+	<li>Three <strong>representation references</strong>: <code>Deck RR</code>,
+	<kbd>Truck RR</kbd>, and <kbd>Wheel RR</kbd>.</li>
+</ol>
+<p>And the three shapes of the Part modeler that are not handled by the Product 
+modeler.</p>
+<p>Now if you want to figure out how this model really is, you need to think a bit 
+about it. For example, its wheel count is not immediately deduced form the wheel 
+instance count: two wheel instances, but four real wheels. Because it is a sparing 
+model, you cannot address each real object directly. You must interpret it by expanding 
+the different objects, running along the links from the root to the leaf objects 
+to count actual objects. For example, starting from <kbd>Skateboard R</kbd> through
+<kbd>Front I</kbd>, <kbd>T&amp;W Asm R</kbd>, up to <kbd>Right I</kbd> and its representation 
+shows the front right wheel, and so on for the others. This model must thus be interpreted 
+to understand the real model, for example, to display it. This is discussed in
+<a href="#Session">From the Persistent Model to the Session Model</a>, but two other 
+assembly design requirements should be fulfilled before.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Constraints"></a>Modeling Constraints and Publications</h3>
+<p>The assembly is built by positioning parts the ones with respect to the others. 
+This is necessary, but sometimes not enough. For example, wheel and truck axle rotate 
+sharing the same rotation axis and thus must be coaxial. If you move the wheel, 
+it must remain coaxial with the truck shaft. To ensure this, you can set a constraint 
+using the Assembly Design workbench between a wheel and the truck, assumed here 
+for simplification to be identical with its axle.</p>
+<table>
+	<caption>Fig. 11: Constraints between two Objects</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Constraints between two Objects" src="CAAPst0010.png" width="510" height="277"/></td>
+	</tr>
+</tbody>
+</table>
+<p>The constraint is naturally added in the Product structure graph at the same 
+level than the objects it constrains. In the example, the constraint (<kbd>Cnst1</kbd>) 
+points to the truck and wheel rotation axes in their respective shapes using paths 
+passing by the instance, jumping to the representation instance, the representation 
+reference, and finally to the shape. To complete the design, a second constraint 
+should be set to constraint the left wheel and the truck to be coaxial.</p>
+<p>From the PLM Core modeler standpoint, the constraint is a <strong>connection</strong>, 
+a more generic object to model link patterns between objects within a PLM modeler, 
+or from different PLM modelers. Another classical connection usage is associating 
+a material to a reference.</p>
+<p>Now assume that the truck part owner changes the shape geometry, for example 
+by replacing this shape with another one.</p>
+<table>
+	<caption>Fig. 12: Change a Shape</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Change a Part" src="CAAPst0011.png" width="546" height="303"/></td>
+	</tr>
+</tbody>
+</table>
+<p>The representation instance aggregated by the <kbd>Truck R</kbd> reference is 
+changed to <kbd>Truck2 RI</kbd> of the newly created <kbd>Truck2 RR</kbd> representation 
+reference aggregating the new Shape. The previous instance is deleted and the constraint
+<kbd>Cnst1</kbd> points now a disappeared instance: the constraint is broken.</p>
+<p>The assembly owner can of course manually reroute the constraint to the new representation 
+instance and new Shape. This implies the truck part owner and the assembly owner, 
+if they are not the same person, to communicate about the design changes. In addition, 
+if the truck part is pointed by several assemblies belonging to different owners, 
+the communication process will shortly turn to a nightmare. It is thus much simpler 
+and more efficient to use an intermediate object named <strong>publication</strong> 
+to make the pointing mechanism endure.</p>
+<p>Using a publication, the <kbd>Truck R</kbd> reference owner ensures that the 
+part will always offer to assembly designers the truck rotation axis, whatever the 
+changes he/she could bring to the shape itself. The publication is a kind of interface 
+the part exhibits assorted with a perennial contract assembly designers can rely 
+on to set their constraints against that axis. The same applies to the wheel.</p>
+<table>
+	<caption>Fig. 13: The Publications to Make the Model Easily Usable</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Publications" src="CAAPst0012.png" width="545" height="290"/></td>
+	</tr>
+</tbody>
+</table>
+<p>Instead of pointing the shape through the instances only, the constraint now 
+points the two publication objects which make up a stable contract to access a geometric 
+element inside a shape. </p>
+<p>From the PLM Core modeler standpoint, the publication is a <strong>port</strong>, 
+a more generic object that can be used to model other data patterns. Another classical 
+usage of ports is to interface two systems in the logical or functional modelers.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Model"></a>The Instance/Reference Model</h3>
+<p>Thanks to this simple skateboard model, but without excessive simplification, 
+the resulting data model, except for the shapes, relies on six object types making 
+up the PLM Core modeler:</p>
+<ol>
+	<li>Reference</li>
+	<li>Instance</li>
+	<li>Representation reference</li>
+	<li>Representation instance</li>
+	<li>Connection</li>
+	<li>Port.</li>
+</ol>
+<p>Any modeler built from this six objects is an instance/reference model, such 
+as the Product modeler, but also the Process, Logical, and Functional modelers.</p>
+<table>
+	<caption>Fig. 14: The Complete Skateboard Instance/Reference Model Relying on 
+	Six Objects</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard Instance/Reference Model" src="CAAPst0013.png" width="545" height="291"/></td>
+	</tr>
+</tbody>
+</table>
+<p>Even if this example is simple compared to an industrial assembly, featuring 
+three instance/reference levels only, it represents the objects you will handle 
+and the mechanisms you will deal with when designing, browsing, or scanning your 
+assemblies.</p>
+<p>Such an assembly is created and designed during a <strong>client session</strong>, 
+and saved in the <strong>database</strong>. The assembly is saved as an instance/reference 
+model in the <strong>Vault server</strong>, while the shapes and their geometries 
+are streamed in the <strong>Store server</strong>.</p>
+<table>
+	<caption>Fig. 15: The Vault and Store Servers</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard in Database" src="CAAPst0014.png" width="571" height="260"/></td>
+	</tr>
+</tbody>
+</table>
+<p>To know more about this model, see Product Instance/Reference Model [<a href="#References">1</a>].</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Session"></a>From the Persistent Model to the Session Model</h2>
+<p>If the instance/reference model synthetically represents an assembly and efficiently 
+saves it in a database, this model does not match the session requirements. The 
+picture below shows the skateboard in the CATIA 3D editor window.</p>
+<table>
+	<caption>Fig. 16: The Skateboard in a Client Session</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard in Client Session" src="CAAPst0015.png" width="590" height="412"/></td>
+	</tr>
+</tbody>
+</table>
+<p>The skateboard is shown as a 3D model and as a tree structure, usually named 
+the specification tree. These are two views of the same model in session.</p>
+<p>On the 3D view, you can see that the skateboard has four wheels, and not two 
+if you just look at the instance/reference model without interpreting it. This 3D 
+view is thus not a rough view of the instance/reference model. It is built on a 
+model named the <strong>occurrence model</strong>, created from the instance/reference 
+model. </p>
+<p>The occurrence model is not persistent, that is, not saved in the database. It 
+is rebuilt whenever the instance/reference model is read from the database and loaded 
+into the session. Both models reside in the session memory and can be accessed, 
+either interactively or programmatically.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Occurrence"></a>The Occurrence Model</h3>
+<p>It is created from the instance/reference model loaded from the database to the 
+session. The following image shows how.</p>
+<table>
+	<caption><a name="Fig._17">Fig. 17</a>: The Occurrence Model Build</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard Occurrence Model" src="CAAPst0016.png" width="525" height="615"/></td>
+	</tr>
+</tbody>
+</table>
+<p>To create the occurrence model, the instance/reference model is expanded or unfolded 
+by running along all the possible paths from the root object to the leaf objects. 
+The colored lines shows these paths.</p>
+<ul>
+	<li><strong>Step 0</strong>: Create an occurrence for the root reference.</li>
+	<li><strong>Step 1</strong>: Running along the blue path from the root through
+	<kbd>Deck I</kbd>, <kbd>Deck R</kbd>, <kbd>Deck RI</kbd>, up to <kbd>Deck RR</kbd> 
+	and its pointed part to create the <kbd>Deck</kbd> occurrence.</li>
+	<li><strong>Step 2</strong>: Running along the orange path:<ul>
+		<li>From the root through<kbd>Front I</kbd> to <kbd>T&amp;W Asm R</kbd> to create 
+		the Front <kbd>T&amp;W Asm</kbd> occurrence.</li>
+		<li>Then from <kbd>T&amp;W Asm R</kbd> through <kbd>Truck I</kbd>, <kbd>Truck 
+		R</kbd>, <kbd>Truck RI</kbd>, up to <kbd>Truck RR</kbd> and its pointed 
+		part to create the <kbd>Front</kbd> <kbd>Truck</kbd> occurrence.</li>
+	</ul>
+	</li>
+	<li><strong>Step 3</strong>: Running along the red path:<ul>
+		<li>From the root through <kbd>Front I</kbd> to <kbd>T&amp;W Asm R</kbd> , leaving 
+		the Front <kbd>T&amp;W Asm</kbd> occurrence created in step 2.</li>
+		<li>Then from <kbd>T&amp;W Asm R</kbd> to <kbd>Right I</kbd>, <kbd>Wheel R</kbd>,
+		<kbd>Wheel RI</kbd>, up to <kbd>Wheel RR</kbd> and its pointed part to create 
+		the <kbd>Front Right Wheel</kbd> occurrence.</li>
+	</ul>
+	</li>
+	<li><strong>Step 4</strong>: Running along the green path:<ul>
+		<li>From the root through <kbd>Front I</kbd> to <kbd>T&amp;W Asm R</kbd>, leaving 
+		the Front <kbd>T&amp;W Asm </kbd>occurrence created in step 2.</li>
+		<li>Then from <kbd>T&amp;W Asm R</kbd> to <kbd>Left I</kbd>, <kbd>Wheel R</kbd>,
+		<kbd>Wheel RI</kbd>, up to <kbd>Wheel RR </kbd>and its pointed part to create 
+		the <kbd>Front Left Wheel </kbd>occurrence.</li>
+	</ul>
+	</li>
+</ul>
+<p>And so on until all the possible paths passing by all the instances of leaf references 
+are run. An occurrence is created for each instance met along these paths. This 
+is why an occurrence is also called an instance path, starting from the root and 
+jumping from instance to instance. For example, the <strong>front left</strong> 
+wheel occurrence is built by jumping from the root to the <kbd>Truck &amp; Wheel Assembly</kbd>
+<strong>front</strong> instance and to the wheel <strong>left</strong> instance.</p>
+<p>This occurrence model does not make use of the representation reference, representation 
+instance, connection, and port objects. It does not include the representations 
+and their parts. Nevertheless, to make things clear, the [<a href="#Fig._17">Fig. 
+17</a>] shows the seven physical objects using images, like the starting physical 
+model.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="Specification"></a>The Specification Tree 
+and the 3D Model</h3>
+<p>So if this occurrence model does not include neither the representations nor 
+their parts, which objects make up the 3D model? Going back to the specification 
+tree will unveil this mystery.</p>
+<table>
+	<caption>Fig. 18: The Occurrence Model and the Specification Tree</caption>
+	<tbody>
+	<tr>
+		<td>
+		<img alt="Skateboard Occurrence Model and Specification Tree" src="CAAPst0020.png"/></td>
+	</tr>
+</tbody>
+</table>
+<p>Putting the occurrence model and the specification tree side by side, you can 
+see that the latter is well built using the occurrence model objects, but not only:</p>
+<ul>
+	<li>The objects with the icons
+	<img alt="Product" src="CAAI_MldToolStructure.png" width="22" height="22"/> and
+	<img alt="3D Part" src="CAAI_3DPart.png" width="22" height="22"/> are occurrences.</li>
+	<li>The objects with the icons
+	<img alt="3D Shape" src="CAAI_Part.png" width="22" height="22"/> are representation 
+	instances that link with the shape and their geometries.</li>
+</ul>
+<p>In the same way, the connections and ports are other instance/reference model 
+objects seen in the specification tree, but not shown here.</p>
+<p>To know more about this model, see the Product Occurrence Model [<a href="#References">2</a>].</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="InShort"></a>In Short</h2>
+<p>The Product data model is persisted in database through 6 PLM Core objects: PLM 
+Product Reference, PLM Product Instance, PLM Product Representation Reference, PLM 
+Product Representation Instance, PLM Port, PLM Connection. This instance/reference 
+model represents the exact physical model, but in a sparing way. So, in order to 
+handle it, like in the real word, you need to &quot;expend&quot; it. It is the role of the 
+occurrence data model. This model, not directly persisted in database, is the unfolded 
+view of the instance/reference data model. The occurrence data model represents 
+the different paths to get each leaf of the instance/reference data model. Be careful, 
+this model does not contain Representation, connection and port. What you see interactively 
+in the specification tree is a mix of the two models. </p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[1]</td>
+		<td>&nbsp;</td>
+	</tr>
+</tbody>
+</table>
+</div>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="History"></a>History</h2>
+<table class="history">
+	<tbody>
+	<tr>
+		<td>Version: <strong>1</strong> [Sep 2010]</td>
+		<td>Document created</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>
+

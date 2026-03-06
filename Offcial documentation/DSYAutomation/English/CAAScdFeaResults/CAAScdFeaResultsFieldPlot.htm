@@ -1,0 +1,221 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="topictype" content="Uc" />
+    <meta name="devlang" content="idl" />
+    <meta name="devlang" content="idl" />
+    <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+    <title>Field Plot</title>
+    <style type="text/css">
+        .padded td, .padded th
+        {
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+    <table class="table1">
+        <tr>
+            <td class="DocHeader1">
+                <h1>Creating a field plot</h1>
+            </td>
+        </tr>
+        <tr>
+            <td class="DocHeader3" style="width: 1807px">
+                <table class="DocHeaderIntro">
+                    <tr>
+                        <td class="Intro1">
+                            <p class="header">This article explains how to open the results and create a field plot.</p>
+                            <hr class="header" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                <span class="run-in">Where to find the macro: <a href="CAAScdFeaResultsFieldPlotSource.htm">CAAScdFeaResultsFieldPlotSource.htm</a></span>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="indented">
+        <tr>
+            <td>
+                <p>This use case can be divided in 9 steps:</p>
+                <ol>
+                    <li><a href="#Step1">Opens the document and retrieves the results analysis case</a></li>
+                    <li><a href="#Step2">Retrieves the plot from the results set</a></li>
+                    <li><a href="#Step3">Gets a list of creatable plot Ids from the plot definition</a></li>
+                    <li><a href="#Step4">Creates the field plot through template</a></li>
+                    <li><a href="#Step5">Sets the display group to the plot</a></li>
+                    <li><a href="#Step6">Sets the deformation scale factor</a></li>
+                    <li><a href="#Step7">Retrieves the legend from the plot</a></li>
+                    <li><a href="#Step8">Retrieves the plot type</a></li>                    
+                    <li><a href="#Step9">Retrieves the step and frame from the plot</a></li>
+                    <li><a href="#Step10">Deletes the plot</a></li>
+
+                </ol>
+            </td>
+        </tr>
+    </table>
+    <table class="table1">
+
+        <tr>
+            <td>
+                <ol class="task">
+                    <li>
+                        <p><strong><a name="Step1"></a>Opens the document and retrieves the results analysis case</strong></p>
+                        <p>As a first step, the following code will show how to open the simulation document and retrieve the 
+                            results analysis case. </p>
+                        <a href="CAAScdFeaResultsOpenDocument.htm">Retrieve the analysis case</a>
+                    </li>
+                    <ul></ul>
+
+                    <li>
+                        <p><strong><a name="Step2"></a>Retrieves the plot from the results set</strong></p>
+                        <p>In this step we retrieve the results set and then get the first plot from the results set.</p>
+                        <p>By default the Undeformed plot is the first plot.</p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>oFieldPlots<span class="keyword"> As </span>SimResultsSet
+<span class="keyword">Set </span>oFieldPlots = oResultsAnalysisCase.GetSet("FieldPlot")
+
+<span class="keyword">Dim </span>oFieldPlot<span class="keyword"> As </span>SimFieldPlot
+<span class="keyword">Set </span>oFieldPlot = oFieldPlots.Item(1)
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step3"></a>Gets a list of creatable plot Ids from the plot definition</strong></p>
+                        <p>This step shows how to get the creatable plot ids from the plot.</p>
+                        <p>If ilFields is an empty list, the list of existing fields in the model is used.</p>
+                        <p>The returned list of Field Plot Ids is filtered to exclude the Ids of Field Plots
+                            referencing fields that are not in the list or fields that are not in the model.</p>
+                        <p>If ibIncludeDefaults is True, include the internal Field Plot definitions in addition to 
+                        definitions passed to @href #AddField PlotDefinitions.</p>
+                        <p>If ibIncludeUndMesh is True, include the Field Plot Id for the undeformed mesh.</p>
+                        <p>sId is the returned list of Field Plot Id strings.</p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>ilFields()<span class="keyword"> As </span>Variant
+<span class="keyword">Dim </span>ibIncludeDefaults<span class="keyword"> As </span>Boolean
+<span class="keyword">Dim </span>ibIncludeUndMesh<span class="keyword"> As </span>Boolean
+<span class="keyword">Dim </span>sId()<span class="keyword"> As </span>Variant
+oResultsAnalysisCase.GetListOfFieldPlotIDs ilFields, ibIncludeDefaults, ibIncludeUndMesh, sId
+...
+</pre>
+                    </li>
+
+                    <li>
+                        <p><strong><a name="Step4"></a>Creates the field plot through template</strong></p>
+                        <p>This step shows how to create a field plot from the results analysis case retrieved from the earlier step.</p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>sId<span class="keyword"> As </span>String
+sId = "Contour_Stress_Tresca"
+<span class="keyword">Dim </span>oPlot<span class="keyword"> As </span>SimFieldPlot
+<span class="keyword">Set </span>oPlot = oResultsAnalysisCase.CreateFieldPlotByID(sId, True)
+...
+</pre>
+                    </li>
+
+                    <li>
+
+                        <p><strong><a name="Step5"></a>Sets the display group to the plot</strong></p>
+                        <p>The following code sets the already created display groups to the plot.</p>
+                        <pre class="code">...
+<span class="comment">'First we retrieve the display group from the results set</span>
+
+<span class="keyword">Dim </span>oDisplayGroupSet<span class="keyword"> As </span>SimResultsSet
+<span class="keyword">Set </span>oDisplayGroupSet = oResultsAnalysisCase.GetSet("DisplayGroupSet")
+<span class="keyword">Dim </span>oDisplayGroup<span class="keyword"> As </span>SimDisplayGroup
+<span class="keyword">Set </span>oDisplayGroup = oDisplayGroupSet.Item(1)
+
+<span class="keyword">Dim </span>MyDispatch<span class="keyword"> As </span>CATBaseDispatch
+<span class="keyword">Set </span>MyDispatch = oDisplayGroup
+<span class="keyword">Dim </span>MySupports(0)
+<span class="keyword">Set </span>MySupports(0) = MyDispatch
+oPlot.DisplayGroup = MyDispatch1
+oPlot.Refresh
+...
+</pre>
+
+                    </li>
+
+                    <li>
+
+                        <p><strong><a name="Step6"></a>Sets the deformation scale factor</strong></p>
+                        <p>The following code sets the deformation scale factor to the plot.</p>
+
+                        <pre class="code">...
+oPlot.SetDeformationScaleFactors 2, 2, 2
+...
+</pre>
+
+                    </li>
+                    <li>
+                        <p><strong><a name="Step7"></a>Retrieves the legend from the plot</strong></p>
+                        <p>Here we retrieve the plot legend. </p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>oPlotLegend<span class="keyword"> As </span>SimLegend
+<span class="keyword">Set </span>oPlotLegend = oPlot.Legend
+...
+</pre>
+
+                    </li>
+                    <li>
+                        <p><strong><a name="Step8"></a>Retrieves the plot type</strong></p>
+<p>More options for setting SimFieldPlotTypes can be found at <a href="CAAScdFeaResultsFiledPlotEnum.htm"> FieldPlotEnums.</a></p>
+
+
+                        <pre class="code">...
+<span class="keyword">Dim </span>oPlotType<span class="keyword"> As </span>SimFieldPlotTypes
+<span class="keyword">Set </span>oPlotType = oPlot.Type
+...
+</pre>
+
+                    </li>
+
+
+                    <li>
+                        <p><strong><a name="Step9"></a>Retrieves the step and frame from the plot</strong></p>
+                        <p>Following code retrieves the step and frame information from the plot.</p>
+                        <pre class="code">...
+<span class="keyword">Dim </span>nbFrame<span class="keyword"> As </span>Long
+<span class="keyword">Set </span>nbFrame = oPlot.GetCurrentFrame True 
+
+<span class="keyword">Dim </span>sStep<span class="keyword"> As </span>String
+oPlot.GetStepAndFrame sStep, nbframe, 0, False
+...
+</pre>
+                    </li>
+                    <li>
+                        <p><strong><a name="Step10"></a>Deletes the plot</strong></p>
+                        <p>Deletes the plot feature.</p>
+                        <pre class="code">...
+oResultsAnalysisCase.DeleteFeature oPlot
+
+</pre>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

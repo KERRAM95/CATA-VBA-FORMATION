@@ -1,0 +1,299 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<meta name="GENERATOR" content="Microsoft FrontPage 12.0" />
+<meta name="ProgId" content="FrontPage.Editor.Document" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Testing SFD Collar</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Testing SFD Collar</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to test collar.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSfdUcSteel_A90.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSfdUcL8x8x1.3dxml</div></code>,
+							<code><div class=vb_sample_data>CAAScdSfdUcSlotSections.3dxml</div></code> <code><div class=vb_sample_data>CAAScdSfdUcTestCollar.3dxml</div></code>,
+							<code><div class=vb_sample_data>CAAScdSfdUcCGR.3dxml</div></code> and <code><div class=vb_sample_data>CAAScdSfdUcSR.3dxml</div></code> 
+							files supplied in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSfdSFDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where 
+								the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSfdUcTestCollarSource.htm">CAAScdSfdUcTestCollarSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSfdTocSFDesign.htm">Structure Functional Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in ten steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SFD_Collar&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves already created panel</a></li>
+			<li><a href="#Step5">Retrieves sfd slot object</a></li>
+			<li><a href="#Step6">Retrieves sfd collar object</a></li>
+			<li><a href="#Step7">Setting up collar parameters</a></li>
+			<li><a href="#Step8">Adding Collar on Slot</a></li>
+			<li><a href="#Step9">Removing Collar on Slot</a></li>
+			<li><a href="#Step10">Updates the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SFD_Collar&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SFD_Collar&quot; from DB and 
+			loads it and returns object of the Editor.</p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SFDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SFD_Collar&quot;
+ OpenProduct prdName , SFDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SFD model from underlying database the current active 
+			editor is returned in <strong><code>SFDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+			<p>As a next step, the UC retrieves Selection object in SFDProdSel variable. 
+			To retrieve the Selection object <strong><code>SFDPrdEditor </code>
+			</strong>is used.</p>
+			<pre class="code">...
+    <span class="keyword">Set</span> SFDProdSel = SFDPrdEditor<strong>.Selection </strong>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> ObjPart = SFDPrdEditor.<strong>ActiveObject</strong> 
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves already created panel</strong></p>
+			<p>In this step UC retrieves already created panel object. This panel 
+			is used as a penetrated element for the slot creation. </p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> RefObjSfdPanel = ObjPart.FindObjectByName("Longitudinal Bulkhead_2.1")
+  <span class="keyword">Dim</span> ObjSfdPanel As SfdPanel
+  SFDProdSel.Add (RefObjSfdPanel)
+  <span class="keyword">Set</span> ObjSfdPanel = SFDProdSel.FindObject("CATIASfdPanel")
+...</pre>
+			<p><code>Find Object</code> method will find CATIASfdPanel panel and return 
+			it in <code>ObjSfdPanel</code> object.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieves sfd slot object</strong></p>
+			<p>In this step UC finds a SFD slot. This slot is used for collar creation.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjStrSlot <span class="keyword">As</span> StrSlot
+  <strong>GetSlot</strong> ObjSfdPanel, ObjStrSlot
+...</pre>
+<pre class="code">... 
+<span class="keyword">Sub</span> <strong>GetSlot</strong>(iObjSfdPanel <span class="keyword">As</span> SfdPanel, oObjStrSlot <span class="keyword">As</span> StrSlot)
+       
+    <span class="keyword">Dim</span> ObjStrSlots <span class="keyword">As</span> StrSlots
+    <span class="keyword">Set</span> ObjStrSlots = iObjSfdPanel.StrSlots
+    <span class="comment">'Get StrSlot</span>
+    <span class="keyword">Set</span> oObjStrSlot = ObjStrSlots.<strong>Item</strong>(1)
+	
+<span class="keyword">End Sub</span>
+...</pre>
+
+			<p>In above lines, <code>GetSlot</code> method finds slot object from given panel. This slot object is used for creation of collar.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Retrieves sfd collar object</strong></p>
+			<p>In this step UC finds a SFD collar on slot. This is the collar on which testing is to be done.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjStrCollar <span class="keyword">As</span> StrCollar
+  <strong>GetCollar</strong> ObjStrSlot, ObjStrCollar
+...</pre>
+<pre class="code">... 
+<span class="keyword">Sub</span> <strong>GetCollar</strong>(iObjStrSlot <span class="keyword">As</span> StrSlot, oObjStrCollar <span class="keyword">As</span> StrCollar)
+   
+   <span class="keyword">Dim</span> ObjStrCollars <span class="keyword">As</span> StrCollars
+   <span class="keyword">Set</span> ObjStrCollars = iObjStrSlot.Collars   
+   <span class="comment">'Get StrCollar</span>
+   <span class="keyword">Set</span> oObjStrCollar = ObjStrCollars.<strong>Item</strong>(1)
+
+<span class="keyword">End Sub</span>
+...</pre>
+
+			<p>In above lines, <code>GetCollar</code> method finds collar object from given slot. This is the collar used for testing.</p>
+			</li>
+<li>
+			<p><strong><a name="Step7"></a>Setting up collar parameters</strong></p>
+			<p>In this step UC sets up collar parameters.</p>
+			<pre class="code">... 
+  <strong>SetCollarParameters</strong> ObjStrCollar
+...</pre>
+<pre class="code">... 
+<span class="keyword">Sub</span> <strong>SetCollarParameters</strong>(iObjStrCollar <span class="keyword">As</span> StrCollar)
+    
+   iObjStrCollar.<strong>Material</strong> = "Steel A90"
+   
+   iObjStrCollar.<strong>MaterialThrowOrientation</strong> = 1
+	
+   <span class="keyword">Dim</span> oThickness <span class="keyword">As</span> Parameter
+   <span class="keyword">Set</span> oThickness = iObjStrCollar.<strong>Thickness</strong>
+   oThickness.ValuateFromString("20mm")
+	
+   <span class="keyword">Dim</span> oMaterialThrowOrientation <span class="keyword">As</span> CATStrCollarThrowOrientation
+   oMaterialThrowOrientation = iObjStrCollar.<strong>MaterialThrowOrientation</strong>
+	
+   <span class="keyword">Dim</span> oMaterial <span class="keyword">As</span> String
+   oMaterial = iObjStrCollar.<strong>Material</strong>
+	
+   <span class="keyword">Dim</span> ObjCollarParameters <span class="keyword">As</span> StrParameters
+   <span class="keyword">Set</span> ObjCollarParameters = iObjStrCollar.<strong>CollarParameters</strong>
+   <span class="keyword">Dim</span> Width <span class="keyword">As</span> Parameter
+   <span class="keyword">Set</span> Width = ObjCollarParameters.Item(1)
+   Width.ValuateFromString("205mm")
+   <span class="keyword">Dim</span> Angle <span class="keyword">As</span> Parameter
+   <span class="keyword">Set</span> Angle = ObjCollarParameters.Item(2)
+   Angle.ValuateFromString("35deg")
+   
+   iObjStrCollar.<strong>Update</strong>
+
+<span class="keyword">End Sub</span>
+...</pre>
+
+			<p>In above lines, <code>SetCollarParameters</code> method sets up different properties on collar. Here, <code>Material</code> property is used to get and set collar material. <code>Thickness</code> is used to get collar thickness and then valuate it as required. <code>MaterialThrowOrientation</code> is used to set and get different orientations of collar material (0 - catStrCollarThrowOrientationInvert, 1 - catStrCollarThrowOrientationNormal, 2 - catStrCollarThrowOrientationCentered). <code>CollarParameters</code> will get the public parameters on particular collar. Valuate it as required. <code>Update</code> updates the modified collar object.</p>
+			</li>
+<li>
+			<p><strong><a name="Step8"></a>Adding Collar on Slot</strong></p>
+			<p>In this step UC adds a SFD collar on slot.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjStrCollar_2 <span class="keyword">As</span> StrCollar
+  <strong>AddCollar </strong> ObjStrSlot, ObjStrCollar_2
+...</pre>
+<pre class="code">... 
+<span class="keyword">Sub</span><strong> AddCollar</strong>(iObjStrSlot <span class="keyword">As</span> StrSlot, oObjStrCollar_2 <span class="keyword">As</span> StrCollar)
+
+   <span class="keyword">Dim</span> ObjStrCollars <span class="keyword">As</span> StrCollars
+   <span class="keyword">Set</span> ObjStrCollars = iObjStrSlot.Collars
+   
+   <span class="comment">'Add StrCollar</span>
+   <span class="keyword">Set</span> oObjStrCollar_2 = ObjStrCollars.<strong>Add</strong>
+
+<span class="keyword">End Sub</span>
+...</pre>
+
+			<p>In above lines, <code>AddCollar</code> method creates new collar object on given slot.</p>
+			</li>
+<li>
+			<p><strong><a name="Step9"></a>Removing Collar on Slot</strong></p>
+			<p>In this step UC removes a SFD collar on slot.</p>
+			<pre class="code">... 
+<strong>  RemoveCollar</strong> ObjStrSlot
+...</pre>
+<pre class="code">... 
+<span class="keyword">Sub</span> <strong>RemoveCollar</strong>(iObjStrSlot <span class="keyword">As</span> StrSlot)
+
+    <span class="keyword">Dim</span> ListOfCollars <span class="keyword">As</span> StrCollars
+    <span class="keyword">Set</span> ListOfCollars = iObjStrSlot.Collars
+    
+    <span class="comment">'Remove the newly added collar</span>
+    <span class="keyword">Dim</span> ObjStrCollar <span class="keyword">As</span> StrCollar
+    <span class="keyword">Set</span> ObjStrCollar = ListOfCollars.Item(2)
+    ListOfCollars.<strong>Remove</strong> (ObjStrCollar)	
+
+End Sub
+...</pre>
+
+			<p>In above lines, <code>RemoveCollar</code> method removes newly created collar object on given slot.</p>
+			</li>
+
+
+	<li>
+			<p><strong><a name="Step10"></a>Updates the Part object</strong></p>
+			<pre class="code">...
+    ObjPart.<strong>Update</strong>
+<span class="keyword">End Sub</span></pre>
+			<p><code>Update</code> method updates the <code>ObjPart.</code></p>
+			
+			</li>
+		</ol>
+		<table>
+			<caption><a name="Fig.1"></a>Fig.1: Tested Collar</caption>
+			<tr>
+				<td>
+				<img alt="Tested Collar" src="CAAScdSfdUcTestCollar.png" width="877" height="660"/></td>
+			</tr>
+		</table>
+		<script type="text/javascript">insertLinkToTop()</script>
+			<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+  <title>Hex-Dominant Mesh Part Attributes</title>
+  <style type="text/css">
+    .fmt_table
+    {
+      width: 95%;
+    }
+    .fmt_table td
+    {
+      background-color: #C0C0C0;
+      padding: 5px;
+      border: 1px solid black;
+    }
+    .width40
+    {
+      width: 40%;
+    }
+    .width60
+    {
+      width: 60%;
+    }
+    .center
+    {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+  <!-- Header -->
+
+  <table class="DocHeader">
+    <tr>
+      <td class="DocHeader1">
+        <h1><a name="Top"></a>Hex-Dominant Mesh Part Attributes</h1>
+      </td>
+    </tr>
+    <tr>
+      <td class="tech">Technical Article</td>
+    </tr>
+  </table>
+
+  <!-- Abstract and table of contents -->
+
+  <table class="abstract">
+    <tr>
+      <td>
+        <h3>Abstract</h3>
+        <p>This article presents an overview of the <b>Hex-Dominant Mesh Part</b> attributes and its local specifications.</p>
+        <p><b><a href="#Mesh_Part_Creation">Hex-Dominant Mesh Part Creation</a></b></p>
+        <p><b><a href="#Mesh_Part_Support_Definition">Hex-Dominant Mesh Part Support Definition</a></b></p>
+        <p>
+          <b><a href="#Global_Mesh_Specifications">Global Mesh Specifications</a></b>
+        </p>
+        <ul>
+          <li><a href="#Size">Size</a></li>
+          <li><a href="#MinSize">MinSize</a></li>
+          <li><a href="#Angle">Angle</a></li>
+          <li><a href="#UseBoundaryLayers">UseBoundaryLayers</a></li>
+          <li><a href="#Size1Value">Size1Value</a></li>
+          <li><a href="#UseNbElements">UseNbElements</a></li>
+          <li><a href="#NbElementsValue">NbElementsValue</a></li>
+          <li><a href="#Splitting">Splitting</a></li>
+        </ul>
+        <p>
+          <b><a href="#Local_Mesh_Specifications">Local Mesh Specifications</a></b>
+        </p>
+        <ul>
+          <li><a href="#CATFmtHexLocalMeshSizeFace">CATFmtHexLocalMeshSizeFace</a></li>
+          <li><a href="#CATFmtHexLocalMeshSizeBox">CATFmtHexLocalMeshSizeBox</a></li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Mesh part creation -->
+
+  <h2>
+    <a name="Mesh_Part_Creation">Hex-Dominant Mesh Part Creation</a>
+  </h2>
+  <p>A &quot;late type&quot; must be given to indicate which type of mesh part is to be created.</p>
+  <p>In the case of the hex-dominant mesh part, the late type is &quot;<b>CATFmtHexMesher</b>&quot;.</p>
+  <p>The hex-dominant mesh part can be created by using <b>Add</b> method of <b>SimMeshParts</b> object.</p>
+
+  <script type="text/javascript">insertLinkToTop();</script>
+
+  <!-- Support definition -->
+
+  <h2>
+    <a name="Mesh_Part_Support_Definition">Hex-Dominant Mesh Part Support Definition</a>
+  </h2>
+  <p>The Hex-Dominant Mesh Part support can be initialized and managed using the <b>AddSupport</b> method of <b>SimMeshPart</b> object:</p>
+  <ul>
+    <li>
+      <b>AddSupport</b> ( <i>iSupport As AnyObject</i> ) to add a new support to the mesh part
+    </li>
+  </ul>
+
+  <script type="text/javascript">insertLinkToTop();</script>
+
+  <!-- Global Specifications introduction -->
+
+  <h2>
+    <a name="Global_Mesh_Specifications">Global Mesh Specifications</a>
+  </h2>
+
+  <p>
+    Global mesh specifications can be set or retrieved using 
+	following methods of <b>SimMeshPart</b> object:
+  </p>
+
+  <ul>
+    <li>
+      <b>SetAttributeValue</b> ( <i>iSetType As String, iAttribute As String, iValue</i> ) to set a mesh attribute
+    </li>
+    <li>
+      <b>GetAttributeValue</b> ( <i>iSetType As String, iAttribute As String, oValue</i> ) to get a mesh attribute value
+    </li>
+  </ul>
+
+  <p>
+    <b>iAttribute</b> is the 
+	name of specification and <b>iSetType = &quot;Mesh&quot; for all Global Mesh Specifications.</b>
+  </p>
+
+  <!-- Maximum Mesh Size -->
+
+  <p>
+    <b><a name="Size">Size</a></b>
+  </p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        Type: <b>double</b><br /><br />
+        Valuated to mesh elements maximum target size.
+      </td>
+      <td class="width60">
+        This attribute specifies the maximum mesh element size that the mesher tries to respect.
+      </td>
+    </tr>
+  </table>
+
+  <!-- Minimum Mesh Size -->
+
+  <p>
+    <b><a name="MinSize">MinSize</a></b>
+  </p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        Type: <b>double</b><br /><br />
+        Valuated to mesh elements minimum target size.
+      </td>
+      <td class="width60">
+        This attribute specifies the minimum mesh element size that the mesher tries to respect.
+      </td>
+    </tr>
+  </table>
+
+  <!-- Angle -->
+
+  <p>
+    <b><a name="Angle">Angle</a></b>
+  </p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        Type: <b>double</b> (radians)<br /><br />
+        Valuated to the angle under which edges are not captured.
+      </td>
+      <td class="width60">
+        This attribute specifies the smallest angle &theta; between adjacent faces that will result in an edge between mesh element faces.<br /><br />
+        <p class="center"><img src="images/FaceAngle.jpg" alt="Angle"/></p>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Boundary layers - Use -->
+
+  <p>
+    <b><a name="UseBoundaryLayers">UseBoundaryLayers</a></b>
+  </p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        Type: <b>int</b><br /><br />
+        Valuated to
+        <ul>
+          <li><b>1</b> to produce a mesh without boundary layers</li>
+          <li><b>2</b> to produce a mesh with boundary layers</li>
+        </ul>
+      </td>
+      <td class="width60">
+        This attribute specifies whether boundary layers should be added to the mesh (<b>2</b>) or not (<b>1</b>).
+      </td>
+    </tr>
+  </table>
+
+  <!-- Boundary layers - First layer thickness -->
+
+  <p>
+    <b><a name="Size1Value">Size1Value</a></b>
+  </p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        Type: <b>double</b><br /><br />
+        Valuated the expected thickness for the first layer.
+      </td>
+      <td class="width60">
+        This attribute specifies the thickness of the first layer of elements that the mesher tries to respect along the boundary.<br /><br />
+        <b>Warning</b>: this attribute is only taken into account if <b>UseBoundaryLayers</b> is set to <b>2</b>.
+      </td>
+    </tr>
+  </table>
+
+  <!-- Boundary layers - Number of layers use -->
+
+  <p>
+    <b><a name="UseNbElements">UseNbElements</a></b>
+  </p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        Type: <b>int</b><br /><br />
+        Valuated to
+        <ul>
+          <li><b>1</b> to let the mesher compute the number of boundary layers automatically</li>
+          <li><b>2</b> to specify the expected number of boundary layers</li>
+        </ul>
+      </td>
+      <td class="width60">
+        This attribute specified if the number of boundary layers is an user input (<b>2</b>) or not (<b>1</b>).<br />
+        If it is set to <b>1</b>, the mesher will compute the number of boundary layers automatically based on the mesh size to ensure smooth transition towards the interior of the volume.<br /><br />
+        <b>Warning</b>: this attribute is only taken into account if <b>UseBoundaryLayers</b> is set to <b>2</b>.
+      </td>
+    </tr>
+  </table>
+
+  <!-- Boundary layers - Number of layers -->
+
+  <p>
+    <b><a name="NbElementsValue">NbElementsValue</a></b>
+  </p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        Type: <b>int</b><br /><br />
+        Valuated to the expected number of boundary layers.
+      </td>
+      <td class="width60">
+        This attribute specified the number of boundary layers to be generated along the boundary.<br /><br />
+        <b>Warning</b>: this attribute is only taken into account if <b>UseBoundaryLayers</b> and <b>UseNbElements</b> are both set to <b>2</b>.
+      </td>
+    </tr>
+  </table>
+  
+  <!-- Splitting - Standard Edge Capture -->
+  
+  <p>
+    <b><a name="Splitting">Splitting</a></b>
+  </p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        Type: <b>int</b><br /><br />
+        Valuated to
+        <ul>
+          <li><b>1</b> to use the default method which provides better accuracy in capturing sharp edges.</li>
+          <li><b>2</b> to use the alternative method, the &quot;Standard edge capture&quot;, which is typically more robust when dealing with complex, dirty geometry.</li>
+        </ul>
+      </td>
+      <td class="width60">
+        This attribute specified which method is used to manage edge capture while creating a hex-dominant mesh.<br /><br />
+      </td>
+    </tr>
+  </table>
+
+
+  <script type="text/javascript">insertLinkToTop();</script>
+
+  <!-- Local Mesh Specifications introduction -->
+
+  <h2>
+    <a name="Local_Mesh_Specifications">Local Mesh Specifications</a>
+  </h2>
+
+  <p>Local mesh specifications are created by the <code>Add</code> method of the <code>SimMeshSpecifications</code> object.</p>
+<ul>
+	<li><strong>Add</strong> ( <i>iType As String</i> ) with:
+		<ul>
+			<li><strong>iType</strong> is the late type of the mesh specification to 
+			create.</li>
+		</ul>
+	</li>
+</ul>
+<p>The <b>Item</b> and the <b>Remove</b> methods work with an index which is the position 
+of the specification in the collection. The position index starts from 1.</p>
+<p>The support of the local topology specification is managed by the <b>SimLinkAccess</b> object:</p>
+<ul>
+	<li><b>AddLink</b> ( <i>iName As String, iLink As AnyObject</i> )</li>
+	<li><b>RemoveAllLinks</b> ( <i>iName As String</i> )</li>
+	<li><b>RemoveLink</b> ( <i>iName As String, iLink As AnyObject</i> )
+	<ul>
+		<li><b>iName</b> is the name of the link container, here it's <b>&quot;ConnectorList&quot;</b></li>
+	</ul>
+	</li>
+</ul>
+
+<p>The specification values are managed by the following methods of 
+<b>SimMeshSpecification</b>:</p>
+<ul>
+	<li><strong>GetAttributeValue</strong> ( <i>iAttribute As String, oValue</i> )</li>
+	<li><strong>SetAttributeValue</strong> ( <i>iAttribute As String, iValue</i> )
+	<ul>
+		<li><strong>iAttribute</strong> is the attribute name to set/retrieve.</li>
+	</ul>
+	</li>
+</ul>
+
+  <p>
+    <b><a name="CATFmtHexLocalMeshSizeFace">CATFmtHexLocalMeshSizeFace</a></b>
+  </p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        The size to be applied on the support faces is specified through <b>GetAttributeValue</b> and <b>SetAttributeValue</b> with iName = &quot;<b>SizeValue</b>&quot; (type <b>double</b>).
+      </td>
+      <td class="width60">
+        This specification is used to refine the mesh along a given set of faces.<br />
+        The target size should be lower than the maximum mesh size given through the global <b>Size</b> attribute.
+      </td>
+    </tr>
+  </table>
+
+  <p>
+    <b><a name="CATFmtHexLocalMeshSizeBox">CATFmtHexLocalMeshSizeBox</a></b>
+  </p>
+
+  <table class="fmt_table">
+    <tr>
+      <td class="width40">
+        All specification attributes are specified through <b>GetAttribute</b> and <b>SetAttribute</b>:
+        <ul>
+          <li><b>OriginX</b> (type <b>double</b>): the X coordinate of the lower left corner of the box</li>
+          <li><b>OriginY</b> (type <b>double</b>): the Y coordinate of the lower left corner of the box</li>
+          <li><b>OriginZ</b> (type <b>double</b>): the Z coordinate of the lower left corner of the box</li>
+          <li><b>Vector0X</b> (type <b>double</b>): the dimension of the box along the X axis</li>
+          <li><b>Vector1Y</b> (type <b>double</b>): the dimension of the box along the Y axis</li>
+          <li><b>Vector2Z</b> (type <b>double</b>): the dimension of the box along the Z axis</li>
+          <li><b>SizeValue</b> (type <b>double</b>): the target mesh size inside the box</li>
+        </ul>
+      </td>
+      <td class="width60">
+        This specification is used to refine the mesh inside a given Cartesian box: the box is defined by its lower left corner and a vector transforming it into the upper right corner, as shown on the picture below.<br />
+        The target size should be lower than the maximum mesh size given through the global <b>Size</b> attribute.<br /><br />
+        <p class="center"><img src="images/CATFmtHexLocalMeshSizeBox.png" alt="Local Mesh Size in Cartesian Box" height="300"/></p>
+      </td>
+    </tr>
+  </table>
+
+<script type="text/javascript">insertCopyright();</script>
+</body>
+</html>

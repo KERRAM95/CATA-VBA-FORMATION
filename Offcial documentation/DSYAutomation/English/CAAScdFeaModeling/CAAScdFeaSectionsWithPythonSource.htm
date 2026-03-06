@@ -1,0 +1,182 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment"># -------------- Sample SCRIPT written in Python ------------------------------------------</span>
+<span class="comment"># This sample manages section objects into the FEM properties set.</span>
+
+<span class="comment"># Steps :</span>
+
+<span class="comment"># 1 - Retrieves the simulation and its product</span>
+<span class="comment"># 2 - Retrieves the RootOccurence and the RootProduct</span>
+<span class="comment"># 3 - Retrieves the publications</span>
+<span class="comment"># 4 - Creates the FEM representation and retrieving its root object</span>
+<span class="comment"># 5 - Retrieves the properties set</span>
+<span class="comment"># 6 - Creates individual properties</span>
+<span class="comment"># 7 - Sets individual attributes</span>
+<span class="comment"># 8 - Retrieves/Removes individual properties</span>
+<span class="comment"># 9 - Retrieves Shell Section attributes : Thickness, Integration Method...</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  1 - Retrieves the simulation and its product </span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># As a first step, retrieves the simulation editor which is the actived one</span>
+myEditor = CATIA.ActiveEditor
+
+<span class="comment"># Then retrieves the product service</span>
+myProdService = myEditor.GetService("PLMProductService")
+
+<span class="comment"># Retrieves the PLMEntities</span>
+myEntities = myProdService.EditedContent
+
+<span class="comment"># Now retrieves the PLMEntity</span>
+myEntity = myEntities.Item(1)
+
+<span class="comment"># Gets the simulation Root</span>
+MySimulationRoot = myEntity
+
+<span class="comment"># Now retrieves the Model</span>
+myModel = MySimulationRoot.Model
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  2 - Retrieves the RootOccurence and the RootProduct</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Opens the simulation model</span>
+oOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+oOpenService.PLMOpen (myModel)
+
+<span class="comment"># Retrieves the product root product and the root occurrence</span>
+myProductEditor = CATIA.ActiveEditor
+myProductService = myProductEditor.GetService(&quot;PLMProductService&quot;)
+myProductEntities = myProductService.EditedContent
+
+myRootProduct = myProductEntities.Item(1)
+myRootOccurrence = myProductService.RootOccurrence
+
+<span class="comment">#----------------------------------------------------------------------------------------------------</span>
+<span class="comment">#  3 - Retrieves the publications  </span>
+<span class="comment">#----------------------------------------------------------------------------------------------------</span>
+
+myPublications = myRootProduct.Publications
+myPublication = myPublications.GetItem(&quot;Pipe_Extrude&quot;)
+myPublication_2 = myPublications.GetItem("Pump_Housing")
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  4 - Creates the FEM representation and retrieving its root object</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+MyPrdRepFactory = myRootProduct.GetItem(&quot;SimPrdRepFactory&quot;)
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+MyFemRepRoot = MyFemRepRef.GetItem(&quot;SimFemRoot&quot;)
+
+myLink = myProductService.ComposeLink(myRootOccurrence, None, myPublication)
+MyFemRepRoot.AddAssociatedRep (myLink)
+
+myLink_2 = myProdService.ComposeLink(myRootOccurrence, None, myPublication_2)
+MyFemRepRoot.AddAssociatedRep (myLink_2)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  5 - Retrieves the properties set </span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myPropertiesSet = MyFemRepRoot.GetSet(&quot;SimProperties&quot;)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  6 - Creates individual properties</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+mySolidSection = myPropertiesSet.Add(&quot;SimSolidSection&quot;)
+myShellSection = myPropertiesSet.Add(&quot;SimShellSection&quot;)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  7 - Sets individual attributes</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Sets the section support</span>
+myLinkAccess = myShellSection.GetItem(&quot;SimLinkAccess&quot;)
+myLinkAccess.AddLink (&quot;MainSupport&quot;, myLink)
+
+myLinkAccess = mySolidSection.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLink_2)
+
+<span class="comment"># Sets the material behavior</span>
+myShellSection.MaterialBehaviorByName = "Behavior.1"
+mySolidSection.MaterialBehaviorByName = "Behavior.1"
+
+<span class="comment"># Sets the orientation</span>
+myOrientation = myShellSection.Orientation
+
+myAxisSystem = myOrientation.AxisSystem
+myAxisSystem.CoordinateType = win32com.client.constants.SimAxisSystemCartesian
+
+myOrientation.OrientationFlag = True
+myOrientation.AxisOfRotation = win32com.client.constants.SimOrientationAxis2
+myOrientation.AngleOfRotation = 90
+
+<span class="comment"># Sets others attributes</span>
+myShellSection.IntegrationScheme = win32com.client.constants.SimShellSectionSimpsonIntegration
+myShellSection.PoissonMethod = win32com.client.constants.SimShellSectionPoissonDefault
+myShellSection.UniformThickness = 0.002
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  8 - Retrieves/Removes individual properties </span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myRetrievedSolidSection = myPropertiesSet.Item(1)
+
+myRetrievedShellSection = myPropertiesSet.Item(2)
+
+myPropertiesSet.Remove(1)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  9 - Retrieves Shell Section attributes : Thickness, Integration Method...</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+myIntegrationScheme = myRetrievedShellSection.IntegrationScheme
+
+myNumberOfIntegrationPoints = myRetrievedShellSection.NumIntPoints
+
+bHasUniformThickness = myRetrievedShellSection.UniformThicknessFlag
+
+<span class="keyword">if</span>  bHasUniformThickness == <span class="keyword">True</span>:
+    myUniformThickness = myRetrievedShellSection.UniformThickness
+
+myMaterialBehavior = myRetrievedShellSection.MaterialBehavior
+
+myOrientation = myRetrievedShellSection.Orientation
+
+bHasOrientation = myOrientation.OrientationFlag
+<span class="keyword">if</span>  bHasOrientation == <span class="keyword">True</span>:
+    myRotationAxis = myOrientation.AxisOfRotation
+    myAngleOfRotation = myOrientation.AngleOfRotation
+
+
+</pre>
+
+
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>
+

@@ -1,0 +1,322 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Browsing Product Contents</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Browsing Product Contents</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates navigation of the Product Structure Model. Use 
+						case navigates down the hierarchy of an Product Reference-Instance 
+						Model associated with a Product Root Reference loaded in 
+						session. And displays the entire hierarchy in a tree format, 
+						as viewed in the Specification Tree within CATIA, but with 
+						the Representation Instances/References.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:<a href="CAAScdPstUcBrowsingProductContentsSource.htm"> 
+						CAAScdPstUcBrowsingProductContentsSource.htm</a></span></p>
+						<p>Attention the macro can request a slight change to 
+						take into account your own Product types. First read
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a> 
+						before using it.</p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+					<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td></tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 3 steps</p>
+		<ol>
+			<li><a href="#Step1">Searches for a Product in database</a></li>
+			<li><a href="#Step2">Opens the Product and retrieves its Editor</a></li>
+			<li><a href="#Step3">Navigates the Product Reference Recursively</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches for a Product in database</strong></p>
+			<p>As a first step, the UC retrieves a Product from database</p>
+			<p>It begins with a call to <strong>SearchProduct</strong> function. 
+			This function searches for a list of PLM Components from the underlying 
+			database based on an input search criteria[<a href="#References">1</a>]. 
+			This list is output in the PLM Search Result window in CATIA.</p>
+			<pre class="code"> ... 
+ <span class="keyword">    Dim </span>oDBSearch <span class="keyword"> As </span> DatabaseSearch
+ <span class="keyword">    Set </span>oDBSearch = <strong>SearchProduct(oSearchService)</strong>
+...</pre>
+			<p>The function <em>SearchProduct</em> returns the <code>oDBSearch</code> 
+			object, a<code> DatabaseSearch</code>.</p>
+			<p>We build up the search criteria, with a Product Reference type , 
+			and PLM_ExternalID and revision as an input.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Opens the Product and retrieves 
+			its Editor</strong></p>
+			<p>As a next step, the UC essentially loads in session first PLM Entity 
+			output by search collection occurring in the new tab page within Search 
+			Editor retrieved in the last step[<a href="#References">1</a>]. </p>
+			<pre class="code">...
+ <span class="keyword">   Dim</span> oProductEditor <span class="keyword">As</span> Editor
+ <span class="keyword">   Set </span>oProductEditor = <strong>OpenProductAndGetEditor</strong>(oDBSearch)
+...</pre>
+			<p>The function <em>OpenProductAndGetEditor</em> takes a <code>DatabaseSearch</code>,
+			<code>oDBSearch</code>, as its input and returns an Editor which contains 
+			opened Product. This argument was output by the Search on the underlying 
+			database, which occurred in the previous step</p>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Navigates the Product Reference 
+			Recursively</strong></p>
+			<p>Now Use case retrieves the Product Reference (Root) associated with 
+			its reference-Instance Model and then navigates down its product hierarchy 
+			to display its contents, precisely in the same way, as seen in the specification 
+			tree within CATIA, with the Representation Instances/ References as 
+			shown in the <a href="#Fig.1">Fig.1</a> below.</p>
+			<pre class="code">...
+ <strong>   NavigateProductReference </strong> oProductEditor
+...</pre>
+			<p>The function <em>NavigateProductReference </em>takes an <code>Editor</code>,
+			<code>oProductEditor</code>, as an input.</p>
+			<table>
+				<caption><a name="Fig.1"></a>Fig.1: Product model sample output
+				</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Browsing Occurrence Model" src="CAAScdPstUcBrowsingProductContents_image2.jpg"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>The function <em>NavigateProductReference </em>details are as in 
+			the below sub steps.</p>
+			<ol class="task" style="list-style-type: upper-roman">
+				<li>
+				<p>Retrieves the Root Product Occurrence from the current VPM Editor 
+				to navigate</p>
+				<pre class="code">Sub <strong>NavigateProductReference </strong>(oProductEditor)
+ 
+ <span class="keyword">   Dim  </span>oProductService <span class="keyword"> As  </span> PLMProductService
+ <span class="keyword">   Set  </span>oProductService = oProductEditor.GetService(&quot;<strong>PLMProductService</strong>&quot;)
+ 
+  <span class="keyword">  Dim  </span>oVPMRootOccOnRoot <span class="keyword"> As  </span> VPMRootOccurrence
+ <span class="keyword">   Set  </span>oVPMRootOccOnRoot = oProductService.<strong>RootOccurrence</strong>
+...</pre>
+				<p>The <code>PLMProductService</code>, <code>oProductService</code> 
+				is retrieved from the <code>Editor</code>, <code>oProductEditor</code>, 
+				thanks to the <em>GetService</em> method with the string &quot;<em>PLMProductService</em>&quot; 
+				as input</p>
+				<p>Then a call to <em>RootOccurrence</em> Property of the <code>
+				PLMProductService</code>, <code>oProductService</code>, returns 
+				a <code>VPMRootOccurrence</code>, <code>oVPMRootOccOnRoot</code> 
+				.</p>
+				</li>
+				<li>
+				<p>Retrieves the Root Reference from the occurrence model</p>
+				<pre class="code">... 
+ <span class="keyword">   Dim  </span>oVPMRefOnRoot <span class="keyword">As  </span> VPMReference
+ <span class="keyword">   Set  </span>oVPMRefOnRoot = oVPMRootOccOnRoot.<strong>ReferenceRootOccurrenceOf</strong>
+...</pre>
+				<p>The VPMReference, oVPMRefOnRoot is retrieve corresponding 
+				Root Reference from the Root Occurrence VPMRootOccurrence, 
+				oVPMRootOccOnRoot </p>
+				<p>This step is important, user needs to switch from occurrence 
+				model to Reference-instance model. </p>
+				</li>
+				<li>
+				<p>Navigates the Product Reference</p>
+				<p>Here we navigate through model recursively. We will start navigation 
+				from Root Reference which is retrieved in last step.</p>
+				<pre class="code">...
+ <strong>   NavigateProdReference</strong> oVPMRefOnRoot, 1
+...</pre>
+				<p>The function <em>NavigateProdReference</em> takes a <code>VPMReference</code>,
+				<code>oVPMRefOnRoot</code>, as an input. last argument 1 is depth 
+				which will further used for display purpose.</p>
+				<p>The function <em>NavigateProdReference</em> details are as in 
+				the below sub steps</p>
+				<ol class="task" style="list-style-type: lower-roman">
+					<li>
+					<p>Retrieves the Rep Instances under the Product Reference</p>
+					<pre class="code">Sub <strong>NavigateProdReference</strong>(oProdRef, depth)
+ 
+    <strong>NavigateProdReferenceForRepInst</strong> oProdRef, depth <span class="keyword">  </span>
+...</pre>
+					<p>The function <em>NavigateProdReferenceForRepInst</em> takes 
+					a <code>VPMReference</code>, <code>oProdRef</code>, as an input. 
+					last argument 1 is depth which will further used for display 
+					purpose.</p>
+					<p>The function <em>NavigateProdReferenceForRepInst</em> details 
+					are as in the below sub steps</p>
+					<ol class="task" style="list-style-type: lower-alpha">
+						<li>
+						<p>Retrieves the list of Rep Instances within the input 
+						reference</p>
+						<pre class="code">Sub <strong>NavigateProdReferenceForRepInst</strong>(oProdRef, depth)
+    
+ <span class="keyword">  Dim  </span>oVPMRepInsts <span class="keyword"> As  </span> VPMRepInstances
+ <span class="keyword">  Set  </span>oVPMRepInsts = oProdRef.RepInstances 
+...</pre>
+						<p>A call to <em>RepInstances</em> Property of the <code>
+						VPMReference</code>, retrieves the <code>VPMRepInstances
+						</code>a collection object,<code> oVPMRepInsts </code>
+						</p>
+						</li>
+						<li>
+						<p>Navigates through each child Rep instances</p>
+						<pre class="code">... 
+    For k = 1 To oVPMRepInsts.Count
+    
+       <span class="keyword">Dim</span> oVPMRepInst<span class="keyword"> As</span> VPMRepInstance
+       <span class="keyword">Set</span> oVPMRepInst = oVPMRepInsts.Item(k)
+        
+       <span class="keyword">Dim</span> oVPMRepRef<span class="keyword"> As</span> VPMRepReference
+       <span class="keyword">Set</span> oVPMRepRef = oVPMRepInst.<strong>ReferenceInstanceOf</strong>
+              
+    Next k   
+...</pre>
+						<p>Next UC parse through the <em>VPMRepInstances </em>collection 
+						object, a <code>oVPMRepInsts </code>and retrieves Product 
+						Representation Reference Instance <code>oVPMRepInst</code> 
+						from its index, thanks <em>Item </em>method of <em>VPMRepInstances</em></p>
+						<p>Further we retrieve VPM Rep reference of rep instance, 
+						a <em>VPMRepReference</em> <code>oVPMRepRef</code> using
+						<em>ReferenceInstanceOf</em> property of <em>VPMRepReference,
+						</em><code>oVPMRepRef</code></p>
+						</li>
+					</ol>
+					</li>
+					<li>
+					<p>Retrieves the list of Instances within the input <em>Reference</em></p>
+					<pre class="code">... 
+ <span class="keyword">  Dim  </span>oListChildrenInstances <span class="keyword">As  </span> VPMInstances
+ <span class="keyword">  Set  </span>oListChildrenInstances = oProdRef.Instances
+...</pre>
+					<p>A call to Instances Property of the <code>VPMReference</code>, 
+					retrieves the <code>VPMInstances </code>a collection object,<code> 
+					oListChildrenInstances</code> </p>
+					</li>
+					<li>
+					<p>Navigates through each child Instances recursively</p>
+					<pre class="code">...  					
+    For i = 1 To oListChildrenInstances.Count
+   
+        <span class="keyword">Dim  </span>oVPMInst <span class="keyword">As  </span> VPMInstance
+        <span class="keyword">Set  </span>oVPMInst = oListChildrenInstances.Item(i)
+                
+        <span class="keyword">Dim  </span>oVPMRef <span class="keyword">As  </span> VPMReference
+        <span class="keyword">Set  </span>oVPMRef = oVPMInst.<strong>ReferenceInstanceOf</strong>
+        ...
+        <strong>NavigateProdReference</strong> oVPMRef, depth + 1
+     
+    Next i 
+...</pre>
+					<p>We parse through the <em>VPMInstances</em> collect object, 
+					a <code>oListChildrenInstances</code> and retrieves PLM Product 
+					Instance <code>oVPMInst</code> from its index, thanks <em>Item
+					</em>method of <em>VPMInstances</em> </p>
+					<p>From each instance a call to <em>ReferenceInstanceOf</em> 
+					of VPMInstance returns a Product reference <code>VPMReference,
+					</code><code>oVPMRef </code></p>
+					<p>A recursive call to <em>NavigateProdReference</em> with the
+					<code>VPMReference</code> object, a <code>oVPMRef</code> as 
+					one of its arguments. The second argument (depth + 1) represents 
+					the offset at which the child Reference will be displayed in 
+					the output, implying it is output at &quot;+1 tab&quot; offset relative 
+					to its parent Reference. </p>
+					</li>
+				</ol>
+				</li>
+			</ol>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<table>
+	<tbody>
+	<tr>
+		<td valign="top">[1]</td>
+		<td><a href="CAAScdPstUcOpenProductReference.htm">Opening Product Reference</a></td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

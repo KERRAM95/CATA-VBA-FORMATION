@@ -1,0 +1,206 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an Interference Simulation and Processing the Results</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2" style="height: 10px">
+				<h1>Creating an Interference Simulation and Processing the Results</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case 
+						primarily focuses on the methodology to create an 
+						interference simulation and analyze the results. </p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin :</span> 
+						<ul>
+							<li>You should first launch CATIA and import the 
+							<code><div class=vb_sample_data>SkateboardITF.3dxml</div></code> file supplied in 
+							folder <code>
+							InstallRootFolder\CAADoc\Doc\English\CAAScdITFCheck\samples\</code> 
+							where <code>InstallRootFolder</code> is the 
+							directory where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro :
+						<a href="CAAScdITFUcITFSimCreationSource.htm">CAAScdITFUcITFSimCreationSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table>
+	<tr>
+		<td>
+		<p>This use case:</p>
+		<ol>
+			<li><a href="#Step1">Creating the Simulation</a></li>
+			<li><a href="#Step2">Setting the Interferences Groups</a></li>
+			<li><a href="#Step3">Executing the Simulation and Computing the Interferences Results</a></li>	
+			<li><a href="#Step4">Processing the Results</a></li>		
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task wide">
+			<li>
+				<p><a name="Step1"></a><strong>Creating the Simulation</strong></p>
+				
+				<pre class="code">
+<span class="comment">' Gets the Root Reference </span>
+<span class="keyword">Dim</span> RootOcc <span class="keyword">As</span> VPMRootOccurrence 
+<span class="keyword">Set</span> RootOcc = CATIA.ActiveEditor.ActiveObject 
+
+<span class="keyword">Dim</span> RootRef <span class="keyword">As</span> VPMReference 
+<span class="keyword">Set</span> RootRef = RootOcc.ReferenceRootOccurrenceOf 
+
+<span class="comment">' Gets the Interference Service </span>
+<span class="keyword">Dim</span> ITFServices <span class="keyword">As</span> InterferenceServices 
+<span class="keyword">Set</span> ITFServices = CATIA.ActiveEditor.GetService(&quot;InterferenceServices&quot;) 
+
+<span class="comment">' Creates the Simulation and sets its Specification Type and its Interference Groups Computation Type </span>
+<span class="keyword">Dim</span> SpecificationType <span class="keyword">As</span> CatInterferenceSpecificationType 
+SpecificationType = catInterferenceSpecificationTypeClash 
+
+<span class="keyword">Dim</span> GroupCmpType2 <span class="keyword">As</span> CatInterferenceGroupComputationType2 
+GroupCmpType2 = catInterferenceGroupComputationTypeGroupAgainstGroup 
+
+<span class="keyword">Dim</span> ITFSimu <span class="keyword">As</span> InterferenceSimulation 
+ITFServices.CreateInterferenceSimulation2 RootRef, GroupCmpType2, ITFSimu 
+
+ ITFSimu.InterferenceSpecificationType = SpecificationType 
+...</pre>
+			
+			</li>
+			<li>
+				<p><a name="Step2"></a><strong>Setting the Interferences Groups</strong></p>
+	
+				<pre class="code"> ...
+<span class="comment">' Gets the SkateBody Occurence </span>
+<span class="keyword">Dim</span> occSkateBody <span class="keyword">As</span> VPMOccurrence 
+<span class="keyword">Set</span> occSkateBody = RootOcc.Occurrences.Item(1) 
+
+<span class="comment">' Sets the Skate Body Group </span>
+<span class="keyword">Dim</span> boardGroup <span class="keyword">As</span> InterferenceGroupObjects 
+ITFSimu.GetGroupObjects 1, boardGroup 
+
+boardGroup.Add2 occSkateBody 
+
+<span class="comment">' Gets the TruckWheels Occurences </span>
+<span class="keyword">Dim</span> occTruckWheel(1) <span class="keyword">As</span> VPMOccurrence 
+<span class="keyword">Set</span> occTruckWheel(0) = RootOcc.Occurrences.Item(2) 
+<span class="keyword">Set</span> occTruckWheel(1) = RootOcc.Occurrences.Item(3) 
+
+<span class="comment">' Sets the Truck Group </span>
+<span class="keyword">Dim</span> truckGroup <span class="keyword">As</span> InterferenceGroupObjects 
+ITFSimu.GetGroupObjects 2, truckGroup 
+
+<span class="comment">' Creates the Wheel Group </span>
+<span class="keyword">Dim</span> wheelGroup <span class="keyword">As</span> InterferenceGroupObjects 
+ITFSimu.AddGroupObjects wheelGroup 
+
+<span class="comment">' Gets the Trucks Occurrences and the Wheels Occurrences and Adds them to their Group</span>
+<span class="keyword">Dim</span> occTruck <span class="keyword">As</span> VPMOccurrence 
+<span class="keyword">Dim</span> occWheel(1) <span class="keyword">As</span> VPMOccurrence 
+
+<span class="keyword">For</span> i = 0 <span class="keyword">To</span> 1 
+  <span class="comment">' Adds the Truck to the Truck Group </span>
+  <span class="keyword">Set</span> occTruck = occTruckWheel(i).Occurrences.Item(1) 
+  truckGroup.Add2 occTruck 
+
+  <span class="comment">' Adds the Wheels to the Wheel Group </span>
+  <span class="keyword">Set</span> occWheel(0) = occTruckWheel(i).Occurrences.Item(2) 
+  wheelGroup.Add2 occWheel(0) 
+  <span class="keyword">Set</span> occWheel(1) = occTruckWheel(i).Occurrences.Item(3) 
+  wheelGroup.Add2 occWheel(1) 
+<span class="keyword">Next</span> 
+...</pre>
+				<p>The Simulation is created by default with two empty groups. 
+				To create the SkateBody Group and the Truck Group, the empty 
+				Group are used with the method GetGroupObjects. To create the 
+				Wheel Group, the method AddGroupObjects is used.</p>
+			</li>
+			<li>
+				<p><a name="Step3"></a><strong>Executing the Simulation and Computing the Interferences Results</strong></p>
+				<pre class="code">...
+ITFSimu.Execute
+...</pre>
+			</li>
+			<li>
+				<p><a name="Step4"></a><strong>Processing the Results</strong></p>
+				
+				<pre class="code">
+<span class="comment">' Gets the Interference Results</span>
+<span class="keyword">Dim</span> ListInterferences <span class="keyword">As</span> InterferenceResults 
+<span class="keyword">Set</span> ListInterferences = ITFSimu.InterferenceResults 
+
+<span class="comment">' Analizes each Result</span>
+<span class="keyword">Dim</span> oInterference <span class="keyword">As</span> InterferenceResult 
+
+<span class="keyword">For</span> i = 1 <span class="keyword">To</span> ListInterferences.Count 
+  <span class="keyword">Set</span> oInterference = ListInterferences.Item(i) 
+
+  <span class="keyword">If</span> oInterference.Type = catInterferenceResultTypeContact <span class="keyword">Then</span> 
+     oInterference.UserType = catInterferenceResultUserTypeContact 
+     oInterference.AnalysisStatus = catInterferenceResultStatusOK 
+     oInterference.UserComment = &quot;No problem&quot; 
+  <span class="keyword">Else</span> 
+     oInterference.UserType = catInterferenceResultUserTypeUndefined 
+     oInterference.AnalysisStatus = catInterferenceResultStatusKO 
+     oInterference.UserComment = &quot;Problem&quot; 
+  <span class="keyword">End If </span>
+<span class="keyword">Next</span> 
+...</pre>
+			
+			</li>
+		</ol>
+		<table>
+				<caption><a name="Fig.1"></a>Fig.1: The Generated Interference Simulation</caption>
+				<tr>
+					<td><img alt="The Generated Interference Simulation" height="400" src="images/CAAScdAssUcITFSimCreationPicture.png" width="1200"/></td>
+				</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

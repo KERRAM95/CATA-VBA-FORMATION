@@ -1,0 +1,162 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAMpaBaseIDLItf SimMathPlane (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAMpaBaseIDLItf.htm" href="../SMAMpaBaseIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAMpaBaseIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimMathPlane"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimMathPlane<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimMathPlane_21116','SimMathPlane','0');</script>
+<section id='maindesc'>
+<b><i> Represents the Math Plane object.</i></b><br>
+
+ The <code>SimMathPlane</code> object is composed of normalized in-plane direction vectors and an origin position. These form a valid plane definition with no zero length or co-linear vectors.
+ 
+ <!-- @sample -->
+ <dl>
+ Given a <code>SimMeshedBolt</code> object with an attribute <code>Plane</code> of type <code>SimMathPlane</code>, you can retrieve <code>SimMathPlane</code> object as following:
+ <dt><strong>Example:</strong></dt>
+ <dd>
+ <pre>
+ Dim MyMeshedBolt As SimMeshedBolt
+ ...
+ Dim MyMathPlane As SimMathPlane
+ Set MyMathPlane = MyMeshedBolt.Plane
+ </pre>
+ </dd>
+ <dt><strong>Example in Python:</strong></dt>
+ <dd>
+ <pre>
+ ...
+ myMathPlane = myMeshedBolt.Plane
+ </pre>
+ </dd>
+ </dl>
+ <!-- @sample -->
+ <dl>
+ You can return values by chaining properties. Given a feature <code>SimMeshedBolt</code> with an attribute <code>Plane</code> of type <code>SimMathPlane</code>, you can chain properties as following:
+ <dt><strong>Example:</strong></dt>
+ <dd>
+ <pre>
+ Dim MyMeshedBolt As SimMeshedBolt
+ ...
+ MyX = MyMeshedBolt.Plane.FirstDirection.X
+ </pre>
+ </dd>
+ <dt><strong>Example in Python:</strong></dt>
+ <dd>
+ <pre>
+ ...
+ MyX = MyMeshedBolt.Plane.FirstDirection.X
+ </pre>
+ </dd>
+ </dl>
+
+ <!-- @sample -->
+ <dl>
+ You must use assignment to set values, and cannot set values by chaining properties. Given a feature <code>SimMeshedBolt</code> with an attribute <code>Plane</code> of type <code>SimMathPlane</code>, you can set values as following:
+ <dt><strong>Example:</strong></dt>
+ <dd>
+ <pre>
+ Dim MyMeshedBolt As SimMeshedBolt
+ ...
+ Dim MyMathPlane As SimMathPlane
+ Set MyMathPlane = MyMeshedBolt.Plane
+ Dim MyDirection As SimMathVector
+ Set MyDirection = MyMathPlane.FirstDirection
+ MyDirection.X = 0.5
+ ...
+ MyMathPlane.FirstDirection = MyDirection
+ MyMeshedBolt.Plane = MyMathPlane
+ </pre>
+ </dd>
+ <dt><strong>Example in Python:</strong></dt>
+ <dd>
+ <pre>
+ ...
+ MyMathPlane = MyMeshedBolt.Plane
+ MyDirection = MyMathPlane.FirstDirection
+ MyDirection.X = 0.5
+ ...
+ MyMathPlane.FirstDirection = MyDirection
+ MyMeshedBolt.Plane = MyMathPlane
+ </pre>
+ </dd>
+ </dl>
+
+ <dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('SMAIAMpaMeshedBolt','','SMAIAMpaMeshedBolt') </script>, <script type="text/javascript"> activateLinkAnchor('SMAIAMpaMathVector','','SMAIAMpaMathVector') </script>, <script type="text/javascript"> activateLinkAnchor('SMAIAMpaMathPoint','','SMAIAMpaMathPoint') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#FirstDirection"><b>FirstDirection</b></a>
+</td><td  id='tdright'>  Returns or sets the first direction of the plane.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Origin"><b>Origin</b></a>
+</td><td  id='tdright'>  Returns or sets the origin of the plane.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SecondDirection"><b>SecondDirection</b></a>
+</td><td  id='tdright'>  Returns or sets the second direction of the plane.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="FirstDirection"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FirstDirection</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SimMathVector','SimMathVector')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the first direction of the plane.
+</dd>
+<a id="Origin"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Origin</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SimMathPoint','SimMathPoint')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the origin of the plane.
+</dd>
+<a id="SecondDirection"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SecondDirection</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SimMathVector','SimMathVector')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the second direction of the plane.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

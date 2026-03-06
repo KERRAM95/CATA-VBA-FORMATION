@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<meta http-equiv="Content-Language" content="en-us" />
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta name="topictype" content="Uc" />
+	<meta name="devlang" content="idl" />
+	<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+	<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+	<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+	<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+	
+	<title>Managing Connection Property Features</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Managing Connection Property Features</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This use case primarily focuses on the methodology 
+					to include and exclude connection property into the FEM representation.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					<ul>
+						<li>
+							Launch CATIA and then import and open the
+							<code><div class=vb_sample_data>CAAScdFeaPumpModel.3dxml</div></code> file supplied 
+							in the folder <code>
+						InstallRootFolder\CAADoc\Doc\English\CAAScdFeaScenario\samples\</code> 
+							where <code>InstallRootFolder</code> is the folder 
+						where the API CD-ROM is installed.
+						</li>
+						<li>Launch the structural scenario App and create a structural simulation.
+						</li>
+            <li>Note: Creation of new PLM objects via scripting, as in this 
+                use case, requires an enabling license in addition to the
+                interactive Roles needed to access the functionality.</li>                        
+					</ul>
+					<p><span class="run-in">Where to find the macro:
+					<a href="CAAScdFeaManagingConnectionPropertyWithPythonSource.htm">
+					CAAScdFeaManagingConnectionPropertyWithPythonSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the simulation and its product</a></li>
+			<li><a href="#Step2">Creates the FEM representation and retrieves its root object</a></li>
+			<li><a href="#Step3">Creates a spring property connection</a></li>
+			<li><a href="#Step4">Checks the connection property inclusion</a></li>
+			<li><a href="#Step5">Updates the FEM representation</a></li>
+			<li><a href="#Step6">Excludes the connection property</a></li>
+			<li><a href="#Step7">Includes the connection property again</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+				<p><strong><a name="Step1"></a>Retrieves the simulation and its product</strong></p>
+				<p>As a first step, the UC retrieves the simulation and its product from the simulation editor. </p>
+<pre class="code">...
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+...</pre>
+<p>Then, opens the simulation model and retrieves the root occurence and the root product</p>
+<pre class="code">...
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+
+myProductEditor = CATIA.ActiveEditor
+myProductService = myProductEditor.GetService("PLMProductService")
+
+myProductEntities = myProductService.EditedContent
+MyRootProduct = myProductEntities.Item(1)
+
+myRootOccurrence = myProductService.RootOccurrence
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step2"></a>Creates the FEM representation and retrieves its root object</strong></p>
+				<p>In this step UC creates a new FEM representation object. To 
+				perform the creation, a simulation representation factory have to be 
+				retrieved on the reference object on which the FEM rep will be 
+				aggregated.</p>
+<pre class="code">...
+MyPrdRepFactory = MyRootProduct.GetItem("SimPrdRepFactory")
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep("FEM")
+MyFemRepRoot = MyFemRepRef.GetItem("SimFemRoot")
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step3"></a>Creates connection property</strong></p>
+				<p>In this step UC creates connection property and includes it in the FEM representation upon addition.</p>
+				<p>For further information about creating a connection property refer to the spring connection property
+				section of the article <a href="CAAScdFeaConnectionsWithPython.htm">Creating a Connection Property</a>.
+				</p>
+			</li>
+			<li>
+				<p><strong><a name="Step4"></a>Checks the connection property inclusion</strong></p>
+				<p>In this step UC checks whether the connection property is included or not.</p>
+<pre class="code">...
+MyFemRepRoot.IsIncludedPropertyConnection (myRootOccurrence, mySpringConnection)
+...
+</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step5"></a>Updates the FEM representation</strong></p>
+				<p>In this step UC updates the FEM representation with the previously included connection property.</p>
+<pre class="code">...
+MyFemRepRoot.Update
+...
+</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step6"></a>Excludes the connection property</strong></p>
+				<p>In this step UC excludes the connection property from the FEM representation.</p>
+<pre class="code">...
+MyFemRepRoot.ExcludePropertyConnection (myRootOccurrence, mySpringConnection)
+...
+</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step7"></a>Includes the connection property again</strong></p>
+				<p>In this step UC includes the connection property in the FEM representation again.</p>
+<pre class="code">...
+MyFemRepRoot.IncludePropertyConnection (myRootOccurrence, mySpringConnection)
+...
+</pre>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>	
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

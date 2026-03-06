@@ -1,0 +1,311 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Mesh Parts and Their Attributes</title>
+<style type="text/css">
+    .padded td, .padded th {
+        padding: 5px;
+        border: 1px solid black;
+    }
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Mesh Parts and Their Attributes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+				<h3>Abstract</h3>
+				<p>The following reference article describes the different types 
+				of mesh parts, their attributes and usage.</p>
+				<p>This paper explains two types of mesh parts:</p>
+				<ul>
+				    <li>The Beam Mesher. See <a href="CAAScdFeaBeamMeshPartAttributes.htm">Beam Mesh Part Attributes</a>.
+				    <em>The description of all attributes of the Beam mesh part.</em></li>
+				    <li>The Coating 1D Mesher. See <a href="CAAScdFeaCoating1DMeshPartAttributes.htm">Coating 1D Mesh Part Attributes</a>.
+				    <em>The description of all attributes of the Coating 1D mesh part.</em></li>
+				    <li>The Coating 2D Mesher. See <a href="CAAScdFeaCoating2DMeshPartAttributes.htm">Coating 2D Mesh Part Attributes</a>.
+				    <em>The description of all attributes of the Coating 2D mesh part.</em></li>
+				    <li>The Extrusion Offset. See <a href="CAAScdFeaOffsetExtrusionMeshPartAttributes.htm">Extrusion Offset Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Extrusion Offset mesh part.</em> </li>
+					<li>The Extrusion Rotation. See <a href="CAAScdFeaRotationExtrusionMeshPartAttributes.htm">Extrusion Rotation Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Extrusion Rotation mesh part.</em> </li>
+					<li>The Extrusion Spine. See <a href="CAAScdFeaSpineExtrusionMeshPartAttributes.htm">Extrusion Spine Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Extrusion Spine mesh part.</em> </li>
+					<li>The Extrusion Symmetry. See <a href="CAAScdFeaSymmetryExtrusionMeshPartAttributes.htm">Extrusion Symmetry Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Extrusion Symmetry mesh part.</em> </li>
+					<li>The Extrusion Translation. See <a href="CAAScdFeaTranslationExtrusionMeshPartAttributes.htm">Extrusion Translation Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Extrusion Translation mesh part.</em> </li>
+				    <li>The Hex-Dominant Mesher. See <a href="CAAScdFeaHexDominantMeshPartAttributes.htm">Hex-Dominant Mesher Attributes</a>.
+					<em>The description of all attributes of the Hex-Dominant mesh part.</em> </li>
+					<li>The Octree Mesher. See <a href="CAAScdFeaOctreeMeshPartAttributes.htm">Octree Mesher Attributes</a>.
+					<em>The description of all attributes of the Octree mesh part.</em> </li>
+					<li>The Offset Mesher. See <a href="CAAScdFeaOffsetMeshPartAttributes.htm">Offset Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Offset mesh part.</em> </li>
+					<li>The Partition Hex Mesher. See <a href="CAAScdFeaPartitionHexMeshPartAttributes.htm">Partition Hex Mesher Attributes</a>.
+					<em>The description of all attributes of the Partition Hex mesh part.</em> </li>
+					<li>The Quadrangle Surface Mesher. See <a href="CAAScdFeaSurfaceQuadMeshPartAttributes.htm">Surface Quadrangle Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Surface Quadrangle mesh part.</em></li>
+					<li>The Rotation Mesher. See <a href="CAAScdFeaRotationMeshPartAttributes.htm">Rotation Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Rotation mesh part.</em> </li>
+					<li>The Sweep 3D Mesher. See <a href="CAAScdFeaSweep3DMeshPartAttributes.htm">Sweep 3D Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Sweep 3D mesh part.</em> </li>
+					<li>The Symmetry Mesher. See <a href="CAAScdFeaSymmetryMeshPartAttributes.htm">Symmetry Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Symmetry mesh part.</em> </li>
+					<li>The Tetrahedron Mesher. See <a href="CAAScdFeaTetMeshPartAttributes.htm">Tetrahedron Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Tetrahedron mesh part.</em></li>
+					<li>The Tetrahedron Filler Mesher. See <a href="CAAScdFeaTetFillerMeshPartAttributes.htm">Tetrahedron Filler Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Tetrahedron Filler mesh part.</em> </li>
+					<li>The Translation Mesher. See <a href="CAAScdFeaTranslationMeshPartAttributes.htm">Translation Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Translation mesh part.</em> </li>
+					<li>The Triangle Surface Mesher. See <a href="CAAScdFeaSurfaceTriaMeshPartAttributes.htm">Surface Triangle Mesh Part Attributes</a>.
+					<em>The description of all attributes of the Surface Triangle mesh part.</em></li>
+				</ul>
+				<p>This paper describes also how to access to:</p>
+				<ul>
+					<li><a href="#Mesh_Part_Creation"><strong>Mesh Part Creation</strong></a></li>
+					<li><a href="#Global_Attributes"><strong>Global Attributes</strong></a>.</li>
+					<li><a href="#Local_Topology_Specifications"><strong>Local Topology Specifications</strong></a>.</li>
+					<li><a href="#Local_Mesh_Specifications"><strong>Local Mesh Specifications</strong></a>.</li>
+					<li><a href="#Meshing_Rules"><strong>Meshing Rules</strong></a>.</li>
+					<li><a href="#Meshing_Quality"><strong>Mesh Quality</strong></a>.</li>
+				</ul>
+				</td>
+			</tr>
+		</table>
+<h2><a name="Mesh_Part_Creation">Mesh Part creation</a></h2>
+<p>Mesh Part creation is managed the <code>Add</code> method of the mesh part collection object.</p>
+<p>A &quot;late type&quot; must be given to indicate which type of mesh part is to be created:</p>
+<table class="padded">
+    <tr>
+        <th>Mesh part</th>
+        <th>Late type</th>
+    </tr>
+    <tr>
+        <td>Beam</td>
+        <td>CATFmtBeamRulesMesher</td>
+    </tr>
+    <tr>
+        <td>Coating 2D</td>
+        <td>CATFmtCoating2DMesher</td>
+    </tr>
+    <tr>
+        <td>Extrusion Offset</td>
+        <td>CATFmtExtrusionOffsetMesher</td>
+    </tr>
+    <tr>
+        <td>Extrusion Rotation</td>
+        <td>CATFmtExtrusionRotationMesher</td>
+    </tr>
+    <tr>
+        <td>Extrusion Spine</td>
+        <td>CATFmtExtrusionSpineMesher</td>
+    </tr>
+    <tr>
+        <td>Extrusion Symmetry</td>
+        <td>CATFmtExtrusionSymmetryMesher</td>
+    </tr>
+    <tr>
+        <td>Extrusion Translation</td>
+        <td>CATFmtExtrusionTranslationMesher</td>
+    </tr>
+    <tr>
+        <td>Hex-Dominant Mesher</td>
+        <td>CATFmtHexMesher</td>
+    </tr>
+    <tr>
+        <td>Octree 2D</td>
+        <td>CATFmtOctree2DRulesMesher</td>
+    </tr>
+    <tr>
+        <td>Octree 3D</td>
+        <td>CATFmtOctree3DRulesMesher</td>
+    </tr>
+    <tr>
+        <td>Offset</td>
+        <td>CATFmtOffsetMesher</td>
+    </tr>
+    <tr>
+        <td>Partition Hex Mesher</td>
+        <td>CATFmtPartitionHexMesher</td>
+    </tr>
+    <tr>
+        <td>Quadrangle Surface</td>
+        <td>CATFmtSurfQuadMesher</td>
+    </tr>
+    <tr>
+        <td>Rotation</td>
+        <td>CATFmtRotationMesher</td>
+    </tr>
+    <tr>
+        <td>Sweep 3D</td>
+        <td>CATFmtSweep3DMesher</td>
+    </tr>
+    <tr>
+        <td>Symmetry</td>
+        <td>CATFmtSymmetryMesher</td>
+    </tr>  
+    <tr>
+        <td>Tetrahedron</td>
+        <td>CATFmt3DRulesMesher</td>
+    </tr>
+    <tr>
+        <td>Tetrahedron Filler</td>
+        <td>CATFmtGHS3DMesher</td>
+    </tr>    
+    <tr>
+        <td>Translation</td>
+        <td>CATFmtTranslationMesher</td>
+    </tr>
+    <tr>
+        <td>Triangle Surface</td>
+        <td>CATFmtSurfTriaMesher</td>
+    </tr>
+</table>
+
+<h2><a name="Global_Attributes">Global Attributes</a></h2>
+<p>Global attributes is managed using <code>SimMeshPart</code> object:</p>
+<ul>
+	<li><strong>SetAttributeValue</strong> ( <i>iSetType As String, iAttribute As String, iValue</i> ) 
+	to set an attribute value.</li>
+	<li><strong>GetAttributeValue</strong> ( <i>iSetType As String, iAttribute As String, oValue</i> ) 
+	to get an attribute value.</li>
+</ul>
+<p>iAttribute is the global attribute&#39;s name and iSetType is the type of specification:</p>
+<ul>
+	<li><strong>iSetType =&quot;Mesh&quot;</strong> for Global Mesh Attributes.</li>
+	<li><strong>iSetType =&quot;Topology&quot;</strong> for Global Topology Attributes.</li>
+</ul>
+<h2><a name="Local_Topology_Specifications">Local Topology Specifications</a></h2>
+<p>Local topology specifications are created by the <code>Add</code> method of the <code>SimTopologySpecifications</code> object.</p>
+<ul>
+	<li><strong>Add</strong> ( <i>iType As String</i> ) with:
+		<ul>
+			<li><strong>iType</strong> is the late type of the topology specification to 
+			create.</li>
+		</ul>
+	</li>
+</ul>
+<p>The <code>Item</code> and the <code>Remove</code> methods work with an index which is the position 
+of the specification in the collection. The position index starts from 1.</p>
+<p>The support of the local topology specification is managed by the <b>SimLinkAccess</b> object:</p>
+<ul>
+	<li><b>AddLink</b> ( <i>iName As String, iLink As AnyObject</i> )</li>
+	<li><b>RemoveAllLinks</b> ( <i>iName As String</i> )</li>
+	<li><b>RemoveLink</b> ( <i>iName As String, iLink As AnyObject</i> )
+	<ul>
+		<li><b>iName</b> is the name of the link container, here it's <b>&quot;ConnectorList&quot;</b></li>
+	</ul>
+	</li>
+</ul>
+<p>The specification values are managed by the following methods:</p>
+<ul>
+	<li><strong>GetAttributeValue</strong> ( <i>iAttribute As String, oValue</i> )</li>
+	<li><strong>SetAttributeValue</strong> ( <i>iAttribute As String, iValue</i> )
+	<ul>
+		<li><strong>iAttribute</strong> is the attribute name to set/retrieve.</li>
+	</ul>
+	</li>
+</ul>
+<h2><a name="Local_Mesh_Specifications">Local Mesh Specifications</a></h2>
+<p>Local mesh specifications are created by the <code>Add</code> method of the <code>SimMeshSpecifications</code> object.</p>
+<ul>
+	<li><strong>Add</strong> ( <i>iType As String</i> ) with:
+		<ul>
+			<li><strong>iType</strong> is the late type of the mesh specification to 
+			create.</li>
+		</ul>
+	</li>
+</ul>
+<p>The <code>Item</code> and the <code>Remove</code> methods work with an index which is the position 
+of the specification in the collection. The position index starts from 1.</p>
+<p>The support of the local topology specification is managed by the <b>SimLinkAccess</b> object:</p>
+<ul>
+	<li><b>AddLink</b> ( <i>iName As String, iLink As AnyObject</i> )</li>
+	<li><b>RemoveAllLinks</b> ( <i>iName As String</i> )</li>
+	<li><b>RemoveLink</b> ( <i>iName As String, iLink As AnyObject</i> )
+	<ul>
+		<li><b>iName</b> is the name of the link container, here it's <b>&quot;ConnectorList&quot;</b></li>
+	</ul>
+	</li>
+</ul>
+
+<p>The specification values are managed by the following methods:</p>
+<ul>
+	<li><strong>GetAttributeValue</strong> ( <i>iAttribute As String, oValue</i> )</li>
+	<li><strong>SetAttributeValue</strong> ( <i>iAttribute As String, iValue</i> )
+	<ul>
+		<li><strong>iAttribute</strong> is the attribute name to set/retrieve.</li>
+	</ul>
+	</li>
+</ul>
+<h2><a name="Meshing_Rules">Meshing Rules</a></h2>
+<p>A Meshing Rule can be used to manage the mesh part parameters by using <code>SetRule</code> method of the <code>SimMeshPart</code> object.</p>
+<ul>
+	<li><strong>SetRule</strong> ( <i>iRuleName As String, iExtension As String</i> ) with:
+		<ul>
+			<li><strong>iRuleName </strong> is the name of the meshing rule.</li>
+			<li><strong>iExtension </strong> is the extension of the meshing rule.</li>
+		</ul>
+	</li>
+</ul>
+<table>
+  <caption><a name="Fig.1"></a>Fig.1: Meshing Rule PLM Attributes</caption>
+  <tr>
+    <td><img alt="MeshingRule" src="images/CAAScdFeaMeshingRule.png"/></td>
+  </tr>
+</table>
+<h2><a name="Meshing_Quality">Mesh Quality</a></h2>
+<p>The mesh quality analysis can be exported from the <code>SimMeshPart</code> or <code>SimFemRoot</code> objects.<br/> 
+If the export is called on a <code>SimMeshPart</code>, the mesh quality analysis will be done on the mesh part only.<br/>
+If the export is called on the <code>SimFemRoot</code>, the mesh quality analysis will be done on the complete mesh set.</p>
+<p>The mesh quality analysis can be exported by using the <code>CreateCSVFile</code> method of the <code>SimMeshQuality</code> object. This object can be retrieved by calling 
+<code>GetItem(&quot;SimMeshQuality&quot;)</code> method on the <code>SimMeshPart</code> or <code>SimFemRoot</code> objects.</p>
+<ul>
+	<li><strong>CreateCSVFile</strong> ( <i>iPath As String, iOverwrite As Boolean</i> ) with:
+		<ul>
+			<li><strong>iPath</strong> is the full path with the file name and its extension where to export the 
+			CSV file.</li>
+			<li><strong>iOverwrite</strong> to allow to overwrite an existing file.</li>
+		</ul>
+	</li>
+</ul>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [Oct 2014]</td>
+		<td>Document created</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

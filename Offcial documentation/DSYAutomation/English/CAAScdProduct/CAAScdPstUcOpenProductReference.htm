@@ -1,0 +1,351 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Opening Product Reference</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Opening Product Reference</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This Use case retrieves 
+						a Root Product Reference from database according to end 
+						user criteria. In the process Use Case demonstrates about 
+						searching the Product Reference from the database and opening 
+						it into VPM Editor. Further Use Case demonstrates about 
+						retrieving handle to Root object though various methods.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:<a href="CAAScdPstUcOpenProductReferenceSource.htm"> 
+						CAAScdPstUcOpenProductReferenceSource.htm</a></span></p>
+						<p>Attention the macro can request a slight change to 
+						take into account your own Product types. First read
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a> 
+						before using it.</p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+					<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td></tr>
+									</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 6 steps</p>
+		<ol>
+			<li><a href="#Step1">Searches for a Product in database</a></li>
+			<li><a href="#Step2">Opens the Product </a></li>
+			<li><a href="#Step3">Retrieves Handle of Root object as an occurrence 
+			from editor</a></li>
+			<li><a href="#Step4">Retrieves Handle of Root object as a reference 
+			from editor</a></li>
+			<li><a href="#Step5">Retrieves Handle of Root object as a reference 
+			from root occurrence</a></li>
+			<li><a href="#Step6">Retrieves Handle of UI Active Object</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"></a>Searches for a Product in database</p>
+			<p>As a first step, the UC retrieves a Product from database</p>
+			<p>It begins with a call to <strong>SearchProduct</strong> function. 
+			This function searches for a list of PLM Components from the underlying 
+			database based on an input search criteria. This list is output in the 
+			PLM Search Result window in CATIA.</p>
+			<pre class="code"> ... 
+ <span class="keyword">    Dim </span>oDBSearch <span class="keyword"> As </span> DatabaseSearch
+ <span class="keyword">    Set </span>oDBSearch = <strong>SearchProduct(oSearchService)</strong>
+...</pre>
+			<p>The function <em>SearchProduct</em> returns the <code>oDBSearch</code> 
+			object, a<code> DatabaseSearch </code>.</p>
+			<p>We build up the search criteria, with a Product Reference as PLM 
+			Entity type , 
+			along with PLM Attributes PLM_ExternalID and revision as an input.</p>
+			<p>The function <strong><code>SearchProduct(oSearchService)</code> </strong>details are as in 
+			the below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Retrieves the DatabaseSearch property from the Search Service</p>
+				<pre class="code"><span class="keyword">Function</span> SearchProduct(oSearchService) <span class="keyword">As</span> DatabaseSearch
+<span class="keyword">    Dim</span> oDBSearch  <span class="keyword">As</span> DatabaseSearch
+<span class="keyword">    Set</span> oDBSearch = oSearchService.DatabaseSearch
+...</pre>
+				</li>
+				<li>
+				<p>Sets the type of objects to search for</p>
+				<pre class="code">...
+    oDBSearch.<strong>BaseType </strong> = strTheProductReferenceType
+...</pre>
+				<p>A call to the <code>BaseType </code>property sets the type of 
+				objects to search for. <code>strTheProductReferenceType</code> 
+				is a global variable defining a Product Reference type.</p>
+				</li>
+				<li>
+				<p>Updates the PLM Search object created in the above 
+				steps with the attribute criteria provided by the user as an input</p>
+				<pre class="code">...
+    oDBSearch.<strong>AddEasyCriteria </strong> &quot;<strong>PLM_ExternalID</strong>&quot;, strInputPLMIDName
+    oDBSearch.<strong>AddEasyCriteria </strong> &quot;<strong>revision</strong>&quot;, strInputRevision
+...</pre>
+				<p>A call to <em>AddEasyCriteria</em> method, 
+				updates the created DatabaseSearch object with the search criteria according 
+				to the users input as depicted in the figures below</p>
+				<p>Prompt the user to input the PLM_ExternalID for 
+				search purpose. A dialog box appears:</p>
+				<table>
+					<caption><a name="Fig.1"></a>Fig. 1 Dialog to input PLM_ExternalID 
+					for search</caption>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="PLM_ExternalID" src="CAAScdPstUcOpenProductReference_image1.jpg"/></td>
+					</tr>
+				</tbody>
+				</table>
+				<p>Next, we prompt the user to input the revision for search purpose. 
+				A dialog box appears:</p>
+				<table>
+					<caption><a name="Fig.2"></a>Fig. 2 Dialog to input revision 
+					for search</caption>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="revision" src="CAAScdPstUcOpenProductReference_image2.jpg"/></td>
+					</tr>
+				</tbody>
+				</table>
+				</li>
+				<li>
+				<p>Triggers the search</p>
+				<pre class="code">...
+    oSearchService.<strong>search</strong>
+...
+<span class="keyword">End Function </span></pre>
+				<p>A call to <em>search</em> method of the SearchService  
+				object actually searches for the objects which matches all the attributes 
+				of the set and matching the case of the values(i.e. search is Case 
+				Sensitive), and type.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a></strong>Opens the Product 
+			and retrieves its Editor</p>
+			<p>As a next step, the UC essentially loads in session first output 
+			by search collection occurring in the new tab page retrieved in the 
+			last step. </p>
+			<pre class="code">...
+ <span class="keyword">   Dim</span> oProductEditor <span class="keyword">As</span> Editor
+ <span class="keyword">   Set </span>oProductEditor = <strong>OpenProductAndGetEditor</strong>(oDBSearch)
+...</pre>
+			<p>The function <em>OpenProductAndGetEditor</em> takes a <code>DatabaseSearch</code>,
+			<code>oDBSearch</code>, as its input and returns an Editor which contains 
+			opened Product. This <code>oDBSearch</code> input argument object to 
+			this method was updated output by the Search on the underlying database, 
+			which occurred in the previous step</p>
+			<p>The function <code>OpenProductAndGetEditor</code> is detailed as 
+			in the below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Retrieves the root entities from the new search 
+				tab page</p>
+				<pre class="code"><span class="keyword">Function</span> OpenProductAndGetEditor(oDBSearch) <span class="keyword">As</span> Editor
+<span class="keyword">    Dim</span> oPLMProdRefAsEntities <span class="keyword">As</span> PLMEntities
+<span class="keyword">    Set</span> oPLMProdRefAsEntities = oDBSearch.<strong>Results</strong>
+...</pre>
+				<p>A call to the <em>Results</em> method of DatabaseSearch  
+				object, <code>oDBSearch</code> returns a collection of root PLM 
+				Entities in the Search tab.</p>
+				</li>
+				<li>
+				<p>Retrieves a PLM Entity object from its index</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oPLMProdRefAsPLMEntity <span class="keyword">As</span> PLMEntity
+<span class="keyword">    Set</span> oPLMProdRefAsPLMEntity = oPLMProdRefAsEntities.<strong>Item</strong>(<strong>1</strong>)
+...</pre>
+				<p>The first entity in the above collection is retrieved, 
+				thanks to the <em>Item</em> method on PLMEntities.</p>
+				</li>
+				<li>
+				<p>Retrieves the Open Service from CATIA Session</p>
+				<pre class="code">...
+<span class="keyword">    Dim</span> oOpenService <span class="keyword">As</span> PLMOpenService
+<span class="keyword">    Set</span> oOpenService = CATIA.<strong>GetSessionService</strong>(&quot;<strong>PLMOpenService</strong>&quot;)
+...</pre>
+				<p>A call to the Application (CATIA) <em>GetSessionService</em> 
+				method returns the specified Service, PLMOpenService, <code>oOpenService
+				</code>in this case.</p>
+				</li>
+				<li>
+				<p>Opens in the authoring session the first element 
+				occurring in the new search tab page ( a Product)</p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oProductEditor <span class="keyword">As</span> Editor
+    oOpenService.<strong>PLMOpen</strong> <strong>oPLMProdRefAsPLMEntity</strong> , <strong>oProductEditor</strong>
+...
+<span class="keyword">End Function </span></pre>
+				<p>The PLM Entity, <code>oPLMProdRefAsPLMEntity</code> 
+				retrieved in the above steps is then loaded in the current session 
+				with a call to the <em>PLMOpen</em> method of the PLMOpenService. 
+				The editor associated with the loaded Product in the current session, 
+				is finally returned by the <em>PLMOpen</em> call in a Product Editor,
+				<code>oProductEditor</code>. The PLMEntity, <code>oPLMProdRefAsPLMEntity</code> 
+				, is loaded in Authering mode</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><a name="Step3"></a>Retrieves Handle of Root object as an occurrence 
+			from editor</p>
+			<p>Retrieve the 'PLMProductService' service from the editor. The editor 
+			object being a VPMEditor, we can use a service to retrieve information 
+			specific to the VPM editor. </p>
+			<pre class="code">...
+ <span class="keyword">   Dim  </span>oProductService <span class="keyword"> As  </span> PLMProductService
+ <span class="keyword">   Set  </span>oProductService = oProductEditor.GetService(&quot;<strong>PLMProductService</strong>&quot;)
+...</pre>
+			<p>The <code>PLMProductService</code>, <code>oProductService</code> 
+			is retrieved from the <code>Editor</code>, <code>oProductEditor</code>, 
+			thanks to the <em>GetService</em> method with the string &quot;<em>PLMProductService</em>&quot; 
+			as an input</p>
+			<p>Retrieve the root occurrence of the product</p>
+			<pre class="code">...
+  <span class="keyword">  Dim  </span>oVPMRootOccOnRoot <span class="keyword"> As  </span> VPMRootOccurrence
+ <span class="keyword">   Set  </span>oVPMRootOccOnRoot = oProductService.<strong>RootOccurrence</strong>
+
+    MsgBox &quot;Success in retrieving Handle of Root object as an occurrence : &quot; + oVPMRootOccOnRoot.Name
+...</pre>
+			<p>A call to <em>RootOccurrence</em> property of the <code>PLMProductService</code>,
+			<code>oProductService</code>, returns the Product Root as an occurrence<code> 
+			VPMRootOccurrence</code>, <code>oVPMRootOccOnRoot</code>.</p>
+			</li>
+			<li>
+			<p><a name="Step4"></a>Retrieves Handle of Root object as a reference 
+			from editor</p>
+			<pre class="code">...
+ <strong>   </strong><span class="keyword">Dim  </span>oPLMEntities <span class="keyword"> As  </span> PLMEntities
+ <span class="keyword">   Set  </span>oPLMEntities = oProductService.<strong>EditedContent</strong>
+...</pre>
+			<p>A call to <em>EditedContent</em> property of <code>PLMAppContext
+			</code>(the object where derived PLMProductService) called on <code>
+			oProductService</code> returns the root Product as a VPMReference. The 
+			list of PLMEntiries returned by EditedContent only contains one element 
+			in the VPMEditor case. </p>
+			<p>Next retrieve first object from PLMEntities collection object. The 
+			number of elements in the list are always 1 for VPM Editor since root 
+			object is product reference Root object. In this case Root object is 
+			of type VPMReference since the Product Root object is of Reference-Instance 
+			Model root.</p>
+			<pre class="code">...
+ <span class="keyword">   Dim  </span>oPLMEntityAsVPMRefOnRoot <span class="keyword"> As  </span><strong>VPMReference</strong>
+ <span class="keyword">   Set  </span>oPLMEntityAsVPMRefOnRoot = oPLMEntities.<strong>Item</strong>(1)
+...</pre>
+			<p>A call to <em>Item</em> method of PLMEntities returns the indexed 
+			(1) <code>PLMEntity</code> in this case we are retrieving first object 
+			as <code>VPMReference </code>object.</p>
+			</li>
+			<li>
+			<p><a name="Step5"></a>Retrieves Handle of Root object as a reference 
+			from root occurrence</p>
+			<p>Retrieve the root object of instance -reference model <code>VPMReference
+			</code>type from the occurrence model. It is the same Root object retrieved 
+			in previous step [<a href="#Step4">#</a>].</p>
+			<pre class="code">...
+ <span class="keyword">   Dim  </span>oVPMRefOnRoot <span class="keyword"> As  </span> VPMReference
+ <span class="keyword">   Set  </span>oVPMRefOnRoot = oVPMRootOccOnRoot.<strong>ReferenceRootOccurrenceOf</strong>
+     
+    MsgBox &quot;Success in retrieving Root object as a reference from root occurrence : &quot; + oVPMRefOnRoot.<strong>Name</strong>
+      
+...</pre>
+			<p>A call to <em>ReferenceRootOccurrenceOf</em> property of <code>VPMRootOccurrence</code>,
+			<code>oVPMRootOccOnRoot</code> returns the Product Reference <code>oVPMRefOnRoot
+			</code>corresponding object. </p>
+			</li>
+			<li>
+			<p><a name="Step6"></a>Retrieves Handle of UI Active Object</p>
+			<p>By default in VPM Editor of opened Product the UI active object is 
+			Root occurrence</p>
+			<pre class="code">...
+ <span class="keyword">   Dim  </span>oUIActiveObject <span class="keyword"> As  </span> VPMRootOccurrence
+ <span class="keyword">   Set  </span>oUIActiveObject = oProductEditor.<strong>ActiveObject</strong>
+    
+    MsgBox &quot;Success in retrieving UI Active Object : &quot; + oUIActiveObject.<strong>Name</strong>
+...</pre>
+			<p>A call to <em>ActiveObject</em> property of Editor on editor returns 
+			UI active object, in this case it returns Root occurrence object
+			<code>oUIActiveObject </code></p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcCreateHistoryPlotSource.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+    '--------------------------------------------------------------------------
+<pre>
+<span class="comment">'---------------------------- Sample MACRO written in Basic Script ---------------------------------</span>
+<span class="comment">'This sample shows how to create the history plot. 
+ </span>
+<span class="comment">'Steps:</span>
+<span class="comment">'    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">'    2- Retrieves the results analysis case  </span>
+<span class="comment">'    3- Creates the history plot1 </span>   
+<span class="comment">'    4- Get the step Id ,name and step description</span>     
+<span class="comment">'    5- Sets the attributes to the history plot1</span>
+<span class="comment">'    6- Sets the support for the history plot</span>
+<span class="comment">'    7- Set all time based steps</span>
+<span class="comment">'    8- Creates the history plot2 </span>   
+<span class="comment">'    9- Sets the attributes to the history plot2</span>
+<span class="comment">'    10- Sets the step, frame and load case information</span>
+<span class="comment">'    11- Set name to history plot</span>
+<span class="comment">'    12- Updates the history plot</span>
+<span class="comment">'    13- Return the minimum and maximum values</span>
+<span class="comment">'    14- Retrieves and exports the curve</span>
+
+
+<span class="keyword">Sub </span>CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oEditor<span class="keyword"> As </span>Editor
+<span class="keyword">Set </span>oEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim </span>oProdService<span class="keyword"> As </span>PLMProductService
+<span class="keyword">Set </span>oProdService = oEditor.GetService("PLMProductService")
+
+<span class="keyword">Dim </span>oEntities<span class="keyword"> As </span>PLMEntities
+
+<span class="keyword">If Not </span>oProdService.EditedContent<span class="keyword"> Is Nothing Then</span>
+
+<span class="keyword">Set </span>oEntities = oProdService.EditedContent
+
+<span class="keyword">Dim </span>oEntity<span class="keyword"> As </span>PLMEntity
+<span class="keyword">Dim </span>oSimObjEntity<span class="keyword"> As </span>PLMEntity
+
+<span class="keyword">For </span>Each oEntity<span class="keyword"> In </span>oEntities
+    <span class="keyword">If </span>oEntity.GetCustomType = "SIMObjSimulationObjectGenericDS" Or oEntity.GetCustomType = "DesignSight"<span class="keyword"> Then </span>
+        <span class="keyword">Set </span>oSimObjEntity = oEntity
+    <span class="keyword">End If</span>
+<span class="keyword">Next</span>
+
+<span class="keyword">Dim </span>oSimulationRoot<span class="keyword"> As </span>SimulationReference
+<span class="keyword">Set </span>oSimulationRoot = oSimObjEntity
+    
+<span class="keyword">Dim </span>oResults<span class="keyword"> As </span>SimulationResults
+<span class="keyword">Set </span>oResults = oSimulationRoot.Results
+
+<span class="keyword">Dim </span>oSimulationRepRes<span class="keyword"> As </span>SimulationRepresentation
+<span class="keyword">Set </span>oSimulationRepRes = oResults.Item(1)  
+
+<span class="keyword">Dim </span>oRootRepRes<span class="keyword"> As </span>SimResultRepManager
+<span class="keyword">Set </span>oRootRepRes = oSimulationRepRes.Root    
+
+<span class="keyword">Dim </span>oResultsManager<span class="keyword"> As </span>SimResultsManager
+<span class="keyword">Set </span>oResultsManager = oRootRepRes.GetItem("SimResultsManager")   
+
+<span class="keyword">End If</span>
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    2- Retrieves the results analysis case</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oResultsAnalysisCases<span class="keyword"> As </span>SimResultsAnalysisCases
+<span class="keyword">Set </span>oResultsAnalysisCases = oResultsManager.ResultsAnalysisCases
+
+<span class="keyword">Dim </span>oResultsAnalysisCase<span class="keyword"> As </span>SimResultsAnalysisCase
+<span class="keyword">Set </span>oResultsAnalysisCase = oResultsAnalysisCases.Item(1)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    3- Creates the history plot</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oHistoryPlot1<span class="keyword"> 'As </span>SimHistoryPlot
+<span class="keyword">Set </span>oHistoryPlot1 = oResultsAnalysisCase.CreateHistoryPlot
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    4- Get the step Id ,name and step description</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oSteps<span class="keyword"> As </span>SimResultsSteps
+<span class="keyword">Set </span>oSteps = oResultsAnalysisCase.ResultsSteps
+
+<span class="keyword">Dim </span>oResultsStep <span class="keyword"> As </span>SimResultsStep
+<span class="keyword">Set </span>oResultsStep = oSteps.Item(2)
+
+<span class="keyword">Dim </span>stepId <span class="keyword"> As </span>String
+<span class="keyword">Dim </span>stepName <span class="keyword"> As </span>String
+<span class="keyword">Dim </span>stepDescription  <span class="keyword"> As </span>String
+oResultsStep.GetIdentifier stepId, stepName, stepDescription
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    5- Sets the attributes to the history plot1</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+oHistoryPlot1.Variable = "U"
+oHistoryPlot1.ComponentQuantity = SimVector_Component_1
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    6- Sets the support for the history plot</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+Dim MySupports(0)
+MySupports(0) = "INP2SIM_NSET_Nodal Probe2"
+
+Dim MySupports1(0)
+MySupports1(0) = 3
+
+Dim MySupports2(2)
+MySupports2(0) = "Node 4"
+MySupports2(1) = "Node 36"
+MySupports2(2) = "Node 87"
+
+oHistoryPlot1.SetSupport  MySupports, MySupports1,  MySupports2
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    7- Set all time based steps</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+oHistoryPlot1.SetAllTimeBasedSteps 
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    8-  Creates the history plot2 </span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oHistoryPlot2<span class="keyword"> As </span>SimHistoryPlot
+<span class="keyword">Set </span>oHistoryPlot2 = oResultsAnalysisCase.CreateHistoryPlot 
+    
+ <span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    9- Sets the attributes to the history plot2</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+oHistoryPlot2.Variable = "ALLIE"
+oHistoryPlot2.ComponentQuantity =  SimScalar  
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    10- Sets the step, frame and load case information</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+oHistoryPlot2.SetStepAndFrame stepId, 0, 0
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    11- Set name to history plot</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+oHistoryPlot1.Name = "Test History Plot 1"
+oHistoryPlot2.Name = "Test History Plot 2"
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    12- Updates the history plot</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+oHistoryPlot1.Update
+oHistoryPlot2.Update
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    13- Return the minimum and maximum values</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>dMin<span class="keyword"> As </span>Double
+<span class="keyword">Dim </span>dMax<span class="keyword"> As </span>Double
+
+oHistoryPlot1.GetMinMaxValues dMin, dMin
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    12- Retrieves and exports the curve</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+Dim oHistCurveList()
+oHistoryPlot1.GetHistoryCurveList oHistCurveList 
+Dim oHistCurve As SimHistoryCurve
+Set oHistCurve = oHistCurveList(0)
+Dim iFileName As String
+iFileName = "History_Curve1"
+Dim iFileLocation As String
+iFileLocation="C:\temp"
+oHistCurve.Export iFileName, iFileLocation, SimXlsx
+
+Set oHistCurve1 = oHistCurveList(1)
+Dim iFileName1 As String
+iFileName1 = "History_Curve_PLM"
+oHistCurve1.ExportToPLMDoc iFileName1, SimCsv
+
+<span class="keyword">End Sub</span>
+
+
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

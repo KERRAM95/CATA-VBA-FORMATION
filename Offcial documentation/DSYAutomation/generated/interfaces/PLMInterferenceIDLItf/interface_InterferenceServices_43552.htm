@@ -1,0 +1,193 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>PLMInterferenceIDLItf InterferenceServices (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../PLMInterferenceIDLItf.htm" href="../PLMInterferenceIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "PLMInterferenceIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "InterferenceServices"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> InterferenceServices<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_InterferenceServices_43552','InterferenceServices','0');</script>
+<section id='maindesc'>
+<b><i> Provides services around InterferenceSimulation</i></b><br>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#CreateInterferenceSimulation"><b>CreateInterferenceSimulation</b></a>
+</td><td  id='tdright'>  
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateInterferenceSimulation2"><b>CreateInterferenceSimulation2</b></a>
+</td><td  id='tdright'>  Creates an InterferenceSimulation on a reference entity.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="CreateInterferenceSimulation"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>CreateInterferenceSimulation</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iReference</span>,<script type="text/javascript"> activateLink('InterferenceSimulation','InterferenceSimulation')</script> <span class='param'>oInterferenceSimulation</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ 
+<dl  class='desclist'>
+  <dt class='deprecated'> <b>Deprecated:</b></dt> 
+  <dd>  R213. use 
+<script type="text/javascript"> activateLinkAnchor('','CreateInterferenceSimulation2','CreateInterferenceSimulation2') </script> <br>
+ Creates an InterferenceSimulation on a reference entity.
+ 
+ </ dd>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iReference</span></dt>
+   <dd>   The reference entity (for instance a product).
+   <br><b>Legal values</b>:
+   <dl>
+     <dt>Valid reference</dt>
+     <dd>The reference is valid for a interference checking.</dd>
+     <dt>Invalid reference</dt>
+     <dd>The reference is not valid for a interference checking.</dd>
+   </dl>
+ 
+ </ dd>
+    <dt><span class='paramitem'> oInterferenceSimulation</span></dt>
+   <dd>   The created InterferenceSimulation.
+   <br><b>Legal values</b>:
+   <dl>
+     <dt>Valid InterferenceSimulation</dt>
+     <dd>The InterferenceSimulation is successfully created.</dd>
+     <dt>Invalid InterferenceSimulation</dt>
+     <dd>The InterferenceSimulation is not created.</dd>
+   </dl>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example creates the <tt>oITF1</tt> InterferenceSimulation from the <tt>oRootProduct</tt> product.
+   <pre>
+   Dim oRootProduct As Product
+   Set oRootProduct = ...
+   Dim oITFServices As InterferenceServices
+   Set oITFServices = CATIA.ActiveEditor.GetService("InterferenceServices")
+   Dim oITF1 As InterferenceSimulation
+   oITFServices.CreateInterferenceSimulation(oRootProduct, oITF1)
+   </pre>
+</dl>
+</dd>
+<a id="CreateInterferenceSimulation2"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>CreateInterferenceSimulation2</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iReference</span>,<script type="text/javascript"> activateLink('CatInterferenceGroupComputationType2','CatInterferenceGroupComputationType2')</script> <span class='param'>iGroupComputationType2</span>,<script type="text/javascript"> activateLink('InterferenceSimulation','InterferenceSimulation')</script> <span class='param'>oInterferenceSimulation</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Creates an InterferenceSimulation on a reference entity.
+ With this method, the right number of groups is created in line with the parameter iGroupComputationType2.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iReference</span></dt>
+   <dd>   The reference entity of the root product.
+   <br><b>Legal values</b>:
+   <dl>
+     <dt>Valid reference</dt>
+     <dd>The reference is valid for a interference checking.</dd>
+     <dt>Invalid reference</dt>
+     <dd>The reference is not valid for a interference checking.</dd>
+   </dl>
+
+ 
+ </ dd>
+    <dt><span class='paramitem'> iGroupComputationType2</span></dt>
+   <dd>   The type of computation for group. This parameter influences the creation of group(s) and the number of them.
+   (see definition of CATInterferenceGroupComputationType2)
+   <br><b>Legal values</b>:
+   <dl>
+     <dt>catInterferenceGroupComputationTypeAllAgainstAllInGroup</dt>
+     <dd>The computation takes into account all the occurrences against each other inside groups
+         One group is created.
+         </dd>
+     <dt>catInterferenceGroupComputationTypeGroupAgainstGroup</dt>
+     <dd>The computation takes into account all the occurrences in a group against the others in other group.
+         Two groups are created.
+         </dd>
+     <dt>catInterferenceGroupComputationTypeGroupAgainstContext</dt>
+     <dd>The computation takes into account all the occurrences of the first group against the rest of the context.
+         One group is created.
+         </dd>
+     <dt>catInterferenceGroupComputationTypeAllAgainstAllInContext</dt>
+     <dd>The computation takes into account all the occurrences against each other inside context.
+         No group is created.
+         </dd>
+   </dl>
+
+ 
+ </ dd>
+    <dt><span class='paramitem'> oInterferenceSimulation</span></dt>
+   <dd>   The created InterferenceSimulation.
+   <br><b>Legal values</b>:
+   <dl>
+     <dt>Valid InterferenceSimulation</dt>
+     <dd>The InterferenceSimulation is successfully created.</dd>
+     <dt>Invalid InterferenceSimulation</dt>
+     <dd>The InterferenceSimulation is not created.</dd>
+   </dl>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   This example creates the <tt>oITF1</tt> InterferenceSimulation from the <tt>RootProduct</tt> product.
+   <pre>
+   Dim RootProduct As VPMRootOccurrence
+   Set RootProduct = CATIA.ActiveEditor.ActiveObject
+   
+   Dim RootProductRef    As VPMReference
+   Set RootProductRef = RootProduct.ReferenceRootOccurrenceOf
+
+   Dim GroupCmpType As CatInterferenceGroupComputationType2
+   GroupCmpType = catInterferenceGroupComputationTypeAllAgainstAllInContext
+   
+   Dim oITF1 As InterferenceSimulation
+   
+   Dim ITFServices As InterferenceServices
+   Set ITFServices = CATIA.ActiveEditor.GetService("InterferenceServices")
+
+   ITFServices.CreateInterferenceSimulation RootProductRef, GroupCmpType, oITF1
+   </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

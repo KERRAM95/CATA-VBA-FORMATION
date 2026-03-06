@@ -1,0 +1,279 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating Parameters and Relations</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating Parameters and Relations</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates creating different types of Parameters and Relations 
+						between them</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA </li>
+							<li>In Tools-&gt; Options-&gt; Infrastructure-&gt; 3D Shape Infrastructure 
+							-&gt; Display Tab select Parameters and Relations</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdKniUcCreateParametersAndRelationsSource.htm">
+						CAAScdKniUcCreateParametersAndRelationsSource.htm</a></span></p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic1</em>&gt;</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic2</em>&gt;</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 8 steps</p>
+		<ol>
+			<li><a href="#Step1">Creates the 3DShape </a></li>
+			<li><a href="#Step2">Retrieves the KnowledgeObjects Object from Part
+			</a></li>
+			<li><a href="#Step3">Creates the Parameters Set beneath the Part </a>
+			</li>
+			<li><a href="#Step4">Creates the Relations Set beneath the Part </a>
+			</li>
+			<li><a href="#Step5">Creates the Parameter Objects </a></li>
+			<li><a href="#Step6">Creates the Relation Objects</a></li>
+			<li><a href="#Step7">Updates the Part Object</a></li>
+			<li><a href="#Step8">Validates the Relations</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<caption></caption>
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p class="task"><strong><a name="Step1"></a>Creates the 3DShape</strong></p>
+			<pre class="code"><span class="keyword">...</span>
+    <span class="keyword">Dim</span> MyNewPart <span class="keyword">As</span> Part
+    <strong>Create3DShape</strong> MyNewPart
+...</pre>
+			<p>The <code><em>Create3DShape</em></code> sub routine creates a new 
+			3DShape with geometry as shown in the following picture. </p>
+			<table>
+				<caption>Fig. 1 Creating 3D Shape</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="3D Shape" src="CAAScdKniUcCreateParametersAndRelations_in.jpg"/>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			
+			<p class="task"><code><em>MyNewPart</em></code> is the Part Object of 
+			the 3D Shape, the object aggregating all the objects making up the 3D 
+			shape.</p>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step2"></a>Retrieves the Knowledge 
+			Objects Object from Part</strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oKnowledgeObjects <span class="keyword">As</span> KnowledgeObjects
+    <span class="keyword">Set</span> oKnowledgeObjects =  MyNewPart.<strong>GetItem</strong>(&quot;KnowledgeObjects&quot;)
+...</pre>
+			<p>The <code><em>GetItem</em></code> method 
+			called against the active Part object using the <code><em>KnowledgeObjects
+			</em></code>arguments returns a <code><em>KnowledgeObjects </em>
+			</code>object. </p>
+			</li>
+			<li>
+			<p class="task"><a name="Step3"></a><strong>Creates the Parameters Set 
+			beneath the Part </strong></p>
+			<p class="task">The <code><em>GetKnowledgeRootSet</em></code> method 
+			of <code><em>KnowledgeObjects</em></code> creates the requested collection 
+			object and returns it. </p>
+			<p class="task">Creates the Parameters Set</p>
+			<pre class="code">...
+    <span class="keyword">Dim </span> oParmsSet <span class="keyword">As</span> ParmsSet
+    
+    <span class="keyword">Set </span>oParmsSet = oKnowledgeObjects.<strong>GetKnowledgeRootSet</strong>(True, <strong>kweParametersType</strong>) 
+...</pre>
+			<p class="task">The <code><em>Parameters Set </em></code>is the feature 
+			Parameters beneath the <code>Part </code>feature (see Fig.2). To create 
+			it, we use the <code><em>GetKnowledgeRootSet </em></code>method of the
+			<code><em>KnowledgeObjects </em></code>object using TRUE as first argument. 
+			The second argument specifies the type of set to create. <code><em>kweParametersType</em></code> 
+			it is the <code><em>ParmsSet</em> </code>object (representing the Parameters 
+			feature). </p>
+			<p>Note: About the first argument of <code><em>GetKnowledgeRootSet
+			</em></code>: If the two features already exist, the TRUE value as argument 
+			is equivalent to FALSE (it makes a retrieval) </p>
+			</li>
+			<li>
+			<p class="task"><a name="Step4"></a><strong>Creates the Relations Set 
+			beneath the Part </strong></p>
+			<p class="task">Creates the Relations Set</p>
+			<pre class="code">...
+    <span class="keyword">Dim </span> oRelsSet <span class="keyword">As</span> RelsSet
+    
+    <span class="keyword">Set </span>oRelsSet = oKnowledgeObjects.<strong>GetKnowledgeRootSet</strong>(True, <strong>kweRelationsType</strong>)
+...</pre>
+			<p class="task">The <code>Relations set </code>is the feature <code>
+			Relations </code>beneath the <code>Part </code>feature (see Fig.2). 
+			To create it, we use the <code><em>GetKnowledgeRootSet </em></code>method 
+			of the <code><em>KnowledgeObjects</em> </code>object using TRUE as first 
+			argument. The second argument specifies the type of set to create.<code><em>kweRelationsType</em></code> 
+			it is the <code><em>RelsSet </em></code>object (representing the Relations 
+			feature). </p>
+			</li>
+			<li>
+			<p class="task"><a name="Step5"></a><strong>Creates the Parameter Objects</strong></p>
+			<pre class="code">...
+<span class="keyword">    Dim</span> oParametersFactory <span class="keyword">As</span> <strong>ParametersFactory</strong>
+<span class="keyword">    Set</span> oParametersFactory = oParmsSet.<strong>ParametersFactory</strong>
+
+<span class="keyword">    Dim</span> oParamString1 <span class="keyword">As</span> <strong>Parameter</strong>
+<span class="keyword">    Set</span> oParamString1 = oParametersFactory.<strong>CreateString</strong>(&quot;ProjectId&quot;, &quot;CATLifKnowledgeAdvisor&quot;)
+
+<span class="keyword">    Dim </span> oParamSphereVol <span class="keyword">As</span> <strong>Parameter</strong>
+<span class="keyword">    Set</span> oParamSphereVol = oParametersFactory.<strong>CreateDimension</strong>(&quot;SphereVolume&quot;, &quot;VOLUME&quot;, 0)
+...</pre>
+			<p class="task">The <code><em>ParametersFactory</em> </code>is retrieved 
+			from the <code><em>ParametersSet</em></code> object, different <code>
+			<em>Parameter</em></code> types are created using appropriate <code>
+			<em>Createxxx</em></code> methods of the <code><em>ParametersFactory</em>
+			</code></p>
+			</li>
+			<li>
+			<p class="task"><a name="Step6"></a><strong>Creates the Relation Objects</strong></p>
+			<pre class="code">...
+<span class="keyword">    Dim</span> oRelationsFactory <span class="keyword">As</span> <strong>RelationsFactory</strong>
+<span class="keyword">    Set</span> oRelationsFactory = oRelsSet.<strong>ParametersFactory</strong>
+
+<span class="keyword">    Dim</span> oFormula1 <span class="keyword">As</span> <strong>Formula</strong>
+<span class="keyword">    Set</span> oFormula1 = oRelationsFactory.<strong>CreateFormula</strong>(&quot;Formula1&quot;, &quot;&quot;, oParamString2, &quot;ProjectId.Extract(0,3)&quot;)
+
+<span class="keyword">    Dim</span> oFormula4 <span class="keyword">As</span> <strong>Formula</strong>
+<span class="keyword">    Set</span> oFormula4 = oRelationsFactory.<strong>CreateFormula</strong>(&quot;Formula4&quot;, &quot;&quot;, oParamSphereVol, &quot;(4/3)*PI*SphereRadius**3&quot;)
+...
+			</pre>
+			<p>The <code><em>RelationsFactory</em></code> is retrieved from the
+			<code><em>RelationsSet</em></code> object, different <code><em>Relations</em></code> 
+			are created using <code><em>CreateFormula</em></code> method of the
+			<code><em>RelationsFactory</em> </code></p>
+			<table>
+				<caption>Fig. 2 Displaying Parameters and Relations Created</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Parameters and Relations Created" src="CAAScdKniUcCreateParametersAndRelations_out.jpg"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p><a name="Step7"></a><strong>Updates the Part Object</strong></p>
+			<pre class="code">...
+    MyNewPart.<strong>Update</strong>
+<span class="keyword">...</span></pre>
+			<p class="task">Updates the Part object, <code><em>MyNewPart</em></code> 
+			, result with respect to its specifications </p>
+			</li>
+			<li>
+			<p class="task"><a name="Step8"></a><strong>Validates the Relations</strong></p>
+				<p class="task">The created <code><em>Parameter</em></code> names 
+				are displayed in specification tree, from it edit <code><em>SphereRadius</em></code> 
+				parameter value. </p>
+				<table>
+					<caption>Fig. 6 Edit Parameter</caption>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="Edit Parameter" src="CAAScdKniUcCreateParametersAndRelations_Edit_Parameter1.jpg"/></td>
+					</tr>
+				</tbody>
+				</table>
+				<p class="task">The <code><em>SphereVolume</em></code> parameter 
+				value changes according to Formula3 <code><em>Relation</em></code> 
+				created by macro. </p>
+				<table>
+					<caption>Fig. 7 Check Parameter</caption>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="Check Parameter" src="CAAScdKniUcCreateParametersAndRelations_Relation1_check.jpg"/></td>
+					</tr>
+				</tbody>
+				</table>
+				<p class="task">Similarly we can check all other <code><em>Relations</em></code> 
+				applied on created <code><em>Parameters</em></code>. </p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdMpaLinkAccess.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+
+<pre class=>
+<span class="comment"># -------------- Sample script written in Python ------------------------------------------</span>
+<span class="comment"># This sample shows how to use the compose link method with publications.</span>
+
+<span class="comment"># Steps:</span>
+<span class="comment">#          1 - Retrieves the simulation and its product   										</span>
+<span class="comment">#          2 - Creates link 								</span>
+<span class="comment">#          3 - Associates representation to FEM								</span>
+<span class="comment">#          4 - Creates a Shell section					</span>
+<span class="comment">#          5 - Sets the shell section attributes									</span>
+<span class="comment">#============================================================================================</span>
+
+<span class="keyword">import</span> sys, os
+<span class="keyword">from</span> com3dx <span class="keyword">import</span> *
+CATIA = get3dxClient()
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  1 - Retrieves the simulation and its product  </span>
+<span class="comment"># =====================================================================</span>
+
+<span class="comment"># As a first step, retrieve the simulation editor which is the actived one</span>
+myEditor = CATIA.ActiveEditor
+
+<span class="comment"># Then retrieve the product service</span>
+myProdService = myEditor.GetService("PLMProductService")
+
+<span class="comment"># Retrieve the PLMEntities</span>
+myEntities = myProdService.EditedContent
+
+<span class="comment"># Now retrieve the PLMEntity</span>
+myEntity = myEntities.Item(1)
+
+<span class="comment"># Get the simulation Root</span>
+MySimulationRoot = myEntity
+
+<span class="comment"># Now retrieve the Model</span>
+myModel = MySimulationRoot.Model
+
+<span class="comment"># Open the model to retrieve the root occurence</span>
+
+<span class="comment"># Root occurence is needed to retrieve the part occurences</span>
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+
+myProductEditor = CATIA.ActiveEditor
+MyProductService = myProductEditor.GetService("PLMProductService")
+
+myRootOccurrence = MyProductService.RootOccurrence
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  2 - Creates link</span>
+<span class="comment">#======================================================================</span>
+
+<span class="comment"># To create the correct link, retrieve the part occurence needed for the first argument</span>
+<span class="comment"># Retrieve the part rep instance needed for the second argument</span>
+<span class="comment"># Create a reference for the 3D Shape object needed for the third argument</span>
+
+<span class="comment"># Be aware to retrieve the part occurence and the part rep instance to whom the 3D Shape is associated</span>
+
+
+<span class="comment"># Retrieve the ws3_pipe_neutral_fiber_part.1 part occurrence</span>
+iMaxCnt = myRootOccurrence.Occurrences.Count
+
+<span class="keyword">for</span> index <span class="keyword">in</span> <span class="keyword">range</span>(1, iMaxCnt+1):
+    <span class="keyword">if</span> myRootOccurrence.Occurrences.Item(index).Name == "ws3_pipe_neutral_fiber_part.1":
+       myPartOccurrence = myRootOccurrence.Occurrences.Item(index)
+
+<span class="comment"># Retrieve the ws3_pipe_neutral_fiber_part.1 part rep instance</span>
+myPartInstance = myPartOccurrence.InstanceOccurrenceOf
+myPartInstanceRef = myPartInstance.ReferenceInstanceOf
+myPartRepInstance = myPartInstanceRef.RepInstances.Item(1)
+
+<span class="comment"># Retrieve the ws3_pipe_neutral_fiber_part.1 part body</span>
+myPartRepInstanceRef = myPartRepInstance.ReferenceInstanceOf
+myPart = myPartRepInstanceRef.GetItem("Part")
+myPartBody = myPart.MainBody
+
+<span class="comment"># Retrieve the 3D shape Extrude.1</span>
+myExtrude = myPart.FindObjectByName("Extrude.1")
+myReference = myPart.CreateReferenceFromObject(myExtrude)
+
+<span class="comment"># Create the link with ComposeLink method</span>
+myLink = myProdService.ComposeLink(myPartOccurrence, myPartRepInstance, myReference)
+
+<span class="comment"># =====================================================================</span>
+<span class="comment"># 3 - Associates representation to FEM</span>
+<span class="comment">#======================================================================</span>
+
+<span class="comment"># Retrieve the Product representation factory to create a FEM</span>
+MyPrdRepFactory = myModel.GetItem("SimPrdRepFactory")
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep("FEM")
+MyFemRepRoot = MyFemRepRef.GetItem("SimFemRoot")
+
+<span class="comment"># Add link to the FEM rep</span>
+MyFemRepRoot.AddAssociatedRep (myLink)
+
+
+<span class="comment"># =====================================================================</span>
+<span class="comment"># 4 - Creates a Shell section</span>
+<span class="comment">#======================================================================</span>
+<span class="comment"># Retrieve the properties set</span>
+myPropertiesSet = MyFemRepRoot.GetSet("SimProperties")
+
+<span class="comment"># Create individual properties</span>
+myShellSection = myPropertiesSet.Add("SimShellSection")
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  5 - Sets the shell section attributes</span>
+<span class="comment">#======================================================================</span>
+
+<span class="comment"># Set the section support</span>
+myLinkAccess = myShellSection.GetItem("SimLinkAccess")
+
+<span class="comment"># Add the link created before</span>
+myLinkAccess.AddLink ("MainSupport", myLink)
+myShellSection.UniformThickness = 1.0
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Searching PLM Objects</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre class="automation">
+<span class="comment">'---------------------------------------------------------------------------------------------------------------------------</span>
+<span class="comment">'COPYRIGHT DASSAULT SYSTEMES 2009</span>
+<span class="comment">'---------------------------------------------------------------------------------------------------------------------------</span>
+<span class="comment">'Searching PLM Objects</span>
+<span class="comment">'</span>
+<span class="comment">'Mission:   Searching objects with a given type and a give name in the database,</span>
+<span class="comment">'           displaying them in the Search Results, and showing that setting a value</span>
+<span class="comment">'           to a PLM attribute of one of these ojects is not possible without</span>
+<span class="comment">'           loading it in session.</span>
+<span class="comment">'Steps: 1. Prolog</span>
+<span class="comment">'       2. Retrieving the SearchService object</span>
+<span class="comment">'       3. Retrieving the DatabaseSearch object</span>
+<span class="comment">'       4. Building the search</span>
+<span class="comment">'       5. Launching the search</span>
+<span class="comment">'       6. Retrieving the search results</span>
+<span class="comment">'       7. Displaying the title of the first object in the collection</span>
+<span class="comment">'       8. Attempting to set PLM Attribute V_Name through a PLM entity listed in the Search Results</span>
+<span class="comment">'       9. Epilog</span>
+
+<span class="keyword">Sub </span>SearchPLMObjects()
+  <span class="comment">'1. Prolog</span>
+  <span class="comment">'Error handling</span>
+  <span class="keyword">On Error GoTo</span> ErrorSub
+
+  <span class="comment">'2. Retrieving the SearchService object</span>
+  <span class="keyword">Dim </span>oSearchService <span class="keyword">As</span> SearchService
+  <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService("Search")
+
+  <span class="keyword">'3. Retrieving the DatabaseSearch object</span>
+  <span class="keyword">Dim </span>oDBSearch <span class="keyword">As</span> DatabaseSearch
+  <span class="keyword">Set </span>oDBSearch = oSearchService.DatabaseSearch
+
+  <span class="comment">'4. Building the search</span>
+  <span class="comment">'Ask the end user for the type of the objects to search</span>
+  <span class="keyword">Dim </span>strObjectType <span class="keyword">As</span> String
+  strObjectType = InputBox("Please enter the type of objects to search", "Enter Object Type")
+
+  <span class="comment">'Set the type of the objects to the search</span>
+  oDBSearch.BaseType = strObjectType
+
+  <span class="comment">'Ask the end user for the name of the objects to search</span>
+  <span class="keyword">Dim </span>strObjectName <span class="keyword">As</span> String
+  strObjectName = InputBox("Please enter the name of objects to search", "Enter Object Name")
+
+  <span class="comment">'Set this name to the search. The object name is represented in the database by the PLM_ExternalID atribute</span>
+  oDBSearch.AddEasyCriteria "PLM_ExternalID", strObjectName
+
+  <span class="comment">'5. Launching the search</span>
+  oSearchService.Search
+
+  <span class="comment">'6. Retrieving the search results</span>
+  <span class="keyword">Dim </span>cObjects <span class="keyword">As</span> PLMEntities
+  <span class="keyword">Set </span>cObjects = oDBSearch.Results
+
+  <span class="comment">'7. Displaying the title of the first object in the collection</span>
+  <span class="comment">'The object title is represented in the database by the V_Name atribute</span>
+  MsgBox "Title of the first object retrieved: " &amp; cObjects.Item(1).GetAttributeValue("V_Name")
+
+  <span class="comment">'8. Attempting to set PLM Attribute V_Name through a PLM entity listed in the Search Results</span>
+  cObjects.Item(1).SetAttributeValue "V_Name", "New Name"
+
+  <span class="comment">'9. Epilog</span>
+  <span class="comment">'Error handling</span>
+  <span class="keyword">GoTo</span> EndSub
+
+ErrorSub:
+    MsgBox Err.Description _
+    + vbCrLf + " The SetAttributeValue called on an object in the search results fails" _
+    + vbCrLf + " The V_Name value remains: " + cObjects.Item(1).GetAttributeValue("V_Name") _
+    + vbCrLf + " Objects retrieved from a search are not PLM objects but references to them."
+
+EndSub:
+<span class="keyword">End Sub</span>
+</pre>
+
+</body>
+
+</html>

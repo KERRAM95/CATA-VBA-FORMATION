@@ -1,0 +1,197 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>System Collection (Collection)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../System.htm" href="../System.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "System";	}
+		function getCurrentObjectName() { 
+ 	return "Collection"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> Collection<font style='font-size:small;'> (Collection)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_Collection_10201','Collection','0');</script>
+<section id='maindesc'>
+<b><i> Represents the base object for collections.</i></b><br>
+
+ As a base object, it provides properties and methods shared by
+ any other object.<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Application"><b>Application</b></a>
+</td><td  id='tdright'>  Returns the application.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Count"><b>Count</b></a>
+</td><td  id='tdright'>  Returns the number of objects in the collection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Name"><b>Name</b></a>
+</td><td  id='tdright'>  Returns or sets the name of the object.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Parent"><b>Parent</b></a>
+</td><td  id='tdright'>  Returns the parent object.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetItem"><b>GetItem</b></a>
+</td><td  id='tdright'>  Returns an object from its name.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Application"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Application</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAApplication','CATIAApplication')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the application.
+ The application is the root object in the object structure and can be
+ retrieved from any object
+ in the object structure using the Application property.
+ The Application property is the way to jump from any object up to the
+ root of the object data structure, allowing then to navigate downwards.
+ For in-process scripting, the application is always referred to as
+ <tt>CATIA</tt>.
+ Note that the Application property of the Application object returns the
+ Application object itself.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example retrieves in <tt>CurrentApplication</tt> the application
+ object, root of the object structure, from a given object of this
+ structure: a document refered to using the <tt>MyDocCollecion</tt>
+ variable.
+ <pre>
+ Dim CurrentApplication As Application
+ Set CurrentApplication = MyDocCollecion.<font color="red">Application</font>
+ </pre>
+ </dl>
+</dd>
+<a id="Count"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Count</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the number of objects in the collection.
+ This is handy to scan all the objects in a collection.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example retrieves in  <tt>ObjectNumber</tt> the number of objects
+ currently gathered in <tt>MyCollection</tt>.
+ <pre>
+ ObjectNumber = MyCollection.<font color="red">Count</font>
+ </pre>
+ </dl>
+</dd>
+<a id="Name"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Name</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the name of the object.
+ The name is a character string you can assign to any object to
+ handle it easier.
+ In the case of an object part of a collection, the name can often
+ be used in place of the object rank to retrieve or remove the object,
+ providing the Item and Remove methods of the collection feature
+ an argument with the Variant type.
+ If the object has no name set, the name returned is the one of
+ its parent.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example sets to <tt>MyObject</tt> the name <tt>Nice and Handy
+ Object Name</tt>.
+ <pre>
+ MyObject.<font color="red">Name</font>("Nice and Handy Object Name")
+ </pre>
+ </dl>
+</dd>
+<a id="Parent"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Parent</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the parent object.
+ The parent object of a given object is the object that created this
+ object, usually the object just above in the object tree structure
+ and that aggregates it.
+ In the case of an object part of a collection, the parent object
+ is not the collection object itself, but the object that
+ aggregates the collection object.
+ The Parent property is the way to step upwards in the object data
+ structure.
+ Note that the Parent property of the Application object returns the
+ Application object itself.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example retrieves in <tt>ParentObject</tt> the parent object
+ of the <tt>GivenObject</tt> object.
+ <pre>
+ Dim ParentObject As AnyObject
+ Set ParentObject = GivenObject.<font color="red">Parent</font>
+ </pre>
+ </dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetItem"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetItem</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>IDName</span>)</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns an object from its name.
+ <br><b>Role</b>: To retrieve an object when only its name is available.
+ <b>You should not use this method</b>, but you can find it in the macros generated
+ by the Tools->Macro command.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> IDName</span></dt>
+   <dd>   The searched obect name
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>    The searched object
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

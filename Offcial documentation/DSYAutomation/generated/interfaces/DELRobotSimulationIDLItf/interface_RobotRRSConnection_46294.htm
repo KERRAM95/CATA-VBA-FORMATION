@@ -1,0 +1,493 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELRobotSimulationIDLItf RobotRRSConnection (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELRobotSimulationIDLItf.htm" href="../DELRobotSimulationIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELRobotSimulationIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RobotRRSConnection"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RobotRRSConnection<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RobotRRSConnection_46294','RobotRRSConnection','0');</script>
+<section id='maindesc'>
+<b><i> Interface to manage the RRS connection capabilities.</i></b><br>
+
+
+ <strong>Role</strong>:
+  This interface provides methods to deal with the industrial robot 
+connection through the RRS standards.
+<br>
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<dd>Let assume there is a robot opened as a root entity in a given editor.
+<pre>
+ Dim MainResource As Variant
+ Set MainResource = CATIA.ActiveEditor.ActiveObject
+
+ Dim MySimulatedResource As RobotRRSConnection
+ Set MySimulatedResource = MainResource.GetItem("<font color="red"><b>CAARobotRRSConnection</b></font>")
+ 
+ If Not MySimulatedResource Is Nothing Then
+
+ End If
+</pre>
+</dl>
+<b>Note:</b>API documentation will include sample code referring to:
+<ul>
+<li><b>MySimulatedResource</b> as a variable of type <b>RobotRRSConnection</b>.</li>
+<li><b>MainResource</b> as the resource to be simulated (can be obtained 
+through selection or model scanning.</li>
+</ul>
+<b>Remark:</b>All API will not work if the <script type="text/javascript"> activateLinkAnchor('','Initialize','Initialize') </script> has not been performed.
+
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#IsRRSConnected"><b>IsRRSConnected</b></a>
+</td><td  id='tdright'>  Checks if RRS is enabled for the robot.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RRSControllerType"><b>RRSControllerType</b></a>
+</td><td  id='tdright'>  Gets the RRS controller type used for communication with the RRS server.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RRSServerDecoratedNames"><b>RRSServerDecoratedNames</b></a>
+</td><td  id='tdright'>  Gets the complete list of RRS server decorated names.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RRSServerName"><b>RRSServerName</b></a>
+</td><td  id='tdright'>  Gets the name of the RRS server robot is connected to.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UsingRRS2Server"><b>UsingRRS2Server</b></a>
+</td><td  id='tdright'>  Checks if an RRS-II (as opposed to RRS-I) connection is enabled for the 
+robot.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AutoRRSConnect"><b>AutoRRSConnect</b></a>
+</td><td  id='tdright'>  Automatically RRS (RRS-I) connects robots using RRS attributes
+ stored in persistent store (based on previous RRS connection).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ChkRRSServerType"><b>ChkRRSServerType</b></a>
+</td><td  id='tdright'>  Checks if given rrs_server_decorated_name corresponds to an RRS-I server 
+(as opposed to an RRS-II server).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RRS1ConnectStep1"><b>RRS1ConnectStep1</b></a>
+</td><td  id='tdright'>  First call to establish RRS-I connection to given RRS-I RCS server 
+ using given connection parameters.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RRS1ConnectStep2"><b>RRS1ConnectStep2</b></a>
+</td><td  id='tdright'>  Second (and final) call to establish RRS-I connection to given 
+ RRS-I RCS server using given connection parameters.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RRS2ConnectStep1"><b>RRS2ConnectStep1</b></a>
+</td><td  id='tdright'>  First call to establish RRS-II connection to given RRS-II VRC module 
+ using given connection parameters.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RRS2ConnectStep2"><b>RRS2ConnectStep2</b></a>
+</td><td  id='tdright'>  Second call to establish RRS-II connection to given RRS-II VRC module 
+ using given connection parameters.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RRS2ConnectStep3"><b>RRS2ConnectStep3</b></a>
+</td><td  id='tdright'>  Third (and final) call to establish RRS-II connection to given 
+ RRS-II VRC module using given connection parameters.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RRSDisconnect"><b>RRSDisconnect</b></a>
+</td><td  id='tdright'>  Disconnects RRS (RRS-I) for robot.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="IsRRSConnected"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>IsRRSConnected</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Checks if RRS is enabled for the robot.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim bRRSConnected As Boolean
+ bRRSConnected = MySimulatedResource.<font color="red"><b>IsRRSConnected</b></font>
+</pre>
+</dl>
+
+</dd>
+<a id="RRSControllerType"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>RRSControllerType</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Gets the RRS controller type used for communication with the RRS server.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyRRSControllerType As String
+ MyRRSControllerType = MySimulatedResource.<font color="red"><b>RRSControllerType</b></font>
+</pre>
+</dl>
+
+</dd>
+<a id="RRSServerDecoratedNames"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>RRSServerDecoratedNames</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Gets the complete list of RRS server decorated names. Name is obtained 
+from the "rrs.servers" file. Decorated names also contain host and TCP 
+port/RPC program number besides the raw RRS server name.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyRRSServerNames As String
+ Dim MyListRRSServerNames
+ MyListRRSServerNames = MySimulatedResource.<font color="red"><b>RRSServerDecoratedNames</b></font>
+ For II = LBound(MyListRRSServerNames) To UBound(MyListRRSServerNames)
+   Set MyRRSServerNames = MyListRRSServerNames(II)
+   <font color="green">'uncomment next line to display value</font>
+   <font color="green">'MsgBox ("Decorated server name:" & MyRRSServerNames)</font>
+ Next
+</pre>
+</dl>
+</dd>
+<a id="RRSServerName"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>RRSServerName</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Gets the name of the RRS server robot is connected to.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyRRSServerName As String
+ MyRRSServerName = MySimulatedResource.<font color="red"><b>RRSServerName</b></font>
+</pre>
+</dl>
+
+</dd>
+<a id="UsingRRS2Server"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UsingRRS2Server</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Checks if an RRS-II (as opposed to RRS-I) connection is enabled for the 
+robot.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyRRS2Server As Boolean
+ MyRRS2Server = MySimulatedResource.<font color="red"><b>UsingRRS2Server</b></font>
+</pre>
+</dl>
+
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AutoRRSConnect"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>AutoRRSConnect</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Automatically RRS (RRS-I) connects robots using RRS attributes
+ stored in persistent store (based on previous RRS connection).
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oConnectionSuccess</span></dt>
+   <dd>  0 if RRS-I connection attempt was successful(otherwise 1).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="ChkRRSServerType"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>ChkRRSServerType</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iRRSServerDecoratedName</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Checks if given rrs_server_decorated_name corresponds to an RRS-I server 
+(as opposed to an RRS-II server). Decorated names also contain host and 
+TCP port/RPC program number besides the raw RRS server name.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyRRSServerDecoratedName As String
+ <font color="green">'valuation of the server decorated name</font>
+ Dim MyRRS1Status As Boolean
+ MyRRS1Status = MySimulatedResource.ChkRRSServerType(MyRRSServerDecoratedName)
+</pre>
+</dl>
+
+
+</dd>
+<a id="RRS1ConnectStep1"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>RRS1ConnectStep1</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iRRSServerDecoratedName</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>oDefaultRobotNumber</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>oMinRobotNumber</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>oMaxRobotNumber</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>oRRSServerHostName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>oRCSHomeDirectory</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oRCSListHomeDirectory</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>oDefaultRCSHomeDirIndex</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>oDefaultRobotRelativePath</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oManipulatorListID</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>oDefaultManipulatorIndex</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>oManipulatorUserSelectable</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ First call to establish RRS-I connection to given RRS-I RCS server 
+ using given connection parameters.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iRRSServerDecoratedName</span></dt>
+   <dd>  Decorated name of RRS server. Note that, decorated
+  names also contain host and TCP port/RPC program number besides the
+  raw RRS server name.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDefaultRobotNumber</span></dt>
+   <dd>  Returned default RRS-I robot number.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oMinRobotNumber</span></dt>
+   <dd>  Returned minimum acceptable RRS-I robot number.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oMaxRobotNumber</span></dt>
+   <dd>  Returned maximum acceptable RRS-I robot number.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oRRSServerHostName</span></dt>
+   <dd>  Returned RRS server host machine name.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oRCSHomeDirectory</span></dt>
+   <dd>  Returned RCS home directory.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDefaultRCSHomeDirIndex</span></dt>
+   <dd>  Returned index for default data home directory list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDefaultRobotRelativePath</span></dt>
+   <dd>  Returned default relative robot path.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDefaultRobotRelativePath</span></dt>
+   <dd>  Returned default relative robot path.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oManipulatorListID</span></dt>
+   <dd>  Returned supported RRS-I manipulator strings list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDefaultManipulatorIndex</span></dt>
+   <dd>  Returned index of the default manipulator in manipulator_list  
+  with a 1 corresponding to first item in the list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oManipulatorUserSelectable</span></dt>
+   <dd>  Returned indication of whether or not manipulator string
+  is user selectable. 
+ 
+ </ dd>
+    <dt><span class='paramitem'> oConnectionSuccess</span></dt>
+   <dd>  0 if RRS-I connection attempt was successful(otherwise 1).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="RRS1ConnectStep2"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>RRS1ConnectStep2</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iRobotNumber</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iRRSDataHomeDirectory</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iRelativeRobotPath</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iManipulatorID</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibInitializationDebugEnabled</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Second (and final) call to establish RRS-I connection to given 
+ RRS-I RCS server using given connection parameters.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iRobotNumber</span></dt>
+   <dd>  The RRS-I robot number to use.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRRSDataHomeDirectory</span></dt>
+   <dd>  The RRS-I RCS data home directory to use. 
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRelativeRobotPath</span></dt>
+   <dd>  The RRS-I robot path directory to use (when combined with 
+  rcs_data_home_directory). 
+ 
+ </ dd>
+    <dt><span class='paramitem'> iManipulatorID</span></dt>
+   <dd>  The RRS-I manipulator string to use. 
+ 
+ </ dd>
+    <dt><span class='paramitem'> ibInitializationDebugEnabled</span></dt>
+   <dd>  Indicates if RRS-I initialization debugging should be enabled or
+  not (set it to FALSE by default).
+ 
+ </ dd>
+    <dt><span class='paramitem'> oConnectionSuccess</span></dt>
+   <dd>  0 if RRS-I connection attempt was successful(otherwise 1).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="RRS2ConnectStep1"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>RRS2ConnectStep1</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iRRSServerDecoratedName</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oListControllerSoftwareVersion</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>oDefaultControllerSoftwareVersionIndex</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ First call to establish RRS-II connection to given RRS-II VRC module 
+ using given connection parameters.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iRRSServerDecoratedName</span></dt>
+   <dd>  Decorated name of RRS server. Note that, decorated
+  names also contain host and TCP port/RPC program number besides the
+  raw RRS server name.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oListControllerSoftwareVersion</span></dt>
+   <dd>  Returned supported VRC controller software versions list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDefaultControllerSoftwareVersionIndex</span></dt>
+   <dd>  Returned index of the default controller software version in 
+  controller_sw_version_list with a 1 corresponding to first item 
+  in the list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oConnectionSuccess</span></dt>
+   <dd>  0 if RRS-II connection attempt was successful(otherwise 1).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="RRS2ConnectStep2"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>RRS2ConnectStep2</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iControllerSoftwareVersion</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oListUserLanguage</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>oDefaultUserLanguageIndex</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oListControllerConfig</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>oDefaultControllerConfigIndex</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Second call to establish RRS-II connection to given RRS-II VRC module 
+ using given connection parameters.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iControllerSoftwareVersion</span></dt>
+   <dd>  The VRC controller software version to use.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oListUserLanguage</span></dt>
+   <dd>  Returned supported VRC user languages list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDefaultUserLanguageIndex</span></dt>
+   <dd>  Returned index of the default VRC user language in 
+  user_language_list with a 1 corresponding to first item 
+  in the list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oListControllerConfig</span></dt>
+   <dd>  Returned supported VRC controller configurations list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oDefaultControllerConfigIndex</span></dt>
+   <dd>  Returned index of the default VRC controller configuration in 
+  controller_config_list with a 1 corresponding to first item 
+  in the list.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oConnectionSuccess</span></dt>
+   <dd>  0 if RRS-II connection attempt was successful(otherwise 1).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="RRS2ConnectStep3"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>RRS2ConnectStep3</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iUserLanguage</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iControllerConfig</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFileSystemFullPath</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Third (and final) call to establish RRS-II connection to given 
+ RRS-II VRC module using given connection parameters.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iUserLanguage</span></dt>
+   <dd>  The VRC user language to use.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iControllerConfig</span></dt>
+   <dd>  The VRC controller configuration to use.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iFileSystemFullPath</span></dt>
+   <dd>  The full path of VRC file system to use in initializing the
+  VRC instance. Note that, for controller_config-based initialization,
+  this parameter should be set to an empty string.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oConnectionSuccess</span></dt>
+   <dd>  0 if RRS-II connection attempt was successful(otherwise 1).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="RRSDisconnect"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>RRSDisconnect</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Disconnects RRS (RRS-I) for robot.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oConnectionSuccess</span></dt>
+   <dd>  0 if RRS-I connection attempt was successful(otherwise 1).
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

@@ -1,0 +1,170 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Navigating Structure Objects</title>
+<style type="text/css">
+.style1 {
+	color: #800000;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Navigating Structure Objects</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to navigate structure objects.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code class="style1"><div class=vb_sample_data>CAAScdSfdUcCGR.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcSR.3dxml</div>,</code> 
+							<code class="style1"><div class=vb_sample_data>CAAScdSfdUcSteel_A90.3dxml</div></code>, 
+							<code class="style1"><div class=vb_sample_data>CAAScdSfdUcNavigate.3dxml</div></code>,
+							files supplied in folder 
+							<code class="style1">InstallRootFolder\CAADoc\Doc\<code>English</code>\CAAScdSfdSFDesign\samples\</code> 
+							where 
+							<code class="style1">InstallRootFolder</code> is the folder where 
+								the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSfdUcNavigateSource.htm">CAAScdSfdUcNavigateSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSfdTocSFDesign.htm">Structure Functional Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in nine steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as "SfdProduct"</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves Transversal Bulkhead which is already created</a></li>
+			<li><a href="#Step5">Retrieving children of the panel </a></li>
+			<li><a href="#Step6">Retrieving Parents of the panel </a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named as "SfdProduct"</strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SFD_VB_TEST&quot; from DB and 
+			loads it and returns object of the Editor.</p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SFDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SFD_VB_TEST&quot;
+ OpenProduct prdName , SFDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SFD model from underlying database the current active 
+			editor is returned in <strong><code>SFDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+			<p>As a next step, the UC retrieves Selection object in SFDProdSel variable. 
+			To retrieve the Selection object <strong><code>SFDPrdEditor </code>
+			</strong>is used.</p>
+			<pre class="code">...
+    <span class="keyword">Set</span> SFDProdSel = SFDPrdEditor<strong>.Selection </strong>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> ObjPart = SFDPrdEditor.<strong>ActiveObject</strong> 
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves Transversal Bulkhead which is already created</strong></p>
+			<p>In this step UC retrieves Transversal bulkhead which is already created in the model. </p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> RefSfdPanel = ObjPart.FindObjectByName("Transverse Bulkhead_1")
+  SFDProdSel.Add RefSfdPanel
+  <span class="keyword">Dim</span> ObjStrNavigate <span class="keyword">As</span> StrNavigate
+  <span class="keyword">Set</span> ObjStrNavigate = SFDProdSel.FindObject("CATIAStrNavigate")
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieving children of the panel</strong></p>
+			<p>In this step UC retrieves all children of panel which is retrieved in above step.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ListOfPanelChildren <span class="keyword">As</span> References
+  <span class="keyword">Set</span> ListOfPanelChildren = ObjStrNavigate.<strong>GetChildren</strong>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Retrieving Parents of the panel</strong></p>
+			<p>In this step UC retrieves all parents of panel which is retrieved in step 4.</p>
+			<pre class="code">...
+   <span class="keyword">Dim</span> ListOfPanelParents <span class="keyword">As</span> References
+   <span class="keyword">Set</span> ListOfPanelParents = ObjStrNavigate.<strong>GetParents</strong>
+...</pre>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

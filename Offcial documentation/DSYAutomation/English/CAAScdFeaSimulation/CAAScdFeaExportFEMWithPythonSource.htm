@@ -1,0 +1,95 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaExportFEMWithPython.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">#-------------- Sample Script written in Python ------------------------------------------</span>
+<span class="comment"># This sample exports a FEM representation into Abaqus file format(inp). </span>
+<span class="comment"># The Abaqus file will be saved in the temporary folder defined by the TMP environment variable.</span>
+
+<span class="comment"># Steps:</span>
+<span class="comment">#    1 - Retrieves the simulation and its product</span>
+<span class="comment">#    2 - Retrieves the FEM Root</span>
+<span class="comment">#    3 - Retrieves the simulation exporter</span>
+<span class="comment">#    4 - Retrieves the exporter arguments</span>
+<span class="comment">#    5 - Sets the export parameters</span>
+<span class="comment">#    6 - Executes the export</span>
+
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 1 - Retrieves the simulation and its product</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+
+myProductEditor = CATIA.ActiveEditor
+MyProductService = myProductEditor.GetService("PLMProductService")
+
+myEntities = MyProductService.EditedContent
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 2 - Retrieves the FEM Root</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="keyword">for</span> myEntity <span class="keyword">in</span> myEntities:
+    myRef = myEntity
+    myReps = myRef.RepInstances
+    <span class="keyword">for</span> myRep <span class="keyword">in</span> myReps:
+        myRepRef = myRep.ReferenceInstanceOf
+        attr = myRepRef.GetAttributeValue("V_discipline")
+        <span class="keyword">if</span> (attr == "FEM"):
+            myFEMRoot = myRepRef.GetItem("SimFemRoot")
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 3 - Retrieves the simulation exporter</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+mySimManagerSIMExport = myFEMRoot.GetItem(&quot;SimManagerSIMExport&quot;)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 4 - Retrieves the exporter arguments</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+mySimExportArgs = mySimManagerSIMExport.Args
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 5 - Sets the export parameters</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+myExportPath=CATIA.SystemService.Environ("TMP") + "\CAAScdFeaExportFEM.inp"
+mySimExportArgs.SetPath(myExportPath)
+
+myParameters = mySimExportArgs.Parameters
+
+myParameters.SetIntegerParameter (&quot;AllowOverwrite&quot;, 1)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 6 - Executes the export</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+mySimManagerSIMExport.Export("Model2Abaqus")
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

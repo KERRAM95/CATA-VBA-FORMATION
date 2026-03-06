@@ -1,0 +1,249 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaGenerate3DMesh.catvbs</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">' &lt;!-- -------------- Sample macro written in VB ------------------------------------------ --&gt;</span>
+<span class="comment">' &lt;!-- This sample is an automated modeling procedure to create rule based 3D Mesh part. --&gt; </span>
+
+<span class="comment">' &lt;!-- Steps :--&gt; </span>
+
+<span class="comment">' &lt;!-- 1 - Inputs definitions --&gt; </span>
+<span class="comment">' &lt;!-- 2 - VB Script to create Mesh Part --&gt; </span>
+    <span class="comment">' &lt;!-- a - Retrieve Shape Reference and Part--&gt; </span>
+    <span class="comment">' &lt;!-- b - Retrieve created FEM Rep and link services--&gt; </span>
+    <span class="comment">' &lt;!-- c - Selection Mode = MainBody --&gt; </span>
+       <span class="comment">' &lt;!-- Retrieve Mesh Part Support if it is not given as argument --&gt; </span>
+       <span class="comment">' &lt;!-- Create Mesh Part and Solid Property --&gt; </span>
+    <span class="comment">' &lt;!-- d - Selection Mode = All Geometries or All Visible Geometries --&gt;</span>
+       <span class="comment">' &lt;!-- Retrieve all 3D Results in Part --&gt; </span>
+       <span class="comment">' &lt;!-- Loop on 3D Results  --&gt; </span>
+       
+<span class="comment">' &lt;!-- -------------------------------------------------------------------------- --&gt; </span>
+<span class="comment">' &lt;!-- 1 - Inputs definitions --&gt; </span>
+<span class="comment">' &lt;!-- -------------------------------------------------------------------------- --&gt; </span>
+</pre>
+<pre>
+<span class="comment">
+'&lt;Lists&gt;
+  '&lt;List Name = "SelectionDefinition"&gt;
+    '&lt;Member Name = "MainBody" Nls = "MainBody"/&gt;
+    '&lt;Member Name = "AllGeometries" Nls = "AllGeometries"/&gt;
+    '&lt;Member Name = "VisibleGeometries" Nls = "VisibleGeometries"/&gt;
+   '&lt;/List&gt;
+'&lt;/Lists&gt;
+'&lt;Inputs&gt;
+  '&lt;Input Name = "SelectionMode" Type = "List" SubType = "SelectionDefinition" Mand ="false" Nls ="SelectionMode"&gt;
+    '&lt;Input Name = "Support" Type ="Port" Visible = "1" Mand ="false" Nls ="Support"/&gt;
+  '&lt;/Input&gt;
+  '&lt;Input Name = "MeshingRule" Type ="DmtDocument" SubType ="CATFmtTetRule" Mand ="true" Nls ="Rule"/&gt;
+  '&lt;Input Name = "Property" Type ="Boolean" Mand ="true" Nls ="CreateSolid"/&gt;
+'&lt;/Inputs&gt;
+</span>
+<span class="comment">' &lt;!-- ---------------------------------------------------------------------------------------------------- --&gt;</span>
+<span class="comment">' &lt;!-- 2 - VB Script to create Mesh Part --&gt; </span>
+<span class="comment">' &lt;!-- ---------------------------------------------------------------------------------------------------- --&gt; </span>
+
+<span class="keyword">Sub main</span>(iMode, iSupport, iRule, iProp)
+
+<span class="comment">' a - Retrieve Shape Reference and Part</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">  Dim</span> ShapeRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">  Set</span>  ShapeRef = SHAPE.ReferenceInstanceOf
+<span class="keyword">  Dim</span> ThePart <span class="keyword">As</span> Part
+<span class="keyword">  Set</span>  ThePart = ShapeRef.GetItem("Part")
+
+<span class="comment">' b - Retrieve created FEM Rep and link services</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">  Dim</span> FEMRoot <span class="keyword">As</span> CATIAFmtFemRoot
+<span class="keyword">  Set</span> FEMRoot = FEM.GetItem(&quot;SimFemRoot&quot;)
+<span class="keyword">  Dim</span> EmptyOcc <span class="keyword">As</span> PLMOccurrence
+<span class="keyword">  Set</span> EmptyOcc = OCCURRENCE
+<span class="keyword">  Dim</span> FEMService <span class="keyword">As</span> SimComposeLinkServices
+<span class="keyword">  Set</span> FEMService = FEM.GetItem("SimComposeLinkServices")
+
+<span class="comment">' c - Selection Mode = MainBody</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">  Dim</span> EmptyBody <span class="keyword">As</span> Boolean
+<span class="keyword">  Dim</span> RefSupport <span class="keyword">As</span> Reference
+  <span class="keyword">If</span> (iMode = "1") <span class="keyword">Then</span>
+    <span class="keyword">If</span> IsEmpty(iSupport) <span class="keyword">Then</span>
+      Dim PartBody As AnyObject
+      Set PartBody = ThePart.MainBody
+      EmptyBody = IsAnEmptyBody(PartBody,False)
+      <span class="comment">'-- Retrieve Mesh Part Support if it is not given as argument --</span>
+      <span class="keyword">If</span> EmptyBody = True <span class="keyword">Then</span>
+        Set PartBody = FindFirstSolidBody(ThePart)
+        <span class="keyword">If Not</span> (PartBody Is Nothing) <span class="keyword">Then</span>
+          EmptyBody = False
+        <span class="keyword">Else</span> 
+          Exit Sub 
+        <span class="keyword">End If</span>
+      <span class="keyword">End If</span>
+      <span class="comment">'-- Create link for Support and Mesh Part --</span>
+      Set RefSupport = ThePart.CreateReferenceFromObject(PartBody)
+      Set Link = FEMService.ComposeLink(EmptyOcc, SHAPE, RefSupport)
+      CreateMeshPart FEMRoot, EmptyOcc, ThePart, Link, iRule, iProp
+    <span class="keyword">Else</span>
+      <span class="comment">'-- Create Mesh Part for iSupport --</span>
+      CreateMeshPart FEMRoot, EmptyOcc, ThePart, iSupport, iRule, iProp
+	<span class="keyword">End If</span>
+	 
+  <span class="keyword">End If</span>
+    
+<span class="comment">' d - Selection Mode = All Geometries or All Visible Geometries --&gt;</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">  Dim</span> count3DGeom <span class="keyword">As</span> Integer
+  count3DGeom = 0
+<span class="keyword">  Dim</span> CheckVisibility <span class="keyword">As</span> Boolean
+  CheckVisibility = False
+  <span class="keyword">If</span> (iMode = "3") <span class="keyword">Then</span>
+    CheckVisibility = True
+  <span class="keyword">End If</span> 
+
+  <span class="keyword">If</span> (iMode = "2") or (iMode = "3") <span class="keyword">Then</span>
+  <span class="keyword">  Dim</span> AutomatedFEMServices <span class="keyword">As</span> SimAutoModServices
+  <span class="keyword">  Set</span> AutomatedFEMServices = CATIA.ActiveEditor.GetService("SimAutoModServices")
+  <span class="keyword">  Dim</span> myList3DGeom
+    <span class="comment">'-- Retrieve all 3D Results in Part --</span>
+    myList3DGeom = AutomatedFEMServices.GetAllResults(ThePart, 3)
+    count3DGeom = UBound(myList3DGeom) - LBound(myList3DGeom) + 1
+		
+  <span class="comment">'-- Loop on 3D Results --</span>
+  <span class="keyword">For</span> i = 0 To count3DGeom - 1
+  <span class="keyword">  Dim</span> Support <span class="keyword">As</span> Body 
+  <span class="keyword">  Set</span> Support = myList3DGeom(i)
+  <span class="keyword">  Dim</span> Mysel <span class="keyword">As</span> Selection
+  <span class="keyword">  Set</span> Mysel = CATIA.ActiveEditor.Selection
+  <span class="keyword">  Dim</span> visStatus <span class="keyword">As</span> CatVisPropertyShow
+    Mysel.Add Support
+    Mysel.VisProperties.GetShow visStatus
+    Mysel.Clear
+    <span class="comment">'-- Check visibility according to iMode --</span>
+    <span class="keyword">If</span> (CheckVisibility = False) or ((CheckVisibility = True) and (visStatus = catVisPropertyShowAttr)) <span class="keyword">Then</span>
+    <span class="keyword">  Set</span> RefSupport = ThePart.CreateReferenceFromObject(Support)
+    <span class="keyword">  Set</span> Link = FEMService.ComposeLink(EmptyOcc, SHAPE, RefSupport)
+      <span class="comment">'-- Create Mesh Part --</span>
+      CreateMeshPart FEMRoot, EmptyOcc, ThePart, Link, iRule, iProp
+    <span class="keyword">End If</span>
+   <span class="keyword">Next</span> 
+	
+  <span class="keyword">End If</span>
+
+<span class="keyword">End Sub</span>
+
+<span class="keyword">Private Function</span> IsAnEmptyBody(<span class="keyword">ByVal</span> iBody <span class="keyword">As</span> Body, <span class="keyword">ByVal</span> iVisible <span class="keyword">As</span> Boolean) <span class="keyword">As</span> Boolean
+
+<span class="keyword">If</span> iBody Is Nothing <span class="keyword">Then</span>
+  <span class="keyword">Exit Function</span>
+<span class="keyword">Else</span>
+  <span class="keyword">Dim</span> Mysel <span class="keyword">As</span> Selection
+  <span class="keyword">Set</span> Mysel = CATIA.ActiveEditor.Selection
+  <span class="keyword">Dim</span> visStatus <span class="keyword">As</span> CatVisPropertyShow
+  <span class="keyword">Dim</span> myShapes <span class="keyword">As</span> Shapes
+  <span class="keyword">Set</span> myShapes = iBody.Shapes
+  <span class="keyword">Dim</span> myHybridShapes <span class="keyword">As</span> HybridShapes
+  <span class="keyword">Set</span> myHybridShapes = iBody.HybridShapes
+  IsAnEmptyBody = True
+  <span class="keyword">If</span> Not (myShapes Is Nothing) <span class="keyword">Then</span>
+    <span class="keyword">If</span> myShapes.Count &gt; 0 <span class="keyword">Then</span>
+      Mysel.Add iBody
+      Mysel.VisProperties.GetShow visStatus
+      Mysel.Clear
+      <span class="keyword">If</span> (iVisible = False) or ((iVisible = True) and (visStatus = catVisPropertyShowAttr)) <span class="keyword">Then</span>
+        IsAnEmptyBody = False
+      <span class="keyword">End If</span>
+    <span class="keyword">End If</span>
+  <span class="keyword">End If</span>
+  <span class="keyword">If</span> Not (myHybridShapes Is Nothing) <span class="keyword">Then</span>
+    <span class="keyword">If</span> myHybridShapes.Count &gt; 0 <span class="keyword">Then</span>
+      Mysel.Add iBody
+      Mysel.VisProperties.GetShow visStatus
+      Mysel.Clear
+      <span class="keyword">If</span> (iVisible = False) or ((iVisible = True) and (visStatus = catVisPropertyShowAttr)) <span class="keyword">Then</span>
+        IsAnEmptyBody = False
+      <span class="keyword">End If</span>
+    <span class="keyword">End If</span>
+  <span class="keyword">End If</span>
+<span class="keyword">End If</span>
+
+<span class="keyword">End Function</span>
+
+<span class="comment">' Find the fisrt volume in OGS</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Private Function</span> FindFirstSolidBody(iPart) <span class="keyword">As</span> Body
+
+  <span class="keyword">Dim</span> theMeasureService <span class="keyword">As</span> MeasurableService
+  <span class="keyword">Set</span> theMeasureService = CATIA.ActiveEditor.GetService("MeasurableService")
+  found = False
+  <span class="keyword">For Each</span> lOGS In iPart.OrderedGeometricalSets  
+    <span class="keyword">For Each</span> lHybShape In lOGS.HybridShapes
+      <span class="keyword">Dim</span> theMeasurableVolume <span class="keyword">As</span> MeasurableVolume
+      <span class="keyword">Set</span> theMeasurableVolume = theMeasureService.GetMeasurable(lHybShape, CAAMeasurableVolume)
+      <span class="keyword">Dim</span> theArea <span class="keyword">As</span> Double
+      <span class="keyword">On Error Resume Next</span>
+      theArea = theMeasurableVolume.GetVolume
+      <span class="keyword">If</span> Err = 0 <span class="keyword">Then</span>
+        <span class="keyword">Set</span> FindFirstSolidBody = lHybShape
+        found = True
+        <span class="keyword">Exit For</span>
+      <span class="keyword">End If</span>
+      <span class="keyword">On Error Goto 0</span>
+    <span class="keyword">Next</span>
+    <span class="keyword">If</span> found=True <span class="keyword">Then Exit For</span>
+  <span class="keyword">Next</span>
+   <span class="keyword">On Error Goto 0</span>
+   <span class="keyword">If</span> found=False <span class="keyword">Then</span> <span class="keyword">Set</span> FindFirstSolidBody=Nothing
+   
+<span class="keyword">End Function</span>
+
+<span class="comment">' Create Mesh Part</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Private Sub</span> CreateMeshPart(<span class="keyword">ByVal</span> FEMRoot <span class="keyword">As</span> CATIAFmtFemRoot, <span class="keyword">ByVal</span> EmptyOcc <span class="keyword">As</span> PLMOccurrence, <span class="keyword">ByVal</span> ThePart <span class="keyword">As</span> Part, <span class="keyword">ByVal</span> Support <span class="keyword">As</span> Body, <span class="keyword">ByVal</span> iRule <span class="keyword">As</span> AnyBody, <span class="keyword">ByVal</span> iProp <span class="keyword">As</span> Integer)
+
+  <span class="comment">' Create Mesh Part</span>
+  <span class="keyword">Dim</span> MeshSet <span class="keyword">As</span> CATIAFmtMeshSet
+  <span class="keyword">Set</span> MeshSet = FEMRoot.GetSet("SimNodesElements")
+  <span class="keyword">Dim</span> MeshParts <span class="keyword">As</span> CATIAFmtMeshParts
+  <span class="keyword">Set</span> MeshParts = MeshSet.MeshParts
+	
+  <span class="keyword">Dim</span> MeshPart <span class="keyword">As</span> CATIAFmtMeshPart
+  <span class="keyword">Set</span> MeshPart = MeshParts.Add("CATFmtTetRulesMesher")
+  <span class="comment">' Add Support to Mesh Part</span>
+  MeshPart.AddSupport (Support)
+  <span class="comment">' If requested Create Solid Property</span>
+  <span class="keyword">If</span> (iProp = 1) <span class="keyword">Then</span>
+    <span class="keyword">Dim</span> PropertySet <span class="keyword">As</span> SimProperties
+    <span class="keyword">Set</span> PropertySet = FEMRoot.GetSet("SimProperties")
+    <span class="keyword">Dim</span> SolidSection <span class="keyword">As</span> SimSolidSection
+    <span class="keyword">Dim</span> LinkAccess <span class="keyword">As</span> SimLinkAccess
+    <span class="keyword">Set</span> SolidSection = PropertySet.Add("SMAMpaSolidProperty")
+    <span class="keyword">Set</span> LinkAccess = SolidSection.GetItem("SimLinkAccess")
+    LinkAccess.AddLink "MainSupport", Support
+  <span class="keyword">End If</span>
+  <span class="comment">' Set Rule to Mesh Part</span>
+  MeshPart.SetRule iRule,"CATFmtTetRule"
+
+<span class="keyword">End Sub</span>
+
+
+</pre>
+  </body>
+</html>
+

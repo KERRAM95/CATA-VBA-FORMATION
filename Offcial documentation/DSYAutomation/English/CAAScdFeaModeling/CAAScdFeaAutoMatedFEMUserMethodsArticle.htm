@@ -1,0 +1,1234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<style type="text/css">
+    table.fill1 {
+    	width: 95%;
+    	background-color: #C0C0C0;
+	}
+	td.fill1 {
+		width: 33%;
+		padding: 30px;
+	}
+	td.fill2 {
+		padding: 30px;
+	}
+	td.fill3 {
+		width: 35%;
+		padding: 30px;
+	}
+	.padded td, .padded th {
+        padding: 5px;
+        border: 1px solid black;
+    }
+    ul li.att {
+ 		list-style-Type: none;
+ 		padding: 0 0 4px 23px;
+ 		background: url(https://www.computerhope.com/cdn/arrow.png) no-repeat left center;
+    }
+    .un {
+       list-style: circle;
+     }
+</style>
+
+<title>Automated FEM User Methods</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Automated FEM User Methods</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+		<h3>Abstract</h3>
+		<p> This article describes how to write a User Method for Automated FEM App.</p>
+		<p> A user method is a xml file that describes the list of mesh and connection procedures to apply on several subsets of an assembly of products.</p>
+		<p> It defines a list of <a href="#assignment">assigments</a> applying a mesh or connection procedure on the result of a search (<a href="#selector">selector</a>) with a set of input values (<a href="#inputValueSet">inputValueSet</a>).</p> 
+		<p><strong><a href="#Description_of_tags_and attributes">Description of tags and attributes</a></strong> </p>
+		<ul>
+		<li><p><a href="#method">method</a></p></li>
+		<ul class="un">
+			<li><a href="#id">id</a></li>
+            <li><a href="#displayName">displayName</a></li>	
+		</ul>
+		<li><p><a href="#selectorSet">selectorSet</a></p></li>
+		<ul>
+			<li><p><a href="#selector">selector</a></p></li>
+			<ul class="un">
+			<li><a href="#selector_id">id</a></li>
+			<li><a href="#selector_type">type</a></li>
+			<li><a href="#selector_subType">subType</a></li>
+			<li><a href="#string">string</a></li>
+            <li><a href="#comparator">comparator</a></li>
+			</ul>
+        </ul>
+        <li><p><a href="#selectionSet">selectionSet</a></p></li>
+        <ul>
+			<li><p><a href="#selection">selection</a></p></li>
+			<ul class="un">
+			<li><a href="#valueName">valueName</a></li>
+			</ul>
+			<ul>
+			<li><p><a href="#part">part</a></p></li>
+			<ul class="un">
+			<li><a href="#part_id">id</a></li>
+			<li><a href="#occurrencePath">occurrencePath</a></li>
+            <li><a href="#featurePath">featurePath</a></li>
+			</ul>
+			</ul>
+        </ul>
+        <li><p><a href="#inputValueSet">inputValueSet</a></p></li>
+        <ul>
+			<li><p><a href="#inputValue">inputValue</a></p></li>
+			<ul class="un">
+			<li><a href="#input_id">id</a></li>
+			</ul>
+			<ul>
+			<li><p><a href="#input">input</a></p></li>
+			<ul class="un">
+			<li><a href="#key">key</a></li>
+			<li><a href="#input_type">type</a></li>
+            <li><a href="#input_subType">subType</a></li>
+            <li><a href="#input_value">value</a></li>
+			</ul>
+			</ul>
+			
+	    </ul>
+        <li><p><a href="#structuration">structuration</a></p></li>
+        <ul class="un">
+			<li><a href="#structuration_type">type</a></li>
+	    </ul>
+	    
+	    <li><p><a href="#generative">generative</a></p></li>
+        <ul class="un">
+			<li><a href="#generative_value">value</a></li>
+	    </ul>
+
+	    
+	    <li><p><a href="#assignmentSet">assignmentSet</a></p></li>
+        <ul>
+			<li><p><a href="#assignment">assignment</a></p></li>
+			<ul class="un">
+			<li><a href="#assignment_type">type</a></li>
+			<li><a href="#assignment_id">id</a></li>
+			<li><a href="#searchDomain">searchDomain</a></li>
+            <li><a href="#procedure">procedure</a></li>
+            <li><a href="#inputs">inputs</a></li>
+			</ul>
+        </ul>
+
+	    
+    </ul>
+	<p><strong><a href="#Examples_of_procedure_inputs">Examples of mesh procedure inputs</a></strong> </p>
+	<p><strong><a href="#Example_of_connection_inputs">Example of connection procedure inputs</a></strong> </p>
+	<p><strong><a href="#Example_of_user_method">Example of user method</a></strong> </p>
+
+	</td>
+	</tr>
+	<tr>
+		<td></td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Description_of_tags_and attributes">Description of tags and attributes</a></h2>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<ul>
+<li><p><strong><a name="method">method</a></strong> </p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+		
+		</td>
+		<td class="fill2">
+		
+			<p>Root tag which defines the method.</p>
+			
+			<p><b>Example</b> :</p> <p>&lt;<a href="#method">method</a> DisplayName = "myMethod"&gt;</p>
+			                    <p> ... </p>
+			                    <p> &lt;/<a href="#method">method</a>&gt;</p>
+	    </td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<ul>
+<li><p><a name="id">id</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>false</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the internal name of the method.</p>
+		
+		</td>
+	</tr>
+</table>
+<li><p><a name="displayName">displayName</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the name of the method.</p>
+		
+		</td>
+	</tr>
+</table>
+</ul>
+
+<li><p><strong><a name="selectorSet">selectorSet</a></strong> </p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+		
+		</td>
+		<td class="fill2">
+		
+			<p>Tag which contains the list of searches</p>
+			
+			<p><b>Example</b> :</p> <p>&lt;<a href="#selectorSet">selectorSet</a>&gt;</p>
+			                            <p>&lt;<a href="#selector">selector</a> <a href="#selector_id">id</a> = "PartFor2D" <a href="#selector_type">type</a> = "Attribute" <a href="#selector_subType">subType</a> = "V_Name" <a href="#string">string</a> = "CAE" <a href="#comparator">comparator</a> = "="/&gt;</p>
+			                            <p>&lt;/<a href="#selectorSet">selectorSet</a>&gt;</p>
+		
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<ul>
+<li><p><strong><a name="selector">selector</a></strong></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Tag which represents a query on the database and defines a list of parts on which an assignment is applied.</p>
+		
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<ul>
+<li><p><a name="selector_id">id</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the name of the search.</p>
+		
+		</td>
+	</tr>
+</table>
+<li><p><a name="selector_type">type</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the type of the search.</p>
+			<p>Available values:</p>
+			<ul>
+				<li><b>&quot;All&quot;:</b> Query all the parts under the root product.</li>
+				<li><b>&quot;Visible&quot;:</b> Query all the visible parts or shapes under the root product.</li>
+				<li><b>&quot;Attribute&quot;:</b> Query products on a PLM attribute, the attribute is de fined byt the subType attribute.
+				<ul class="un">
+				<li>Required attribute : <a href="#selector_subType">subType</a></li>
+				</ul>
+				</li>
+				<li><b>&quot;MeshedSupport&quot;:</b> Query meshed gometries.</li>
+                <li><b>&quot;Publication&quot;:</b> Query products on the first publication fitting the string according to the comparator.
+                <ul class="un">
+				<li>Required attribute : <a href="#string">string</a></li>
+				</ul>
+				</li>
+				<li><b>&quot;Path&quot;:</b> (Only for connection procedure) Query products, parts or geometries based on their paths in the product structure.
+				<ul class="un">
+				<li>Required attribute : <a href="#string">string</a></li>
+				</ul>
+				</li>
+			</ul>
+		
+		</td>
+	</tr>
+</table>
+
+<li><p><a name="selector_subType">subType</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory: true</strong> if type="Attribute"</p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>If the type is &quot;Attribute&quot; it defines the name of the PLM attribute.</p>
+			<p><b>Example</b> : V_NAME</p>
+					
+		</td>
+	</tr>
+</table>
+
+<li><p><a name="string">string</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory: true</strong> if type="Attribute", "Publication" or "Path"</p>
+					
+		</td>
+		<td class="fill2">
+		
+		    <p>If the type is &quot;Publication&quot; it defines the substring of the publication name.</p>
+			<p>If the type is &quot;Attribute&quot; it defines the value of the PLM attribute.</p>
+			<p>If the type is &quot;Path&quot; it defines the search path that products, parts or geometries must comply with. Path in the product structure is built from the titles of product or part instances (the title of product reference in case of root product) and names of geometrical sets or features.</p>
+			<ul>
+			<li> the product path to the part or product with "!" separating each object in the path. If the product path is not defined, search is performed on all the parts and products.</li> 
+			<li> adding "|" and the geometrical path to the geometrical set or feature with "!" separating each object in the geometrical path. The first object must be a geometrical set.
+			It the fisrt object is not defined, geometrical features are searched in all geometrical sets.</li>
+			</ul>
+			
+			<p><b>Example</b> :</p>
+			<p>&ndash; Product1!Product2!Part3</p>
+            <p>&ndash; Product1!Part2|GeomSet1!GeomFeat2</p>
+			<p>&ndash; |GeomSet1!GeomFeat2</p>
+            <p>&ndash; |!GeomFeat2</p>
+		</td>
+	</tr>
+</table>
+
+<li><p><a name="comparator">comparator</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>false</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>If the type is &quot;Attribute&quot; or &quot;Publication&quot;</p>
+			<p>Available values:</p>
+			<ul>
+				<li><b>&quot;=&quot;:</b> The attribute value or the publication name must contain the string attribute</li>
+				<li><b>&quot;!=&quot;:</b> The attribute value or the publication name must not contain the string attribute</li>
+			</ul>
+					
+		</td>
+	</tr>
+</table>
+
+
+</ul>
+
+<li><p><strong><a name="selectionSet">selectionSet</a></strong> </p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>false</strong><strong></strong></p>
+		
+		</td>
+		<td class="fill2">
+		
+			<p>Tag which contains the list of selections</p>
+			
+			<p><b>Example</b> :</p> <p>&lt;<a href="#selectionSet">selectionSet</a>&gt;</p>
+			                            <p>&lt;<a href="#selection">selection</a> <a href="#valueName">valueName</a> = &quot;PointPlacementSelection&quot;<strong>/&gt;</strong></p>
+			                               <p>&lt;<a href="#part">part</a> <a href="#part_id">id</a> = "1" <a href="#occurrencePath">occurrencePath</a> = "DesignSolution_Body.1!Fasteners.1" <a href="#featurePath">featurePath</a> = "Point_Fasteners 1"<strong>/&gt;</strong></p>
+			                            <p>&lt;/<a href="#selection">selection</a>&gt;</p>
+			                            <p>&lt;/<a href="#selectionSet">selectionSet</a>&gt;</p>
+		
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-tags/attributes for selectionSet=-=-=-=-=-=-=-=-= -->
+<ul>
+<li><p><strong><a name="selection">selection</a></strong></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>false</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>This tag is needed in case the type of an input is &quot;Selection&quot;.</p>
+		
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-tags/attributes for selection =-=-=-=-=-=-=-=--=-=-= -->
+<ul>
+<li><p><a name="valueName">valueName</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the name of the selection.</p>
+		
+		</td>
+	</tr>
+</table>
+
+
+<li><p><strong><a name="part">part</a></strong></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Tag which defines an item of the selection.</p>
+		
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<ul>
+<li><p><a name="part_id">id</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the id of the part.</p>		
+		</td>
+	</tr>
+</table>
+<li><p><a name="occurrencePath">occurrencePath</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the product path to the part or product with "!" separating each object in the path. If the product path is not defined, search is performed on all the parts and products.</p>
+			<p><b>Remark</b>: the Root Product is defined by the reference name and the other products and parts by the instance name.</p>		
+		    <p><b>Example</b> : Product1!Product2!Part3</p>
+            
+		</td>
+	</tr>
+</table>
+<li><p><a name="featurePath">featurePath</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the geometrical path to the geometrical set or feature with "!" separating each object in the geometrical path. The first object must be a geometrical set. 
+			If the first object is not defined, geometrical features are searched in all geometrical sets.</p>		
+		    <p><b>Example</b> : GeomSet1!GeomFeat2 or !GeomFeat2</p>
+		</td>
+	</tr>
+</table>
+</ul>
+<!-- -=-=-=-=-=-=-=-=-=-=-tags/attributes for selection =-=-=-=-=-=-=-=--=- -->
+</ul>
+<!-- -=-=-=-=-=-=-=-=-=-=-tags/attributes for selectionSet=-=-=-=-=-=-=-=-= -->
+</ul>
+<li><p><strong><a name="inputValueSet">inputValueSet</a></strong> </p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+		
+		</td>
+		<td class="fill2">
+		
+			<p>Tag which contains the list of inputs.</p>
+			
+			<p><b>Example</b> :</p> <p>&lt;<a href="#inputValueSet">inputValueSet</a>&gt;</p>
+			                            <p>&lt;<a href="#inputValue">inputValue</a> <a href="#input_id">id</a> = &quot;inputValueSet1&quot;<strong>&gt;</strong></p>
+			                               <p>&lt;<a href="#input">input</a> <a href="#key">key</a> = "SelectionMode" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "SelectionDefinition" <a href="#input_value">value</a> = "1"/&gt;</p>
+                                           <p>&lt;<a href="#input">input</a> <a href="#key">key</a> = "Support" <a href="#input_type">type</a> ="Port" <a href="#input_value">value</a> = "" /&gt;</p>
+                                           <p>&lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshingRule" <a href="#input_type">type</a> = "DmtDocument" <a href="#input_subType">subType</a> = "CATFmtTetRule" <a href="#input_value">value</a> = "3D_Rule"/&gt;</p>
+                                           <p>&lt;<a href="#input">input</a> <a href="#key">key</a> = "Property" <a href="#input_type">type</a> = "Boolean" <a href="#input_value">value</a> = "TRUE"/&gt;</p>
+			                            <p>&lt;/<a href="#inputValue">inputValue</a>&gt;</p>
+			                            <p>&lt;/<a href="#inputValueSet">inputValueSet</a>&gt;</p>
+		
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-tags/attributes for inputValueSet=-=-=-=-=-=-=-=-= -->
+<ul>
+<li><p><strong><a name="inputValue">inputValue</a></strong></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Tag which defines a set of parameters needed as input for mesh or connection procedures.</p>
+			<p>A procedure needs a specific list of inputs (more details in <a href="CAAScdFeaAutoMatedModelingProceduresArticle.htm">Automated FEM Procedures</a>).</p>
+			<p>An example of inputs list for some out-of-the-box mesh procedures can be find below in <a href="#Examples_of_procedure_inputs">Examples of mesh procedure inputs</a>.</p>
+            <p>Each input only requires from this specific list the <strong>key</strong>, the <strong>type</strong> (eventually the <strong>subType</strong>) and the <strong>value</strong>.</p>
+            <p>There is no need to specify the attributes Mand, Nls, Min, Max, MinExcl, MaxExcl.</p>
+            <p>The inputs must be written in the same order as given in the mesh procedures.</p>
+		
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-tags/attributes for inputValue =-=-=-=-=-=-=-=--=-=-= -->
+<ul>
+<li><p><a name="input_id">id</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the name used by the assignment.</p>
+		
+		</td>
+	</tr>
+</table>
+<li><p><strong><a name="input">input</a></strong></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Tag which defines an input for mesh or connection procedures.</p>
+		
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-Attributes of input=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<ul>
+<li><p><a name="key">key</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the name of the input.</p>		
+		</td>
+	</tr>
+</table>
+<li><p><a name="input_type">type</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the type of the input. <strong>For more information, see the Simulation | Physics Simulation | Model Assembly Design | Automated FEM | About User Procedures section of the User Assistance</strong></p>		
+		    <table class="padded">
+    		<tr>
+    			<th>type</th>
+    			<th>subType</th>
+    			<th>value</th>
+           </tr>
+    		<tr>
+    			<th>Integer, Double, String, Boolean</th>
+    			<th> - </th>
+    			<th>integer, double, string, boolean value </th>    		
+    			</tr>
+            <tr>
+    			<th>DmtDocument</th>    			
+    			<th>extension of the dmt document</th>
+    			<th>name of the dmtdocument (meshing rule, connection rule, ...) </th>
+    	    </tr>
+            <tr>
+    			<th>List</th>
+    			<th>name of the list in the inputs definition</th>
+    			<th>integer value (starting at 1) giving the position in the list</th>    		
+    		</tr>
+			<tr>
+    			<th>Enum</th>
+    			<th>name of the enum in the inputs definition</th>
+    			<th>integer value (starting at 1) giving the position in the enum</th>    		
+    		</tr>
+    		<tr>
+    			<th>Dimension</th>
+    			<th>kind of dimension (Length, Angle, ...)</th>
+    			<th>literal value containing units ("10mm")</th>    		
+    		</tr>
+    		<tr>
+    			<th>DimensionRange</th>
+    			<th>kind of dimension (Length, Angle, ...)</th>
+    			<th>min/max values separated by | ("0mm|20mm")</th>    		
+    		</tr>
+
+            <tr>
+    			<th>Port</th>
+    			<th> - </th>
+    			<th>string value giving the name of publication</th>    		
+    		</tr>
+            <tr>
+    			<th>Selection</th>
+    			<th>selection type (MonoSelectionSolids, MultiSelectionSolids, MultiSelectionLinePlacement,...)</th>
+    			<th>string value giving the name of the selection defined in <a href="#selectionSet">selectionSet</a></th>    		
+    		</tr>
+    		<tr>
+    			<th>Search</th>
+    			<th> - </th>
+    			<th>string value giving the name of the search defined in <a href="#selectorSet">selectorSet</a></th>    		
+    		</tr>
+            
+    		</table>
+		</td>
+	</tr>
+</table>
+<li><p><a name="input_subType">subType</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>false</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the subtype of the input depending on the type.</p>		
+		    <p><b>Example</b> : SelectionDefinition (List type), Length (Dimension type), ElementOrder (Enum)</p>
+		</td>
+	</tr>
+</table>
+<li><p><a name="input_value">value</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the value of the input depending on the type.</p>		
+		 </td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-Attributes of input=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+</ul>
+<!-- -=-=-=-=-=-=-=-=-=-=-tags/attributes for inputValue =-=-=-=-=-=-=-=--=-=-= -->
+</ul>
+<!-- -=-=-=-=-=-=-=-=-=-=-tags/attributes for inputValueSet =-=-=-=-=-=-=-=--=-=-= -->
+</ul>
+
+<li><p><strong><a name="structuration">structuration</a></strong> </p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>false</strong><strong></strong></p>
+			<p><strong>default value:</strong> <strong>&quot;AOM&quot;</strong><strong></strong></p>
+
+		
+		</td>
+		<td class="fill2">
+		
+			<p>Tag which defines the AOM/MOA mode.</p>
+					
+		</td>
+	</tr>
+</table>
+<ul>
+<li><p><a name="structuration_type">type</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>false</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the type of structuration.</p>	
+			<p>Available values:</p>
+			<ul>
+				<li><b>&quot;AOM&quot;:</b> Create one FEM per part</li>
+				<li><b>&quot;MOA&quot;:</b> Create one FEM containing all the meshes</li>
+			</ul>
+	
+		</td>
+	</tr>
+</table>
+</ul>
+
+<li><p><strong><a name="generative">generative</a></strong> </p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>false</strong><strong></strong></p>
+			<p><strong>default value:</strong> <strong>&quot;false&quot;</strong><strong></strong></p>
+
+		
+		</td>
+		<td class="fill2">
+		
+			<p>Tag which defines the storage of connection procedures and results in an automated specification.</p> 
+			<p>The supported connection procedures are: Read From Design procedure with "In current finite element model" as Creation location, 
+			and the other procedures with "In current finite element model" as Creation location and applied on "Meshed Supports".</p>  
+			<p>It enables user to relaunch connection procedures according to design and model changes.</p>
+					
+		</td>
+	</tr>
+</table>
+<ul>
+<li><p><a name="generative_value">value</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>false</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the generative storage.</p>	
+			<p>Available values:</p>
+			<ul>
+				<li><b>&quot;true&quot;</b></li>				
+				<li><b>&quot;false&quot;</b></li>			
+			</ul>
+	
+		</td>
+	</tr>
+</table>
+</ul>
+
+
+<li><p><strong><a name="assignmentSet">assignmentSet</a></strong> </p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+		
+		</td>
+		<td class="fill2">
+		
+			<p>Tag which contains the list of assignments.</p>
+			
+			<p><b>Example</b> :</p> <p>&lt;<a href="#assignmentSet">assignmentSet</a>&gt;</p>
+			                            <p>&lt;<a href="#assignment">assignment</a> <a href="#assignment_type">type</a> = &quot;Mesh&quot; <a href="#assignment_id">id</a> = &quot;1&quot; <a href="#searchDomain">searchDomain</a> = &quot;PartFor2D&quot; <a href="#procedure">procedure</a> = &quot;GenerateSurfQuadMesh&quot; <a href="#inputs">inputs</a> = &quot;inputValueSet1&quot; /&gt;</p>
+			                            <p>&lt;<a href="#assignment">assignment</a> <a href="#assignment_type">type</a> = &quot;Mesh&quot; <a href="#assignment_id">id</a> = &quot;2&quot; <a href="#searchDomain">searchDomain</a> = &quot;PartFor3D&quot; <a href="#procedure">procedure</a> = &quot;Generate3DMesh&quot; <a href="#inputs">inputs</a> = &quot;inputValueSet2&quot; /&gt;</p>
+			                        <p>&lt;/<a href="#assignmentSet">assignmentSet</a>&gt;</p>
+		
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-tags/attributes for asignmentSet=-=-=-=-=-=-=-=-= -->
+<ul>
+<li><p><strong><a name="assignment">assignment</a></strong></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Tag which defines an assignment. An assignment applies a mesh or connection procedure on the result of a search with a set of input values.</p>
+		
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-tags/attributes for assignment =-=-=-=-=-=-=-=--=-=-= -->
+<ul>
+<li><p><a name="assignment_type">type</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the type of the assignment.</p>
+		    <p>Available values:</p>
+			<ul>
+				<li><b>&quot;Mesh&quot;:</b> Applies a mesh procedure</li>
+				<li><b>&quot;Connection&quot;:</b> Applies a connection procedure</li>
+			</ul>
+
+		</td>
+	</tr>
+</table>
+<li><p><a name="assignment_id">id</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the id of the assignment.</p>
+		
+		</td>
+	</tr>
+</table>
+<li><p><a name="searchDomain">searchDomain</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the name of the selector.</p>
+		
+		</td>
+	</tr>
+</table>
+<li><p><a name="procedure">procedure</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the name of the procedure. This procedure contains the instructions to populate the FEM.</p>
+            <p><b>Example for mesh procedure:</b> &quot;Generate3DTetMeshParameters&quot;, &quot;Ignore&quot;&#8230;</p>
+            <p><b>Example for connection procedure:</b> &quot;GeometricalDetection&quot;, &quot;GeometricalLineDetection&quot;, &quot;GeometricalPointDetection&quot;, &quot;ImportFromFSR&quot;.</p>
+		
+		</td>
+	</tr>
+</table>
+<li><p><a name="inputs">inputs</a></p></li>
+<table class="fill1">
+	<tr>
+		<td class="fill1">
+		
+			<p><b>type</b>: <b><i>string </i></b></p>
+			<p><strong>Mandatory:</strong> <strong>true</strong><strong></strong></p>
+					
+		</td>
+		<td class="fill2">
+		
+			<p>Attribute which defines the name of the inputs set.</p>
+		
+		</td>
+	</tr>
+</table>
+
+</ul>
+</ul>
+
+<!-- -=-=-=-=-=-=-=-=-=-=-all tags=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+</ul>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Examples_of_procedure_inputs">Examples of mesh procedure inputs</a></h2>
+
+<p>Here are some examples of inputs for the out-of-the-box mesh procedures available in Automated FEM.</p>
+ <table class="padded">
+    		<tr>
+    			<th>Mesh procedure UI</th>
+    			<th style="width: 979px">List of inputs</th>
+    	    </tr>
+    	    <tr>
+    	    	<th> <img src="images/MidSurfaceRule.png"/> </th>
+    	    	<th style="width: 979px">  <pre class="code">
+ &lt;<a href="#inputValue">inputValue</a> <a href="#input_id">id</a> = "MidSurface_Rule_Based"&gt;  
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "SelectionMode" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "SelectionDefinition" <a href="#input_value">value</a>  = "1" /&gt; 
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "PublicationName" <a href="#input_type">type</a> = "String" <a href="#input_value">value</a> = "To_Mesh"/&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Defeaturing" <a href="#input_type">type</a> = "Boolean" <a href="#input_value">value</a> = "TRUE&quot;&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "FilletRadius" <a href="#input_type">type</a> = "DimensionRange" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "0mm|1mm"/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "HoleDiameter" <a href="#input_type">type</a> = "DimensionRange" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "0mm|0mm"/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "ChamferLength" <a href="#input_type">type</a> = "DimensionRange" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "0mm|0mm"/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "DraftAngle" <a href="#input_type">type</a> = "DimensionRange" <a href="#input_subType">subType</a> = "Angle" <a href="#input_value">value</a> = "0deg|0deg"/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "LogoFilter" <a href="#input_type">type</a> = "Boolean" <a href="#input_value">value</a> = "FALSE"/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshDefinition" <a href="#input_type">type</a> = "Enum" <a href="#input_subType">subType</a>  = "MeshDefinition" <a href="#input_value">value</a> = "1" &gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshingRule" <a href="#input_type">type</a> = "DmtDocument" <a href="#input_subType">subType</a> = "CATFmtSurfQuadRule" <a href="#input_value">value</a> = "2D_Quad_Rule"/&gt; 
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshSize" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = ""/&gt; 
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "ElementOrder" <a href="#input_type">type</a> = "Enum" <a href="#input_subType">subType</a> = "ElementOrder" <a href="#input_value">value</a> = ""/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "ShellSection" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "ThicknessDefinition" <a href="#input_value">value</a> = &quot;5"&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "Specified" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = ""/&gt;
+ &lt;/<a href="#input">input</a>&gt; 
+ &lt;/<a href="#inputValue">inputValue</a>&gt;</pre>
+  				</th>
+    	    </tr>
+    	    <tr>
+    	    	<th> <img src="images/SurfTriaParams.png"/> </th>
+    	    	<th style="width: 979px">  <pre class="code">
+ &lt;<a href="#inputValue">inputValue</a> <a href="#input_id">id</a> = "SurfTria_Parameters_Based"&gt;  
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "SelectionMode" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "SelectionDefinition" <a href="#input_value">value</a>  = "1"&gt; 
+    &lt;<a href="#input">input</a> <a href="#key">key</a> = "Support" <a href="#input_type">Port</a> = "Boolean" <a href="#input_value">value</a> = "SolidBody"/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshDefinition" <a href="#input_type">type</a> = "Enum" <a href="#input_subType">subType</a>  = "MeshDefinition" <a href="#input_value">value</a> = "2" &gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshingRule" <a href="#input_type">type</a> = "DmtDocument" <a href="#input_subType">subType</a> = "" <a href="#input_value">value</a> = ""/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshSize" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "10mm"/&gt; 
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "ElementOrder" <a href="#input_type">type</a> = "Enum" <a href="#input_subType">subType</a> = "ElementOrder" <a href="#input_value">value</a> = "1"/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "ShellSection" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "ThicknessDefinition" <a href="#input_value">value</a> = &quot;2"&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "Specified" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "1mm"/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;/<a href="#inputValue">inputValue</a>&gt;</pre>
+  				</th>
+    	    </tr>
+<tr>
+    	    	<th> <img src="images/3DTetRule.png"/> </th>
+    	    	<th style="width: 979px">  <pre class="code">
+ &lt;<a href="#inputValue">inputValue</a> <a href="#input_id">id</a> = "3DTet_Rule_Based"&gt;  
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "SelectionMode" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "SelectionDefinition" <a href="#input_value">value</a>  = "2"&gt; 
+    &lt;<a href="#input">input</a> <a href="#key">key</a> = "Support" <a href="#input_type">Port</a> = "Boolean" <a href="#input_value">value</a> = ""/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Defeaturing" <a href="#input_type">type</a> = "Boolean" <a href="#input_value">value</a> = "FALSE&quot;&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "FilletRadius" <a href="#input_type">type</a> = "DimensionRange" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "0mm|1mm"/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "HoleDiameter" <a href="#input_type">type</a> = "DimensionRange" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "0mm|0mm"/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "ChamferLength" <a href="#input_type">type</a> = "DimensionRange" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "0mm|0mm"/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "DraftAngle" <a href="#input_type">type</a> = "DimensionRange" <a href="#input_subType">subType</a> = "Angle" <a href="#input_value">value</a> = "0deg|0deg"/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "LogoFilter" <a href="#input_type">type</a> = "Boolean" <a href="#input_value">value</a> = "FALSE"/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshDefinition" <a href="#input_type">type</a> = "Enum" <a href="#input_subType">subType</a>  = "MeshDefinition" <a href="#input_value">value</a> = "2" &gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshingRule" <a href="#input_type">type</a> = "DmtDocument" <a href="#input_subType">subType</a> = "" <a href="#input_value">value</a> = ""/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshSize" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "10mm"/&gt; 
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "ElementOrder" <a href="#input_type">type</a> = "Enum" <a href="#input_subType">subType</a> = "ElementOrder" <a href="#input_value">value</a> = "1"/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "ShellSection" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "ThicknessDefinition" <a href="#input_value">value</a> = &quot;2"&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "Specified" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "1mm"/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;/<a href="#inputValue">inputValue</a>&gt;</pre>
+  				</th>
+    	    </tr>
+
+
+ </table>
+
+
+<p><b>Remarks:</b></p>
+
+<p>The input list of <a href="#input_subType">subType</a> = "<b>SelectionDefinition</b>" can take 3 integer values:</p>
+<ul class="un">
+ <li><b>&quot;1&quot;:</b> for "MainBody".</li>
+ <li><b>&quot;2&quot;:</b> for "AllGeometries".</li>
+ <li><b>&quot;2&quot;:</b> for "VisibleGeometries".</li>
+</ul>
+
+<p>The input list for <a href="#key">key</a> = "<b>ElementOrder</b>" can take 2 integer values:</p>
+<ul class="un">
+ <li><b>&quot;1&quot;:</b> for "Linear".</li>
+ <li><b>&quot;2&quot;:</b> for "Quadratic".</li></ul>
+
+<p>The input list for <a href="#key">key</a> = "<b>ThicknessDefinition</b>" can take 4 integer values:</p>
+<ul class="un">
+ <li><b>&quot;1&quot;:</b> for "No shell section".</li>
+ <li><b>&quot;2&quot;:</b> for "Specified".</li>
+ <li><b>&quot;3&quot;:</b> for "From thin part feature".</li>
+ <li><b>&quot;4&quot;:</b> for "From midsurface".</li>
+ </ul>
+
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Example_of_connection_inputs">Example of connection procedure inputs</a></h2>
+
+<p>Here are some examples of inputs for each type of available connection procedures.</p>
+
+<ul>
+<li><strong>Geometrical Point Detection</strong></li>
+
+<pre class="code">
+&lt;<a href="#inputValue">inputValue</a> <a href="#input_id">id</a> = "UserConnInputs2"&gt;  
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "PointRule" <a href="#input_type">type</a> = "DmtDocument" <a href="#input_subType">subType</a> = "SMAFeaPointFastenerRule" <a href="#input_value">value</a> = "PF" <a href="#input_value">revision</a> = "---.000"  /&gt; 
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = &quot;PointPlacement" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "PlacementDefinition" <a href="#input_value">value</a> = "1"&gt;
+  &lt;<a href="#input">input</a> <a href="#key">key</a> = "PointPlacementSearch" <a href="#input_type">type</a> = "Search" <a href="#input_value">value</a> = "UserInputSearch2_1"/&gt;
+  &lt;<a href="#input">input</a> <a href="#key">key</a> = "PointPlacementSelection" <a href="#input_type">type</a> = "Selection" <a href="#input_subType">subType</a> = "MultiSelectionPointPlacement" <a href="#input_value">value</a> = ""/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Tolerance" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "15mm"/&gt; 
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Prefix" <a href="#input_type">type</a> = "String" <a href="#input_value">value</a> = "PF_"/&gt; 
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "CreationLocation" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "" <a href="#input_value">value</a> = "2"/&gt;
+&lt;/<a href="#inputValue">inputValue</a>&gt;
+&lt;<a href="#selectorSet">selectorSet</a>&gt;
+  &lt;<a href="#selector">selector</a> <a href="#selector_id">id</a> = "UserInputSearch2_1" <a href="#selector_type">type</a> = "Attribute" <a href="#selector_subType">subType</a> = "V_Name" <a href="#string">string</a> = "|Point" <a href="#comparator">comparator</a> = "="/&gt;	
+&lt;/<a href="#selectorSet">selectorSet</a>&gt;
+</pre>
+
+<li><strong>Geometrical Line Detection</strong></li>
+
+<pre class="code">
+&lt;<a href="#inputValue">inputValue</a> <a href="#input_id">id</a> = "UserConnInputs3"&gt;  
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "PointRule" <a href="#input_type">type</a> = "DmtDocument" <a href="#input_subType">subType</a> = "SMAFeaLineFastenerRule" <a href="#input_value">value</a> = "Seam Weld (NVH)" <a href="#input_value">revision</a> = "---.000"  /&gt; 
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "PlacementMethod" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "PlacementMethodDefinition" <a href="#input_value">value</a> = "1"/&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = &quot;LinePlacement" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "PlacementDefinition" <a href="#input_value">value</a> = "2"&gt;
+  &lt;<a href="#input">input</a> <a href="#key">key</a> = "LinePlacementSearch" <a href="#input_type">type</a> = "Search" <a href="#input_value">value</a> = "UserInputSearch3_1"/&gt;
+  &lt;<a href="#input">input</a> <a href="#key">key</a> = "LinePlacementSelection" <a href="#input_type">type</a> = "Selection" <a href="#input_subType">subType</a> = "MultiSelectionLinePlacement" <a href="#input_value">value</a> = "Selection1_3"/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Tolerance" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "10mm"/&gt; 
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Prefix" <a href="#input_type">type</a> = "String" <a href="#input_value">value</a> = "LF_"/&gt; 
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "CreationLocation" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "" <a href="#input_value">value</a> = "3"/&gt;
+&lt;/<a href="#inputValue">inputValue</a>&gt;
+&lt;<a href="#selectionSet">selectionSet</a>&gt;	
+  &lt;<a href="#selection">selection</a> <a href="#valueName">valueName</a> = "Selection1_3"&gt;
+    &lt;<a href="#part">part</a> <a href="#part_id">id</a> = "1" <a href="#occurrencePath">occurrencePath</a> = "NDIVehicleReference ---.000!DesignSolution_Body.1!Fasteners.1" <a href="#featurePath">featurePath</a> = "Adhesives"/&gt;
+  &lt;/<a href="#selection">selection</a>&gt;			
+&lt;/<a href="#selectionSet">selectionSet</a>&gt;
+</pre>
+
+<li><strong>Read From Design</strong></li>
+
+<pre class="code">
+&lt;<a href="#inputValue">inputValue</a> <a href="#input_id">id</a> = "UserConnInputs1"&gt;  
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "PointRule" <a href="#input_type">type</a> = "DmtDocument" <a href="#input_subType">subType</a> = "SMAFeaPointFastenerRule" <a href="#input_value">value</a> = "PF" <a href="#input_value">revision</a> = "---.000"/&gt; 
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Prefix" <a href="#input_type">type</a> = "String" <a href="#input_value">value</a> = "FSR_"/&gt; 
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "CreationLocation" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "" <a href="#input_value">value</a> = "1"/&gt;
+</pre>
+
+<li><strong>Virtual Bolt Detection</strong></li>
+
+<pre class="code">
+&lt;<a href="#inputValue">inputValue</a> <a href="#input_id">id</a> = "UserConnInputs4"&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Geometry" <a href="#input_type">type</a> = "List" <a href="#input_value">value</a> = "1"/&gt;   
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "PlacementMethod" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "PlacementMethodDefinition" <a href="#input_value">value</a> = "1"&gt;
+  &lt;<a href="#input">input</a> <a href="#key">key</a> = &quot;PointPlacement" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "PlacementDefinition" <a href="#input_value">value</a> = "1"&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "PointPlacementSearch" <a href="#input_type">type</a> = "Search" <a href="#input_value">value</a> = "UserInputSearch1_1"/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "PointPlacementSelection" <a href="#input_type">type</a> = "Selection" <a href="#input_subType">subType</a> = "MultiSelectionPointPlacement" <a href="#input_value">value</a> = ""/&gt;
+  &lt;/<a href="#input">input</a>&gt;
+  &lt;<a href="#input">input</a> <a href="#key">key</a> = "PointPlacementTolerance" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = ""/&gt; 
+  &lt;<a href="#input">input</a> <a href="#key">key</a> = &quot;LinePlacement" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "PlacementDefinition" <a href="#input_value">value</a> = "1"&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "LinePlacementSearch" <a href="#input_type">type</a> = "Search" <a href="#input_value">value</a> = "UserInputSearch1_2"/&gt;
+   &lt;<a href="#input">input</a> <a href="#key">key</a> = "LinePlacementSelection" <a href="#input_type">type</a> = "Selection" <a href="#input_subType">subType</a> = "MultiSelectionLinePlacement" <a href="#input_value">value</a> = ""/&gt;
+  &lt;/<a href="#input">input</a>&gt;
+  &lt;<a href="#input">input</a> <a href="#key">key</a> = "LinePlacementTolerance" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = ""/&gt;
+ &lt;/<a href="#input">input</a>&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "CircularShape" <a href="#input_type">type</a> = "Boolean" <a href="#input_value">value</a> = "false"/&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Diameter" <a href="#input_type">type</a> = "DimensionRange" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "0mm|50mm"/&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Width" <a href="#input_type">type</a> = "DimensionRange" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "10mm|60mm"/&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "DiameterTolerance" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "2mm"/&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Length" <a href="#input_type">type</a> = "DimensionRange" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "20mm|70mm"/&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "MaxOffsetBetweenHoles" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "5mm"/&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "MaxAngleBetweenAxes" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Angle" <a href="#input_value">value</a> = "10deg"/&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "VirtualBoltRule" <a href="#input_type">type</a> = "DmtDocument" <a href="#input_subType">subType</a> = "SMAFeaVirtualBoltRule" <a href="#input_value">value</a> = "SMAFeaVirtualBoltRule" <a href="#input_value">revision</a> = "---.000"/&gt;
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "Prefix" <a href="#input_type">type</a> = "String" <a href="#input_value">value</a> = "Test_"/&gt; 
+ &lt;<a href="#input">input</a> <a href="#key">key</a> = "CreationLocation" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "" <a href="#input_value">value</a> = "4"/&gt;
+&lt;/<a href="#inputValue">inputValue</a>&gt;
+&lt;<a href="#selectorSet">selectorSet</a>&gt;
+  &lt;<a href="#selector">selector</a> <a href="#selector_id">id</a> = "UserInputSearch1_1" <a href="#selector_type">type</a> = "Path" <a href="#string">string</a> = "" <a href="#comparator">comparator</a> = "="/&gt;	
+  &lt;<a href="#selector">selector</a> <a href="#selector_id">id</a> = "UserInputSearch1_2" <a href="#selector_type">type</a> = "Path" <a href="#string">string</a> = "" <a href="#comparator">comparator</a> = "="/&gt;
+&lt;/<a href="#selectorSet">selectorSet</a>&gt;
+
+</pre>
+
+<p><b>Remarks:</b></p>
+
+<p>The input list of <a href="#input_subType">subType</a> = "<b>PlacementDefinition</b>" can take 2 integer values:</p>
+<ul class="un">
+ <li><b>&quot;1&quot;:</b> for "PointPlacementSearch" or "LinePlacementSearch".</li>
+ <li><b>&quot;2&quot;:</b> for "PointPlacementSelection" or "LinePlacementSelection".</li>
+</ul>
+
+<p>The input list for <a href="#key">key</a> = "<b>CreationLocation</b>" can take 4 integer values:</p>
+<ul class="un">
+ <li><b>&quot;1&quot;:</b> for "One engineering connection for all connection properties".</li>
+ <li><b>&quot;2&quot;:</b> for "One engineering connection per connected parts".</li>
+ <li><b>&quot;3&quot;:</b> for "One engineering connection per connection property".</li>
+ <li><b>&quot;4&quot;:</b> for "In current finite element model".</li>
+</ul>
+
+<p>The input list of <a href="#input_subType">subType</a> = "<b>PlacementMethodDefinition</b>" (for line fasteners) can take 2 integer values:</p>
+<ul class="un">
+ <li><b>&quot;1&quot;:</b> for "Line".</li>
+ <li><b>&quot;2&quot;:</b> for "Support boundary".</li>
+</ul>
+
+
+<p>The input list of <a href="#input_subType">subType</a> = "<b>PlacementMethodDefinition</b>" (for virtual bolts) can take 3 integer values:</p>
+<ul class="un">
+ <li><b>&quot;1&quot;:</b> for "Free"; no Placement block is required.</li>
+ <li><b>&quot;2&quot;:</b> for "Point": the first Placement block is required.</li>
+ <li><b>&quot;3&quot;:</b> for "Line": the second Placement block is required.</li>
+</ul>
+
+<p><b>Tolerance</b> value is set as maximum projection distance of detected connections, instead of maximum projection distance of connection rule.</p>
+
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Example_of_user_method">Example of user method</a></h2>
+
+<p>Here is an example of a user method containing two mesh assignments and one connection assignment.</p>
+
+<pre class="code">
+&lt;?xml version='1.0' encoding='UTF-8' ?&gt;			
+&lt;<a href="#method">method</a> <a href="#displayName">displayName</a> = "ODTmethod"&gt;			
+  &lt;<a href="#selectorSet">selectorSet</a>&gt;
+    &lt;<a href="#selector">selector</a> <a href="#selector_id">id</a> = "PartFor2D" <a href="#selector_type">type</a> = "Attribute" <a href="#selector_subType">subType</a> = "V_Name" <a href="#string">string</a> = "CAE" <a href="#comparator">comparator</a> = "="/&gt;
+    &lt;<a href="#selector">selector</a> <a href="#selector_id">id</a> = "PartFor3D" <a href="#selector_type">type</a> = "Attribute" <a href="#selector_subType">subType</a> = "V_Name" <a href="#string">string</a> = "NDISeat" <a href="#comparator">comparator</a> = "="/&gt;
+    &lt;<a href="#selector">selector</a> <a href="#selector_id">id</a> = "ConnecSupport" <a href="#selector_type">type</a> = "MeshedSupport"/&gt;	
+  &lt;/<a href="#selectorSet">selectorSet</a>&gt;			
+  			
+  &lt;<a href="#selectionSet">selectionSet</a>&gt;	
+    &lt;<a href="#selection">selection</a> <a href="#valueName">valueName</a> = "Selection1_1"&gt;
+      &lt;<a href="#part">part</a> <a href="#part_id">id</a> = "1" <a href="#occurrencePath">occurrencePath</a> = "L8D2-5K091-A-PIA-01_51 ---.000!L8D2-5K091-A-PIA-26_12.1" <a href="#featurePath">featurePath</a> = "ON_SOLIDS"/&gt;
+    &lt;/<a href="#selection">selection</a>&gt;			
+  &lt;/<a href="#selectionSet">selectionSet</a>&gt;			
+  			
+  &lt;<a href="#inputValueSet">inputValueSet</a>&gt;
+    &lt;<a href="#inputValue">inputValue</a> <a href="#input_id">id</a> = "inputvalueSet1"&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "SelectionMode" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "SelectionDefinition" <a href="#input_value">value</a> = "1"&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "Support" <a href="#input_type">type</a> ="Port" <a href="#input_value">value</a> = "To_Mesh" /&gt;
+      &lt;/<a href="#input">input</a>&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshDefinition" <a href="#input_type">type</a> = "Enum" <a href="#input_subType">subType</a>  = "MeshDefinition" <a href="#input_value">value</a> = "1" &gt;
+        &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshingRule" <a href="#input_type">type</a> = "DmtDocument" <a href="#input_subType">subType</a> = "CATFmtSurfQuadRule" <a href="#input_value">value</a> = "2D_Quad_Rule"/&gt;
+        &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshSize" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = ""/&gt; 
+        &lt;<a href="#input">input</a> <a href="#key">key</a> = "ElementOrder" <a href="#input_type">type</a> = "Enum" <a href="#input_subType">subType</a> = "ElementOrder" <a href="#input_value">value</a> = ""/&gt;
+      &lt;/<a href="#input">input</a>&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "ShellSection" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "ThicknessDefinition" <a href="#input_value">value</a> = "3"&gt;
+        &lt;<a href="#input">input</a> <a href="#key">key</a> = "Specified" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" visible = "2" <a href="#input_value">value</a> = ""/&gt;
+      &lt;/<a href="#input">input</a>&gt;
+    &lt;/<a href="#inputValue">inputValue</a>&gt;
+    &lt;<a href="#inputValue">inputValue</a> <a href="#input_id">id</a> = "inputvalueSet2"&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "SelectionMode" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "SelectionDefinition" <a href="#input_value">value</a> = "1"&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "Support" <a href="#input_type">type</a> ="Port" <a href="#input_value">value</a> = "" /&gt;
+      &lt;/<a href="#input">input</a>&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshDefinition" <a href="#input_type">type</a> = "Enum" <a href="#input_subType">subType</a>  = "MeshDefinition" <a href="#input_value">value</a> = "1" &gt;
+        &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshingRule" <a href="#input_type">type</a> = "DmtDocument" <a href="#input_subType">subType</a> = "CATFmtTetRule" <a href="#input_value">value</a> = "3D_Rule"/&gt;
+        &lt;<a href="#input">input</a> <a href="#key">key</a> = "MeshSize" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = ""/&gt; 
+        &lt;<a href="#input">input</a> <a href="#key">key</a> = "ElementOrder" <a href="#input_type">type</a> = "Enum" <a href="#input_subType">subType</a> = "ElementOrder" <a href="#input_value">value</a> = ""/&gt;
+      &lt;/<a href="#input">input</a>&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "Property" <a href="#input_type">type</a> = "Boolean" <a href="#input_value">value</a> = "TRUE"/&gt;
+    &lt;/<a href="#inputValue">inputValue</a>&gt;
+    &lt;<a href="#inputValue">inputValue</a> id = "UserConnInputs1"&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "LineRule" <a href="#input_type">type</a> = "DmtDocument" <a href="#input_subType">subType</a> = "SMAFeaLineFastenerRule" value = "Seam Weld (NVH)" revision = "---.000"/&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "PlacementMethod" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "PlacementMethodDefinition" <a href="#input_value">value</a> = "2"/&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = &quot;LinePlacement" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "PlacementDefinition" <a href="#input_value">value</a> = "2"&gt;
+        &lt;<a href="#input">input</a> <a href="#key">key</a> = "LinePlacementSearch" <a href="#input_type">type</a> = "Search" <a href="#input_value">value</a> = "UserInputSearch1_1"/&gt;
+        &lt;<a href="#input">input</a> <a href="#key">key</a> = "LinePlacementSelection" <a href="#input_type">type</a> = "Selection" <a href="#input_subType">subType</a> = "MultiSelectionLinePlacement" <a href="#input_value">value</a> = "Selection1_1"/&gt;
+      &lt;/<a href="#input">input</a>&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "Tolerance" <a href="#input_type">type</a> = "Dimension" <a href="#input_subType">subType</a> = "Length" <a href="#input_value">value</a> = "10mm"/&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "Prefix" <a href="#input_type">type</a> = "String" <a href="#input_value">value</a> = "DETECTED_"/&gt;
+      &lt;<a href="#input">input</a> <a href="#key">key</a> = "CreationLocation" <a href="#input_type">type</a> = "List" <a href="#input_subType">subType</a> = "" <a href="#input_value">value</a> = "2"/&gt;
+    &lt;/<a href="#inputValue">inputValue</a>&gt;	
+  &lt;/<a href="#inputValueSet">inputValueSet</a>&gt;			
+  			
+  &lt;<a href="#structuration">structuration</a> <a href="#structuration_type">type</a> = "AOM"/&gt;			
+  			
+  &lt;<a href="#assignmentSet">assignmentSet</a>&gt;			
+	&lt;<a href="#assignment">assignment</a> <a href="#assignment_type">type</a> = "Mesh" <a href="#assignment_id">id</a> = "1" <a href="#searchDomain">searchDomain</a> = "PartFor2D" <a href="#procedure">procedure</a> = "GenerateSurfQuadMesh" <a href="#inputs">inputs</a> = "inputvalueSet1"/&gt;		
+	&lt;<a href="#assignment">assignment</a> <a href="#assignment_type">type</a> = "Mesh" <a href="#assignment_id">id</a> = "2" <a href="#searchDomain">searchDomain</a> = "PartFor3D" <a href="#procedure">procedure</a> = "Generate3DMesh" <a href="#inputs">inputs</a> = "inputvalueSet2"/&gt;
+	&lt;<a href="#assignment">assignment</a> <a href="#assignment_type">type</a> = "Connection" <a href="#assignment_id">id</a> = "MyLineConnection" <a href="#searchDomain">searchDomain</a> = "ConnecSupport" <a href="#procedure">procedure</a> = "GeometricalDetection" <a href="#inputs">inputs</a> = "UserConnInputs1"/&gt;
+  &lt;/<a href="#assignmentSet">assignmentSet</a>&gt;			
+&lt;/<a href="#method">method</a>&gt;			
+
+</pre>
+
+
+</ul>
+
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>
+
+

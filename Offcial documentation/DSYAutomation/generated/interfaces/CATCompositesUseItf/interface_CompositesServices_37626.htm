@@ -1,0 +1,132 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATCompositesUseItf CompositesServices (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATCompositesUseItf.htm" href="../CATCompositesUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATCompositesUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "CompositesServices"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> CompositesServices<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_CompositesServices_37626','CompositesServices','0');</script>
+<section id='maindesc'>
+<b><i> Represents CATIACompositesServices  that allow to query composites entity.</i></b><br>
+
+ <b>Role</b>: On any object recovers is it his a composites object or not and provides its type if yes. 
+ <dl>
+ <dt>Example:</dt>
+ <dd>
+ This VBScript example illustrates how to <code>GetCompositesType</code> if any , on objects in CATIA Part.
+ </dd> 
+ <dd>
+ <pre>
+ ' -------------------------------------------------------------------
+ ' CATIA Composites 
+ ' VBScript example to identify composites object type
+ ' ------------------------------------------------------------------
+ Sub CATMain()
+    Const UNKNOWN       = 0 
+    Const STACKING      = 1 
+    Const PLYGROUP      = 2 
+    Const SEQUENCE      = 3
+    Const CUTPIECEGROUP = 4
+    Const PLY           = 5
+    Const CORE          = 6
+    Const CUTPIECE      = 7
+    ' Part 
+    Set myPart = CATIA.ActiveDocument.Part
+ 
+    ' Get Service Object by querying on part - extension of CATIA Base 
+    Set myCompServObj = myPart.<font color="red">GetItem("CATCompositesServices")</font>
+    
+    ' Hybrid Bodies
+    Set myHBodies = myPart.HybridBodies
+    
+    ' Get Part Hybrid Bodies Count
+    HBCount = myHBodies.Count
+   
+    StckCnt = 0
+    For N = 1 To PartHBCount
+       ' Iterate through all Hybrid Bodies in Part one by one and retrieve its type
+         Set myObject = myHBodies.Item(N)
+         myCompServObj.<font color="red">GetCompositesType</font> myObject, myType
+         If myType = STACKING Then
+    		     ' ==> Stacking Composites feature type is recovered  among hybridshapes under part 
+    		    ObjCompositesStacking =  myObject
+    		    ' ....
+    		Exit For 
+    	End if 
+    Next 
+    Mggbox "Stacking="& ObjCompositesStacking.Name 
+ End Sub
+ </pre>
+ </dd>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetCompositesType"><b>GetCompositesType</b></a>
+</td><td  id='tdright'>  Retrieves "Composites Type" of an 3D object.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetCompositesType"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetCompositesType</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iObject</span>,<script type="text/javascript"> activateLink('CATCompositesTypeEnum','CATCompositesTypeEnum')</script> <span class='param'>oCompositesType</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves "Composites Type" of an 3D object.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iObject</span></dt>
+   <dd>   Object whose type is to be retrieved.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oCompositesType</span></dt>
+   <dd>   Composites Type of input object.
+ 
+ </ dd>
+</dl></dd>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('CATCompositesTypeEnum','','CATCompositesTypeEnum') </script></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

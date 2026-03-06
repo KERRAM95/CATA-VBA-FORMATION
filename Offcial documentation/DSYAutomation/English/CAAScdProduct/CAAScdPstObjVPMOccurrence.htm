@@ -1,0 +1,171 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>VPMOccurrence Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>VPMOccurrence Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavreuse"><a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMOccurrence', 'PropertyIndex');return false;">Properties</a></td>
+		<td class="ofvbanavunused">Methods</td>
+	</tr>
+</tbody>
+</table>
+<table>
+	<tbody>
+	<tr>
+		<td class="auto">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'PLMModelerBaseIDLItf', 'interface', 'PLMOccurrence');return false;">
+		<img src="../CAAScdImages/PLMOccurrence.png" alt="PLMOccurrence Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/parderil.png" alt="Inheritance Symbol" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="../CAAScdInfInfrastructure/CAAInfObjPLMEntity.htm"><img src="../CAAScdImages/PLMEntity.png" alt="PLMEntity Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/parlower.png" alt="Inheritance Symbol" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'PLMModelerBaseIDLItf', 'interface', 'PLMOccurrences');return false;"><img src="../CAAScdImages/PLMOccurrences.png" alt="PLMOccurrences Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMOccurrence');return false;"><img src="../CAAScdImages/VPMOccurrence.png" alt="VPMOccurrence Object" width="252" height="22"/></a>
+		<br />
+		<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'InfModelInterfaces', 'interface', 'Position');return false;"><img src="../CAAScdImages/Position.png" alt="Po Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMInstance');return false;"><img src="../CAAScdImages/VPMInstance.png" alt="VPMInstance Object" width="252" height="22"/></a><br />
+		<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'ProductStructureClientIDLItf', 'interface', 'VPMOccurrences');return false;"><img src="../CAAScdImages/VPMOccurrences.png" alt="VPMOccurrences Collection Object" width="252" height="22"/></a><br />
+		</td>
+			</tr>
+</tbody>
+</table>
+<p>Represents any object of the product structure occurrence model objects, 
+except its root object.</p>
+<p>The <strong>VPMOccurrence</strong> object enables you to manipulate the 
+product structure occurrence 
+model. See <a href="../CAAScdProduct/CAAScdPstTaProductOverview.htm">Product Modeler Overview</a>.</p>
+<h2>Retrieving a VPMOccurrence Object</h2>
+<p>To retrieve a given <strong>VPMOccurrence</strong> object, start from the 
+root occurrence and navigate the occurrence tree using the <strong>VPMOccurrences</strong> 
+collection object of each <strong>VPMOccurrence</strong> object node until the 
+one searched for is found.</p>
+<pre class="code"><span class="keyword">Dim</span> oPLMProductService <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> oPLMProductService = oEditor.<strong>GetService</strong>(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> oRootOcc <span class="keyword">As</span> VPMRootOccurrence
+<span class="keyword">Set</span> oRootOcc = oPLMProductService.<strong>RootOccurrence</strong>
+
+<span class="keyword">Dim</span> oFoundOcc <span class="keyword">As</span> VPMOccurrence
+
+<span class="keyword">Dim</span> isOccFound = <span class="keyword">False</span>
+<span class="keyword">Set</span> isOccFound = navigateOccurrences oRootOcc, oFoundOcc 
+
+<span class="keyword">If</span> isOccFound = <span class="keyword">True Then</span>
+    <span class="keyword">MsgBox</span> &quot;The occurrence object with Name set to SearchedOccName is found: &quot; _
+           &amp; oFoundOcc.InstanceOccurrenceOf.GetAttributeValue("PLM_ExternalID")
+<span class="keyword">Else</span>
+    <span class="keyword">MsgBox</span> &quot;The occurrence object with Name set to SearchedOccName is not found&quot;
+<span class="keyword">End If</span>
+
+...
+
+<span class="keyword">Function</span> navigateOccurrences (oOcc <span class="keyword">As</span> VPMOccurrence, oFoundOcc <span class="keyword">As</span> VPMOccurrence) <span class="keyword">As</span> Boolean
+  <span class="keyword">On Error GoTo</span> ErrorSub
+  <span class="keyword">Dim</span> cOccs <span class="keyword">As</span> VPMOccurrences
+  <span class="keyword">Set</span> cOccs = oOcc.<strong>Occurrences</strong>
+
+<span class="keyword">  For</span> i = 1 <span class="keyword">To</span> cOccs.Count
+    <span class="keyword">Dim</span> oChildOcc <span class="keyword">As</span> VPMOccurrence
+    <span class="keyword">Set</span> oChildOcc = cOccs.Item(i)
+
+    <span class="keyword">If</span> oChildOcc.InstanceOccurrenceOf.GetAttributeValue("PLM_ExternalID") = &quot;SearchedOccName&quot; <span class="keyword">Then</span>
+      oFoundOcc = oChildOcc
+      <span class="keyword">Return True</span>
+    <span class="keyword">End If</span>
+    <span class="keyword">If</span> navigateOccurrences (oChildOcc, oFoundOcc ) <span class="keyword">Then Return True</span>
+  <span class="keyword">Next</span>
+
+  <span class="keyword">GoTo</span> EndSub
+  ErrorSub:
+    <span class="keyword">MsgBox</span> Err.Description
+  EndSub:
+<span class="keyword">End Function</span></pre>
+
+<p>The navigateOccurrences func retrieves the <strong>VPMOccurrences</strong> 
+collection object of the current VPMOccurrence object thanks to its <strong>
+Occurrences</strong> property, and loops onto the collection to scan each 
+element until the appropriate one is found, here if the appropriate name of the 
+associated <strong>VPMInstance</strong> object is found, or recursively scans 
+the node below.</p>
+<h2>Using a VPMOccurrence Object</h2>
+<p>Use the <strong>PLMEntity</strong> property inherited from the <strong>PLMOccurrence</strong> 
+object to retrieve to return the instance/reference 
+model object associated with the current <strong>VPMOccurrence</strong> object.</p>
+<pre class="code"><span class="keyword">Dim</span> oVPMOcc <span class="keyword">As</span> VPMOccurrence
+... <span class="comment">'Retrieve either the VPMOccurrence object</span>
+<span class="keyword">Dim</span> oPLMEntity <span class="keyword">As</span> PLMEntity
+<span class="keyword">Set</span> oPLMEntity = oVPMOcc.<strong>PLMEntity</strong></pre>
+<p>The <strong>PLMOccurrences</strong> property returns the <strong>
+VPMOccurrence</strong> object aggregated to the <strong>
+PLMOccurrence</strong> object. This collection object contains all the <strong>
+PLMOccurrence</strong> objects that are just below children of the <strong>
+PLMOccurrence</strong> object. lf this collection object 
+is empty, the <strong>PLMOccurrence</strong> object is a leaf object in the 
+occurrence model tree. Otherwise, it is a node. Prefer using the <strong>
+Occurrences</strong> properties of either the VPMRootOccurrence Object and the VPMOccurrence 
+Object to navigate the occurrence model. </p>
+<p>Use the <strong>Position</strong> property of the <strong>VPMOccurrence</strong> object to return the 
+<strong>Position</strong> 
+object storing the occurrence object location in the 3D space.</p>
+<pre class="code"><span class="keyword">Dim</span> oPosition <span class="keyword">As</span> Position
+<span class="keyword">Set</span> oPosition = oVPMOcc.<strong>Position
+</strong>
+<span class="keyword">Dim</span> oPosArray (11)
+oPosition.<strong>GetComponents</strong> oPosArray
+ 
+MsgBox &quot;Relative position of the occurrence of &quot; &amp; _
+        oVPMOcc.VPMInstance.GetAttributeValue("PLM_ExternalID") &amp; &quot; in the 3D space&quot; &amp; _
+
+vbCrLf &amp; &quot; Local coordinate system X vector: &quot; &amp; _
+oPosArray (0) &amp; &quot;, &quot; &amp; oPosArray (1) &amp; &quot;, &quot; &amp; oPosArray (2) &amp; _ 
+
+vbCrLf &amp; &quot; Local coordinate system X vector: &quot; &amp; _
+oPosArray (3) &amp; &quot;, &quot; &amp; oPosArray (4) &amp; &quot;, &quot; &amp; oPosArray (5) &amp; _  
+
+vbCrLf &amp; &quot; Local coordinate system Z vector: &quot; &amp; _
+oPosArray (6) &amp; &quot;, &quot; &amp; oPosArray (7) &amp; &quot;, &quot; &amp; oPosArray (8) &amp; _ 
+ 
+vbCrLf &amp; &quot; Local coordinate system origin coordinates: &quot; &amp; _
+oPosArray (9) &amp; &quot;, &quot; &amp; oPosArray (10) &amp; &quot;, &quot; &amp; oPosArray (11)</pre>
+<p>The <strong>Position</strong> property of the <strong>
+VPMOccurrence</strong> object returns a <strong>Position</strong> object from 
+which the coordinate system local to the occurrence can be retrieved. This 
+coordinate system can expressed either with respect to the parent object 
+coordinate system using the <strong>GetComponents</strong> sub as shown here, or 
+to the absolute coordinate system thanks to the <strong>GetAsbComponents</strong> 
+sub.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

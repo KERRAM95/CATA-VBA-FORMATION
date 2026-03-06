@@ -1,0 +1,203 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Opening Simulation Reference</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Opening Simulation Reference</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This Use case 
+						retrieves a Root Simulation Reference from database 
+						according to end user criteria. In the process Use Case 
+						demonstrates about searching the Simulation Reference from the database . Further Use Case demonstrates about 
+						retrieving handle to Root object though various methods.</p>
+					</tr>
+					<tr>
+						<td class="Intro1"><span class="run-in">Before you begin:</span> 
+						<ul>
+						<li>You should first launch 3DEXPERIENCE and import the file
+							<br><code>InstallRootFolder\CAADoc\CAAScdSimulation\samples\<div class=vb_sample_data>ghaSimulationMultyLabA.1.3dxml</div></code> 
+						<br>where <code>InstallRootFolder</code> is the folder where the CAA CD-ROM is 
+                        installed.</li>
+						<li>Then, select one of the Physics Simulation apps.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:</span>
+						<a href="CAAScdSimSearchOpenSource.htm">CAAScdSimSearchOpenSource.htm</a></p>
+						<p>Attention the macro can request a slight change to 
+						take into account your own Simulation types. First read
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a> 
+						before using it.</p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSimTocSimulation.htm">Simulation Platform Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 1 step</p>
+		<ol>
+			<li><a href="#Step1">Searches for a Simulation in database</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"></a>Searches for a Simulation in database</p>
+			<p>As a first step, the UC retrieves a Simulation from database</p>
+			<p>It begins with a call to <strong>SearchSimulation</strong> function. 
+			This function searches for a list of PLM Components from the underlying 
+			database based on an input search criteria. This list is output in the 
+			PLM Search Result window in CATIA.</p>
+			<pre class="code"> ... 
+ <span class="keyword">    Dim oDatabaseSearch As  DatabaseSearch
+     Set oDatabaseSearch = SearchSimulation</span>
+...</pre>
+			<p>The function <em>SearchSimulation</em> returns the  
+ <span class="keyword">    DatabaseSearch </span>object, a<code> 
+ <span class="keyword">    <b>oDatabaseSearch</b> </span></code>, which represents a tab in the PLM 
+			Search Result window in CATIA. It is interesting to note that each tab 
+			in this search corresponds to each input search criteria which user 
+			would launch on the underlying database.</p>
+			<p>We build up the search criteria, with a Simulation Reference as PLM 
+			Entity type , 
+			along with PLM Attributes PLM_ExternalID&nbsp; as an input.</p>
+			<p>The function <strong><code>SearchSimulation</code> </strong>details are as in 
+			the below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Retrieves the Search service from CATIA session</p>
+				<pre class="code"><span class="keyword">Function</span> SearchSimulation() <span class="keyword">As</span> <span class="keyword">DatabaseSearch</span>
+<span class="keyword">    Dim</span> oSearchService <span class="keyword">As</span> SearchService
+<span class="keyword">    Set</span> oSearchService = CATIA.<strong>GetSessionService</strong>(&quot;<strong>Search</strong>&quot;)
+...</pre>
+				<p>The <code>PLMSearchService</code>, <code>oSearchService
+				</code>is retrieved by calling <em>GetSessionService</em> method 
+				on the Application (CATIA) with &quot;Search&quot; as an input.
+				</p>
+				</li>
+				<li>
+				<p>Retrieving the the Databasesearch Object</p>
+				<pre class="code">...
+   Dim oDBSearch As DatabaseSearch
+   Set oDBSearch = oSearchService.DatabaseSearch
+...
+<span class="keyword"> </span></pre>
+				</li>
+				<li>
+				<p>Sets the type of objects to search for SIMObjSimulationObjectGeneric in this case)</p>
+				<pre class="code">...
+    oDBSearch.BaseType = &quot;SIMObjSimulationObjectGeneric&quot;
+...</pre>
+				<p>A call to the <code>Type </code>property sets the type of objects to search for : 
+                    &quot;SIMObjSimulationObjectGeneric&quot;</p>
+				</li>
+				<li>
+				<p>Updates the PLM Search object created in the above 
+				steps with the attribute criteria provided by the user as an input</p>
+				<pre class="code">...
+    oDBSearch.<strong>AddEasyCriteria</strong> &quot;<strong>PLM_ExternalID</strong>&quot;, strInputPLMIDName
+...</pre>
+				<p>A call to <em>AddeasyCriteria</em> method, 
+				updates the created PLMSearch object with the search criteria according 
+				to the users input as depicted in the figures below</p>
+				<p>Prompt the user to input the PLM_ExternalID for 
+				search purpose. A dialog box appears:</p>
+				<table>
+					<caption><a name="Fig1"></a>Fig. 1 Dialog to input PLM_ExternalID 
+					for search</caption>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="PLM_ExternalID" src="../CAAScdProduct/CAAScdPstUcOpenProductReference_image1.jpg"/></td>
+					</tr>
+				</tbody>
+				</table>
+				<p>&nbsp;Triggers the search</p>
+				<pre class="code">...
+    oSearchService.Search
+...
+<span class="keyword">End Function </span></pre>
+				<p>A call to S<em>earch</em> method of the SearchService 
+				object actually searches for the objects which matches all the attributes 
+				of the set and matching the case of the values(i.e. search is Case 
+				Sensitive), and type. A Search object is equivalent to the new 
+				tab page within PLM Search window interactively.</p>
+				<p>Once the Simulation Object has been found right click on it 
+				and select the Open command in order to open it.</p>
+				</li>
+			</ol>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

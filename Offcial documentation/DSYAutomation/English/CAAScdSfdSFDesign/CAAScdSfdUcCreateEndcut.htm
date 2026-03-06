@@ -1,0 +1,381 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an Endcut</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an Endcut</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a Endcut.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSfdUcCGR.3dxml</div></code> 
+							 <code><div class=vb_sample_data>CAAScdSfdUcSR.3dxml</div></code> <code><div class=vb_sample_data>CAAScdSfdUcPart.3dxml</div></code> files supplied 
+							in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSfdSFDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where 
+								the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSfdUcCreateEndcutSource.htm">CAAScdSfdUcCreateEndcutSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSfdTocSFDesign.htm">Structure Functional Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in eight steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves a SFD stiffener object</a></li>
+			<li><a href="#Step5">Creates Endcut </a></li>
+			<li><a href="#Step6">Edits Endcut</a></li>
+			<li><a href="#Step7">Retrieves StrEndcutMngt object and remove the Endcut 
+			created at the start of the profile</a></li>
+			<li><a href="#Step8">Updates the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SFD_VB_TEST&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SFD_VB_TEST&quot; from DB and 
+			loads it and returns object of the Editor. </p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>SFDPrdEditor <span class="keyword"> As </span> Editor
+ <span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+  prdName = &quot;SFD_VB_TEST&quot;
+  OpenProduct prdName , SFDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SFD model from underlying database the current active 
+			editor is returned in <strong><code>SFDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+			<p>As a next step, the UC retrieves Selection object in SFDProdSel variable. 
+			To retrieve the Selection object <strong><code>SFDPrdEditor </code>
+			</strong>is used.</p>
+			<pre class="code"> ...
+  <span class="keyword">Set</span> SFDProdSel = SFDPrdEditor<strong>.Selection </strong>
+ ...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> ObjPart = SFDPrdEditor.<strong>ActiveObject</strong> 
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves a SFD Stiffener object</strong></p>
+			<p>In this step UC retrieves stiffener object. Endcut will be created 
+			on this stiffener. </p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> RefObjSfdStiffener = ObjPart.<strong>FindObjectByName</strong>(&quot;Stiffener.1&quot;)
+  <span class="keyword">Dim</span> ObjSfdStiffener <span class="keyword">As</span> StrSfdStiffener
+  SFDProdSel.<strong>Add</strong> (RefObjSfdStiffener)
+  <span class="keyword">Set</span> ObjSfdStiffener = SFDProdSel.<strong>FindObject</strong>(&quot;CATIASfdStiffener&quot;)
+...</pre>
+			<p><code>FindObjectByName</code> method finds object whose name is &quot;Stiffener.1&quot; 
+			and returns reference to it. Here RefObjSfdStiffener is of type
+			<code>Reference</code>. To retrieve <code>StrSfdStiffener</code> object 
+			from <code>Reference</code> add retrieved reference to the selection 
+			and call <code>FindObject</code> method as shown above. This will return 
+			the <code>StrSfdStiffener</code> object variable. </p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Creates Endcut</strong></p>
+			<p>Now, stiffener i.e. profile is available to create Endcut. Call
+			<code>CreateEndCut</code> method to create Endcut. <code>CreateEndCut</code> 
+			method takes a stiffener as input parameter and it returns created Endcut 
+			as output parameter.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjStrEndCut <span class="keyword">As </span>StrEndCut 			
+  <strong>CreateEndCut</strong> ObjSfdStiffener, ObjStrEndCut 
+...</pre>
+			<p>The method <code>CreateEndCut</code> is detailed as in the below 
+			sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Retrieves <code>StrEndcutMngt</code> object and and create 
+				an Endcut with no data.</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> CreateEndCut(iObjSfdStiffener <span class="keyword">As </span>StrSfdStiffener, oObjStrEndCut <span class="keyword">As</span> StrEndCut)
+<span class="comment">&#39;Get StrEndcutMngt object</span>
+<span class="keyword">  Dim</span> ObjStrEndcutMngt <span class="keyword">As</span> StrEndcutMngt
+<span class="keyword">  Set</span> ObjStrEndcutMngt = iObjSfdStiffener.<strong>StrEndcutMngt</strong>
+<span class="comment">&#39;Create Endcut</span>
+<span class="keyword">  Set</span> oObjStrEndCut = ObjStrEndcutMngt.<strong>AddEndCut(1)</strong>
+...</pre>
+				<p><code>StrEndcutMngt </code>is retrieved in <code>ObjStrEndcutMngt</code> 
+				variable from <code>iObjSfdStiffener</code> object. On <code>ObjStrEndcutMngt</code> 
+				object, <code>AddEndCut</code> method is called to create the Endcut 
+				with no data. Method <code>AddEndCut</code> takes one input parameter 
+				which defines whether this Endcut is created at the start of the 
+				profile or end of the profile. 1 is for start and 2 is for end. 
+				Now Uc needs to set the different properties of the Endcut like 
+				Endcut&#39;s parameters etc.</p>
+				</li>
+				<li>
+				<p><strong>Sets Endcut parameters</strong></p>
+				<pre class="code">...
+    <strong>SetEndCutParameters</strong> oObjStrEndCut, iObjSfdStiffener
+...</pre>
+				<p>Method <code>SetEndCutParameters</code> is called to set the 
+				Endcut parameters.</p>
+				<p>The method <code>SetEndCutParameters</code> is detailed as in 
+				the below sub steps.</p>
+				<ol class="task" style="list-style-type: lower-roman">
+					<li>
+					<p><strong>Retrieves <code>StrDetailFeature</code> object</strong></p>
+					<pre class="code"><span class="keyword">Sub</span> SetEndCutParameters(iObjStrEndCut <span class="keyword">As</span> StrEndCut,iObjSfdStiffener <span class="keyword">As</span> StrSfdStiffener)
+    <span class="keyword">Dim</span> ObjStrDetailFeature <span class="keyword">As</span> StrDetailFeature
+    <span class="keyword">Set</span> ObjStrDetailFeature = iObjStrEndCut.<strong>StrDetailFeature</strong>
+...</pre>
+					<p><code>ObjStrDetailFeature </code>is of type <code>StrDetailFeature</code>. 
+					It is retrieved from <code>iObjStrEndCut</code> object using 
+					method <code>StrDetailFeature</code>. Later this object is used 
+					to set different Endcut parameters like Endcut name, Endcut 
+					type etc.</p>
+					</li>
+					<li>
+					<p><strong>Sets Endcut type</strong></p>
+					<pre class="code">...
+    ObjStrDetailFeature.<strong>Type</strong> = &quot;SNIPE&quot;
+...</pre>
+					<p><code>Type </code>property of <code>StrDetailFeature</code> 
+					is set to &quot;SNIPE&quot;. This defines the type of the Endcut.</p>
+					</li>
+					<li>
+					<p><strong>Sets Endcut name</strong></p>
+					<pre class="code">...
+    ObjStrDetailFeature.<strong>FeatureName</strong> = &quot;WT_snipe_radius&quot;
+...</pre>
+					<p><code>FeatureName </code>property of <code>StrDetailFeature</code> 
+					is set to &quot;WT_snipe_radius&quot;. This defines the name of the Endcut.</p>
+					</li>
+					<li>
+					<p><strong>Retrieves list of parameters of impacted object</strong></p>
+					<pre class="code">...
+    <span class="keyword">Set</span> ObjPartParameters = ObjPart.<strong>Parameters</strong>
+<span class="comment">  &#39;parameters will be aggregated under impacted
+  &#39;object(here impacted object is iObjSfdStiffener)</span>
+<span class="keyword">    Set</span> HBParameters = ObjPartParameters.<strong>SubList</strong>(iObjSfdStiffener, True)
+...</pre>
+					<p><code>Parameters</code> property of <code>ObjPart</code> 
+					returns collection object containing the part parameters.
+					<code>SubList</code> method from <code>Parameters</code> returns 
+					the sub-collection of parameters aggregated to <code>iObjSfdStiffener</code> 
+					object and it collected in <code>HBParameters</code> object.</p>
+					</li>
+					<li>
+					<p><strong>Creates parameters and stores role of each parameter 
+					in an array</strong></p>
+					<pre class="code">...
+    <span class="keyword">Set</span> R1 = HBParameters.<strong>CreateDimension</strong>(&quot;R1&quot;, &quot;LENGTH&quot;, &quot;50&quot;)    
+<span class="comment">  &#39;Define parameter roles in an array</span>
+<span class="keyword">    Dim</span> ParamRoles(0) <span class="keyword">As</span> Variant
+    ParamRoles(0) = &quot;R1&quot;    
+...</pre>
+					<p>Method <code>CreateDimension</code> creates a user dimension. 
+					Here Uc creates one parameter R1 for Endcut. Role of this parameter 
+					is stored in ParamRoles array.</p>
+					</li>
+					<li>
+					<p><strong>Sets parameters</strong></p>
+					<pre class="code">...
+    ObjStrDetailFeature.<strong>SetParameters</strong> HBParameters, ParamRoles
+...</pre>
+					<p><code>SetParameters</code> method of <code>ObjStrDetailFeature</code> 
+					is called to set the parameters for Endcut creation. This method 
+					takes two input parameters. First parameter is the collection 
+					object which contains Endcut parameters and second object is 
+					an array which contains the role of each parameter from the 
+					collection object.</p>
+					</li>
+					<li>
+					<p><strong>Updates the ObjStrDetailFeature object</strong></p>
+					<pre class="code">...
+    ObjStrDetailFeature.<strong>Update</strong>
+End Sub</pre>
+					<p>Call to <code>Update</code> method of <code>ObjStrDetailFeature</code> 
+					will update connection coordinate and visualization of the Endcut 
+					feature.</p>
+					</li>
+				</ol>
+				</li>
+				<li>
+				<p><strong>Retrieves <code>SfdConnectionSet</code> object from SfdPart 
+				object and updates the ConnectionSet</strong></p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> ObjSfdPart <span class="keyword">As</span> SfdPart
+    SFDProdSel.Add (ObjPart)
+    <span class="keyword">Set</span> ObjSfdPart = SFDProdSel.FindObject(&quot;CATIASfdPart&quot;)
+    <span class="keyword">Dim</span> ObjSfdConnectionSet As SfdConnectionSet
+    <span class="keyword">Set</span> ObjSfdConnectionSet = ObjSfdPart.<strong>GetConnectionsSet</strong>
+    ObjSfdConnectionSet.<strong>UpdateConnectionsSet</strong> UpdatedCnx, RemovedCnx, UnkStatusCnx
+...</pre>
+				<p>To retrieve <code>ObjSfdPart</code> from <code>ObjPart</code>, 
+				ObjPart is added to the <code>Selection</code> object <code>SFDProdSel</code>. 
+				Then on <code>SFDProdSel</code> object, <code>FindObject</code> 
+				method is called as shown above. <code>GetConnectionSet</code> method 
+				from <code>SfdPart</code> returns <code>SfdConnectionSet</code> 
+				which is collected in <code>ObjSfdConnectionSet</code>. Then
+				<code>UpdateConnectionsSet</code> updates all the connections created. 
+				It has three out parameters, first is for number of updated connections 
+				second is for number of connections which are removed and third 
+				is for number of unknown status connections.</p>
+				</li>
+				<li>
+				<p><strong>Updates created Endcut object</strong></p>
+				<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjStrEndCut
+End Sub
+</pre>
+				<p><code>UpdateObject</code> method from <code>Part</code> will 
+				update the created Endcut.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Edits Endcut</strong></p>
+			<p>In this step UC edits Endcut. It changes the SNIPE Endcut to Weld 
+			Endcut.</p>
+			<pre class="code">...
+   <strong>EditEndcut</strong> ObjStrEndCut
+...</pre>
+			<p>The method <code>EditEndcut</code> is detailed as in the below sub 
+			steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Retrieves StrDetailFeature object using created Endcut</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> EditEndcut(iObjStrEndCut <span class="keyword">As </span>StrEndCut)
+<span class="keyword">Dim</span> ObjStrDetailFeature <span class="keyword">As</span> StrDetailFeature
+<span class="keyword">Set</span> ObjStrDetailFeature = iObjStrEndCut.<strong>StrDetailFeature</strong>
+...</pre>
+				<p>Method <code>StrDetailFeature</code> retrieves the object of 
+				type <code>StrDetailFeature</code>.</p>
+				</li>
+				<li>
+				<p><strong>Changes the Endcut Type and Name</strong></p>
+				<pre class="code">...
+    ObjStrDetailFeature.<strong>Type</strong> = &quot;Weld&quot;
+    ObjStrDetailFeature.<strong>FeatureName</strong> = &quot;Metal To Metal&quot;
+...</pre>
+				<p>Uc changes the Endcut type from &quot;SNIPE&quot; to &quot;Weld&quot; and name from 
+				&quot;WT_snipe_radius&quot; to &quot;Metal To Metal&quot;. Here no need to set the parameters 
+				because no parameter is exposed to the user to change for this type 
+				of Endcut.</p>
+				</li>
+				<li>
+				<p><strong>Updates the connection coordinate and visualiztion for 
+				Endcut</strong></p>
+				<pre class="code">...
+    ObjStrDetailFeature.<strong>Update</strong>
+End Sub
+</pre>
+				<p>Call to <code>Update</code> method of <code>ObjStrDetailFeature</code> 
+				will update connection coordinate and visualization of the Endcut 
+				feature.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Retrieves StrEndcutMngt object and remove 
+			the Endcut created at the start of the profile</strong></p>
+			<p>In this step UC removes Endcut created on stiffener.</p>
+			<pre class="code">...
+    <span class="comment">&#39;Get StrEndcutMngt object</span>
+    <span class="keyword">Set</span> ObjStrEndcutMngt = ObjSfdStiffener.<strong>StrEndcutMngt</strong>
+    <span class="comment">&#39;Remove the Endcut</span>
+    ObjStrEndcutMngt.<strong>RemoveEndcut (1)</strong>
+...</pre>
+			<p>The method <code>RemoveEndcut</code> is called to remove the created 
+			Endcut. It takes one input parameter which defines whether this Endcut 
+			is at the start of the profile or at the end of the profile. 1 defines 
+			start of the profile and 2 defines end of the profile.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Updates the Part object</strong></p>
+			<pre class="code">...
+  ObjPart.<strong>Update</strong>
+<span class="keyword">End Sub</span>
+</pre>
+			<p><code>Update</code> method updates the <code>ObjPart</code></p>
+			<script type="text/javascript">insertLinkToTop()</script>
+			<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

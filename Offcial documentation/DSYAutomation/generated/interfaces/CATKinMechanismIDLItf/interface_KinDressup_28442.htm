@@ -1,0 +1,251 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATKinMechanismIDLItf KinDressup (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATKinMechanismIDLItf.htm" href="../CATKinMechanismIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATKinMechanismIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "KinDressup"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> KinDressup<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_KinDressup_28442','KinDressup','0');</script>
+<section id='maindesc'>
+<b><i> The interface to manage the dressup products of the mechanism.</i></b><br>
+
+ <dt><b>Example:</b>
+ <dd>Get the KinDressup object from a  KinMechanism object:
+ <pre>
+  ...
+  Dim MyMechRep  As  KinMechanism
+  Set MyMechRep = MyRepRef.GetItem("MECHRep")
+  ...
+  Dim Dressup As  KinDressup
+  Set Dressup = MyMechRep.GetItem("KinDressup")
+  ...
+ </pre>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#MechanismProducts"><b>MechanismProducts</b></a>
+</td><td  id='tdright'>  Returns the list of the mechanism products.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AttachDressupProduct"><b>AttachDressupProduct</b></a>
+</td><td  id='tdright'>  Attaches a product to a given mechanism product thru a dressup link.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DetachDressupProduct"><b>DetachDressupProduct</b></a>
+</td><td  id='tdright'>  Detaches a dressup product previously attached to a mechanism product.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetDressupProducts"><b>GetDressupProducts</b></a>
+</td><td  id='tdright'>  Returns the dressup product list attached to a given mechanism product.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="MechanismProducts"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>MechanismProducts</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the list of the mechanism products. 
+ This list does not contains the dressup products but only the mechanism products.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     The products of the mechanism. Each single product is a VPMOccurrence
+ <! @sample >
+ <dt><b>Example:</b>
+ <dd>Identify the list of the mechanism products:
+ <pre>
+  ...
+  Dim MyMechRep  As  KinMechanism
+  Set MyMechRep = MyRepRef.GetItem("MECHRep")
+  ...
+  Dim Dressup As  KinDressup
+  Set Dressup = MyMechRep.GetItem("KinDressup")
+  ...
+  Dim MechProducts
+  MechProducts = Dressup.MechanismProducts
+
+  Dim j As Integer
+  ' loop to identify each mechanism products
+  For j = 0 To UBound(MechProducts)
+    Dim Product As VPMOccurrence
+    Set Product = MechProducts(j)
+    MsgBox " mechanism product : " & Product.Name
+  Next
+ </pre>
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AttachDressupProduct"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AttachDressupProduct</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iMechanismProduct</span>,<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iAttachedProduct</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Attaches a product to a given mechanism product thru a dressup link.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iMechanismProduct</span></dt>
+   <dd>    A product of the mechanism
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAttachedProduct</span></dt>
+   <dd>    A product to be attached
+ <! @sample >
+ <dt><b>Example:</b>
+ <dd>The mechanism contains a product named "Product 1.1". "Product 2.2" is attached to "Product 1.1":
+ <pre>
+  ...
+  ...
+  Dim MyMechRep  As  KinMechanism
+  Set MyMechRep = MyRepRef.GetItem("MECHRep")
+  ...
+  Dim Dressup As  KinDressup
+  Set Dressup = MyMechRep.GetItem("KinDressup")
+  ...
+  Dim OccurrencesList As VPMOccurrences
+  Set OccurrencesList = myRootOccurrence.Occurrences
+
+  Dim MechanismPart As VPMOccurrence
+  Set MechanismPart = OccurrencesList.GetItem("Product 1.1")
+
+  Dim Product22 As VPMOccurrence
+  Set Product22 = OccurrencesList.GetItem("Product 2.2")  *
+
+  ' Attach Product 2.2 to Product 1.1
+  Call Dressup.AttachDressupProduct(MechanismPart, Product22)
+ </pre>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="DetachDressupProduct"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>DetachDressupProduct</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iAttachedProduct</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Detaches a dressup product previously attached to a mechanism product.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAttachedProduct</span></dt>
+   <dd>    A product to be detached from the mechanism
+ <! @sample >
+ <dt><b>Example:</b>
+ <dd>"Product 2.2" is detached from the mechanism.":
+ <pre>
+  ...
+  Dim MyMechRep  As  KinMechanism
+  Set MyMechRep = MyRepRef.GetItem("MECHRep")
+  ...
+  Dim Dressup As  KinDressup
+  Set Dressup = MyMechRep.GetItem("KinDressup")
+  ...
+  Dim OccurrencesList As VPMOccurrences
+  Set OccurrencesList = myRootOccurrence.Occurrences
+
+  Dim Product22 As VPMOccurrence
+  Set Product22 = OccurrencesList.GetItem("Product 2.2")
+
+  ' Detach Product 2.2 from the mechanism
+  Call Dressup.DetachDressupProduct(Product22)
+ </pre>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetDressupProducts"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetDressupProducts</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iMechanismProduct</span>)</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the dressup product list attached to a given mechanism product.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iMechanismProduct</span></dt>
+   <dd>    A product of the mechanism
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     The dressup product list as a CATSafeArrayVariant. Each single product is a VPMOccurrence
+ <! @sample >
+ <dt><b>Example:</b>
+ <dd>The mechanism contains a product named "Product 1.1". The following example returns all the dressup products attached to "Product 1.1":
+ <pre>
+  ...
+  Dim MyMechRep  As  KinMechanism
+  Set MyMechRep = MyRepRef.GetItem("MECHRep")
+  ...
+  Dim Dressup As  KinDressup
+  Set Dressup = MyMechRep.GetItem("KinDressup")
+  ...
+  Dim MechanismPart As VPMOccurrence
+  Set MechanismPart = OccurrencesList.GetItem("Product 1.1")
+  ...
+  Dim OccurrencesList As VPMOccurrences
+  Set OccurrencesList = myRootOccurrence.Occurrences
+
+  Dim MechanismPart As VPMOccurrence
+  Set MechanismPart = OccurrencesList.GetItem("Product 1.1")
+
+  Dim ListAttached
+  ListAttached = Dressup.GetDressupProducts(MechanismPart)
+
+  Dim j As Integer
+  ' loop to identify each attached product
+  For j = 0 To UBound(ListAttached)
+    Dim Product As VPMOccurrence
+    Set Product = ListAttached(j)
+    MsgBox " Attached product : " & Product.Name
+  Next
+ </pre>
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

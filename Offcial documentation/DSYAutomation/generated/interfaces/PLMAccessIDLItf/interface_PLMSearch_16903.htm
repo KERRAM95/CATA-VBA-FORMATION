@@ -1,0 +1,168 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>PLMAccessIDLItf PLMSearch (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../PLMAccessIDLItf.htm" href="../PLMAccessIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "PLMAccessIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "PLMSearch"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> PLMSearch<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_PLMSearch_16903','PLMSearch','0');</script>
+<section id='maindesc'>
+<b><i> </i></b><br>
+<dl  class='desclist'>
+  <dt class='deprecated'> <b>Deprecated:</b></dt> 
+  <dd>  R216
+ Use 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchService','','CATIASearchService') </script> and related interfaces instead. Interface representing a PLMSearch object.
+ Interactively it corresponds to a tab page in the PLM Search result window.
+ <p>
+ <br><b>Role</b>: Define the attribute criteria and trigger a Search in database.
+ <p>
+ Example of how to create a new Search from 
+<script type="text/javascript"> activateLinkAnchor('CATIAPLMSearchContexts','','CATIAPLMSearchContexts') </script> collection: <pre>
+ Dim aSearchSrv as PLMSearchService
+ Set aSearchSrv = CATIA.GetSessionService("PLMSearch")
+ Dim cPLMSearches as PLMSearches
+ Set cPLMSearches = aSearchSrv.Searches
+ Dim aPLMSearch as PLMSearch
+ Set aPLMSearch = cPLMSearches.Add
+ </pre>
+ </ dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Editor"><b>Editor</b></a>
+</td><td  id='tdright'>  Returns the editor associated with the current tab page.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Type"><b>Type</b></a>
+</td><td  id='tdright'>  Returns or sets the type of objects to search for.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AddAttributeCriteria"><b>AddAttributeCriteria</b></a>
+</td><td  id='tdright'>  Add an attribute criteria to the query considering that:
+ <ul>
+ <li>An attributes is identified by a string and should be only of string type</li>
+ <li>A value is a string</li>
+ <li>Wildcard '*' is supported in attribute value</li>
+ </ul>
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Search"><b>Search</b></a>
+</td><td  id='tdright'>  Triggers the search.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Editor"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Editor</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAEditor','CATIAEditor')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the editor associated with the current tab page.
+ The editor gathers the results of the search.
+
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">    This example retrieves PLMEntities collection representing the results of the Search:
+    <pre>
+    ...
+    Dim aPLMSearch As PLMSearch
+    ...
+    aPLMSearch.Search()
+   
+    Dim cPLMEntities As PLMEntities
+    Dim cPLMEntities = aPLMSearch.<font color="red">EditedContent</font>
+    </pre>
+</dl>
+</dd>
+<a id="Type"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Type</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTypeBSTR</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the type of objects to search for.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AddAttributeCriteria"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddAttributeCriteria</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iAttrIdBSTR</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iAttrValueBSTR</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Add an attribute criteria to the query considering that:
+ <ul>
+ <li>An attributes is identified by a string and should be only of string type</li>
+ <li>A value is a string</li>
+ <li>Wildcard '*' is supported in attribute value</li>
+ </ul>
+</dd>
+<a id="Search"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Search</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Triggers the search.
+ All attributes are combined through a "AND" condition,
+ thus leading to a search of objects which match all the attributes of the set
+ and matching the case of the values (i.e. search is case sensitive).
+ If attribute value does not contain any wildcard objects have to match exactly.
+
+ 
+<dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">    This example retrieves the objects matching all the following constraints:
+    <ul>
+    <li>attribute Attr1 is strictly equal to val1</li>
+    <li>attribute Attr2 starts with val2</li>
+    <li>attribute Attr3 ends with val3</li>
+    <li>attribute Attr4 contains val4</li>
+    </ul>
+   <pre>
+    Dim aPLMSearch As PLMSearch
+    ...
+    aPLMSearch.AddAttributeCriteria ("Attr1", "val1")
+    aPLMSearch.AddAttributeCriteria ("Attr2", "val2*")
+    aPLMSearch.AddAttributeCriteria ("Attr3", "*val3")
+    aPLMSearch.AddAttributeCriteria ("Attr4", "*val4*")
+    aPLMSearch.Search()
+    </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

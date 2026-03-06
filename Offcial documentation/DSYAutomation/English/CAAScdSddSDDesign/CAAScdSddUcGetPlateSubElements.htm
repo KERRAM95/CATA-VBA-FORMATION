@@ -1,0 +1,201 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<meta content="Microsoft FrontPage 12.0" name="GENERATOR" />
+<meta content="FrontPage.Editor.Document" name="ProgId" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>Getting SDD Plate Sub-Elements</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Getting SDD Plate Sub-Elements</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to get SDD plate sub elements.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:
+						<ul>
+							<li>You should first launch CATIA and import the
+								<code><div class=vb_sample_data>CAAScdSddUcGetPlateSubElements.3dxml</div></code>,
+								<code><div class=vb_sample_data>CAAScdSddUcSteel_A42.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSddUcWT18x179_5.3dxml</div></code>,
+								<code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div></code> and <code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div></code> 
+								files supplied in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code><br />
+								where 
+							<code>InstallRootFolder</code> is the folder where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcGetPlateSubElementsSource.htm">CAAScdSddUcGetPlateSubElementsSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSddTocSDDesign.htm">Structure Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in 6 steps<span lang="fr">:</span></p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SddProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Part object</a></li>
+			<li><a href="#Step3">Retrieves Service Manger (RfgService)</a></li>
+			<li><a href="#Step4">Retrieves a SddProduct Plate object</a></li>
+			<li><a href="#Step5">Get Plate Sub-Elements</a></li>
+			<li><a href="#Step6">Update the plate</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+				<p><strong><a name="Step1"></a>Searches and opens model which is 
+				named as &quot;SddProduct&quot; </strong></p>
+				<p>As a first step, the UC retrieves a model &quot;SddProduct&quot; 
+				from DB and loads it and returns object of the Editor. </p>
+				<pre class="code">... 
+ <span class="keyword">Dim</span> SDDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SddProduct&quot;
+ OpenProduct prdName , SDDPrdEditor
+...</pre>
+				<p>The function <strong><code>OpenProduct</code></strong> returns
+				<strong><code>SDDPrdEditor</code></strong>, a Editor object. After 
+				searching and opening of SDD model from underlying database the 
+				current active editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step2"></a>Retrieves Part object</strong></p>
+				<p>In this step UC retrieves Part object ObjPart variable.</p>
+				<pre class="code">... 
+  <span class="keyword">Dim </span>product1Service <span class="keyword"> As </span> PLMProductService
+  <span class="keyword">Set</span> product1Service = DDPrdEditor.GetService(&quot;PLMProductService&quot;)
+  <span class="keyword">Dim </span>ObjVPMRootOccurrence <span class="keyword"> As </span> VPMRootOccurrence
+  <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+  <span class="keyword">Dim </span>ObjVPMReference <span class="keyword"> As </span> VPMReference
+  <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+  <span class="keyword">Dim </span>ObjVPMRepInstances <span class="keyword"> As </span> VPMRepInstances
+  <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+  <span class="keyword">Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> ObjPart = ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step3"></a>Retrieves Service manager (RfgService)</strong></p>
+				<p>In this step UC retrieves <code>RfgService</code>.</p>
+				<pre class="code">...
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.<strong>GetService</strong>(&quot;RfgService&quot;)
+...</pre>
+				<p><code>GetService</code> method returns <code>RfgService</code>. 
+				This service provides methods such GetReferencePlane, CreateProjectData, 
+				CreateRefSurfaceFeature.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step4"></a>Retrieves a SddProduct Plate object</strong></p>
+				<pre class="code">...
+  <span class="keyword">Set</span> ListOfInstances = ObjVPMReference.Instances
+  <span class="keyword">Set</span> PlateRef = ListOfInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> PlateRepInstances = PlateRef.RepInstances
+  <span class="keyword">Set</span> PlateRepInstReference = PlateRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> PlatePart = PlateRepInstReference.GetItem("Part")
+  
+  <span class="keyword">Dim</span> ObjSddProductPlate As SddProductPlate
+  SDDProdSel.Add PlateRef
+  <span class="keyword">Set</span> ObjSddProductPlate = SDDProdSel.FindObject("CATIASddProductPlate")
+  <span class="keyword">Dim</span> ObjSddPlate As SddPlate
+  <span class="keyword">Set</span> ObjSddPlate = ObjSddProductPlate.SddPlate
+...</pre>
+				<p>In this step Uc retrieves the SddProduct Plate as shown above.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step5"></a>Get Plate Sub-Elements</strong></p>
+				<p class="task">Now plate is available to get it's sub elements. 
+				Call <code>GetPlateSubElements</code> method to get plate's sub 
+				elements. <code>GetPlateSubElements</code> method takes a plate 
+				as input.</p>
+				<pre class="code">... 
+<span class="keyword">  Dim</span> ObjSddPlateSubElementMngt <span class="keyword">As</span> SddPlateSubElementMngt
+<strong>  GetPlateSubElements </strong>ObjSddPlate, ObjSddPlateSubElementMngt 
+...</pre>
+				<pre class="code">...
+ <span class="keyword">Sub </span>GetPlateSubElements(iObjSddPlate <span class="keyword">As</span> SddPlate, oObjSddPlateSubElementMngt <span class="keyword">As</span> SddPlateSubElementMngt)
+
+<span class="keyword">  Set</span> oObjSddPlateSubElementMngt = iObjSddPlate.PlateSubElements
+    
+<span class="comment">  'Get Faces</span>
+<span class="keyword">  Dim</span> oListOfFaces <span class="keyword">As</span> References
+<span class="keyword">  Set</span> oListOfFaces = oObjSddPlateSubElementMngt.<strong>GetFaces</strong>(1)
+
+ <span class="keyword">End Sub</span>
+...</pre>
+				<p class="task"><code>GetFaces</code>: This method is used to retrieve 
+				the faces based on top and bottom face of plate. (catStrPlateFaceNameUndefined 
+				= 0, catStrPlateFaceBottom = 1, catStrPlateFaceTop = 2)</p>
+			</li>
+			<li>
+				<p><strong><a name="Step6"></a>Update the plate</strong></p>
+				<pre class="code">...
+  ObjSddProductPlate.<strong>Update</strong> 
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>Update</code> updates the Product Plate.</p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

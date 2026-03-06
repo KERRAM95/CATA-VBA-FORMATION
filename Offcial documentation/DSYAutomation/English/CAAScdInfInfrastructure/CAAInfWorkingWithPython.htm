@@ -1,0 +1,331 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>About Python</title>
+</head>
+
+<body onload="createToc();highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1><a name="Top"></a>About Python</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">This article gives you general notes regarding how to consume  
+						the Automation API using Python programming language.</td>
+					</tr>
+					<tr>
+						<td class="Intro2">Note that using the Python programming language to access the Automation API
+							is only available through the <code>Python</code> command of the <code>Tools</code> section of the action bar, 
+							available in some simulation apps.</td>
+					</tr>
+							<div id="toc">
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<p>We advise that you do not use the Python bindings unless you are familiar with the Python language.
+Full details on Python, including tutorials, are available at <a href="#" onclick="javascript:CAAlinkUrl('https://www.python.org');return false;">www.python.org</a>.</p>
+
+<p>A complete example of how to create and run a Python script is provided in the Getting Started with Python article.</p>
+
+<p>The following notes provide an overview of the differences between the two programming languages. As the Automation API reference documentation types and most coding examples provided in this 
+documentation are provided in Visual Basic for Applications (aka VBA) language, this allows you to take advantage of existing examples to create Python scripts. 
+<ol>
+	<li>Python is case sensitive. <code>myFeatures</code> is a different name from <code>MyFeatures</code></li>
+	<li>Python objects are created dynamically via an assignment. A declaration, as can be done in Visual Basic using the <code>Dim</code> keyword, is not needed.</li>
+	<li>The Python assignment does not require a Set keyword.</li>
+	<li>Boolean branching syntax: in Python the end of a boolean branch statement block is determined by the indentation level.
+<table style="width:100%">
+	<thead>
+		<tr>
+			<th style="width:50%">Visual Basic for Applications Syntax</th>
+			<th>Python Syntax</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+<pre class="code">If condition Then
+   ...
+End If
+</pre>
+			</td><td>
+<pre class="code">if condition:
+    ...
+    
+</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</li>
+<li>Function definition: in Python, the end of a function block is determined by the indent level.
+<table style="width:100%">
+	<thead>
+		<tr>
+			<th style="width:50%">Visual Basic for Applications Syntax</th>
+			<th>Python Syntax</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+<pre class="code">Sub foo()
+   ...
+End Sub
+
+</pre>
+			<pre class="code">Sub bar()
+   ...
+End Sub
+</pre>
+			</td><td>
+<pre class="code">def foo():
+	...
+    
+    
+</pre>
+			<pre class="code">def bar():
+	...
+    
+</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+All function calls require parentheses.
+<br />
+The VB Sub and Function are both defined in Python using the <code>def</code> keyword in Python.
+The equivalent of a Visual Basic <code>Sub</code> is a function that returns None. To exit a function use:
+<table style="width:100%">
+	<thead>
+		<tr>
+			<th style="width:50%">Visual Basic for Applications Syntax</th>
+			<th>Python Syntax</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+<pre class="code">Exit Sub
+</pre>
+			</td><td>
+<pre class="code">return
+</pre>
+			</td>
+		</tr>
+		<tr>
+			<td>
+<pre class="code">Exit Function
+</pre>
+			</td><td>
+<pre class="code">return xxx
+</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</li>
+<li>Loops: the VBA <code>For Each</code> construction becomes a <code>for</code> loop, <code>Exit For</code> becomes <code>break</code> in Python and Python offers a <code>continue</code>
+ keyword to continue the loop which has to be simulated in VBA using a <code>GoTo</code> and doesn't exist at all in VBSCript.
+<table style="width:100%">
+	<thead>
+		<tr>
+			<th style="width:50%">Visual Basic for Applications Syntax</th>
+			<th>Python Syntax</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+<pre class="code">' -- declare and initialize an array
+Dim myArray(3)
+myArray(0) = "print"
+myArray(1) = "skip"
+myArray(2) = "exit"
+
+' -- loop on array
+For Each i In myArray
+
+   If i="exit" Then
+	msgbox "exit detected"
+	<strong>Exit For</strong>           ' exit loop
+   ElseIf i="skip" Then
+	msgbox "Skip detected"
+	GoTo ContinueLoop  ' loop on next item
+   End If
+
+   msgbox "print detected"
+   ContinueLoop:
+Next               ' loop on next item : end loop
+</pre>
+			</td><td>
+<pre class="code">
+# -- initialize an array
+myArray = []
+myArray.append('print')
+myArray.append('skip')
+myArray.append('exit')
+
+# -- loop on array
+for i in myArray:
+
+	if i=='exit':
+		print ("exit detected")
+		break     # exit loop
+
+	elif i=='skip':
+		print ("skip detected")
+		continue  # loop on next item
+
+	print ("print detected")
+                
+                           # enf of loop: indentation level
+</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</li>
+<li>Type names in VB and Python are not the same, for example:
+<table style="width:100%">
+	<thead>
+		<tr>
+			<th style="width:50%">Visual Basic for Applications Syntax</th>
+			<th>Python Syntax</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+<pre class="code">String / CATBSTR (in reference documentation)
+</pre>
+			</td><td>
+<pre class="code">unicode (Python-2.7), str (Python-3.x)
+</pre>
+			</td>
+		</tr>
+		<tr>
+			<td>
+<pre class="code">double
+</pre>
+			</td><td>
+<pre class="code">float
+</pre>
+			</td>
+		</tr>
+
+	</tbody>
+</table>
+</li>
+<li>Working with CATSafeArrayVariant in Python
+<table style="width:100%">
+	<thead>
+		<tr>
+			<th style="width:50%">Visual Basic for Applications Syntax</th>
+			<th>Python Syntax</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+<pre class="code">
+' -- VB Method Call with input/output argument
+' -- argument name usually starts with lower-case io
+ReDim MyVPOrigin(2)
+CATIA.ActiveWindow.ActiveViewer.Viewpoint3D.GetOrigin MyVPOrigin
+</pre>
+			</td>
+			<td>
+<pre class="code">
+# -- Python Method Call
+# -- empty argument tuple must have correct number of members
+MyVPOrigin = CATIA.ActiveWindow.ActiveViewer.Viewpoint3D.GetOrigin((0,0,0))
+</pre>
+			</td>
+		</tr>
+		<tr>
+			<td>
+<pre class="code">
+' -- VB Method Call with input argument
+' -- argument name usually starts with lower-case i
+CATIA.ActiveWindow.ActiveViewer.Translate Array(10.0, 20.0, 30.0)
+</pre>
+			</td>
+			<td>
+<pre class="code">
+# -- Python Method Call
+CATIA.ActiveWindow.ActiveViewer.Translate((10.0, 20.0, 30.0))
+</pre>
+			</td>
+		</tr>
+		<tr>
+			<td>
+<pre class="code">
+' -- VB Property to get value
+Dim MyOutput as SimOutput
+...
+Dim MyPoints()
+MyPoints = MyOutput.SectionPoints
+</pre>
+			</td>
+			<td>
+<pre class="code">
+# -- Python Method Call
+MyPoints = MyOutput.SectionPoints
+</pre>
+			</td>
+		</tr>
+		<tr>
+			<td>
+<pre class="code">
+' -- VB Property to set value
+Dim MyOutput as SimOutput
+...
+MyOutput.SectionPoints = Array(1, 2, 3)
+</pre>
+			</td>
+			<td>
+<pre class="code">
+# -- Python Method Call
+MyOutput.SectionPoints = (1, 2, 3)
+</pre>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</li>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

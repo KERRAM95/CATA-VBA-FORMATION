@@ -1,0 +1,319 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Positioning Product Model</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Positioning Product Model</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>The use case mainly 
+						deals with Positioning of the occurrence of Skate model 
+						objects. </p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA</li>
+							<li>Create Skate model as described in the [<a href="#References">1</a>] 
+							article</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:<a href="CAAScdPstUcPositionProductModelSource.htm"> 
+						CAAScdPstUcPositionProductModelSource.htm</a></span></p>
+						<p>Attention the macro can request a slight change to 
+						take into account your own Product types. First read
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a> 
+						before using it.</p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td></tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 3 steps</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the Product Reference (Skate) from underlying 
+			database</a></li>
+			<li><a href="#Step2">Positions the skate model</a> </li>
+			<li><a href="#Step3">Displays the Occurrence Product Model Contents 
+			after positioning of the skate model</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"></a>Retrieves the Product Reference 
+			(Skate) from underlying database</p>
+			<pre class="code"> ...
+ <span class="keyword"> Dim</span> oVPMRootOccOnSkateRef <span class="keyword">As</span> VPMRootOccurrence
+  <span class="keyword">Set</span> oVPMRootOccOnSkateRef = <strong>RetrieveProdRootOcc</strong>
+...</pre>
+			<p>The function <em>RetrieveProdRootOcc</em>, returns <code>oVPMRootOccOnSkateRef
+			</code>, a <em>VPMRootOccurrence</em> type [<a href="#References">2</a>]. 
+			The PLM_ExternalID and V_version values are sought as input from an 
+			end-user. A search criteria is built with those inputs and a Product 
+			Reference type. When this query is run on an underlying 
+			database, it typically returns a list of entities listed within a search 
+			editor. We retrieve the first element in this list, load it in the current 
+			session and retrieve the associated Product Reference.</p>
+			<table>
+				<caption><a name="Fig.1"></a>Fig.1 The Input Skate Model</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Input Skate Model" src="CAAScdPstUcPositionProductModel_SkateModelWith3DPart.jpg" width="676" height="349"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>The Input model imported from database which has &quot;Skate1&quot; as PLM_ExternalID 
+			of root and &quot;---&quot; version value as shown in [<a href="#Fig.1">Fig.1</a>]</p>
+			</li>
+			<li>
+			<p><a name="Step2"></a>Positions the skate model</p>
+			<p>As we could see that in [<a href="#Fig.1">Fig.1</a>] all wheels and 
+			Axles are merged and positioned to center. Now this step will explain 
+			about positioning. The wheel and Axle instances are so positioned so 
+			that they will obtain the final Model position as shown in [<a href="#Fig.2">Fig.2</a>].
+			</p>
+			<table>
+				<caption><a name="Fig.2"></a>Fig.2 Positioned Skate model with 3DParts</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Positioned Skate model with 3DParts" src="CAAScdPstUcPositionProductModel_PositionedSkateModelWith3DPart.jpg" width="653" height="414"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>This step sets the positions</p>
+			<pre class="code">... 
+ <strong>PositionSkateOccurrences </strong>oVPMRootOccOnSkateRef, 0
+... </pre>
+			<p>A call to <em>PositionSkateOccurrences</em><strong> </strong>sets 
+			the positions of Product Occurrences. The retrieval of Occurrences are 
+			not explained here those details are explained in the [<a href="#References">3</a>] 
+			use case.</p>
+			<p>The <em>PositionSkateOccurrences </em>method internally 
+			calls the <em>SetPositionOfOccurrence</em> method (this is crux of this 
+			use case), some of the important points of this method are detailed 
+			below.</p>
+			<p>The <em>SetPositionOfOccurrence</em> call sets the Product 
+			occurrence positions. This method has Occurrence object and X,Y,Z co-ordinate 
+			values as inputs. </p>
+			<p>The <em>SetPositionOfOccurrence</em> method logically 
+			divided in two steps as described below</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Creates Position matrix with input X,Y,Z values.</p>
+				<pre class="code">Sub <strong>SetPositionOfOccurrence</strong>(oOccurrence, x, y, z)
+  
+    Dim TransformationArray(11)
+    TransformationArray(0) = 1#
+    TransformationArray(1) = 0
+    TransformationArray(2) = 0
+    TransformationArray(3) = 0
+    TransformationArray(4) = 1#
+    TransformationArray(5) = 0
+    TransformationArray(6) = 0
+    TransformationArray(7) = 0
+    TransformationArray(8) = 1
+    TransformationArray(<strong>9</strong>) = <strong>x</strong>
+    TransformationArray(<strong>10</strong>) = <strong>y</strong>
+    TransformationArray(<strong>11</strong>) = <strong>z</strong>
+...</pre>
+				<p><code>TransformationArray</code> is Position matrix which will 
+				define the values of position of occurrence in next step, A Position 
+				Matrix is an entity defined by 12 components as depicted below, 
+				The array initialized with the components to set to the object's 
+				position.</p>
+				<p>The first nine components represent the rotation matrix.</p>
+				<p>The last three components represent the translation vector. Here 
+				use case updates input X,Y,Z values .</p>
+				</li>
+				<li>
+				<p>Sets the position of input Occurrence object defined 
+				in Position matrix. </p>
+				<pre class="code">...
+  <span class="keyword">Dim</span> oPositionMoveOnOcc <span class="keyword">As</span>  Position
+  <span class="keyword">Set</span> oPositionMoveOnOcc = oOccurrence<strong>.Position</strong>
+
+    oPositionMoveOnOcc<strong>.SetComponents</strong> <strong>TransformationArray</strong>
+...</pre>
+				<p>A call to <em>Position </em>method called on the input Occurrence 
+				(<code>oOccurrence</code> input to <em>SetPositionOfOccurrence</em> 
+				method) returns the position object (derived from <strong><em>Move</em></strong>) 
+				is the 3D-axis system associated with an Occurrence object.
+				<code>oPositionMoveOnOcc</code> is <em>position</em> object which 
+				represents PLM Product Occurrence position. </p>
+				<p>Next call to <em>SetComponents</em> method of Position Sets the 
+				relative object's position. This sets the 3D-axis system associated 
+				with the object. </p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><a name="Step3"></a>Displays the Occurrence Product Model contents 
+			after positioning of the skate model</p>
+			<p>Displays complete model with both positions (absolute as well as 
+			relative position respectively) as shown in [<a href="#Fig.3">Fig.3</a>]</p>
+			<p>Initially we initialize global variable with Root Occurrence name 
+			then we Navigate through the occurrence model and retrieve name and 
+			positions of all children occurrence objects.</p>
+			<pre class="code">...
+    <strong>NavigateAndDisplayProdOccurrencesPosition</strong> oVPMRootOccOnSkateRef, 0
+... </pre>
+			<p>A call to <em>NavigateAndDisplayProdOccurrencesPosition</em> navigates 
+			through the occurrence model and retrieves all occurrence object names 
+			with their positions and updates these values in global string variable 
+			which will finally used for displaying Structure in message box.</p>
+			<p>The function <em>NavigateAndDisplayProdOccurrencesPosition</em> details 
+			some of the important steps related to Positioning as in the below sub 
+			steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p>Retrieve Absolute position of occurrence object</p>
+				<pre class="code">Sub NavigateAndDisplayProdOccurrencesPosition(oOccurrence, depth)
+...
+   <span class="keyword">Dim</span> oPositionMoveOnOccObj <span class="keyword">As</span>  Position
+  <span class="keyword"> Set</span> oPositionMoveOnOccObj = oOccurrence<strong>.Position</strong>
+
+   <span class="keyword">Dim</span> oAxisComponentsArrayAbsPos(11)
+   oPositionMoveOnOccObj.<strong>GetAbsComponents</strong> oAxisComponentsArrayAbsPos
+...        
+</pre>
+				<p>A call to <em>Position </em>method returns the position object 
+				(derived from <strong><em>Move</em></strong>) is the 3D-axis system 
+				associated with an Occurrence object .<code> oPositionMoveOnOccObj
+				</code>is <em>position</em> object which represents PLM Product 
+				Occurrence position. </p>
+				<p>A call to <em>GetAbsComponents</em> method of Position returns 
+				the object's position in a global context. This returns the 3D-axis 
+				system associated with the object. </p>
+				</li>
+				<li>
+				<p>Retrieve relative position of occurrence model </p>
+				<pre class="code">...       
+   <span class="keyword">Dim</span> oAxisComponentsArrayRelPos(11)
+   oPositionMoveOnOccObj.<strong>GetComponents</strong> oAxisComponentsArrayRelPos
+...       
+</pre>
+				<p>A call to <em>GetComponents</em> method of Position returns relative 
+				object's position. This returns the 3D-axis system associated with 
+				the object.</p>
+				</li>
+			</ol>
+			<table>
+				<caption><a name="Fig.3"></a>Fig.3 Positioned Skate Model</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Positioned Skate Model" src="CAAScdPstUcPositionProductModel_MsgboxNewPosition.jpg" width="533" height="276"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>The above image [<a href="#Fig.3">Fig.3</a>] shows the final Positioned 
+			Skate Model. This Structure contains Instance name along with their 
+			positions for eg. FrontAxleInst has one LeftWheelInst beneath it, which 
+			has </p>
+			<ul>
+				<li>(100,100,0) absolute value which means positions with its global 
+				3D-axis system(in this case respective with Skate Model) (position 
+				in an absolute coordinate system) </li>
+				<li>(0,100,0) relative value which means position with its parent 
+				object (in this case with respective to FrontAxleInst)(position 
+				in a local coordinate system). </li>
+			</ul>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<table>
+	<tbody>
+	<tr>
+		<td valign="top">[1]</td>
+		<td><a href="CAAScdPstUcCreateSkateProductModel.htm">Creating Skate Product 
+		Model Interactively</a></td>
+	</tr>
+	<tr>
+		<td valign="top">[2]</td>
+		<td><a href="CAAScdPstUcOpenProductReference.htm">Opening Product Reference</a></td>
+	</tr>
+	<tr>
+		<td valign="top">[3]</td>
+		<td><a href="CAAScdPstUcBrowseOccurrenceModel.htm">Browsing Occurrence Model
+		</a></td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

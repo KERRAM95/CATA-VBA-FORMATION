@@ -1,0 +1,149 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATEngConnectionIDLItf EngConnections (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATEngConnectionIDLItf.htm" href="../CATEngConnectionIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATEngConnectionIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "EngConnections"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> EngConnections<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_EngConnections_35539','EngConnections','0');</script>
+<section id='maindesc'>
+<b><i> Collection to manage all the Engineering Connections of a Product Reference.</i></b><br>
+
+ <br><b>Role</b>: Allow to read/write/remove Engineering Connections.
+ <dl> Here is the way to get it:
+ <dt><tt> Dim myEngConnections As EngConnections. </tt>
+ <dt><tt> set myEngConnections =  myPLMProductReference.GetItem("CATEngConnections"). </tt>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#Add"><b>Add</b></a>
+</td><td  id='tdright'>  Adds an Engineering Connection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AddWithContext"><b>AddWithContext</b></a>
+</td><td  id='tdright'> </td></tr>  <tr><td  id='tdleft'>
+    <a href="#Item"><b>Item</b></a>
+</td><td  id='tdright'>  Return an Engineering Connection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Remove"><b>Remove</b></a>
+</td><td  id='tdright'>  Remove an Engineering Connection.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="Add"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Add</span><span class='signature'>(<script type="text/javascript"> activateLink('CatEngConnectionType','CatEngConnectionType')</script> <span class='param'>iType</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iImpacteds</span>)</span> As <script type="text/javascript"> activateLink('EngConnection','EngConnection')</script> </span></dt>
+  <dd class='ddmethod'>
+ Adds an Engineering Connection.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iEngCntType</span></dt>
+   <dd> [in] The type of the Engineering Connection. 
+ 
+ </ dd>
+    <dt><span class='paramitem'> iListOfImpacteds</span></dt>
+   <dd> [in] The list of impacted pointed by the connection. The impacted is 
+ identified by a String :
+ <dl> Here is the different formats accepted:
+ <dt><tt> "ProductInstance1.1"</tt> for standard impacted.
+ <dt><tt> "ProductInstance1.1/ProductInstance2.1"</tt> for flexible impacted.
+ <dt><tt> "RepInstance1.1"</tt> for "on rep" impacted.
+ </dl>
+ [out] The created Engineering Connection. 
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>    <dl>
+   <dt><tt> The created Engineering Connection. 
+   </tt> <dd>If the operation is successful.
+   <dt><tt>nothing </tt> <dd> If the operation is failed.
+   </dl>
+ <dl> A VB Error is raised if the creation failed.
+ </ dd>
+</dl>
+</dd>
+<a id="AddWithContext"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>AddWithContext</span><span class='signature'>(<script type="text/javascript"> activateLink('CatEngConnectionType','CatEngConnectionType')</script> <span class='param'>iType</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iImpacteds</span>,<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iReferenceContext</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iNameBSTR</span>)</span> As <script type="text/javascript"> activateLink('EngConnection','EngConnection')</script> </span></dt>
+  <dd class='ddmethod'>
+</dd>
+<a id="Item"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Item</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('EngConnection','EngConnection')</script> </span></dt>
+  <dd class='ddmethod'>
+ Return an Engineering Connection.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> I</span></dt>
+   <dd> [in] The index or name of the Engineering Connection. 
+   <dt><tt>the index in the collection </tt><dd>if it is an Integer. 
+   <dt><tt>the name of the connection </tt><dd>if it is a String.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="Remove"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Remove</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iEngCnt</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Remove an Engineering Connection.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iEngCnt</span></dt>
+   <dd>   <dt><tt>the index in the collection </tt><dd>if it is an Integer. 
+   <dt><tt>the name of the connection </tt><dd>if it is a String.
+   <dt><tt>the connection to remove</tt><dd>if it is a EngConnection.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

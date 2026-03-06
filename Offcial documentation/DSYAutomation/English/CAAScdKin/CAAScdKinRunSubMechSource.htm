@@ -1,0 +1,161 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+<style type="text/css">
+.auto-style1 {
+	color: #008000;
+}
+.auto-style2 {
+	color: #0000FF;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre class="auto-style1">
+'-------------- Sample MACRO written in Basic Script ------------------------------------------
+'This sample retrieves the Mechanism Representation from a current product Structure
+'and simulates this mechanism.
+'
+'Before starting this macro, open a product structure including a mechanism rep under the root.
+'
+' 1 Get the current editor
+' 2 Get the product service from the editor
+' 3 Identify the mechanism
+' 4 Scan all kinematics commands
+' 5 Prepare the solver
+' 6 Run a first simulation with all commands values
+' 7 Run a second simulation with a single command value
+' 8 Clean the simulation
+'
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</pre>
+<pre>
+<span class="auto-style2">Sub</span> CATMain()
+<span class="auto-style1">' 1 Get the current Editor</span>
+  <span class="keyword" style="color: rgb(0, 0, 255);">Dim </span>myEditor <span class="auto-style2">As</span> Editor
+  Set myEditor = CATIA.ActiveEditor
+
+<span class="auto-style1">' 2 Get the product service from the editor</span>
+  <span class="auto-style2">Dim</span> MyPrdService <span class="auto-style2">As</span> PLMProductService
+  Set MyPrdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="auto-style1">' 3 Identify the mechanism</span>
+  <span class="auto-style2">Dim</span> MyMechRep '<span class="auto-style2">As</span> KinMechanism
+</pre>
+<pre>
+<span class="auto-style1">' Get the discipline of all representations of the tree</span>
+  <span class="auto-style2">For</span> Each MyEntity In MyPrdService.EditedContent
+    <span class="auto-style2">Dim</span> MyRef <span class="auto-style2">As</span> VPMReference
+    Set MyRef = MyEntity
+    <span class="auto-style2">Dim</span> MyReps <span class="auto-style2">As</span> VPMRepInstances
+    Set MyReps = MyRef.RepInstances
+    For Each MyRep In MyReps
+      <span class="auto-style2">Dim</span> MyRepRef As VPMRepReference
+      Set MyRepRef = MyRep.ReferenceInstanceOf
+      <span class="auto-style2">Dim</span> attr <span class="auto-style2">As</span> String
+      attr = MyRepRef.GetAttributeValue(&quot;V_discipline&quot;)
+<span class="auto-style1">      ' Get the Mechanism Representation if the V_discipline is Mechanism</span>
+      <span class="auto-style2">If</span> (attr = &quot;Mechanism&quot;) <span class="auto-style2">Then</span>
+        Set MyMechRep = MyRepRef.GetItem(&quot;MECHRep&quot;)
+        Exit For
+      <span class="auto-style2">End</span> <span class="auto-style2">If</span> 
+    <span class="auto-style2">Next</span>
+  <span class="auto-style2">Next</span>
+  MsgBox (MyMechRep.Name &amp; &quot; has been identified as a mechanism&quot;)
+
+
+<span class="auto-style1">' 4 Scan all kinematics commands</span>
+  <span class="auto-style2">Dim</span> MyCommands <span class="auto-style2">As</span> KinCommands
+  Set MyCommands = MyMechRep.Commands
+
+  <span class="auto-style2">Dim</span> i <span class="auto-style2">As</span> Integer
+  <span class="auto-style2">For</span> i = 1 To MyCommands.Count
+    <span class="auto-style2">Dim</span> MyCommand <span class="auto-style2">As</span> KinCommand
+    Set MyCommand = MyCommands.Item(i)
+    Msg = &quot; Command : &quot; &amp; MyCommand.Name
+    MsgBox (Msg)
+
+    <span class="auto-style2">Dim</span> SubCmd <span class="auto-style2">As</span> KinSubCommand
+    Set SubCmd = MyCommand.GetItem(&quot;KinSubCommandObj&quot;)
+
+    <span class="auto-style2">Dim</span> SubMech <span class="auto-style2">As</span> KinMechanism
+    Set SubMech = SubCmd.SubMechanism
+    <span class="auto-style2">If</span> <span class="auto-style2">Not</span> SubMech <span class="auto-style2">Is</span> Nothing <span class="auto-style2">Then</span>
+      MsgBox (&quot;This command is owned by the sub mechanism, &quot; &amp; SubMech.Name)
+    <span class="auto-style2">End</span> <span class="auto-style2">If</span>
+
+    <span class="auto-style2">Dim</span> SubMechOcc <span class="auto-style2">As</span> VPMOccurrence
+    Set SubMechOcc = SubCmd.SubMechanismProductOccurrence
+    <span class="auto-style2">If</span> <span class="auto-style2">Not</span> SubMechOcc <span class="auto-style2">Is</span> Nothing <span class="auto-style2">Then</span>
+      MsgBox (&quot;This sub mechanism is defined in &quot; &amp; SubMechOcc.Name)
+    <span class="auto-style2">End</span> <span class="auto-style2">If</span> 
+  <span class="auto-style2">Next</span>
+
+<span class="auto-style1">' Set a value range with the current values of all the commands</span>
+  <span class="auto-style2">Dim</span> MyValues(2)
+  MyValues(0) = MyCommands.Item(1).CurrentValue
+  MyValues(1) = MyCommands.Item(2).CurrentValue
+  MyValues(2) = MyCommands.Item(3).CurrentValue
+  Msg = &quot; Current command values are &quot;
+  Msg = Msg &amp; MyValues(0) &amp; &quot;, &quot; &amp; MyValues(1) &amp; &quot;, &quot; &amp; MyValues(2)
+  MsgBox (Msg)
+
+<span class="auto-style1">' 5 Prepare the solver for the kinematics simulation</span>
+  MyMechRep.PrepareSimulation
+  MsgBox (&quot;PrepareSimulation is done&quot;)
+
+<span class="auto-style1">' 6 Run a first simulation with all commands values</span>
+  MyValues(0) = MyValues(0) + 30#
+  MyValues(1) = MyValues(1) + 30#
+  MyValues(2) = MyValues(2) + 30#
+
+  Call MyMechRep.RunSimulation(MyValues)
+  MsgBox (&quot;A first kinematic simulation is done&quot;)
+
+  <span class="auto-style2">Dim</span> V(2) <span class="auto-style2">As</span> Double
+  V(0) = MyCommands.Item(1).CurrentValue
+  V(1) = MyCommands.Item(2).CurrentValue
+  V(2) = MyCommands.Item(3).CurrentValue
+  Msg = &quot;The mechanism has reached the following command values : &quot;
+  Msg = Msg &amp; V(0) &amp; &quot;, &quot; &amp; V(1) &amp; &quot;, &quot; &amp; V(2)
+  MsgBox (Msg)
+
+<span class="auto-style1">' 7 Run a second simulation bywith a single command value</span>
+  <span class="auto-style2">Dim</span> val <span class="auto-style2">As</span> Double
+  val = V(2)
+  val = val + 30#
+
+  Call MyMechRep.RunCommand(2, val)
+  MsgBox (&quot;A second kinematic simulation is done&quot;)
+
+  V(0) = MyCommands.Item(1).CurrentValue
+  V(1) = MyCommands.Item(2).CurrentValue
+  V(2) = MyCommands.Item(3).CurrentValue
+  Msg = &quot;The mechanism has reached the following command values : &quot;
+  Msg = Msg &amp; V(0) &amp; &quot;, &quot; &amp; V(1) &amp; &quot;, &quot; &amp; V(2)
+  MsgBox (Msg)
+
+<span class="auto-style1">' 8 Clean the simulation</span>
+  MyMechRep.CleanSimulation
+  MsgBox (&quot;CleanSimulation is done&quot;)
+
+<span class="auto-style2">End Sub</span></pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

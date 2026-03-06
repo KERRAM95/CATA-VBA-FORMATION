@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">
+
+/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">
+
+/* */</script>
+<title>Coating 1D Mesh Parts Attributes</title>
+<style type="text/css">
+    .fmt_table
+    {
+      width: 95%;
+    }
+    .fmt_table td
+    {
+      background-color: #C0C0C0;
+      padding: 5px;
+      border: 1px solid black;
+    }
+    .width40
+    {
+      width: 40%;
+    }
+    .width50
+    {
+      width: 50%;
+    }
+
+    .width60
+    {
+      width: 60%;
+    }
+    .center
+    {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Coating 1D Mesh Parts Attributes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tr>
+		<td>
+		<h3>Abstract</h3>
+		<p>This article presents an overview of the <b>Coating 1D Mesh Part</b> attributes and its local specifications.</p>		
+		<p><strong><a href="#Coating1D_Mesh_Part_Creation">Coating 1D Mesh Part 
+		Creation</a></strong> </p>
+		<p><strong><a href="#Coating1D_Mesh_Part_Support_Definition">Coating 1D 
+		Mesh Part Support Definition</a></strong> </p>
+		<p><strong><a href="#MeshAtt">The Mesh Attributes:</a></strong></p>
+		<ul>
+			<li><a href="#ExtractionType">ExtractionType</a></li>
+		</ul>
+		<p><b><a href="#MeshLocalAtt">The Local Specifications:</a></b></p>
+		<ul>
+			<li><a href="#CATFmtCoatingLocalSpecification">CATFmtCoatingLocalSpecification</a></li>
+		</ul>
+		</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Coating1D_Mesh_Part_Creation">Coating 1D Mesh Part Creation</a></h2>
+<p>A &quot;late type&quot; must be given to indicate which type of mesh part is to be created.</p>
+<p>In the case of the Coating 1D Mesh Part, the late type is &quot;<b>CATFmtCoating1DMesher</b>&quot;.</p>
+<p>The Coating 1D Mesh Part can be created by using <b>Add</b> method of <b>SimMeshParts</b> object.</p>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Coating1D_Mesh_Part_Support_Definition">Coating 1D Mesh Part Support 
+Definition</a></h2>
+<p>The Coating 1D Mesh Part support can be initialized and managed using the <b>AddSupport</b> method of <b>SimMeshPart</b> object:</p>
+  <ul>
+    <li>
+      <b>AddSupport</b> ( <i>iSupport <span class="keyword">As</span> AnyObject</i> ) to add a new support to the mesh part
+    </li>
+  </ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="MeshAtt"></a>Mesh attributes of the Coating 1D mesh part</h2>
+		<p>The attributes referenced in this section drive the <strong>Mesh</strong> 
+		specification of Coating 2D mesh and define precisely what type of mesh is wanted 
+		by user.</p>
+		<p>Mesh specifications can be set or retrieved using the type &quot;<strong>Mesh</strong>&quot; 
+		on the <strong>&nbsp;SetAttributeValue</strong> and<strong> 
+		GetAttributeValue </strong>services of the<strong> SimMeshPart</strong> 
+		object.</p>
+<h4><a name="ExtractionType"></a>ExtractionType</h4>
+<table class="fmt_table">
+    <tr>
+      <td class="width50">
+        Type: <b>int</b><br /><br />
+        Valuated to
+        <ul>
+          <li><b>1</b> to generate a 1D element for each edge of the 2D meshes (<b>All Edges</b>).</li>
+          <li><b>2</b> to generate a 1D element for each boundary edge of the 2D meshes (<b>Boundary Edges</b>).</li>
+          <li><b>3</b> to generate a 1D element for each internal edge of the 2D meshes (<b>Internal Edges</b>).</li>
+		  <li><b>4</b> to generate a 1D element for each constrained edge of the 2D meshes (<b>Constrained Edges</b>).</li>
+          <li><b>5</b> to generate a 1D element for each unconstrained edge of the 2D meshes (<b>Non Constrained Edges</b>).</li>
+          <li><b>6</b> to generate a 1D element only for local specifications (<b>None</b>).</li>
+        </ul>
+        <br/><b>Default Value:</b> 1
+      </td>
+      <td class="width50">
+        This attribute specifies which edges should be extracted from the support.
+      </td>
+    </tr>
+  </table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="MeshLocalAtt"></a>Local specifications of the Coating 1D mesh part</h2>
+<p>The Coating 1D Mesh Part has only one kind of local specifications: <b>mesh</b> 
+local specifications. These specifications are managed by 
+collection object:</p>
+<ul>
+	<li><b>SimMeshSpecifications</b>: for the collection of local mesh specifications</li>
+</ul>
+<p>You should use the following methods of <b>SimMeshPart</b> object to retrieve these collections:</p>
+<ul>
+	<li><b>GetMeshSpecifications</b> to retrieve the local mesh specification collection</li>
+</ul>
+<p>Local specifications are managed from the collection objects:</p>
+<ul>
+	<li><b>Add</b> (<i>iType <span class="keyword">As String</span></i>) to create a new local 
+	specification with:
+	<ul>
+		<li>iType is the late type of the specification to create</li>
+	</ul>
+	</li>
+	<li><b>Item</b> (<i>iIndex</i>) to retrieve a local specification with:
+	<ul>
+		<li>iIndex is the index of the local specification in its collection</li>
+	</ul>
+	</li>
+	<li><b>Remove</b> (<i>iIndex</i>) to delete a local specification with:
+	<ul>
+		<li>iIndex is the index of the local specification in its collection</li>
+	</ul>
+	</li>
+</ul>
+<p>Attribute of local specification are set using following method from 
+<b>SimMeshSpecification</b> or <b>SimTopologySpecification</b> object depending of the kind of 
+local specification:</p>
+<ul>
+	<li><b>SetAttributeValue</b> (<i>iAttribute <span class="keyword">As String</span>, iValue</i>) to set a local specification attribute value</li>
+</ul>
+<p>In a manner similar, attribute of local specification are retrieved using following method:</p>
+<ul>
+	<li><b>GetAttributeValue</b> (<i>iAttribute <span class="keyword">As String</span>, iValue</i>) to retrieve a local specification</li>
+</ul>
+<p>Geometric attribute of local specification (supports) are managed using <b>SimLinkAccess</b> object:</p>
+<ul>
+	<li><b>AddLink</b> ( <i>iName <span class="keyword">As String</span>, iLink <span class="keyword">As</span> AnyObject</i> )</li>
+	<li><b>RemoveAllLinks</b> ( <i>iName <span class="keyword">As String</span></i> )</li>
+	<li><b>RemoveLink</b> ( <i>iName <span class="keyword">As String</span>, iLink <span class="keyword">As</span> AnyObject</i> )</li>
+	<ul>
+		<li><b>iName</b> is the name of the link container, here it's <b>&quot;ConnectorList&quot;</b></li>
+	</ul>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="CATFmtCoatingLocalSpecification"></a><b>CATFmtCoatingLocalSpecification</b></h3>
+<p>This specification specifies the edges which are to be included or excluded while computing the coating mesh. You can specify 
+multiple edges to one local specification. If you want to include some edges, and exclude some other then you need to create at 
+least two local specifications. All the edges which are to be included, can be added as support to one local specification with 
+the attribute "LocalExtractionType" valuated to 1. Similarly edges which are to be exclude can be added as support to other local 
+specification with the attribute "LocalExtractionType" valuated to 2.</p>
+<h4><a name="LocalExtractionType">LocalExtractionType</a></h4>
+<table class="fmt_table">
+    <tr>
+      <td class="width40">
+        Type: <b>int</b><br /><br />
+        
+        Valuated to
+        <ul>
+          <li><b>1</b> to include the edges defined as support of the local specification</li>
+          <li><b>2</b> to exclude the edges defined as support of the local specification</li>
+        </ul>
+        <br/><b>Default Value:</b> 1
+      </td>
+      <td class="width60">
+        This attribute specifies if the edges defined as support of the local specification should be included (<b>1</b>) or excluded (<b>2</b>).<br/>
+      </td>
+    </tr>
+  </table>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="History"></a>History</h2>
+<table class="history">
+	<tr>
+		<td>Version: <strong>1</strong> [August 2018]</td>
+		<td>Document created</td>
+	</tr>
+</table>
+
+<script type="text/javascript">insertCopyright();</script>
+</body>
+
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>MyIO_SYNC.vb</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'===================================================================</span>
+<span class="comment">' COPYRIGHT Dassault Systemes Delmia Corp. 2012/02/09</span>
+<span class="comment">'===================================================================</span>
+<span class="keyword">Imports</span> DELOlp
+<span class="keyword">Imports</span> System.Text.RegularExpressions
+
+&lt;CLSCompliant(False)&gt; <span class="keyword">Public</span> <span class="keyword">Class</span> MyIO_SYNC
+    <span class="keyword">Inherits</span> FanucCallInstruction
+
+    <span class="comment">'###############################</span>
+    <span class="comment">' CONSTRUCTORS</span>
+    <span class="comment">'###############################</span>
+    <span class="keyword">Public</span> <span class="keyword">Sub</span> New(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, _
+                    <span class="keyword">ByVal</span> iV6Instruction<span class="keyword"> As </span>OlpInstruction, _
+                    <span class="keyword">ByRef</span> iAstInstruction<span class="keyword"> As </span>OlpAstBranch)
+        MyBase.New(iTask, iV6Instruction, iAstInstruction)
+<span class="keyword">    End Sub</span>
+
+    <span class="comment">'###############################</span>
+    <span class="comment">' PUBLIC METHODS</span>
+    <span class="comment">'###############################</span>
+    <span class="keyword">Public</span> <span class="keyword">Overrides</span> <span class="keyword">Sub</span> UploadProcedure()
+<span class="keyword">        Dim </span>IO_SYNC<span class="keyword"> As </span>OlpProcedure = Nothing
+
+        <span class="comment">' see if the task already exists</span>
+        <span class="comment">' Here I assume that if the procedure exists, that it already has the correct</span>
+        <span class="comment">' inputs and instructions configured.  </span>
+        IO_SYNC = Main.TransHelper.Behavior.Procedures.Item(<span class="string">&quot;IO_SYNC&quot;</span>)
+
+<span class="keyword">        If </span>IO_SYNC Is Nothing<span class="keyword"> Then</span>
+            <span class="comment">' if it does not exist, create it</span>
+            IO_SYNC = CreateIOSYNC()
+<span class="keyword">        End If</span>
+
+        <span class="comment">' set the run instruction to call IO_SYNC</span>
+        RunInstr.Procedure = IO_SYNC
+
+<span class="keyword">    End Sub</span>
+
+    <span class="comment">'###############################</span>
+    <span class="comment">' PROTECTED METHODS</span>
+    <span class="comment">'###############################</span>
+    <span class="keyword">Protected</span> <span class="keyword">Overridable</span> <span class="keyword">Function</span> CreateIOSYNC()<span class="keyword"> As </span>OlpProcedure
+<span class="keyword">        Dim </span>IO_SYNC<span class="keyword"> As </span>OlpProcedure = Main.TransHelper.Behavior.Procedures.CreateRobotTask()
+        IO_SYNC.Name = <span class="string">&quot;IO_SYNC&quot;</span>
+
+        <span class="comment">' add the procedure argument</span>
+<span class="keyword">        Dim </span>io_value<span class="keyword"> As </span>OlpVariable = IO_SYNC.LocalVariables.GetOrCreateIO(<span class="string">&quot;io_value&quot;</span>, _
+                                                                            DELOlpDataType.delOlpInteger, _
+                                                                            DELOlpIODirection.delOlpInput)
+
+        <span class="comment">' get the external group IO</span>
+<span class="keyword">        Dim </span>ExternalIO<span class="keyword"> As </span>OlpVariables = Main.TransHelper.Behavior.GlobalVariables
+<span class="keyword">        Dim </span>go1<span class="keyword"> As </span>OlpVariable = ExternalIO.GetOrCreateIO(<span class="string">&quot;GO1&quot;</span>, DELOlpDataType.delOlpInteger, DELOlpIODirection.delOlpOutput)
+<span class="keyword">        Dim </span>gi1<span class="keyword"> As </span>OlpVariable = ExternalIO.GetOrCreateIO(<span class="string">&quot;GI1&quot;</span>, DELOlpDataType.delOlpInteger, DELOlpIODirection.delOlpInput)
+
+        <span class="comment">' create the set and the wait instructions for the group input</span>
+<span class="keyword">        Dim </span>Instructions<span class="keyword"> As </span>OlpInstructions = IO_SYNC.Instructions
+<span class="keyword">        Dim </span>SetOutput<span class="keyword"> As </span>OlpAssign = Instructions.CreateInstruction(DELOlpInstructionType.delOlpAssign, Nothing, True)
+<span class="keyword">        Dim </span>WaitInput<span class="keyword"> As </span>OlpWait = Instructions.CreateInstruction(DELOlpInstructionType.delOlpWait, Nothing, True)
+
+        <span class="comment">' set the go1 as the variable being assigned</span>
+        SetOutput.Destination = go1
+
+        <span class="comment">' create the expression that is being assigned to go1</span>
+        <span class="comment">'   normally the expression comes from the AST</span>
+        <span class="comment">'   so we need to generate an AST to set as the expression</span>
+        <span class="comment">'   &lt;Expression&gt;</span>
+        <span class="comment">'    &lt;Identifier&gt;io_value&lt;/Identifier&gt;</span>
+        <span class="comment">'   &lt;/Expression&gt;</span>
+<span class="keyword">        Dim </span>SetExpression<span class="keyword"> As </span>OlpAstBranch = Main.TransHelper.AstRoot.CreateBranch(DELOlpAstNodeType.delAstEXPRESSION, <span class="string">&quot;&quot;</span>)
+        SetExpression.AppendLeaf(DELOlpAstNodeType.delAstIDENTIFIER, <span class="string">&quot;&quot;</span>, io_value.Name)
+        SetOutput.Source = SetExpression
+
+        <span class="comment">' set the WAIT to have no timeout </span>
+        WaitInput.UseTimeout = False
+
+        <span class="comment">' create the expression to wait for (GI1=io_value)</span>
+        <span class="comment">' &lt;BinaryExpression&gt;</span>
+        <span class="comment">'    &lt;Identifier id=&quot;Operand1&quot;&gt;GO1&lt;/Identifier&gt;</span>
+        <span class="comment">'    &lt;Operator&gt;=&lt;/Operator&gt;</span>
+        <span class="comment">'    &lt;Identifier id=&quot;Operand2&quot;&gt;io_value&lt;/Identifier&gt;</span>
+        <span class="comment">' &lt;/BinaryExpression&gt;</span>
+<span class="keyword">        Dim </span>WaitExpression<span class="keyword"> As </span>OlpAstBranch = Main.TransHelper.AstRoot.CreateBranch(DELOlpAstNodeType.delAstBINARYEXP, <span class="string">&quot;&quot;</span>)
+        WaitExpression.AppendLeaf(DELOlpAstNodeType.delAstIDENTIFIER, <span class="string">&quot;Operand1&quot;</span>, gi1.Name)
+        WaitExpression.AppendLeaf(DELOlpAstNodeType.delAstOPERATOR, <span class="string">&quot;&quot;</span>, <span class="string">&quot;=&quot;</span>)
+        WaitExpression.AppendLeaf(DELOlpAstNodeType.delAstIDENTIFIER, <span class="string">&quot;Operand2&quot;</span>, io_value.Name)
+        WaitInput.Condition = WaitExpression
+
+        Return IO_SYNC
+<span class="keyword">    End Function</span>
+
+    <span class="keyword">Protected</span> <span class="keyword">Overrides</span> <span class="keyword">Sub</span> UploadArguments()
+
+        <span class="comment">' the is the AST we need to upload</span>
+        <span class="comment">' we need to convert the string argument to an integer</span>
+        <span class="comment">'&lt;Arguments&gt;</span>
+        <span class="comment">'    &lt;String id=&quot;Argument&quot;&gt;'0000000000011000'&lt;/String&gt;</span>
+        <span class="comment">'&lt;/Arguments&gt;</span>
+
+<span class="keyword">        Dim </span>ArgsNode<span class="keyword"> As </span>OlpAstNode = Nothing
+<span class="keyword">        Dim </span>ExpressionOK<span class="keyword"> As </span>Boolean = False
+<span class="keyword">        If </span>AstInstruction.ExistsChildByType(DELOlpAstNodeType.delAstARGUMENTS, ArgsNode)<span class="keyword"> Then</span>
+<span class="keyword">            Dim </span>ArgsBranch<span class="keyword"> As </span>OlpAstBranch = ArgsNode.Clone
+<span class="keyword">            Dim </span>StringNode<span class="keyword"> As </span>OlpAstNode = Nothing
+<span class="keyword">            If </span>ArgsBranch.Count = 1 And ArgsBranch.ExistsChildByType(DELOlpAstNodeType.delAstSTRING, StringNode)<span class="keyword"> Then</span>
+
+                ExpressionOK = True
+
+                <span class="comment">' the literal is an AST Leaf, just modify the type and value </span>
+<span class="keyword">                Dim </span>StringLeaf<span class="keyword"> As </span>OlpAstLeaf = StringNode
+                StringLeaf.Type = DELOlpAstNodeType.delAstCONST_INTEGER
+
+                <span class="comment">' remove the quotes and put a &quot;0b&quot; in front </span>
+                <span class="comment">' to turn it into a binary number expression</span>
+<span class="keyword">                Dim </span>StringValue<span class="keyword"> As </span>String = StringLeaf.Value
+                StringLeaf.Value = <span class="string">&quot;0b&quot;</span> &amp; StringValue.Substring(1, StringValue.Length - 2)
+
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+
+<span class="keyword">        If </span>ExpressionOK<span class="keyword"> Then</span>
+            RunInstr.Arguments = ArgsBranch
+        <span class="keyword">Else</span>
+            <span class="comment">' display a message that the arguments were not as expected</span>
+            Main.ErrorReporter.AddMessage(DELOlpMessageType.delOlpWarning, <span class="string">&quot;Invalid arguments in call to IO_SYNC.  There should be 1 string input.&quot;</span>, RunInstr, AstInstruction)
+<span class="keyword">        End If</span>
+
+<span class="keyword">    End Sub</span>
+
+    <span class="keyword">Protected</span> <span class="keyword">Overrides</span> <span class="keyword">Sub</span> AppendArguments()
+
+        <span class="comment">' convert the 1 integer argument to a string</span>
+        <span class="comment">' This is what the RunInstr.Arguments AST looks like</span>
+        <span class="comment">'&lt;Arguments&gt;</span>
+        <span class="comment">'    &lt;Expression id=&quot;Argument&quot;&gt;</span>
+        <span class="comment">'        &lt;ConstInteger&gt;Ob0000000000011000&lt;/ConstInteger&gt;</span>
+        <span class="comment">'    &lt;/Expression&gt;</span>
+        <span class="comment">'&lt;/Arguments&gt;</span>
+<span class="keyword">        Dim </span>V6Args<span class="keyword"> As </span>OlpAstBranch = RunInstr.Arguments
+
+<span class="keyword">        Dim </span>ExpressionOK<span class="keyword"> As </span>Boolean = False
+<span class="keyword">        If </span>V6Args.Count = 1<span class="keyword"> Then</span>
+<span class="keyword">            Dim </span>Arg1<span class="keyword"> As </span>OlpAstBranch = V6Args.Item(1)
+<span class="keyword">            Dim </span>IntegerNode<span class="keyword"> As </span>OlpAstNode = Nothing
+<span class="keyword">            If </span>Arg1.Count = 1 And Arg1.ExistsChildByType(DELOlpAstNodeType.delAstCONST_INTEGER,IntegerNode)<span class="keyword"> Then</span>
+                ExpressionOK = True
+                ConvertIntToString(IntegerNode)
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+
+<span class="keyword">        If </span>ExpressionOK<span class="keyword"> Then</span>
+            AstInstruction.AppendLeaf(DELOlpAstNodeType.delAstOPERATOR, <span class="string">&quot;&quot;</span>, <span class="string">&quot;(&quot;</span>)
+            AstInstruction.Append(V6Args)
+            AstInstruction.AppendLeaf(DELOlpAstNodeType.delAstOPERATOR, <span class="string">&quot;&quot;</span>, <span class="string">&quot;)&quot;</span>)
+        <span class="keyword">Else</span>
+            <span class="comment">' display a message that the arguments were not as expected</span>
+            Main.ErrorReporter.AddMessage(DELOlpMessageType.delOlpWarning, <span class="string">&quot;Invalid arguments in call to IO_SYNC.  There should be 1 string input.&quot;</span>, RunInstr, AstInstruction)
+<span class="keyword">        End If</span>
+
+<span class="keyword">    End Sub</span>
+
+    <a name="ConvertIntToString"></a><span class="keyword">Protected</span> <span class="keyword">Overridable</span> <span class="keyword">Sub</span> ConvertIntToString(<span class="keyword">ByVal</span> IntegerLeaf<span class="keyword"> As </span>OlpAstLeaf)
+
+<span class="keyword">        Dim </span>ArgsExpression<span class="keyword"> As </span>Regex = New Regex(<span class="string">&quot;^0b([01]{16})&quot;</span>, RegexOptions.CultureInvariant)
+<span class="keyword">        Dim </span>ArgsMatch<span class="keyword"> As </span>Match = ArgsExpression.Match(IntegerLeaf.Value)
+<span class="keyword">        Dim </span>CallArgumentText<span class="keyword"> As </span>String = <span class="string">&quot;&quot;</span>
+<span class="keyword">        If </span>ArgsMatch.Success And ArgsMatch.Groups.Count &gt; 1<span class="keyword"> Then</span>
+            <span class="comment">' Group(0) is the full matched string</span>
+            <span class="comment">' Group(1) is the match for the 1st group in the regular expression: ([01]{16})</span>
+            CallArgumentText = ArgsMatch.Groups(1).Value
+        <span class="keyword">Else</span>
+            <span class="comment">' error with regular expression - syntax must be invalid</span>
+            <span class="comment">' set all signals to 0 and post a warning</span>
+            Main.ErrorReporter.AddMessage(DELOlpMessageType.delOlpWarning, <span class="string">&quot;Invalid IO_SYNC argument syntax.  &quot;</span> &amp; _
+                        <span class="string">&quot;The argument should be specified as a 16 digit binary number (0b100000111111000).  &quot;</span> &amp; _
+                        <span class="string">&quot;Unable to set argument values.  All events will be set to 0.&quot;</span>, V6Instruction, AstInstruction)
+            CallArgumentText = <span class="string">&quot;0000000000000000&quot;</span>
+<span class="keyword">        End If</span>
+
+        IntegerLeaf.Value = <span class="string">&quot;'&quot;</span> &amp; CallArgumentText &amp; <span class="string">&quot;'&quot;</span>
+
+<span class="keyword">    End Sub</span>
+
+<span class="keyword">End Class</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

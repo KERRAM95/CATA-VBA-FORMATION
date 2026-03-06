@@ -1,0 +1,266 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAMpaFoundationIDLItf SimFeatureHistory (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAMpaFoundationIDLItf.htm" href="../SMAMpaFoundationIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAMpaFoundationIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimFeatureHistory"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimFeatureHistory<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimFeatureHistory_40478','SimFeatureHistory','0');</script>
+<section id='maindesc'>
+<b><i> Represents the Feature History Collection.</i></b><br>
+
+ 
+ <!-- @sample -->
+ <dl>
+ <dt><strong>Example:</strong></dt>
+ <dd>
+ 
+ You can retrieve a <code>SimFeatureHistory</code> collection from a propagating feature, for example: <code>SimPressure</code>
+ as following:
+ <pre>
+ Dim MyPressure As SimPressure
+ ...
+ Dim MyFeatureHistory As SimFeatureHistory
+ Set MyFeatureHistory = MyPressure.FeatureHistory
+ </pre>
+ 
+ Given a <code>SimFeatureHistory</code> object, you can loop through the <code>SimFeatureState</code> objects as following:
+ <pre>
+ Dim MyFeatureHistory As SimFeatureHistory
+ ...
+ Dim MyFeatureState As SimFeatureState
+ For Each MyFeatureState In MyFeatureHistory
+     Dim MyScaleFactorFlag As Boolean
+     MyScaleFactorFlag = MyFeatureState.ScaleFactorFlag
+ Next
+ </pre>
+ </dd>
+ <dt><strong>Example in Python:</strong></dt>
+ <dd>
+ 
+ You can retrieve a <code>SimFeatureHistory</code> collection from a propagating feature, for example: <code>SimPressure</code>
+ as following:
+ <pre>
+ ...
+ myFeatureHistory = myPressure.FeatureHistory
+ </pre>
+ 
+ Given a <code>SimFeatureHistory</code> object, you can loop through the <code>SimFeatureState</code> objects as following:
+ <pre>
+ ...
+ for myFeatureState in myFeatureHistory:
+     myScaleFactorFlag = myFeatureState.ScaleFactorFlag
+ </pre>
+ </dd>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AddToStep"><b>AddToStep</b></a>
+</td><td  id='tdright'>  Adds the Feature State in a step and any dependent steps.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CanAddToStep"><b>CanAddToStep</b></a>
+</td><td  id='tdright'>  Returns whether the Feature State can be added in a step.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CanRemoveFromStep"><b>CanRemoveFromStep</b></a>
+</td><td  id='tdright'>  Returns whether the Feature State can be removed from a step.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CanStartInStep"><b>CanStartInStep</b></a>
+</td><td  id='tdright'>  Returns whether the Feature State can start in a step.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Item"><b>Item</b></a>
+</td><td  id='tdright'>  Returns the Feature State from a step.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RemoveFromStep"><b>RemoveFromStep</b></a>
+</td><td  id='tdright'>  Removes the Feature State from a step and any dependent steps.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#StartInStep"><b>StartInStep</b></a>
+</td><td  id='tdright'>  Starts the Feature State in a step.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AddToStep"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddToStep</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Adds the Feature State in a step and any dependent steps.
+ Dependent steps are:
+ <ul>
+    <li><b>For General steps</b> - All subsequent steps</li>
+    <li><b>For Frequency/Buckle steps</b> - All subsequent Linear Dynamic steps</li>
+    <li><b>For Linear Dynamic steps</b> - None</li>
+    <li><b>For any other Perturbation steps</b> - None</li>
+ </ul>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex[in]</span></dt>
+   <dd>    The index or name of the Step.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="CanAddToStep"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CanAddToStep</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns whether the Feature State can be added in a step.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex[in]</span></dt>
+   <dd>    The index or name of the Step.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     TRUE: the Feature State can be added in the specified step.<br/>
+    FALSE: the Feature State cannot be added in the specified step.
+ </ dd>
+</dl>
+</dd>
+<a id="CanRemoveFromStep"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CanRemoveFromStep</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns whether the Feature State can be removed from a step.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex[in]</span></dt>
+   <dd>    The index or name of the Step.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     TRUE: the Feature State can be removed from the specified step.<br/>
+    FALSE: the Feature State cannot be removed from the specified step.
+ </ dd>
+</dl>
+</dd>
+<a id="CanStartInStep"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CanStartInStep</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns whether the Feature State can start in a step.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex[in]</span></dt>
+   <dd>    The index or name of the Step.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     TRUE: the Feature State can start in the specified step.<br/>
+    FALSE: the Feature State cannot start in the specified step.
+ </ dd>
+</dl>
+</dd>
+<a id="Item"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Item</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the Feature State from a step.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex[in]</span></dt>
+   <dd>    The index or name of the Step.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     The retrieved SimFeatureState object.
+ </ dd>
+</dl>
+</dd>
+<a id="RemoveFromStep"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>RemoveFromStep</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Removes the Feature State from a step and any dependent steps.
+ Dependent steps are:
+ <ul>
+    <li><b>For General steps</b> - All subsequent steps</li>
+    <li><b>For Frequency/Buckle steps</b> - All subsequent Linear Dynamic steps</li>
+    <li><b>For Linear Dynamic steps</b> - None</li>
+    <li><b>For any other Perturbation steps</b> - None</li>
+ </ul>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex[in]</span></dt>
+   <dd>    The index or name of the Step.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="StartInStep"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>StartInStep</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Starts the Feature State in a step.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex[in]</span></dt>
+   <dd>    The index or name of the Step.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

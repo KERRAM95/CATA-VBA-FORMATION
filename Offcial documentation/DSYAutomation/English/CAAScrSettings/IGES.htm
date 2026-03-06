@@ -1,0 +1,422 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>IGES Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>IGES Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>IGES</h2>
+<p><strong>Role:</strong> defines Settings to control conversion of IGES files</p>
+<p>The IGES repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /General/Compatibility/IGES</li>
+  <li><strong>Repository File</strong>: IGES</li>
+  <li><strong>Version</strong>: 1</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+</ul>
+<p>IGES setting repository attributes:</p>
+<ul>
+  <li><a name="Angle"></a><strong>Angle</strong>
+    <br /><strong>Role</strong>: To define the angle (in degree) below which contiguous elements (curves) can be merged.
+    <ul>
+      <li><strong>Type</strong>: float</li>
+      <li><strong>Default value</strong>: 2.0</li>
+      <li><strong>Min value</strong>: 0.0</li>
+      <li><strong>Max value</strong>: 10</li>
+    <li><strong>Step</strong>: 0.5</li>
+    </ul>
+  </li>
+  <li><a name="ApplyJoin"></a><strong>ApplyJoin</strong>
+    <br /><strong>Role</strong>: To join the surfaces of your IGES model into a shell
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="AuthorName"></a><strong>AuthorName</strong>
+    <br /><strong>Role</strong>: To define the name of author
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: UNIX: ${LOGNAME} Windows: ${USERNAME}</li>
+    </ul>
+  </li>
+  <li><a name="AuthorOrganization"></a><strong>AuthorOrganization</strong>
+    <br /><strong>Role</strong>: To define the organization into IGES file.
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: ${USERDOMAIN}</li>
+    </ul>
+  </li>
+  <li><a name="CrvMod"></a><strong>CrvMod</strong>
+    <br /><strong>Role</strong>: To select which curve and surface types you want to be generated
+    <br /><strong>Detailed role</strong>: If you leave the default Standard option selected the curve and surface types created in the Part are kept as is. If you select the <br />BSpline option all curves and surfaces are converted into B-splines.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Standard</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>BSpline</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="Deformation"></a><strong>Deformation</strong>
+    <br /><strong>Role</strong>: To define the maximum deformation (in millimeter) allowed in the optimization of curves and surfaces
+    <ul>
+      <li><strong>Alias</strong>: Tolerance</li>
+      <li><strong>Type</strong>: float</li>
+      <li><strong>Default value</strong>: 0.001</li>
+      <li><strong>Min value</strong>: 0.0005</li>
+      <li><strong>Max value</strong>: 0.10</li>
+    <li><strong>Step</strong>: 0.0005</li>
+    </ul>
+  </li>
+  <li><a name="EnableQualityenhancement"></a><strong>Enable Quality enhancement</strong>
+    <br /><strong>Role</strong>: Enables quality enhancements.
+    <ul>
+      <li><strong>Alias</strong>: HealingActive</li>
+      <li><strong>Type</strong>: short integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="ExportUnit"></a><strong>ExportUnit</strong>
+    <br /><strong>Role</strong>: To define the unit to be used for export
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Keep user unit</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>Centimeter (cm)</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>Microinch (uin)</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Inch(in)</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Millimeter (mm)</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Foot (ft)</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Mile (mi)</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Meter (m)</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Kilometer (km)</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Mil - i.e. 0.001 inch (mil)</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Micron (um)</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="GeomQualityMode"></a><strong>GeomQualityMode</strong>
+    <br /><strong>Role</strong>: Enhancement mode
+    <ul>
+      <li><strong>Type</strong>: short integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Default enhancement without deformation</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Advanced enhancement with customized allowed deformation
+<br /><strong>Detailed role</strong>: To define a maximum tolerance value which may enhance the quality.<br /></td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="GeomQualityTolFact"></a><strong>GeomQualityTolFact</strong>
+    <br /><strong>Role</strong>: To define the maximum deformation allowed in the Geometry Quality Enhancement. This is a factor of the Resolution.
+    <ul>
+      <li><strong>Type</strong>: short integer</li>
+      <li><strong>Default value</strong>: 5</li>
+      <li><strong>Min value</strong>: 5</li>
+      <li><strong>Max value</strong>: 100</li>
+    </ul>
+  </li>
+  <li><a name="ImportGroupAsSelSet"></a><strong>ImportGroupAsSelSet</strong>
+    <br /><strong>Role</strong>: To Import IGES groups (Entity Type 402, Forms 1-7-14-15: Associativity Instance)as Selection Sets
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="OnlyShow"></a><strong>OnlyShow</strong>
+    <br /><strong>Role</strong>: To allow to save only the PLM entities which are in the Show mode.
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="OptC2Mode"></a><strong>OptC2Mode</strong>
+    <br /><strong>Role</strong>: Optimization mode
+    <ul>
+      <li><strong>Alias</strong>: OptC2Mode</li>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>No optimization</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Automatic optimization</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Advanced optimization
+<br /><strong>Detailed role</strong>: To Define a larger tolerance value which may enhance the optimization impact(resulting in less C2 cutting on faces).<br /></td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="OptCleanTopoMode"></a><strong>OptCleanTopoMode</strong>
+    <br /><strong>Role</strong>: BSpline surfaces and curves continuity is optimized, within deformation and Angle values
+    <ul>
+      <li><strong>Alias</strong>: OptCleanTopoMode</li>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="OptFittingMode"></a><strong>OptFittingMode</strong>
+    <br /><strong>Role</strong>: To Allow approximation of B-Spline curves and surfaces, controlled by deformation parameter.
+    <br /><strong>Detailed role</strong>: This option usually results in a significant decrease in the number of faces cuttings, but may change the internal structure of BSplines (equations and knots).<br />
+    <ul>
+      <li><strong>Alias</strong>: OptFittingMode</li>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="OptInvalidGeomMode"></a><strong>OptInvalidGeomMode</strong>
+    <br /><strong>Role</strong>: To detect discrepancies in geometry, controlled by Tolerance value
+    <ul>
+      <li><strong>Alias</strong>: OptInvalidGeomMode</li>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>No Detection</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Detection</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="OptLoop3DMode"></a><strong>OptLoop3DMode</strong>
+    <br /><strong>Role</strong>: To define the preferred representation between 2D and 3D representations
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Keep File Preference</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Force 3D representation</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="Parameters"></a><strong>Parameters</strong>
+    <br /><strong>Role</strong>: Define parameters for data quality enhancements
+    <ul>
+      <li><strong>Alias</strong>: ButtonToOpenAdvHealingParams</li>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>:</li>
+    </ul>
+  </li>
+  <li><a name="PartProdMode"></a><strong>PartProdMode</strong>
+    <br /><strong>Role</strong>: To generate one single 3D Shape Representation or a Product Structure
+    <br /><strong>Detailed role</strong>: When the Import as a 3D Shape Representation option is selected, the IGES file is translated into one single 3D Shape Representation. For large files containing a large number of 308/408 IGES entities, you can select the option Import as a Product Structure<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 3</li>
+    </ul>
+  </li>
+  <li><a name="RepMod"></a><strong>RepMod</strong>
+    <br /><strong>Role</strong>: To choose the representation mode in the resulting file
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Surface</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Wireframe</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Solid - Shell</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ShowNoShowdialogbox"></a><strong>Show/NoShow dialog box</strong>
+    <br /><strong>Role</strong>: Select this option to display the completion dialog box at the end of the transfer
+    <br /><strong>Detailed role</strong>: By default, the Show Completion Dialog Box option is not selected<br />
+    <ul>
+      <li><strong>Alias</strong>: ShowCompletionDialogBox</li>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="TolOptInvalidGeom"></a><strong>TolOptInvalidGeom</strong>
+    <br /><strong>Role</strong>: Define tolerance for invalidity detection
+    <ul>
+      <li><strong>Alias</strong>: TolOptInvalidGeom</li>
+      <li><strong>Type</strong>: float</li>
+      <li><strong>Default value</strong>: 3.0</li>
+      <li><strong>Min value</strong>: 0.5</li>
+      <li><strong>Max value</strong>: 99.0</li>
+    <li><strong>Step</strong>: 0.5</li>
+    </ul>
+  </li>
+  <li><a name="Tolerance"></a><strong>Tolerance</strong>
+    <br /><strong>Role</strong>: Define tolerance for Join operator
+    <ul>
+      <li><strong>Alias</strong>: TolJoin</li>
+      <li><strong>Type</strong>: float</li>
+      <li><strong>Default value</strong>: 0.01</li>
+      <li><strong>Min value</strong>: 0.00</li>
+      <li><strong>Max value</strong>: 0.10</li>
+    <li><strong>Step</strong>: 0.001</li>
+    </ul>
+  </li>
+  <li><a name="ToleranceText"></a><strong>ToleranceText</strong>
+    <br /><strong>Role</strong>: To define the shape Deformation Value
+    <ul>
+      <li><strong>Alias</strong>: ToleranceText</li>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>:</li>
+    </ul>
+  </li>
+  <li><a name="XHealing"></a><strong>XHealing</strong>
+    <br /><strong>Role</strong>: Enables XHealing handling, Geometry will be heal
+    <ul>
+      <li><strong>Alias</strong>: XHealing</li>
+      <li><strong>Type</strong>: short integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="XHealingMode"></a><strong>XHealingMode</strong>
+    <br /><strong>Role</strong>: Mode on Geometry  Standard, Advanced, Forced
+    <ul>
+      <li><strong>Alias</strong>: XHealingMode</li>
+      <li><strong>Type</strong>: short integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 2</li>
+    </ul>
+  </li>
+  <li><a name="XHealingTrimmed"></a><strong>XHealingTrimmed</strong>
+    <br /><strong>Role</strong>: Apply to faces / trimmed surfaces
+    <ul>
+      <li><strong>Alias</strong>: XHealingTrimmed</li>
+      <li><strong>Type</strong>: short integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 1</li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

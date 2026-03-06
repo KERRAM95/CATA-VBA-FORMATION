@@ -1,0 +1,696 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAMpaResultsIDLItf SimStressLine (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAMpaResultsIDLItf.htm" href="../SMAMpaResultsIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAMpaResultsIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimStressLine"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimStressLine<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimStressLine_28083','SimStressLine','0');</script>
+<section id='maindesc'>
+<b><i> Represents the Stress Line class.</i></b><br>
+
+ <b>Role</b>:After creating the Stress line, one needs set the different API's provided in the Interface. <br> 
+ Then update the Stress line using and the <script type="text/javascript"> activateLinkAnchor('SMAIAMpaStressLine','Update()','SMAIAMpaStressLine.Update()') </script> method. <dt><b>Example:</b></dt>
+ <pre>
+ Given a SimResultsAnalysisCase object, you can create a Stress line object as following.
+ </pre>
+ <pre>
+ Dim oStressLine As SimStressLine
+ Set oStressLine = oResultsAnalysisCase.CreateStressLine
+ oStressLine.SetStartPoint .04, .03, .02
+ oStressLine.SetEndPoint .04, -.03, .02
+ oStressLine.SetMembraneComponentForXYdata True, False, False, False, False, False
+ oStressLine.SetBendingComponentForXYdata True, False, False, False, False, False
+ oStressLine.SetBendingComponentForInvariant True, False, False, False, False, False
+ oStressLine.UseCurvatureCorrection = False
+ oStressLine.Update True
+ </pre>
+ 
+<script type="text/javascript"> activateLinkAnchor('','SimResultsAnalysisCase','SimResultsAnalysisCase') </script>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#EndPointSpecification"><b>EndPointSpecification</b></a>
+</td><td  id='tdright'>  Gets/Sets the type of End point specification needed.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#NumberOfIntervals"><b>NumberOfIntervals</b></a>
+</td><td  id='tdright'>  Gets/Sets the number of intervals needed for the stress line.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PathDefinition"><b>PathDefinition</b></a>
+</td><td  id='tdright'>  Sets the Path plot to create the stress line.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UseCurvatureCorrection"><b>UseCurvatureCorrection</b></a>
+</td><td  id='tdright'>  Gets/Sets the use of curvature correction option.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#ExportToFile"><b>ExportToFile</b></a>
+</td><td  id='tdright'>  Exports the curve values in the specified file format at the given location.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#ExportToPLMDoc"><b>ExportToPLMDoc</b></a>
+</td><td  id='tdright'>  Exports the curve values in the specified file format in the database as an Engineering Document.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetAxis"><b>GetAxis</b></a>
+</td><td  id='tdright'>  Gets the axis specified for the stress line curvature correction.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetBendingComponentForInvariant"><b>GetBendingComponentForInvariant</b></a>
+</td><td  id='tdright'>   Retrieves the Bending components considered for the invariant computation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetBendingComponentForXYdata"><b>GetBendingComponentForXYdata</b></a>
+</td><td  id='tdright'>   Retrieves the  Membrane + Bending components considered for the stress line curve creation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetEndPoint"><b>GetEndPoint</b></a>
+</td><td  id='tdright'>   Retrieves the end point.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetInplaneCurvatureRadius"><b>GetInplaneCurvatureRadius</b></a>
+</td><td  id='tdright'>   Retrieves the value for the In-plane radius of curvature.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetMembraneComponentForXYdata"><b>GetMembraneComponentForXYdata</b></a>
+</td><td  id='tdright'>   Retrieves the components considered for the stress line curve creation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetOutofplaneCurvatureRadius"><b>GetOutofplaneCurvatureRadius</b></a>
+</td><td  id='tdright'>   Retrieves the value for the Out-of-plane radius of curvature.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetStartPoint"><b>GetStartPoint</b></a>
+</td><td  id='tdright'>   Retrieves the start point.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetAxis"><b>SetAxis</b></a>
+</td><td  id='tdright'>  Sets the axis to specify a local coordinate system, or use the default (global) coordinate system.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetBendingComponentForInvariant"><b>SetBendingComponentForInvariant</b></a>
+</td><td  id='tdright'>   Specifies the Bending components to be considered for the invariant computation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetBendingComponentForXYdata"><b>SetBendingComponentForXYdata</b></a>
+</td><td  id='tdright'>   Specifies the  Membrane + Bending components to be considered for the stress line curve creation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetEndPoint"><b>SetEndPoint</b></a>
+</td><td  id='tdright'>   Specifies the end point.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetInplaneCurvatureRadius"><b>SetInplaneCurvatureRadius</b></a>
+</td><td  id='tdright'>   Specifies a value for the In-plane radius of curvature of the midplane of your model at the location of the stress line.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetMembraneComponentForXYdata"><b>SetMembraneComponentForXYdata</b></a>
+</td><td  id='tdright'>   Specifies the components to be considered for the stress line curve creation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetOutofplaneCurvatureRadius"><b>SetOutofplaneCurvatureRadius</b></a>
+</td><td  id='tdright'>   Specifies a value for the Out-of-plane radius of curvature of the midplane of your model at the location of the stress line.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetStartPoint"><b>SetStartPoint</b></a>
+</td><td  id='tdright'>   Specifies the start point.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetStepAndFrame"><b>SetStepAndFrame</b></a>
+</td><td  id='tdright'>   Sets the step, frame and load case information needed for which the Stress Line will be created.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Update"><b>Update</b></a>
+</td><td  id='tdright'>  Updates the Stress line and opens the viewer.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="EndPointSpecification"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>EndPointSpecification</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SimStressLineSpecificationType','SimStressLineSpecificationType')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/Sets the type of End point specification needed. See the enum SimStressLineSpecification. 
+ If not specified, the default will be SimSpecificationPoints,
+</dd>
+<a id="NumberOfIntervals"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>NumberOfIntervals</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/Sets the number of intervals needed for the stress line.
+</dd>
+<a id="PathDefinition"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>PathDefinition</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBaseDispatch','CATBaseDispatch')</script> </span></dt>
+  <dd class='ddmethod'>
+ Sets the Path plot to create the stress line. This method is to be used when SimSpecificationPath option is used.
+ The ospPath will be an Path Plot Interface. Only the path containing 2 points are valid.
+</dd>
+<a id="UseCurvatureCorrection"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>UseCurvatureCorrection</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Gets/Sets the use of curvature correction option.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="ExportToFile"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ExportToFile</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>icsFileName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>icsFileLocation</span>,<script type="text/javascript"> activateLink('SimColumnSeparator','SimColumnSeparator')</script> <span class='param'>ieColumnSep</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Exports the curve values in the specified file format at the given location.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> icsFileName</span></dt>
+   <dd>   The name of the file.
+ 
+ </ dd>
+    <dt><span class='paramitem'> icsFileLocation</span></dt>
+   <dd>   The location at which the exported file needs to be created.
+ 
+ </ dd>
+    <dt><span class='paramitem'> ieColumnSep:</span></dt>
+   <dd>   Column separator.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="ExportToPLMDoc"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>ExportToPLMDoc</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>icsFileName</span>,<script type="text/javascript"> activateLink('SimColumnSeparator','SimColumnSeparator')</script> <span class='param'>ieColumnSep</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Exports the curve values in the specified file format in the database as an Engineering Document.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> icsFileName</span></dt>
+   <dd>   The name of the file.
+ 
+ </ dd>
+    <dt><span class='paramitem'> ieColumnSep</span></dt>
+   <dd>   Column separator.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetAxis"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetAxis</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>oSelectedAxis</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obUseLocalAxis</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Gets the axis specified for the stress line curvature correction.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oSelectedAxis</span></dt>
+   <dd>    Returns the axis. It can be either a Model axis, Resulst axis or Sim axis. For Sim axis, the name of the axis would be returned as String.
+    For Model and Result axis, the object should be returned as CATBaseDispatch.
+  
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetBendingComponentForInvariant"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetBendingComponentForInvariant</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS11</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS22</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS33</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS12</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS13</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS23</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Retrieves the Bending components considered for the invariant computation.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> obS11</span></dt>
+   <dd>    Set true to include the S11 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS22</span></dt>
+   <dd>    Set true to include the S22 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS33</span></dt>
+   <dd>    Set true to include the S33 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS12</span></dt>
+   <dd>    Set true to include the S12 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS13</span></dt>
+   <dd>    Set true to include the S13 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS23</span></dt>
+   <dd>    Set true to include the S23 component.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetBendingComponentForXYdata"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetBendingComponentForXYdata</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS11</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS22</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS33</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS12</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS13</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS23</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Retrieves the  Membrane + Bending components considered for the stress line curve creation.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> obS11</span></dt>
+   <dd>    Set true to include the S11 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS22</span></dt>
+   <dd>    Set true to include the S22 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS33</span></dt>
+   <dd>    Set true to include the S33 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS12</span></dt>
+   <dd>    Set true to include the S12 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS13</span></dt>
+   <dd>    Set true to include the S13 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS23</span></dt>
+   <dd>    Set true to include the S23 component.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetEndPoint"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetEndPoint</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>odX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>odY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>odZ</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Retrieves the end point.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> odX</span></dt>
+   <dd>    X coordinate.
+  
+ </ dd>
+    <dt><span class='paramitem'> odY</span></dt>
+   <dd>    Y coordinate.
+  
+ </ dd>
+    <dt><span class='paramitem'> odZ</span></dt>
+   <dd>    Z coordinate.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetInplaneCurvatureRadius"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetInplaneCurvatureRadius</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obSpecify</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>odValue</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Retrieves the value for the In-plane radius of curvature.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> obSpecify</span></dt>
+   <dd>    Returns true if any value is specified.
+  
+ </ dd>
+    <dt><span class='paramitem'> odValue</span></dt>
+   <dd>    Returns the radius value. It will return -1 if obSpecify is false.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetMembraneComponentForXYdata"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetMembraneComponentForXYdata</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS11</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS22</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS33</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS12</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS13</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obS23</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Retrieves the components considered for the stress line curve creation.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> obS11</span></dt>
+   <dd>    Set true to include the S11 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS22</span></dt>
+   <dd>    Set true to include the S22 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS33</span></dt>
+   <dd>    Set true to include the S33 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS12</span></dt>
+   <dd>    Set true to include the S12 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS13</span></dt>
+   <dd>    Set true to include the S13 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> obS23</span></dt>
+   <dd>    Set true to include the S23 component.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetOutofplaneCurvatureRadius"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetOutofplaneCurvatureRadius</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>obSpecify</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>odValue</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Retrieves the value for the Out-of-plane radius of curvature.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> obSpecify</span></dt>
+   <dd>    Returns true if any value is specified.
+  
+ </ dd>
+    <dt><span class='paramitem'> odValue</span></dt>
+   <dd>    Returns the radius value. It will return -1 if obSpecify is false.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetStartPoint"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetStartPoint</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>odX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>odY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>odZ</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Retrieves the start point.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> odX</span></dt>
+   <dd>    X coordinate.
+  
+ </ dd>
+    <dt><span class='paramitem'> odY</span></dt>
+   <dd>    Y coordinate.
+  
+ </ dd>
+    <dt><span class='paramitem'> odZ</span></dt>
+   <dd>    Z coordinate.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetAxis"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetAxis</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iSelectedAxis</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibUseLocalAxis</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the axis to specify a local coordinate system, or use the default (global) coordinate system.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSelectedAxis</span></dt>
+   <dd>    Specify the local axis system. It can be either a Model axis, Resulst axis or Sim axis. For Sim axis, the name of the axis should be specified as String.
+    For Model and Result axis, the object should be passed as CATBaseDispatch.
+  
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetBendingComponentForInvariant"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetBendingComponentForInvariant</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS11</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS22</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS33</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS12</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS13</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS23</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Specifies the Bending components to be considered for the invariant computation.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ibS11</span></dt>
+   <dd>    Set true to include the S11 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS22</span></dt>
+   <dd>    Set true to include the S22 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS33</span></dt>
+   <dd>    Set true to include the S33 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS12</span></dt>
+   <dd>    Set true to include the S12 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS13</span></dt>
+   <dd>    Set true to include the S13 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS23</span></dt>
+   <dd>    Set true to include the S23 component.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetBendingComponentForXYdata"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetBendingComponentForXYdata</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS11</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS22</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS33</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS12</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS13</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS23</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Specifies the  Membrane + Bending components to be considered for the stress line curve creation.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ibS11</span></dt>
+   <dd>    Set true to include the S11 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS22</span></dt>
+   <dd>    Set true to include the S22 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS33</span></dt>
+   <dd>    Set true to include the S33 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS12</span></dt>
+   <dd>    Set true to include the S12 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS13</span></dt>
+   <dd>    Set true to include the S13 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS23</span></dt>
+   <dd>    Set true to include the S23 component.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetEndPoint"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetEndPoint</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>idX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>idY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>idZ</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Specifies the end point. It must be used when the SimStressLineSpecificationType is either SimSpecificationPoints or SimSpecificationNodes.
+  The unit must be MKS.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> idX</span></dt>
+   <dd>    X coordinate.
+  
+ </ dd>
+    <dt><span class='paramitem'> idY</span></dt>
+   <dd>    Y coordinate.
+  
+ </ dd>
+    <dt><span class='paramitem'> idZ</span></dt>
+   <dd>    Z coordinate.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetInplaneCurvatureRadius"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetInplaneCurvatureRadius</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibSpecify</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>idValue</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Specifies a value for the In-plane radius of curvature of the midplane of your model at the location of the stress line.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ibSpecify</span></dt>
+   <dd>    Set true to specify a value. If set false, infinite value will be considered, which indicates a lack of curvature.
+    The unit must be MKS.
+  
+ </ dd>
+    <dt><span class='paramitem'> idValue</span></dt>
+   <dd>    Curvature radius value. It will be neglected if ibSpecify is set false.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetMembraneComponentForXYdata"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetMembraneComponentForXYdata</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS11</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS22</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS33</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS12</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS13</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibS23</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Specifies the components to be considered for the stress line curve creation.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ibS11</span></dt>
+   <dd>    Set true to include the S11 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS22</span></dt>
+   <dd>    Set true to include the S22 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS33</span></dt>
+   <dd>    Set true to include the S33 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS12</span></dt>
+   <dd>    Set true to include the S12 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS13</span></dt>
+   <dd>    Set true to include the S13 component.
+  
+ </ dd>
+    <dt><span class='paramitem'> ibS23</span></dt>
+   <dd>    Set true to include the S23 component.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetOutofplaneCurvatureRadius"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetOutofplaneCurvatureRadius</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibSpecify</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>idValue</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Specifies a value for the Out-of-plane radius of curvature of the midplane of your model at the location of the stress line.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ibSpecify</span></dt>
+   <dd>    Set true to specify a value. If set false, the radius value is automatically computed based
+    on the axisymmetric shape and the position of the selected stress line. 
+    The unit must be MKS.
+  
+ </ dd>
+    <dt><span class='paramitem'> idValue</span></dt>
+   <dd>    Curvature radius value. It will be neglected if ibSpecify is set false.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetStartPoint"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetStartPoint</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>idX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>idY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>idZ</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Specifies the start point. It must be used when the SimStressLineSpecificationType is either SimSpecificationPoints or SimSpecificationNodes.
+  The unit must be MKS.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> idX</span></dt>
+   <dd>    X coordinate.
+  
+ </ dd>
+    <dt><span class='paramitem'> idY</span></dt>
+   <dd>    Y coordinate.
+  
+ </ dd>
+    <dt><span class='paramitem'> idZ</span></dt>
+   <dd>    Z coordinate.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetStepAndFrame"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetStepAndFrame</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>icsPersistentStepID</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>inFrameIndex</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>inLoadCaseIndex</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Sets the step, frame and load case information needed for which the Stress Line will be created. If not set, the last Frame of the first Step will be considered.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> icsPersistentStepID</span></dt>
+   <dd>    The persistent ID of the step.
+  
+ </ dd>
+    <dt><span class='paramitem'> inFrameIndex</span></dt>
+   <dd>    The frame index. The index starts from 1.
+  
+ </ dd>
+    <dt><span class='paramitem'> inLoadCaseIndex</span></dt>
+   <dd>    The load case index. The index starts from 1. Set 0 if there is no load case.
+    SimResultsStep::GetLoadCases should be used to retrieve the required LoadCase ID for that step.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="Update"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Update</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>ibShowViewer</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Updates the Stress line and opens the viewer.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ibShowViewer</span></dt>
+   <dd>    Set true to open the XY viewer after update.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

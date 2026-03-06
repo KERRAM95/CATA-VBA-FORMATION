@@ -1,0 +1,204 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Retrieving the 3DShape in the Session</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2011
+'---------------------------------------------------------------------------------------------------------------------------
+'Retrieving the 3DShape in the Session
+'Mission:   This use case fundamentally illustrates retriving of the Product 3DShapes from current session.
+'
+'Steps:     1- Retrieves session service related to Product data
+'           2- Retrieves the List of 3DShape in session
+'           3- Displays the list of each of them in a dialog box - to lets the end user select one
+'           4- Retrieve its Part feature for selected 3DShape
+'           5- Creates the Pad
+'
+'Global variable to gather and display at the end the PLM Component Identification Set attributes
+Dim strBrowsedPLMCompIDAttr As String
+'
+'==========================================================================================================================
+' Main Routine
+'==========================================================================================================================
+ Sub Retrieveing3dShape()
+    'Error handling
+    On Error GoTo ErrorSub
+    
+    strBrowsedPLMCompIDAttr =""
+   
+   '1- Retrieves session service related to Product data
+   Dim oProductSessionService As ProductSessionService
+   Set oProductSessionService = CATIA.GetSessionService(&quot;ProductSessionService&quot;)
+
+  ' 2- Retrieves the List of 3DShape in session
+   Dim oShape3Ds As Shape3Ds
+   Set oShape3Ds = oProductSessionService.Shape3Ds
+   
+   '3- Displays the list of each of them in a dialog box - to lets the end user select one
+   'Navigates through list and list the names of 3dshapes
+    For i = 1 To oShape3Ds.Count
+    
+        'Retrieves the 3dshape from the list
+         Dim oShape3D As Shape3D
+         Set oShape3D = oShape3Ds.Item(i)
+        
+        'Indent the PLM entity appropriately
+         strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + vbTab
+
+        'Prepare the string for displaying purpose
+        strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + oShape3D.Name + &quot; &quot; + vbCrLf
+            
+    'Next 3dshape
+    Next i
+  
+   'Displays the Product 3dshape list in the Message Box
+    MsgBox strBrowsedPLMCompIDAttr
+    
+    'Prompts the user to input the number of 3dshape for create pad
+    Dim iInput3DshapeIndex As Integer
+    iInput3DshapeIndex = InputBox(&quot;Please enter the index number of 3dshape to create pad&quot;, strBrowsedPLMCompIDAttr)
+    
+   Dim oShape3DSelected As Shape3D
+   Set oShape3DSelected = oShape3Ds.Item(iInput3DshapeIndex)
+
+   '4- Retrieve its Part feature for selected 3DShape
+   Dim part1 As Part
+   Set part1 = oShape3DSelected.GetItem(&quot;Part&quot;)
+   
+   MsgBox (&quot;Part Name :&quot;) + part1.Name
+
+  '5- Creates the Pad
+   CreatesPad part1
+
+   'Error Handling
+    GoTo EndSub
+
+ErrorSub:
+        MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+        GoTo EndSub
+EndSub:
+ End Sub
+
+'--------------------------------------------------------------------------------------------
+' 5- Creates Pad
+'    Input  : the Part object
+'--------------------------------------------------------------------------------------------
+'
+Sub CreatesPad(part1)
+   'Error handling
+   On Error GoTo ErrorSub
+    
+
+    '5.1Retrieves the Body from the Part
+    '(Here Part is the MechanicalPart feature)
+    '5.1.1- Retrieves the Bodies from the Part
+    Dim bodies1 As Bodies
+    Set bodies1 = part1.Bodies
+
+    '5.1.2- Retrieves the PartBody from the bodies1
+    Dim body1 As Body
+    Set body1 = bodies1.Item(&quot;PartBody&quot;)
+
+    '5.2. Creates Sketch1
+    '5.2.1 -  Retrieves the Sketches from the Body
+    Dim sketches1 As Sketches
+    Set sketches1 = body1.Sketches
+
+    '5.2.2- Retrieves the OriginElements from the Part
+    Dim originElements1 As OriginElements
+    Set originElements1 = part1.OriginElements
+
+    '5.2.3 - Creates Plane reference
+    Dim reference1 As Reference
+    Set reference1 = originElements1.PlaneYZ
+
+    'Adds plane reference to the Sketch
+    Dim sketch1 As Sketch
+    Set sketch1 = sketches1.Add(reference1)
+
+    '5.2.4 - Creates and sets the Variant data to sketch1Variant
+    Dim arrayOfVariantOfDouble1(8)
+    arrayOfVariantOfDouble1(0) = 0#
+    arrayOfVariantOfDouble1(1) = 0#
+    arrayOfVariantOfDouble1(2) = 0#
+    arrayOfVariantOfDouble1(3) = 0#
+    arrayOfVariantOfDouble1(4) = 1#
+    arrayOfVariantOfDouble1(5) = 0#
+    arrayOfVariantOfDouble1(6) = 0#
+    arrayOfVariantOfDouble1(7) = 0#
+    arrayOfVariantOfDouble1(8) = 1#
+    Set sketch1Variant = sketch1
+    sketch1Variant.SetAbsoluteAxisData arrayOfVariantOfDouble1
+
+    'Sets In work object to Sketch1
+    part1.InWorkObject = sketch1
+
+    'Creates 2Dfactory
+    Dim factory2D1 As Factory2D
+    Set factory2D1 = sketch1.OpenEdition()
+
+    'Retrieves GeometricElements from sketch
+    Dim geometricElements1 As GeometricElements
+    Set geometricElements1 = sketch1.GeometricElements
+
+    'Retrieves 2d axis
+    Dim axis2D1 As Axis2D
+    Set axis2D1 = geometricElements1.Item(&quot;AbsoluteAxis&quot;)
+
+    '5.2.5 Creates closed circle
+    Dim circle2D1 As Circle2D
+    Set circle2D1 = factory2D1.CreateClosedCircle(0#, 0#, 49.360087)
+
+    'Retrieve Origin
+    Dim point2D1 As Point2D
+    Set point2D1 = axis2D1.GetItem(&quot;Origin&quot;)
+
+    circle2D1.CenterPoint = point2D1
+
+    circle2D1.ReportName = 3
+
+    'Closes Sketch editiion
+    sketch1.CloseEdition
+
+    part1.InWorkObject = sketch1
+
+    ' Update part
+    part1.Update
+
+    '5.3.1 Retrieves Shape Factory from Part
+    Dim shapeFactory1 As ShapeFactory
+    Set shapeFactory1 = part1.ShapeFactory
+
+    '5.3.2 Creates Pad with Sketch1 and PlaneXY
+    Dim pad1 As Pad
+    Set pad1 = shapeFactory1.AddNewPad(sketch1, 20#)
+
+    'Update part
+    part1.Update
+    
+   'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Sub</pre>
+
+</body>
+
+</html>

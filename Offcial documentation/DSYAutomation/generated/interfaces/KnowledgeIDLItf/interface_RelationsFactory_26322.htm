@@ -1,0 +1,311 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>KnowledgeIDLItf RelationsFactory (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../KnowledgeIDLItf.htm" href="../KnowledgeIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "KnowledgeIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RelationsFactory"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RelationsFactory<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RelationsFactory_26322','RelationsFactory','0');</script>
+<section id='maindesc'>
+<b><i> Factory for creating relations and relations sets under a specified root.</i></b><br>
+
+
+ <dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('CATIARelsSet','Factory','CATIARelsSet.Factory') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#CreateCheck"><b>CreateCheck</b></a>
+</td><td  id='tdright'>  Creates a check.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateDesignTable"><b>CreateDesignTable</b></a>
+</td><td  id='tdright'>  Creates a vertical design table (DT).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateFormula"><b>CreateFormula</b></a>
+</td><td  id='tdright'>  Creates a formula.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateHorizontalDesignTable"><b>CreateHorizontalDesignTable</b></a>
+</td><td  id='tdright'>  Creates a horizontal design table (DT).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateLaw"><b>CreateLaw</b></a>
+</td><td  id='tdright'>  Creates a law.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateProgram"><b>CreateProgram</b></a>
+</td><td  id='tdright'>  Creates a rule.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateRelationsSet"><b>CreateRelationsSet</b></a>
+</td><td  id='tdright'>  Creates a set of relations.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateSetOfEquations"><b>CreateSetOfEquations</b></a>
+</td><td  id='tdright'>  Creates a set of equations (SoE).
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="CreateCheck"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateCheck</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iComment</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iCheckBody</span>)</span> As <script type="text/javascript"> activateLink('Check','Check')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a check.
+
+ The following example shows how to create a check which checks if a given
+ mass is less than 10kg. The mass should be defined previously:
+<pre>
+ Dim relFact As RelationsFactory
+ Set relFact = ...
+ Dim mass As RealParam
+ Set mass = ...
+ Dim maximummass As Check
+ Set maximummass = relFact.CreateCheck
+                    ("maximummass",
+                     "Ensures that mass is less than 10 kg",
+                     "mass&lt;10kg")
+</pre>
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd> Name of the check 
+ </ dd>
+    <dt><span class='paramitem'> iComment</span></dt>
+   <dd> Comment 
+ </ dd>
+    <dt><span class='paramitem'> iCheckBody</span></dt>
+   <dd> Body of the check 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created check This method requires the KWA license (Knowledge Advisor).
+ </ dd>
+</dl>
+</dd>
+<a id="CreateDesignTable"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateDesignTable</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iComment</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iCopyMode</span>,<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iSheetRepRef</span>)</span> As <script type="text/javascript"> activateLink('DesignTable','DesignTable')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a vertical design table (DT).
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd> Name of the DT 
+ </ dd>
+    <dt><span class='paramitem'> iComment</span></dt>
+   <dd> Comment 
+ </ dd>
+    <dt><span class='paramitem'> iCopyMode</span></dt>
+   <dd> Local copy of values or not 
+ </ dd>
+    <dt><span class='paramitem'> iSheetRepRef</span></dt>
+   <dd> Representation reference where to seek for values. It is a CATIAVPMRepReference. 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created DT
+ </ dd>
+</dl>
+</dd>
+<a id="CreateFormula"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateFormula</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iComment</span>,<script type="text/javascript"> activateLink('Parameter','Parameter')</script> <span class='param'>iOutputParameter</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iFormulaBody</span>)</span> As <script type="text/javascript"> activateLink('Formula','Formula')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a formula.
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd> Name of the formula 
+ </ dd>
+    <dt><span class='paramitem'> iComment</span></dt>
+   <dd> Comment 
+ </ dd>
+    <dt><span class='paramitem'> iOutputParameter</span></dt>
+   <dd> Parameter to be valuated by the formula 
+ </ dd>
+    <dt><span class='paramitem'> iFormulaBody</span></dt>
+   <dd> Body of the formula 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created formula
+ </ dd>
+</dl>
+</dd>
+<a id="CreateHorizontalDesignTable"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateHorizontalDesignTable</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iComment</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iCopyMode</span>,<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iSheetRepRef</span>)</span> As <script type="text/javascript"> activateLink('DesignTable','DesignTable')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a horizontal design table (DT).
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd> Name of the DT 
+ </ dd>
+    <dt><span class='paramitem'> iComment</span></dt>
+   <dd> Comment 
+ </ dd>
+    <dt><span class='paramitem'> iCopyMode</span></dt>
+   <dd> Local copy of values or not 
+ </ dd>
+    <dt><span class='paramitem'> iSheetRepRef</span></dt>
+   <dd> Representation reference where to seek for values. It is a CATIAVPMRepReference. 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created DT
+ </ dd>
+</dl>
+</dd>
+<a id="CreateLaw"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateLaw</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iComment</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iLawBody</span>)</span> As <script type="text/javascript"> activateLink('Law','Law')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a law.
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd> Name of the law 
+ </ dd>
+    <dt><span class='paramitem'> iComment</span></dt>
+   <dd> Comment 
+ </ dd>
+    <dt><span class='paramitem'> iLawBody</span></dt>
+   <dd> Body of the law 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created law
+ </ dd>
+</dl>
+</dd>
+<a id="CreateProgram"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateProgram</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iComment</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iProgramBody</span>)</span> As <script type="text/javascript"> activateLink('Rule','Rule')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a rule.
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd> Name of the rule 
+ </ dd>
+    <dt><span class='paramitem'> iComment</span></dt>
+   <dd> Comment 
+ </ dd>
+    <dt><span class='paramitem'> iProgramBody</span></dt>
+   <dd> Body of the rule 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created rule This method requires the KWA license (Knowledge Advisor).
+ </ dd>
+</dl>
+</dd>
+<a id="CreateRelationsSet"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateRelationsSet</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>)</span> As <script type="text/javascript"> activateLink('RelsSet','RelsSet')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a set of relations.
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd> Name of the set of relations 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created set of relations This method requires the KWA license (Knowledge Advisor).
+ </ dd>
+</dl>
+</dd>
+<a id="CreateSetOfEquations"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateSetOfEquations</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iComment</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iSetOfEquationsBody</span>)</span> As <script type="text/javascript"> activateLink('SetOfEquation','SetOfEquation')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a set of equations (SoE).
+
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd> Name of the SoE 
+ </ dd>
+    <dt><span class='paramitem'> iComment</span></dt>
+   <dd> Comment 
+ </ dd>
+    <dt><span class='paramitem'> iSetOfEquationsBody</span></dt>
+   <dd> Body of the SoE 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created SoE This method requires the KWA license (Knowledge Advisor).
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

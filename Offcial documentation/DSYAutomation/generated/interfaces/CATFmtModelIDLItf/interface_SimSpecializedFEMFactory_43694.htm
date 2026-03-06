@@ -1,0 +1,277 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATFmtModelIDLItf SimSpecializedFEMFactory (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATFmtModelIDLItf.htm" href="../CATFmtModelIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATFmtModelIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimSpecializedFEMFactory"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimSpecializedFEMFactory<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimSpecializedFEMFactory_43694','SimSpecializedFEMFactory','0');</script>
+<section id='maindesc'>
+<b><i> Represents the service to create specialized FEM representations
+ <!-- @sample -->
+ <dl>
+ <dt><strong>Example:</strong></dt>
+ <dd> Given a <code>VPMReference</code> object, you can retrieve a <code>SimSpecializedFEMFactory</code> as following:
+ <pre>
+ Dim MyReference As VPMReference
+ Set MyReference = &#8230
+ Dim MyFactory As SimSpecializedFEMFactory
+ Set MyFactory = MyReference&#46;GetItem("SimSpecializedFEMFactory")
+ </pre>
+ </dd>
+ </dl>
+ </i></b><br>
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('VPMReference','','VPMReference') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Parameters"><b>Parameters</b></a>
+</td><td  id='tdright'>  Gets the factory parameters.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#CreateAxisymmetricFEM"><b>CreateAxisymmetricFEM</b></a>
+</td><td  id='tdright'>  Creates an axisymmetric FEM representation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreatePreloadedFEM"><b>CreatePreloadedFEM</b></a>
+</td><td  id='tdright'>  Creates a preloaded FEM representation.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Parameters"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Parameters</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAFmtParameterSet','CATIAFmtParameterSet')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Gets the factory parameters.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="CreateAxisymmetricFEM"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateAxisymmetricFEM</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAFmtParameterSet','CATIAFmtParameterSet')</script> <span class='param'>iParameters</span>)</span> As <script type="text/javascript"> activateLink('CATIAVPMRepReference','CATIAVPMRepReference')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates an axisymmetric FEM representation.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iParameters</span></dt>
+   <dd> [in]   The factory parameters.<br/>
+   <strong>Legal values</strong>:
+   <table style="">
+     <thead>
+       <tr>
+         <th>Name</th>
+         <th>Type</th>
+         <th>Description</th>
+       <tr>
+     </thead>
+     <tbdody>
+       <tr>
+         <td>AxiOrigin</td>
+         <td>Object</td>
+         <td><strong>Mandatory</strong> : the model origin.</td>
+       </tr>
+       <tr>
+         <td>AxiAxis</td>
+         <td>Object</td>
+         <td><strong>Mandatory</strong> : the model axis.</td>
+       </tr>
+       <tr>
+         <td>AxiPlane</td>
+         <td>Variant</td>
+         <td><strong>Mandatory</strong> : the model plane.</td>
+       </tr>
+     </tbody>
+   </table>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>    The created axisymmetric FEM representation.
+ </ dd>
+</dl>
+</dd>
+<a id="CreatePreloadedFEM"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreatePreloadedFEM</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAFmtParameterSet','CATIAFmtParameterSet')</script> <span class='param'>iParameters</span>)</span> As <script type="text/javascript"> activateLink('CATIAVPMRepReference','CATIAVPMRepReference')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a preloaded FEM representation.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iParameters</span></dt>
+   <dd> [in]   The factory parameters.<br/>
+   <strong>Legal values</strong>:
+   <table>
+     <thead>
+       <tr>
+         <th scope="col"><strong>Name</strong></th>
+         <th scope="col"><strong>Type</strong></th>
+         <th scope="col"><strong>Description</strong></th>
+       <tr>
+     </thead>
+     <tbdody>
+       <tr>
+         <td scope="row">Sequence</td>
+         <td>Object</td>
+         <td><strong>Mandatory</strong> : The original analysis case.</td>
+       </tr>
+       <tr>
+         <td scope="row">Prefix</td>
+         <td>string</td>
+         <td><strong>Optional</strong> : The preloaded FEM prefix name.</td>
+       </tr>
+       <tr>
+         <td scope="row">ModelType</td>
+         <td>Integer</td> 
+         <td><strong>Optional</strong> : the kind of model to generate.
+         <br /><strong>Legal values</strong>:
+         <ul>
+           <li>1 (default) : Creates a standard preloaded FEM.</li>
+           <li>2 : Creates a preloaded FEM using symmetric model generation.</li>
+         </ul> 
+         </td>
+       </tr>
+       <tr>
+         <td scope="row">StepIndex</td>
+         <td>Integer</td> 
+         <td><strong>Optional</strong> : the analysis case step index to import.</td>
+       </tr>
+       <tr>
+         <td scope="row">Increment</td>
+         <td>Integer</td> 
+         <td><strong>Optional</strong> : Specifies the increment number within the step from which to generate the preloaded FEM.
+         <br /><strong>Legal values</strong>:
+         <ul>
+           <li>-1 (default) : Last Increment</li>
+           <li>1 to Increment Count : the increment number</li>
+         </ul>
+         </td>
+       </tr>
+       <tr>
+         <td scope="row">IncludeConnections</td>
+         <td>Integer</td> 
+         <td><strong>Optional</strong> : Copies the connections from the original model along with the preloaded FEM.
+         <br /><strong>Legal values</strong>:
+         <ul>
+           <li>0 (default) : no.</li>
+           <li>1 : yes.</li>
+         </ul>
+         </td>
+       </tr>
+       <tr>
+         <td scope="row">ResetReferenceConfig</td>
+         <td>Integer</td> 
+         <td><strong>Optional</strong> : Uses the deformed mesh as the baseline for downstream simulations.
+         <br /><strong>Legal values</strong>:
+         <ul>
+           <li>0 (default) : no.</li>
+           <li>1 : yes.</li>
+         </ul>
+         </td>
+       </tr>
+       <tr>
+         <td scope="row">ImportMaterialState</td>
+         <td>Integer</td> 
+         <td><strong>Optional</strong> : Uses the material state from the selected step and increment as the initial material state for downstream simulations.
+         <br /><strong>Legal values</strong>:
+         <ul>
+           <li>0 (default) : no.</li>
+           <li>1 : yes.</li>
+         </ul>
+         </td>
+       </tr>
+       <tr>
+         <td scope="row">SegmentAngles</td>
+         <td>Double (list)</td> 
+         <td><strong>Optional</strong> : Defines the segment angles for the mesh segments of the generated model.
+         <br/> Only for symmetric model generation. Size of SegmentAngles list must be equal to size of Divisions and BiasRatio lists. 
+         </td>
+       </tr>
+       <tr>
+         <td scope="row">Divisions</td>
+         <td>Integer (list)</td> 
+         <td><strong>Optional</strong> : The number of divisions for each segment.
+         <br/> Only for symmetric model generation.
+         </td>
+       </tr>
+       <tr>
+         <td scope="row">BiasRatios</td>
+         <td>Double (list)</td> 
+         <td><strong>Optional</strong> : to set a nonuniform distribution of nodes along the segment.
+         <br/> Only for symmetric model generation.
+         </td>
+       </tr>
+       <tr>
+         <td scope="row">AxisOfSpin</td>
+         <td>Integer</td> 
+         <td><strong>Optional</strong> : to defines the axis about which the generated mesh revolves.
+         <br/> Only for symmetric model generation.
+         <br /><strong>Legal values</strong>:
+         <ul>
+           <li>1 : Uses the x-axis.</li>
+           <li>2 : Uses the y-axis.</li>
+           <li>3 : Uses the z-axis.</li>
+           <li>4 (default) : Uses the axis from the upstream axisymmetric FEM.</li>
+         </ul>
+         </td>
+       </tr>
+     </tbody>
+   </table>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>    The created preloaded FEM representation.
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

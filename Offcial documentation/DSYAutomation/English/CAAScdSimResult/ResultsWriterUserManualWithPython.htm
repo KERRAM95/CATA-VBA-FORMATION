@@ -1,0 +1,949 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Writing SIM Results Using Python</title>
+<style type="text/css">
+.auto-style1 {
+	border-style: solid;
+	border-width: 2px;
+}
+.auto-style2 {
+	border: 1px solid #CCCCCC;
+}
+.auto-style3 {
+	border-width: 1px;
+}
+.auto-style4 {
+	color: #990000;
+}
+.auto-style5 {
+	color: #006600;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();" style="width: 1297px">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Writing SIM Results Using Python</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This article explains how to write results 
+					to a SIM file using Python.</p>
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided into the following steps:</p>
+		<ol>
+			<li><a href="#Step1">Import the required modules</a></li>
+			<li><a href="#Step2">Create a new SIM document</a></li>
+			<li><a href="#Step3">Set the unit system</a></li>
+			<li><a href="#Step4">Write the nodes and node set information</a></li>
+			<li><a href="#Step5">Write the elements and element set information</a></li>
+			<li><a href="#Step6">Write the material and section information</a></li>
+			<li><a href="#Step7">Create a new step and frames</a></li>
+			<li><a href="#Step8">Create and initialize a new nodal displacement 
+			field variable</a></li>
+			<li><a href="#Step9">Create a new field type and write data</a></li>
+			<li><a href="#Step10">Create a new history type and write history 
+			data</a></li>
+			<li><a href="#Step11">Save and close the document</a></li>
+			<li><a href="#Step12">Samples</a></li>
+			<li><a href="#Step13">Adding user labels</a></li>
+			<li><a href="#Step14">SIM Predefined string</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol>
+			<li>
+			<p><strong><a name="Step1">Import the required modules</a></strong></p>
+			<p>This step imports the simResultsWriter module, which contains 
+			methods and classes needed for writing results.</p>
+			<pre class="code">... 
+<font color="#3333CC"><b>from</b></font> simResultsWriter <font color="#3333CC"><b>import</b></font> * 
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2">Create a new SIM document</a></strong></p>
+			<p>This step creates a new SIM document. </p>
+			<pre class="code">...
+iDocName = <span class="auto-style5">&#8220;new.sim&#8221;</span>
+writer = SIMResultsWriter()
+writer.Initialize()
+writer.CreateDocument(iDocName)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3">Set the unit system</a></strong></p>
+			<p>This step sets the unit system for the SIM document. </p>
+			<pre class="code">...
+<span class="auto-style4"><em>#Set the unit system</em></span>
+iUnitSystemName = <span class="auto-style5">&quot;FPSUnitSystem&quot;</span>
+iLengthToSIConvFactor = 0.3048
+iMassToSIConvFactor = 0.453592
+iTimeToSIConvFactor = 1.0
+writer.SetUnitSystem(iUnitSystemName, iLengthToSIConvFactor, iMassToSIConvFactor, iTimeToSIConvFactor)
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4">Write the nodes and node set information</a></strong></p>
+			<p>This step writes the nodes, coordinates and node set 
+			information to the SIM document. &nbsp;The user is in charge of the 
+			management of the memory. The user has to allocate the right size 
+			for the table of coordinates for the nodes. </p>
+			<pre class="code">...
+<span class="auto-style4"><em>#Write nodes</em></span>
+nodeIndices = [ 0,1,2,3,4,5,6,7, 8, 9, 10, 11, 12 ]
+coords = [ 0.0, 0.0 , 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, -1.0, 0.0, 0.0, -1.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, -1.0, 0, -1.0]
+
+numOfSpaceDims = 3
+writer.WriteNodes(numOfSpaceDims, nodeIndices, coords)
+
+<span class="auto-style4"><em>#Create node set</em></span>
+allNodes = &quot;ALL NODES&quot;
+setIndices = [ 0,1,2,3,4,5,6,7 ]
+writer.CreatePermutedNodeSet(allNodes, setIndices)
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5">Write the elements and element set 
+				information</a></strong></p>
+			<p>This step writes the element specs, elements, element 
+				connectivity and element set information to the SIM document.</p>
+			<pre class="code">...
+<span class="auto-style4"><em>#Write elements</em></span>
+elmType = <span class="auto-style5">&quot;C3D4&quot;</span>
+elementIndices = [ 0,1,2,3 ]
+numElements = len(elementIndices)
+connectivity = [ 0, 1, 2, 5, 0, 2, 3, 7, 0, 5, 7, 4, 5, 0, 7, 2 ]
+writer.AddElements(elmType, elementIndices, connectivity)
+
+<span class="auto-style4"><em>#Create element set</em></span>
+setIndices = [ 0, 1 ]
+aluminiumElements = <span class="auto-style5">&#8220;ALUMINIUM_ELEMENTS&#8221;</span>
+writer.CreatePermutedElementSet(aluminiumElements, setIndices)
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6">Write the material and section 
+				information</a></strong></p>
+			<p>This step writes the material and section information 
+				to the SIM document <span>and assigns them to the elements sets 
+				created in previous step.</span></p>
+			<pre class="code">...
+<span class="auto-style4"><em>#Create material</em></span>
+materialName = <span class="auto-style5">&quot;ALUMINIUM&quot;</span>
+writer.CreateMaterial(materialName) 
+
+<span class="auto-style4"><em>#Create section</em></span>
+writer.CreateContinuumSection(aluminiumElements, materialName)
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step7">Create a new step and frames</a></strong></p>
+			<p>This step creates a new static step and frames.</p>
+			<pre class="code">...
+frameValues = [ 0.0, 1.0]
+
+stepName = <span class="auto-style5">&quot;Step-1&quot;</span>
+stepType = <span class="auto-style5">&quot;Step_Gen_Static&quot;</span>
+stepDescription = <span class="auto-style5">&quot;The description goes here&quot;</span>
+
+writer.AddStep(stepName, stepType, stepDescription, frameValues)
+...
+				</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step8">Create and initialize a new nodal 
+				displacement field variable</a></strong></p>
+			<p>This step creates and initializes a nodal displacement 
+				field variable. The dimension of the field is also defined here 
+				(in this case, it is a vector with 3 components). </p>
+			<pre class="code">...
+<span class="auto-style4"><em>#Initialize the field variable</em></span>
+dispUniqueNodalField = UniqueNodalField()
+stepName = <span class="auto-style5">&#8220;Step-1&#8221;</span>
+displacementFieldType = <span class="auto-style5">&#8220;U_D&#8221;</span>
+writer.InitFieldResult(stepName, displacementFieldType, dispUniqueNodalField)
+
+<span class="auto-style4"><em>#Define dimensions</em></span>
+vectorComponents = [<span class="auto-style5">&quot;C_1&quot;</span>, <span class="auto-style5">&quot;C_2&quot;</span>, <span class="auto-style5">&quot;C_3&quot;</span>]
+magInvariants = [<span class="auto-style5">&quot;MAGNITUDE&quot;</span>] 
+complexData = False
+doublePrecision = True
+dispUniqueNodalField.DefineDimensions(allNodes, vectorComponents, magInvariants, complexData, doublePrecision)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step9">Create a new field type and write 
+				field data</a></strong></p>
+			<p>This step creates a new displacement field type and 
+				writes the data at the first frame. </p>
+			<pre class="code">...
+<span class="auto-style4"><em>#Write the field data</em></span>
+newField = <span class="auto-style5">&quot;NewDisplacementField01&quot;</span>
+writer.AddFieldType(newField, <span class="auto-style5">&quot;New Displacement Field&quot;</span>, <span class="auto-style5">&quot;VECTOR&quot;</span>, <span class="auto-style5">&quot;L&quot;</span>, <span class="auto-style5">&quot;DISPLACEMENT&quot;</span>)
+
+dispNodalData0 = [ 0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0 ]
+firstFrameIndex = 0
+dispUniqueNodalField.AddFrameData(firstFrameIndex, allNodes, dispNodalData0)
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step10">Create a new history type and write 
+				history data</a></strong></p>
+			<p>This step creates a new displacement history type and 
+				writes the data at all frames.</p>
+			<pre class="code">...
+<span class="auto-style4"><em>#Initialize the history variable</em></span>
+dispHistoryField = UniqueNodalField()
+writer.InitHistoryResult(stepName, displacementFieldType, dispHistoryField)
+vectorComponents = [<span class="auto-style5">&quot;C_1&quot;</span>] 
+invariants = None
+dispHistoryField.DefineDimensions(allNodes, vectorComponents, invariants, complexData, doublePrecision)
+
+<span class="auto-style4"><em>#Write the history data</em></span>
+dispHistoryData = [ 0,0,0,0,0,0,0,0,-1.52,-1.25,-9.43,-5.95,-2.25,1.54,5.27,8.80 ]
+frameIndices = [ 0,1 ]
+dispHistoryField.AddHistoryData(frameIndices, allNodes, dispHistoryData) 
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step11">Close the document</a></strong></p>
+			<p>This step saves and closes the document.</p>
+			<pre class="code">...
+writer.Finalize()
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step12">Samples</a></strong></p>
+			<p>Write results to a SIM document #1:
+				<a href="samples/simResultsWriterSample1.py.txt">simResultsWriterSample1.py</a></p>
+			<p>Write results to a SIM document #2:
+				<a href="samples/simResultsWriterSample2.py.txt">simResultsWriterSample2.py</a></p>
+			<p>Write user node and element labels to a SIM document:
+				<a href="samples/simResultsWriterSample3.py.txt">simResultsWriterSample3.py</a></p>
+			<p>Read and write results to the same SIM document:
+				<a href="samples/resultsReadWriteSample1.py.txt">resultsReadWriteSample1.py</a><br />
+			</p>
+			</li>
+			<li>
+			<p><strong><a name="Step13">Adding user labels</a></strong></p>
+			<p>This step shows how to add user node labels to the SIM document, map the user labels 
+			to the flat labels and how the user labels are used. For a sample 
+			script, please refer to simResultsWriterSample3.py in <a href="#Step12">Samples </a></p>
+			<p>&nbsp;AddUserNodeLabels() is used to add user node labels to the SIM 
+			document:</p>
+			<pre class="code">...
+<span class="auto-style4">#Add the user node labels</span>
+instance1 = <span class="auto-style5">&quot;Part-1-1&quot;</span>
+userNodeLabels = [1001,1002,1003,1004,1005,1006,1007,1008]
+flatNodeIndices = writer.AddUserNodeLabels(iInstanceName = instance1, iUserLabels = userNodeLabels)</pre>
+			<p>A dictionary is constructed to store the map between the user 
+			supplied node labels and the flat labels generated by SIM: </p>
+			<pre class="code">...
+nodeMap = {}
+for i in range(len(userNodeLabels)):
+    nodeMap[instance1 + <span class="auto-style5">&quot;.&quot;</span> + str(userNodeLabels[i])] = flatNodeIndices[i]
+...</pre>
+			<p>When creating the element connectivity or node sets, the above 
+			dictionary is used: </p>
+			<pre class="code">...
+elementSpec = <span class="auto-style5">&quot;C3D4&quot;</span>;
+elementIndices = [1,2]
+connectivity = [nodeMap[instance1+<span class="auto-style5">&quot;.&quot;</span>+str(1005)], nodeMap[instance1+<span class="auto-style5">&quot;.&quot;</span>+str(1006)], nodeMap[instance1+<span class="auto-style5">&quot;.&quot;</span>+str(1008)], ...]
+writer.AddElements(elementSpec, elementIndices, connectivity)
+</pre>
+			<pre class="code">nset1 = <span class="auto-style5">&quot;SampleNodeSet1&quot;</span>
+nset1Indices = [nodeMap[instance1+<span class="auto-style5">&quot;.&quot;</span>+str(1006)], nodeMap[instance1+<span class="auto-style5">&quot;.&quot;</span>+str(1008)]]
+writer.CreatePermutedNodeSet(nset1, nset1Indices)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step14">SIM predefined string</a></strong></p>
+			<P>This section discusses some of the possible predefined SIM strings 
+		that can be used in the API.</P>
+			</li>
+		</ol>
+		<ul>
+			<li>
+			<P><strong>Step Type</strong></P>
+			</li>
+		</ul>
+		<ol>
+			<table style="width: 82%" class="auto-style1">
+				<tr>
+					<td style="width: 154px; height: 27px;"><strong>Predefined String</strong></td>
+					<td style="width: 409px; height: 27px;"><strong>Description</strong></td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">Step_Gen_Anneal</td>
+					<td style="width: 409px" class="auto-style2">*ANNEAL</td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_BaseStateResolution</td>
+					<td style="width: 409px" class="auto-style2">Base state step 
+					for linear pertubation steps when there is no general step 
+					preceeding them</td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_TemperatureDisplacement_SteadyState</td>
+					<td style="width: 409px" class="auto-style2">*COUPLED TEMPERATURE-DISPLACEMENT, 
+					STEADY STATE </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_TemperatureDisplacement_Transient</td>
+					<td style="width: 409px" class="auto-style2">*COUPLED TEMPERATURE-DISPLACEMENT, 
+					TRANSIENT </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_TemperatureElectricalSteadyState</td>
+					<td style="width: 409px" class="auto-style2">*COUPLED THERMAL-ELECTRICAL, STEADY 
+					STATE </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_TemperatureElectrical</td>
+					<td style="width: 409px" class="auto-style2">COUPLED THERMAL-ELECTRICAL </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_DirectCyclic</td>
+					<td style="width: 409px" class="auto-style2">*DIRECT CYCLIC </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_Dynamic</td>
+					<td style="width: 409px" class="auto-style2">*DYNAMIC</td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_Dynamic_Explicit</td>
+					<td style="width: 409px" class="auto-style2">*DYNAMIC, EXPLICIT </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_Dynamic_Explicit_TemperatureDisplacement</td>
+					<td style="width: 409px" class="auto-style2">*DYNAMIC TEMPERATURE-DISPLACEMENT, 
+					EXPLICIT </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_Geostatic</td>
+					<td style="width: 409px" class="auto-style2">*GEOSTATIC </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_HeatTransferSteadyState</td>
+					<td style="width: 409px" class="auto-style2">*HEAT TRANSFER, STEADY STATE </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_HeatTransfer</td>
+					<td style="width: 409px" class="auto-style2">*HEAT TRANSFER</td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_Dynamic_Implicit</td>
+					<td style="width: 409px" class="auto-style2">*DYNAMIC </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_MassDiffusionSteadyState</td>
+					<td style="width: 409px" class="auto-style2">*MASS DIFFUSION, STEADY STATE </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_MassDiffusion</td>
+					<td style="width: 409px" class="auto-style2">*MASS DIFFUSION</td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_SoilsSteadyState</td>
+					<td style="width: 409px" class="auto-style2">*SOILS </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">Step_Gen_Soils</td>
+					<td style="width: 409px" class="auto-style2">*SOILS, CONSOLIDATION </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_StaticRiks</td>
+					<td style="width: 409px" class="auto-style2">*STATIC, RIKS</td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">Step_Gen_Static</td>
+					<td style="width: 409px" class="auto-style2">*STATIC </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_SteadyStateTransport</td>
+					<td style="width: 409px" class="auto-style2">*STEADY STATE TRANSPORT </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_Dynamic_SubspaceProjection</td>
+					<td style="width: 409px" class="auto-style2">*DYNAMIC, SUBSPACE </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">Step_Gen_Visco</td>
+					<td style="width: 409px" class="auto-style2">*VISCO </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Gen_Electromagnetic</td>
+					<td style="width: 409px" class="auto-style2">*ELECTROMAGNETIC </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">Step_Lin_Buckle</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *BUCKLE </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Lin_ComplexFrequency</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *COMPLEX FREQUENCY </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Lin_Frequency</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *FREQUENCY </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Lin_MatrixGeneration</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *MATRIX GENERATE </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Lin_SubstructureGeneration</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *SUBSTRUCTURE GENERATE </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Lin_BeamSectionGeneration</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *BEAM SECTION GENERATE </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Lin_DirectHarmonic</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *STEADY STATE DYNAMICS, DIRECT </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Lin_ModalHarmonic</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *STEADY STATE DYNAMICS </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Lin_ModalRandomResponse</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *RANDOM RESPONSE </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Lin_ModalTransient</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *MODAL DYNAMIC </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Lin_ResponseSpectrum</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *RESPONSE SPECTRUM </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">Step_Lin_Static</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *STATIC </td>
+				</tr>
+				<tr>
+					<td style="width: 154px" class="auto-style2">
+					Step_Lin_Electromagnetic</td>
+					<td style="width: 409px" class="auto-style2">*STEP, LINEAR 
+					and *ELECTROMAGNETIC </td>
+				</tr>
+			</table>
+		</ol>
+		<ul>
+			<li>
+			<P><strong>Component</strong></P>
+			<table style="width: 82%" class="auto-style1">
+				<tr>
+					<td style="width: 156px" class="auto-style3"><strong>Predefined String</strong></td>
+					<td style="width: 409px" class="auto-style3"><strong>Description</strong></td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_SCALAR</td>
+					<td class="auto-style2">Indicates scalar</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_1</td>
+					<td class="auto-style2">Indicates vector first component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_2</td>
+					<td class="auto-style2">Indicates vector second component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_3</td>
+					<td class="auto-style2">Indicates vector third component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_11</td>
+					<td class="auto-style2">Indicates second-order tensor 11-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_22</td>
+					<td class="auto-style2">Indicates second-order tensor 22-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_33</td>
+					<td class="auto-style2">Indicates second-order tensor 33-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_12</td>
+					<td class="auto-style2">Indicates second-order tensor 12-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_13</td>
+					<td class="auto-style2">Indicates second-order tensor 13-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_23</td>
+					<td class="auto-style2">Indicates second-order tensor 23-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_21</td>
+					<td class="auto-style2">Indicates second-order tensor 21-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_31</td>
+					<td class="auto-style2">Indicates second-order tensor 31-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_32</td>
+					<td class="auto-style2">Indicates second-order tensor 32-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px; height: 70px" class="auto-style2">C_12PLUS</td>
+					<td style="height: 70px" class="auto-style2">Indicates second-order tensor 
+					12-component PLUS cross-diagonal 21 component (and, when 
+					used with a symmetric tensor, therefore TWICE the 12-value). 
+					This is used to represent an 'engineering' 12 shear 
+					component.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_13PLUS</td>
+					<td class="auto-style2">Indicates second-order tensor 13-component PLUS 
+					cross-diagonal 31 component.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_23PLUS</td>
+					<td class="auto-style2">Indicates second-order tensor 23-component PLUS 
+					cross-diagonal component.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_SORT_PRIN1</td>
+					<td class="auto-style2">Indicates second-order tensor principal value 1, as 
+					sorted with principal values 1,2,3 ascending.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_SORT_PRIN2</td>
+					<td class="auto-style2">Indicates second-order tensor principal value 2, as 
+					sorted with principal values 1,2,3 ascending.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_SORT_PRIN3</td>
+					<td class="auto-style2">Indicates second-order tensor principal value 3, as 
+					sorted with principal values 1,2,3 ascending.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_1111</td>
+					<td class="auto-style2">Indicates fourth-order tensor 1111-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_1122</td>
+					<td class="auto-style2">Indicates fourth-order tensor 1122-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_1112</td>
+					<td class="auto-style2">Indicates fourth-order tensor 1112-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_2211</td>
+					<td class="auto-style2">Indicates fourth-order tensor 2211-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_2222</td>
+					<td class="auto-style2">Indicates fourth-order tensor 2222-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_2212</td>
+					<td class="auto-style2">Indicates fourth-order tensor 2212-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_1211</td>
+					<td class="auto-style2">Indicates fourth-order tensor 1211-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_1222</td>
+					<td class="auto-style2">Indicates fourth-order tensor 1222-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_1212</td>
+					<td class="auto-style2">Indicates fourth-order tensor 1212-component</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_ROT1</td>
+					<td class="auto-style2">Indicates the 1-component of a finite rotation vector, 
+					representing an orthogonal second-order tensor.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_ROT2</td>
+					<td class="auto-style2">Indicates the 2-component of a finite rotation vector, 
+					representing an orthogonal second-order tensor.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_ROT3</td>
+					<td class="auto-style2">Indicates the 3-component of a finite rotation vector, 
+					representing an orthogonal second-order tensor.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_PRIN1</td>
+					<td class="auto-style2">Indicates second-order tensor principal value 1. Differs 
+					from C_SORT_PRIN1 in that the 1 here reflects a basis vector 
+					1, not the lowest of three tensor eigenvalues. For possible 
+					future use in conjunction with a quaternion to represent a 
+					symmetric tensor; or with two quaternions to represent a 
+					general tensor.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_PRIN2</td>
+					<td class="auto-style2">See C_PRIN1</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_PRIN3</td>
+					<td class="auto-style2">See C_PRIN1</td>
+				</tr>
+				<tr>
+					<td style="width: 156px; height: 72px;" class="auto-style2">C_QUAT0</td>
+					<td class="auto-style2" style="height: 72px">Indicates quaternion component of orthogonal two-tensor. Note: rotation 
+					in three dimensions has all four quaternion components 
+					possibly non-zero. A rotation in only two dimensions 
+					involves nonzero components only for C_QUAT0 and C_QUAT3.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_QUAT1</td>
+					<td class="auto-style2">Indicates quaternion component of orthogonal two-tensor; 
+					component 1 of vector q.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_QUAT2</td>
+					<td class="auto-style2">Indicates quaternion component of orthogonal two-tensor; 
+					component 2 of vector q.</td>
+				</tr>
+				<tr>
+					<td style="width: 156px" class="auto-style2">C_QUAT3</td>
+					<td class="auto-style2">Indicates quaternion component of orthogonal two-tensor; 
+					component 3 of vector q.</td>
+				</tr>
+			</table>
+			</li>
+		</ul>
+	</td>
+	</tr>
+</table>	
+
+
+<ul>
+	<li><strong>Invariant</strong><table style="width: 82%" class="auto-style1">
+		<tr>
+			<td style="width: 187px" class="auto-style2"><strong>Predefined String</strong></td>
+			<td style="width: 409px" class="auto-style2"><strong>Description</strong></td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">INV1</td>
+			<td class="auto-style2">The 'first invariant' of a second order tensor. Applied to a 
+			strain, this gives volumetric strain</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">INV3</td>
+			<td class="auto-style2">The 'third invariant' of a second order tensor.</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">PRESSURE_LIKE</td>
+			<td class="auto-style2">This is defined as minus one third INV1. Applied to stress 
+			tensor, it produces pressure.</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">MISES_LIKE</td>
+			<td class="auto-style2">The function which produces the Mises stress from a second-order 
+			stress tensor.</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">TRESCA_LIKE</td>
+			<td class="auto-style2">The function which produces the Tresca stress from a 
+			second-order stress tensor.</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">MAGNITUDE</td>
+			<td class="auto-style2">The function which produces the magnitude of a vector.</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">MAX_PRINCIPAL</td>
+			<td class="auto-style2">The function which produces the maximum principal value of a 
+			second-order tensor.</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">MID_PRINCIPAL</td>
+			<td class="auto-style2">The function which produces the 'mid' principal value of a 
+			second-order tensor.</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">MIN_PRINCIPAL</td>
+			<td class="auto-style2">The function which produces the minimum principal value of a 
+			second-order tensor.</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">MAX_INPLANE_PRINCIPAL</td>
+			<td class="auto-style2">The function which produces the maximum in-plane principal value 
+			of a second-order tensor.</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">MIN_INPLANE_PRINCIPAL</td>
+			<td class="auto-style2">The function which produces the minimum in-plane principal value 
+			of a second-order tensor.</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">OUTOFPLANE_PRINCIPAL</td>
+			<td class="auto-style2">The function which produces the out of plane principal value 
+			of a second-order tensor.</td>
+		</tr>
+	</table>
+	</li>
+</ul>
+<ul>
+	<li><strong>Output Position</strong><table style="width: 82%" class="auto-style1">
+		<tr>
+			<td style="width: 187px" class="auto-style2"><strong>Predefined String</strong></td>
+			<td style="width: 409px" class="auto-style2"><strong>Description</strong></td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">UNIQUE_NODAL</td>
+			<td style="width: 409px" class="auto-style2">UNIQUE NODAL</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">ELEMENT_CENTROID</td>
+			<td style="width: 409px" class="auto-style2">ELEMENT CENTROID</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">WHOLE_ELEMENT</td>
+			<td style="width: 409px" class="auto-style2">WHOLE ELEMENT</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">INTEGRATION_POINT</td>
+			<td style="width: 409px" class="auto-style2">INTEGRATION POINT</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">ELEMENT_NODAL</td>
+			<td style="width: 409px" class="auto-style2">ELEMENT NODAL</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">SURFACE_NODAL</td>
+			<td style="width: 409px" class="auto-style2">SURFACE NODAL</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">WHOLE_REGION</td>
+			<td style="width: 409px" class="auto-style2">WHOLE REGION</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">WHOLE_MODEL</td>
+			<td style="width: 409px" class="auto-style2">WHOLE MODEL</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">GENERIC_POSITION</td>
+			<td style="width: 409px" class="auto-style2">GENERIC POSITION</td>
+		</tr>
+	</table>
+	</li>
+</ul>
+<ul>
+	<li><strong>Element type </strong>(please refer to Abaqus Element 
+	Guide for the complete list)<table style="width: 82%" class="auto-style1">
+		<tr>
+			<td style="width: 187px" class="auto-style2"><strong>Predefined String</strong></td>
+			<td style="width: 409px" class="auto-style2"><strong>Description</strong></td>
+		</tr>
+		<tr>
+			<td style="width: 187px; height: 26px;" class="auto-style2">C3D8</td>
+			<td style="width: 409px; height: 26px;" class="auto-style2">C3D8</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">C3D4</td>
+			<td style="width: 409px" class="auto-style2">C3D4</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">B31</td>
+			<td style="width: 409px" class="auto-style2">B31</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">S4</td>
+			<td style="width: 409px" class="auto-style2">S4</td>
+		</tr>
+		<tr>
+			<td style="width: 187px" class="auto-style2">...</td>
+			<td style="width: 409px" class="auto-style2">...</td>
+		</tr>
+	</table>
+	</li>
+</ul>
+<ul>
+	<li><strong>Physical dimension</strong><br />
+	Physical dimension describes the dimensions of a quantity in terms of fundamental quantities. This is used for units conversion. The following are the rules to define the physical dimension string:<br />
+	1. Write its formula in the base physical dimensions, representing the base 
+	physical dimensions (M..L..T..E..K..A..C) through their own symbol names.<br />
+	2. Omit any exponents of value 1 in the formula; include no base dimensions 
+	which have an exponent 0 in the formula.<br />
+	3. Arrange the formula so the base physical dimensions appear in the order 
+	they appear below, that is, M..L..T..E..K..A..C.<br />
+	4. Write down what you see from left to right, each base symbol followed 
+	immediately by what we'll call the symbol form of its exponent:<br />
+	5. To put an exponent in symbol form, as a fraction it must be normalized; 
+	represent minus in the numerator with a prefix 0.)<table style="width: 82%" class="auto-style1">
+		<tr>
+			<td style="width: 44px" class="auto-style2"><strong>Predefined String</strong></td>
+			<td style="width: 409px" class="auto-style2"><strong>Description</strong></td>
+		</tr>
+		<tr>
+			<td class="auto-style2">L </td>
+			<td class="auto-style2">Length</td>
+		</tr>
+		<tr>
+			<td class="auto-style2">M</td>
+			<td class="auto-style2">Mass</td>
+		</tr>
+		<tr>
+			<td class="auto-style2">T</td>
+			<td class="auto-style2">Time</td>
+		</tr>
+		<tr>
+			<td class="auto-style2">E</td>
+			<td class="auto-style2">Electric Current</td>
+		</tr>
+		<tr>
+			<td class="auto-style2">K</td>
+			<td class="auto-style2">Temperature</td>
+		</tr>
+		<tr>
+			<td class="auto-style2">A</td>
+			<td class="auto-style2">Amount of substance</td>
+		</tr>
+		<tr>
+			<td style="height: 28px;" class="auto-style2">C</td>
+			<td style="height: 28px;" class="auto-style2">Luminous Intensity</td>
+		</tr>
+		<tr>
+			<td class="auto-style2">MLT02</td>
+			<td class="auto-style2">Mass*Length/Time^2; physical dimension for 
+			stress</td>
+		</tr>
+		<tr>
+			<td class="auto-style2">ML2T02K01A01 </td>
+			<td class="auto-style2">Mass*Length^2/(Time^2*Temperature*Amount of 
+			substance)</td>
+		</tr>
+		<tr>
+			<td class="auto-style2" style="height: 28px">M1_2L01_2T01 </td>
+			<td class="auto-style2" style="height: 28px">Mass^0.5/(Length^0.5*Time)</td>
+		</tr>
+		<tr>
+			<td class="auto-style2">...</td>
+			<td class="auto-style2">...</td>
+		</tr>
+	</table>
+	</li>
+</ul><ul>
+	<li><strong>Field type</strong><br />
+	Use GetFieldTypeFromOutputVariable() to get a field type from Abaqus output 
+	variable (refer to Abaqus Output Guide for the complete list of 
+	Abaqus output variables). For user defined field types, use either 
+	AddFieldType() or AddModifiedFieldType() to create new field types.<table style="width: 82%" class="auto-style1">
+		<tr>
+			<td style="width: 154px" class="auto-style2"><strong>Predefined String</strong></td>
+			<td style="width: 409px" class="auto-style2"><strong>Description</strong></td>
+		</tr>
+		<tr>
+			<td style="width: 154px; height: 26px;" class="auto-style2">U_D</td>
+			<td style="width: 409px; height: 26px;" class="auto-style2">
+			Translational displacement</td>
+		</tr>
+		<tr>
+			<td style="width: 154px" class="auto-style2">STRAIN_ENERGY</td>
+			<td style="width: 409px" class="auto-style2">Strain energy</td>
+		</tr>
+		<tr>
+			<td style="width: 154px" class="auto-style2">S0</td>
+			<td style="width: 409px" class="auto-style2">Stress</td>
+		</tr>
+		<tr>
+			<td style="width: 154px" class="auto-style2">...</td>
+			<td style="width: 409px" class="auto-style2">...</td>
+		</tr>
+	</table>
+	</li>
+</ul>
+
+<p>&nbsp;</p>
+
+</body>
+
+</html>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>

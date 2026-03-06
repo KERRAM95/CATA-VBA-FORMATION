@@ -1,0 +1,879 @@
+<html><head>             
+<meta http-equiv="Content-Language" content="en-us">             
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">             
+<meta name="Generator" content="CppGene v1.1">             
+<meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">             
+<meta name="topictype" content="Qr" />             
+<meta name="devlang" content="cpp" />             
+ <link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+ <script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+ <script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+ <script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>           
+<title> SIM Results Reader (python)</title>            
+</head>            
+<body>
+<br>            
+<hr> <h2>SIMResultsReader</h2> <br>
+<dd>     This class is intended to make it as easy as possible to read results from SIM. </dd>
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>       Creates a new instance of SIMResultsReader</dd>
+
+ <dt> o <a href="#Finalize"><b>Finalize</b></a></dt><dd>   Delete all the objects created.
+ </dd></dl>
+ <dt> o <a href="#GetBaseStateStep"><b>GetBaseStateStep</b></a></dt><dd>   Gets the base state step name.
+ </dd></dl>
+ <dt> o <a href="#GetElementFaceConnectivity"><b>GetElementFaceConnectivity</b></a></dt><dd>   Gets the face connectivity of the given elements at the given face.
+ </dd></dl>
+ <dt> o <a href="#GetElementIndices"><b>GetElementIndices</b></a></dt><dd>   Gets the element indices for the specified element spec.
+ </dd></dl>
+ <dt> o <a href="#GetElementSetMembers"><b>GetElementSetMembers</b></a></dt><dd>   Gets the element indices in the specified element set.
+ </dd></dl>
+ <dt> o <a href="#GetElementSetUserName"><b>GetElementSetUserName</b></a></dt><dd>   Gets the user element set name.
+ </dd></dl>
+ <dt> o <a href="#GetElementSets"><b>GetElementSets</b></a></dt><dd>   Gets the set of element sets in the model.
+ </dd></dl>
+ <dt> o <a href="#GetElementSpec"><b>GetElementSpec</b></a></dt><dd>   Gets the element spec of the given element.
+ </dd></dl>
+ <dt> o <a href="#GetElementSpecs"><b>GetElementSpecs</b></a></dt><dd>   Gets the vector of element specs.
+ </dd></dl>
+ <dt> o <a href="#GetElementTopology"><b>GetElementTopology</b></a></dt><dd>   Gets the element topology of the given element.
+ </dd></dl>
+ <dt> o <a href="#GetElementUserLabel"><b>GetElementUserLabel</b></a></dt><dd>   Gets the user label for an element. Returns true if user label found.
+ </dd></dl>
+ <dt> o <a href="#GetElementsConnectivity"><b>GetElementsConnectivity</b></a></dt><dd>   Gets the element connectivity for the specified element indices. The element indices must belong to the same element spec.
+ </dd></dl>
+ <dt> o <a href="#GetElementsInSection"><b>GetElementsInSection</b></a></dt><dd>   Gets the elements in the given section.. If iElemIndices is specified, gets the elements that belong to the given section from this list of elements .
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultsInventory"><b>GetFieldResultsInventory</b></a></dt><dd>   Gets all the field info objects describing the field types and output locations for the field results in the step.
+ </dd></dl>
+ <dt> o <a href="#GetFrames"><b>GetFrames</b></a></dt><dd>   Gets the frame indices and the frame values for the specified step.
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultsInventory"><b>GetHistoryResultsInventory</b></a></dt><dd>   Gets all the field info objects describing the field types and output locations for the history results in the step.
+ </dd></dl>
+ <dt> o <a href="#GetLoadCases"><b>GetLoadCases</b></a></dt><dd>   Gets the map of load cases in the model.
+ </dd></dl>
+ <dt> o <a href="#GetNodeCoordinates"><b>GetNodeCoordinates</b></a></dt><dd>   Gets the nodal coordinates.
+ </dd></dl>
+ <dt> o <a href="#GetNodeIndices"><b>GetNodeIndices</b></a></dt><dd>   Gets the node indices.
+ </dd></dl>
+ <dt> o <a href="#GetNodeSetMembers"><b>GetNodeSetMembers</b></a></dt><dd>   Gets the node indices in the specified node set.
+ </dd></dl>
+ <dt> o <a href="#GetNodeSetUserName"><b>GetNodeSetUserName</b></a></dt><dd>   Gets the user node set name.
+ </dd></dl>
+ <dt> o <a href="#GetNodeSets"><b>GetNodeSets</b></a></dt><dd>   Gets the set of node sets in the model.
+ </dd></dl>
+ <dt> o <a href="#GetNodeUserLabel"><b>GetNodeUserLabel</b></a></dt><dd>   Gets the user label for a node. Returns true if user label found.
+ </dd></dl>
+ <dt> o <a href="#GetSectionNames"><b>GetSectionNames</b></a></dt><dd>   Gets the name of the sections present in the model.
+  </dd></dl>
+ <dt> o <a href="#GetSectionType"><b>GetSectionType</b></a></dt><dd>   Gets the section type for the specified section.
+  </dd></dl>
+ <dt> o <a href="#GetShellSectionProperties"><b>GetShellSectionProperties</b></a></dt><dd>   Gets the shell section properties for the given section.
+  </dd></dl>
+ <dt> o <a href="#GetSpaceDimensions"><b>GetSpaceDimensions</b></a></dt><dd>   Returns the space dimensions of the main model in the SIM document.
+ </dd></dl>
+ <dt> o <a href="#GetStepSequence"><b>GetStepSequence</b></a></dt><dd>   Gets the sequence of steps.
+ </dd></dl>
+ <dt> o <a href="#GetStepTypeAndDescription"><b>GetStepTypeAndDescription</b></a></dt><dd>   Gets the step type and the step description for the specified step.
+ </dd></dl>
+ <dt> o <a href="#GetSurfaceElementsAtFace"><b>GetSurfaceElementsAtFace</b></a></dt><dd>   Gets the elements at the given face in the surface.
+ </dd></dl>
+ <dt> o <a href="#GetSurfaceFaces"><b>GetSurfaceFaces</b></a></dt><dd>   Gets the faces in the given surface.
+ </dd></dl>
+ <dt> o <a href="#GetSurfaceNames"><b>GetSurfaceNames</b></a></dt><dd>   Gets the name of surfaces in the model.
+ </dd></dl>
+ <dt> o <a href="#GetUnitSystem"><b>GetUnitSystem</b></a></dt><dd>   Returns the unit system name of the SIM document and the conversion factors.
+ </dd></dl>
+ <dt> o <a href="#GroupElementsBySections"><b>GroupElementsBySections</b></a></dt><dd>   Groups the elements based on its section.
+ </dd></dl>
+ <dt> o <a href="#HasExternalElementSets"><b>HasExternalElementSets</b></a></dt><dd>   Checks if external element sets exists in the sim file. Returns true if external element sets are found.
+ </dd></dl>
+ <dt> o <a href="#HasExternalNodeSets"><b>HasExternalNodeSets</b></a></dt><dd>   Checks if external node sets exists in the sim file. Returns true if external node sets are found.
+ </dd></dl>
+ <dt> o <a href="#HasInternalElementSets"><b>HasInternalElementSets</b></a></dt><dd>   Checks if internal element sets exists in the sim file. Returns true if internal element sets are found.
+ </dd></dl>
+ <dt> o <a href="#HasInternalNodeSets"><b>HasInternalNodeSets</b></a></dt><dd>   Checks if internal node sets exists in the sim file. Returns true if internal node sets are found.
+ </dd></dl>
+ <dt> o <a href="#InitFieldResult"><b>InitFieldResult</b></a></dt><dd>   Initializes a field for reading field result.
+ </dd></dl>
+ <dt> o <a href="#InitHistoryResult"><b>InitHistoryResult</b></a></dt><dd>   Initializes a field for reading history result.
+ </dd></dl>
+ <dt> o <a href="#LoadDocument"><b>LoadDocument</b></a></dt><dd>   Loads an existing SIM document.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd><dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt>None</dt></dl></dd></dl></dl><a name="Finalize"></a><dt> o <b>Finalize</b></dt><dl> <dd>Delete all the objects created.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt>None</dt></dl></dd></dl></dl><a name="GetBaseStateStep"></a><dt> o <b>GetBaseStateStep</b></dt><dl> <dd>Gets the base state step name.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A string specifying the base state step name.
+        </tt> </dt></dl></dd></dl></dl><a name="GetElementFaceConnectivity"></a><dt> o <b>GetElementFaceConnectivity</b></dt><dl> <dd>Gets the face connectivity of the given elements at the given face.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElementIndices
+        </tt> </dt><dd>[in/required] The element indices.
+        </dd><dt> <tt> iFaceIndex
+        </tt> </dt><dd>[in/required] The face index.
+        </dd><dt><tt> [out] The face connectivity of the given elements at the given face.
+        </tt> </dt></dl></dd></dl></dl><a name="GetElementIndices"></a><dt> o <b>GetElementIndices</b></dt><dl> <dd>Gets the element indices for the specified element spec.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElementSpec
+        </tt> </dt><dd>[in/required] A string specifying the element spec.
+        </dd><dt><tt> [out] A sequence of integers specifying the element indices.
+        </tt> </dt></dl></dd></dl></dl><a name="GetElementSetMembers"></a><dt> o <b>GetElementSetMembers</b></dt><dl> <dd>Gets the element indices in the specified element set.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElementSet
+        </tt> </dt><dd>[in/required] A string specifying the element set name.
+        </dd><dt><tt> [out] A sequence of integers specifying the elements in the element set; if the set is unsorted, the members will be unsorted.
+        </tt> </dt></dl></dd></dl></dl><a name="GetElementSetUserName"></a><dt> o <b>GetElementSetUserName</b></dt><dl> <dd>Gets the user element set name.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElementSet
+        </tt> </dt><dd>[in/required] A string specifying the flat element set name.
+        </dd><dt><tt> [out] A sequence of a strings specifying the occurence name and the user element set name.
+        </tt> </dt></dl></dd></dl></dl><a name="GetElementSets"></a><dt> o <b>GetElementSets</b></dt><dl> <dd>Gets the set of element sets in the model.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt>includeExternalSets
+        </tt> </dt><dd>[in/optional] A boolean specifying if external sets should be included or not.
+        </dd><dt><tt>includeInternalSets
+        </tt> </dt><dd>[in/optional] A boolean specifying if internal sets should be included or not.
+        </dd><dt><tt> [out] A sequence of strings specifying the element sets in the model.
+        </tt> </dt></dl></dd></dl></dl><a name="GetElementSpec"></a><dt> o <b>GetElementSpec</b></dt><dl> <dd>Gets the element spec of the given element.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElementIndex
+        </tt> </dt><dd>[in/required] The element index.
+        </dd><dt><tt> [out] The element spec of the given element.
+        </tt> </dt></dl></dd></dl></dl><a name="GetElementSpecs"></a><dt> o <b>GetElementSpecs</b></dt><dl> <dd>Gets the vector of element specs.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A sequence of strings specifying the element specs in the model.
+        </tt> </dt></dl></dd></dl></dl><a name="GetElementTopology"></a><dt> o <b>GetElementTopology</b></dt><dl> <dd>Gets the element topology of the given element.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElementIndex
+        </tt> </dt><dd>[in/required] The element index.
+        </dd><dt><tt> [out] The element topology of the given element.
+        </tt> </dt></dl></dd></dl></dl><a name="GetElementUserLabel"></a><dt> o <b>GetElementUserLabel</b></dt><dl> <dd>Gets the user label for an element. Returns true if user label found.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElementIndice
+        </tt> </dt><dd>[in/required] An integer specifying the element for which user label is required.
+        </dd><dt><tt> [out] A tuple of the string specifying the occurence name and the integer specifying the element user label.
+        </tt> </dt></dl></dd></dl></dl><a name="GetElementsConnectivity"></a><dt> o <b>GetElementsConnectivity</b></dt><dl> <dd>Gets the element connectivity for the specified element indices. The element indices must belong to the same element spec.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElemIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the element indices.
+        </dd><dt><tt> [out] A sequence of integers specifying the element connectivity.
+        </tt> </dt></dl></dd></dl></dl><a name="GetElementsInSection"></a><dt> o <b>GetElementsInSection</b></dt><dl> <dd>Gets the elements in the given section.. If iElemIndices is specified, gets the elements that belong to the given section from this list of elements .
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iSectionName
+        </tt> </dt><dd>[in/required] The name of the section.
+        </dd><dt><tt>iElementIndices
+        </tt> </dt><dd>[in/optional] The list of element indices.
+        </dd><dt><tt> [out] The elements in the section.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultsInventory"></a><dt> o <b>GetFieldResultsInventory</b></dt><dl> <dd>Gets all the field info objects describing the field types and output locations for the field results in the step.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name.
+        </dd><dt><tt> [out] A sequence of FieldInfo objects specifying the field info sequence.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFrames"></a><dt> o <b>GetFrames</b></dt><dl> <dd>Gets the frame indices and the frame values for the specified step.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name.
+        </dd><dt><tt> [out] A sequence of sequence of integers specifying the frame indices and a sequence of doubles specifying the frame values.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultsInventory"></a><dt> o <b>GetHistoryResultsInventory</b></dt><dl> <dd>Gets all the field info objects describing the field types and output locations for the history results in the step.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name.
+        </dd><dt><tt> [out] A sequence of FieldInfo objects specifying the field info sequence.
+        </tt> </dt></dl></dd></dl></dl><a name="GetLoadCases"></a><dt> o <b>GetLoadCases</b></dt><dl> <dd>Gets the map of load cases in the model.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A dictionary with the load case index as keys and the load case name as values. 
+        </tt> </dt></dl></dd></dl></dl><a name="GetNodeCoordinates"></a><dt> o <b>GetNodeCoordinates</b></dt><dl> <dd>Gets the nodal coordinates.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iNodeIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the node indices.
+        </dd><dt><tt> [out] A sequence of doubles specifying the nodal coordinates.
+        </tt> </dt></dl></dd></dl></dl><a name="GetNodeIndices"></a><dt> o <b>GetNodeIndices</b></dt><dl> <dd>Gets the node indices.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A sequence of integers specifying the node indices.
+        </tt> </dt></dl></dd></dl></dl><a name="GetNodeSetMembers"></a><dt> o <b>GetNodeSetMembers</b></dt><dl> <dd>Gets the node indices in the specified node set.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iNodeSet
+        </tt> </dt><dd>[in/required] A string specifying the node set name.
+        </dd><dt><tt> [out] A sequence of integers specifying the nodes in the node set; if the set is unsorted, the members will be unsorted.
+        </tt> </dt></dl></dd></dl></dl><a name="GetNodeSetUserName"></a><dt> o <b>GetNodeSetUserName</b></dt><dl> <dd>Gets the user node set name.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iNodeSet
+        </tt> </dt><dd>[in/required] A string specifying the flat node set name.
+        </dd><dt><tt> [out] A sequence of a strings specifying the occurence name and the user node set name.
+        </tt> </dt></dl></dd></dl></dl><a name="GetNodeSets"></a><dt> o <b>GetNodeSets</b></dt><dl> <dd>Gets the set of node sets in the model.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt>includeExternalSets
+        </tt> </dt><dd>[in/optional] A boolean specifying if external sets should be included or not.
+        </dd><dt><tt>includeInternalSets
+        </tt> </dt><dd>[in/optional] A boolean specifying if internal sets should be included or not.
+        </dd><dt><tt> [out] A sequence of strings specifying the node sets in the model.
+        </tt> </dt></dl></dd></dl></dl><a name="GetNodeUserLabel"></a><dt> o <b>GetNodeUserLabel</b></dt><dl> <dd>Gets the user label for a node. Returns true if user label found.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iNodeIndex
+        </tt> </dt><dd>[in/required] An integer specifying the node number for which user label is required.
+        </dd><dt><tt> [out] A sequence of a string specifying the occurence name and an integer specifying the node user label
+        </tt> </dt></dl></dd></dl></dl><a name="GetSectionNames"></a><dt> o <b>GetSectionNames</b></dt><dl> <dd>Gets the name of the sections present in the model.
+  <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] The name of the sections in the model.
+        </tt> </dt></dl></dd></dl></dl><a name="GetSectionType"></a><dt> o <b>GetSectionType</b></dt><dl> <dd>Gets the section type for the specified section.
+  <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iSectionName
+    	</tt> </dt><dd>[in/required] The name of the section.
+     </dd><dt> <tt> iSectionType
+    	</tt> </dt><dd>[in/required] The type of the section.
+        </dd></dl></dd></dl></dl><a name="GetShellSectionProperties"></a><dt> o <b>GetShellSectionProperties</b></dt><dl> <dd>Gets the shell section properties for the given section.
+  <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iSectionName
+    	</tt> </dt><dd>[in/required] The name of the section.
+        </dd><dt><tt> [out] A list containing the section integration rule, number of layers in the section, angle, thickness, integration points in each layer.
+     *
+        </tt> </dt></dl></dd></dl></dl><a name="GetSpaceDimensions"></a><dt> o <b>GetSpaceDimensions</b></dt><dl> <dd>Returns the space dimensions of the main model in the SIM document.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt>None</dt></dl></dd></dl></dl><a name="GetStepSequence"></a><dt> o <b>GetStepSequence</b></dt><dl> <dd>Gets the sequence of steps.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A sequence of strings specifying the steps in the model.
+        </tt> </dt></dl></dd></dl></dl><a name="GetStepTypeAndDescription"></a><dt> o <b>GetStepTypeAndDescription</b></dt><dl> <dd>Gets the step type and the step description for the specified step.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name.
+        </dd><dt><tt> [out] A sequence of a string specifying the step type and a string specifying the step description.
+        </tt> </dt></dl></dd></dl></dl><a name="GetSurfaceElementsAtFace"></a><dt> o <b>GetSurfaceElementsAtFace</b></dt><dl> <dd>Gets the elements at the given face in the surface.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iSurfaceName
+	</tt> </dt><dd>[in/required] A string specifying the surface name.
+ </dd><dt> <tt> iFaceIndex
+	</tt> </dt><dd>[in/required] An integer specifying the face index.
+ </dd><dt><tt> [out] A sequence of integers specifying the elements at the face in the surface..
+        </tt> </dt></dl></dd></dl></dl><a name="GetSurfaceFaces"></a><dt> o <b>GetSurfaceFaces</b></dt><dl> <dd>Gets the faces in the given surface.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iSurfaceName
+	</tt> </dt><dd>[in/required] A string specifying the surface name.
+ </dd><dt><tt> [out] A sequence of integers specifying the faces in the surface.
+        </tt> </dt></dl></dd></dl></dl><a name="GetSurfaceNames"></a><dt> o <b>GetSurfaceNames</b></dt><dl> <dd>Gets the name of surfaces in the model.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A sequence of string specifying the surfaces in the model.
+        </tt> </dt></dl></dd></dl></dl><a name="GetUnitSystem"></a><dt> o <b>GetUnitSystem</b></dt><dl> <dd>Returns the unit system name of the SIM document and the conversion factors.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] An instance of the UnitSystem class object.
+        </tt> </dt></dl></dd></dl></dl><a name="GroupElementsBySections"></a><dt> o <b>GroupElementsBySections</b></dt><dl> <dd>Groups the elements based on its section.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iElemIndices
+        </tt> </dt><dd>[in/required] The element indices.
+        </dd><dt> <tt> sectionElemIndicesMap
+        </tt> </dt><dd>[in/required] The elements from the input set of elements grouped based on their sections.
+        </dd></dl></dd></dl></dl><a name="HasExternalElementSets"></a><dt> o <b>HasExternalElementSets</b></dt><dl> <dd>Checks if external element sets exists in the sim file. Returns true if external element sets are found.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] True if external element sets exists in the sim file.
+        </tt> </dt></dl></dd></dl></dl><a name="HasExternalNodeSets"></a><dt> o <b>HasExternalNodeSets</b></dt><dl> <dd>Checks if external node sets exists in the sim file. Returns true if external node sets are found.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] True if external node sets exists in the sim file.
+        </tt> </dt></dl></dd></dl></dl><a name="HasInternalElementSets"></a><dt> o <b>HasInternalElementSets</b></dt><dl> <dd>Checks if internal element sets exists in the sim file. Returns true if internal element sets are found.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] True if internal element sets exists in the sim file.
+        </tt> </dt></dl></dd></dl></dl><a name="HasInternalNodeSets"></a><dt> o <b>HasInternalNodeSets</b></dt><dl> <dd>Checks if internal node sets exists in the sim file. Returns true if internal node sets are found.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] True if internal node sets exists in the sim file.
+        </tt> </dt></dl></dd></dl></dl><a name="InitFieldResult"></a><dt> o <b>InitFieldResult</b></dt><dl> <dd>Initializes a field for reading field result.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name for the result.
+        </dd><dt> <tt> iFieldInfo
+        </tt> </dt><dd>[in/required] A FieldInfo object specifying the field info object.
+        </dd><dt> <tt> ioFieldReader
+        </tt> </dt><dd>[in/required] A FieldReader object specifying the field object which should be used to read data.
+        </dd></dl></dd></dl></dl><a name="InitHistoryResult"></a><dt> o <b>InitHistoryResult</b></dt><dl> <dd>Initializes a field for reading history result.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iStepName
+        </tt> </dt><dd>[in/required] A string specifying the step name for the result.
+        </dd><dt> <tt> iFieldInfo
+        </tt> </dt><dd>[in/required] A FieldInfo object specifying the field info object.
+        </dd><dt> <tt> ioFieldReader
+        </tt> </dt><dd>[in/required] A FieldReader object specifying the field object which should be used to read data.
+        </dd></dl></dd></dl></dl><a name="LoadDocument"></a><dt> o <b>LoadDocument</b></dt><dl> <dd>Loads an existing SIM document.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDocument
+        </tt> </dt><dd>[in/required] A string specifying the document name or a SIMDocument object specifying the SIMDocument object.
+        </dd></dl></dd></dl></dl>
+<hr> <h2>ElementCentroidFieldReader</h2> <br>
+<dd>    The ElementCentroidFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of ElementCentroidFieldReader object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns an instance of ElementCentroidDimension for the drawer with members: 
+ frame indices, loadcase indices, section points, element indices, Component labels, Invariants, isDoublePrecision, isComplex
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of ElementCentroidFieldReader object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of ElementCentroidFieldReader object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns an instance of ElementCentroidDimension for the drawer with members: 
+ frame indices, loadcase indices, section points, element indices, Component labels, Invariants, isDoublePrecision, isComplex
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt><tt> [out] An instance of the ElementCentroidDimension object with members" frame indices, loadCases, section points, element indices, Component labels, Invariants, isDoublePrecision, isComplex.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index for which the data is requested; Set it to -1 if the field does not have associated frames.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point index for which data is required.  
+        </dd><dt> <tt> iElementIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the element indices for which data is required.      
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point index for which data is required.  
+        </dd><dt> <tt> iElementIndex
+        </tt> </dt><dd>[in/required] An integer specifying the element index for which data is required.    
+        </dd><dt> <tt> iComponentSymbol 
+        </tt> </dt><dd>[in/required] A string specifying the component label for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>ElementFaceFieldReader</h2> <br>
+<dd>    The ElementFaceFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of ElementFaceField object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns an instance of ElementIntPointDimension for the drawer with members: 
+ frame indices, loadcase indices, section points, element indices, face ID, component labels, Invariants, isDoublePrecision, isComplex
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of ElementFaceField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of ElementFaceField object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns an instance of ElementIntPointDimension for the drawer with members: 
+ frame indices, loadcase indices, section points, element indices, face ID, component labels, Invariants, isDoublePrecision, isComplex
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt><tt> [out] An instance of the ElementIntPointDimension object with members:frame indices, loadcase indices, section points, element indices, face ID, component labels, Invariants, isDoublePrecision, isComplex.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index for which the data is requested; Set it to -1 if the field does not have associated frames.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point index for which data is required.  
+        </dd><dt> <tt> iFaceID
+        </tt> </dt><dd>[in/required] An integer specifying the face ID for which data is required.  
+        </dd><dt> <tt> iElementIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the element indices for which data is required.      
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point index for which data is required.  
+        </dd><dt> <tt> iElementIndex
+        </tt> </dt><dd>[in/required] An integer specifying the element index for which data is required.    
+        </dd><dt> <tt> iFaceID
+        </tt> </dt><dd>[in/required] An integer specifying the face ID for which data is required.  
+        </dd><dt> <tt> iComponentSymbol 
+        </tt> </dt><dd>[in/required] A string specifying the component label for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>ElementIntegrationPointFieldReader</h2> <br>
+<dd>    The ElementIntegrationPointFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of ElementIntegrationPointField object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns an instance of ElementIntPointDimension for the drawer with members: 
+ frame indices, loadcase indices, section points, element indices, integration point indices, component labels, Invariants, isDoublePrecision, isComplex
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of ElementIntegrationPointField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of ElementIntegrationPointField object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns an instance of ElementIntPointDimension for the drawer with members: 
+ frame indices, loadcase indices, section points, element indices, integration point indices, component labels, Invariants, isDoublePrecision, isComplex
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt><tt> [out] An instance of the ElementIntPointDimension object with members:frame indices, loadcase indices, section points, element indices, integration point indices, component labels, Invariants, isDoublePrecision, isComplex.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index for which the data is requested; Set it to -1 if the field does not have associated frames.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point index for which data is required.  
+        </dd><dt> <tt> iElementIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the element indices for which data is required.      
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point index for which data is required.   
+        </dd><dt> <tt> iElementIndex
+        </tt> </dt><dd>[in/required] An integer specifying the element index for which data is required. 
+        </dd><dt> <tt> iIntegrationPoint
+        </tt> </dt><dd>[in/required] An integer specifying the integration point index for which data is required.    
+        </dd><dt> <tt> iComponentSymbol 
+        </tt> </dt><dd>[in/required] A string specifying the component label for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>ElementNodalFieldReader</h2> <br>
+<dd>    The ElementNodalFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of ElementNodalFieldReader object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns an instance of ElementNodalDimension for the drawer with members: 
+ frame indices, loadcase indices, section points, element indices, local node indices, component labels, Invariants, isDoublePrecision, isComplex
+ of data per element class for element output or all the nodes for node output.
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of ElementNodalFieldReader object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of ElementNodalFieldReader object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns an instance of ElementNodalDimension for the drawer with members: 
+ frame indices, loadcase indices, section points, element indices, local node indices, component labels, Invariants, isDoublePrecision, isComplex
+ of data per element class for element output or all the nodes for node output.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt><tt> [out] An instance of the ElementNodalDimension object with members: frame indices, loadcase indices, section points, element indices, local node indices, component labels, Invariants, isDoublePrecision, isComplex.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index for which the data is requested; Set it to -1 if the field does not have associated frames.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point index for which data is required.  
+        </dd><dt> <tt> iElementIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the element indices for which data is required.      
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point index for which data is required.  
+        </dd><dt> <tt> iElementIndex
+        </tt> </dt><dd>[in/required] An integer specifying the element index for which data is required.  
+        </dd><dt> <tt> iLocalNode
+        </tt> </dt><dd>[in/required] An integer specifying the local node index for which data is required.   
+        </dd><dt> <tt> iComponentSymbol 
+        </tt> </dt><dd>[in/required] A string specifying the component label for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>FieldReader</h2> <br>
+<dd>     This abstract base class provides the interface for each field on SIM. </dd>
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Abstract base class.
+ </dd></dl>
+ <dt> o <a href="#GetFieldMaterial"><b>GetFieldMaterial</b></a></dt><dd>   Returns the material name associated with the field. This is valid in case of a multi-species field or a CEL field.
+ </dd></dl>
+ <dt> o <a href="#GetNumberOfDrawers"><b>GetNumberOfDrawers</b></a></dt><dd>   Returns the number of drawers in the field. A drawer is a rectangular block 
+ of data per element class for element output or all the nodes for node output.
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Abstract base class.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt>None</dt></dl></dd></dl></dl><a name="GetFieldMaterial"></a><dt> o <b>GetFieldMaterial</b></dt><dl> <dd>Returns the material name associated with the field. This is valid in case of a multi-species field or a CEL field.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A string specifying the material name associated with the field.
+        </tt> </dt></dl></dd></dl></dl><a name="GetNumberOfDrawers"></a><dt> o <b>GetNumberOfDrawers</b></dt><dl> <dd>Returns the number of drawers in the field. A drawer is a rectangular block 
+ of data per element class for element output or all the nodes for node output.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] The number of drawers in the field.
+         </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>GenericPositionFieldReader</h2> <br>
+<dd>    The GenericPositionFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of GenericPositionFieldReader object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns the dimensions for the drawer. A bulk drawer is a rectangular drawer 
+ of data per element class for element output and all the nodes for node output.
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a sequence of data for the drawer. A drawer is a rectangular block 
+ of data per element class for element output or all the nodes for node output.
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a sequence of data for the drawer. A drawer is a rectangular block 
+ of data per element class for element output or all the nodes for node output. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of GenericPositionFieldReader object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of GenericPositionFieldReader object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns the dimensions for the drawer. A bulk drawer is a rectangular drawer 
+ of data per element class for element output and all the nodes for node output.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of bulk drawers. 
+        </dd><dt><tt> [out] An instance of the Dimension object.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a sequence of data for the drawer. A drawer is a rectangular block 
+ of data per element class for element output or all the nodes for node output.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iDimensionDetailsList;
+        </tt> </dt><dd>[in/required] A Dimensions object to query for the field drawer.
+        </dd><dt><tt> [out] A sequence of doubles specifying the data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a sequence of data for the drawer. A drawer is a rectangular block 
+ of data per element class for element output or all the nodes for node output. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iDimensionDetailsList;
+        </tt> </dt><dd>[in/required] A Dimensions object to query for the field drawer.
+        </dd><dt><tt> [out] A sequence of doubles specifying the data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>SurfaceNodalFieldReader</h2> <br>
+<dd>    The SurfaceNodalFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of SurfaceNodalField object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns an instance of SurfaceNodalDimension for the drawer with members: 
+ frame indices loadCases, nodeIndices, components,invariants, isDoublePrecision, isComplex
+ generalContact, masterSurface, slaveSurface, outputSurface
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of SurfaceNodalField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of SurfaceNodalField object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns an instance of SurfaceNodalDimension for the drawer with members: 
+ frame indices loadCases, nodeIndices, components,invariants, isDoublePrecision, isComplex
+ generalContact, masterSurface, slaveSurface, outputSurface
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt><tt> [out] An instance of the SurfaceNodalDimension object with members: frame indices loadCases, nodeIndices, components,invariants, isDoublePrecision, isComplex.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index for which the data is requested; Set it to -1 if the field does not have associated frames.
+        </dd><dt> <tt> iNodeIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the node indices for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iNodeIndex
+        </tt> </dt><dd>[in/required] An integer specifying the node index for which data is required.    
+        </dd><dt> <tt> iComponentSymbol 
+        </tt> </dt><dd>[in/required] A string specifying the component label for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>TempPointElementNodalFieldReader</h2> <br>
+<dd>    The TempPointElementNodalFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of TempPointElementNodalField object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns an instance of TempPointElementNodalDimension for the drawer with members: 
+ frame indices, loadCases, sectionPoints, elementIndices, localNodes, temperature points, components,invariants, isDoublePrecision, isComplex
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of TempPointElementNodalField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of TempPointElementNodalField object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns an instance of TempPointElementNodalDimension for the drawer with members: 
+ frame indices, loadCases, sectionPoints, elementIndices, localNodes, temperature points, components,invariants, isDoublePrecision, isComplex
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt><tt> [out] An instance of the TempPointElementNodalDimension object with members: frame indices, loadCases, sectionPoints, elementIndices, localNodes, temperaturePoints, components,invariants, isDoublePrecision, isComplex.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index for which the data is requested; Set it to -1 if the field does not have associated frames.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point for which data is required.   
+        </dd><dt> <tt> iElementIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the node indices for which data is required.
+        </dd><dt> <tt> iTemperaturePoints
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the temperature points for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iSectionPoint
+        </tt> </dt><dd>[in/required] An integer specifying the section point index for which data is required.  
+        </dd><dt> <tt> iElementIndex
+        </tt> </dt><dd>[in/required] An integer specifying the element index for which data is required.  
+        </dd><dt> <tt> iLocalNode
+        </tt> </dt><dd>[in/required] An integer specifying the local node index for which data is required.   
+        </dd><dt> <tt> iTemperaturePoint
+        </tt> </dt><dd>[in/required] An integer specifying the temperature point for which data is required.    
+        </dd><dt> <tt> iComponentSymbol 
+        </tt> </dt><dd>[in/required] A string specifying the component label for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>TempPointNodalFieldReader</h2> <br>
+<dd>    The TempPointNodalFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of TempPointNodalField object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns an instance of TempPointNodalDimension for the drawer with members: 
+ frame indices, loadCases, nodeIndices, temperature points, components,invariants, isDoublePrecision, isComplex
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of TempPointNodalField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of TempPointNodalField object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns an instance of TempPointNodalDimension for the drawer with members: 
+ frame indices, loadCases, nodeIndices, temperature points, components,invariants, isDoublePrecision, isComplex
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt><tt> [out] An instance of the TempPointNodalDimension object with members: frame indices, loadCases, nodeIndices, temperaturePoints, components,invariants, isDoublePrecision, isComplex.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index for which the data is requested; Set it to -1 if the field does not have associated frames.
+        </dd><dt> <tt> iNodeIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the node indices for which data is required.
+        </dd><dt> <tt> iTemperaturePoints
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the temperature points for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iNodeIndex
+        </tt> </dt><dd>[in/required] An integer specifying the node index for which data is required.    
+        </dd><dt> <tt> iTemperaturePoint
+        </tt> </dt><dd>[in/required] An integer specifying the temperature point for which data is required.    
+        </dd><dt> <tt> iComponentSymbol 
+        </tt> </dt><dd>[in/required] A string specifying the component label for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>UniqueNodalFieldReader</h2> <br>
+<dd>    The UniqueNodalFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of UniqueNodalField object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns an instance of UniqueNodalDimension for the drawer with members: 
+ frame indices, loadCases, nodeIndices, components,invariants, isDoublePrecision, isComplex
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of UniqueNodalField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of UniqueNodalField object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns an instance of UniqueNodalDimension for the drawer with members: 
+ frame indices, loadCases, nodeIndices, components,invariants, isDoublePrecision, isComplex
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt><tt> [out] An instance of the UniqueNodalDimension object with members: frame indices, loadCases, nodeIndices, components,invariants, isDoublePrecision, isComplex.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index for which the data is requested; Set it to -1 if the field does not have associated frames.
+        </dd><dt> <tt> iNodeIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the node indices for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iNodeIndex
+        </tt> </dt><dd>[in/required] An integer specifying the node index for which data is required.    
+        </dd><dt> <tt> iComponentSymbol 
+        </tt> </dt><dd>[in/required] A string specifying the component label for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>WholeElementFieldReader</h2> <br>
+<dd>    The WholeElementFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of WholeElementFieldReader object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns an instance of WholeElementFieldReader for the drawer with members: 
+ frame indices, loadcase indices, element indices, Component labels, Invariants, isDoublePrecision, isComplex
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of WholeElementFieldReader object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of WholeElementFieldReader object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns an instance of WholeElementFieldReader for the drawer with members: 
+ frame indices, loadcase indices, element indices, Component labels, Invariants, isDoublePrecision, isComplex
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt><tt> [out] An instance of the WholeElementFieldReader object with members: frame indices, loadcase indices, element indices, Component labels, Invariants, isDoublePrecision, isComplex.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index for which the data is requested; Set it to -1 if the field does not have associated frames.
+        </dd><dt> <tt> iElementIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the element indices for which data is required.      
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iElementIndex
+        </tt> </dt><dd>[in/required] An integer specifying the element index for which data is required.    
+        </dd><dt> <tt> iComponentSymbol 
+        </tt> </dt><dd>[in/required] A string specifying the component label for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>WholeModelFieldReader</h2> <br>
+<dd>    The WholeModelFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of WholeModelField object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns an instance of WholeModelDimension for the drawer with members: 
+ frame indices, loadCases, components,invariants, isDoublePrecision, isComplex
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of WholeModelField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of WholeModelField object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns an instance of WholeModelDimension for the drawer with members: 
+ frame indices, loadCases, components,invariants, isDoublePrecision, isComplex
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt><tt> [out] An instance of the WholeModelDimension object with members: frame indices, loadCases, components,invariants, isDoublePrecision, isComplex.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index for which the data is requested; Set it to -1 if the field does not have associated frames.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iComponentSymbol 
+        </tt> </dt><dd>[in/required] A string specifying the component label for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>WholeRegionFieldReader</h2> <br>
+<dd>    The WholeRegionFieldReader object is derived from the FieldReader object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>   Creates a new instance of WholeRegionField object
+ </dd></dl>
+ <dt> o <a href="#GetDimensions"><b>GetDimensions</b></a></dt><dd>   Returns an instance of WholeRegionDimension for the drawer with members: 
+ frame indices, loadCases, regionIndices, components,invariants, isDoublePrecision, isComplex
+ </dd></dl>
+ <dt> o <a href="#GetFieldResultData"><b>GetFieldResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetHistoryResultData"><b>GetHistoryResultData</b></a></dt><dd>   Returns a tuple of real and imaginary data for the drawer. 
+ </dd></dl>
+ <dt> o <a href="#GetOrientationFieldInfo"><b>GetOrientationFieldInfo</b></a></dt><dd>   Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ </dd></dl>
+ <dt> o <a href="#GetRegionData"><b>GetRegionData</b></a></dt><dd>   Returns the node or element set indices along with the set name for the given region index.
+ </dd></dl><h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd>Creates a new instance of WholeRegionField object
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A new instance of WholeRegionField object
+    </tt> </dt></dl></dd></dl></dl><a name="GetDimensions"></a><dt> o <b>GetDimensions</b></dt><dl> <dd>Returns an instance of WholeRegionDimension for the drawer with members: 
+ frame indices, loadCases, regionIndices, components,invariants, isDoublePrecision, isComplex
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt><tt> [out] An instance of the WholeRegionDimension object with members: frame indices, loadCases, regionIndices, components,invariants, isDoublePrecision, isComplex.
+        </tt> </dt></dl></dd></dl></dl><a name="GetFieldResultData"></a><dt> o <b>GetFieldResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iFrameIndex
+        </tt> </dt><dd>[in/required] An integer specifying the frame index for which the data is requested; Set it to -1 if the field does not have associated frames.
+        </dd><dt> <tt> iRegionIndices
+        </tt> </dt><dd>[in/required] A sequence of integers specifying the node or element indices for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetHistoryResultData"></a><dt> o <b>GetHistoryResultData</b></dt><dl> <dd>Returns a tuple of real and imaginary data for the drawer. 
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iDrawerNumber
+        </tt> </dt><dd>[in/required] An integer specifying the drawer number; Must be non-negative and less than the number of drawers.
+        </dd><dt> <tt> iRegionIndex
+        </tt> </dt><dd>[in/required] An integer specifying the node index for which data is required.    
+        </dd><dt> <tt> iComponentSymbol 
+        </tt> </dt><dd>[in/required] A string specifying the component label for which data is required.
+        </dd><dt><tt>iLoadCase
+        </tt> </dt><dd>[in/optional] An integer specifying the load case index, must be specified when load case exists in dimension. The default value is - 1.
+        </dd><dt><tt> [out] A sequence of doubles specifying the real and imaginary data for the drawer.
+        </tt> </dt></dl></dd></dl></dl><a name="GetOrientationFieldInfo"></a><dt> o <b>GetOrientationFieldInfo</b></dt><dl> <dd>Gets the associated orientation field info. Returns false if the field has no associated orientation.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt><tt> [out] A FieldInfo object specifying the orientation field info.
+         </tt> </dt></dl></dd></dl></dl><a name="GetRegionData"></a><dt> o <b>GetRegionData</b></dt><dl> <dd>Returns the node or element set indices along with the set name for the given region index.
+ <dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt> <tt> iRegionIndex
+            </tt> </dt><dd>[in/required] Region index.
+            </dd><dt><tt> [out] An instance of RegionData class with members: regionIndex, nsetName, nodeIndices, elsetName, elementIndices.
+            </tt> </dt></dl></dd></dl></dl>
+<hr> <h2>FieldInfo</h2> <br>
+<dd>     This struct is intended to capture the basic field info that will help uniquely identify the field on SIM.</dd>
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>       Create a new FieldInfo class.</dd>
+<h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd><dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt>None</dt></dl></dd></dl></dl>
+<hr> <h2>SimResultsReaderException</h2> <br>
+<dd>    The SimResultsReaderException object is derived from the Exception object.</dd> 
+<h2>Method Index</h2> <br>
+
+ <dt> o <a href="#__init__"><b>__init__</b></a></dt><dd>       Creates a new instance of SimResultsReaderException</dd>
+<h2>Methods</h2> <br>
+<a name="__init__"></a><dt> o <b>__init__</b></dt><dl> <dd><dl> <dt> <b>   Parameters:</b> </dt><dd> <dl><dt>None</dt></dl></dd></dl></dl>
+<br>            
+<hr>            
+</body>
+
+</html>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>

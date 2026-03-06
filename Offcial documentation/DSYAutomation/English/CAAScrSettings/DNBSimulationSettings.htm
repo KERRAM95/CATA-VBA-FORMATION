@@ -1,0 +1,211 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>DNBSimulationSettings Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>DNBSimulationSettings Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>DNBSimulationSettings</h2>
+<p><strong>Role:</strong> Settings to handle default simulation parameters</p>
+<p><strong>Detailed role:</strong> Default settings that will be used when performing a simulation. Please note that some applications might have their own ones.</p>
+<p>The DNBSimulationSettings repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /Infrastructure/Delmia Infrastructure/Simulation</li>
+  <li><strong>Repository File</strong>: PLMSimulationSettings</li>
+  <li><strong>Version</strong>: 2</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+<li><strong>Root tab page</strong> /x reused as /x</li>
+</ul>
+<p>DNBSimulationSettings setting repository attributes:</p>
+<ul>
+  <li><a name="MsgWndVisibility"></a><strong>MsgWndVisibility</strong>
+    <br /><strong>Role</strong>:           Controls message window visibility.
+    <br /><strong>Detailed role</strong>:           Users can hide the message window.<br />
+    <ul>
+      <li><strong>Type</strong>: unsigned integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Message window is hidden</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Message window is shown</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="SimulationEndTime"></a><strong>SimulationEndTime</strong>
+    <br /><strong>Role</strong>: Default user-specified start time for the simulation beginning.
+    <br /><strong>Detailed role</strong>: This time will constraint the simulation start time. The simulation will stop whenever the simulation reaches the end time specified (or earlier if the simulated entity requires it). Please note that if the simulation end time is set to 0, there is no constraint: the simulation will go on until the simulated object ends the simulation itself.<br />
+    <ul>
+      <li><strong>Type</strong>: double</li>
+      <li><strong>Default value</strong>: 0</li>
+    </ul>
+  </li>
+  <li><a name="SimulationGraphicsUpdatesYesOrNo"></a><strong>SimulationGraphicsUpdatesYesOrNo</strong>
+    <br /><strong>Role</strong>: Activation mode of the graphics update.  
+    <br /><strong>Detailed role</strong>: Graphics update can be controlled either by simulation steps or by duration. Although simulation is running, there is no graphics update between the speficied steps or duration. When the graphics update is turned OFF, there is no graphical update, except viewpoint manipulations (zoom, panning, view mode, etc..).<br />
+    <ul>
+      <li><strong>Type</strong>: unsigned integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Graphics update are deactivated</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Graphics update are activated</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="SimulationMasterClockStepSize"></a><strong>SimulationMasterClockStepSize</strong>
+    <br /><strong>Role</strong>: Default step size of each simulation.  
+    <br /><strong>Detailed role</strong>: The master clock controls the step size of the simulation to provide a specific interval during refresh. Each simulated may have specific step size. However, the master clock allows to control the simulation by constraining the step size. This step size represents the refresh rate of the simulation and not the computation rate (step size for specific solvers).<br />
+    <ul>
+      <li><strong>Type</strong>: double</li>
+      <li><strong>Default value</strong>: 0.1</li>
+    </ul>
+  </li>
+  <li><a name="SimulationMasterClockYesOrNo"></a><strong>SimulationMasterClockYesOrNo</strong>
+    <br /><strong>Role</strong>: Activation mode of the constrained step size.  
+    <br /><strong>Detailed role</strong>: The master clock controls the step size of the simulation to provide a specific interval during refresh. Each simulated may have specific step size. However, the master clock allows to control the simulation by constraining the step size. This step size represents the refresh rate of the simulation and not the computation rate (step size for specific solvers). If this option is turned OFF, the step size during a simulation may not be constant.<br />
+    <ul>
+      <li><strong>Type</strong>: unsigned integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Constrained step is OFF</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Constrained step is ON</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="SimulationRealTimeYesOrNo"></a><strong>SimulationRealTimeYesOrNo</strong>
+    <br /><strong>Role</strong>: Activation mode of the real time simulation.  
+    <br /><strong>Detailed role</strong>: Real time simulation will synchronize the simulation time with the actual computer time. Please note that the real time simulation will not aceelerate the simulation: it will only delay it to mimic the computer time.<br />
+    <ul>
+      <li><strong>Type</strong>: unsigned integer</li>
+      <li><strong>Default value</strong>: 0</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Real time simulation is OFF</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Real time simulation is ON</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="SimulationSpecTreeVisibility"></a><strong>SimulationSpecTreeVisibility</strong>
+    <br /><strong>Role</strong>: Controls specification tree visibility during simulation.  
+    <br /><strong>Detailed role</strong>: For presentation purpose, users can hide the tree during simulation..<br />
+    <ul>
+      <li><strong>Type</strong>: unsigned integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Specification tree is hidden</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Specification tree is shown</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="SimulationStartTime"></a><strong>SimulationStartTime</strong>
+    <br /><strong>Role</strong>: Default user-specified end time for the simulation end.  
+    <br /><strong>Detailed role</strong>: This time will constraint the simulation start time. The simulation will start from the specified time. As a consequence, when the simulation ends, it will restart from the specified point.<br />
+    <ul>
+      <li><strong>Type</strong>: double</li>
+      <li><strong>Default value</strong>: 0</li>
+    </ul>
+  </li>
+  <li><a name="SimulationSynchronousRefresh"></a><strong>SimulationSynchronousRefresh</strong>
+    <br /><strong>Role</strong>: 				Activation mode of the synchroneous refresh mode.
+    <br /><strong>Detailed role</strong>: 				Allows to activate the synchroneous refresh.<br />
+    <ul>
+      <li><strong>Type</strong>: unsigned integer</li>
+      <li><strong>Default value</strong>: 1</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Synchroneous refresh is activated</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Synchroneous refresh is deactivated</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="SimulationUpdateRate"></a><strong>SimulationUpdateRate</strong>
+    <br /><strong>Role</strong>: Number of steps between each viewer refresh.  
+    <br /><strong>Detailed role</strong>: Graphics update can be controlled either by simulation steps or by duration. Although simulation is running, there is no graphics update between the speficied steps or duration.<br />
+    <ul>
+      <li><strong>Type</strong>: unsigned integer</li>
+      <li><strong>Default value</strong>: 1</li>
+    </ul>
+  </li>
+  <li><a name="SimulationUpdateTime"></a><strong>SimulationUpdateTime</strong>
+    <br /><strong>Role</strong>: Interval time between each viewer refresh.  
+    <br /><strong>Detailed role</strong>: Graphics update can be controlled either by simulation steps or by duration. Although simulation is running, there is no graphics update between the speficied steps or duration.<br />
+    <ul>
+      <li><strong>Type</strong>: float</li>
+      <li><strong>Default value</strong>: 0.1</li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Circuit Board Design Object Model Map</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>Circuit Board Design Object Model Map</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p class="auto"><a href="../CAAScdInfInfrastructure/CAAInfObjService.htm">
+<img src="../CAAScdImages/Service.png" alt="Service Object" width="252" height="22"/></a><a href="../CAAScdInfInfrastructure/CAAInfTocApplication.htm"><img src="../CAAScdImages/uparrow.gif" alt="Foudation Object Model Map" width="18" height="7"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATPCBoardIDLItf', 'interface', 'PCBService');return false;"><img src="../CAAScdImages/PCBService.png" alt="PCBService Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATPCBoardIDLItf', 'interface', 'PCBBoard');return false;"><img src="../CAAScdImages/PCBBoard.png" alt="PCBBoard Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATPCBoardIDLItf', 'interface', 'PCBArea');return false;"><img src="../CAAScdImages/PCBArea.png" alt="PCBArea Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATPCBoardIDLItf', 'interface', 'PCBHoleAndPattern');return false;"><img src="../CAAScdImages/PCBHoleAndPattern.png" alt="PCBHoleAndPattern Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATPCBoardIDLItf', 'interface', 'PCBComponent');return false;"><img src="../CAAScdImages/PCBComponent.png" alt="PCBComponent Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATPCBoardIDLItf', 'interface', 'PCBObject');return false;"><img src="../CAAScdImages/PCBObject.png" alt="PCBObject Object" width="252" height="22"/></a></p>
+<p>Circuit Board Design objects can be managed using the <strong>PCBService</strong> 
+object. This object allows you to:</p>
+<ul>
+	<li>Create a <strong>PCBBoard</strong> object or a <strong>PCBComponent</strong> 
+	object.</li>
+	<li>Retrieve a <strong>PCBObject</strong> object.</li>
+</ul>
+<p>Use the <strong>CreateBoard</strong> method to create a <strong>PCBBoard</strong> object in a 3D <strong>Part</strong> object of a 3D 
+shape representation:</p>
+<pre class="code">
+<span class="keyword">Dim</span> oPCBService <span class="keyword">As</span> PCBService
+<span class="keyword">Set</span> oPCBService = CATIA.ActiveEditor.GetService("PCBService")
+
+<span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+<span class="keyword">Set</span> oPart = CATIA.ActiveEditor.ActiveObject
+
+<span class="keyword">Dim</span> oPCBBoard <span class="keyword">As</span> PCBBoard
+<span class="keyword">Set</span> oPCBBoard = oPCBService.CreateBoard(oPart)
+</pre>
+
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

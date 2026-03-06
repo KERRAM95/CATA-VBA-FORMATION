@@ -1,0 +1,543 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SFD Parametric Panel</title>
+<style type="text/css">
+.style1 {
+	font-family: "Courier New", Courier, monospace;
+}
+.style2 {
+	color: #800000;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SFD Parametric Panel</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to initialize the SFD system 
+						and create SFD parametric panel.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code class="style2"><div class=vb_sample_data>CAAScdSfdUcCGR.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcSR.3dxml</div>, </code>
+							<code class="style2"><div class=vb_sample_data>CAAScdSfdUcSteel_A42.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcWT18x179_5.3dxml</div>, </code>
+							<code class="style2"><div class=vb_sample_data>CAAScdSfdUcCreateSketchBasedPanel_RefSkt.3dxml</div>, <div class=vb_sample_data>Bracket_KN6.3dxml</div>,</code> and 
+							<code class="style2"><div class=vb_sample_data>CAAScdSfdUcCreateSketchBasedPanel.3dxml</div></code>
+							&nbsp;
+							files supplied 
+							in folder 
+							<code class="style2">InstallRootFolder\CAADoc\Doc\<code>English</code>\CAAScdSfdSFDesign\samples\</code> 
+							where 
+							<code class="style2">InstallRootFolder</code> is the folder where 
+								the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSfdUcCreateSketchBasedPanelSource.htm">CAAScdSfdUcCreateSketchBasedPanelSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSfdTocSFDesign.htm">Structure Functional Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in 12 steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SFD_Product&quot;</a></li>
+			<li><a href="#Step2">Navigates to the part object and retrieves the part object</a></li>
+			<li><a href="#Step3">Retrieves Service manager (RfgService)</a></li>
+			<li><a href="#Step4">Retrieves SfdFactory</a></li>
+            <li><a href="#Step9">Retrieves a SFD panels and create stiffeners</a></li>
+			<li><a href="#Step5">Adds a geometrical set</a></li>
+			<li><a href="#Step6">Creates a Parametric Panel using LONG.9 as support plane</a></li>
+			<li><a href="#Step7">Updates the part</a></li>
+			<li><a href="#Step8">Detailed steps of subroutines called in Uc</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+		
+		   <!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 1-x-x-x-x-x-x-x-x-x-x-x-  -->
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SFD_Product&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SFD_Product&quot; from DB and loads 
+			it and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SFDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SFD_Product&quot;
+ OpenProduct prdName , SFDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SFD model from underlying database the current active 
+			editor is returned in <strong><code>SFDPrdEditor</code></strong>.</p>
+			</li>
+			
+			<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 2-x-x-x-x-x-x-x-x-x-x-x-  -->
+			<li>
+			<p><strong><a name="Step2"></a>Navigates to the part object and retrieves the part object</strong></p>
+			<p>In this step, starting from the root product, the UC navigates to the part object of the SFD system and retrieves a <code>Reference</code> on it.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> SFDProdSel = SFDPrdEditor.Selection
+  <span class="keyword">Dim</span> product1Service   <span class="keyword">As</span> PLMProductService
+  <span class="keyword">Set</span> product1Service = SFDPrdEditor.GetService("PLMProductService")
+  <span class="keyword">Dim</span> ObjVPMRootOccurrence   <span class="keyword">As</span> VPMRootOccurrence
+  <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+  <span class="keyword">Dim</span> ObjVPMReference <span class="keyword">As</span> VPMReference
+  <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+  <span class="keyword">Dim</span> ObjVPMRepInstances <span class="keyword">As</span> VPMRepInstances
+  <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+  <span class="keyword">Set</span> ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> ObjPart = ObjVPMRepReference.GetItem("Part")
+  <span class="keyword">If</span> ObjPart <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, "Cannot retrieve part"
+    <span class="keyword">Exit Sub
+  End If</span>
+	...</pre>
+			</li>
+			
+			<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 3-x-x-x-x-x-x-x-x-x-x-x-  -->
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Service manager (RfgService)</strong></p>
+			<p>In this step UC retrieves <code>RfgServices</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.<strong>GetService</strong>(&quot;RfgServices&quot;)
+...</pre>
+			<p><code>GetService</code> method returns <code>RfgServices</code>. 
+			This service provides methods such GetReferencePlane, CreateProjectData, 
+			CreateRefSurfaceFeature.</p>
+			</li>
+			
+			<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 4-x-x-x-x-x-x-x-x-x-x-x-  -->
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves SfdFactory</strong></p>
+			<p>In this step Uc initializes resources for SFD.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjSfdFactory <span class="keyword">As</span> SfdFactory
+  <span class="keyword">Set</span> ObjSfdFactory = ObjPart.<strong>GetCustomerFactory</strong>(&quot;SfdFactory&quot;)
+...</pre>
+			<p>In this step Uc retrieves object <code>ObjSfdFactory</code> of type
+			<code>SfdFactory</code>. It is retrieved by using <code>GetCustomerFactory</code> 
+			method.</p>
+			</li>
+
+			<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 4-x-x-x-x-x-x-x-x-x-x-x-  -->
+			<li>
+			<p><strong><a name="Step9"></a>Retrieves a SFD panels and create stiffeners</strong></p>
+			<p>In this step Uc retrieves SFd panels and creates stiffener on it.</p>
+			<pre class="code">...
+  <span class="comment">' 5- Retrieves a SFD panels and create stiffeners</span>
+  <span class="keyword">Set</span> RefSfdPanel = ObjPart.FindObjectByName("Transverse Bulkhead_3")
+  <span class="keyword">Dim</span> ObjSfdTransvPanel <span class="keyword">As</span> SfdPanel
+  SFDProdSel.Add RefSfdPanel
+  <span class="keyword">Set</span> ObjSfdTransvPanel = SFDProdSel.FindObject("CATIASfdPanel")
+  CreateStiffener ObjSfdTransvPanel, ObjSfdTransvStiffener
+  <span class="keyword">Set</span> RefSfdPanel = ObjPart.FindObjectByName("Deck_1")
+  <span class="keyword">Dim</span> ObjSfdDeckPanel <span class="keyword">As</span> SfdPanel
+  SFDProdSel.Add RefSfdPanel
+  <span class="keyword">Set</span> ObjSfdDeckPanel = SFDProdSel.FindObject("CATIASfdPanel")
+  CreateStiffener ObjSfdDeckPanel, ObjSfdLongStiffener
+...</pre>
+			<p>In this step Uc retrieves object <code>ObjSfdTransvPanel</code> & <code>ObjSfdDeckPanel</code> of type
+			<code>SfdPanel</code> and it creates stiffeners on these panels using <code>CreateStiffener</code> 
+			method.</p>
+			</li>
+            
+            			
+			<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 5-x-x-x-x-x-x-x-x-x-x-x-  -->
+			<li>
+			<p><strong><a name="Step5"></a>Adds a geometrical set</strong></p>
+			<p>Call <code>AddGeometricalSet</code> method to create a new geometrical set under the SFD system. <code>AddGeometricalSet</code> method takes 
+			a part as input parameter and gives a reference to the newly created geometrical set as the output.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> RefGeometricalSet <span class="keyword">As</span> Reference
+  AddGeometricalSet ObjPart, RefGeometricalSet
+...</pre>
+			<p>The method <code>AddGeometricalSet</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+			    <!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 5.1-x-x-x-x-x-x-x-x-x-x-x-  -->
+				<li>
+				<p><strong>Obtains HybridBodies from Part</strong></p>
+				<pre class="code">
+  <span class="keyword">Sub</span> AddGeometricalSet(iObjPart <span class="keyword">As</span> Part, oRefGeometricalSet <span class="keyword">As</span> Reference)
+    <span class="comment">&#39; Add a Geometrical Set in Part for creating Sketch Based Panel</span>
+    <span class="keyword">Dim</span> oHybridBodies <span class="keyword">As</span> HybridBodies
+    <span class="keyword">Set</span> oHybridBodies = iObjPart.HybridBodies
+...</pre>
+				<p>Here <code>HybridBodies</code> method returns the HybridBodies object in the part.</p>
+				</li>
+				<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 5.2-x-x-x-x-x-x-x-x-x-x-x-  -->
+				<li>
+				<p><strong>Adds a new HybridBody</strong></p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> oGeometricalSet <span class="keyword">As</span> HybridBody
+    <span class="keyword">Set</span> oGeometricalSet = oHybridBodies.Add()
+...</pre>
+				</li>
+				<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 5.3-x-x-x-x-x-x-x-x-x-x-x-  -->
+				<li>
+				<p><strong>Obtains a reference on the new geometric set and returns</strong></p>
+				<pre class="code">...  
+    <span class="keyword">Set</span> oRefGeometricalSet = iObjPart.CreateReferenceFromObject(oGeometricalSet)
+    <span class="keyword">If</span> oRefGeometricalSet <span class="keyword">Is Nothing Then</span>
+      Err.Raise 1, Err.Source, "Cannot Create GeometricalSet"
+      <span class="keyword">Exit Sub
+    End If
+  End Sub</span>
+</pre>
+				<p>This step sets the newly created geometric set as the Active Object. The <code>SfdSketchBasedPanel</code> will be created under this geometric set.</p>
+				</li>
+			</ol>
+			</li>
+			
+			<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 6-x-x-x-x-x-x-x-x-x-x-x-  -->
+			<li>
+			<p><strong><a name="Step6"></a>Creates a Parametric Panel using LONG.9 as support plane</strong></p>
+			<p>Call <code>CreateSketchBasedPanel</code> method to create a Parametric Panel. A geomtric set is an input to the method <code>CreateSketchBasedPanel</code>.
+			The Parametric Panel is created under this geometric set. The second input to this method is the SfdFactory using which the Parametric Panel is create.
+			The method returns created parametric panel as output parameter in <code>ObjSfdSketchBasedPanel</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel
+  <strong>CreateSketchBasedPanel</strong> RefGeometricalSet, ObjSfdFactory, ObjSfdSketchBasedPanel
+...</pre>
+			<p>The method <code>CreateSketchBasedPanel</code> is detailed as in the below sub 
+			steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 6.1-x-x-x-x-x-x-x-x-x-x-x-  -->
+				<li>
+				<p><strong>Creates sketch based panel with no properties</strong></p>
+				<pre class="code">
+<span class="keyword">Sub</span> CreateSketchBasedPanel(iDestPart <span class="keyword">As</span> Reference, iObjSfdFactory <span class="keyword">As</span> SfdFactory, oObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel)
+    
+    <span class="comment">&#39; Call subroutine AddSketchBasedPanel to add a new Sketch Based Panel using the SFD Factory</span>
+    <strong><a href="#Step6.1"><code>AddSketchBasedPanel</code></a></strong> iDestPart, iObjSfdFactory, oObjSfdSketchBasedPanel
+...</pre>
+				<p>Follow the link for details of what is done in the <code>AddSketchBasedPanel</code> method.
+				</p>
+				</li>
+				<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 6.2-x-x-x-x-x-x-x-x-x-x-x-  -->
+				<li>
+				<p><strong>Sets the category</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39; Set the Category</span>
+    <strong><a href="#Step6.2"><code>SetCategory</code></a></strong> oObjSfdSketchBasedPanel, "ParametricPanel"
+...</pre>
+				<p>Follow the link for details of what is done in the <code>SetCategory</code> method.
+				</p>
+				</li>
+				<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 6.3-x-x-x-x-x-x-x-x-x-x-x-  -->
+				<li>
+				<p><strong>Set LONG.9 as the support plane</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39; Browse to "LONG.9" reference plane and set it as the support plane</span>
+    <span class="keyword">Dim</span> PanelSupport <span class="keyword">As</span> Reference
+    <span class="keyword">Set</span> PanelSupport = Manager.GetReferencePlane(ObjPart, 3, "LONG.9")
+    <strong><a href="#Step6.3"><code>SetSketchBasedPanelSupport</code></a></strong> oObjSfdSketchBasedPanel, PanelSupport
+...</pre>
+				<p>Follow link to know how the subroutine <code>SetSketchBasedPanelSupport</code> obtains the <code>StrPanelSurf</code> and sets <code>LONG.9</code> as the support plane.</p>
+				</li>
+				<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 6.4-x-x-x-x-x-x-x-x-x-x-x-  -->
+				<li>
+				<p><strong>Set the reference sketch for the parametric panel</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39; Set the DMS</span>
+    <span class="keyword">Dim</span> PanelDMS <span class="keyword">As</span> StrSketchBasedDMSMngt
+    <span class="keyword">Set</span> PanelDMS = oObjSfdSketchBasedPanel.<strong>StrSketchBasedDMSMngt</strong>
+    PanelDMS.<strong>SetStrSketch ("SAMPLE_RCO_2LIMITS_KB")</strong>
+...</pre>
+				<p>The <code>StrSketchBasedDMSMngt</code> is obtained from <code>SfdSketchBasedPanel</code>. Further, the method <code>SetStrSketch</code>
+				is called to set the reference sketch on <code>SfdSketchBasedPanel</code>. The <strong>"SAMPLE_RCO_2LIMITS_KB"</strong> is a user defined sketch
+				retrieved from the DB. The parametric panel is created based on this sketch.</p>
+				</li>
+				<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 6.5-x-x-x-x-x-x-x-x-x-x-x-  -->
+			    <li>
+				<p><strong>Set the public parameters of the reference sketch</strong></p>
+				<pre class="code">...
+    <span class="keyword">Dim</span> ObjStrReferenceSketchPublicParms <span class="keyword">As</span> StrReferenceSketchPublicParameters
+    <span class="keyword">Set</span> ObjStrReferenceSketchPublicParms = oObjSfdSketchBasedPanel.<strong>StrReferenceSketchPublicParameters</strong>
+    <span class="keyword">Dim</span> NSize <span class="keyword">As Long</span>
+    NSize = ObjStrReferenceSketchPublicParms.Count
+    <span class="keyword">Dim</span> ObjPublicParm <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> ObjPublicParm = ObjStrReferenceSketchPublicParms.<strong>Item(2)</strong>
+    <strong>ObjPublicParm.ValuateFromString ("2000mm")</strong>
+...</pre>
+                <p>The reference sketch used in this UC has two public parameters. The UC modifies only the second public parameter and sets its value to 2000mm.
+				The <code>StrReferenceSketchPublicParameters</code> object is obtained from <code>oObjSfdSketchBasedPanel</code> and the <code>Item</code> method
+				is called to obtain the public parameter at index 2.</p>
+				</li>
+				<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 6.6-x-x-x-x-x-x-x-x-x-x-x-  -->
+			    <li>
+				<p><strong>Set the material, the material throw orientation and the thickness of the parametric panel</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39; Set material</span>
+    <strong><a href="#Step6.6"><code>SetMaterial</code></a></strong> oObjSfdSketchBasedPanel, "Steel A42"
+    <span class="comment">&#39; Set material throw orientation</span>
+    <span class="keyword">Dim</span> ExtrusionManager <span class="keyword">As</span> StrPlateExtrusionMngt
+    <span class="keyword">Set</span> ExtrusionManager = oObjSfdSketchBasedPanel.<strong>StrPlateExtrusionMngt</strong>
+    ExtrusionManager.<strong>ThrowOrientation = 1</strong>
+    <span class="comment">&#39; Set thickness of the parametric panel</span>
+    <span class="keyword">Dim</span> Thickness <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> Thickness = ExtrusionManager.GetThickness
+    <strong>Thickness.ValuateFromString "12mm"</strong>
+...</pre>
+                <p>
+				The UC calls subroutine <code>SetMaterial</code> to set the material. To know what is done withing, follow the link.<br/>
+				The <code>StrPlateExtrusionMngt</code> object is obtained from <code>oObjSfdSketchBasedPanel</code> object. The method <code>ThrowOrientation</code>
+				on <code>StrPlateExtrusionMngt</code> object in turn sets the material throw orientation.<br/>
+				Further, the thickness <code>Parameter</code> is obtained for the thickness and set to <strong>"12mm"</strong>
+				</p>
+				</li>
+				<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 6.7-x-x-x-x-x-x-x-x-x-x-x-  -->
+			    <li>
+				<p><strong>Set the other necessary limits to position the parametric panel</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39; Set panel limits</span>
+    SetSketchBasedPanelLimits oObjSfdSketchBasedPanel
+...</pre>
+                <p>
+				Here, the UC positions the parametric panel using the two stiffeners, <strong>"Transverse Bulkhead Vertical Stiffener_2"</strong> and <strong>"Deck Longitudinal Stiffener_1",</strong>
+				present in the data as the limits.
+				</p>
+				<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 6.7.1-x-x-x-x-x-x-x-x-x-x-x-  -->
+				<ul>
+				    <li>The <code>SetSketchBasedPanelLimits</code> subroutine is detailed below:
+					<pre class="code">...
+    <span class="keyword">Sub</span> SetSketchBasedPanelLimits(iObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel)
+      <span class="comment">&#39; Obtain the StrPanelLimitMngt</span>
+      <span class="keyword">Dim</span> ObjSfdPanelLimitMngt <span class="keyword">As</span> StrPanelLimitMngt
+      <span class="keyword">Set</span> ObjSfdPanelLimitMngt = iObjSfdSketchBasedPanel.<strong>StrPanelLimitMngt</strong>
+      <span class="keyword">If</span> ObjSfdPanelLimitMngt <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, "Cannot retrieve StrPanelLimitMngt object"
+        <span class="keyword">Exit Sub
+      End If</span>
+    
+      <span class="comment">&#39; Get Reference to an existing SFD Stiffener</span>
+      <span class="keyword">Set</span> Limit1 = ObjPart.CreateReferenceFromObject(ObjSfdTransvStiffener)
+    
+      <span class="comment">&#39; Get Reference to another existing SFD Stiffener</span>
+      <span class="keyword">Set</span> Limit2 = ObjPart.CreateReferenceFromObject(ObjSfdLongStiffener)
+	
+      <span class="comment">&#39; Apply the References to the 2 SFD stiffeners as limits to the Skecth Based Panel</span>
+      ObjSfdPanelLimitMngt.<strong>SetLimitingObject Limit1, 2, 0, -1</strong>
+      ObjSfdPanelLimitMngt.<strong>SetLimitingObject Limit2, 3, 0, -1</strong>
+        
+    <span class="keyword">End Sub</span>
+...</pre>
+                    <p>
+					The <code>SetSketchBasedPanelLimits</code> subroutine takes <code>SfdSketchBasedPanel</code> object as input.<br/>
+					Internally, it obtains the <code>StrPanelLimitMngt</code> from <code>SfdSketchBasedPanel</code> and calls the <code>SetLimitingObject</code> method on it.<br/>
+					The two stiffeners which are set as limits are obtained by calling the <code>FindObjectByName</code> on the part.<br/>
+					The parameters to <code>SetLimitingObject</code> are "limiting object", "limit index", "orientation" and "limit type" in that order.
+					</p>
+					</li>
+				</ul>
+				</li>
+				<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 6.8-x-x-x-x-x-x-x-x-x-x-x-  -->
+			    <li>
+				<p><strong>Calls method Run to complete the creation os parametric panel</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39; Call run to create the parametric panel</span>
+    <strong><a href="#Step6.8"><code>Run</code></a> oObjSfdSketchBasedPanel</strong>
+<span class="keyword">End Sub</span>
+</pre>
+				</li>
+			</ol>
+			</li>
+			
+			<!-- -x-x-x-x-x-x-x-x-x-x-x- STEP 7-x-x-x-x-x-x-x-x-x-x-x-  -->
+			<li>
+			<p><strong><a name="Step7"></a>Update the part</strong></p>
+			<pre class="code">...
+  <span class="comment">&#39; Update the part</span>
+  <strong>ObjPart.Update</strong>
+<span class="keyword">End Sub</span>
+</pre>
+			</li>
+		</ol>
+		
+		
+		<p><strong><a name="Step8"></a>Detailed steps of subroutines called in Uc</strong></p>
+		<ul class="task">
+		
+		<li><a name="Step6.1"></a><strong>AddSketchBasedPanel</strong>
+		<p>
+		This method adds a new empty sketch based panel. It takes the <code>SfdFactory</code> and a reference to the destination part where the 
+		sketch based panel will be created. In this UC we create the sketch based panel under the new geometric set.<br/>
+		This subroutine returns <code>SfdSketchBasedPanel</code>, the empty sketch based panel.
+		</p>
+		<pre class="code">
+  <span class="keyword">Sub</span> AddSketchBasedPanel(iDestPart <span class="keyword">As</span> Reference, iObjSfdFactory <span class="keyword">As</span> SfdFactory, oObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel)
+    <span class="keyword">Set</span> oObjSfdSketchBasedPanel = iObjSfdFactory.<strong>AddSketchBasedPanel(iDestPart, 5)</strong>
+    <span class="keyword">If</span> oObjSfdSketchBasedPanel <span class="keyword">Is Nothing Then</span>
+      Err.Raise 1, Err.Source, "Cannot Create SfdSketchBasedPanel"
+      <span class="keyword">Exit Sub
+    End If    
+  End Sub</span>
+</pre>
+        <p>The second parameter to the <code>AddSketchBasedPanel</code> method of <code>SfdFactory</code> is the mode of creation of the parametric panel. In this UC we use mode <strong>5</strong> which is creation
+		with two stiffeners as the limits.
+		</p>
+		</li>
+		
+		<li><a name="Step6.2"></a><strong>SetCategory</strong>
+		<p>
+		The <code>SetCategory</code> subroutine accepts a <code>SfdSketchBasedPanel</code> and a string referring to category name as input.
+		</p>
+		<pre class="code">
+  <span class="keyword">Sub</span> SetCategory(iObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel, iStrCategory <span class="keyword">As String</span>)
+    <span class="keyword">Dim</span> ObjSfdCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjSfdCategoryMngt = iObjSfdSketchBasedPanel.<strong>StrCategoryMngt</strong>
+    <span class="keyword">If</span> ObjSfdCategoryMngt <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, "Cannot retrieve StrCategoryMngt object"
+        <span class="keyword">Exit Sub
+    End If</span>
+    
+    ObjSfdCategoryMngt.AutomaticName = True
+    <strong>ObjSfdCategoryMngt.SetCategory iStrCategory</strong>
+
+  <span class="keyword">End Sub</span>
+</pre>
+        <p>
+		Internally, it obtains the <code>StrCategoryMngt</code> object from <code>SfdSketchBasedPanel</code> object and calls method <code>SetCategory</code> to set the category.
+        </p>
+		</li>
+		
+		<li><a name="Step6.3"></a><strong>SetSketchBasedPanelSupport</strong>
+		<p>
+		The <code>SetSketchBasedPanelSupport</code> subroutine accepts a <code>SfdSketchBasedPanel</code> and a <code>Reference</code> to support as input.
+		</p>
+		<pre class="code">
+  <span class="keyword">Sub</span> SetSketchBasedPanelSupport(iObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel, iSupport <span class="keyword">As</span> Reference)
+    <span class="keyword">Dim</span> ObjSfdPanelSupport <span class="keyword">As</span> StrPanelSurf
+    <span class="keyword">Set</span> ObjSfdPanelSupport = iObjSfdSketchBasedPanel.<strong>StrPanelSurf</strong>
+    <span class="keyword">If</span> ObjSfdPanelSupport <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, "Cannot retrieve StrPanelSupport object"
+        <span class="keyword">Exit Sub
+    End If</span>
+    
+    <strong>ObjSfdPanelSupport.Support = iSupport</strong>
+  <span class="keyword">End Sub</span>
+</pre>
+        <p>
+		Internally, it obtains the <code>StrPanelSurf</code> object from <code>SfdSketchBasedPanel</code> object and calls method <code>Support</code> to set the panel support.
+        </p>
+		</li>
+		
+		<li><a name="Step6.6"></a><strong>SetMaterial</strong>
+		<p>
+		The <code>SetMaterial</code> subroutine accepts a <code>SfdSketchBasedPanel</code> and a string referring to material name as input.
+		</p>
+		<pre class="code">
+  <span class="keyword">Sub</span> SetMaterial(iObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel, iStrMaterial <span class="keyword">As String</span>)
+    <span class="keyword">Dim</span> ObjMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+    <span class="keyword">Set</span> ObjMaterialMngt = iObjSfdSketchBasedPanel.<strong>StrMaterialMngt</strong>
+    <span class="keyword">If</span> ObjMaterialMngt <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, "Cannot retrieve StrMaterial object"
+        <span class="keyword">Exit Sub</span>
+    End If
+    <strong>ObjMaterialMngt.SetMaterial iStrMaterial</strong>
+  <span class="keyword">End Sub</span>
+</pre>
+        <p>
+		Internally, it obtains the <code>StrMaterialMngt</code> object from <code>SfdSketchBasedPanel</code> object and calls method <code>SetMaterial</code> to set the material.
+        </p>
+		</li>
+
+        <li><a name="Step6.8"></a><strong>Run</strong>
+		<p>
+		The <code>SetMaterial</code> subroutine accepts a <code>SfdSketchBasedPanel</code> as input and after obtaining an object of <code>StrSfdPlatesMngt</code> from it,
+		it calls the <code>Run</code> method on <code>StrSfdPlatesMngt</code>.
+		</p>
+		<pre class="code">
+  <span class="keyword">Sub</span> Run(iObjSfdSketchBasedPanel <span class="keyword">As</span> SfdSketchBasedPanel)
+    ' Obtain the StrSfdPlatesMngt
+    <span class="keyword">Dim</span> ObjSfdPlatesMngt <span class="keyword">As</span> StrSfdPlatesMngt
+    <span class="keyword">Set</span> ObjSfdPlatesMngt = iObjSfdSketchBasedPanel.<strong>StrSfdPlatesMngt</strong>
+    <span class="keyword">If</span> ObjSfdPlatesMngt <span class="keyword">Is Nothing Then</span>
+        Err.Raise 1, Err.Source, "Cannot retrieve StrSfdPlatesMngt object"
+        <span class="keyword">Exit Sub
+    End If</span>
+    
+    <strong>ObjSfdPlatesMngt.Run</strong>
+    'Panel is Created
+  <span class="keyword">End Sub</span>
+</pre>
+		</li>
+			
+		</ul>
+		<table>
+			<caption><a name="Fig.1"></a>Fig.1: Parametric Panel</caption>
+			<tr>
+				<td>
+				<img alt="Parametric Panel" src="CAAScdSfdUcCreateSketchBasedPanel.png"/></td>
+			</tr>
+		</table>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATOpnsInertiaIDLItf InertiaBox (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATOpnsInertiaIDLItf.htm" href="../CATOpnsInertiaIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATOpnsInertiaIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "InertiaBox"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> InertiaBox<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_InertiaBox_26269','InertiaBox','0');</script>
+<section id='maindesc'>
+<b><i> Interface representing the inertia Bounding Box of an element.</i></b><br>
+
+
+ Get the computation mode of the results.
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetBoundingBox"><b>GetBoundingBox</b></a>
+</td><td  id='tdright'>  Retrieves the bounding box of inertia.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetBoundingBox"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetBoundingBox</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oBoundingBoxOrigin</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oBoundingBoxLenths</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the bounding box of inertia.
+ The compute of the bounding box is optimized taking into account the inertia principal axes and center of gravity.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oBoundingBoxOrigin</span></dt>
+   <dd>    The array of the bounding box origin:
+    <ul>
+    <li>oBoundingBoxOrigin(0) is the origin value with respect to the first principal axe of inertia
+    <li>oBoundingBoxOrigin(1) is the origin value with respect to the second principal axe of inertia
+    <li>oBoundingBoxOrigin(2) is the origin value with respect to the third principal axe of inertia
+    </ul>
+ 
+ </ dd>
+    <dt><span class='paramitem'> oBoundingBoxLengths</span></dt>
+   <dd>    The array of the bounding box lengths:
+    <ul>
+    <li>oBoundingBoxLengths(0) is the length value with respect to the first principal axe of inertia
+    <li>oBoundingBoxLengths(1) is the length value with respect to the second principal axe of inertia
+    <li>oBoundingBoxLengths(2) is the length value with respect to the third principal axe of inertia
+    </ul>
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">    This  example  retrieves  the bounding box of <tt>theInertiaBoxElement</tt>.
+    <pre>
+      Set theInertiaBoxService = CATIA.ActiveEditor.GetService("InertiaBoxService")
+      Dim theInertiaBoxElement As InertiaBox
+      Set theInertiaBoxElement = theInertiaBoxService.GetInertiaBoxElement(theSelection)
+      Dim theBoundingBoxOrigin(2)
+      Dim theBoundingBoxLengths(2)
+      theInertiaBoxElement.<font color="red">GetBoundingBox</font> theBoundingBoxOrigin, theBoundingBoxLengths
+    </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

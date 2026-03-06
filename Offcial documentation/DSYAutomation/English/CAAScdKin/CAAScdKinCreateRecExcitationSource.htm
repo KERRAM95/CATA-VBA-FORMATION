@@ -1,0 +1,145 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+<style type="text/css">
+.auto-style1 {
+	color: #008000;
+}
+.auto-style2 {
+	color: #0000FF;
+}
+</style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">' This sample creates a kinematics recorded excitation on a mechanism with 2 commands. The first 
+' command is defined on a prismatic joint. And second command is defined on a revolute joint.
+' The key frames times are (0s,100s)  
+' The key frames values for the 1rst command are (0mm,100mm)  
+' The key frames values for the 2nd command are  (90deg,450deg)
+' The kinematics scenario time parameters are (StartTime=0s, EndTime=100s, TimeStep=1s)
+'---------------------------------------------------------------------------------------------- 
+</span>
+</pre>
+<pre>
+
+<span class="auto-style2">Sub</span> CATMain()
+
+<span class="auto-style2">Dim</span> oEditor <span class="auto-style2">As</span> Editor
+<span class="auto-style2">Set</span> oEditor = CATIA.ActiveEditor
+
+<span class="auto-style2">Dim</span> oProdService <span class="auto-style2">As</span> PLMProductService
+<span class="auto-style2">Set</span> oProdService = CATIA.ActiveEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="auto-style2">Dim</span> oSimulation <span class="auto-style2">As</span> SimulationReference
+<span class="auto-style2">Set</span> oSimulation = oProdService.EditedContent.Item(1)
+
+<span class="auto-style2">Dim</span> oSimulationService <span class="auto-style2">As</span> SimSimulationService
+<span class="auto-style2">Set</span> oSimulationService = CATIA.GetSessionService(&quot;SimSimulationService&quot;)
+
+<span class="auto-style1">' Gets the root occurrence of the simulation</span>
+<span class="auto-style2">Dim</span> oRootOcc <span class="auto-style2">As</span> VPMRootOccurrence
+<span class="auto-style2">Set</span> oRootOcc = oSimulationService.GetProductRootOccurrence(oSimulation)
+
+<span class="auto-style1">' Gets the rep instance of the mechanism</span>
+<span class="auto-style2">Dim</span> oMechRepInst As VPMRepInstance
+Set oMechRepInst = oRootOcc.RepOccurrences.Item(1).RelatedRepInstance
+
+<span class="auto-style1">' Gets the mechanism object</span>
+<span class="auto-style2">Dim</span> oMechRoot <span class="auto-style2">As</span> KinMechanism
+<span class="auto-style2">Set</span> oMechRoot = oMechRepInst.ReferenceInstanceOf.GetItem(&quot;MECHRep&quot;)
+
+<span class="auto-style2">Dim</span> oBehaviorLink <span class="auto-style1">'As AnyObject</span>
+Set oBehaviorLink = oProdService.ComposeLink(oRootOcc, oMechRepInst, oMechRoot)
+<span class="auto-style2">ReDim</span> LinkArray(0) <span class="auto-style1">'As Variant</span>
+<span class="auto-style2">Set</span> LinkArray(0) = oBehaviorLink
+
+<span class="auto-style1">' Retrieves the SimulationSpecifications</span>
+<span class="auto-style2">Dim</span> oSimSpecs <span class="auto-style2">As</span> SimulationSpecifications
+<span class="auto-style2">Set</span> oSimSpecs = oSimulation.Specifications
+
+<span class="auto-style1">' Retrieve the SimulationRepresentation</span>
+<span class="auto-style2">Dim</span> oSimSpecRep As SimulationRepresentation
+Set oSimSpecRep = oSimSpecs.Item(1)
+
+<span class="auto-style1">' Retrieves the SimSpecsRepManager</span>
+<span class="auto-style2">Dim</span> oScenarioRepManager <span class="auto-style2">As</span> SimSpecsRepManager
+<span class="auto-style2">Set</span> oScenarioRepManager = oSimSpecRep.Root
+
+<span class="auto-style1">' Retrieves the SimScenarioSpecs</span>
+<span class="auto-style2">Dim</span> oScenarioSpecs <span class="auto-style1">'As SimScenarioSpecs</span>
+<span class="auto-style2">Set</span> oScenarioSpecs = oScenarioRepManager.ScenarioSpecs
+
+<span class="auto-style1">' Creates a scenario</span>
+Set oScenarioSpec = oScenarioSpecs.Add(&quot;CATKinSolverOption&quot;, &quot;&quot;, &quot;&quot;, LinkArray)
+
+<span class="auto-style1">' Gets the KinScenarioSpec</span>
+<span class="auto-style2">Dim</span> oKinScenarioSpec <span class="auto-style1">'As KinScenarioSpec</span>
+Set oKinScenarioSpec = oScenarioSpec.GetItem(&quot;KinScenario&quot;)
+
+<span class="auto-style1">' Creates a recorded excitation under the kin scenario</span>
+<span class="auto-style2">Dim</span> oKinExcitation 'As KinRecordedExcitation
+Set oKinExcitation = oKinScenarioSpec.AddRecordedExcitation
+
+<span class="auto-style1">' Gets the 2 Kinematics commands</span>
+<span class="auto-style2">Dim</span> MyCommands <span class="auto-style2">As</span> KinCommands
+Set MyCommands = oMechRoot.Commands
+
+<span class="auto-style2">Dim</span> MyCommand1 As KinCommand
+Set MyCommand1 = MyCommands.Item(1)
+
+<span class="auto-style2">Dim</span> MyCommand2 <span class="auto-style2">As</span> KinCommand
+Set MyCommand2 = MyCommands.Item(2)
+
+<span class="auto-style1">' Sets the key frames times</span>
+<span class="auto-style2">Dim</span> KeyTimes(1) 'As CATSafeArrayVariant
+KeyTimes(0) = 0#
+KeyTimes(1) = 100#
+oKinExcitation.SetKeyFramesTimes (KeyTimes)
+
+<span class="auto-style2">Dim</span> StartTime, EndTime, TimeStep  <span class="auto-style2">As</span> Double
+StartTime = 0#
+EndTime = 100#
+TimeStep = 1#
+
+<span class="auto-style1">' Sets the times parameters</span>
+<span class="auto-style2">Call</span> oKinScenarioSpec.SetTimeParameters(StartTime, EndTime, TimeStep)
+
+<span class="auto-style2">Dim</span> KeyCmdValues(1) <span class="auto-style1">'As CATSafeArrayVariant</span>
+
+<span class="auto-style1">' Sets the key frames values for the 1rst kineatics command</span>
+KeyCmdValues(0) = 0#
+KeyCmdValues(1) = 100#
+oKinExcitation.SetKeyFramesValues MyCommand1, KeyCmdValues
+
+<span class="auto-style1">' Set the key frames values for the 2nd kinematics command
+</span>KeyCmdValues(0) = 90#
+KeyCmdValues(1) = 450#
+oKinExcitation.SetKeyFramesValues MyCommand2, KeyCmdValues
+
+<span class="auto-style2">End</span> <span class="auto-style2">Sub</span>
+
+
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

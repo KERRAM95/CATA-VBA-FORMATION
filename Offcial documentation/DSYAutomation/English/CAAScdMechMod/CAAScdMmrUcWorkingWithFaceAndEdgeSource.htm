@@ -1,0 +1,557 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Working With Face and Edge Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Working with Face and Edge
+'
+'Mission:This use case fundamentally illustrates about working with Face and Edge. In this UC we learn how to retrieve Faces and Edge and create Fillets using it.
+'
+'Steps:  1- Creates a 3D Shape with Face and Edge
+'        2- Creates Face to Face Fillet With Constant Radius
+'           2.1- Selects and retrieves first Face
+'           2.2- Selects and retrieves Second Face
+'           2.3- Creates face to face Fillet
+'        3- Creates Edge Fillet With Constant Radius
+'           3.1- Selects and retrieves Edge
+'           3.2- Creates Edge Fillet With Constant Radius
+'==========================================================================================================================
+' Main Routine
+'==========================================================================================================================
+'
+Sub WorkingWithFaceAndEdge()
+
+'Error Handling
+'On Error GoTo ErrorSub
+ 
+    '1- Creates a 3D Shape with Face and Edge (a 2D Sketch extruded to a Pad)
+    Dim oPart As Part
+    CreatingGeometry oPart
+          
+    '2- Creates Face to Face Fillet With Constant Radius
+    '2.1- Select and retrieve first Face
+    'Retrieves Selection object from Active Editor
+    Dim oObjSelection
+    Set oObjSelection = CATIA.ActiveEditor.Selection
+        
+    'Selection Object updated with selection criteria (Face type)
+    Dim strStatus As String
+    Dim oInputObjectType(0)
+    oInputObjectType(0) = &quot;Face&quot;
+    
+    'Select first Face
+    Status = oObjSelection.SelectElement(oInputObjectType, &quot;Select the first face&quot;, False)
+     
+    'Retrieve First Face object
+    Dim oFirstFace As Face
+    Set oFirstFace = oObjSelection.Item(1).Value
+    
+    'Clear the selection object
+    oObjSelection.Clear
+    
+    MsgBox (&quot;Selected First Face Name : &quot;) + oFirstFace.Name
+    
+    '2.2- Select and retrieve Second Face
+    'Select the second face
+    Status = oObjSelection.SelectElement(oInputObjectType, &quot;Select the second face&quot;, False)
+        
+    'Retrieve Second Face object
+    Dim oSecondFace As Face
+    Set oSecondFace = oObjSelection.Item(1).Value
+    
+    MsgBox (&quot;Selected second Face Name : &quot;) + oSecondFace.Name
+    
+    '2.3- Create face to face Fillet
+    'Prompt the user to input the Fillet radius
+    Dim dFaceFilletRadius As Double
+    dFaceFilletRadius = InputBox(&quot;Please enter the Face Fillet Radius Value  &quot;, &quot;Enter Face Fillet Radius Value&quot;)
+    
+    'Create face to face Fillet
+    Dim oFaceFillet As FaceFillet
+    Set oFaceFillet = oPart.ShapeFactory.AddNewSolidFaceFillet(oFirstFace, oSecondFace, dFaceFilletRadius)
+
+    'Update Part
+    oPart.Update
+    
+    'Clear the selection object
+    oObjSelection.Clear
+    
+    '3- Create Edge Fillet With Constant Radius
+    '3.1- Select and retrieve Edge
+    'Selection Object updated with selection criteria (Edge type)
+    oInputObjectType(0) = &quot;Edge&quot;
+    Status = oObjSelection.SelectElement(oInputObjectType, &quot;Select the Edge for fillet&quot;, False)
+     
+    'Retrieve Edge object
+    Dim oEdge As Edge
+    Set oEdge = oObjSelection.Item(1).Value
+    
+    '3.2- Create Edge Fillet With Constant Radius
+    'Prompt the user to input the Fillet radius
+    Dim dEdgeFilletRadius As Double
+    dEdgeFilletRadius = InputBox(&quot;Please enter the Edge Fillet Radius Value &quot;, &quot;Enter Edge Fillet Radius Value&quot;)
+       
+    'Create Edge Fillet
+    Dim oEdgeFillet As EdgeFillet
+    Set oEdgeFillet = oPart.ShapeFactory.AddNewEdgeFilletWithConstantRadius(oEdge, 1, dEdgeFilletRadius)
+
+    'Update Part
+    oPart.Update
+       
+'Error Handling
+   GoTo EndSub
+
+ErrorSub:
+          MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+          GoTo EndSub
+EndSub:
+End Sub
+
+
+'-----------------------------------------------------------------------------------------------------------
+'1- Creates a 3D Shape with Face and Edge (a 2D Sketch extruded to a Pad)
+'Steps:
+'   1 -Creates a 3DShape
+'   2 -Retrieves the Part Object from the 3D Shape Editor
+'   3 -Retrieves the Body Object from the Part object
+'   4 -Create Sketch1
+'   5 -Create Pad1 on sketch1
+'   6 -Create Sketch2
+'   7 -Create Pad2 on sketch2
+'   8-Updates Part Object
+'-----------------------------------------------------------------------------------------------------------
+Sub CreatingGeometry(Part1)
+
+    '1- Creates a 3DShape
+    'Creates a new 3DShape Rep Ref
+    Dim oNewService As PLMNewService
+    Set oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+ 
+    Dim oEditor3DShape As Editor
+    oNewService.PLMCreate &quot;3DShape&quot;, oEditor3DShape
+
+    '2- Retrieves the Part Object from the 3D Shape Editor
+    Set Part1 = oEditor3DShape.ActiveObject
+
+    MsgBox (&quot;Part Name :&quot;) + Part1.Name
+    
+    '3- Retrieves the Body Object from the Part object
+    'Retrieves the Bodies a collection Object from the Part object
+    Dim bodies1 As Bodies
+    Set bodies1 = Part1.Bodies
+
+    'Retrieves the Body object from Bodies collection Object
+    Dim body1 As Body
+    Set body1 = bodies1.Item(&quot;PartBody&quot;)
+
+    'Retrieves the Sketches a collection Object from Body object
+    Dim sketches1 As Sketches
+    Set sketches1 = body1.Sketches
+
+    'Retrieves the OriginElements Object from Part object
+    Dim originElements1 As OriginElements
+    Set originElements1 = Part1.OriginElements
+
+    '4- Create Sketch1
+    'Sets the XY-plane as reference of originElements
+    Dim reference1 As Reference
+    Set reference1 = originElements1.PlaneXY
+
+    ' Add new Sketch to Sketches a collection Object
+    Dim sketch1 As Sketch
+    Set sketch1 = sketches1.Add(reference1)
+
+    Dim arrayOfVariantOfDouble1(8)
+    arrayOfVariantOfDouble1(0) = 0#
+    arrayOfVariantOfDouble1(1) = 0#
+    arrayOfVariantOfDouble1(2) = 0#
+    arrayOfVariantOfDouble1(3) = 1#
+    arrayOfVariantOfDouble1(4) = 0#
+    arrayOfVariantOfDouble1(5) = 0#
+    arrayOfVariantOfDouble1(6) = 0#
+    arrayOfVariantOfDouble1(7) = 1#
+    arrayOfVariantOfDouble1(8) = 0#
+    Set sketch1Variant = sketch1
+    sketch1Variant.SetAbsoluteAxisData arrayOfVariantOfDouble1
+    
+    'Sets the in work object of the part
+    Part1.InWorkObject = sketch1
+    
+    'Opens the Sketch Edition
+    Dim factory2D1 As Factory2D
+    Set factory2D1 = sketch1.OpenEdition()
+    
+    'Creates the Geometry
+    Dim geometricElements1 As GeometricElements
+    Set geometricElements1 = sketch1.GeometricElements
+    
+    'Retrieves a geometric element using its name, AbsoluteAxis&quot; from the GeometricElements collection
+    Dim axis2D1 As Axis2D
+    Set axis2D1 = geometricElements1.Item(&quot;AbsoluteAxis&quot;)
+    
+    'Retrieves an object from its name, HDirection, we call it Line1
+    Dim line2D1 As Line2D
+    Set line2D1 = axis2D1.GetItem(&quot;HDirection&quot;)
+    
+    line2D1.ReportName = 1
+    
+    'Retrieves an object from its name, VDirection, we call it Line2
+    Dim line2D2 As Line2D
+    Set line2D2 = axis2D1.GetItem(&quot;VDirection&quot;)
+    
+    line2D2.ReportName = 2
+    
+    'Create 2Dpoint
+    Dim point2D1 As Point2D
+    Set point2D1 = factory2D1.CreatePoint(-20#, 20#)
+    
+    point2D1.ReportName = 3
+    
+    'Create 2Dpoint
+    Dim point2D2 As Point2D
+    Set point2D2 = factory2D1.CreatePoint(150#, 20#)
+    
+    point2D2.ReportName = 4
+    
+    'Create 2D Line with two 2D Points
+    Dim line2D3 As Line2D
+    Set line2D3 = factory2D1.CreateLine(-20#, 20#, 150#, 20#)
+    
+    line2D3.ReportName = 5
+    
+    line2D3.StartPoint = point2D1
+    
+    line2D3.EndPoint = point2D2
+    
+    'Create 2DPoint
+    Dim point2D3 As Point2D
+    Set point2D3 = factory2D1.CreatePoint(150#, -50#)
+    
+    point2D3.ReportName = 6
+    
+    'Create Line
+    Dim line2D4 As Line2D
+    Set line2D4 = factory2D1.CreateLine(150#, 20#, 150#, -50#)
+    
+    line2D4.ReportName = 7
+    
+    line2D4.EndPoint = point2D2
+    
+    line2D4.StartPoint = point2D3
+    
+    'Create 2DPoint
+    Dim point2D4 As Point2D
+    Set point2D4 = factory2D1.CreatePoint(-20#, -50#)
+    
+    point2D4.ReportName = 8
+    
+    'Create Line
+    Dim line2D5 As Line2D
+    Set line2D5 = factory2D1.CreateLine(150#, -50#, -20#, -50#)
+    
+    line2D5.ReportName = 9
+    
+    line2D5.StartPoint = point2D3
+    
+    line2D5.EndPoint = point2D4
+    
+    'Create  Line
+    Dim line2D6 As Line2D
+    Set line2D6 = factory2D1.CreateLine(-20#, -50#, -20#, 20#)
+    
+    line2D6.ReportName = 10
+    
+    line2D6.EndPoint = point2D4
+    
+    line2D6.StartPoint = point2D1
+    
+    Dim constraints1 As Constraints
+    Set constraints1 = sketch1.Constraints
+    
+    Dim reference2 As Reference
+    Set reference2 = Part1.CreateReferenceFromObject(line2D3)
+    
+    Dim reference3 As Reference
+    Set reference3 = Part1.CreateReferenceFromObject(line2D1)
+    
+    Dim constraint1 As Constraint
+    Set constraint1 = constraints1.AddBiEltCst(catCstTypeHorizontality, reference2, reference3)
+    
+    constraint1.Mode = catCstModeDrivingDimension
+    
+    Dim reference4 As Reference
+    Set reference4 = Part1.CreateReferenceFromObject(line2D5)
+    
+    Dim reference5 As Reference
+    Set reference5 = Part1.CreateReferenceFromObject(line2D1)
+    
+    Dim constraint2 As Constraint
+    Set constraint2 = constraints1.AddBiEltCst(catCstTypeHorizontality, reference4, reference5)
+    
+    constraint2.Mode = catCstModeDrivingDimension
+    
+    Dim reference6 As Reference
+    Set reference6 = Part1.CreateReferenceFromObject(line2D4)
+    
+    Dim reference7 As Reference
+    Set reference7 = Part1.CreateReferenceFromObject(line2D2)
+    
+    Dim constraint3 As Constraint
+    Set constraint3 = constraints1.AddBiEltCst(catCstTypeVerticality, reference6, reference7)
+    
+    constraint3.Mode = catCstModeDrivingDimension
+    
+    Dim reference8 As Reference
+    Set reference8 = Part1.CreateReferenceFromObject(line2D6)
+    
+    Dim reference9 As Reference
+    Set reference9 = Part1.CreateReferenceFromObject(line2D2)
+    
+    Dim constraint4 As Constraint
+    Set constraint4 = constraints1.AddBiEltCst(catCstTypeVerticality, reference8, reference9)
+    
+    constraint4.Mode = catCstModeDrivingDimension
+    
+    sketch1.CloseEdition
+    
+    Part1.InWorkObject = sketch1
+    
+    Part1.Update
+    '5- Create Pad on sketch 1
+    Dim shapeFactory1 As ShapeFactory
+    Set shapeFactory1 = Part1.ShapeFactory
+    
+    'Create new Pad
+    Dim pad1 As Pad
+    Set pad1 = shapeFactory1.AddNewPad(sketch1, 20#)
+    
+    'Set first limit of Pad
+    Dim limit1 As Limit
+    Set limit1 = pad1.FirstLimit
+    
+    Dim length1 As Length
+    Set length1 = limit1.Dimension
+    
+    'Set length value
+    length1.Value = 30#
+    
+    'Update Part
+    Part1.Update
+    
+    '6- Create Sketch2
+    Dim reference10 As Reference
+    Set reference10 = Part1.CreateReferenceFromName(&quot;Selection_RSur:(Face:(Brp:(Pad.1;2);None:();Cf11:());Pad.1_ResultOUT;Z0;G2980)&quot;)
+    
+    Dim sketch2 As Sketch
+    Set sketch2 = sketches1.Add(reference10)
+    
+    Dim arrayOfVariantOfDouble2(8)
+    arrayOfVariantOfDouble2(0) = 0#
+    arrayOfVariantOfDouble2(1) = 0#
+    arrayOfVariantOfDouble2(2) = 30#
+    arrayOfVariantOfDouble2(3) = 1#
+    arrayOfVariantOfDouble2(4) = 0#
+    arrayOfVariantOfDouble2(5) = 0#
+    arrayOfVariantOfDouble2(6) = 0#
+    arrayOfVariantOfDouble2(7) = 1#
+    arrayOfVariantOfDouble2(8) = 0#
+    Set sketch2Variant = sketch2
+    sketch2Variant.SetAbsoluteAxisData arrayOfVariantOfDouble2
+    
+    Part1.InWorkObject = sketch2
+    
+    'retrieve 2d factory
+    Dim factory2D2 As Factory2D
+    Set factory2D2 = sketch2.OpenEdition()
+    
+    Dim geometricElements2 As GeometricElements
+    Set geometricElements2 = sketch2.GeometricElements
+    
+    'Set Absolute axis
+    Dim axis2D2 As Axis2D
+    Set axis2D2 = geometricElements2.Item(&quot;AbsoluteAxis&quot;)
+    
+    'Create Line
+    Dim line2D7 As Line2D
+    Set line2D7 = axis2D2.GetItem(&quot;HDirection&quot;)
+    
+    line2D7.ReportName = 1
+    
+    'Create Line
+    Dim line2D8 As Line2D
+    Set line2D8 = axis2D2.GetItem(&quot;VDirection&quot;)
+    
+    line2D8.ReportName = 2
+    
+    'Create Point
+    Dim point2D5 As Point2D
+    Set point2D5 = factory2D2.CreatePoint(-20#, 20#)
+    
+    point2D5.ReportName = 3
+    
+    'Create Point
+    Dim point2D6 As Point2D
+    Set point2D6 = factory2D2.CreatePoint(10#, 20#)
+    
+    point2D6.ReportName = 4
+    
+    'Create Line
+    Dim line2D9 As Line2D
+    Set line2D9 = factory2D2.CreateLine(-20#, 20#, 10#, 20#)
+    
+    line2D9.ReportName = 5
+    
+    line2D9.StartPoint = point2D5
+    
+    line2D9.EndPoint = point2D6
+    
+    'Create Point
+    Dim point2D7 As Point2D
+    Set point2D7 = factory2D2.CreatePoint(10#, -50#)
+    
+    point2D7.ReportName = 6
+    
+    'Create Line
+    Dim line2D10 As Line2D
+    Set line2D10 = factory2D2.CreateLine(10#, 20#, 10#, -50#)
+    
+    line2D10.ReportName = 7
+    
+    line2D10.EndPoint = point2D6
+    
+    line2D10.StartPoint = point2D7
+    
+    'Create Point
+    Dim point2D8 As Point2D
+    Set point2D8 = factory2D2.CreatePoint(-20#, -50#)
+    
+    point2D8.ReportName = 8
+    
+    'Create Line
+    Dim line2D11 As Line2D
+    Set line2D11 = factory2D2.CreateLine(10#, -50#, -20#, -50#)
+    
+    line2D11.ReportName = 9
+    
+    line2D11.StartPoint = point2D7
+    
+    line2D11.EndPoint = point2D8
+    
+    Dim line2D12 As Line2D
+    Set line2D12 = factory2D2.CreateLine(-20#, -50#, -20#, 20#)
+    
+    line2D12.ReportName = 10
+    
+    line2D12.EndPoint = point2D8
+    
+    line2D12.StartPoint = point2D5
+    
+    Dim constraints2 As Constraints
+    Set constraints2 = sketch2.Constraints
+    
+    Dim reference11 As Reference
+    Set reference11 = Part1.CreateReferenceFromObject(line2D9)
+    
+    Dim reference12 As Reference
+    Set reference12 = Part1.CreateReferenceFromObject(line2D7)
+    
+    Dim constraint5 As Constraint
+    Set constraint5 = constraints2.AddBiEltCst(catCstTypeHorizontality, reference11, reference12)
+    
+    constraint5.Mode = catCstModeDrivingDimension
+    
+    Dim reference13 As Reference
+    Set reference13 = Part1.CreateReferenceFromObject(line2D11)
+    
+    Dim reference14 As Reference
+    Set reference14 = Part1.CreateReferenceFromObject(line2D7)
+    
+    Dim constraint6 As Constraint
+    Set constraint6 = constraints2.AddBiEltCst(catCstTypeHorizontality, reference13, reference14)
+    
+    constraint6.Mode = catCstModeDrivingDimension
+    
+    Dim reference15 As Reference
+    Set reference15 = Part1.CreateReferenceFromObject(line2D10)
+    
+    Dim reference16 As Reference
+    Set reference16 = Part1.CreateReferenceFromObject(line2D8)
+    
+    Dim constraint7 As Constraint
+    Set constraint7 = constraints2.AddBiEltCst(catCstTypeVerticality, reference15, reference16)
+    
+    constraint7.Mode = catCstModeDrivingDimension
+    
+    Dim reference17 As Reference
+    Set reference17 = Part1.CreateReferenceFromObject(line2D12)
+    
+    Dim reference18 As Reference
+    Set reference18 = Part1.CreateReferenceFromObject(line2D8)
+    
+    Dim constraint8 As Constraint
+    Set constraint8 = constraints2.AddBiEltCst(catCstTypeVerticality, reference17, reference18)
+    
+    constraint8.Mode = catCstModeDrivingDimension
+    
+    sketch2.CloseEdition
+    
+    Part1.InWorkObject = sketch2
+    
+    Part1.Update
+    
+    '7 -Create Pad2 on sketch2
+    Dim pad2 As Pad
+    Set pad2 = shapeFactory1.AddNewPad(sketch2, 30#)
+    
+    'Set limit of Pad
+    Dim limit2 As Limit
+    Set limit2 = pad2.FirstLimit
+    
+    Dim length2 As Length
+    Set length2 = limit2.Dimension
+    
+    length2.Value = 60#
+    
+    'Update part
+    Part1.Update
+    
+    'Retrieve SpecsAndGeomWindow
+    Dim specsAndGeomWindow1 As SpecsAndGeomWindow
+    Set specsAndGeomWindow1 = CATIA.ActiveWindow
+    
+    Dim viewer3D1 As Viewer3D
+    Set viewer3D1 = specsAndGeomWindow1.ActiveViewer
+    
+    'Set view point
+    Dim viewpoint3D1 As Viewpoint3D
+    Set viewpoint3D1 = viewer3D1.Viewpoint3D
+
+End Sub
+
+</pre>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

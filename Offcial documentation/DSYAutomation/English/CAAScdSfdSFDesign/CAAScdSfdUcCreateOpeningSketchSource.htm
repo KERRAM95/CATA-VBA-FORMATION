@@ -1,0 +1,256 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSfdUcCreateOpeningSketch.CATScript</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates two openings using sketches.</span>
+<span class="comment">'This script requires sfd model which contains a panel and two sketch profiles</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</span>
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="comment">'   4- Retrieves a SFD panel object</span>
+<span class="comment">'   5- Retrieves first sketch profile</span>
+<span class="comment">'   6- Creates opening with limit mode set to UpToLast</span>
+<span class="comment">'   7- Retrieves second sketch profile</span>
+<span class="comment">'   8- Creates opening with limit mode set to dimensions(Limit1/Limit2)</span>
+<span class="comment">'   9- Updates the Part object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+Language=&quot;VBSCRIPT&quot; 
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+
+<span class="keyword">Sub </span>CATMain()
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</span>
+<span class="keyword">    Dim </span>SFDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SFD_VB_TEST&quot;
+    OpenProduct prdName , SFDPrdEditor
+    
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="keyword">    Set </span>SFDProdSel = SFDPrdEditor.Selection
+    
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="keyword">    Set </span>ObjPart = SFDPrdEditor.ActiveObject
+    
+<span class="comment">'   4- Retrieves a SFD panel object</span>
+<span class="keyword">    Set </span>RefSfdPanel = ObjPart.FindObjectByName(&quot;Panel.1&quot;)
+<span class="keyword">    Dim </span>ObjSfdPanel<span class="keyword"> As </span>SfdPanel
+    SFDProdSel.Add RefSfdPanel
+<span class="keyword">    Set </span>ObjSfdPanel = SFDProdSel.FindObject(&quot;CATIASfdPanel&quot;)
+    
+<span class="comment">'   5- Retrieves first sketch profile</span>
+<span class="keyword">    Set </span>ProfileSketchOpeningUpToLast = ObjPart.FindObjectByName(&quot;Profile.1&quot;)
+<span class="keyword">    Set </span>RefProfileSketchOpeningUpToLast = ObjPart.CreateReferenceFromObject(ProfileSketchOpeningUpToLast)
+
+
+<span class="comment">'   6- Creates opening with Extrusion set to UpToLast</span>
+<span class="keyword">    Dim </span>ObjStrOpeningWtLtMdUpToLast<span class="keyword"> As </span>StrOpening
+    CreateOpeningSketchUpToLast ObjSfdPanel, RefProfileSketchOpeningUpToLast, ObjStrOpeningWtLtMdUpToLast
+    
+<span class="comment">'   7- Retrieves second sketch profile</span>
+<span class="keyword">    Set </span>ProfileSketchOpeningDimensions = ObjPart.FindObjectByName(&quot;Profile.2&quot;)
+<span class="keyword">    Set </span>RefProfileSketchOpeningDimensions = ObjPart.CreateReferenceFromObject(ProfileSketchOpeningDimensions)
+    
+<span class="comment">'   8- Creates opening with Extrusion set to dimensions(Limit1/Limit2)</span>
+<span class="keyword">    Dim </span>ObjStrOpeningWtLtMdDim<span class="keyword"> As </span>StrOpening
+    CreateOpeningSketchDimensions ObjSfdPanel, RefProfileSketchOpeningDimensions, ObjStrOpeningWtLtMdDim
+    
+<span class="comment">'   9- Updates the Part object</span>
+    ObjPart.Update
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Opening with limit mode UpToLasat</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   6.1- Creates a opening with no properties set</span>
+<span class="comment">'   6.2- Sets opening type to 1 for sketch opening</span>
+<span class="comment">'   6.3- Sets category</span>
+<span class="comment">'   6.4- Sets forming extrusion mode</span>
+<span class="comment">'   6.5- Sets output profile </span>
+<span class="comment">'   6.6- Updates created opening object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateOpeningSketchUpToLast(iObjSfdPanel<span class="keyword"> As </span>SfdPanel, iRefProfileSketch<span class="keyword"> As </span>Reference, oObjStrOpening<span class="keyword"> As </span>StrOpening)
+    
+<span class="comment">'   6.1- Creates a opening with no properties set</span>
+    AddOpening iObjSfdPanel, oObjStrOpening
+    
+<span class="comment">'   6.2- Sets opening type to catStrOpeningModeOutputProfile for sketch opening</span>
+    SetOpeningType oObjStrOpening, catStrOpeningModeOutputProfile
+    
+<span class="comment">'   6.3- Sets category</span>
+    SetCategory oObjStrOpening, &quot;SldOpening&quot;
+
+<span class="comment">'   6.4- Sets forming extrusion mode</span>
+<span class="keyword">    Set </span>ObjStrOpeningExtrusionMngt = oObjStrOpening.StrOpeningExtrusionMngt
+    ObjStrOpeningExtrusionMngt.ExtrusionMode = 2
+    
+<span class="comment">'   6.5- Sets output profile </span>
+    <span class="comment">'set LimitMode to 0 for UpTOLast</span>
+    SetOutPutProfile oObjStrOpening, iRefProfileSketch, 0
+
+<span class="comment">'   6.6- Updates created opening object</span>
+    ObjPart.UpdateObject oObjStrOpening
+
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create opening with limit mode Dimensions</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   8.1- Creates a opening with no properties set</span>
+<span class="comment">'   8.2- Sets opening type to 1 for sketch opening</span>
+<span class="comment">'   8.3- Sets category</span>
+<span class="comment">'   8.4- Sets forming extrusion mode</span>
+<span class="comment">'   8.5- Sets output profile </span>
+<span class="comment">'   8.6- Retrieves StrOpeningLimitDimensionsMngt object</span>
+<span class="comment">'   8.7- Retrieves and sets FirstOffset and SecondOffset parameter values of opening and invert it</span>
+<span class="comment">'   8.8- Updates created opening object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateOpeningSketchDimensions(iObjSfdPanel<span class="keyword"> As </span>SfdPanel, iRefProfileSketch<span class="keyword"> As </span>Reference, oObjStrOpening<span class="keyword"> As </span>StrOpening)
+    
+<span class="comment">'   8.1- Creates a opening with no properties set</span>
+    AddOpening iObjSfdPanel, oObjStrOpening
+    
+<span class="comment">'   8.2- Sets opening type to catStrOpeningModeOutputProfile</span>
+    SetOpeningType oObjStrOpening, catStrOpeningModeOutputProfile
+    
+<span class="comment">'   8.3- Sets category</span>
+    SetCategory oObjStrOpening, &quot;SldOpening&quot;
+
+<span class="comment">'   8.4- Sets forming extrusion mode</span>
+<span class="keyword">    Set </span>ObjStrOpeningExtrusionMngt = oObjStrOpening.StrOpeningExtrusionMngt
+    ObjStrOpeningExtrusionMngt.ExtrusionMode = 2
+    
+<span class="comment">'   8.5- Sets output profile </span>
+    <span class="comment">'set LimitMode to 1 for Dimensions</span>
+    SetOutPutProfile oObjStrOpening, iRefProfileSketch, 1
+
+<span class="comment">'   8.6- Retrieves StrOpeningLimitDimensionsMngt object</span>
+<span class="keyword">    Dim </span>ObjStrOpeningLimitDimensionsMngt<span class="keyword"> As </span>StrOpeningLimitDimensionsMngt
+<span class="keyword">    Set </span>ObjStrOpeningLimitDimensionsMngt = oObjStrOpening.StrOpeningLimitDimensionsMngt
+    
+<span class="comment">'   8.7- Retrieves and sets FirstOffset and SecondOffset parameter values of opening and invert it</span>
+    <span class="comment">'set FirstOffset of opening output profile</span>
+<span class="keyword">    Set </span>FirstOffset = ObjStrOpeningLimitDimensionsMngt.GetFirstOffset
+    FirstOffset.ValuateFromString (&quot;1000mm&quot;)
+    <span class="comment">'Set second Offset of opening output profile</span>
+<span class="keyword">    Set </span>SecondOffset = ObjStrOpeningLimitDimensionsMngt.GetSecondOffset
+    SecondOffset.ValuateFromString (&quot;-2000mm&quot;)
+    <span class="comment">'Invert the first offset and second offset</span>
+    ObjStrOpeningLimitDimensionsMngt.Invert
+    
+<span class="comment">'   8.8- Updates created opening object</span>
+    ObjPart.UpdateObject oObjStrOpening
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set output profile</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Retrieves StrOpeningOutputProfile</span>
+<span class="comment">'   2- Sets OutputProfile for sketch opening</span>
+<span class="comment">'   3- Sets direction</span>
+<span class="comment">'   4- Sets LimitMode</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetOutPutProfile(iObjStrOpening<span class="keyword"> As </span>StrOpening, iOutputProfile<span class="keyword"> As </span>Reference, iLimitMode<span class="keyword"> As </span>Long)
+<span class="comment">'   1- Retrieves StrOpeningOutputProfile</span>
+<span class="keyword">    Dim </span>ObjStrOpeningOutputProfile<span class="keyword"> As </span>StrOpeningOutputProfile
+<span class="keyword">    Set </span>ObjStrOpeningOutputProfile = iObjStrOpening.StrOpeningOutputProfile
+    
+<span class="comment">'   2- Sets OutputProfile for sketch opening</span>
+    ObjStrOpeningOutputProfile.OutputProfile = iOutputProfile
+    
+<span class="comment">'   3- Sets direction</span>
+<span class="keyword">    Set </span>Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+<span class="keyword">    Set </span>ObjRefDirection = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.1&quot;)
+<span class="keyword">    Set </span>RefDirection = ObjPart.CreateReferenceFromObject(ObjRefDirection)
+    ObjStrOpeningOutputProfile.Direction = RefDirection
+    
+<span class="comment">'   4- Sets LimitMode</span>
+    ObjStrOpeningOutputProfile.LimitMode = iLimitMode
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Sets category</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetCategory(iObjStrOpening<span class="keyword"> As </span>StrOpening, iCategory<span class="keyword"> As </span>String)
+    <span class="comment">'Get StrCategoryMngt object</span>
+<span class="keyword">    Dim </span>ObjStrCategoryMngt<span class="keyword"> As </span>StrCategoryMngt
+<span class="keyword">    Set </span>ObjStrCategoryMngt = iObjStrOpening.StrCategoryMngt
+    <span class="comment">'set catgory</span>
+    ObjStrCategoryMngt.SetCategory iCategory
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Sets Opening Type</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetOpeningType(iObjStrOpening<span class="keyword"> As </span>StrOpening, iOpeningType<span class="keyword"> As </span>CATStrOpeningMode)
+    <span class="comment">'set opening type</span>
+    iObjStrOpening.OpeningType = iOpeningType
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Adds a new opening with no properties set</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>AddOpening(iObjSfdPanel<span class="keyword"> As </span>SfdPanel, oObjStrOpening<span class="keyword"> As </span>StrOpening)
+    <span class="comment">'Get StrOpeningsMngt object</span>
+<span class="keyword">    Dim </span>ObjStrOpenings<span class="keyword"> As </span>StrOpenings
+<span class="keyword">    Set </span>ObjStrOpenings = iObjSfdPanel.GetOpenings(0)
+    <span class="comment">'Add opening</span>
+<span class="keyword">    Set </span>oObjStrOpening = ObjStrOpenings.Add
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SFDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SFDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATGSMIDLItf HybridShapePlaneBetween (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATGSMIDLItf.htm" href="../CATGSMIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATGSMIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "HybridShapePlaneBetween"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> HybridShapePlaneBetween<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_HybridShapePlaneBetween_35092','HybridShapePlaneBetween','0');</script>
+<section id='maindesc'>
+<b><i> </i></b><br>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#FirstElement"><b>FirstElement</b></a>
+</td><td  id='tdright'>  Returns or sets the first reference Plane.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Orientation"><b>Orientation</b></a>
+</td><td  id='tdright'>  Returns or sets the orientation.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Ratio"><b>Ratio</b></a>
+</td><td  id='tdright'>   Get the ratio.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SecondElement"><b>SecondElement</b></a>
+</td><td  id='tdright'>  Returns or sets the second reference Plane.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="FirstElement"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>FirstElement</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the first reference Plane.
+ <br>Sub-element(s) supported (see 
+<script type="text/javascript"> activateLinkAnchor('CATIABoundary','','CATIABoundary') </script> object):  
+<script type="text/javascript"> activateLinkAnchor('CATIAVertex','','CATIAVertex') </script>.<dl>
+<dt><b>Example</b>:
+<dd>
+ This example retrieves in <code>RefPlane1</code> the first reference Plane for the
+<code>PlaneBetween</code> hybrid shape feature.
+<pre>
+ Dim RefPlane1 As Reference
+ Set RefPlane1 = PlaneBetween.<font color="red">FirstPlane</font>
+</pre>
+</dl>
+</dd>
+<a id="Orientation"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Orientation</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the orientation.
+ <b>Role</b>:<br>
+  Orientation = 1 means that distance is measured from the second Plane
+ <dl>
+ <dt><b>Example</b>:
+ <dd>
+ This example retrieves in <code>Orient</code> the orientation for the <code>PlaneBetween</code> hybrid shape feature.
+<pre>
+ Dim Orient As long
+ Set Orient = PlaneBetween.<font color="red">Orientation</font>
+ </pre>
+ </dl>
+</dd>
+<a id="Ratio"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Ratio</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIARealParam','CATIARealParam')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+  Get the ratio.
+ <b>Role</b>: <br>
+   if  d1 is the distance between the first Plane and the created Plane,
+   and d2 is the distance between the first Plane and the second Plane,
+   then ratio = d1/d2.
+ <dl>
+ <dt><b>Example</b>:
+ <dd>
+ This example retrieves in <code>ratio</code> the orientation for the <code>PlaneBetween</code> hybrid shape feature.
+<pre>
+ Dim ratio  As CATIARealParam
+ Get ratio = PlaneBetween.<font color="red">Ratio</font>
+ </pre>
+ </dl>
+</dd>
+<a id="SecondElement"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SecondElement</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the second reference Plane.
+ <br>Sub-element(s) supported (see 
+<script type="text/javascript"> activateLinkAnchor('CATIABoundary','','CATIABoundary') </script> object):  
+<script type="text/javascript"> activateLinkAnchor('CATIAVertex','','CATIAVertex') </script>.<dl>
+<dt><b>Example</b>:
+<dd>
+ This example retrieves in <code>RefPlane2</code> the second reference Plane for the
+<code>PlaneBetween</code> hybrid shape feature.
+<pre>
+ Dim RefPlane2 As Reference
+ Set RefPlane2 = PlaneBetween.<font color="red">SecondPlane</font>
+</pre>
+</dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

@@ -1,0 +1,435 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Converting an SFD Stiffener</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Converting an SFD Stiffener</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case 
+						primarily focuses on the methodology to convert SFD 
+						Stiffener into Web/Flange or Web/FlatBar.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you 
+						begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSfdUcCGR.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcSR.3dxml</div></code>, 
+							<code><div class=vb_sample_data>CAAScdSfdUcWT18x179_5.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcSteel_A90.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcPart.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcConvertStiffener.3dxml</div></code> 
+							files supplied 
+							in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSfdSFDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where 
+								the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSfdUcConvertStiffenerSource.htm">
+						CAAScdSfdUcConvertStiffenerSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSfdTocSFDesign.htm">Structure Functional Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in eight steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as 
+			&quot;SFD_ConvertStiffener&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves Service manager</a></li>
+			<li><a href="#Step5">Retrieves SfdFactory for getting SFD objects</a></li>			
+			<li><a href="#Step6">Retrieves a SFD panel(&quot;panel.1&quot;) object</a></li>
+			<li><a href="#Step7">Creates a Stiffener </a></li>
+			<li><a href="#Step8">Calling ConvertStiffener</a></li>
+			<li><a href="#Step9">Update the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p class="task"><strong><a name="Step1"></a>Searches and opens model 
+			which is named as &quot;SFD_ConvertStiffener&quot; </strong></p>
+			<p class="task">As a first step, the UC retrieves a model 
+			&quot;SFD_ConvertStiffener&quot; from DB and loads it and returns object of 
+			the Editor.</p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SFDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SFD_ConvertStiffener&quot;
+ OpenProduct prdName , SFDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After 
+			searching and opening of SFD model from underlying database the 
+			current active editor is returned in <strong><code>SFDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step2"></a>Retrieves Selection 
+			Object</strong></p>
+			<p>As a next step, the UC retrieves Selection object in SFDProdSel 
+			variable. To retrieve the Selection object <strong><code>
+			SFDPrdEditor </code>
+			</strong>is used.</p>
+			<pre class="code"> ...
+<span class="keyword">    Set</span> SFDProdSel = SFDPrdEditor<strong>.Selection </strong>
+ ...</pre>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p class="task">In this step UC retrieves Part object ObjPart 
+			variable.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> ObjPart = SFDPrdEditor.<strong>ActiveObject</strong> 
+...</pre>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step4"></a>Retrieves Service 
+			Manager</strong></p>
+			<p class="task">In this step UC retrieves object of RfgService.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.<strong>GetService(&quot;</strong>RfgService<strong>&quot;)</strong> 
+...</pre>
+			<p class="task"><em>GetService</em> method returns the service <code>
+			RfgService</code> in <code>Manager</code> variable. This service 
+			provides various services.</p>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step5"></a>Retrieves SfdFactory for 
+			getting SFD objects</strong></p>
+			<p class="task">In this step UC retrieves SFDFactory for getting SFD 
+			objects.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> ObjSfdFactory = ObjPart.<strong>GetCustomerFactory</strong>(&quot;SfdFactory&quot;) 
+...</pre>
+			</li>
+
+			<li>
+			<p class="task"><strong><a name="Step6"></a>Retrieves a SFD panel 
+			(&quot;panel.1&quot;) object</strong></p>
+			<p class="task">In this step UC finds a SFD panel in the part and 
+			retrieve SfdPanel object using Selection object.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> RefSfdPanel = ObjPart.<strong>FindObjectByName(&quot;</strong>Panel.1<strong>&quot;)</strong> 
+  <span class="keyword">Dim</span> ObjSfdPanel <span class="keyword">As</span> SfdPanel 
+  SFDProdSel.<strong>Add </strong>RefSfdPanel 
+  <span class="keyword">Set</span> ObjSfdPanel = SFDProdSel.<strong>FindObject(&quot;</strong>CATIASfdPanel<strong>&quot;)</strong> 
+...</pre>
+			<p class="task">In above lines, <em>FindObjectByName</em> method 
+			finds object whose name is &quot;Panel.1&quot; and returns reference to it. 
+			Here
+			<code>RefSfdPanel</code> is of type <code>Reference</code>. To 
+			retrieve
+			<code>SfdPanel</code> object from the reference, add retrieved 
+			reference to the selection and call <em>FindObject</em> method as 
+			shown above. This will give the <code>SfdPanel</code> object.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Creates a Stiffener</strong></p>
+			<p class="task">Now panel is available to create stiffener on it. 
+			Call
+			<code>CreateStiffener</code> method to create stiffener. <code>
+			CreateStiffener</code> 
+			method takes a panel as input and created stiffener is returned in 
+			output parameter.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjSfdStiffener <span class="keyword">As</span> StrSfdStiffener 			
+  <strong>CreateStiffener</strong> ObjSfdPanel, ObjSfdStiffener 
+...</pre>
+			<p>The method <code>CreateStiffener</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p class="task">Retrieves the <code>StrSfdStiffeners</code> 
+				object from panel. Then <code>AddStiffener</code> method from 
+				object
+				<code>StrSfdStiffeners</code> will create a new empty stiffener.</p>
+				<pre class="code"><span class="keyword">Sub</span> CreateStiffener(iObjSfdPanel <span class="keyword">As</span> SfdPanel, oObjSfdStiffener <span class="keyword">As </span>StrSfdStiffener)
+    <span class="comment">'Get StrSfdStiffeners object</span>
+    <span class="keyword">Dim</span> ObjSfdStiffeners <span class="keyword">As</span> StrSfdStiffeners
+    <span class="keyword">Set</span> ObjSfdStiffeners = iObjSfdPanel.<strong>StrSfdStiffeners</strong>
+    <span class="comment">'Add Stiffener</span>
+    <span class="keyword">Set</span> oObjSfdStiffener = ObjSfdStiffeners.<strong>AddStiffener</strong>
+...</pre>
+				<p class="task"><code>StrSfdStiffeners </code>object is 
+				retrieved in
+				<code>ObjSfdStiffeners</code> variable from <code>iObjSfdPanel</code> 
+				object. On <code>ObjSfdStiffeners</code> object <code>
+				AddStiffener</code> 
+				method is called to create the empty stiffener. Now Uc needs to 
+				set the different properties of the stiffener like material, 
+				category etc.</p>
+				</li>
+				<li>
+				<p class="task">Set different properties of the stiffener like 
+				material. Retrieve the <code>StrMaterialMngt</code> object from <code>
+				StrSfdStiffener</code> 
+				object and set the material for the stiffener using <code>
+				SetMaterial</code> 
+				method.</p>
+				<pre class="code">...
+    <span class="comment">'Get StrMaterialMngt object</span>
+    <span class="keyword">Dim</span> ObjMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+    <span class="keyword">Set</span> ObjMaterialMngt = oObjSfdStiffener.<strong>StrMaterialMngt</strong>
+    <span class="comment">'Set material of the stiffener</span>
+    ObjMaterialMngt.<strong>SetMaterial</strong>(&quot;Steel A90&quot;) 
+...</pre>
+				<p class="task"><code>ObjMaterialMngt</code> object is of type
+				<code>StrMaterialMngt</code>. It is retrieved from the stiffener
+				<code>oObjSfdStiffener</code>. <code>SetMaterial</code> method 
+				is called to set the material on object <code>ObjMaterialMngt</code>.</p>
+				</li>
+				<li>
+				<p class="task">To set the category retrieve the <code>
+				StrCategoryMngt
+				</code>object from <code>StrSfdStiffener</code> object and set 
+				category using <code>SetCategory</code> method.</p>
+				<pre class="code">...
+    <span class="comment">'Get StrCategoryMngt object</span>
+    <span class="keyword">Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjStrCategoryMngt = oObjSfdStiffener.<strong>StrCategoryMngt</strong>
+    <span class="comment">'Set category of the stiffener</span>
+    ObjStrCategoryMngt.<strong>SetCategory</strong>(&quot;SldStiffener&quot;)<strong> </strong>
+...</pre>
+				</li>
+				<li>
+				<p class="task">Sets the <code>ProfileType</code> property of 
+				the stiffener to catStrProfileModeSurfSurf (here 
+				catStrProfileModeSurfSurf means profile is created with the 
+				intersection of two surfaces).</p>
+				<pre class="code">...
+    <span class="comment">'Set type of the stiffener</span>
+    oObjSfdStiffener.<strong>ProfileType </strong>= catStrProfileModeSurfSurf
+...</pre>
+				</li>
+				<li>
+				<p class="task">Retrieves the <code>StrSectionMngt</code> object 
+				from the created stiffener object and sets the different section 
+				parameters like section name, anchor point, web orientation, 
+				flange orientation.&nbsp;&nbsp; </p>
+				<pre class="code">...
+    <span class="comment">'Get StrSectionMngt object</span>
+    <span class="keyword">Dim</span> ObjStrSectionMngt <span class="keyword">As</span> StrSectionMngt
+    <span class="keyword">Set</span> ObjStrSectionMngt = oObjSfdStiffener.<strong>StrSectionMngt</strong>
+    <span class="comment">'Set different section parameters</span>
+    ObjStrSectionMngt.<strong>SetSectionName </strong>(&quot;WT18x179.5&quot;)
+    ObjStrSectionMngt.<strong>AnchorPoint </strong>= &quot;catStrTopCenter&quot;
+    ObjStrSectionMngt.<strong>WebOrientation </strong>= 1
+    ObjStrSectionMngt.<strong>FlangeOrientation </strong>= 1
+    ObjStrSectionMngt.<strong>AngleMode </strong>= 0
+...</pre>
+				<p class="task"><code>ObjStrSectionMngt</code> object which is 
+				of type <code>StrSectionMngt</code> is used to set the different 
+				section properties of the stiffener. <code>SetSectionName</code> 
+				method sets the section name for the stiffener. <code>
+				AnchorPoint</code> 
+				property is used to set anchor point to &quot;catStrTopCenter&quot;. 
+				Similarly
+				<code>WebOrientation</code> and <code>FlangeOrientation</code> 
+				properties are set to 1.</p>
+				</li>
+				<li>
+				<p class="task">Retrieves the <code>StrProfileLimitMngt</code> 
+				object from the created stiffener object and sets the Start 
+				limit and End limit of the stiffener.</p>
+				<pre class="code">...
+    <span class="comment">'Get StrProfileLimitMngt object</span>
+    <span class="keyword">Dim</span> ObjStrProfileLimitMngt <span class="keyword">As</span> StrProfileLimitMngt
+    <span class="keyword">Set</span> ObjStrProfileLimitMngt = oObjSfdStiffener.<strong>StrProfileLimitMngt</strong>
+    <span class="comment">'Set the profile limits</span>
+    <span class="keyword">Set</span> ObjStartLimit = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.70&quot;)
+    <span class="keyword">Set</span> StartLimit = ObjPart.CreateReferenceFromObject(ObjStartLimit)
+    ObjStrProfileLimitMngt.<strong>SetLimitingObject </strong>1, StartLimit
+    <span class="keyword">Set</span> ObjEndLimit = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.110&quot;)
+    <span class="keyword">Set</span> EndLimit = ObjPart.CreateReferenceFromObject(ObjEndLimit)
+    ObjStrProfileLimitMngt.<strong>SetLimitingObject </strong>2, EndLimit
+...</pre>
+				<p class="task"><code>ObjStrProfileLimitMngt</code> is retrieved 
+				from the <code>oObjSfdStiffener</code> object. Variable <code>
+				StartLimit</code> 
+				and <code>EndLimit</code> are of type <code>Reference</code> 
+				which contains references to planes &quot;CROSS.70&quot; and &quot;CROSS.110&quot; 
+				respectively. Reference to plane is retrieved using <code>
+				GetReferencePlane</code> 
+				method on <code>Manager</code> object. <code>Manager</code> 
+				object is of type <code>RfgService</code>. <code>
+				ObjStrProfileLimitMngt</code> 
+				calls <code>SetLimitingObject</code> method to set the start and 
+				end limit of the of the stiffener. <code>SetLimitingObject</code> 
+				method hass two input parameters. First input defines whether it 
+				is start of the stiffener or end of the stiffener. Second input 
+				is the limiting object.</p>
+				</li>
+				<li>
+				<p class="task">Retrieves the <code>StrProfileSurfSurf</code> 
+				object from the created stiffener object and sets two surfaces 
+				which are intersecting with each other. At the intersection of 
+				these two surfaces stiffener will be created. </p>
+				<pre class="code">...
+    <span class="comment">'Get StrProfileSurfSurf object</span>
+    <span class="keyword">Dim</span> ObjStrProfileSurfSurf <span class="keyword">As</span> StrProfileSurfSurf
+    <span class="keyword">Set</span> ObjStrProfileSurfSurf = oObjSfdStiffener.<strong>StrProfileSurfSurf</strong>
+    <span class="comment">'Set two surfaces</span>
+    <span class="keyword">Dim</span> DMS <span class="keyword">As</span> Reference 
+    <span class="keyword">Set</span> DMS = iObjSfdPanel.<strong>GetDelimitedSupport</strong>
+    ObjStrProfileSurfSurf.<strong>FirstSurface</strong> = DMS
+    <span class="keyword">Set</span> ObjWebSupport = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.4&quot;)
+    <span class="keyword">Set</span> WebSupport = ObjPart.CreateReferenceFromObject(ObjWebSupport) 
+    ObjStrProfileSurfSurf.<strong>SecondSurface</strong> = WebSupport
+...</pre>
+				<p class="task"><code>ObjStrProfileSurfSurf</code> object is 
+				retrieved from <code>oObjSfdStiffener</code> object. Here Uc is 
+				setting two intersecting surfaces for stiffener creation. To set 
+				first surface, it retrieves delimited surface of the <code>
+				iObjSfdPanel</code> 
+				using method <code>GetDelimitedSupport</code> in <code>DMS</code> 
+				object. Then <code>DMS</code> is assigned to the <code>
+				FirstSurface</code> 
+				property of the <code>ObjStrProfileSurfSurf</code> object. 
+				Similarly
+				<code>SecondSurface</code> is set.</p>
+				</li>
+				<li>
+				<p class="task">Updates the created stiffener. </p>
+				<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjSfdStiffener
+<span class="keyword">End Sub</span>
+...</pre>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step8"></a>Calling ConvertStiffener</strong></p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjSfdConvertStiffener As <strong>SfdConvertStiffener</strong>
+  <strong>ConvertStiffener</strong> ObjSfdConvertStiffener,ObjSfdStiffener 
+...</pre>
+<p class="task"><code>oObjSfdConvertStiffener</code> object is retreived from <code>
+iObjSfdStiffener</code> object.</p>
+
+<pre class="code">... 
+  <span class="keyword">Set</span> oObjSfdConvertStiffener = iObjSfdStiffener.<strong>SfdConvertStiffener</strong>
+
+    <span class="comment">'Set Mode</span>
+    oObjSfdConvertStiffener.Mode = <strong>1</strong>
+    <span class="comment">'Set Category</span>
+    <span class="comment">'Example:: For FlatBar: Category - &quot;StiffenerOnFreeEdge&quot;</span>
+    oObjSfdConvertStiffener.Category <strong>&quot;Panel&quot;, &quot;Panel&quot;</strong>
+    <span class="comment">'Set Material</span>
+    oObjSfdConvertStiffener.Material <strong>&quot;Steel A90&quot;, &quot;Steel A90&quot;</strong>
+    <span class="comment">'Set Panel Names</span>
+    oObjSfdConvertStiffener.PanelNames <strong>&quot;Panel&quot;, &quot;Flange&quot;</strong>
+    <span class="comment">'Set Stiffener State</span>
+    oObjSfdConvertStiffener.RemoveStiffener <strong>FALSE</strong>
+    <span class="comment">'Set Flange State</span>
+    oObjSfdConvertStiffener.FlangeState <strong>TRUE</strong>
+    <span class="comment">'Set Flange Section Name</span>
+    oObjSfdConvertStiffener.FlatBarSectionName <strong>&quot;WT18x179.5&quot;</strong>
+    <span class="comment">'ConvertStiffener</span>
+    oObjSfdConvertStiffener.ConvertStiffener 
+...</pre>
+
+<p class="task">
+<code>Mode</code>: Setting up the Mode for type of conversion. 1- Web/Flange 2- 
+Web/FlatBar</p>
+<p class="task">
+<code>Category</code>: Setting up the Category for Web and Flange or FlatBar.</p>
+<p class="task">
+<code>Material</code>: Setting up the Material for Web and Flange or FlatBar.</p>
+<p class="task">
+<code>PanelNames</code>: Setting up the Panel Names for Web and Flange or FlatBar.</p>
+<p class="task">
+<code>RemoveStiffener</code>: Setting up whether want to remove stiffener or not after it's 
+conversion.</p>
+<p class="task">
+<code>FlangeState</code>: Setting up whether want to convert flange or not.</p>
+<p class="task">
+<code>FlatBarSectionName</code>: Setting up the section name for FlatBar.</p>
+<p class="task">
+<code>ConvertStiffener</code>: Calling ConvertStiffener for conversion after setting above 
+parameters.
+</p>
+
+			</li>
+			<li>
+			<p><strong><a name="Step9"></a>Update the <code>Part</code> object</strong></p>
+			<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> ObjSfdConvertStiffener
+<span class="keyword">End Sub</span></pre>
+			</li>
+		</ol>
+		<table>
+			<caption><a name="Fig.1"></a>Fig.1: Converting Stiffener to 
+			Web/Flange</caption>
+			<tr>
+				<td>
+				<img alt="Converting Stiffener to Web/Flange" src="CAAScdSfdUcConvertStiffener.png"/></td>
+			</tr>
+		</table>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

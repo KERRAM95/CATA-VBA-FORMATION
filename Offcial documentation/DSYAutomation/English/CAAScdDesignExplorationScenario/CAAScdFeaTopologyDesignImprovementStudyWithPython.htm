@@ -1,0 +1,252 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating and Executing a Topology Design Improvement Study</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Initializing and Executing a Topology Design Improvement Study</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This article explains how to initialize and execute a topology design improvement study.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					<ul>
+						<li>Launch CATIA and then import and 
+						open the
+						<code><div class=vb_sample_data>CAAScdFeaBracketModel.3dxml</div></code> file supplied in 
+						the folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdFeaDesignExplorationScenario\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder where 
+						the API CD-ROM is installed.</li>
+						<li>Make sure that you have all of the licenses required for launching execution and perform the solve operation in the interactive session for a similar simulation to test the licenses.</li>
+            <li>Note: Creation of new PLM objects via scripting, as in this 
+                use case, requires an enabling license in addition to the
+                interactive Roles needed to access the functionality.</li>                                                
+					</ul>
+					<p><span class="run-in">Where to find the macro: <a href="CAAScdFeaTopologyDesignImprovementStudyWithPythonSource.htm">
+					CAAScdFeaTopologyDesignImprovementStudyWithPythonSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in 12 steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieving the active Product</a></li>
+			<li><a href="#Step2">Retrieving the Publications and Composing Links</a></li>
+			<li><a href="#Step3">Creating the FEM Rep and Retrieving its Rep Manager</a></li>
+			<li><a href="#Step4">Creating a Mesh on a Part</a></li>	
+			<li><a href="#Step5">Creating a Property</a></li>		
+			<li><a href="#Step6">Initializing and Creating the Design Exploration PLM Object</a></li>		
+			<li><a href="#Step7">Retrieving the Scenario Manager</a></li>		
+			<li><a href="#Step8">Creating the Structural Analysis Case with the FEM Rep</a></li>		
+			<li><a href="#Step9">Creating and Initializing the Static Step</a></li>		
+			<li><a href="#Step10">Retrieving the Structural Analysis Case Features Set</a></li>		
+			<li><a href="#Step11">Creating Structural Analysis Case features</a></li>		
+			<li><a href="#Step12">Creating the Topology Design Improvement Study with the Structural Analysis Case</a></li>
+			<li><a href="#Step13">Retrieving the Design Improvement Study features</a></li>		
+			<li><a href="#Step14">Creating the Design Improvement Study features</a></li>					
+			<li><a href="#Step15">Launching the topology design improvement study</a></li>			
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Retrieves the product</strong></p>
+			<p>As a first step, the UC retrieves the active product </p>
+<pre class="code">... 
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves the Publications and Composes Links</strong></p>
+			<p>In this step UC retrieves the publications aggregated by the root 
+			product and composes links.</p>
+<pre class="code">...
+myPublications  = myModel.Publications
+myDesignSpaceSupport = myPublications.GetItem("Design_Space")
+
+<span class="comment"># Composing links</span>
+myLinkToPartitionSupport = myProdService.ComposeLink(None, None, myDesignSpaceSupport)
+...
+</pre>
+<p>As we use publication, we just need to give it as third argument to compose the link</p>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Creates the FEM Rep and Retrieving its Rep Manager</strong></p>
+			<p>In this step UC creates a finite element representation model on the product which was just opened.</p>
+			<p>For further information about creating the FEM Rep and retrieving its Rep Manager, refer to the article
+				<a href="../CAAScdFeaModeling/CAAScdFeaCreateFEMWithPython.htm">
+					Creating FEM representation</a>.
+			</p>
+			</li>
+			<li>
+				<p><strong><a name="Step4"></a>Creates a Mesh on a Part</strong></p>
+				<p>In this step UC retrieves the nodes and elements set from the FEM Representation, creates a mesh on a part and sets the mesh attributes.</p>
+				<p>For further information about the creation and management of mash parts, refer to the article
+				<a href="../CAAScdFeaModeling/CAAScdFeaCreateMPWithPython.htm">
+					Creating Mesh Part</a>.
+				</p>
+			</li>
+			<li>
+				<p><strong><a name="Step5"></a>Creates a Property</strong></p>
+				<p>In this step UC creates a solid section on the part and sets its individual attributes. </p>
+				<p>For further information about the creation and management of properties, refer to the article
+				<a href="../CAAScdFeaModeling/CAAScdFeaCreateSectionsWithPython.htm">
+					Managing FEM section features</a>.
+				</p>
+			</li>
+			<li>
+				<p><strong><a name="Step6"></a>Initializing and Creating the Design Exploration Simulation PLM Object</strong></p>
+				<p>In this step UC creates a simulation object.</p>
+				<pre class="code">...
+<span class="comment"># Creating and Initializing the design exploration PLM Object</span>
+myInitService = CATIA.GetSessionService(&quot;SimInitializationService&quot;)
+myInitService.SetSimulationInitialization "SimDesignexplorationCreation", "SimOptimization"
+mySimPLMService = CATIA.GetSessionService(&quot;SIMPLMService&quot;)
+mySimPLMService.PLMCreate &quot;NewDesignExplorationObject&quot;, &quot;SMAFeaPLMNewSimu&quot;, myModel, mySimulationReference, myEditor
+...
+				</pre>
+				<p>For further information about the initialization of a simulation object, refer to the article <a href="CAAScdFeaDesignExplorationScenarioInitialization.htm">
+					Initializing a Simulation Object</a>.
+				</p>
+			</li>
+
+			<li>
+				<p><strong><a name="Step7"></a>Retrieves the Scenario Manager</strong></p>
+				<p>In this step UC retrieves the scenario manager.</p>
+				<pre class="code">...
+myScenarioManager = MySimulationRoot.GetItem("SimScenarioManager")
+...
+				</pre>
+			</li>	
+<li>
+				<p><strong><a name="Step8"></a>Creating the Structural Analysis Case with the FEM Rep</strong></p>
+				<p>In this step UC retrieves the structural analysis case and associates it with the FEM rep.</p>
+				<p>For further information about the creation and management of structural analysis case, refer to the article
+				<a href="../CAAScdFeaScenario/CAAScdFeaStaticSimulationWithPython.htm">
+					Creating and Executing a Simulation (Python)</a>.
+				</p>
+
+			</li>
+			<li>
+				<p><strong><a name="Step9"></a>Creating and Initializing the Static Step</strong></p>
+				<p>In this step UC creates a static step under the structural analysis case and sets its individual attributes.</p>
+				<p>For further information about the creation and management of steps, refer to the article
+				<a href="../CAAScdFeaScenario/CAAScdFeaStaticSimulationWithPython.htm">
+					Creating and Executing a Simulation (Python)</a>.
+				</p>
+			</li>	
+			<li>
+				<p><strong><a name="Step10"></a>Retrieving the Structural Analysis Case Features Set</strong></p>
+				<p>In this step UC retrieves the features set for the structural analysis case.</p>
+				<p>For further information about the management of structural analysis case features set, refer to the article
+				<a href="../CAAScdFeaScenario/CAAScdFeaStaticSimulationWithPython.htm">
+					Creating and Executing a Simulation (Python)</a>.
+				</p>
+
+			</li>	
+			<li>
+				<p><strong><a name="Step11"></a>Creating Structural Analysis Case features</strong></p>
+				<p>In this step UC creates and initializes features for the structural anaylsis case.</p>
+				<p>For further information about the creation and management of structural analysis features, refer to the article
+				<a href="../CAAScdFeaScenario/CAAScdFeaStaticSimulationWithPython.htm">
+					Creating and Executing a Simulation (Python)</a>.
+				</p>
+
+			</li>
+			<li>
+				<p><strong><a name="Step12"></a>Associates the Topology Design Improvement Study with the Structural Analysis Case</strong></p>
+				<p>In this step UC retrieves the topology design improvement study and associates it with the structural analysis case</p>
+				<pre class="code">...
+myAnalysisCases = myScenarioManager.AnalysisCases
+myTopologyStudy = myAnalysisCases.AddAnalysisCase("SimTopologyDesignImprovementStudy")
+myTopologyStudy.AnalysisCase = myAnalysisCase 
+...
+                </pre>
+			</li>
+						<li>
+				<p><strong><a name="Step13"></a>Retrieving the Design Improvement Study Features Set</strong></p>
+				<p>In this step UC retrieves the features set.</p>
+				<pre class="code">...
+myTopologyFeatures = myTopologyStudy.Features
+...
+				</pre>
+			</li>		
+			<li>
+				<p><strong><a name="Step14"></a>Creating Design Improvement Study Features</strong></p>
+				<p>In this step UC creates features for the topology design improvement study.</p>
+				<pre class="code">...
+<span class="comment"># Creating Design Space feature and setting its support</span>
+myDesignSpace = myFeatures.Add(&quot;SimDesignEnvelope&quot;)
+myLinkAccess = myDesignSpace .GetItem(&quot;SimLinkAccess&quot;)
+myLinkAccess.AddLink "MainSupport", myLinkToPartitionSupport	
+...
+				</pre>
+				<p>You can find the available late types for features creation in the <a href="CAAScdFeaDesignExplorationScenarioLateTypes.htm">
+					Creation Late Types for Design Exploration Scenario Features</a> article.
+				</p>
+
+			</li>
+			<li>
+				<p><strong><a name="Step15"></a>Launches the Topology Design Improvement Study</strong></p>
+				<p>In this step UC launch the topology design improvement study and shows the results.</p>
+				<pre class="code">...
+myExecutionService = myEditor.GetService("SimExecutionService")
+myExecutionService.BasicExecuteAll (mySimulationReference)
+...
+				</pre>
+			</li>				
+	</ol>
+	</td>
+	</tr>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>
+
+	
+
+
+
+
+

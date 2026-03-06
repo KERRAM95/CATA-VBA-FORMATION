@@ -1,0 +1,264 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>NCMfgOutput Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>NCMfgOutput Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>NCMfgOutput</h2>
+<p><strong>Role:</strong> Lists the settings of the outputs generated in the Machining applications</p>
+<p><strong>Detailed role:</strong> The output machining settings are useful to manages options on manufacturing programs outputs</p>
+<p>The NCMfgOutput repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /Manufacturing/Output</li>
+  <li><strong>Repository File</strong>: NCMfgOutput</li>
+  <li><strong>Version</strong>: 1</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+</ul>
+<p>NCMfgOutput setting repository attributes:</p>
+<ul>
+  <li><a name="APTTypesToPP"></a><strong>APTTypesToPP</strong>
+    <br /><strong>Role</strong>: Defines the extension of the APT files to be Post-Processed
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: aptsource</li>
+    </ul>
+  </li>
+  <li><a name="CEPath"></a><strong>CEPath</strong>
+    <br /><strong>Role</strong>: Defines the path where the Controller Emulators are located
+    <br /><strong>Detailed role</strong>: Defines the path where the Controller Emulators are located<br />
+    <ul>
+      <li><strong>Type</strong>: URN</li>
+      <li><strong>Default value</strong>:</li>
+    </ul>
+  </li>
+  <li><a name="CEPro"></a><strong>CEPro</strong>
+    <br /><strong>Role</strong>: Choose the Controller Provider company
+    <br /><strong>Detailed role</strong>: Choose the Controller Provider company<br />
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>:</li>
+<li><strong>Default Value Role</strong>: By default no company preference is done</li>
+    </ul>
+  </li>
+  <li><a name="ContactPointsColor"></a><strong>ContactPointsColor</strong>
+    <br /><strong>Role</strong>: Contact points' color
+    <br /><strong>Detailed role</strong>: Contact points' color<br />
+    <ul>
+      <li><strong>Type</strong>: unsigned integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: Red in RGB order</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 255</li>
+    </ul>
+  </li>
+  <li><a name="ExportNCCodeSimulationFormat"></a><strong>ExportNCCodeSimulationFormat</strong>
+    <br /><strong>Role</strong>: Chooses the format of exported data for NC Code Simulation
+    <br /><strong>Detailed role</strong>: Chooses the format exported for NC Code Simulation<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default export in STEP format</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td>STEP</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>STL</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ExportNCCodeSimulationProgram"></a><strong>ExportNCCodeSimulationProgram</strong>
+    <br /><strong>Role</strong>: Defines the program path to launch after export NC Code Simulation
+    <br /><strong>Detailed role</strong>: Defines the program path to launch after export NC Code Simulation<br />
+    <ul>
+      <li><strong>Type</strong>: URN</li>
+      <li><strong>Default value</strong>: Windows: C:\Windows\explorer.exe</li>
+    </ul>
+  </li>
+  <li><a name="ExportPath"></a><strong>ExportPath</strong>
+    <br /><strong>Role</strong>: Defines the export path for NC Files container
+    <br /><strong>Detailed role</strong>: Defines the export path for NC Files container<br />
+    <ul>
+      <li><strong>Type</strong>: URN</li>
+      <li><strong>Default value</strong>: UNIX: ${CATTemp} Windows: ${CATTemp}</li>
+    </ul>
+  </li>
+  <li><a name="ExternalCEPath"></a><strong>ExternalCEPath</strong>
+    <br /><strong>Role</strong>: Defines the file path of the external Controller Emulators
+    <br /><strong>Detailed role</strong>: Defines the file path of the external Controller Emulators<br />
+    <ul>
+      <li><strong>Type</strong>: URN</li>
+      <li><strong>Default value</strong>: UNIX: ${CATTemp} Windows: ${CATTemp}</li>
+    </ul>
+  </li>
+  <li><a name="MinCollisionCheck"></a><strong>MinCollisionCheck</strong>
+    <br /><strong>Role</strong>: Defines the minimum length for collision detection
+    <br /><strong>Detailed role</strong>: Defines the minimum length for collision detection<br />
+    <ul>
+      <li><strong>Type</strong>: double</li>
+      <li><strong>Default value</strong>: 0.0</li>
+<li><strong>Default Value Role</strong>: By default, the minimum length collision detection is set to 0.</li>
+    </ul>
+  </li>
+  <li><a name="MyPPCfgFilePath"></a><strong>MyPPCfgFilePath</strong>
+    <br /><strong>Role</strong>: Defines file path(s) of configuration file(s) for My Post Processor
+    <br /><strong>Detailed role</strong>: Defines file path(s) of configuration file(s) for My Post Processor<br />
+    <ul>
+      <li><strong>Type</strong>: URN</li>
+      <li><strong>Default value</strong>: UNIX: ${CATTemp} Windows: ${CATTemp}</li>
+    </ul>
+  </li>
+  <li><a name="NCCodeDirectory"></a><strong>NCCodeDirectory</strong>
+    <br /><strong>Role</strong>: Defines the path where the NC code files are generated
+    <br /><strong>Detailed role</strong>: Defines the path where the NC code files are generated<br />
+    <ul>
+      <li><strong>Type</strong>: URN</li>
+      <li><strong>Default value</strong>: UNIX: ${CATTemp} Windows: ${CATTemp}</li>
+    </ul>
+  </li>
+  <li><a name="NCErrorLimit"></a><strong>NCErrorLimit</strong>
+    <br /><strong>Role</strong>: Defines the limit on number of Errors for NCCode generation to stop
+    <br /><strong>Detailed role</strong>: Defines the limit on number of Errors for NCCode generation to stop<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 10</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 10000</li>
+    </ul>
+  </li>
+  <li><a name="NCErrorLimitCheck"></a><strong>NCErrorLimitCheck</strong>
+    <br /><strong>Role</strong>: Defines if the limit on number of Errors for NCCode generation to stop is to be considered
+    <br /><strong>Detailed role</strong>: Defines if the limit on number of Errors for NCCode generation to stop is to be considered<br />
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="NCFileExtension"></a><strong>NCFileExtension</strong>
+    <br /><strong>Role</strong>: Defines the extension name of generated NC code files
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: CATNCCode</li>
+    </ul>
+  </li>
+  <li><a name="NCWarningLimit"></a><strong>NCWarningLimit</strong>
+    <br /><strong>Role</strong>: Defines the limit on number of Warnings for NCCode generation to stop
+    <br /><strong>Detailed role</strong>: Defines the limit on number of Warnings for NCCode generation to stop<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 10</li>
+      <li><strong>Min value</strong>: 0</li>
+      <li><strong>Max value</strong>: 10000</li>
+    </ul>
+  </li>
+  <li><a name="NCWarningLimitCheck"></a><strong>NCWarningLimitCheck</strong>
+    <br /><strong>Role</strong>: Defines if the limit on number of Warnings for NCCode generation to stop is to be considered
+    <br /><strong>Detailed role</strong>: Defines if the limit on number of Warnings for NCCode generation to stop is to be considered<br />
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="PPPath"></a><strong>PPPath</strong>
+    <br /><strong>Role</strong>: Defines the path where the Post Processors are located
+    <br /><strong>Detailed role</strong>: Defines the path where the Post Processors are located<br />
+    <ul>
+      <li><strong>Type</strong>: URN</li>
+      <li><strong>Default value</strong>:</li>
+    </ul>
+  </li>
+  <li><a name="PostPro"></a><strong>PostPro</strong>
+    <br /><strong>Role</strong>: Choose the Post Processor company
+    <br /><strong>Detailed role</strong>: Choose the Post Processor company<br />
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>:</li>
+<li><strong>Default Value Role</strong>: By default no company preference is done</li>
+    </ul>
+  </li>
+  <li><a name="StoreContactPoints"></a><strong>StoreContactPoints</strong>
+    <br /><strong>Role</strong>: Store contact points in toolpath during its computation
+    <br /><strong>Detailed role</strong>: Store contact points in toolpath during its computation<br />
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+  <li><a name="TPAutoPack"></a><strong>TPAutoPack</strong>
+    <br /><strong>Role</strong>: Pack tool path automatically after computation
+    <br /><strong>Detailed role</strong>: Pack tool path automatically after computation<br />
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: false</li>
+    </ul>
+  </li>
+  <li><a name="ToolOutputPoint"></a><strong>ToolOutputPoint</strong>
+    <br /><strong>Role</strong>: Chooses the reference point to compute toolpath with
+    <br /><strong>Detailed role</strong>: Chooses the reference point to compute toolpath with<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default the tool output point is the tool tip</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>1</td>
+            <td>Tool tip</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Tool center</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Tool center for ball end tools</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ToolPathEditorAccess"></a><strong>ToolPathEditorAccess</strong>
+    <br /><strong>Role</strong>: Allows Tool Path edition
+    <br /><strong>Detailed role</strong>: Allows Tool Path edition<br />
+    <ul>
+      <li><strong>Type</strong>: boolean</li>
+      <li><strong>Default value</strong>: true</li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

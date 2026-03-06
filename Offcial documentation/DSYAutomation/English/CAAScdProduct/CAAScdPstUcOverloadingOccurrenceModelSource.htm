@@ -1,0 +1,393 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Overloading Occurrence Position Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2010
+'---------------------------------------------------------------------------------------------------------------------------
+'Overloading Occurrence Position
+'Mission: The use case mainly deals with overloading of the occurrence of skate/DoubleSkate model objects.
+'Steps:     1- Retrieve the Product Reference (Skate) from underlying database
+'           2- Overload the Skate Occurrence Model Objects
+
+'---------------------------------------------------------------------------------------------------------------------------
+
+' Be careful: this piece of code has been written with a specific Product Reference type (VPMReference). If your ENOVIA
+
+' installation does not contain this Product Modele type, use you own Product Reference type.
+
+' You have just to change the contents of the strTheProductReferenceType variable defined just below (in main routine).
+
+'---------------------------------------------------------------------------------------------------------------------------
+'Global variable to gather and display at the end the PLM Component Identification Set attributes
+Dim strBrowsedPLMCompIDAttr As String
+Dim bFrontAxleInstFound As Boolean
+
+'
+
+Dim strTheProductReferenceType As String
+
+'
+'==========================================================================================================================
+' Main Routine
+'==========================================================================================================================
+'
+Sub OverloadingOccurrenceModel()
+    'Error handling
+    'On Error GoTo ErrorSub
+    strTheProductReferenceType = &quot;VPMReference&quot;
+     
+    '1- Retrieve the Product Reference (Skate) from underlying database
+    '1.1- Retrieve the Product Root Reference from the Root Occurrence
+    Dim oVPMRootOccOnSkateRef As VPMRootOccurrence
+    Set oVPMRootOccOnSkateRef = RetrieveProdRootOcc
+    
+    'retrieve VPMReference object from VPMRootOccurrence
+    Dim oSkateReference As VPMReference
+    Set oSkateReference = oVPMRootOccOnSkateRef.ReferenceRootOccurrenceOf
+    
+    'pre setting flag
+    bFrontAxleInstFound = False
+    
+    '2- Overload the Skate Occurrence Model Objects
+    OverloadSkateOccurrencesPosition oVPMRootOccOnSkateRef, 0
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox (Err.Description)
+EndSub:
+End Sub
+
+'
+'--------------------------------------------------------------------------------------------
+' 1.1- Retrieve the Product Reference (Root) As VPMReference from underlying database
+'    Output  : the VPMRootOccurrence object
+'--------------------------------------------------------------------------------------------
+'
+Function RetrieveProdRootOcc() As VPMRootOccurrence
+   'Error handling
+    'On Error GoTo ErrorSub
+
+   'Retrieves the Search service from CATIA session
+    Dim oSearchService As SearchService
+    Set oSearchService = CATIA.GetSessionService("Search") 
+                
+   'Search in database for a Product Reference Type
+    Dim oDBSearch  As DatabaseSearch
+    Set oDBSearch = SearchPLMComp(oSearchService)
+    
+    'Open the Product Reference and retrieves its Editor
+    Dim oEditorRootProduct As Editor
+    Set oEditorRootProduct = OpenProductObjectAndGetEditor(oDBSearch)
+        
+    'Retrieve the Root Reference from Editor
+   'Retrieves the &quot;PLMProductService&quot; service object that handles objects controlled by a VPM Editor
+    Dim oProductService As PLMProductService
+    Set oProductService = oEditorRootProduct.GetService(&quot;PLMProductService&quot;)
+        
+    'Retrieve the root occurrence corresponding to the Product Root
+    Dim oVPMRootOccOnRoot As VPMRootOccurrence
+    Set oVPMRootOccOnRoot = oProductService.RootOccurrence
+    
+    'Return the editor to the calling subroutine
+    Set RetrieveProdRootOcc = oVPMRootOccOnRoot
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Function
+'--------------------------------------------------------------------------
+'2.1- Navigates the Product Occurrence and display its name in the message box
+'    Input : the Product Occurrence
+'            depth of the object in hierarchy
+'--------------------------------------------------------------------------
+Sub OverloadSkateOccurrencesPosition(oOccurrence, depth)
+   'Error handling
+    'On Error GoTo ErrorSub
+    
+    '3.2.1- Retrieves the list of Occurrences within the input Occurrence
+    Dim oListChildrenOccurrences As VPMOccurrences
+    Set oListChildrenOccurrences = oOccurrence.Occurrences
+      
+    If oOccurrence.Name = &quot;AxleAssembly.Front&quot; Then
+        MsgBox &quot;AxleAssembly.Front Found&quot;
+        bFrontAxleInstFound = True
+    ElseIf oOccurrence.Name = &quot;AxleAssembly.Back.Short&quot; Then
+       MsgBox &quot;AxleAssembly.Back.Short Found&quot;
+       bFrontAxleInstFound = False
+    ElseIf oOccurrence.Name = &quot;BigWheel.Left&quot; And bFrontAxleInstFound = True Then
+       MsgBox &quot;BigWheel.Left Found&quot;
+       SetPositionOfOccurrences oOccurrence, 125, 0, 0
+    ElseIf oOccurrence.Name = &quot;BigWheel.Right&quot; And bFrontAxleInstFound = True Then
+       MsgBox &quot;BigWheel.Right  Found&quot;
+       SetPositionOfOccurrences oOccurrence, -125, 0, 0
+    End If
+        
+    '3.2.2- For each child Occurrence navigate through recursively
+    'Loop through the List of child occurrences
+    For i = 1 To oListChildrenOccurrences.Count
+        
+        'Retrieves the Child Occurrence from the list
+        Dim oChildOcc As VPMOccurrence
+        Set oChildOcc = oListChildrenOccurrences.Item(i)
+            
+        'Recursively navigates through the occurrences for child occurrences
+        OverloadSkateOccurrencesPosition oChildOcc, depth + 1
+    Next
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Sub
+
+
+
+'--------------------------------------------------------------------------------------------
+' Searches for a Product in database
+'    The search criteria is:
+'     - A PLM_ExternalID value entered by the end user
+'     - A revision value entered by the end user
+'    Output  : the object containing the result of the search
+'--------------------------------------------------------------------------------------------
+'
+Function SearchPLMComp(oSearchService) As DatabaseSearch
+    'Error handling
+    'On Error GoTo ErrorSub
+    
+    'Retrieves the Database attribute from Search service
+    Dim oDBSearch As DatabaseSearch
+    Set oDBSearch = oSearchService.DatabaseSearch
+     
+    'Builds the Query criteria for Search on underlying database
+    'Prompts the user to input the PLM_ExternalID for search purpose
+    Dim strInputPLMIDName As String
+    strInputPLMIDName = InputBox(&quot;Please enter the PLM_ExternalID to search&quot;, &quot;Enter PLM_ExternalID&quot;)
+    
+    'Prompts the user to input the revision for search purpose
+    Dim strInputRevision As String
+    strInputRevision = InputBox(&quot;Please enter the revision to search&quot;, &quot;Enter revision&quot;)
+ 
+    'Sets the type of objects to search
+    oDBSearch.BaseType = strTheProductReferenceType
+           
+    'Updates the PLM Search object created in the above steps with the attribute criteria provided by the user as an input
+    oDBSearch.AddEasyCriteria &quot;PLM_ExternalID&quot;, strInputPLMIDName
+    oDBSearch.AddEasyCriteria &quot;revision&quot;, strInputRevision
+       
+    'Triggers the Search
+    oSearchService.Search
+    
+    'Valuates the output
+    Set SearchPLMComp = oDBSearch
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+    
+End Function
+'--------------------------------------------------------------------------------------------
+' Open the Product Object and retrieves its Editor
+'    Input  : the object containing the result of the previous search
+'    Output : the editor containing the opened Product Object
+'--------------------------------------------------------------------------------------------
+'
+Function OpenProductObjectAndGetEditor(oDBSearch) As Editor
+    'Error handling
+    'On Error GoTo ErrorSub
+    
+    'Retrieves the list of PLM Entities from the PLM Search object
+    Dim oPLMEntities As PLMEntities
+    Set oPLMEntities = oDBSearch.Results
+    
+    'Ensures the search results retrieves atleast one PLM Entity
+    If oPLMEntities.Count &gt; 1 Then
+        MsgBox &quot;Please enter a query criteria which outputs a unique PLM Component for further processing&quot;
+        GoTo EndSub
+    ElseIf oPLMEntities.Count = 0 Then
+        MsgBox &quot;No result for the input criteria&quot;
+        GoTo EndSub
+    End If
+
+    'Retrieves first PLM Entity from the PLMEntities collection object
+    Dim oPLMEntity As PLMEntity
+    Set oPLMEntity = oPLMEntities.Item(1)
+    
+    'Call the Open Service to open the Product Object
+    Dim oOpenService As PLMOpenService
+    Set oOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    
+    'Opens the PLM Component in the editor
+    Dim oEditor As Editor
+    oOpenService.PLMOpen oPLMEntity, oEditor
+        
+    'Valuates the output
+    Set OpenProductObjectAndGetEditor = oEditor
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Function
+
+
+
+'--------------------------------------------------------------------------
+'Navigates the Product Occurrence and display its name in the message box
+'    Input : the Product Occurrence
+'            depth of the object in hierarchy
+'--------------------------------------------------------------------------
+Sub NavigateAndDisplayProdOccurrencesPosition(oOccurrence, depth)
+   'Error handling
+    'On Error GoTo ErrorSub
+    
+    '3.2.1- Retrieves the list of Occurrences within the input Occurrence
+    Dim oListChildrenOccurrences As VPMOccurrences
+    Set oListChildrenOccurrences = oOccurrence.Occurrences
+    
+    If (depth &gt; 0) Then
+    
+       'Absolute position
+       Dim oAxisComponentsArrayAbsPos(11)
+       oOccurrence.Position.GetAbsComponents oAxisComponentsArrayAbsPos
+         
+       'Relative position
+       Dim oAxisComponentsArrayRelPos(11)
+       oOccurrence.Position.GetComponents oAxisComponentsArrayRelPos
+       
+       'Manages  the spaces and tabs for display according to depth
+       For spaceCnt = 1 To depth
+               strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + vbTab '&quot;    &quot;
+       Next spaceCnt
+    
+       'Valuates the output
+       Dim strXYZPosition As String
+       strXYZPosition = &quot;&quot;
+       strXYZPosition = &quot; (&quot; &amp; oAxisComponentsArrayAbsPos(9) &amp; &quot;,&quot; &amp; oAxisComponentsArrayAbsPos(10) &amp; &quot;,&quot; &amp; oAxisComponentsArrayAbsPos(11) &amp; &quot;) &quot; &amp; &quot; (&quot; &amp; oAxisComponentsArrayRelPos(9) &amp; &quot;,&quot; &amp; oAxisComponentsArrayRelPos(10) &amp; &quot;,&quot; &amp; oAxisComponentsArrayRelPos(11) &amp; &quot;) &quot;
+       
+       'Displays the occurrence name
+       strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + oOccurrence.Name + strXYZPosition + vbCrLf
+       
+       'Reset String
+       strXYZPosition = &quot;&quot;
+ 
+    End If
+     
+    '3.2.2- For each child Occurrence navigate through recursively
+    'Loop through the List of child occurrences
+    For i = 1 To oListChildrenOccurrences.Count
+        
+        'Retrieves the Child Occurrence from the list
+        Dim oChildOcc As VPMOccurrence
+        Set oChildOcc = oListChildrenOccurrences.Item(i)
+         
+        
+       'Recursively navigates through the occurrences for child occurrences
+        NavigateAndDisplayProdOccurrencesPosition oChildOcc, depth + 1
+    Next
+    
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Sub
+
+
+'--------------------------------------------------------------------------
+'Set the Occurrence position
+'    Input : Occurrence Object
+'            Coordinates (X,Y,Z)
+'--------------------------------------------------------------------------
+Sub SetPositionOfOccurrences(oOccurrence, x, y, z)
+   'Error handling
+   ' On Error GoTo ErrorSub
+ 
+    Dim TransformationArray(11)
+    'The first nine components represent the rotation matrix.
+    'The last three components represent the translation vector.
+    TransformationArray(0) = 1#
+    TransformationArray(1) = 0
+    TransformationArray(2) = 0
+    TransformationArray(3) = 0
+    TransformationArray(4) = 1#
+    TransformationArray(5) = 0
+    TransformationArray(6) = 0
+    TransformationArray(7) = 0
+    TransformationArray(8) = 1
+    'Translation Vector (x,y,z)
+    TransformationArray(9) = x
+    TransformationArray(10) = y
+    TransformationArray(11) = z
+
+    oOccurrence.Position.SetComponents TransformationArray
+ 
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Sub
+
+'--------------------------------------------------------------------------
+'Display the Product Occurrence model with position in the message box
+'    Input : the Product Occurrence
+'--------------------------------------------------------------------------
+Sub DisplayProdOccurrencesPosition(oVPMRootOccOnRef)
+   'Error handling
+    'On Error GoTo ErrorSub
+    
+     'Initializes the global variable
+    strBrowsedPLMCompIDAttr = &quot;&quot;
+    strBrowsedPLMCompIDAttr = strBrowsedPLMCompIDAttr + oVPMRootOccOnRef.Name + vbCrLf
+    
+    'Navigates the Product Occurrence
+    '(Call for Navigate on the retrieved Occurrence)
+    NavigateAndDisplayProdOccurrencesPosition oVPMRootOccOnRef, 0
+        
+    'Displays the Occurrence Product Model Contents in the Message Box
+    MsgBox strBrowsedPLMCompIDAttr
+        
+    'Clears the display contents
+    strBrowsedPLMCompIDAttr = &quot;&quot;
+    
+  
+    'Error handling
+    GoTo EndSub
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+End Sub
+</pre>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

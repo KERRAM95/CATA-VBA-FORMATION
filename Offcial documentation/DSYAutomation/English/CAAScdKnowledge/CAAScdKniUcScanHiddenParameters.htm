@@ -1,0 +1,288 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Scanning the Root Parameter Set</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Scanning the Parameter Set for the hidden Parameters </h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case retrieves 
+						the parameter set created just below the Part feature. This 
+						parameter set is also named the root parameter set. Once 
+						retrieved, it is scanned to list all (i.e. recursively) 
+						its hidden boolean parameters.&nbsp; </p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA </li>
+							<li>In Tools-&gt;Options-&gt;Infrastructure-&gt;3D Shape Infrastructure-&gt;Display 
+							Tab, select Parameters and Relations</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdKniUcScanHiddenParametersSource.htm">CAAScdKniUcScanHiddenParametersSource.htm</a></span></p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic1</em>&gt;</td>
+					</tr>
+					<tr>
+						<td>&lt;<em>topic2</em>&gt;</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 7 steps</p>
+		<ol>
+			<li><a href="#Step1">Creates 3DShape with a Parameter Set</a></li>
+			<li><a href="#Step2">Retrieves the Knowledge Service&nbsp; </a></li>
+			<li><a href="#Step3">Retrieves the Part Knowledge Collection</a></li>
+			<li><a href="#Step4">Retrieves the Created Parameter Set </a></li>
+			<li><a href="#Step5">Retrieves its Parameter Collection</a></li>
+			<li><a href="#Step7">Scans Parameter Collection for the hidden Boolean 
+			Parameters </a></li>
+			<li><a href="#Step8">Displays the list of the hidden Boolean Parameters
+			</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<caption></caption>
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p class="task"><strong><a name="Step1"></a>Creates 3DShape with a Parameter 
+			Set</strong></p>
+			<pre class="code"><span class="keyword">...</span>
+    <span class="keyword">Dim</span> MyNewPart <span class="keyword">As</span> <strong>Part</strong>
+    <strong>Create3DShape</strong> MyNewPart
+...</pre>
+			<p>The <code>Create3DShape</code> sub routine creates a new 3DShape 
+			with the parameters residing under a newly created parameter set as 
+			shown in the following figure. Here we have created 6 parameters (out 
+			of which 4 are hidden, as shown in the following figure, only 2 parameters 
+			are visible. Some parameters are string like others are boolean.</p>
+			<table>
+				<caption>Fig. 1 Creating a 3D Shape with the Parameters
+				</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="3D Shape" src="CAAScdKniUcScanHiddenParameters_image_1.jpg"/>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			<p class="task"><code>MyNewPart</code> is the Part object of the 3DShape, 
+			the object aggregating all the objects making up the 3DShape.</p>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step2"></a>Retrieves the Knowledge 
+			Service</strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oKnowledgeServices <span class="keyword">As</span> KnowledgeServices
+    <span class="keyword">Set</span> oKnowledgeServices = <strong>CATIA</strong>.<strong>GetSessionService</strong>(&quot;KnowledgeServices&quot;)
+...</pre>
+			<p>The <code><em>GetSessionService</em></code> method retrieves the knowledge 
+			service from the current <code>CATIA</code> session.</p>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step3"></a>Retrieves the Part Knowledge 
+			Collection</strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oKnowledgeCollectionForPart <span class="keyword">As</span> KnowledgeCollection
+    <span class="keyword">Set</span> oKnowledgeCollectionForPart = oKnowledgeServices.<strong>GetKnowledgeCollection</strong>(MyNewPart, <strong>kweParametersType</strong>)
+...</pre>
+			<p>The method <code><em>GetKnowledgeCollection</em></code> retrieves the 
+			KnowledgeCollection object associated with the Part feature (<code>MyNewPart</code>). 
+			The second parameter of this method, <code>kweParametersType, </code>
+			means that the returned collection will contain as direct childrens, 
+			all parameter sets and parameters below the Part feature.</p>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step4"></a>Retrieves the Created Parameter 
+			Set</strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oParmsSetForMyParameterSet <span class="keyword">As</span> ParmsSet
+    <span class="keyword">Set</span> oParmsSetForMyParameterSet = oKnowledgeCollectionForPart.<strong>Item</strong>(1)
+...</pre>
+			<p>When using the method <code><em>Item</em></code> on a KnowledgeCollection 
+			object created with the <code>kweParametersType </code>parameter, you<code>
+			</code>retrieve either a parameter set or a parameter. The argument 
+			of the method <code><em>Item</em></code> can be an index or a name. In 
+			our case, since below the Part feature the first element is a parameter 
+			set, this piece of code retrieves the parameter set created in the first 
+			step. The one containing the hidden and visible parameters. </p>
+			</li>
+			<li>
+			<p class="task"><a name="Step5"></a><strong>Retrieves its Parameter Collection</strong></p>
+			<p>The objective of this section is to retrieve all the parameters contained 
+			by our parameter set. </p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oKnowledgeCollection <span class="keyword">As</span> KnowledgeCollection
+    <span class="keyword">Set</span> oKnowledgeCollection = oParmsSetForMyParameterSet.<strong>Collection</strong>
+...</pre>
+			<p>First we retrieve as a KnowledgeCollection object, <code>oKnowledgeCollection</code> 
+			, the collection to scan oKnowledgeCollectionForPart for any kind knowledge 
+			objects. The property <code>Collection </code>retrieves this&nbsp; KnowledgeCollection 
+			object.</p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oParamCollection <span class="keyword">As</span> KnowledgeCollection
+    <span class="keyword">Set</span> oParamCollection = oKnowledgeCollection.<strong>Find</strong>(<strong>kweParameterObjectType</strong>, True)
+...</pre>
+			<p>Finally, using the <code>Find</code> method we are able to create 
+			a collection whose the contents is depending on the method's argument.
+			<code>kweParameterObjectType </code>means the collection will only contain 
+			parameter objects, and <code>True</code> means that the search is recursive.</p>
+			</li>
+			<li>
+			<p class="task"><a name="Step7"></a><strong>Scans the Parameter Collection 
+			for the hidden Boolean Parameters </strong></p>
+			<p class="task">The Use Case scans the hidden parameters of type
+			<code>Boolean</code> from the retrieved collection.</p>
+			<pre class="code">...
+    <span class="keyword">Dim </span> i <span class="keyword">As</span> Integer
+    For i = 1 To oParamCollection.<strong>Count</strong>
+        <span class="keyword">Dim</span> oParam <span class="keyword">As</span> Parameter
+        <span class="keyword">Set</span> oParam = oParamCollection.<strong>Item</strong>(i)
+        <span class="keyword">Dim </span> HiddenNumber <span class="keyword">As</span> Integer
+        If (oParam.<strong>Hidden</strong>) Then
+            If TypeName(oParam) = &quot;BoolParam&quot; Then
+                oParamString1 = oParamString1 &amp; vbCrLf &amp; oParam.<strong>Name</strong> &amp; &quot;   &quot; &amp; oParam.<strong>Value</strong> &amp; &quot;   &quot; &amp; &quot;'&quot; &amp; oParam.<strong>Comment</strong> &amp; &quot;'&quot;: HiddenNumber = HiddenNumber + 1 
+...</pre>
+			<p class="task">Test whether the value returned by the <code><em>Hidden</em></code> 
+			property of the parameter is &quot;True&quot; and then check whether the <code>
+			Parameter</code> belongs to <code>BoolParam</code> class object. If 
+			yes, then increment the HiddenNumber variable.</p>
+			<p>Here we are scanning the hidden parameter list only for the boolean 
+			type of parameters. Here we are using the function <code><em>TypeName</em></code> 
+			to check that the parameter is of Boolean type. <code>BoolParam</code> 
+			is a object representing boolean parameter.</p>
+			</li>
+			<li>
+			<p class="task"><a name="Step8"></a><strong>Displays the list of&nbsp; 
+			hidden Boolean Parameters </strong></p>
+			<pre class="code">...
+    If (HiddenNumber &gt; 0) Then
+    MsgBox oParamString1
+...</pre>
+			<p>The hidden boolean parameter names, values and comments are displayed 
+			in the message box.</p>
+			<table>
+				<caption>Fig. 2 Displaying the Hidden Boolean Parameters</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Hidden Boolean Parameters" src="CAAScdKniUcScanHiddenParameters_image_2.jpg"/>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			<p>You can modify interactively the status of the parameters and see 
+			the hidden parameters in the structure as described below</p>
+			<p>In the specification tree Right-Click on the Parameters. From the 
+			contextual menu select the Parameters Object-&gt;Hidden Parameters.</p>
+			<table>
+				<caption>Fig. 3 Displaying all the Hidden Parameters Interactively</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Hidden Parameters" src="CAAScdKniUcScanHiddenParameters_image_3.jpg"/>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			<p>Select the parameters which you want to display and click on the 
+			Show button.</p>
+			<table>
+				<caption>Fig. 4 Showing the Hidden Parameters</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Hidden Parameters" src="CAAScdKniUcScanHiddenParameters_image_4.jpg"/>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			<p>All the parameters are displayed in the specification tree as shown 
+			below.</p>
+			<table>
+				<caption>Fig. 5 Displaying All the Parameters</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="All the Parameters" src="CAAScdKniUcScanHiddenParameters_image_5.jpg"/>
+					</td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+		</ol>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		<script type="text/javascript">insertCopyright();</script>
+		</td>
+	</tr>
+</tbody>
+</table>
+
+</body>
+
+</html>

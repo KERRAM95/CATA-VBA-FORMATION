@@ -1,0 +1,166 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaGenerate3DSweepMeshParameters.catvbs</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">' &lt;!-- -------------- Sample macro written in VB ------------------------------------------ --&gt; </span>
+<span class="comment">' &lt;!-- This sample is an automated modeling procedure to creates a parameter based 3D Sweep Mesh part. --&gt; </span>
+
+<span class="comment">' &lt;!-- Steps : --&gt; </span>
+
+<span class="comment">' &lt;!-- 1 - Inputs definitions --&gt; </span>
+<span class="comment">' &lt;!-- 2 - VB Script to create Mesh Part --&gt; </span>
+    <span class="comment">' &lt;!-- a - Retrieve created FEM Rep --&gt; </span>
+    <span class="comment">' &lt;!-- b - Create Mesh Part --&gt; </span>
+    <span class="comment">' &lt;!-- c - Create Solid Property --&gt; </span>
+    <span class="comment">' &lt;!-- d - Retrieve Mesh Part Support if it is not given as argument --&gt; </span>
+    <span class="comment">' &lt;!-- e - Add support to Mesh part --&gt; </span>
+    <span class="comment">' &lt;!-- f - Set Mesh attributes --&gt; </span>
+
+<span class="comment">' &lt;!-- -------------------------------------------------------------------------- --&gt; </span>
+<span class="comment">' &lt;!-- 1 - Inputs definitions --&gt; </span>
+<span class="comment">' &lt;!-- -------------------------------------------------------------------------- --&gt; </span>
+<span class="comment">
+'&lt;Enums&gt;
+  '&lt;Enum Name = "ElementOrder"&gt;
+    '&lt;Member Name = "Linear"    Nls ="Linear"/&gt;
+    '&lt;Member Name = "Quadratic" Nls ="Quadratic"/&gt;
+   '&lt;/Enum&gt;
+'&lt;/Enums&gt;
+'&lt;Inputs&gt;
+  '&lt;Input Name = "Support" Type ="Port" Mand ="false" Nls ="Support"/&gt;
+  '&lt;Input Name = "MeshSize" Type ="Dimension" SubType ="Length" Mand ="true" Nls ="MeshSize"/&gt;
+  '&lt;Input Name = "ElementOrder" Type ="Enum" SubType ="ElementOrder" Mand ="true" Nls ="ElementOrder"/&gt;
+  '&lt;Input Name = "NbLayers" Type ="Integer" Mand ="true" Nls ="NumberOfLayers" Min="0" MinExcl="true"/&gt;
+  '&lt;Input Name = "Property" Type ="Boolean" Mand ="true" Nls ="CreateSolid"/&gt;
+'&lt;/Inputs&gt;
+</span>
+<span class="comment">' &lt;!-- ---------------------------------------------------------------------------------------------------- --&gt; </span>
+<span class="comment">' &lt;!-- 2 - VB Script to create Mesh Part --&gt; </span>
+<span class="comment">' &lt;!-- ---------------------------------------------------------------------------------------------------- --&gt; </span>
+
+<span class="keyword">Sub main</span>(iSupport, iSize, iOrder, iNbLayers, iProp)
+
+<span class="comment">' a - Retrieve created FEM Rep</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">  Dim</span> FEMRoot <span class="keyword">As</span> CATIAFmtFemRep
+<span class="keyword">  Set</span> FEMRoot = FEM.GetItem(&quot;SimFemRoot&quot;)
+
+<span class="comment">' b - Create Mesh Part</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">  Dim</span> MeshSet <span class="keyword">As</span> CATIAFmtMeshSet
+<span class="keyword">  Set</span> MeshSet = FEMRoot.GetSet("SimNodesElements")
+<span class="keyword">  Dim</span> MeshParts <span class="keyword">As</span> CATIAFmtMeshParts
+<span class="keyword">  Set</span> MeshParts = MeshSet.MeshParts
+<span class="keyword">  Dim</span> MeshPart <span class="keyword">As</span> CATIAFmtMeshPart
+<span class="keyword">  Set</span> MeshPart = MeshParts.Add("CATFmtSweep3DMesher")
+
+<span class="comment">' c - Set Mesh attributes</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+
+  MeshPart.SetAttributeValue "Mesh", "MeshSize", iSize
+  MeshPart.SetAttributeValue "Mesh", "Automatic2DMeshCreation", 2
+  MeshPart.SetAttributeValue "Mesh", "NbElementsValue", iNbLayers
+  MeshPart.SetAttributeValue "Mesh", "ElementOrder", iOrder
+
+<span class="comment">' d - Create Solid Property</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="comment">'</span>
+<span class="comment">' if requested Create Solid Property</span>
+<span class="comment">'</span>
+  <span class="keyword">if</span> (iProp = &quot;True&quot;) <span class="keyword">Then</span> 
+    <span class="keyword">Dim</span> PropertySet <span class="keyword">As</span> SimProperties
+    <span class="keyword">Set</span> PropertySet = FEMRoot.GetSet(&quot;SimProperties&quot;)
+    <span class="keyword">Set</span> SolidSection = PropertySet.Add(&quot;SMAMpaSolidProperty&quot;)
+  <span class="keyword">end If</span>
+
+  <span class="keyword">Dim</span> LinkAccess <span class="keyword">As</span> SimLinkAccess
+ 
+<span class="comment">' e - Retrieve Mesh Part Support if it is not given as argument</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+<span class="keyword">  if</span> IsEmpty(iSupport) <span class="keyword">Then</span>
+    <span class="keyword">Dim</span> ShapeRef <span class="keyword">As</span> VPMRepReference
+    <span class="keyword">Set</span> ShapeRef = SHAPE.ReferenceInstanceOf
+    <span class="keyword">Dim</span> ThePart <span class="keyword">As</span> Part
+    <span class="keyword">Set</span> ThePart = ShapeRef.GetItem("Part")
+    <span class="keyword">Dim</span> PartBody <span class="keyword">As</span> AnyObject
+    <span class="keyword">Set</span> PartBody = ThePart.MainBody
+    <span class="keyword">Dim</span> Testvar <span class="keyword">As</span> Boolean
+    Testvar = IsAnEmptyBody(PartBody)
+    <span class="keyword">If</span> Testvar = True <span class="keyword">Then</span>
+      <span class="keyword">Dim</span> myOrderedGeometricalSets <span class="keyword">As</span> OrderedGeometricalSets
+      <span class="keyword">Set</span> myOrderedGeometricalSets = ThePart.OrderedGeometricalSets
+      <span class="keyword">If</span> myOrderedGeometricalSets.Count = 0 <span class="keyword">Then</span>
+          <span class="keyword">Set</span> PartBody = ThePart.MainBody
+      <span class="keyword">Else: Set</span> PartBody = myOrderedGeometricalSets.Item(1)
+      <span class="keyword">End If</span>  
+    <span class="keyword">End If</span>
+<span class="comment">' f - Add support to Mesh part</span>
+<span class="comment">'----------------------------------------------------------------------------------------------------</span>
+    <span class="keyword">Dim</span> Ref <span class="keyword">As</span> Reference
+    <span class="keyword">Set</span> Ref = ThePart.CreateReferenceFromObject(PartBody)
+    <span class="keyword">Dim</span> EmptyOcc <span class="keyword">As</span> PLMOccurrence
+    <span class="keyword">Set</span> EmptyOcc = OCCURRENCE
+    <span class="keyword">Dim</span> FEMService <span class="keyword">As</span> SimComposeLinkServices
+    <span class="keyword">Set</span> FEMService = FEM.GetItem("SimComposeLinkServices")
+    <span class="keyword">Set</span> Link = FEMService.ComposeLink(EmptyOcc, SHAPE, Ref)
+    MeshPart.AddSupport (Link)
+    <span class="keyword">if</span> (iProp = "True") <span class="keyword">Then</span> 
+      <span class="keyword">Set</span> LinkAccess = SolidSection.GetItem("SimLinkAccess")
+      LinkAccess.AddLink "MainSupport", Link
+    <span class="keyword">end if</span>
+  <span class="keyword">else</span>
+    MeshPart.AddSupport (iSupport)
+    <span class="keyword">if</span> (iProp = "True") <span class="keyword">Then</span> 
+      <span class="keyword">Set</span> LinkAccess = SolidSection.GetItem("SimLinkAccess")
+      LinkAccess.AddLink "MainSupport", iSupport
+    <span class="keyword">end if</span>
+  <span class="keyword">end If</span>
+
+<span class="keyword">End Sub</span>
+
+<span class="keyword">Private Function</span> IsAnEmptyBody(ByVal iBody As Body) <span class="keyword">As</span> Boolean
+
+<span class="keyword">If</span> iBody Is Nothing <span class="keyword">Then</span>
+    <span class="keyword">Exit Function</span>
+<span class="keyword">Else</span>
+  <span class="keyword">Dim</span> myShapes <span class="keyword">As</span> Shapes
+  <span class="keyword">Set</span> myShapes = iBody.Shapes
+  <span class="keyword">Dim</span> myHybridShapes <span class="keyword">As</span> HybridShapes
+  <span class="keyword">Set</span> myHybridShapes = iBody.HybridShapes
+  IsAnEmptyBody = True
+  <span class="keyword">If</span> Not (myShapes Is Nothing) <span class="keyword">Then</span>
+    <span class="keyword">If</span> myShapes.Count &gt; 0 <span class="keyword">Then</span>
+      IsAnEmptyBody = False
+    <span class="keyword">End If</span>
+  <span class="keyword">End If</span>
+  <span class="keyword">If</span> Not (myHybridShapes Is Nothing) <span class="keyword">Then</span>
+    <span class="keyword">If</span> myHybridShapes.Count &gt; 0 <span class="keyword">Then</span>
+      IsAnEmptyBody = False
+    <span class="keyword">End If</span>
+  <span class="keyword">End If</span>
+<span class="keyword">End If</span>
+
+<span class="keyword">End Function</span>
+
+
+</pre>
+  </body>
+</html>
+

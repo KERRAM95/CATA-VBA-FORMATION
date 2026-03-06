@@ -1,0 +1,85 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>MyInstructionList.vb</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'===================================================================</span>
+<span class="comment">' COPYRIGHT Dassault Systemes Delmia Corp. 2012/02/09</span>
+<span class="comment">'===================================================================</span>
+<span class="keyword">Imports</span> DELOlp
+<span class="keyword">Imports</span> System.Collections.Generic
+
+&lt;CLSCompliant(False)&gt; <span class="keyword">Public</span> <span class="keyword">Class</span> MyInstructionList
+    <span class="keyword">Inherits</span> FanucInstructionList
+
+    <span class="comment">'###############################</span>
+    <span class="comment">' CONSTRUCTORS</span>
+    <span class="comment">'###############################</span>
+    <span class="keyword">Public</span> <span class="keyword">Sub</span> New(<span class="keyword">ByRef</span> iTask<span class="keyword"> As </span>FanucTask, <span class="keyword">ByRef</span> iV6Instructions<span class="keyword"> As </span>OlpInstructions, <span class="keyword">ByRef</span> iAstInstructions<span class="keyword"> As </span>OlpAstBranch)
+        MyBase.New(iTask, iV6Instructions, iAstInstructions)
+<span class="keyword">    End Sub</span>
+
+    <span class="comment">'###############################</span>
+    <span class="comment">' Protected Methods</span>
+    <span class="comment">'###############################</span>
+    <span class="keyword">Protected</span> <span class="keyword">Overrides</span> <span class="keyword">Function</span> CreateTranslatorForUpload(<span class="keyword">ByRef</span> AstInstruction<span class="keyword"> As </span>OlpAstNode)<span class="keyword"> As </span>FanucInstruction
+        <span class="comment">' for CALL instructions see if the task is IO_SYNC</span>
+<span class="keyword">        If </span>AstInstruction.Type = DELOlpAstNodeType.delAstRUN<span class="keyword"> Then</span>
+            <span class="comment">' get the instruction text</span>
+<span class="keyword">            Dim </span>AstInstructionBranch<span class="keyword"> As </span>OlpAstBranch = AstInstruction
+<span class="keyword">            Dim </span>TaskName<span class="keyword"> As </span>String = _
+                    AstInstructionBranch.FindChildByType(DELOlpAstNodeType.delAstIDENTIFIER).Value
+            <span class="comment">' if the  then return the MyIO_SYNC translator class</span>
+<span class="keyword">            If </span>TaskName = <span class="string">&quot;IO_SYNC&quot;</span> Then
+                <span class="comment">' create the instruction to run the IO_SYNC task and append it to the current list of instructions</span>
+<span class="keyword">                Dim </span>EVTAPIInstruction<span class="keyword"> As </span>OlpInstruction = _
+                        V6Instructions.CreateInstruction(DELOlpInstructionType.delOlpRun, Nothing, True)
+                <span class="comment">' create the translator object</span>
+                Return New MyIO_SYNC(TaskTranslator, EVTAPIInstruction, AstInstruction)
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+
+        <span class="comment">' if not then use the normal DELMIA translator classes</span>
+        Return MyBase.CreateTranslatorForUpload(AstInstruction)
+<span class="keyword">    End Function</span>
+
+
+    <span class="keyword">Protected</span> <span class="keyword">Overrides</span> <span class="keyword">Function</span> CreateTranslatorsForDownload(<span class="keyword">ByVal</span> V6Instruction<span class="keyword"> As </span>DELOlp.OlpInstruction)<span class="keyword"> As </span>List(Of FanucInstruction)
+        <span class="comment">' if this is a run instruction, see if this is running one of the custom tasks</span>
+<span class="keyword">        If </span>V6Instruction.Type = DELOlpInstructionType.delOlpRun<span class="keyword"> Then</span>
+<span class="keyword">            Dim </span>RunInstruction<span class="keyword"> As </span>OlpRun = V6Instruction
+            <span class="comment">' if the task being run is IO_SYNC, then return the MyIO_SYNC translator class</span>
+<span class="keyword">            If </span>RunInstruction.Procedure.Name = <span class="string">&quot;IO_SYNC&quot;</span> Then
+<span class="keyword">                Dim </span>AstEVTAPIInstruction<span class="keyword"> As </span>OlpAstBranch = AstInstructions.CreateBranch(DELOlpAstNodeType.delAstRUN, <span class="string">&quot;&quot;</span>)
+<span class="keyword">                Dim </span>Translator<span class="keyword"> As </span>FanucInstruction = New MyIO_SYNC(TaskTranslator, V6Instruction, AstEVTAPIInstruction)
+<span class="keyword">                Dim </span>InstructionTranslators<span class="keyword"> As </span>List(Of FanucInstruction) = New List(Of FanucInstruction)
+                InstructionTranslators.Add(Translator)
+                Return InstructionTranslators
+<span class="keyword">            End If</span>
+<span class="keyword">        End If</span>
+        Return MyBase.CreateTranslatorsForDownload(V6Instruction)
+<span class="keyword">    End Function</span>
+
+<span class="keyword">End Class</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

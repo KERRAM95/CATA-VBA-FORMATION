@@ -1,0 +1,170 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdMpaLinkAccess.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+
+<pre class=>
+<span class="comment"># -------------- Sample script written in Python ------------------------------------------</span>
+<span class="comment"># This sample define and manage simulation feature supports.</span>
+
+<span class="comment"># Steps:</span>
+<span class="comment">#          1 - Retrieves the simulation and its product  										</span>
+<span class="comment">#          2 - Creates the FEM Rep and retrieves its Rep Manager 								</span>
+<span class="comment">#          3 - Creates sections								</span>
+<span class="comment">#          4 - Sets the meshed bolt support from publication					</span>
+<span class="comment">#          5 - Sets the shell section supports from product structure									</span>
+<span class="comment">#          6 - Replaces the first shell section support							</span>
+<span class="comment">#          7 - Removes all supports of the shell section										</span>
+<span class="comment">#============================================================================================</span>
+
+<span class="keyword">import</span> sys, os
+<span class="keyword">from</span> com3dx <span class="keyword">import</span> *
+CATIA = get3dxClient()
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  1 - Retrieves the simulation and its product </span>
+<span class="comment"># =====================================================================</span>
+
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+
+myProductEditor = CATIA.ActiveEditor
+MyProductService = myProductEditor.GetService("PLMProductService")
+
+myEntities = MyProductService.EditedContent
+myAssembly = myEntities.Item(1)
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  2 - Creates the FEM Rep and retrieves its Rep Manager</span>
+<span class="comment">#======================================================================</span>
+
+myPrdRepFactory = myAssembly.GetItem("SimPrdRepFactory")
+myRepRef = myPrdRepFactory.CreatePrdRep("FEM")
+myFEMRoot = myRepRef.GetItem("SimFemRoot")
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  3 - Creates sections</span>
+<span class="comment">#======================================================================</span>
+
+<span class="comment"># Retrieves the Property Set</span>
+myPropertiesSet = myFEMRoot.GetSet("SimProperties")
+
+<span class="comment"># Creates the Properties</span>
+myShellSection = myPropertiesSet.Add("SimShellSection")
+myMeshedBolt = myPropertiesSet.Add("SimMeshedBolt")
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  4 - Sets the meshed bolt support from publication</span>
+<span class="comment">#======================================================================</span>
+
+<span class="comment"># Retrieves the publication</span>
+myPublications  = myAssembly.Publications
+mySupport = myPublications.GetItem("Bolt-1")
+
+<span class="comment"># Sets the meshed bolt support</span>
+myLinkAccess = myMeshedBolt.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", mySupport)
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  5 - Sets the shell section supports from product structure</span>
+<span class="comment">#======================================================================</span>
+
+<span class="comment"># Retrieves the ws3_bolt_part.2 part occurrence</span>
+myRootOccurrence = MyProductService.RootOccurrence
+
+iMaxCnt = myRootOccurrence.Occurrences.Count
+
+<span class="keyword">for</span> index <span class="keyword">in</span> <span class="keyword">range</span>(1, iMaxCnt):
+    <span class="keyword">if</span> myRootOccurrence.Occurrences.Item(index).Name == "ws3_bolt_part.2":
+       myPartOccurrence = myRootOccurrence.Occurrences.Item(index)
+
+<span class="comment"># Retrieves the ws3_bolt_part.2 part rep instance</span>
+myPartInstance = myPartOccurrence.InstanceOccurrenceOf
+myPartInstanceRef = myPartInstance.ReferenceInstanceOf
+myPartRepInstance = myPartInstanceRef.RepInstances.Item(1)
+
+<span class="comment"># Retrieves the ws3_bolt_part.2 part body</span>
+myPartRepInstanceRef = myPartRepInstance.ReferenceInstanceOf
+myPart = myPartRepInstanceRef.GetItem("Part")
+myPartBody = myPart.MainBody
+
+<span class="comment"># Composes link to the ws3_bolt_part.2 part body</span>
+myReference = myPart.CreateReferenceFromObject(myPartBody)
+myLinkToFirstSupport = myProdService.ComposeLink(myPartOccurrence, myPartRepInstance, myReference)
+
+<span class="comment"># Sets the shell section first support</span>
+myLinkAccess = myShellSection.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToFirstSupport)
+
+<span class="comment"># Retrieves the ws3_bolt_part.3 part occurrence</span>
+
+<span class="keyword">for</span> index <span class="keyword">in</span> range(1, iMaxCnt):
+    <span class="keyword">if</span> myRootOccurrence.Occurrences.Item(index).Name == "ws3_bolt_part.3":
+       myPartOccurrence = myRootOccurrence.Occurrences.Item(index)
+
+<span class="comment"># Retrieves the ws3_bolt_part.3 part rep instance</span>
+myPartInstance = myPartOccurrence.InstanceOccurrenceOf
+myPartInstanceRef = myPartInstance.ReferenceInstanceOf
+myPartRepInstance = myPartInstanceRef.RepInstances.Item(1)
+
+<span class="comment"># Retrieves the ws3_bolt_part.3 part body</span>
+myPartRepInstanceRef = myPartRepInstance.ReferenceInstanceOf
+myPart = myPartRepInstanceRef.GetItem("Part")
+myPartBody = myPart.MainBody
+
+<span class="comment"># Composes link to the ws3_bolt_part.3 part body</span>
+myReference = myPart.CreateReferenceFromObject(myPartBody)
+myLinkToSecondSupport = myProdService.ComposeLink(myPartOccurrence, myPartRepInstance, myReference)
+
+<span class="comment"># Sets the shell section second support</span>
+myLinkAccess.AddLink ("MainSupport", myLinkToSecondSupport)
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  6 - Replaces the first shell section support</span>
+<span class="comment">#======================================================================</span>
+
+<span class="comment"># Retrieves the publication</span>
+myNewSupport = myPublications.GetItem("Pipe")
+
+<span class="comment"># Removes first support</span>
+myLinkAccess.RemoveLink ("MainSupport", myLinkToFirstSupport)
+
+<span class="comment"># Sets the new support</span>
+myLinkAccess.AddLink ("MainSupport", myNewSupport)
+
+
+<span class="comment"># =====================================================================</span>
+<span class="comment">#  7 - Removes all supports of the shell section</span>
+<span class="comment">#======================================================================</span>
+myLinkAccess.RemoveAllLinks ("MainSupport")
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>KnowledgeIDLItf Rule (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../KnowledgeIDLItf.htm" href="../KnowledgeIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "KnowledgeIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "Rule"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> Rule<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_Rule_14070','Rule','0');</script>
+<section id='maindesc'>
+<b><i> Represents the Knowledge rule relation.</i></b><br>
+
+ The following example shows how to create a rule that selects a 
+ depth with respect to a mass value. The depth and mass parameters
+ should exist before the creation of the rule object.
+ <pre>
+ Dim part1 As Part
+ Set part1 = ...
+ Dim mass As RealParam
+ Set mass = part1.Parameters.<font color="red">CreateReal</font>("mass", 5.)
+ Dim depth As RealParam
+ Set depth = part1.Parameters.<font color="red">CreateReal</font>("depth", 0.)
+ Dim selectdepth As Relation
+ Set selectdepth = part1.Relations.<font color="red">CreateProgram</font>
+                    ("select_depth",
+                     "Select depth with respect to mass", 
+                     "if (mass>2kg) { depth=2mm } else { depth=1mm }")
+ </pre>
+
+ <dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('CATIARelations','CreateProgram','CATIARelations.CreateProgram') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

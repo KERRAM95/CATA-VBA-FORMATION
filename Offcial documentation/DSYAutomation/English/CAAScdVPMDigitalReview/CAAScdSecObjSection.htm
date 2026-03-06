@@ -1,0 +1,100 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Section Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Section Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'interface', 'Section', 'PropertyIndex'); return false;">
+		Properties</a></td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'interface', 'Section', 'MethodIndex'); return false;">
+		Methods</a></td>
+	</tr>
+</tbody>
+</table>
+<p class="auto"><a href="CAAScdSecObjSectionService.htm">
+<img alt="SectionService Object" src="../CAAScdImages/SectionService.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsSectionIDLItf', 'interface', 'Section'); return false;"><img alt="Section Object" src="../CAAScdImages/Section.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="space" width="20" height="24"/><img src="../CAAScdImages/parmult.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'PLMValidationIDLItf', 'interface', 'Markers'); return false;"><img alt="Markers Collection Object" src="../CAAScdImages/Markers.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="space" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'PLMValidationIDLItf', 'interface', 'Marker'); return false;"><img alt="Marker Object" src="../CAAScdImages/Marker.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="space" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="space" width="20" height="24"/><img src="../CAAScdImages/parderil.png" alt="Inheritance Symbol" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'PLMValidationIDLItf', 'interface', 'MarkerPointing'); return false;"><img alt="MarkerPointing Object" src="../CAAScdImages/MarkerPointing.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="space" width="20" height="24"/><img src="../CAAScdImages/parlower.png" alt="Aggregation Symbol" width="20" height="24"/><img src="../CAAScdImages/space1.png" alt="space" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'PLMValidationIDLItf', 'interface', 'MarkerText'); return false;"><img alt="MarkerText Object" src="../CAAScdImages/MarkerText.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space1.png" alt="space" width="20" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'Measures'); return false;"><img alt="Measures Collection Object" src="../CAAScdImages/Measures.png" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/space2.png" alt="Space" width="40" height="24"/><img src="../CAAScdImages/parchild.png" alt="Aggregation Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'Measure'); return false;"><img alt="Measure Object" src="../CAAScdImages/Measure.png" width="252" height="22"/></a></p>
+<p>Represents a section object.</p>
+<p>The <strong>Section</strong> object lets you create a section plane sectioning the space. 
+You can retrieve and set the sectioning plane, and export the curves created by 
+the sectioned objects to a 3D part.</p>
+<h2>Creating a Section Object</h2>
+<p>Use the <strong>Add</strong> method of the <strong>SectionService</strong> object 
+to create a <strong>Section</strong> object.</p>
+<pre class="code"><span class="keyword">Dim</span> oSectionService <span class="keyword">As</span> SectionService
+<span class="keyword">Set</span> oSectionService = CATIA.ActiveEditor.GetService(&quot;SectionService&quot;)
+<span class="keyword">Dim</span> oSection <span class="keyword">As</span> Section
+<span class="keyword">Set</span> oSection = oSectionService.Add
+</pre>
+<p>To Add a Section, the Product must have a Markup.</p>
+<h2>Positioning the Section Object Plane</h2>
+<p>Use the <strong>SetPosition</strong> method of the <code>oSection</code>
+<strong>Section</strong> object to set the sectioning plane.</p>
+<pre class="code"><span class="keyword">Dim</span> aPositioningMatrix(11) <span class="keyword">As Double</span>
+aPositioningMatrix(0)  = 1.0    <span class="comment">'X-axis 1st component</span>
+aPositioningMatrix(1)  = 0.0    <span class="comment">'X-axis 2nd component</span>
+aPositioningMatrix(2)  = 0.0    <span class="comment">'X-axis 3rd component</span>
+aPositioningMatrix(3)  = 0.0    <span class="comment">'Y-axis 1st component</span>
+aPositioningMatrix(4)  = 1.0    <span class="comment">'Y-axis 2nd component</span>
+aPositioningMatrix(5)  = 0.0    <span class="comment">'Y-axis 3rd component</span>
+aPositioningMatrix(6)  = 0.0    <span class="comment">'Normal axis 1st component</span>
+aPositioningMatrix(7)  = 0.0    <span class="comment">'Normal axis 2nd component</span>
+aPositioningMatrix(8)  = 1.0    <span class="comment">'Normal axis 3rd component</span>
+aPositioningMatrix(9)  = 0.0    <span class="comment">'Origin X coordinate</span>
+aPositioningMatrix(10) = 0.0    <span class="comment">'Origin Y coordinate</span>
+aPositioningMatrix(11) = 100.0  <span class="comment">'Origin Z coordinate</span>
+
+oSection.SetPosition aPositioningMatrix</pre>
+<p>The sectioning plane is defined by two vectors and an origin making up its own 
+coordinate system, and a normal vector.</p>
+<p>The sectioning plane is parallel to the XY plane, because its two director vectors 
+are parallel to the X and Y vectors of the absolute coordinate system, and its normal 
+vector is parallel to the Z vector of the absolute coordinate system. Its origin 
+is located at the z position 100.</p>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

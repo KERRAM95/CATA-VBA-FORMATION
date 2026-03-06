@@ -1,0 +1,346 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a Pad based on a Sketch</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating a Pad based on a Sketch</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case creates 
+						a Pad based on the Sketch. In the process we learn to retrieve 
+						Part object from Body and retrieve Sketch aggregated beneath 
+						body by giving sketch name as an input. </p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:
+						<ul>
+							<li>You should first launch CATIA </li>
+							<li>The macro should essentially be launched from a 
+							Part Editor (meaning input data is always a PLM Product 
+							Representation Reference)</li>
+							<li>Product/Part editor must be active before launching 
+							the macro </li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:</span>
+						<a href="CAAScdMmrUcCreatePadBasedOnSketchSource.htm">CAAScdMmrUcCreatePadBasedOnSketchSource.htm</a></p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrTocPart.htm">Part Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjEditor.htm">Editor Object</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p>Prolog</p>
+			<p>The macro begins with the <strong>CreatePadBasedOnSketch</strong> 
+			main subroutine. It typically begins with the following extract of code, 
+			which serves as a built-in &quot;error handling&quot; mechanism.</p>
+			<pre class="code"><span class="keyword">Sub</span><strong> CreatePadBasedOnSketch</strong>()
+
+<span class="keyword">On Error GoTo </span>ErrorSub
+...</pre>
+			<p>The first instruction means that when a method will throw an error, 
+			the macro will skip to the line named, <strong>ErrorSub</strong>. See the step
+			<a href="#Epilog">Epilog</a>.</p>
+			<p><code>CreatePadBasedOnSketch</code> subroutine selects Body Object 
+			from specification tree or 3d viewer within CATIA. Then UC retrieves 
+			the Part object from of Body which is parent of it. Next we retrieve 
+			aggregated sketch by giving sketch name as an input. Then create 
+			Pad inside the Part using retrieved sketch and limit value given by 
+			user.</p>
+			</li>
+			<li>
+			<p>Here, we retrieve the current active Editor object to 
+			select PLM object</p>
+			<pre class="code"> ... 
+<span class="keyword">Dim</span> oCurrentActiveEditor <span class="keyword">As</span> <strong>Editor</strong>
+<span class="keyword">Set</span> oCurrentActiveEditor = CATIA.<strong>ActiveEditor</strong>
+...</pre>
+			<p>Return a <strong>Editor</strong> object from the Application object (CATIA) 
+			using the <strong>ActiveEditor </strong>method. </p>
+			</li>
+			<li>
+			<p>We then retrieve Selection object from active editor</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oObjSelection
+<span class="keyword">Set</span> oObjSelection = oCurrentActiveEditor.<strong>Selection</strong>
+...</pre>
+			<p>Return a <strong>Selection</strong> object from the Active Editor using <strong>
+			Selection</strong> method. It is significant to note here that we haven't 
+			declared a type for <code>oObjSelection</code> (as for several other 
+			variables, further ahead in this macro). The section &quot;Tips about VB 
+			and VBA&quot; in the technical article &quot;About VB, VBA, Debug, and Compatibility&quot; 
+			[] provides an explanation for why these variables are not typed.
+			</p>
+			</li>
+			<li>
+			<p>The selection object retrieved above is now updated 
+			with the selection criteria (&quot;Body&quot;). The following image shows 
+			sample Object from which user could select Body object (PartBody).</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Representation" src="CAAScdMmrUcCreatePadBasedOnSketch_image_in.jpg" width="360" height="257"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<pre class="code">...
+<span class="keyword">Dim</span> strStatus<strong> </strong><span class="keyword">As</span> String
+<span class="keyword">Dim</span> oInputObjectType(0)
+
+oInputObjectType(0) = &quot;Body&quot;
+strStatus = oObjSelection.<strong>SelectElement</strong>(<strong>oInputObjectType</strong>, &quot;Select a Body Element from spec tree or the 3D Viewer&quot;, False)
+...</pre>
+			<p>The PLM objects that you can select (if the current 
+			editor is VPM Editor) is <strong><em>Body</em></strong> type. This type is appended 
+			to an array (<code>oInputObjectType</code>), which now represents the 
+			select criteria. The selection object (<code>oObjSelection</code>) is 
+			then updated with this select criteria, with a call to <code>SelectElement</code> 
+			method. </p>
+			<p>At this stage, the application prompts an end user to 
+			select a Body from the spec tree or the 3D Viewer (second argument of 
+			the <code>SelectElement</code> method, represents the prompt message)</p>
+			<p>The last argument is false, indicating the end user 
+			will always be invited to select something in the spec tree or the 3D 
+			Viewer, though an entity (of the type set as filter in the selection 
+			criteria) has already been selected by the end-user.</p>
+			<p>Once the user does the selection, the application proceeds 
+			further.</p>
+			</li>
+			<li>
+			<p>Now that the user has made a selection in the spec tree 
+			or the 3D Viewer, the current step retrieves it (a <em><strong>Body</strong></em>) 
+			from the Selection Object which contains it.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oSelectedElement <span class="keyword">As</span> SelectedElement
+<span class="keyword">Set</span> oSelectedElement<strong> </strong> =  oObjSelection.<strong>Item</strong>(1)
+
+<span class="keyword">Dim</span> oBody <span class="keyword">As</span> <strong>Body</strong>
+<span class="keyword">Set</span> oBody = oSelectedElement<strong>.Value</strong>
+
+MsgBox (&quot;Selected Body Name :&quot;) + oBody.<strong>Name</strong>
+...</pre>
+			<p>A call to <code>SelectionObject::Item</code> at index 
+			1, on <code>oObjSelection</code> returns the selected entity, as a
+			<em>SelectedElement</em> type (<code>oSelectedElement</code>). </p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns <code>oBody</code>, a <em>Body</em> type representing the selection.</p>
+			<p>Then we display the Body object name using
+			<code>Body::Name</code>.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdMmrUcCreatePadBasedOnSketch_image1.jpg" width="177" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Next retrieve the Part object aggregating selected Body. 
+			Further we use the Part to create Pad.</p>
+			<p>first we retrieve <strong>Bodies</strong> object from 
+			Body object. Then from Bodies we retrieve its Parent that is <strong>
+			Part</strong>.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oBodies<span class="keyword"> As</span> <strong>Bodies</strong>
+<span class="keyword">Set</span> oBodies = oBody.<strong>Parent</strong>
+
+<span class="keyword">Dim</span> oPart <span class="keyword">As</span> <strong>Part</strong>
+<span class="keyword">Set</span> oPart = oBodies.<strong>Parent</strong>
+ 
+MsgBox (&quot;The Part name aggrigating selected Body : &quot;) + oPart.<strong>Name</strong>
+..</pre>
+			<p>A call to <code>Body::Parent</code> 
+			, on <code>oBody</code> returns the Parent entity, as a <em>Bodies</em> 
+			type (<code>oBodies</code>). </p>
+			<p>Next a call to <code>Bodies::Parent</code> on <code>
+			oBodies</code> (retrieved above) returns its Parent <code>oPart</code>, 
+			a <em>Part</em> type.</p>
+			<p>Then we display the Part object name using
+			<code>Part::Name</code>.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdMmrUcCreatePadBasedOnSketch_image2.jpg" width="311" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Next retrieve the Sketch from Body. </p>
+			<p>Prompt the user to enter Sketch name for creating Pad.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> strInputSketchName <span class="keyword"> As</span> String
+strInputSketchName = InputBox(&quot;Please enter the Sketch (name) for the creation of PAD&quot;, &quot;Enter Sketch Name&quot;)
+...</pre>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Enter Sketch name Prompt" src="CAAScdMmrUcCreatePadBasedOnSketch_image3.jpg" width="363" height="152"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>Here we retrieve the Sketches this contains the the 
+			list of all Sketches beneath selected Body object. Then we retrieve 
+			sketch by its name from list of sketches.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oSketch <span class="keyword">As</span> <strong>Sketch</strong>
+<span class="keyword">Set</span> oSketch = oBody.<strong>Sketches</strong>.<strong>Item</strong>(strInputSketchName)
+...</pre>
+			<p>A call to <code>Body::Sketches</code>, 
+			on <code>oBody</code> returns the list of sketches listed beneath 
+			body object, as a <em>Sketches</em> type .</p>
+			<p>Next a call to <code>Sketches::Item</code> on <code>
+			Sketches type</code> (retrieved above) by giving sketch name as 
+			input (<code>strInputSketchName</code>) returns <code>oSketch</code>,
+			a <em>Sketch</em> type.</p>
+			</li>
+			<li>
+			<p>Next Create the Pad using Sketch retrieved above and 
+			Limit value entered by user. </p>
+			<p>Prompt the user to enter Limit Value for creating Pad.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> iPadLimit <span class="keyword"> As</span> Integer
+iPadLimit = InputBox(&quot;Please enter the Limit Value for the creation of PAD&quot;, &quot;Enter Limit Value&quot;)
+...</pre>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Enter Limit Value Prompt" src="CAAScdMmrUcCreatePadBasedOnSketch_image4.jpg" width="363" height="152"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>Here we create pad by giving sketch object and Limit 
+			value as an input.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oPad <span class="keyword">As</span> <strong>Pad</strong>
+<span class="keyword">Set</span> oPad = <strong>oPart.ShapeFactory.AddNewPad</strong>(<strong>oSketch</strong>, <strong>iPadLimit</strong>)
+
+oPart.<strong>Update</strong>
+...</pre>
+			<p>A call to <code>Part::ShapeFactory</code>, 
+			on <code>oPart</code> returns the part shape factory. It allows the 
+			creation of shapes in the part.</p>
+			<p>Next a call to <code>Factory::AddNewPad</code> on
+			<code>(oPart.ShapeFactory)Factory type</code> (retrieved above) 
+			creates a pad and returns <code>oPad </code>, a <em>Pad </em>type.</p>
+			<p>then finally we update the Part using call to <code>
+			Part::Update</code> on <code>oPart</code>.</p>
+			<p>Following image shows the created pad on Sketch.2 with 
+			input limit value.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Created Pad" src="CAAScdMmrUcCreatePadBasedOnSketch_image_out.jpg" width="379" height="259"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>We then save the changes.</p>
+			<pre class="code">...
+CATIA.GetSessionService(&quot;PLMPropagateService&quot;).Save
+...</pre>
+			<p>We next save this product in the database. It is done 
+			with calls which occur in the following sequence</p>
+			<ul>
+				<li>A call to <code>Application::GetSessionService</code> 
+				on CATIA (an Application object, defined internally by VB) returns
+				a <em>PLMPropagateService</em> object.</li>
+				<li>The next call to <code>PLMPropagateService::Save</code> 
+				eventually saves this new product hierarchy in the database.</li>
+			</ul>
+			</li>
+			<li>
+			<p><a name="Epilog"></a>Epilog</p>
+			<p>The following extract of code is primarily meant for 
+			error-handling purpose. Any run time error that the macro encounters 
+			results in the execution flow reaching this part of the code, and then 
+			terminating with a normal exit from subroutine scope.</p>
+			<pre class="code">...
+    <span class="keyword">GoTo</span> EndSub
+    
+ErrorSub:
+    MsgBox Err.Description
+
+EndSub:
+<span class="keyword">End Sub</span></pre>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

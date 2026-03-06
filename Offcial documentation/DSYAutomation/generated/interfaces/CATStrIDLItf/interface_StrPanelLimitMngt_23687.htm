@@ -1,0 +1,376 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATStrIDLItf StrPanelLimitMngt (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATStrIDLItf.htm" href="../CATStrIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATStrIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "StrPanelLimitMngt"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> StrPanelLimitMngt<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_StrPanelLimitMngt_23687','StrPanelLimitMngt','0');</script>
+<section id='maindesc'>
+<b><i> Object to manage Structure Functional Modeler limits for Panel.</i></b><br>
+ A limit can be:
+     <br>- curve / surface
+     <br>- Panel
+     <br>- Profile
+ <br><b>Role</b>: To manage Panel's limits.<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetLimitingObject"><b>GetLimitingObject</b></a>
+</td><td  id='tdright'>  Returns the Limiting Object on the Panel.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetLimitingObjects"><b>GetLimitingObjects</b></a>
+</td><td  id='tdright'>     Returns the list of Limiting Objects, the limit orientations and the limit offsets on the Panel  
+  
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetOffset"><b>GetOffset</b></a>
+</td><td  id='tdright'>     Returns the Offset for a limit at the position iIndexLimit on the Panel.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetOrientation"><b>GetOrientation</b></a>
+</td><td  id='tdright'>     Returns the Orientation for a limit at the position iIndexLimit on the Panel.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#InvertLimit"><b>InvertLimit</b></a>
+</td><td  id='tdright'>  Inverts the Limit Orientation for a limit at the position iIndexLimit on the Panel.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RemoveLimit"><b>RemoveLimit</b></a>
+</td><td  id='tdright'>     Removes the limit at the position iIndexLimit.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetLimitingObject"><b>SetLimitingObject</b></a>
+</td><td  id='tdright'>  Sets the Limiting Object on the Panel.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetLimitingObject2"><b>SetLimitingObject2</b></a>
+</td><td  id='tdright'>  Sets the Limiting Object on the Panel.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetLimitingObject"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetLimitingObject</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndexLimit</span>)</span> As <script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the Limiting Object on the Panel. Limiting Object Can be a geometric curves, surfaces or a SFD Profile, or a SFD Panel.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndexLimit</span></dt>
+   <dd>      Position of the limit to be retrieved.
+     Provide default value -1
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example retrieves <code>LimitingObject</code> of the SfdPanel.
+ <pre>
+ Set RefLimitingObject = ObjStrPanelLimitMngt.<font color="red">GetLimitingObject</font>(-1)
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="GetLimitingObjects"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetLimitingObjects</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAReferences','CATIAReferences')</script> <span class='param'>oLimitingObjects</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oListOfOrientations</span>,<script type="text/javascript"> activateLink('StrParameters','StrParameters')</script> <span class='param'>oListOfOffset</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oListOfLimitTypes</span>)</span></span></dt>
+  <dd class='ddmethod'>
+    Returns the list of Limiting Objects, the limit orientations and the limit offsets on the Panel  
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oLimitingObjects</span></dt>
+   <dd>             Can be a geometric curves, surfaces or a SFD Profile, or a SFD Panel.  
+                        The exported feature is retrieved if possible, otherwise the import.  
+  
+ </ dd>
+    <dt><span class='paramitem'> oListOfOrientations</span></dt>
+   <dd>             List of the Limit Orientations.    
+  
+ </ dd>
+    <dt><span class='paramitem'> oListOfOffset</span></dt>
+   <dd>   			List of the Limit offsets .list of knowledge parameters. see CATIAParameters.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oListOfLimitTypes</span></dt>
+   <dd> 			List of the Limit types.  
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example sets <code>LimitingObject</code> for the SfdPanel.
+ <pre>
+  Dim LimitingObjects As References
+  Dim Orientations() As Variant
+  Dim ListOfOffsets As SfdParameters
+  ObjStrPanelLimitMngt.<font color="red">GetLimitingObjects</font> LimitingObjects, Orientations, ListOfOffsets
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="GetOffset"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetOffset</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndexLimit</span>)</span> As <script type="text/javascript"> activateLink('CATIAParameter','CATIAParameter')</script> </span></dt>
+  <dd class='ddmethod'>
+    Returns the Offset for a limit at the position iIndexLimit on the Panel.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndexLimit</span></dt>
+   <dd>          Position of the offset's limit.
+         <br>If iIndexLimit == -1 (default value): the last limit orientation is retrieved.
+         <br>If iIndexLimit >   0 : the index of the limit the user wish to retrieve.
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example retrieves the Offset of the last limit of panel.
+ <pre>
+  Dim OffsetParm As Parameter
+  Set OffsetParm = ObjStrPanelLimitMngt.<font color="red">GetOffset</font> -1
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="GetOrientation"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetOrientation</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndexLimit</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+    Returns the Orientation for a limit at the position iIndexLimit on the Panel.  
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndexLimit</span></dt>
+   <dd>            Position of the orientation's limit.  
+         If iIndexLimit == -1 (default value): the last limit orientation is retrieved.
+         If iIndexLimit > 0 : the index of the limit the wish to retrieve.
+ <br>Orientation values can be:
+ <br>-1 = InvertOrientation  
+  <br>0 = UnknownOrientation   
+  <br>1 = SameOrientation     
+  <br>2 =  X+   ( X+ vector = ( 1, 0, 0) )
+  <br>3 =  X-   ( X- vector = (-1, 0, 0) )
+  <br>4 =  Y+   ( Y+ vector = ( 0, 1, 0) )
+  <br>5 =  Y-   ( Y- vector = ( 0,-1, 0) )
+  <br>6 =  Z+    ( Z+ vector = ( 0, 0, 1) )
+  <br>7 =  Z-    ( Z- vector = ( 0, 0,-1) )
+  <br>8 =  Inside      
+  <br>9 =  Outside      
+ <br>10 =  Inboard  ( Toward center line )
+ <br>11 =  Outboard ( Opposite of previous one )
+ <br>12 =  Inboard  (  Toward midship )
+ <br>13 =  Outboard ( Opposite of previous one )
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example retrieves the Orientation of the last limit of panel.
+ <pre>
+ lOrientation = ObjStrPanelLimitMngt.<font color="red">GetOrientation</font> -1
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="InvertLimit"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>InvertLimit</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndexLimit</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Inverts the Limit Orientation for a limit at the position iIndexLimit on the Panel.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndexLimit</span></dt>
+   <dd>      Position of the limit.
+     <br>If iIndexLimit == -1 (default value): the last limit orientation is inverted
+     <br>If iIndexLimit >   0 : the index of the limit orientation the user wish to invert.  
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example Inverts the last set limit of panel.
+ <pre>
+  ObjStrPanelLimitMngt.<font color="red">InvertLimit</font> -1
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="RemoveLimit"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>RemoveLimit</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndexLimit</span>)</span></span></dt>
+  <dd class='ddmethod'>
+    Removes the limit at the position iIndexLimit.  
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndexLimit</span></dt>
+   <dd>        Position of the Limit.  
+  <br>if iIndexLimit =  -1, the last Limit is removed  
+  <br>if iIndexLimit =  -99, all the limits are removed      
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example removes the last limit of the panel.
+ <pre>
+ Dim ObjStrPanelLimitMngt As StrPanelLimitMngt
+ Set ObjStrPanelLimitMngt = ObjSfdPanel.StrPanelLimitMngt
+ ObjStrPanelLimitMngt.<font color="red">RemoveLimit</font> -1
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="SetLimitingObject"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetLimitingObject</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> <span class='param'>iLimitingObject</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndexLimit</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iOrientation</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iLimitType</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the Limiting Object on the Panel. The orientation is automatically computed.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLimitingObject</span></dt>
+   <dd>      Limit Feature to be set on the panel
+     Can be a geometric curves, surfaces or a SFD Profile, or a SFD Panel.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iIndexLimit</span></dt>
+   <dd>      <br>If iIndexLimit == -1 (default value): the new limit is added.
+     <br>If iIndexLimit >  0  : the new limit is set at the position iIndexLimit.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iOrientation</span></dt>
+   <dd>    Current orientation of the plate limit.
+ if iOrientation == 0, the value of the Orientation is automatically
+ computed, depending on the value Set in the PRM ressources.
+ We advised to use the default value, so that the automatic computation is performed.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iLimitType</span></dt>
+   <dd>    Cutting strategy.
+   <br>values :
+           <br>-1 - limit is undefined
+            <br>0 - ShortPoint
+            <br>1 - LongPoint
+            <br>2 - Weld 
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example sets <code>LimitingObject</code> for the SfdPanel.
+ <pre>
+ Set ObjLimit1 = ObjStrService.GetReferencePlane(ObjPart, 1, "DECK.6")
+ Set Limit1 = ObjPart.CreateReferenceFromObject(ObjLimit1)
+ ObjStrPanelLimitMngt.<font color="red">SetLimitingObject</font> Limit1, -1, 0, 2
+ </pre>
+ </dd>
+</dl>
+</dd>
+<a id="SetLimitingObject2"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetLimitingObject2</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAReference','CATIAReference')</script> <span class='param'>iLimitingObject</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iIndexLimit</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iOrientation</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iLimitType</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iKey</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the Limiting Object on the Panel. The orientation is automatically computed.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLimitingObject</span></dt>
+   <dd>      Limit Feature to be set on the panel
+     Can be a geometric curves, surfaces or a SFD Profile, or a SFD Panel.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iIndexLimit</span></dt>
+   <dd>      <br>If iIndexLimit == -1 (default value): the new limit is added.
+     <br>If iIndexLimit >  0  : the new limit is set at the position iIndexLimit.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iOrientation</span></dt>
+   <dd>    Current orientation of the plate limit.
+ if iOrientation == 0, the value of the Orientation is automatically
+ computed, depending on the value Set in the PRM ressources.
+ We advised to use the default value, so that the automatic computation is performed.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iLimitType</span></dt>
+   <dd>    Cutting strategy.
+   <br>values :
+           <br>-1 - limit is undefined
+            <br>0 - ShortPoint
+            <br>1 - LongPoint
+            <br>2 - Weld  
+ 
+ </ dd>
+    <dt><span class='paramitem'> iKey</span></dt>
+   <dd>   Key corresponds the face of feature.
+   <br>values :
+          <br>2 - Plate (Corresponds to one face of the Plate)
+          <br>22 - Stiffener (Corresponds to top face of flange of the Stiffener)
+
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"><dd>
+ This example sets <code>LimitingObject</code> for the SfdPanel.
+ <pre>
+ Set ObjLimit1 = ObjStrService.GetReferencePlane(ObjPart, 1, "DECK.6")
+ Set Limit1 = ObjPart.CreateReferenceFromObject(ObjLimit1)
+ ObjStrPanelLimitMngt.<font color="red">SetLimitingObject2</font> Limit1, -1, 0, 2, "22"
+ </pre>
+ </dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

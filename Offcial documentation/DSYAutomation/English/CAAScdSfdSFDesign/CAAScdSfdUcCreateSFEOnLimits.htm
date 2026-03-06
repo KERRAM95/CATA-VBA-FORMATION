@@ -1,0 +1,336 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SFD StiffenerOnFreeEdge on Panel Limits</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SFD StiffenerOnFreeEdge on Panel Limits</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SFD StiffenerOnFreeEdge(SFE) 
+						on panel limits.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSfdUcPart.3dxml</div></code>, <code><div class=vb_sample_data>CAAScdSfdUcCGR.3dxml</div></code> 
+							and <code><div class=vb_sample_data>CAAScdSfdUcSR.3dxml</div></code> files supplied 
+							in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSfdSFDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where 
+								the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSfdUcCreateSFEOnLimitsSource.htm">CAAScdSfdUcCreateSFEOnLimitsSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSfdTocSFDesign.htm">Structure Functional Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves a SFD panel object</a></li>
+			<li><a href="#Step5">Creates SFE on panel limits</a></li>
+			<li><a href="#Step6">Edits SFE</a></li>
+			<li><a href="#Step7">Updates the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SFD_VB_TEST&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SFD_VB_TEST&quot; from DB and 
+			loads it and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SFDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SFD_VB_TEST&quot;
+ OpenProduct prdName , SFDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SFD model from underlying database the current active 
+			editor is returned in <strong><code>SFDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+			<p>As a next step, the UC retrieves Selection object in SFDProdSel variable. 
+			To retrieve the Selection object <strong><code>SFDPrdEditor </code>
+			</strong>is used.</p>
+			<pre class="code"> ...
+<span class="keyword">    Set</span> SFDProdSel = SFDPrdEditor<strong>.Selection </strong>
+ ...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> ObjPart = SFDPrdEditor.<strong>ActiveObject</strong>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves a SFD panel object</strong></p>
+			<p>In this step UC retrieves panel object.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> RefSfdPanel = ObjPart.<strong>FindObjectByName</strong>(&quot;Panel.1&quot;)
+  <span class="keyword">Dim</span> ObjSfdPanel <span class="keyword">As</span> SfdPanel
+  SFDProdSel.<strong>Add</strong> (RefSfdPanel)
+  <span class="keyword">Set</span> ObjSfdPanel = SFDProdSel.<strong>FindObject</strong>(&quot;CATIASfdPanel&quot;)
+...</pre>
+			<p><code>FindObjectByName</code> method finds object whose name is &quot;Panel.1&quot; 
+			and returns reference to it. Here RefSfdPanel is of type <code>Reference</code>. 
+			To retrieve <code>SfdPanel</code> object from <code>Reference</code> 
+			add retrieved reference to the selection and call <code>FindObject</code> 
+			method as shown above. This will return the <code>SfdPanel</code> object 
+			variable.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Creates SFE on panel limits</strong></p>
+			<p>Now, panel is available to create SFE on its limits. Call <code>CreateSFE</code> 
+			method to create SFE on panel limits. <code>CreateSFE</code> method 
+			takes a panel as input parameter and it returns created SFE as output 
+			parameter in <code>ObjSfdStiffenerOnFreeEdge</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjSfdStiffenerOnFreeEdge <span class="keyword">As</span> StrSfdStiffenerOnFreeEdge
+  <strong>CreateSFE</strong> ObjSfdPanel, ObjSfdStiffenerOnFreeEdge
+...</pre>
+			<p>The method <code>CreateSFE</code> is detailed as in the below sub 
+			steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Retrieves <code>StrSfdStiffeners</code> and creates a empty 
+				SFE</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> CreateSFE(iObjSfdPanel <span class="keyword">As</span> SfdPanel, oObjSfdStiffenerOnFreeEdge <span class="keyword">As</span> StrSfdStiffenerOnFreeEdge)
+    <span class="comment">&#39;Get StrSfdStiffeners object</span>
+    <span class="keyword">Dim</span> ObjSfdStiffeners <span class="keyword">As</span> StrSfdStiffeners
+    <span class="keyword">Set</span> ObjSfdStiffeners = iObjSfdPanel.<strong>StrSfdStiffeners</strong>
+    <span class="comment">&#39;Create StiffenerOnFreeEdge</span>
+    <span class="keyword">Set</span> oObjSfdStiffenerOnFreeEdge = ObjSfdStiffeners.<strong>AddStiffenerOnFreeEdge</strong>
+...</pre>
+				<p><code>StrSfdStiffeners </code>is retrieved in <code>ObjSfdStiffeners</code> 
+				variable from <code>iObjSfdPanel</code> object. On <code>StrSfdStiffeners</code> 
+				object, <code>AddStiffenerOnFreeEdge</code> method is called to 
+				create the SFE with no data. Empty SFE is created now Uc sets different 
+				properties of the SFE like material, section etc.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves <code>StrCategoryMngt</code> and sets category</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrCategoryMngt object</span>
+    <span class="keyword">Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjStrCategoryMngt = oObjSfdStiffenerOnFreeEdge.<strong>StrCategoryMngt</strong>
+    <span class="comment">&#39;set category</span>
+    ObjStrCategoryMngt.<strong>SetCategory</strong> &quot;SldStiffenerOnFreeEdge&quot;
+    <span class="comment">&#39;set automatic naming to true</span>
+    ObjStrCategoryMngt.<strong>AutomaticName</strong> = True
+...</pre>
+				<p>Object of <code>StrCategoryMngt</code> is retrieved in <code>
+				ObjStrCategoryMngt</code>. Then method <code>SetCategory</code> 
+				is called to set the category. The property <code>AutomaticName</code> 
+				is used to enable the automatic naming of objects.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves <code>StrMaterialMngt</code> and sets material</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrMaterialMngt object</span>
+    <span class="keyword">Dim</span> ObjMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+    <span class="keyword">Set</span> ObjMaterialMngt = oObjSfdStiffenerOnFreeEdge.<strong>StrMaterialMngt</strong>
+    <span class="comment">&#39;set material</span>
+    ObjMaterialMngt.<strong>SetMaterial</strong> (&quot;Steel A42&quot;)
+...</pre>
+				<p>Object of <code>StrMaterialMngt</code> is retrieved in <code>
+				ObjMaterialMngt</code>. Then method <code>SetMaterial</code> is 
+				called to set the material.</p>
+				</li>
+				<li>
+				<p><strong>Sets section parameters</strong></p>
+				<p>Call <code>SetSectionParameters</code> method to set the section 
+				parameters. This method takes 3 input parameters SFE object, section 
+				name and anchor point.</p>
+				<pre class="code">...
+  <strong>SetSectionParameters</strong> oObjSfdStiffenerOnFreeEdge, &quot;WT18x179.5&quot;, &quot;catStrTopCenter&quot;
+...</pre>
+				<p>The method <code>SetSectionParameters</code> is detailed as in 
+				the below sub steps.</p>
+				<ol class="task" style="list-style-type: lower-roman">
+					<li>
+					<p><strong>Retrieves <code>StrSectionMngt</code></strong></p>
+					<pre class="code"><span class="keyword">Sub</span> SetSectionParameters(iObjSfdStiffenerOnFreeEdge <span class="keyword">As</span> StrSfdStiffenerOnFreeEdge, iStrSecName <span class="keyword">As</span> String, iAnchorPoint <span class="keyword">As</span> String)
+    <span class="keyword">Dim</span> ObjStrSectionMngt <span class="keyword">As</span> StrSectionMngt
+    <span class="keyword">Set</span> ObjStrSectionMngt = iObjSfdStiffenerOnFreeEdge.<strong>StrSectionMngt</strong>
+...</pre>
+					<p>Object of type <code>StrSectionMngt </code>is retrieved in
+					<code>ObjStrSectionMngt</code> from <code>iObjSfdStiffenerOnFreeEdge</code> 
+					object.</p>
+					</li>
+					<li>
+					<p><strong>Sets section parameters</strong></p>
+					<pre class="code">...
+    ObjStrSectionMngt.<strong>SetSectionName</strong> (iStrSecName)
+    ObjStrSectionMngt.<strong>AnchorPoint</strong> = iAnchorPoint
+    ObjStrSectionMngt.<strong>WebOrientation</strong> = 1
+    ObjStrSectionMngt.<strong>InvertWebOrientation</strong>
+    ObjStrSectionMngt.<strong>FlangeOrientation</strong> = 1
+    ObjStrSectionMngt.<strong>InvertFlangeOrientation</strong>
+    <span class="comment">&#39;set angle</span>
+    <span class="keyword">Dim</span> AngleParm <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> AngleParm = ObjStrSectionMngt.<strong>GetAngle</strong>
+    AngleParm.<strong>ValuateFromString</strong> (&quot;60deg&quot;)
+<span class="keyword">End Sub</span></pre>
+					<p>Method <code>SetSectionName</code> sets the section name. 
+					Anchor point is set using <code>AnchorPoint</code> property.
+					<code>WebOrientation</code> is set to 1 and method <code>InvertWebOrientation</code> 
+					is called to invert the web orientation. Same is done for FlangeOrientation 
+					property. User can directly set WebOrienation and FlangeOrientation 
+					to -1. But to introduce you to the methods <code>InvertWebOrientation</code> 
+					&amp; <code>InvertFlangeOrientation</code> Uc uses it here. To set 
+					the WebAngle for the SFE, the parameter for WebAngle is retrieved 
+					using method <code>GetAngle</code> and then its value is set 
+					using method <code>ValuateFromString</code>.</p>
+					</li>
+				</ol>
+				</li>
+				<li>
+				<p><strong>Sets profile type</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Set profile type (catStrProfileModeOnLimits = profile on limits)</span>
+    oObjSfdStiffenerOnFreeEdge.<strong>ProfileType</strong> = catStrProfileModeOnLimits
+...</pre>
+				<p>Type of the profile is set using property <code>ProfileType</code>. 
+				This property is set to catStrProfileModeOnLimits. catStrProfileModeOnLimits 
+				means that the created profile will be on edges of the panel.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves <code>StrProfileOnLimits</code> and sets limits</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrProfileOnLimits object</span>
+    <span class="keyword">Dim</span> ObjStrProfileOnLimits <span class="keyword">As</span> StrProfileOnLimits
+    <span class="keyword">Set</span> ObjStrProfileOnLimits = oObjSfdStiffenerOnFreeEdge.<strong>StrProfileOnLimits</strong>
+    <span class="comment">&#39;Store indices of plate limits on which SFE should be created in an array</span>
+    <span class="keyword">Dim</span> LimitIndexList(1) <span class="keyword">As</span> Variant
+    LimitIndexList(0) = 1
+    LimitIndexList(1) = 4
+    <span class="comment">&#39;Set limits</span>
+    ObjStrProfileOnLimits.<strong>SetLimits</strong> (LimitIndexList)
+...</pre>
+				<p>Object of <code>StrProfileOnLimits</code> is retrieved in
+				<code>ObjStrProfileOnLimits</code> from object <code>oObjSfdStiffenerOnFreeEdge</code>. 
+				Then limit indices of panel on which SFE should be created are stored 
+				in an array <code>LimitIndexList</code>. Method <code>SetLimits</code> 
+				is called to set the limits. This method takes one input parameter 
+				i.e. limits array.</p>
+				</li>
+				<li>
+				<p><strong>Updates created SFE object</strong></p>
+				<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjSfdStiffenerOnFreeEdge
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>UpdateObject</code> updates the created SFE.</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Edits SFE</strong></p>
+			<p>Method <code>EditStiffenerOnFreeEdge</code> is called to edit the 
+			created SFE. <code>EditStiffenerOnFreeEdge</code> method takes created 
+			SFE as input parameter. It will be edited. </p>
+			<pre class="code">...
+  <strong>EditStiffenerOnFreeEdge</strong> ObjSfdStiffenerOnFreeEdge
+...</pre>
+			<p>The method <code>EditStiffenerOnFreeEdge</code> first retrieves the 
+			object of type <code>StrProfileOnLimits</code>. Then it creates an array 
+			LimitIndexList of size 2, whose contents are {2,4}. This means SFE&#39;s 
+			previous support limits are changed to 2 and 4. So SFE will be created 
+			at panel limit 2 and panel limit 4. Then it calls method <code>ObjStrProfileOnLimits.SetLimits</code> 
+			and updates the SFE object. Go to the
+			<a href="CAAScdSfdUcCreateSFEOnLimitsSource.htm">CAAScdSfdUcCreateSFEOnLimitsSource.htm</a> 
+			to check the source of this method.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Updates the Part object</strong></p>
+			<pre class="code">...
+    ObjPart.<strong>Update</strong>
+<span class="keyword">End Sub</span></pre>
+			<p><code>Update</code> method updates the <code>ObjPart</code></p>
+			<table>
+				<caption><a name="Fig.1"></a>Fig.1: StiffenerOnFreeEdge on Panel 
+				Limits</caption>
+				<tr>
+					<td>
+					<img alt="StiffenerOnFreeEdge on Panel Limits" src="CAAScdSfdUcCreateSFEOnLimits.png"/></td>
+				</tr>
+			</table>
+			<script type="text/javascript">insertLinkToTop()</script>
+			<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

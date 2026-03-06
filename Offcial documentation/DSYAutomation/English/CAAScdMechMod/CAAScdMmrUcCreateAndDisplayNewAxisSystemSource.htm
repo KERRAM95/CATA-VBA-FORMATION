@@ -1,0 +1,131 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating and Displaying New Axis system Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+' Creating and Displaying New Axis system
+'
+'Mission: This use case fundamentally illustrates Creating new Axis System.
+'
+'steps:
+'        1- Creates a 3DShape
+'        2- Retrieves its Part Object
+'        3- Retrieves its Axis System Collection
+'        4- Creates a new Axis system
+'        5- Sets the type of Axis system as per User's input
+'        6- Retrieves and Displays Type of Axis System
+'        7- Retrieves and Displays Origin co-ordinates of Axis System
+'        8- Updates Part Object
+
+Sub CreateAndDisplayNewAxisSystem()
+
+'Error Handling
+On Error GoTo ErrorSub
+
+    '1- Creates a 3DShape
+    Dim oPLMNewService As PLMNewService
+    Set oPLMNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+    
+    Dim oEditor3DShape As Editor
+    oPLMNewService.PLMCreate &quot;3DShape&quot;, oEditor3DShape 
+    
+    '2- Retrieves its Part Object
+    Dim oPart As Part
+    Set oPart = oEditor3DShape.ActiveObject
+        
+    '3- Retrieves its Axis System Collection
+    Dim oAxisSystems As AxisSystems
+    Set oAxisSystems = oPart.AxisSystems
+    
+    '4- Creates a new Axis system
+    Dim oAxisSystem 'As AxisSystem
+    Set oAxisSystem = oAxisSystems.Add()
+    
+    '5- Sets the type of Axis system as per User's input
+    'Prompt the user to input the AxisSystem type
+    Dim iAxisSystemType As Integer
+    iAxisSystemType = InputBox(&quot;Please enter the AxisSystem Type Value (0- Standard, 1- Axis rotation, 2- Euler angles, 3- Datum (explicit)) &quot;, &quot;Enter Axis System Type Value&quot;)
+    
+    'Set the type
+    oAxisSystem.Type = iAxisSystemType
+    
+    '6- Retrieves and Displays Type of Axis System
+    Dim oType
+    oType = oAxisSystem.Type
+     
+    If (0 = oType) Then
+        MsgBox &quot;Axis System type =  Standard&quot;
+         
+    ElseIf (1 = oType) Then
+        MsgBox &quot;Axis System type =  Axis rotation&quot;
+        
+    ElseIf (2 = oType) Then
+        MsgBox &quot;Axis System type =  Euler angles&quot;
+    
+    Else
+         MsgBox &quot;Axis System type = Datum (explicit)&quot;
+         
+    End If
+    
+    '7- Retrieves and Displays Origin co-ordinates of Axis System
+    Dim originCoord(2)
+    oAxisSystem.GetOrigin originCoord
+  
+    Dim strCoordinate As String
+  
+    strCoordinate = &quot;Coordinates::&quot;
+    Dim X
+     X = originCoord(0)
+     strCoordinate = strCoordinate + &quot;  X: &quot; + CStr(X)
+     
+    Dim Y
+     Y = originCoord(1)
+     strCoordinate = strCoordinate + &quot;   Y: &quot; + CStr(Y)
+    Dim Z
+     Z = originCoord(0)
+     strCoordinate = strCoordinate + &quot;   Z: &quot; + CStr(Z)
+     
+     MsgBox strCoordinate
+     
+     If (1 = oType) Then
+        Set originElements1 = oPart.OriginElements
+        Set hybridShapePlaneExplicit1 = originElements1.PlaneZX
+        Set reference1 = oPart.CreateReferenceFromObject(hybridShapePlaneExplicit1)
+        oAxisSystem.AxisRotationReference = reference1
+     End If
+
+     
+     '8- Updates Part Object
+     oPart.Update
+
+'Error Handling
+   GoTo EndSub
+
+ErrorSub:
+          MsgBox str(Err.Number) + &quot;:&quot; + Err.Description
+          GoTo EndSub
+EndSub:
+End Sub
+</pre>
+
+</body>
+
+</html>

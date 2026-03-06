@@ -1,0 +1,186 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATFmtModelIDLItf SimMeshServices (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATFmtModelIDLItf.htm" href="../CATFmtModelIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATFmtModelIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimMeshServices"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimMeshServices<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimMeshServices_27200','SimMeshServices','0');</script>
+<section id='maindesc'>
+<b><i> Interface containing services related to mesh model.</i></b><br>
+<br>
+ <strong>OpenMesher() and CloseMesher() must be called with <code>SimMeshServicesVariable.OpenMesher() / SimMeshServicesVariable.CloseMesher()</code> as in samples below to avoid any issue, e.g. during an Update</strong>
+ <dl  class='desclist'>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example shows how to retrieve the mesh topology and add it as support of the created local mesh specification:
+ <pre>
+ Dim MeshServices1 As SimMeshServices
+ Set MeshServices1 = MP1.GetItem("SimMeshServices") 'With MP1 as a SimMeshPart
+ <strong>MeshServices1.OpenMesher() 'It opens the mesher of MP1</strong>
+ Dim MeshTopo1 As SimMeshTopology
+ <strong>Set MeshTopo1 = MeshServices1.GetNearestTopology(0#, 0#, 0#, 2, 0#)</strong>
+ Dim MeshSpec1 As SimMeshSpecification
+ Set MeshSpec1 = MP1.GetMeshSpecifications.Add("CATFmtStudioMappedSpec")
+ <strong>Call MeshServices1.AddTopologyAsSupport(MeshSpec1, MeshTopo1)</strong>
+ <strong>MeshServices1.CloseMesher() 'It closes the mesher of MP1, MeshTopo1 is now unavailable</strong>
+ </pre>
+ 
+ </pre></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code"> This example shows how to retrieve the mesh topology from an existing local topology specification:
+ <pre>
+ Dim MeshServices1 As SimMeshServices
+ Set MeshServices1 = MP1.GetItem("SimMeshServices") 'With MP1 as a SimMeshPart
+ <strong>MeshServices1.OpenMesher() 'It opens the mesher of MP1</strong>
+ Dim LocalMshSpec1 As SimTopologySpecification
+ Set LocalMshSpec1 = MP1.GetTopologySpecifications.Item(1)
+ Dim MeshTopo1()
+ <strong>MeshTopo1 = MeshServices1.GetTopology(LocalMshSpec1)</strong>
+ <strong>MeshServices1.CloseMesher() 'It closes the mesher of MP1, MeshTopo1 is now unavailable</strong>
+ </pre>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AddTopologyAsSupport"><b>AddTopologyAsSupport</b></a>
+</td><td  id='tdright'>  Add the mesh topology as support of the local mesh specification.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CloseMesher"><b>CloseMesher</b></a>
+</td><td  id='tdright'>  Closes the mesher.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetNearestTopology"><b>GetNearestTopology</b></a>
+</td><td  id='tdright'>  Returns the mesh topology (domain / edge / vertex) the closest to a given point.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTopology"><b>GetTopology</b></a>
+</td><td  id='tdright'>  Returns the mesh topology (domain / edge / vertex) created behind a local topology specification.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#OpenMesher"><b>OpenMesher</b></a>
+</td><td  id='tdright'>  Opens the mesher.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AddTopologyAsSupport"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddTopologyAsSupport</span><span class='signature'>(<script type="text/javascript"> activateLink('SimMeshSpecification','SimMeshSpecification')</script> <span class='param'>iLocalMeshSpec</span>,<script type="text/javascript"> activateLink('SimMeshTopology','SimMeshTopology')</script> <span class='param'>iTopo</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Add the mesh topology as support of the local mesh specification.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLocalMeshSpec</span></dt>
+   <dd>     The local mesh specification.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTopo</span></dt>
+   <dd>     The mesh topology.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="CloseMesher"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>CloseMesher</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Closes the mesher.
+ Use this method after use of this service to properly close the mesher. If not the model could be erroneous, e.g. with an Update call.
+</dd>
+<a id="GetNearestTopology"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetNearestTopology</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iX</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iY</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iZ</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iDimension</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iTolerance</span>)</span> As <script type="text/javascript"> activateLink('SimMeshTopology','SimMeshTopology')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the mesh topology (domain / edge / vertex) the closest to a given point.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'>  iX,</span></dt>
+   <dd> iY, iZ     Coordinates of the point in the local coordinate system of the FEMRep.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDimension</span></dt>
+   <dd>     Dimension of the topology to get (from 0 to 2).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iTolerance</span></dt>
+   <dd>     Maximum distance allowed for the search in millimeters. If the value is set to 0, no limit will be applied.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>      The closest mesh topology (domain / edge / vertex) with respect to the input point. Can be empty if no mesh exist. 
+     Return at least one mesh topology if two or more are equidistant from the input point.
+     <br>The topology will be generated if it has not already been computed.
+ </ dd>
+</dl>
+</dd>
+<a id="GetTopology"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTopology</span><span class='signature'>(<script type="text/javascript"> activateLink('SimTopologySpecification','SimTopologySpecification')</script> <span class='param'>iLocalSpec</span>)</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the mesh topology (domain / edge / vertex) created behind a local topology specification.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLocalSpec</span></dt>
+   <dd>     Local topology specification (Imposed curve / point...)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>      The mesh topologies.
+ </ dd>
+</dl>
+</dd>
+<a id="OpenMesher"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>OpenMesher</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Opens the mesher.
+ Use this method before any other call to this service. It is mandatory to use the CloseMesher after use.
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

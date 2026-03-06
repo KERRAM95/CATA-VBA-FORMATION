@@ -1,0 +1,261 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcCreateFastenerConnectionProperty.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample creates a Fastener Connection Property.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'    1- Retrieving the active product</span>
+<span class="comment">'    2- Retrieving the publications and composing links</span>
+<span class="comment">'    3- Creating and initializing a core material</span>
+<span class="comment">'    4- Creating an engineering connection</span>
+<span class="comment">'    5- Creating the FEM representation and retrieving its root object</span>
+<span class="comment">'    6- Creating and initializing a line fastener connection property</span>
+<span class="comment">'    7- Creating and initializing a point fastener connection property</span>
+
+<span class="keyword">Sub</span> CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 1- Retrieving the active product</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim</span> myEditor <span class="keyword">As</span> Editor
+<span class="keyword">Set</span> myEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim</span> myProdService <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> myEntities <span class="keyword">As</span> PLMEntities
+<span class="keyword">Set</span> myEntities = myProdService.EditedContent
+
+<span class="keyword">Dim</span> myRootProduct <span class="keyword">As</span> VPMReference
+<span class="keyword">Set</span> myRootProduct = myEntities.Item(1)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 2- Retrieving the publications and composing links</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>myPublications<span class="keyword"> As </span>VPMPublications
+<span class="keyword">Set </span>myPublications = myRootProduct.Publications
+
+<span class="keyword">Dim </span>myPumpHousing<span class="keyword"> As </span>VPMPublication
+<span class="keyword">Set </span>myPumpHousing = myPublications.GetItem(&quot;Pump_Housing&quot;)
+
+<span class="keyword">Dim </span>myCover<span class="keyword"> As </span>VPMPublication
+<span class="keyword">Set </span>myCover = myPublications.GetItem(&quot;Cover&quot;)
+
+<span class="keyword">Dim </span>myLine<span class="keyword"> As </span>VPMPublication
+<span class="keyword">Set </span>myLine = myPublications.GetItem(&quot;Pump_Housing_Internal_Lines&quot;)
+
+<span class="comment">' Composing link to the publication</span>
+
+<span class="keyword">Dim </span>myRootOccurrence<span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">Set </span>myRootOccurrence = myProdService.RootOccurrence
+
+<span class="keyword">Dim </span>myRepInstance<span class="keyword"> As </span>VPMRepInstance
+<span class="keyword">Set </span>myRepInstance = Nothing <span class="comment">' Because we use publications</span>
+
+<span class="keyword">Dim </span>myLinkToPumpHousing<span class="keyword"> As </span>AnyObject
+<span class="keyword">Set </span>myLinkToPumpHousing = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myPumpHousing)
+
+<span class="keyword">Dim </span>myLinkToCover<span class="keyword"> As </span>AnyObject
+<span class="keyword">Set </span>myLinkToCover = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myCover)
+
+<span class="keyword">Dim </span>myLinkToLine<span class="keyword"> As </span>AnyObject
+<span class="keyword">Set </span>myLinkToLine = myProdService.ComposeLink(myRootOccurrence, myRepInstance, myLine)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 3- Creating and initializing a core material</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="comment">' Creating a core material</span>
+
+<span class="keyword">Dim </span>myMaterialService<span class="keyword"> As </span>MATPLMService
+<span class="keyword">Set </span>myMaterialService = CATIA.GetSessionService(&quot;MATPLMService&quot;)
+
+<span class="keyword">Dim </span>myCoreMatRef <span class="keyword"> As </span>Material
+<span class="keyword">Dim </span>myMaterialEditor<span class="keyword"> As </span>Editor
+myMaterialService.PLMCreate &quot;dsc_matref_ref_Core&quot;, myCoreMatRef, myMaterialEditor
+
+<span class="keyword">Dim </span>myDomainList<span class="keyword"> As </span>MaterialDomains
+myCoreMatRef.GetDomains myDomainList
+
+<span class="keyword">Dim </span>myDomain<span class="keyword"> As </span>MaterialDomain
+myDomainList.Add &quot;dsc_matref_rep_SmaOptions&quot;, myDomain
+
+<span class="keyword">Dim </span>mySimDomain<span class="keyword"> As </span>SimMaterialDomain
+<span class="keyword">Set </span>mySimDomain = myDomain.MaterialDomainContent
+
+<span class="comment">' Creating a density material option</span>
+
+<span class="keyword">Dim</span> myMaterialOptions <span class="keyword">As</span> SimMaterialOptions
+<span class="keyword">Set</span> myMaterialOptions = mySimDomain.Options
+
+<span class="keyword">Dim</span> myDensity <span class="keyword">As</span> SimDensity
+<span class="keyword">Set</span> myDensity = myMaterialOptions.Add(&quot;SimDensity&quot;)
+
+<span class="keyword">Dim</span> myDensityColumn <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myDensityColumn = myDensity.GetMaterialTableColumn(SimDensityDensity)
+myDensityColumn.SetCellData 1, 7870
+
+<span class="comment">' Creating an elasticity material option</span>
+
+<span class="keyword">Dim</span> myElastic <span class="keyword">As</span> SimElastic
+<span class="keyword">Set</span> myElastic = myMaterialOptions.Add(&quot;SimElasticity&quot;)
+
+myElastic.ElasticType = SimElasticIsotropic
+myElastic.ModuliTimeScaletype = SimElasticLongTerm
+
+<span class="keyword">Dim</span> myYoungsModulusColumn <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myYoungsModulusColumn = myElastic.GetMaterialTableColumn(SimElasticYoungsModulus)
+myYoungsModulusColumn.SetCellData 1, 211000000000.0
+
+<span class="keyword">Dim</span> myPoissonsRatioColumn <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myPoissonsRatioColumn = myElastic.GetMaterialTableColumn(SimElasticPoissonsRatio)
+myPoissonsRatioColumn.SetCellData 1, 0.291
+
+<span class="comment">' Creating a material behavior</span>
+
+<span class="keyword">Dim</span> myBehaviors <span class="keyword">As</span> SimMaterialBehaviors
+<span class="keyword">Set</span> myBehaviors = mySimDomain.Behaviors
+
+<span class="keyword">Dim</span> myBehavior <span class="keyword">As</span> MaterialBehavior
+<span class="keyword">Set</span> myBehavior = myBehaviors.Add
+
+<span class="keyword">Dim</span> myBehaviorOptions <span class="keyword">As</span> MaterialBehaviorOptions
+<span class="keyword">Set</span> myBehaviorOptions = myBehavior.BehaviorOptions
+
+myBehaviorOptions.Add myDensity, 1
+myBehaviorOptions.Add myElastic, 2
+
+mySimDomain.SyncAllBehaviors
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 4- Creating an engineering connection</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="comment">' Creating a free engineering connection</span>
+
+<span class="keyword">Dim</span> myEngineeringConnections <span class="keyword">As</span> EngConnections
+<span class="keyword">Set</span> myEngineeringConnections = myRootProduct.GetItem(&quot;CATEngConnections&quot;)
+
+<span class="keyword">Dim</span> myImpacted(1)
+myImpacted(0) = &quot;ws3_pump_housing_part.1&quot;
+myImpacted(1) = &quot;ws3_cover_part.1&quot;
+
+<span class="keyword">Dim</span> myEngineeringConnection <span class="keyword">As</span> EngConnection
+<span class="keyword">Set</span> myEngineeringConnection = myEngineeringConnections.Add(catFree, myImpacted)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 5- Creating the FEM representation and retrieving its root object</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim</span> MyPrdRepFactory <span class="keyword">As</span> SimPrdRepFactory
+<span class="keyword">Set</span> MyPrdRepFactory = MyRootProduct.GetItem(&quot;SimPrdRepFactory&quot;)
+
+<span class="keyword">Dim</span> MyFemRepRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">Set</span> MyFemRepRef = MyPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+
+<span class="keyword">Dim</span> MyFemRepRoot <span class="keyword">As</span> SimFemRoot
+<span class="keyword">Set</span> MyFemRepRoot = MyFemRepRef.GetItem(&quot;SimFemRoot&quot;)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 6- Creating and initializing a line fastener connection property</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="comment">' Creating the line fastener connection property</span>
+
+<span class="keyword">Dim</span> myMCXProperties <span class="keyword">As</span> SimMCXProperties
+<span class="keyword">Set</span> myMCXProperties = myEngineeringConnection.GetItem(&quot;SimMCXProperties&quot;)
+
+<span class="keyword">Dim</span> myLineFastener <span class="keyword">As</span> SimLineFastener
+<span class="keyword">Set</span> myLineFastener = myMCXProperties.Add(&quot;SimLineFastener&quot;, myFemRepRoot)
+
+<span class="comment">' Setting the line fastener connection property supports</span>
+
+<span class="keyword">Dim</span> myLineFastenerLinkAccess <span class="keyword">As</span> SimLinkAccess
+<span class="keyword">Set</span> myLineFastenerLinkAccess = myLineFastener.GetItem(&quot;SimLinkAccess&quot;)
+
+myLineFastenerLinkAccess.AddLink &quot;PRD1&quot;, myLinkToPumpHousing <span class="comment">' PRD1 attribute is for master surface</span>
+myLineFastenerLinkAccess.AddLink &quot;PRD2&quot;, myLinkToCover <span class="comment">' PRD2 attribute is for slave surface</span>
+myLineFastenerLinkAccess.AddLink &quot;Handler1D&quot;, myLinkToLine <span class="comment">' Handler1D attribute is for fasteners placements</span>
+
+<span class="comment">' Setting the line fastener connection property material</span>
+
+<span class="keyword">Dim</span> myLinkToLineFastener <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> myLinkToLineFastener = myProdService.ComposeLink(myRootOccurrence, Nothing, myLineFastener)
+
+<span class="keyword">Dim</span> myCoreAppliedMaterial <span class="keyword">As</span> AppliedMaterial
+myMaterialService.SetMaterialCore myLinkToLineFastener, myCoreMatRef, myCoreAppliedMaterial
+
+<span class="comment">' Setting the line fastener connection property attributes</span>
+
+myLineFastener.ConstructType = SimLineFastenerShell
+myLineFastener.CouplingType = SimCouplingKinematic
+myLineFastener.MeshCompatibility = SimLineFastenerNonCompatible
+myLineFastener.Height = 0.001
+myLineFastener.MaximumAngle = 2
+myLineFastener.Spacing = 0.003
+myLineFastener.Width = 0.004
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 7- Creating and initializing a point fastener connection property</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="comment">' Creating the point fastener connection property</span>
+
+<span class="keyword">Dim</span> myPointFastener <span class="keyword">As</span> SimPointFastener
+<span class="keyword">Set</span> myPointFastener = myMCXProperties.Add(&quot;SimPointFastener&quot;, myFemRepRoot)
+
+<span class="comment">' Setting the point fastener connection property supports</span>
+
+<span class="keyword">Dim</span> myPointFastenerLinkAccess <span class="keyword">As</span> SimLinkAccess
+<span class="keyword">Set</span> myPointFastenerLinkAccess = myPointFastener.GetItem(&quot;SimLinkAccess&quot;)
+
+myPointFastenerLinkAccess.AddLink &quot;PRD1&quot;, myLinkToPumpHousing <span class="comment">' PRD1 attribute is for master surface</span>
+myPointFastenerLinkAccess.AddLink &quot;PRD2&quot;, myLinkToCover <span class="comment">' PRD2 attribute is for slave surface</span>
+myPointFastenerLinkAccess.AddLink &quot;Handler0D&quot;, myLinkToLine <span class="comment">' Handler0D attribute is for fasteners placements</span>
+
+<span class="comment">' Setting the point fastener connection property material</span>
+
+<span class="keyword">Dim</span> myLinkToPointFastener <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> myLinkToPointFastener = myProdService.ComposeLink(myRootOccurrence, Nothing, myPointFastener)
+
+myMaterialService.SetMaterialCore myLinkToPointFastener, myCoreMatRef, myCoreAppliedMaterial
+
+<span class="comment">' Setting the point fastener connection property attributes</span>
+
+myPointFastener.ConstructType = SimPointFastenerRigid
+myPointFastener.CouplingType = SimCouplingKinematic
+myPointFastener.FastenerDiameter = 0.002
+
+<span class="keyword">Dim</span> myPointFastenerPlacement <span class="keyword">As</span> SimPointFastenerPlacement
+<span class="keyword">Set</span> myPointFastenerPlacement = myPointFastener.PointFastenerPlacement
+myPointFastenerPlacement.FastenerPlacementMethod = SimPointFastenerPlacementLine
+myPointFastenerPlacement.NumberOfFastenersAlongLines = 20
+
+<span class="keyword">End Sub</span>
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>
+

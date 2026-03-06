@@ -1,0 +1,281 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningOnProfileSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates two openings using sketches.</span>
+<span class="comment">'This script requires sfd model which contains a panel and two sketch profiles</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="comment">'   4- Retrieves Services Manager</span>
+<span class="comment">'   5- Retrieves Product Stiffener</span>
+<span class="comment">'   6- Retrieves Sdd Stiffener</span>
+<span class="comment">'   7- Retrieves profile for creating opening on profile</span>
+<span class="comment">'   8- Create Opening On Profile with UpToLast limit mode</span>
+<span class="comment">'   9- Create Opening On Profile with Dimensions limit mode</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Dim </span>Manager<span class="keyword"> As </span>RfgService
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>StiffenerPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>SDDProdSel<span class="keyword"> As </span>Selection
+
+
+<span class="keyword">Sub </span>CATMain()
+
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="keyword">    Dim </span>SDDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SddProduct&quot;
+    OpenProduct prdName , SDDPrdEditor
+    
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="keyword">    Set </span>SDDProdSel = SDDPrdEditor.Selection
+    
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="keyword">    Dim </span>product1Service  <span class="keyword"> As </span>PLMProductService
+<span class="keyword">    Set </span>product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+<span class="keyword">    Dim </span>ObjVPMRootOccurrence  <span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">    Set </span>ObjVPMRootOccurrence = product1Service.RootOccurrence
+<span class="keyword">    Dim </span>ObjVPMReference<span class="keyword"> As </span>VPMReference
+<span class="keyword">    Set </span>ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+<span class="keyword">    Dim </span>ObjVPMRepInstances<span class="keyword"> As </span>VPMRepInstances
+<span class="keyword">    Set </span>ObjVPMRepInstances = ObjVPMReference.RepInstances
+<span class="keyword">    Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+    
+<span class="comment">'   4- Retrieves Services Manager</span>
+<span class="keyword">    Set </span>Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+    
+<span class="comment">'   5- Get product stiffener</span>
+<span class="keyword">    Set</span> ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">    Set</span> StiffenerRef = ListOfInstances.Item(2).ReferenceInstanceOf
+<span class="keyword">    Set</span> StiffenerRepInstances = StiffenerRef.RepInstances
+<span class="keyword">    Set</span> StiffenerRepInstReference = StiffenerRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set</span> StiffenerPart = StiffenerRepInstReference.GetItem(&quot;Part&quot;)
+    
+<span class="comment">'   6- Retrieves Sdd Stiffener</span>
+<span class="keyword">    Dim</span> ObjSddProductStiffener <span class="keyword">As</span> SddProductStiffener
+    SDDProdSel.Add StiffenerRef
+<span class="keyword">    Set</span> ObjSddProductStiffener = SDDProdSel.FindObject(&quot;CATIASddProductStiffener&quot;)
+<span class="keyword">    Dim</span> ObjSddStiffener <span class="keyword">As</span> SddStiffener
+<span class="keyword">    Set</span> ObjSddStiffener = ObjSddProductStiffener.SddStiffener
+<span class="comment">    'Get reference of stiffener</span>
+<span class="keyword">    Dim</span> RefObjSddStiffener <span class="keyword">As</span> Reference
+<span class="keyword">    Set</span> RefObjSddStiffener = StiffenerPart.CreateReferenceFromObject(ObjSddStiffener)
+    
+<span class="comment">'   7- Retrieves profile for creating opening on profile</span>
+<span class="keyword">    Set</span> ProfileSketchOpeningOnProfileUpToLast = StiffenerPart.FindObjectByName(&quot;Profile.1&quot;)
+<span class="keyword">    Dim</span> RefProfileSketchOpeningOnProfileUpToLast <span class="keyword">As</span> Reference
+<span class="keyword">    Set</span> RefProfileSketchOpeningOnProfileUpToLast = StiffenerPart.CreateReferenceFromObject(ProfileSketchOpeningOnProfileUpToLast)
+<span class="keyword">    Set</span> ProfileSketchOpeningOnProfileWtLtMdDim = StiffenerPart.FindObjectByName(&quot;Profile.2&quot;)
+<span class="keyword">    Dim</span> RefProfileSketchOpeningOnProfileWtLtMdDim <span class="keyword">As</span> Reference
+<span class="keyword">    Set</span> RefProfileSketchOpeningOnProfileWtLtMdDim = StiffenerPart.CreateReferenceFromObject(ProfileSketchOpeningOnProfileWtLtMdDim)
+    
+<span class="comment">'   8- Create Opening On Profile with UptoLast limit mode</span>
+<span class="keyword">    Dim</span> ObjStrOpeningOnProfileWtLtMdUpToLast <span class="keyword">As</span> StrOpeningOnProfile
+    CreateOpeningOnProfileSketchUpToLast ObjSddStiffener, RefProfileSketchOpeningOnProfileUpToLast, ObjStrOpeningOnProfileWtLtMdUpToLast
+    ObjSddProductStiffener.Update
+   
+<span class="comment">'   9- Create Opening On Profile with Dimensions limit mode</span>
+<span class="keyword">    Dim</span> ObjStrOpeningOnProfileWtLtMdDim <span class="keyword">As</span> StrOpeningOnProfile
+    CreateOpeningOnProfileSketchDimensions ObjSddStiffener, RefProfileSketchOpeningOnProfileWtLtMdDim, ObjStrOpeningOnProfileWtLtMdDim
+    ObjSddProductStiffener.Update    
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Opening on profile with limit mode UpToLasat</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   8.1- Add Opening On Profile</span>
+<span class="comment">'   8.2- Get StrOpening from StrOpeningOnProfile</span>
+<span class="comment">'   8.3- Set opening type for Sketch opening</span>
+<span class="comment">'   8.4- Sets category</span>
+<span class="comment">'   8.5- Sets forming mode and extrusion mode</span>
+<span class="comment">'   8.6- Sets output profile </span>
+<span class="comment">'   8.7- Sets direction </span>
+<span class="comment">'   8.8- Sets LimitMode to UpToLast </span>
+<span class="comment">'   8.9- Updates created opening on profile object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> CreateOpeningOnProfileSketchUpToLast(iObjSddStiffener <span class="keyword">As</span> SddStiffener, RefProfileSketch <span class="keyword">As</span> Reference, oObjStrOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile)   
+<span class="comment">   '8.1- Add Opening on profile</span>
+    AddOpening iObjSddStiffener, oObjStrOpeningOnProfile
+	
+<span class="comment">    '8.2- Get StrOpening from StrOpeningOnProfile</span>
+<span class="keyword">    Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+<span class="keyword">    Set</span> ObjStrOpening = oObjStrOpeningOnProfile.StrOpening
+
+<span class="comment">    '8.3- Set opening type catStrOpeningModeOutputProfile for sketch opening</span>
+    ObjStrOpening.OpeningType = catStrOpeningModeOutputProfile
+    
+<span class="comment">    '8.4- Set category</span>
+<span class="keyword">    Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+<span class="keyword">    Set</span> ObjStrCategoryMngt = ObjStrOpening.StrCategoryMngt
+    ObjStrCategoryMngt.SetCategory &quot;ManHole&quot;
+
+<span class="comment">    '8.5- Set forming mode and Extrusion Mode</span>
+    'ObjStrOpening.FormingMode = 0
+<span class="keyword">    Set</span> ObjStrOpeningExtrusionMngt = ObjStrOpening.StrOpeningExtrusionMngt
+    'catStrOpeningExtrusionNormal = 1
+    ObjStrOpeningExtrusionMngt.ExtrusionMode = 1
+
+<span class="comment">    '8.6- Set output profile</span>
+    'set LimitMode as 0 for UpTOLast
+    'get object of StrOpeningOutputProfile
+<span class="keyword">    Dim</span> ObjStrOpeningOutputProfile <span class="keyword">As</span> StrOpeningOutputProfile
+<span class="keyword">    Set</span> ObjStrOpeningOutputProfile = ObjStrOpening.StrOpeningOutputProfile
+    'set OutputProfile for sketch opening
+    ObjStrOpeningOutputProfile.OutputProfile = RefProfileSketch
+    
+<span class="comment">    '8.7- Set direction</span>
+<span class="keyword">    Set</span> ObjRefDirection = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.20&quot;)
+<span class="keyword">    Set</span> RefDirection = ObjPart.CreateReferenceFromObject(ObjRefDirection)
+    ObjStrOpeningOutputProfile.Direction = RefDirection
+    
+<span class="comment">    '8.8- Set LimitMode to UpToLast</span>
+    ObjStrOpeningOutputProfile.LimitMode = 0
+	
+<span class="comment">    '8.9- Update the OpeningOnProfile object</span>
+    ObjPart.UpdateObject oObjStrOpeningOnProfile
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Opening on profile with limit mode Dimensions</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   9.1- Add Opening On Profile</span>
+<span class="comment">'   9.2- Get StrOpening from StrOpeningOnProfile</span>
+<span class="comment">'   9.3- Set opening type for Sketch opening</span>
+<span class="comment">'   9.4- Sets category</span>
+<span class="comment">'   9.5- Sets forming mode and extrusion mode</span>
+<span class="comment">'   9.6- Sets output profile </span>
+<span class="comment">'   9.7- Sets direction </span>
+<span class="comment">'   9.8- Sets LimitMode to Dimensions </span>
+<span class="comment">'   9.9- Get dimensionsMngt object to set offsets </span>
+<span class="comment">'   9.10- Set FirstOffset of opening output profile </span>
+<span class="comment">'   9.11- Set second Offset of opening output profile </span>
+<span class="comment">'   9.12- Invert the first offset and second offset</span>
+<span class="comment">'   9.13- Updates created opening on profile object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub</span> CreateOpeningOnProfileSketchDimensions(iObjSddStiffener <span class="keyword">As</span> SddStiffener, RefProfileSketch <span class="keyword">As</span> Reference, oObjStrOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile)
+    
+<span class="comment">    '9.1- Add Opening on profile</span>
+    AddOpening iObjSddStiffener, oObjStrOpeningOnProfile
+	
+<span class="comment">    '9.2- Get StrOpening from StrOpeningOnProfile</span>
+<span class="keyword">    Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+<span class="keyword">    Set</span> ObjStrOpening = oObjStrOpeningOnProfile.StrOpening
+
+<span class="comment">    '9.3- Set opening type catStrOpeningModeOutputProfile for standard opening</span>
+    ObjStrOpening.OpeningType = catStrOpeningModeOutputProfile
+    
+<span class="comment">    '9.4- Set category</span>
+<span class="keyword">    Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+<span class="keyword">    Set</span> ObjStrCategoryMngt = ObjStrOpening.StrCategoryMngt
+    ObjStrCategoryMngt.SetCategory &quot;ManHole&quot;
+
+<span class="comment">    '9.5- Set forming mode and extrusion mode</span>
+    'ObjStrOpening.FormingMode = 0
+<span class="keyword">    Set</span> ObjStrOpeningExtrusionMngt = ObjStrOpening.StrOpeningExtrusionMngt
+    'catStrOpeningExtrusionNormal = 1
+    ObjStrOpeningExtrusionMngt.ExtrusionMode = 1
+
+<span class="comment">    '9.6- Set output profile</span>
+    'set LimitMode to 1 for Dimensions
+    'get object of StrOpeningOutputProfile
+<span class="keyword">    Dim</span> ObjStrOpeningOutputProfile <span class="keyword">As</span> StrOpeningOutputProfile
+<span class="keyword">    Set</span> ObjStrOpeningOutputProfile = ObjStrOpening.StrOpeningOutputProfile
+    'set OutputProfile for sketch opening
+    ObjStrOpeningOutputProfile.OutputProfile = RefProfileSketch
+    
+<span class="comment">    '9.7- Set direction</span>
+<span class="keyword">    Set</span> ObjRefDirection = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.20&quot;)
+ <span class="keyword">   Set</span> RefDirection = ObjPart.CreateReferenceFromObject(ObjRefDirection)
+    ObjStrOpeningOutputProfile.Direction = RefDirection
+    
+<span class="comment">    '9.8- Set LimitMode to Dimensions</span>
+    ObjStrOpeningOutputProfile.LimitMode = 1
+	
+<span class="comment">    '9.9- Get dimensionsMngt object to set offsets</span>
+<span class="keyword">    Dim</span> ObjStrOpeningLimitDimensionsMngt <span class="keyword">As</span> StrOpeningLimitDimensionsMngt
+ <span class="keyword">   Set</span> ObjStrOpeningLimitDimensionsMngt = ObjStrOpening.StrOpeningLimitDimensionsMngt
+    
+<span class="comment">    '9.10- Set FirstOffset of opening output profile</span>
+<span class="keyword">    Dim</span> FirstOffset <span class="keyword">As</span> Parameter
+<span class="keyword">    Set</span> FirstOffset = ObjStrOpeningLimitDimensionsMngt.GetFirstOffset
+    FirstOffset.ValuateFromString (&quot;1000mm&quot;)
+<span class="comment">    '9.11- Set second Offset of opening output profile</span>
+<span class="keyword">    Dim</span> SecondOffsetOffset <span class="keyword">As</span> Parameter
+<span class="keyword">    Set</span> SecondOffsetOffset = ObjStrOpeningLimitDimensionsMngt.GetSecondOffset
+    SecondOffsetOffset.ValuateFromString (&quot;-2000mm&quot;)
+    
+<span class="comment">    '9.12- Invert the first offset and second offset</span>
+    ObjStrOpeningLimitDimensionsMngt.Invert
+	
+<span class="comment">    '9.13- Updates created Opening On Profile Object</span>	
+    ObjPart.UpdateObject oObjStrOpeningOnProfile
+	
+End Sub
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Adds a new opening</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>AddOpening(iObjSddStiffener<span class="keyword"> As </span>SddStiffener, oObjStrOpeningOnProfile<span class="keyword"> As </span>StrOpeningOnProfile)
+<span class="keyword">    Dim </span>ObjStrOpeningsOnProfile<span class="keyword"> As </span>StrOpeningsOnProfile
+<span class="keyword">    Set </span>ObjStrOpeningsOnProfile = iObjSddStiffener.GetOpeningsOnProfile(0)
+    <span class="comment">'Add opening</span>
+<span class="keyword">    Set </span>oObjStrOpeningOnProfile = ObjStrOpeningsOnProfile.Add
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SDDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SDDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

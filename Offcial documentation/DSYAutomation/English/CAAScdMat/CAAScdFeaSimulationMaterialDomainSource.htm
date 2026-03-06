@@ -1,0 +1,185 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcCreateSimulationMaterialDomain.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample creates a simulation material domain.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'    1- Retrieving the active Product</span>
+<span class="comment">'    2- Creating material</span>
+<span class="comment">'    3- Creating simulation domain</span>
+<span class="comment">'    4- Creating material option and assign data</span>
+<span class="comment">'    5- Creating behavior and add options in behavior</span>
+<span class="comment">'    6- Assign material to part</span>
+
+<span class="keyword">Sub</span> CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 1- Retrieving the active Product</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim</span> myEditor <span class="keyword">As</span> Editor
+<span class="keyword">Set</span> myEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim</span> myProdService <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> myEntities <span class="keyword">As</span> PLMEntities
+<span class="keyword">Set</span> myEntities = myProdService.EditedContent
+
+<span class="keyword">Dim</span> myRootProduct <span class="keyword">As</span> VPMReference
+<span class="keyword">Set</span> myRootProduct = myEntities.Item(1)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 2- Creating material</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>myMaterialService<span class="keyword"> As </span>MATPLMService
+<span class="keyword">Set </span>myMaterialService = CATIA.GetSessionService(&quot;MATPLMService&quot;)
+	
+<span class="keyword">Dim </span>myCoreMatRef <span class="keyword"> As </span>Material
+<span class="keyword">Dim </span>myMaterialEditor<span class="keyword"> As </span>Editor
+myMaterialService.PLMCreate &quot;dsc_matref_ref_Core&quot;, myCoreMatRef, myMaterialEditor
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 3- Creating Simulation domain</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>myDomainList<span class="keyword"> As </span>MaterialDomains
+myCoreMatRef.GetDomains myDomainList
+	
+<span class="keyword">Dim </span>myDomain<span class="keyword"> As </span>MaterialDomain
+myDomainList.Add &quot;dsc_matref_rep_SmaOptions&quot;, myDomain
+
+<span class="keyword">Dim </span>mySimDomain<span class="keyword"> As </span>SimMaterialDomain
+<span class="keyword">Set </span>mySimDomain = myDomain.MaterialDomainContent
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 4- Creating material options and assign data</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim</span> myMaterialOptions <span class="keyword">As</span> SimMaterialOptions
+<span class="keyword">Set</span> myMaterialOptions = MySimDomain.Options
+
+<span class="comment">' Creation of a density material option</span>
+
+<span class="keyword">Dim</span> myDensity <span class="keyword">As</span> SimDensity
+<span class="keyword">Set</span> myDensity = myMaterialOptions.Add(&quot;SimDensity&quot;)
+
+<span class="keyword">Dim</span> myDensityColumn <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myDensityColumn = myDensity.GetMaterialTableColumn(SimDensityDensity)
+myDensityColumn.SetCellData 1, 7870
+
+<span class="keyword">Dim</span> myDensity_2 <span class="keyword">As</span> SimDensity
+<span class="keyword">Set</span> myDensity_2 = mySimDomain.DuplicateAndAddMaterialOption(myDensity)
+
+<span class="keyword">Set</span> myDensityColumn = myDensity_2.GetMaterialTableColumn(SimDensityDensity)
+myDensityColumn.SetCellData 1, 7860
+
+<span class="comment">' Creation of an elasticity material option</span>
+
+<span class="keyword">Dim</span> myElastic <span class="keyword">As</span> SimElastic
+<span class="keyword">Set</span> myElastic = myMaterialOptions.Add(&quot;SimElasticity&quot;)
+
+myElastic.ElasticType = SimElasticIsotropic
+myElastic.ModuliTimeScaletype = SimElasticLongTerm
+
+<span class="keyword">Dim</span> myYoungsModulusColumn <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myYoungsModulusColumn = myElastic.GetMaterialTableColumn(SimElasticYoungsModulus)
+myYoungsModulusColumn.SetCellData 1, 211000000000.0
+
+<span class="keyword">Dim</span> myPoissonsRatioColumn <span class="keyword">As</span> SimTableColumn
+<span class="keyword">Set</span> myPoissonsRatioColumn = myElastic.GetMaterialTableColumn(SimElasticPoissonsRatio)
+myPoissonsRatioColumn.SetCellData 1, 0.291
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 5- Creating Behavior and add options in behavior</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim</span> myBehaviors <span class="keyword">As</span> SimMaterialBehaviors
+<span class="keyword">Set</span> myBehaviors = mySimDomain.Behaviors
+
+<span class="keyword">Dim</span> myBehavior <span class="keyword">As</span> MaterialBehavior
+<span class="keyword">Set</span> myBehavior = myBehaviors.Add
+
+<span class="keyword">Dim</span> myBehavior_2 <span class="keyword">As</span> MaterialBehavior
+<span class="keyword">Set</span> myBehavior_2 = myBehaviors.Add
+
+<span class="keyword">Dim</span> myBehaviorOptions <span class="keyword">As</span> MaterialBehaviorOptions
+<span class="keyword">Set</span> myBehaviorOptions = myBehavior.BehaviorOptions
+
+myBehaviorOptions.Add myDensity, 1
+myBehaviorOptions.Add myElastic, 2
+
+<span class="keyword">Set</span> myBehaviorOptions = myBehavior_2.BehaviorOptions
+
+myBehaviorOptions.Add myDensity_2, 1
+myBehaviorOptions.Add myElastic, 2
+
+mySimDomain.DefaultBehavior = myBehavior_2
+
+myBehaviors.Remove 2
+    
+myMaterialOptions.Remove 1
+    
+mySimDomain.SyncAllBehaviors
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 6- Assign material to a part</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="comment">' Retrieve the Root Occurrence and the Part Instance</span>
+
+<span class="keyword">Dim</span> myRootOccurrence <span class="keyword">As</span> VPMRootOccurrence
+<span class="keyword">Set</span> myRootOccurrence = myProdService.RootOccurrence
+
+<span class="keyword">Dim</span> myInstances <span class="keyword">As</span> VPMInstances
+<span class="keyword">Set</span> myInstances = myRootProduct.Instances
+
+<span class="keyword">Dim</span> myInstance <span class="keyword">As</span> VPMInstance
+<span class="keyword">Set</span> myInstance = myInstances.Item(1)
+
+<span class="keyword">Dim</span> myInstanceRef <span class="keyword">As</span> VPMReference
+<span class="keyword">Set</span> myInstanceRef = myInstance.ReferenceInstanceOf
+
+<span class="keyword">Dim</span> myRepInstances <span class="keyword">As</span> VPMRepInstances
+<span class="keyword">Set</span> myRepInstances = myInstanceRef.RepInstances
+
+<span class="keyword">Dim</span> myPartRepInstance<span class="keyword"> As</span> VPMRepInstance
+<span class="keyword">Set</span> myPartRepInstance = myRepInstances.Item(1)
+
+<span class="comment">' Creating link to the part instance</span>
+
+<span class="keyword">Dim</span> myLinkToPartInstance <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> myLinkToPartInstance = myProdService.ComposeLink(myRootOccurrence, myPartRepInstance, Nothing)
+
+<span class="comment">' Assigning material</span>
+
+<span class="keyword">Dim</span> myCoreAppliedMaterial <span class="keyword">As</span> AppliedMaterial
+myMaterialService.SetMaterialCore myLinkToPartInstance, myCoreMatRef, myCoreAppliedMaterial
+
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>
+

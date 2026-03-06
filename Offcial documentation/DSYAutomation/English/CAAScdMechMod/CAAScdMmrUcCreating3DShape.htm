@@ -1,0 +1,187 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating 3DShape</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating 3DShape</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case creates 
+						a new 3DShape and retrieves its associated objects: its 
+						root object, the Part object, and its Product Representation 
+						Reference, the VPMRepReference object.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:</span>
+						<a href="CAAScdMmrUcCreating3DShapeSource.htm">CAAScdPstUcCreating3DShapeSource.htm</a></p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrTocPart.htm">Part Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjEditor.htm">Editor Object</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case is divided in 5 steps</p>
+		<ol>
+			<li><a href="#Step1">Retrieves the service object to create a new PLM 
+			object</a></li>
+			<li><a href="#Step2">Creates a new 3DShape</a></li>
+			<li><a href="#Step3">Retrieves its Part Object</a></li>
+			<li><a href="#Step4">Retrieves its Product Representation Reference</a></li>
+			<li><a href="#Step5">Displays the Product Representation Reference PLM_ExternalID 
+			value</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"><strong></strong></a><strong>Retrieves 
+			the service object to create a new PLM object</strong></p>
+			<pre class="code"> ... 
+<span class="keyword">Dim</span> oNewService <span class="keyword">As</span> <strong>PLMNewService</strong>
+<span class="keyword">Set</span> oNewService = CATIA.<strong>GetSessionService</strong>(&quot;<strong>PLMNewService</strong>&quot;)
+...</pre>
+			<p>Returns a PLMNewService object, <code>oNewService </code>from the 
+			Application object using the <em>GetSessionService</em> method. </p>
+			</li>
+			<li>
+			<p><a name="Step2"></a><strong>Creates a new 3DShape</strong></p>
+			<pre class="code">...
+<span class="keyword">Dim </span>oEditor3DShape <span class="keyword">As</span> Editor
+oNewService.<strong>PLMCreate</strong> &quot;<strong>3DShape</strong>&quot;, <strong>oEditor3DShape</strong>
+...</pre>
+			<p>A call to <em>PLMCreate</em> on <code>oNewService
+			</code>creates and edits the 3DShape in a 3D Shape editor, <code>oEditor3DShape</code>.</p>
+			</li>
+			<li>
+			<p><a name="Step3"><strong></strong></a><strong>Retrieves 
+			its Part Object</strong></p>
+			<pre class="code">...
+<span class="keyword"> Dim </span> oPart3D <span class="keyword"> As </span> Part
+<span class="keyword"> Set </span> oPart3D = oEditor3DShape.<strong>ActiveObject</strong>
+...</pre>
+			<p>The <em>ActiveObject</em> method 
+			of 3D Shape Editor, <code>oEditor3DShape </code>returns the
+			<a href="CAAMmrObjPart.htm">Part Object</a>, <code>oPart3D</code>;</p>
+			</li>
+			<li>
+			<p><a name="Step4"></a><strong>Retrieves its Product Representation 
+			Reference</strong></p>
+			<pre class="code">...
+ <span class="keyword">Dim </span> oVPMRepRef <span class="keyword"> As </span> VPMRepReference
+<span class="keyword"> Set </span> oVPMRepRef = oPart3D.<strong>Parent</strong>   
+...</pre>
+			<p>The <code>Parent</code> property on <code>oPart3D</code> 
+			returns <code>oVPMRepRef</code>, a VPMRepReferance type.</p>
+			</li>
+			<li>
+			<p><a name="Step5"></a><strong>Displays the Product Representation 
+			Reference PLM_ExternalID value</strong></p>
+			<pre class="code">...
+ MsgBox oVPMRepRef.<strong>GetAttributeValue</strong>(&quot;<strong>PLM_ExternalID</strong>&quot;)
+...</pre>
+			<p>A call to <em>GetAttributeValue</em> on <code>oVPMRepRef
+			</code>returns the PLM_ExternalID attribute value of the Representation 
+			Reference as shown in the <a href="#Fig1">Fig.1</a>.</p>
+			<table>
+				<caption><a name="Fig1"></a>Fig.1: Product RepRef PLM_ExternalID</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Product RepRef PLM_ExternalID" src="CAAScdMmrUcCreate3DShape_image1.jpg" width="132" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>You can observe in <a href="#Fig2">Fig.2</a> that the 
+			PLM_ExternalID value appears at the top of the Specifiction tree. This 
+			top object is the Part object. Its name, when it is created, is valuated 
+			with the PLM_ExternalID value of the Product Representation Reference.</p>
+			<table>
+				<caption><a name="Fig2"></a>Fig.2: The 3DShape as Viewed in CATIA</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="3DShape as Viewed in CATIA" src="CAAScdMmrUcCreate3DShape_image2.jpg" width="169" height="138"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

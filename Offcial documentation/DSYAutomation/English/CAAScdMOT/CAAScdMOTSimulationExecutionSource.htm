@@ -1,0 +1,158 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocScript.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="initCode();highlightSearchTerms();">
+
+  <pre>
+<span class="comment">'-------------- Sample MACRO written in Visual Basic for Applications and Python ------------------------------------------ </span>
+<span class="comment">'This sample retrieves the simulation object from the editor </span>
+<span class="comment">'and run one or all the analysis cases.</span>
+<span class="comment">'</span>
+<span class="comment">'Before starting this macro, open a Motion simulation object containing one or several analysis case(s) under the scenario.</span>
+<span class="comment">'Steps:</span>
+<span class="comment">'   1 - Retrieve the current Editor</span>
+<span class="comment">'   2 - Retrieve the Product Service from the Editor</span>
+<span class="comment">'   3 - Retrieve the Entities from the Product Service</span>
+<span class="comment">'   4 - Retrieve the simulation object</span>
+<span class="comment">'   5 - Retrieve the Motion Execution Services from the Editor</span>
+<span class="comment">'   6 - Run one analysis case</span>
+<span class="comment">'   7 - Retrieve execution information</span>
+<span class="comment">'   8 - Run all the analysis cases</span>
+<span class="comment">'   9 - Retrieve execution information</span>
+</pre>
+
+  <div class="codeSample">
+    <table>
+      <tr>
+        <th>VBA</th>
+        <th>Python</th>
+        <th>&nbsp;</th>
+      </tr>
+    </table>
+    <div>
+      <!-- VBA -->
+      <pre class="code">
+<span class="keyword">Sub </span>CATMain()
+
+<span class="comment">' 1 - Retrieve the current Editor </span>
+<span class="keyword">Dim </span>myEditor <span class="keyword">As </span>Editor
+<span class="keyword">Set </span>myEditor = CATIA.ActiveEditor
+
+<span class="comment">' 2 - Retrieve the Product Service from the Editor </span>
+<span class="keyword">Dim </span>myPrdService <span class="keyword">As </span>PLMProductService
+<span class="keyword">Set </span>myPrdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="comment">' 3 - Retrieve the Entities from the Product Service</span>
+<span class="keyword">Dim </span>myEntities <span class="keyword">As </span>PLMEntities
+<span class="keyword">Set </span>myEntities = myPrdService.EditedContent
+
+<span class="comment">' 4 - Retrieve the simulation object</span>
+<span class="keyword">Dim </span>mySimulationObject <span class="keyword">As </span>SimulationReference
+<span class="keyword">Set </span>mySimulationObject = myEntities.Item(1)
+
+<span class="comment">' 5 - Retrieve the Motion Execution Services from the Editor</span>
+<span class="keyword">Dim </span>myExecutionServices <span class="keyword">As </span>MOTExecutionServices
+<span class="keyword">Set </span>myExecutionServices = myEditor.GetService(&quot;MOTExecutionServices&quot;)
+
+<span class="comment">' 6 - Run one analysis case</span>
+<span class="keyword">Dim </span>inputAnalysisCase <span class="keyword">As </span>String
+inputAnalysisCase = "Motion Analysis Case.1"
+<span class="keyword">Dim </span>analysisCaseExecutionInfos <span class="keyword">As </span>MOTAnalysisCaseExecutionInfos
+<span class="keyword">Call </span>myExecutionServices.RunAnalysisCase(mySimulationObject, inputAnalysisCase, analysisCaseExecutionInfos)
+
+<span class="comment">' 7 - Retrieve execution information</span>
+<span class="keyword">Dim </span>analysisCaseName <span class="keyword">As </span>String
+analysisCaseName = analysisCaseExecutionInfos.AnalysisCaseName
+
+<span class="keyword">Dim </span>execStatus <span class="keyword">As </span>MOTExecutionStatus
+execStatus = analysisCaseExecutionInfos.ExecutionStatus
+
+<span class="keyword">Dim </span>executionLog <span class="keyword">As </span>String
+executionLog = analysisCaseExecutionInfos.ExecutionLog
+
+<span class="comment">' 8 - Run all the analysis cases</span>
+<span class="keyword">Dim </span>listOfAnalysisCaseExecutionInfos()
+<span class="keyword">Call </span>myExecutionServices.RunAllAnalysisCases(mySimulationObject, listOfAnalysisCaseExecutionInfos)
+
+<span class="comment">' 9 - Retrieve execution information</span>
+<span class="keyword">For </span>Each execInfos In listOfAnalysisCaseExecutionInfos
+<span class="keyword">  Dim </span>analysisCase <span class="keyword">As </span>String
+  analysisCase = execInfos.AnalysisCaseName
+
+<span class="keyword">  Dim </span>status <span class="keyword">As </span>MOTExecutionStatus
+  status = execInfos.ExecutionStatus
+
+<span class="keyword">  Dim </span>log <span class="keyword">As </span>String
+  log = execInfos.ExecutionLog
+<span class="keyword">Next </span>execInfos
+
+<span class="keyword">End Sub</span>
+</pre>
+    </div>
+
+    <div>
+      <!-- Python -->
+      <pre class="code">
+<span class="comment"># 1 - Retrieve the current Editor </span>
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+
+myEditor = CATIA.ActiveEditor
+
+<span class="comment"># 2 - Retrieve the Product Service from the Editor </span>
+myPrdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="comment"># 3 - Retrieve the Entities from the Product Service </span>
+myEntities = myPrdService.EditedContent
+
+<span class="comment"># 4 - Retrieve the simulation object </span>
+mySimulationObject = myEntities.Item(1)
+
+<span class="comment"># 5 - Retrieve the Motion Execution Services from the Editor </span>
+myExecutionServices = myEditor.GetService(&quot;MOTExecutionServices&quot;)
+
+<span class="comment"># 6 - Run one analysis case</span>
+myAnalysisCaseExecutionInfos = myExecutionServices.RunAnalysisCase(mySimulationObject, &quot;Motion Analysis Case.1&quot;)
+
+<span class="comment"># 7 - Retrieve execution information</span>
+analysisCaseName = myAnalysisCaseExecutionInfos.AnalysisCaseName
+
+executionStatus = myAnalysisCaseExecutionInfos.ExecutionStatus
+
+executionLog = myAnalysisCaseExecutionInfos.ExecutionLog
+
+<span class="comment"># 8 - Run all the analysis cases</span>
+myAnalysisCaseExecutionInfosList = myExecutionServices.RunAllAnalysisCases(mySimulationObject)
+
+<span class="comment"># 9 - Retrieve execution information</span>
+<span class="keyword">for </span>execInfos <span class="keyword">in </span>myAnalysisCaseExecutionInfosList:
+    analysisCaseName = execInfos.AnalysisCaseName
+
+    executionStatus = execInfos.ExecutionStatus
+
+    executionLog = execInfos.ExecutionLog
+</pre>
+</div>
+</div>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

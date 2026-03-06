@@ -1,0 +1,204 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAMpaResultsIDLItf SimResultsStep (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAMpaResultsIDLItf.htm" href="../SMAMpaResultsIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAMpaResultsIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimResultsStep"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimResultsStep<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimResultsStep_29733','SimResultsStep','0');</script>
+<section id='maindesc'>
+<b><i> Represents the results step and can be used to access the data in the case.</i></b><br>
+ 
+ <dt><b>Example:</b></dt>
+ <pre>
+ Given a SimResultsAnalysisCase object, you can create a results step object as following. 
+ The index starts from 1.
+ </pre>
+ <pre>
+ Dim oResultsSteps As SimResultsSteps
+ Set oResultsSteps = oResultsAnalysisCase.ResultsSteps
+ Dim oResultsStep As SimResultsStep
+ Set oResultsStep = oResultsSteps.Item(1)
+ </pre>
+ <dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('','SimResultsAnalysisCase','SimResultsAnalysisCase') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetAvailableFields"><b>GetAvailableFields</b></a>
+</td><td  id='tdright'>  Returns the list of variables names for field, history in the step.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetFramesData"><b>GetFramesData</b></a>
+</td><td  id='tdright'>   Retrieves the frames data.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetHistoryRegionsAndSubRegions"><b>GetHistoryRegionsAndSubRegions</b></a>
+</td><td  id='tdright'>  Retrieves the list of region and subregion information for the given history variable.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetIdentifier"><b>GetIdentifier</b></a>
+</td><td  id='tdright'>   Retrieves the step identifier.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetLoadCases"><b>GetLoadCases</b></a>
+</td><td  id='tdright'>   Retrieves the load case indices.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetAvailableFields"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetAvailableFields</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>inbFrameIndex</span>,<script type="text/javascript"> activateLink('SimResultsSource','SimResultsSource')</script> <span class='param'>ieSource</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>ocsVariables</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Returns the list of variables names for field, history in the step.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> inbFrameIndex</span></dt>
+   <dd>    Specify the frame index for which the variables are to be retrieved. If inbFrameIndex = -1, all the frames will be considered.
+ 
+ </ dd>
+    <dt><span class='paramitem'> ieSource</span></dt>
+   <dd>		Specify the results type depending on which the variables will be returned. For e.g. History, Field etc. Refer the 
+		SMAIAMpaResultsSource enum class for all the available options.
+ 
+ </ dd>
+    <dt><span class='paramitem'> ocsVariables</span></dt>
+   <dd>    List variable names. For e.g. "U", "AT","ALLAE" etc.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetFramesData"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetFramesData</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>olfFrameValues</span>,<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>oeResultsStepDomain</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Retrieves the frames data.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> olfFrameValues</span></dt>
+   <dd>    The values for each frame in this step
+  
+ </ dd>
+    <dt><span class='paramitem'> oeResultsStepDomain</span></dt>
+   <dd>    Enum for what these values represent i.e. TIME, FREQUENCY, MODAL, etc.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetHistoryRegionsAndSubRegions"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetHistoryRegionsAndSubRegions</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>icsVariable</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>ocsRegionNames</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>oNbSubregionsInRegions</span>,<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>ocsSubregions</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the list of region and subregion information for the given history variable. 
+ For whole model, the size of region and sub-region names will be zero. This infroamtion can be used while creating history plots
+ the support information.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> icsVariable</span></dt>
+   <dd>    Name of the variable for which the region information is needed.
+ 
+ </ dd>
+    <dt><span class='paramitem'> ocsRegionNames</span></dt>
+   <dd>    List of region names.
+ 
+ </ dd>
+    <dt><span class='paramitem'> oNbSubregionsInRegions</span></dt>
+   <dd>    Number of sub-regions in a region. If there is no sub-region, the value will be zero. For e.g. the specified variable has 2 
+    regions, where the first region has 4 sub-regions, 2nd region does not have any sub-region, then the array values will be [4,0].
+ 
+ </ dd>
+    <dt><span class='paramitem'> ocsSubregions</span></dt>
+   <dd>    List of sub-region names.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetIdentifier"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetIdentifier</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>ocsStepID</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>ocsStepName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>ocsStepDescription</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Retrieves the step identifier.
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> ocsStepID</span></dt>
+   <dd>    The persistent ID for this results step
+  
+ </ dd>
+    <dt><span class='paramitem'> ocsStepName</span></dt>
+   <dd>    The step name.
+  
+ </ dd>
+    <dt><span class='paramitem'> ocsStepDescription</span></dt>
+   <dd>    The step description.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetLoadCases"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetLoadCases</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>olnLoadCaseIndicies</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Retrieves the load case indices.  
+  
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> olnLoadCaseIndicies</span></dt>
+   <dd>    The load case indices are mapped according to the global load cases that are retrieved through 
+    SMAIAMpaResultsManager::GetLoadCaseIdentifier.
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

@@ -1,0 +1,236 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Modifying Visualization Attributes of a Selected Product Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Modifying Visualization Attributes of a Selected Product Object</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case selects 
+						and retrieves the PLM object from the CATIA spec tree and 
+						modifies its Visualization Property (Color). In the process 
+						it also illustrates that a Visualization Properties are 
+						associated with an Occurrence model.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA </li>
+							<li>Load a Product from database or create one before 
+							launching the macro </li>
+							<li>Keep Product editor active before launching the 
+							macro </li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:<a href="CAAScdPstUcDisplayAndModifyProductAttrFromSelectionSource.htm">
+						</a></span>
+						<a href="CAAScdPstUcModifyVisuProductAttrFromSelectionSource.htm">
+						CAAScdPstUcModifyVisuProductAttrFromSelectionSource.htm</a></p>
+						</td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjEditor.htm">Editor Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjSelection.htm">Selection Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfTocApplication.htm">Foundation Object Model Map</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 4 steps</p>
+		<ol>
+			<li><a href="#Step1">Retrieve active editor</a></li>
+			<li><a href="#Step2">Retrieve Selection object from active editor</a></li>
+			<li><a href="#Step3">Change the visualization property Color of the 
+			selection</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><a name="Step1"></a>Retrieves Active Editor from CATIA</p>
+			<p>We retrieve the Selection Object from CATIA, to enable us to select 
+			the vertices in the steps ahead.</p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> oCurrentActiveEditor <span class="keyword">As</span> Editor
+    <span class="keyword">Set</span> oCurrentActiveEditor = CATIA.<strong>ActiveEditor</strong>
+...</pre>
+			<p>The <em>ActiveEditor</em> property of the Application Object, CATIA 
+			returns the Editor, <code>oCurrentActiveEditor</code> which is currently 
+			active.</p>
+			<p>Retrieves Selection object from Active Editor</p>
+			<pre class="code">...
+<span class="keyword">    Dim</span> oObjSelection
+<span class="keyword">    Set</span> oObjSelection = oCurrentActiveEditor.<strong>Selection</strong>
+...</pre>
+			<p>A call to <em>Selection</em> Property of the Active Editor returns
+			<code>oObjSelection</code>, a <code>Selection </code>object. It is significant 
+			to note here that we have not declared a type for <code>oObjSelection
+			</code>. The section &quot;Virtual Function Table Compatibility&quot; in the Technical 
+			Article &quot;About Automation Languages, Debug, and Compatibility&quot; [<a href="#References">1</a>] 
+			provides an explanation for why these variables are not typed.</p>
+			</li>
+			<li>
+			<p><a name="Step2"></a>Retrieve Selection object from active 
+			editor</p>
+			<ol>
+				<li>
+				<p>Update selection object with the search criteria 
+				and prompt for selection</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> oInputObjectType(1)
+oInputObjectType(1) = &quot;VPMRootOccurrence&quot;
+oInputObjectType(0) = &quot;VPMOccurrence&quot;
+
+<span class="keyword">Dim</span> strStatus<strong> </strong><span class="keyword">As</span> String
+strStatus = oObjSelection.<strong>SelectElement</strong>(<strong>oInputObjectType</strong>, &quot;Select a Element from spec tree&quot;, False)
+...</pre>
+				<p>The PLM objects that you can select (if the current 
+				editor is VPM Editor) are <strong>VPMRootOccurrence and</strong> <strong>VPMOccurrence</strong> 
+				types. These types are appended to an array <code>oInputObjectType</code>, 
+				which now represents the select criteria. The selection object
+				<code>oObjSelection</code> is then updated with this select criteria, 
+				with a call to <em>SelectElement</em> method. Since the last argument 
+				is false, the end user will always be invited to select something 
+				in the spec tree, or the 3D Viewer, though an entity (of the type 
+				set as filter in the selection criteria) has already been selected 
+				by the end-user.</p>
+				</li>
+				<li>
+				<p>Retrieve Selected element and display its type
+				</p>
+				<pre class="code">...
+<span class="keyword">Dim</span> oSelectedElement <span class="keyword">As</span> <strong>SelectedElement</strong>
+<span class="keyword">Set</span> oSelectedElement<strong> </strong> =  oObjSelection.Item(1)	
+			
+MsgBox &quot;Type is &quot; + oSelectedElement.Type
+...</pre>
+				<p>The <em>Item</em> method on <code>oObjSelection</code>, returns 
+				the iIndex-th <code>SelectedElement</code> Object contained by the 
+				current selection.</p>
+				<p>Next, <em>Type</em> property on the <code>oSelectedElement,
+				</code>returns selected object type</p>
+				<table>
+					<caption><a name="Fig.1"></a>Fig.1 Type of The Selected Product 
+					Object</caption>
+					<tbody>
+					<tr>
+						<td>
+						<img alt="Display And Modify Product Attribute From Selection" src="CAAScdPstUcDisplayAndModifyProductAttrFromSelection_image1.jpg" width="140" height="107"/></td>
+					</tr>
+				</tbody>
+				</table>
+				<p>This will show the type of object which has been selected by 
+				user interactively from spec tree. This type could be a VPMOccurrence 
+				or VPMRootOccurrence (type defined by an Occurrence Model). The 
+				type will be seen as shown in [<a href="#Fig.1">Fig.1</a>].</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><a name="Step3"></a>Change the visualization property 
+			Color of the selection</p>
+			<p>At this stage, the user has finalized an entity selection 
+			from the CATIA spec tree. We proceed to change its visualization property 
+			&quot;Color&quot; (set to Green here) . Please note that Visualization property 
+			is associated with occurrence model only. So change in VPMRepInstance 
+			object will not be seen. </p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oVisPropertySet
+<span class="keyword">Set</span> oVisPropertySet = oObjSelection.<strong>VisProperties</strong>
+        
+oVisPropertySet.<strong>SetRealColor</strong> 0, 255, 0, 1
+...</pre>
+			<p>Return a <code>VisPropertySet</code> object from Selection 
+			object using <em>VisProperties</em><strong> </strong>property. Then set a color 
+			using <em>SetRealColor</em> method of <code>VisPropertySet</code>.</p>
+			<p>It is extremely important to note that this Save is 
+			not applicable for any changes in the Visualization Properties associated 
+			with an Occurrence model. </p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[1]</td>
+		<td><a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation Languages, Debug, and Compatibility</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATBehaviorIDLItf DPCOperations (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATBehaviorIDLItf.htm" href="../CATBehaviorIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATBehaviorIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "DPCOperations"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> DPCOperations<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_DPCOperations_24777','DPCOperations','0');</script>
+<section id='maindesc'>
+<b><i> Represents the User Operations collection currently managed from a DPC Technogical Object.</i></b><br>
+
+ These operations belong to one object and can be reached by the GetItem method of CATIABase.
+ For Instance onto a Root Product using Product.GetItem("CATGetDPCOperations") .
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ <pre>
+ Dim RootObj As Object
+ Set RootObj = CATIA.ActiveEditor.ActiveObject
+ Dim MyOperations As DPCOperations
+ Set MyOperations = RootObj.GetItem(<font color="red">"CATGetDPCOperations"</font>)
+ ' Display the number of User Operations 
+ MsgBox ("There are " & MyOperations.Count & " User Operations in  " & MyOperations.Name)
+ ' Run "MyUserOperation" User Operation
+ Dim MyUserOperation As DPCOperation
+ Set MyUserOperation = MyOperations.Operate("MyUserOperation")
+ </pre>
+ </dl><section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#Item"><b>Item</b></a>
+</td><td  id='tdright'>  Returns an Operation using its index or its name from the Operations collection.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Operate"><b>Operate</b></a>
+</td><td  id='tdright'>  Executes a user operation of the technological object.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="Item"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Item</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iIndex</span>)</span> As <script type="text/javascript"> activateLink('DPCOperation','DPCOperation')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns an Operation using its index or its name from the Operations collection. 
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd>   The index or the name of the Operation to retrieve from
+   the collection of Operations.
+   As a numerics, this index is the rank of the Operation
+   in the collection.
+   The index of the first Operation in the collection is 1, and
+   the index of the last Operation is Count.
+   As a string, it is the name  assigned to the Operation.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The retrieved Operation <dt><b>Example:</b>
+ <dd>
+ This example retrieves in <tt>ThisOp</tt> the fifth Operation
+ in the collection and in <tt>ThatOp</tt> the Operation
+ named <tt>MyOp</tt>.
+ <pre>
+ Dim ThisOp As DPCOperation
+ Set ThisOp = listOperations.<font color="red">Item</font>(5)
+ Dim ThatOp As DPCOperation
+ Set ThatOp = listOperations.<font color="red">Item</font>("MyOp")
+ </pre>
+ </ dd>
+</dl>
+</dd>
+<a id="Operate"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>Operate</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>OperationName</span>)</span> As <script type="text/javascript"> activateLink('DPCOperation','DPCOperation')</script> </span></dt>
+  <dd class='ddmethod'>
+ Executes a user operation of the technological object. The wanted operation is specified by its name.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> OperationName</span></dt>
+   <dd> The name of the operation you want to launch. 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  the operation
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

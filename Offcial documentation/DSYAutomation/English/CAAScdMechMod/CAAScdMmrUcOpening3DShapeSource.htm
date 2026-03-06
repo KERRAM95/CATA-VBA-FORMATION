@@ -1,0 +1,168 @@
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<title>Opening 3DShape - Source</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'---------------------------------------------------------------------------------------------------------------------------</span>
+<span class="comment">'COPYRIGHT DASSAULT SYSTEMES 2009</span>
+<span class="comment">'---------------------------------------------------------------------------------------------------------------------------</span>
+<span class="comment">'Opening 3DShape</span>
+<span class="comment">'Mission: This use case primarily focuses on the methodology to Open the 3DShape from database</span>
+<span class="comment">'</span>
+<span class="comment">''Steps:</span>
+<span class="comment">'       1- Retrieves the Search service from CATIA session</span>
+<span class="comment">'       2- Searches for a 3DShape, corresponding to the user input criteria</span>
+<span class="comment">'           2.1- Builds the Query criteria for Search on underlying db</span>
+<span class="comment">'           2.2- Retrieves the Database property from Search service</span>
+<span class="comment">'           2.3- Sets the type of objects to search for</span>
+<span class="comment">'           2.4- Updates the PLM Search object created in the above steps with the attribute criteria provided by the user as an input</span>
+<span class="comment">'           2.5- Triggers the search</span>
+<span class="comment">'       3- Opens 3DShape</span>
+<span class="comment">'           3.1- Retrieves the root entities from the new tab page within the Search Editor</span>
+<span class="comment">'           3.2- Retrieves a PLM Entity object from its index</span>
+<span class="comment">'           3.3- Retrieves the Open Service from CATIA Session</span>
+<span class="comment">'           3.4- Opens in the authoring session the first element occurring in the new tab page within Search Editor( a 3D Shape)</span>
+<span class="comment">'       4- Retrieves its Part Object</span>
+<span class="keyword">Dim </span>strTheProductRepresentationReferenceType<span class="keyword"> As </span>String
+<span class="comment">'---------------------------------------------------------------------------------------------------------------------------</span>
+<span class="keyword">Sub </span>Opening3DShapeFromDB()
+<span class="comment">'Error handling</span>
+On Error GoTo ErrorSub
+
+    strTheProductRepresentationReferenceType = "VPMRepReference"
+   <span class="comment">'1-  Retrieves the Search service from CATIA session</span>
+<span class="keyword">    Dim </span>oSearchService<span class="keyword"> As </span>SearchService
+<span class="keyword">    Set </span>oSearchService = CATIA.GetSessionService("Search")
+
+   <span class="comment">'2- Searches for a 3DShape, corresponding to the user input criteria</span>
+<span class="keyword">    Dim </span>oDBSearch<span class="keyword"> As </span>DatabaseSearch
+<span class="keyword">    Set </span>oDBSearch = Search3DShape(oSearchService)
+    
+   <span class="comment">'3- Opens 3DShape</span>
+<span class="keyword">    Dim </span>oEditor3DShape<span class="keyword"> As </span>Editor
+<span class="keyword">    Set </span>oEditor3DShape = Open3DShape(oDBSearch)
+    
+    <span class="comment">'4- Retrieves its Part Object</span>
+<span class="keyword">    Dim </span>oPart<span class="keyword"> As </span>Part
+<span class="keyword">    Set </span>oPart = oEditor3DShape.ActiveObject
+    
+    <span class="comment">'Displays the Part Object's name</span>
+    MsgBox "Part Object Name is: " + oPart.Name
+        
+    <span class="comment">'Error handling</span>
+    GoTo EndSub
+
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">'---------------------------------------------------------------------------------------------------------------------------</span>
+<span class="comment">'Searches for the 3DShape</span>
+<span class="comment">'Steps:</span>
+<span class="comment">'       1- Builds the Query criteria for Search on underlying db</span>
+<span class="comment">'       2- Retrieves the Database attribute from Search service</span>
+<span class="comment">'       3- Sets the type of objects to search for</span>
+<span class="comment">'       4- Updates the PLM Search object created in the above steps with the attribute criteria provided by the user as an input</span>
+<span class="comment">'       5- Triggers the search</span>
+<span class="comment">'---------------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="keyword">Function </span>Search3DShape(oSearchService)<span class="keyword"> As </span>DatabaseSearch
+
+<span class="comment">'Error handling</span>
+On Error GoTo ErrorSub
+    
+    <span class="comment">'1- Builds the Query criteria for Search on underlying db</span>
+    <span class="comment">'Prompts the user to input the PLMExternal_ID for search purpose</span>
+<span class="keyword">    Dim </span>strInputPLMIDName<span class="keyword"> As </span>String
+    strInputPLMIDName = InputBox("Please enter the PLMExternal_ID to search", "Enter PLMExternal_ID")
+
+    <span class="comment">'2- Retrieves the Database attribute from Search service</span>
+<span class="keyword">    Dim </span>oDBSearch<span class="keyword"> As </span>DatabaseSearch
+<span class="keyword">    Set </span>oDBSearch = oSearchService.DatabaseSearch
+
+    <span class="comment">'3- Sets the type of objects to search for</span>
+    oDBSearch.BaseType = strTheProductRepresentationReferenceType
+    
+    <span class="comment">'4- Updates the PLM Search object created in the above steps with the attribute criteria provided by the user as an input</span>
+    oDBSearch.AddEasyCriteria "PLM_ExternalID", strInputPLMIDName
+       
+    <span class="comment">'5- Triggers the search</span>
+    oSearchService.Search
+<span class="keyword">    Set </span>Search3DShape = oDBSearch
+
+    <span class="comment">'Error handling</span>
+    GoTo EndSub
+
+ErrorSub:
+        MsgBox Err.Description
+EndSub:
+    
+
+<span class="keyword">End Function</span>
+
+
+
+<span class="comment">'---------------------------------------------------------------------------------------------------------------------------</span>
+<span class="comment">'Opens 3DShape</span>
+<span class="comment">'Steps:</span>
+<span class="comment">'       1- Retrieves the root entities from the new tab page within the Search Editor</span>
+<span class="comment">'       2- Retrieves a PLM Entity object from its index (the first 3DShape in this case)</span>
+<span class="comment">'       3- Retrieves the Open Service from CATIA Session</span>
+<span class="comment">'       4- Opens in the authoring session the first element occurring in the new tab page within Search Editor( a 3D Shape)</span>
+<span class="comment">'---------------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="keyword">Function </span>Open3DShape(oDBSearch)<span class="keyword"> As </span>Editor
+
+<span class="comment">'Error handling</span>
+On Error GoTo ErrorSub
+
+    <span class="comment">'1- Retrieves the root entities from the new tab page within the Search Editor</span>
+<span class="keyword">    Dim </span>o3DShapeAsPLMEntities<span class="keyword"> As </span>PLMEntities
+<span class="keyword">    Set </span>o3DShapeAsPLMEntities = oDBSearch.Results
+
+    <span class="comment">'2- Retrieves a PLM Entity object from its index</span>
+<span class="keyword">    Dim </span>o3DShapeAsPLMEntity<span class="keyword"> As </span>PLMEntity
+<span class="keyword">    Set </span>o3DShapeAsPLMEntity = o3DShapeAsPLMEntities.Item(1)
+
+    <span class="comment">'3- Retrieves the Open Service from CATIA Session</span>
+<span class="keyword">    Dim </span>oOpenService<span class="keyword"> As </span>PLMOpenService
+<span class="keyword">    Set </span>oOpenService = CATIA.GetSessionService("PLMOpenService")
+    
+    <span class="comment">'4- Opens in the authoring session the first element occurring in the new tab page within Search Editor( a 3D Shape)</span>
+<span class="keyword">    Dim </span>oEditor3DShape<span class="keyword"> As </span>Editor
+    oOpenService.PLMOpen o3DShapeAsPLMEntity, oEditor3DShape
+    
+    <span class="comment">'Returns the Editor</span>
+<span class="keyword">    Set </span>Open3DShape = oEditor3DShape
+    
+    <span class="comment">'Error handling</span>
+    GoTo EndSub
+
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+
+<span class="keyword">End Function</span>
+
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

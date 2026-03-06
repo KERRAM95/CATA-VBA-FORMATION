@@ -1,0 +1,127 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta http-equiv="Content-Language" content="en-us" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="topictype" content="Uc" />
+    <meta name="devlang" content="idl" />
+    <meta name="devlang" content="idl" />
+    <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+    <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+    <title>Frame Selection API's</title>
+    <style type="text/css">
+        .padded td, .padded th
+        {
+            padding: 5px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+    <table class="table1">
+        <tr>
+            <td class="DocHeader1">
+                <h1>API's to create the various frame selection attributes</h1>
+            </td>
+        </tr>
+        <tr>
+            <td class="DocHeader3" style="width: 1807px">
+                <table class="DocHeaderIntro">
+                    <tr>
+                        <td class="Intro1">
+                            
+
+
+    <p><strong>Frames Selection Interface</strong></p>
+    <p>
+        <span class="keyword">interface </span>SMAIAMpaFramesSelection : CATIABase</p>
+
+<br />
+<p class="header">Following are the Frame Selection API's:</p>
+
+<p> The complete script of Frame selection creation and usage can be found in the <a href="CAAScdFeaResultsSensorSource.htm"> CAAScdFeaResultsSensorSource </a>sample script </p>
+<br />
+<p>1) <span style="color:red"> PROPERTY StepList</span></p>
+<p class="header">put_StepList ( in CATSafeArrayVariant iStepsList )</p>
+<p>
+    Sets the list of Step D's to the frame selector. It is a list of strings which are the steps ID's.
+    The step ID's can be retrieved from SMAIAMpaResultsStep::GetIdentifier()
+</p>
+<p>
+    @param iStepsList:
+    It is the list of Step ID's
+                            <p>
+                                Sample code:
+                                The following example shows how to retrieve the step ID from results step
+
+<pre class="header">Dim stepId As String 
+Dim stepName As String
+Dim stepDescription As String
+oResultsStep.GetIdentifier stepId, stepName, stepDescription
+                                     </pre>
+                            </p>
+                            
+
+<br />
+<p>2) <span style="color:red"> PROPERTY SymbolicFrameRange</span></p>
+<p class="header"> put_SymbolicFrameRange ( in CATVariant iSymbolicFrameRange )</p>
+<p> The following values are available for <strong>iSymbolicFrameRange</strong>. </p>
+
+<pre class="header">  a) SimUndefined                    
+  b) SimAllFrames            
+  c) SimLastFrameOfEachStep  
+  d) SimAllFramesInStep      
+  e) SimTimeBasedFrames      
+  f) SimFrequencyFrames      
+</pre>
+
+<br/>
+<p>3) <span style="color:red"> SetLoadCases( in CATSafeArrayVariant iNbLoadCasesInStep, in CATSafeArrayVariant iLoadCaseIDList )</span></p>
+<p>
+    Sets the load cases to the frame selector. This method must be called if anyone has specified a list of steps
+    (given through StepList() method). No need to call this if there are no load cases in the steps. Suppose if there are two steps
+    and only one out of them has load cases, then for the steps without load cases the user will have to specify the values as zero
+    and the load case ID as NULL string. </p>
+<p>
+    @param iNbLoadCasesInStep:
+    It is the number of load cases in the step. The size of list must be same as the steps specified in the StepList() method. Also
+    it must be in the same order as that of the steps.
+</p>
+<p>
+    @param iLoadCaseIDList:
+    List of load case ID's to set. The ID's can be retrieved through
+    SMAIAMpaResultsManager::GetLoadCaseIdentifier() method.
+</p>
+
+<br />
+<p>4) <span style="color:red"> SetFrames(in CATSafeArrayVariant iNbFrames, in CATSafeArrayVariant iFrameIndex)</span></p>
+<p>
+    Sets the frames to the frame selector. The array size must be same as that of steps/load cases.
+</p>
+<p>
+    @param iNbFrames: The number of frames in step/load case to set.
+</p>
+<p>
+    @param iFrameIndex: The frame index to set.
+</p>                                                  
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+
+    <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+    <script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

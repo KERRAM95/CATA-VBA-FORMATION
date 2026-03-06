@@ -1,0 +1,236 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcThermalStructural.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+
+<pre class=>
+<span class="comment"># -------------- Sample script written in Python ------------------------------------------</span>
+<span class="comment"># This sample creates and executes a thermal structural simulation.</span>
+
+<span class="comment">#Steps:</span>
+<span class="comment">#          1  - Retrieves the simulation and its product										</span>
+<span class="comment">#          2  - Retrieves the Publications and Composes Links 								</span>
+<span class="comment">#          3  - Creates the FEM Rep and retrieves its Rep Manager 		</span>
+<span class="comment">#          4  - Creates a Mesh on a Part								</span>
+<span class="comment">#          5  - Creates a Property					</span>
+<span class="comment">#          6  - Retrieves the Scenario Manager				</span>
+<span class="comment">#          7  - Associates the Structural Analysis Case with the FEM rep					</span>
+<span class="comment">#          8  - Creates and initializes the static step					</span>
+<span class="comment">#          9  - Retrieves the thermal features and features states sets							</span>
+<span class="comment">#          10 - Creates thermal features</span>
+<span class="comment">#          11 - Creates and initializes the static step		</span>
+<span class="comment">#          12 - Retrieves the structural features and features states sets									</span>
+<span class="comment">#          13 - Creates features		</span>
+<span class="comment">#          14 - Launches the simulation									</span>
+<span class="comment">#============================================================================================</span>
+
+
+<span class="keyword">import</span> sys, os
+<span class="keyword">from</span> com3dx <span class="keyword">import</span> *
+CATIA = get3dxClient()
+
+<span class="comment">#--------------------------------------------------------------------------
+# 1 - Retrieves the simulation and its product
+#--------------------------------------------------------------------------
+</span>
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+
+<span class="comment">#--------------------------------------------------------------------------
+# 2 - Retrieves the Publications and Composes Links
+#--------------------------------------------------------------------------</span>
+
+myPublications  = myModel.Publications
+mySupport = myPublications.GetItem("Pump_Housing")
+myTemperatureSupport1 = myPublications.GetItem("Pump_Housing_Contact_Face")
+myTemperatureSupport2 = myPublications.GetItem("Pump_Housing_Internal_Surfaces")
+myClampSupport = myPublications.GetItem("Pump_Housing_Contact_Face")
+
+myDisplacementRestraintSupport1 = myPublications.GetItem("Pump_Housing_Sym_Face")
+myDisplacementRestraintSupport2  = myPublications.GetItem("Pump_Housing_Sym_Face_2")
+myDisplacementRestraintSupport3 = myPublications.GetItem("Pump_Housing_Sym_Face_3")
+
+myPressureSupport = myPublications.GetItem("Pump_Housing_Internal_Surfaces")
+
+<span class="comment"># Composing links
+# ---------------</span>
+myLinkToSupport = myProdService.ComposeLink(<span class="keyword">None</span>, <span class="keyword">None</span>, mySupport)
+myLinkToTemperatureSupport1 = myProdService.ComposeLink(<span class="keyword">None</span>, <span class="keyword">None</span>, myTemperatureSupport1)
+myLinkToTemperatureSupport2 = myProdService.ComposeLink(<span class="keyword">None</span>, <span class="keyword">None</span>, myTemperatureSupport2)
+myLinkToClampSupport = myProdService.ComposeLink(<span class="keyword">None</span>, <span class="keyword">None</span>, myClampSupport)
+myLinkToDisplacementRestraintSupport1  = myProdService.ComposeLink(<span class="keyword">None</span>, <span class="keyword">None</span>, myDisplacementRestraintSupport1)
+myLinkToDisplacementRestraintSupport2 = myProdService.ComposeLink(<span class="keyword">None</span>, <span class="keyword">None</span>, myDisplacementRestraintSupport2)
+myLinkToDisplacementRestraintSupport3 = myProdService.ComposeLink(<span class="keyword">None</span>, <span class="keyword">None</span>, myDisplacementRestraintSupport3)
+myLinkToPressureSupport = myProdService.ComposeLink(<span class="keyword">None</span>, <span class="keyword">None</span>, myPressureSupport)
+
+<span class="comment">#--------------------------------------------------------------------------
+# 3 - Creates the FEM Rep and retrieves its Rep Manager
+#--------------------------------------------------------------------------</span>
+myPrdRepFactory =myModel.GetItem("SimPrdRepFactory")
+myRepRef = myPrdRepFactory.CreatePrdRep("FEM")
+myFEMRoot = myRepRef.GetItem("SimFemRoot")
+myFEMRoot.AddAssociatedRep (mySupport)
+
+<span class="comment">#--------------------------------------------------------------------------
+# 4 - Creates a Mesh on a Part
+#--------------------------------------------------------------------------</span>
+myMeshSet = myFEMRoot.GetSet("SimNodesElements")
+myMeshParts = myMeshSet.MeshParts
+myMeshPart = myMeshParts.Add("CATFmtOctree3DMesher")
+myMeshPart.AddSupport (mySupport)
+
+myMeshPart.SetAttributeValue ("Mesh", "ElementOrder", 1)
+myMeshPart.SetAttributeValue ("Mesh", "SizeValue", 4.0)
+	
+myMeshSet.Update()
+
+<span class="comment">#--------------------------------------------------------------------------
+# 5 - Creates a Property
+#--------------------------------------------------------------------------</span>
+myPropertiesSet = myFEMRoot.GetSet("SimProperties")
+mySolidSection = myPropertiesSet.Add("SimSolidSection")
+
+myLinkAccess = mySolidSection.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToSupport)
+	
+mySolidSection.MaterialBehaviorByName = "Behavior.1"
+
+<span class="comment">#--------------------------------------------------------------------------
+# 6 - Retrieves the Scenario Manager
+#--------------------------------------------------------------------------</span>
+myScenarioManager = MySimulationRoot.GetItem("SimScenarioManager")
+
+<span class="comment">#--------------------------------------------------------------------------
+# 7 - Associates the thermal and Structural Analysis Case with the FEM rep
+#--------------------------------------------------------------------------</span>
+myAnalysisCases = myScenarioManager.AnalysisCases
+
+myThermalAnalysisCase = myAnalysisCases.Item(1)
+myThermalAnalysisCase.FEMRep = myFEMRoot
+
+myStructuralAnalysisCase = myAnalysisCases.Item(2)
+myStructuralAnalysisCase.FEMRep = myFEMRoot
+
+<span class="comment">#--------------------------------------------------------------------------
+# 8 - Creates and initializes the steady state heat transfer step
+#--------------------------------------------------------------------------</span>
+myThermalSteps = myThermalAnalysisCase.Steps
+mySteadyStateHeatTransferStep = myThermalSteps.Add("SimSteadyStateHeatTransferStep")
+myThermalAnalysisCase.CreateDefaultElementTypeAssignment()
+mySteadyStateHeatTransferStep.CreateAnalysisDefaultOutputRequests()
+
+mySteadyStateHeatTransferStep.TotalTime = 1.0
+mySteadyStateHeatTransferStep.TimeIncrementationScheme = win32com.client.constants.SimTimeIncrementation_Automatic
+mySteadyStateHeatTransferStep.InitialTimeStep = 0.12
+mySteadyStateHeatTransferStep.MinimumTimeStep = 0.013
+mySteadyStateHeatTransferStep.MaximumTimeStep = 0.98
+mySteadyStateHeatTransferStep.MaximumNumberOfIncrements = 60
+
+<span class="comment">#--------------------------------------------------------------------------
+# 9 - Retrieves the thermal features and features states sets
+#--------------------------------------------------------------------------</span>
+myThermalFeatures = myThermalAnalysisCase.Features
+myThermalFeatureStates = mySteadyStateHeatTransferStep.FeatureStates
+
+<span class="comment">#--------------------------------------------------------------------------
+# 10 - Creates thermal features
+#--------------------------------------------------------------------------</span>
+myTemperature1 = myThermalFeatures.Add("SimTemperature")
+myLinkAccess = myTemperature1.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToTemperatureSupport1)
+myTemperature1.UniformMagnitude = 320.0
+myThermalFeatureStates.CreateFeatureState (myTemperature1)
+
+<span class="comment">#--------------------------------------------------------------------------
+# 11 - Creates and initializes the static step
+#--------------------------------------------------------------------------</span>
+myStructuralSteps  = myStructuralAnalysisCase.Steps
+myStaticStep  = myStructuralSteps.Add("SimStaticStep")
+
+myStructuralAnalysisCase.CreateDefaultElementTypeAssignment()
+myStaticStep.CreateAnalysisDefaultOutputRequests()
+
+myStaticStep.MaximumIncrements = 1000
+
+<span class="comment">#--------------------------------------------------------------------------
+# 12 - Retrieves the structural features and features states sets
+#--------------------------------------------------------------------------</span>
+myStructuralFeatures  = myStructuralAnalysisCase.Features
+myStructuralFeatureStates = myStaticStep.FeatureStates
+
+<span class="comment">#--------------------------------------------------------------------------
+# 13 - Creates features
+#--------------------------------------------------------------------------</span>
+# Creates a Clamp feature
+# -------------------------
+myClamp = myStructuralFeatures.Add("SimClamp")
+myLinkAccess = myClamp.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToClampSupport)
+myStructuralFeatureStates.CreateFeatureState (myClamp)
+
+<span class="comment"># Creating a displacement restraint feature
+# ------------------------------------------</span>
+myDisplacementRestraint = myStructuralFeatures.Add("SimDisplacementRestraint")
+
+myLinkAccess = myDisplacementRestraint.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToDisplacementRestraintSupport1)
+myLinkAccess.AddLink ("MainSupport", myLinkToDisplacementRestraintSupport2)
+myLinkAccess.AddLink ("MainSupport", myLinkToDisplacementRestraintSupport3)
+
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimTranslation1, <span class="keyword">False</span>)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimTranslation2, <span class="keyword">True</span>)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimTranslation3, <span class="keyword">False</span>)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimRotation1, <span class="keyword">True</span>)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimRotation2, <span class="keyword">False</span>)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimRotation3, <span class="keyword">True</span>)
+
+myStructuralFeatureStates.CreateFeatureState (myDisplacementRestraint)
+
+<span class="comment"># Creating a pressure feature
+# ----------------------------</span>
+myPressure = myStructuralFeatures.Add("SimPressure")
+myLinkAccess = myPressure.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToPressureSupport)
+
+myPressure.UniformMagnitude = 500.0
+myStructuralFeatureStates.CreateFeatureState (myPressure)
+
+<span class="comment">#--------------------------------------------------------------------------
+# 14 - Launches the simulation
+#--------------------------------------------------------------------------</span>
+myExecutionService = myEditor.GetService("SimExecutionService")
+myExecutionService.BasicExecuteAll (MySimulationRoot)
+
+<span class="comment"># Switching to the results visualization workbench
+# ------------------------------------------------</span>
+CATIA.StartWorkbench ("SMAHvcResultsVisualizationWorkbench")
+
+
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

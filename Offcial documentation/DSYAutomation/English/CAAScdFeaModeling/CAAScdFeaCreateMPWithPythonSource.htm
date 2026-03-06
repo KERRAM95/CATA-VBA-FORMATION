@@ -1,0 +1,184 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpeningSketch.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment"># -------------- Sample SCRIPT written in Python ------------------------------------------</span>
+<span class="comment"># This sample creates mesh part objects into the mesh set.</span>
+
+<span class="comment"># Steps :</span>
+
+<span class="comment"># 1 - Retrieves the simulation and its product</span>
+<span class="comment"># 2 - Retrieves the PartBody</span>
+<span class="comment"># 3 - Creates the FEM representation, Retrieves its root object and Associates the PartBody to this</span>
+<span class="comment"># 4 - Retrieves the mesh set</span>
+<span class="comment"># 5 - Creates a mesh part</span>
+<span class="comment"># 6 - Creates a local topology specification</span>
+<span class="comment"># 7 - Creates a local mesh specification</span>
+<span class="comment"># 8 - Generates the mesh</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  1 - Retrieves the simulation and its product </span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># As a first step, retrieves the simulation editor which is the actived one</span>
+myEditor = CATIA.ActiveEditor
+
+<span class="comment"># Then retrieves the product service</span>
+myProdService = myEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="comment"># Retrieves the PLMEntities</span>
+myEntities = myProdService.EditedContent
+
+<span class="comment"># Now retrieves the PLMEntity</span>
+myEntity = myEntities.Item(1)
+
+<span class="comment"># Gets the simulation Root</span>
+MySimulationRoot = myEntity
+
+<span class="comment"># Now retrieves the Model</span>
+myModel = MySimulationRoot.Model
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  2 - Retrieves the PartBody </span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Retrieves Model's Rep Instances</span>
+myModelRepInstances = myModel.RepInstances
+
+<span class="comment"># Retrieves Model's Part, part instance and part body</span>
+<span class="keyword">for</span> myPartRepInstance <span class="keyword">in</span> myModelRepInstances:
+    myPartInstanceRef = myPartRepInstance.ReferenceInstanceOf
+    attr = myPartInstanceRef.GetAttributeValue(&quot;V_discipline&quot;)
+    <span class="keyword">if</span>  attr == &quot;Design&quot; :
+        myPart = myPartInstanceRef.GetItem(&quot;Part&quot;)
+        myPartInstance = myPartRepInstance
+        myBody = myPart.MainBody
+
+<span class="comment">#----------------------------------------------------------------------------------------------------</span>
+<span class="comment">#  3 - Creates the FEM representation, Retrieves its root object and Associates the PartBody to this  </span>
+<span class="comment">#----------------------------------------------------------------------------------------------------</span>
+
+<span class="comment"># Retrieves product rep factory to create FEM</span>
+MyPrdRepFactory = myModel.GetItem("SimPrdRepFactory")
+
+<span class="comment"># Creates FEM</span>
+MyFemRepRef = MyPrdRepFactory.CreatePrdRep("FEM")
+
+<span class="comment"># Retrieves the root object</span>
+MyFemRepRoot = MyFemRepRef.GetItem("SimFemRoot")
+
+<span class="comment"># Opens the PLMOpenService</span>
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+
+<span class="comment"># Opens the model</span>
+oOpenService.PLMOpen (myModel)
+
+<span class="comment"># retrieves the product editor</span>
+myProductEditor = CATIA.ActiveEditor
+
+<span class="comment"># Retrieves the product root occurence</span>
+myRootOcc = myProductEditor.ActiveObject
+
+<span class="comment"># Creates a reference for the part body</span>
+MyReference = myPart.CreateReferenceFromObject(myBody)
+
+<span class="comment"># Retrieves the product service associated with the product editor</span>
+myProductService = myProductEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="comment"># Creates a link to associate with the FEM Representation</span>
+MyLink = myProdService.ComposeLink(myRootOcc,myPartInstance,MyReference)
+MyFemRepRoot.AddAssociatedRep (MyLink)
+
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  4 - Retrieves the mesh set </span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myMeshSet = MyFemRepRoot.GetSet(&quot;SimNodesElements&quot;)
+myMeshParts = myMeshSet.MeshParts
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  5 - Creates a mesh part </span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myMeshPart = myMeshParts.Add("CATFmtSurfTriaMesher")
+
+<span class="comment"># Set the Mesh Part support</span>
+MyPartSupp = myPart.FindObjectByName("Fill.1")
+MyReference = myPart.CreateReferenceFromObject(MyPartSupp)
+MyLink = myProductService.ComposeLink(myRootOcc, myPartInstance, MyReference)
+myMeshPart.AddSupport (MyLink)
+
+<span class="comment"># Define the Mesh Part</span>
+myMeshPart.SetAttributeValue("Mesh", "MeshSizeValue", "20 mm")
+myMeshPart.SetAttributeValue("Mesh", "ElementOrder", 2)
+myMeshPart.SetAttributeValue("Mesh", "AbsoluteSag", 2)
+myMeshPart.SetAttributeValue("Mesh", "AbsoluteSagValue", "2 mm")
+
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  6 - Creates a local topology specification </span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+MyTopologySpecifications = myMeshPart.GetTopologySpecifications()
+MyTopologySpecification = MyTopologySpecifications.Add("CATFmtExternalCurveLocalSpec")
+
+<span class="comment"># Set the mesh specification support</span>
+MySpecSupp = myPart.FindObjectByName("MyLine")
+MyReference = myPart.CreateReferenceFromObject(MySpecSupp)
+MyLink = myProductService.ComposeLink(myRootOcc, myPartInstance, MyReference)
+MyLinkAccess = MyTopologySpecification.GetItem("SimLinkAccess")
+MyLinkAccess.AddLink("ConnectorList", MyLink)
+
+<span class="comment"># Define the topology specification</span>
+MyTopologySpecification.SetAttributeValue("ToleranceValue", "1 mm")
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  7 - Creates a local mesh specification </span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+MyMeshSpecifications = myMeshPart.GetMeshSpecifications()
+MyMeshSpecification = MyMeshSpecifications.Add("CATFmtStudioDistributionSpec")
+
+<span class="comment"># Set the mesh specification support</span>
+MyLinkAccess = MyMeshSpecification.GetItem("SimLinkAccess")
+MyLinkAccess.AddLink("ConnectorList", MyTopologySpecification)
+
+<span class="comment"># Define the mesh specification</span>
+MyMeshSpecification.SetAttributeValue("Type", 3)
+MyMeshSpecification.SetAttributeValue("NbElementsValue", 10)
+MyMeshSpecification.SetAttributeValue("Symmetry", 2)
+MyMeshSpecification.SetAttributeValue("RatioValue", 3)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment">#  8 - Generates the mesh </span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myMeshPart.Update
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>
+

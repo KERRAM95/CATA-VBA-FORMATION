@@ -1,0 +1,284 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SDD Plate</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SDD Plate</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create SDD plate.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div>, </code><code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div>, </code><code><div class=vb_sample_data>CAAScdSddUcSteel_A42.3dxml</div>, </code><code><div class=vb_sample_data>CAAScdSddUcCreatePlate.3dxml</div></code>
+							files supplied in the folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code> 
+							where <code>InstallRootFolder</code> is the folder 
+							where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcCreatePlateSource.htm">CAAScdSddUcCreatePlateSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSddTocSDDesign.htm">Structure Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in five steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SddProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Part object </a></li>
+			<li><a href="#Step3">Retrieves Service manager (RfgService)</a></li>
+			<li><a href="#Step4">Retrieves SddFactory for creating SDD objects</a></li>
+			<li><a href="#Step5">Creates a Plate</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SddProduct&quot; </strong></p>
+			<p>As a first step, the use case retrieves a model &quot;SddProduct&quot; from 
+			the database, 
+			loads it, and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SDDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SddProduct&quot;
+ OpenProduct prdName , SDDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SDDPrdEditor</code></strong>, an Editor object. After searching 
+			and opening the SFD model from the underlying database, the current active 
+			editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Part object</strong></p>
+			<p>In this step, the use case retrieves Part object ObjPart variable.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim </span>product1Service <span class="keyword"> As </span> PLMProductService
+  <span class="keyword">Set</span> product1Service = DDPrdEditor.GetService(&quot;PLMProductService&quot;)
+  <span class="keyword">Dim </span>ObjVPMRootOccurrence <span class="keyword"> As </span> VPMRootOccurrence
+  <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+  <span class="keyword">Dim </span>ObjVPMReference <span class="keyword"> As </span> VPMReference
+  <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+  <span class="keyword">Dim </span>ObjVPMRepInstances <span class="keyword"> As </span> VPMRepInstances
+  <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+  <span class="keyword">Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+  <span class="keyword">Set</span> ObjPart = ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Service manager (RfgService)</strong></p>
+			<p>In this step, the use case retrieves <code>RfgService</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.<strong>GetService</strong>(&quot;RfgService&quot;)
+...</pre>
+			<p><code>GetService</code> method returns <code>RfgService</code>. This 
+			service provides methods such GetReferencePlane, CreateProjectData, 
+			CreateRefSurfaceFeature.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves SddFactory for creating SDD 
+			objects</strong></p>
+			<p>In this step, the use case retrieves the SddFactory for creating SDD objects.</p>
+			<pre class="code">...
+  <span class="keyword">Dim </span>ObjSddFactory <span class="keyword"> As </span> SddFactory
+  SDDProdSel.Add ObjVPMRootOccurrence
+  <span class="keyword">Set</span> ObjSddFactory = SDDProdSel.<strong>FindObject</strong>(&quot;CATIASddFactory&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Creates a plate</strong></p>
+			<p>Call <code>CreatePlate</code> method to create a plate. <code>CreatePlate</code> 
+			method takes the SddFactory as input parameter and it returns the SddProductPlate 
+			as output parameter in <code>ObjSddProductPlate</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjSddProductPlate <span class="keyword">As</span> SddProductPlate
+  <strong>CreatePlate</strong> ObjSddFactory, ObjSddProductPlate
+...</pre>
+			<p>The method <code>CreatePlate</code> is detailed as in the below sub 
+			steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates plate with no properties then set the properties 
+				category, support, material and thickness</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>CreatePlate</strong>(iObjSddFactory <span class="keyword">As</span> SddFactory, oObjSddProductPlate <span class="keyword">As</span> SddProductPlate)  
+  
+    <span class="comment">&#39;Create plate with no properties set</span>
+    <span class="keyword">Set </span>oObjSddProductPlate = iObjSddFactory.<strong>AddProductPlate</strong>(False)
+    <span class="keyword">Dim</span> ObjSddPlate <span class="keyword">As</span> SddPlate
+    <span class="keyword">Set</span> ObjSddPlate = = oObjSddProductPlate.SddPlate
+
+    <span class="comment">&#39;Set category</span>
+    <span class="keyword">Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjStrCategoryMngt = ObjSddPlate.StrCategoryMngt
+    ObjStrCategoryMngt.AutomaticName = True
+    ObjStrCategoryMngt.SetCategory &quot;DeckPanel&quot;
+
+    <span class="comment">&#39;Set panel support</span>
+    <span class="keyword">Set</span> ObjPlateSupport = Manager.GetReferencePlane(ObjPart, 1, &quot;DECK.1&quot;)
+    <span class="keyword">Set</span> PlateSupport = ObjPart.CreateReferenceFromObject(ObjPlateSupport)
+    <span class="keyword">Dim</span> ObjStrPanelSurf <span class="keyword">As</span> StrPanelSurf
+    <span class="keyword">Set</span> ObjStrPanelSurf = ObjSddPlate.StrPanelSurf
+    ObjStrPanelSurf.<strong>Support</strong> = PlateSupport
+    <span class="comment">&#39;Set material</span>
+    <span class="keyword">Dim</span> ObjMaterialMngt <span class="keyword">As</span> StrMaterialMngt
+    <span class="keyword">Set</span> ObjMaterialMngt = oObjSddProductPlate.StrMaterialMngt
+    ObjMaterialMngt.<strong>SetMaterial</strong> &quot;Steel A42&quot;
+
+    <span class="comment">&#39;Set thickness and throw orientation</span>
+    <span class="keyword">Dim</span> ObjStrPlateExtrusionMngt <span class="keyword">As</span> StrPlateExtrusionMngt
+    <span class="keyword">Set</span> ObjStrPlateExtrusionMngt = ObjSddPlate.StrPlateExtrusionMngt
+    ObjStrPlateExtrusionMngt.<strong>ThrowOrientation</strong> = 0
+    ObjStrPlateExtrusionMngt.<strong>OffsetMode</strong> = 0
+    <span class="keyword">Dim</span> Thickness <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> Thickness = ObjStrPlateExtrusionMngt.GetThickness
+    Thickness.ValuateFromString &quot;10mm&quot;
+
+    <span class="comment">&#39;Set panel limits</span>
+    <strong>SetPanelLimits</strong> ObjSddPlate
+...</pre>
+				<p>In this method first <code>AddProductPlate</code> method is called 
+				on iObjSddFactory object to create a new empty panel and stores 
+				it in <code>oObjSddProductPlate</code> which is a output parameter 
+				of this method. Next, it retrieves the object of type <code>StrCategoryMngt</code> 
+				in <code>ObjStrCategoryMngt</code> and calls <code>SetCategory</code> 
+				method to set the category. Similarly for setting the panel support, 
+				it retrieves the object of type <code>StrPanelSurf</code> in
+				<code>ObjStrPanelSurf</code> and sets <code>Support</code> property 
+				with the reference to &quot;Deck.1&quot;. For setting the material, it retrieves 
+				the object of type <code>StrMaterialMngt</code> in <code>ObjStrMaterialMngt</code> 
+				and calls <code>SetMaterial</code> method to set the material. Now 
+				to set the thickness and throw orientation, it retrieves the object 
+				of type <code>StrPlateExtrusionMngt</code> in <code>ObjStrPlateExtrusionMngt</code> 
+				and sets <code>ThrowOrientation</code>, <code>OffsetMode</code> 
+				properties. Finally <code>SetPanelLimits</code> method is called 
+				to set the limits of the panel. The method <code>SetPanelLimits</code>is 
+				detailed in the below steps. The method <code>SetPanelLimits</code> 
+				takes SddPlate as input parameter and sets the limits on this plate
+				</p>
+				</li>
+				<li>
+				<p><strong>Sets panel limits</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> <strong>SetPanelLimits</strong>(iObjSddPlate <span class="keyword">As</span> SddPlate)
+
+<span class="comment">&#39;   1- Retrieves StrPanelLimitMngt for setting limits</span>
+    <span class="keyword">Set</span> oObjProdMember = iObjSddFactory.<strong>AddProductMember</strong>
+    <span class="keyword">Dim</span> ObjStrPanelLimitMngt <span class="keyword">As</span> StrPanelLimitMngt
+    <span class="keyword">Set</span> ObjStrPanelLimitMngt = iObjSddPlate.<strong>StrPanelLimitMngt</strong>
+
+<span class="comment">&#39;   2- Sets limits on the panel</span>
+    <span class="keyword">Set</span> ObjLimit1 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.60&quot;)
+    <span class="keyword">Set</span> Limit1 = ObjPart.CreateReferenceFromObject(ObjLimit1)
+    ObjStrPanelLimitMngt.<strong>SetLimitingObject</strong> Limit1, -1, 0, 2
+
+    <span class="keyword">Set</span> ObjLimit2 = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.120&quot;)
+    <span class="keyword">Set</span> Limit2 = ObjPart.CreateReferenceFromObject(ObjLimit2)
+    ObjStrPanelLimitMngt.<strong>SetLimitingObject</strong> Limit2, -1, -1, 2
+
+
+    <span class="keyword">Set</span> ObjLimit3 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-18&quot;)
+    <span class="keyword">Set</span> Limit3 = ObjPart.CreateReferenceFromObject(ObjLimit3)
+    ObjStrPanelLimitMngt.<strong>SetLimitingObject</strong> Limit3, -1, 0, 2
+
+    <span class="keyword">Set</span> ObjLimit4 = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.18&quot;)
+    <span class="keyword">Set</span> Limit4 = ObjPart.CreateReferenceFromObject(ObjLimit4)
+    ObjStrPanelLimitMngt.<strong>SetLimitingObject</strong> Limit4, -1, -1, 2
+
+
+<span class="keyword">End Sub</span></pre>
+				<p>As a first step, this method retrieves the object of type
+				<code>StrPanelLimitMngt</code> in <code>ObjStrPanelLimitMngt</code>. 
+				Then references to the limiting objects are created using <code>
+				CreateReferenceFromObject</code> method which are references to 
+				the planes &quot;CROSS.60&quot;, &quot;CROSS.120&quot;, &quot;LONG.-18&quot; and &quot;LONG.18&quot; obtained 
+				by <code>GetReferencePlane</code> method of RfgService. These reference 
+				planes are then used as limiting objects for the panel using
+				<code>SetLimitingObject</code>method of <code>StrPanelLimitMngt</code></p>
+				</li>
+				<li>
+				<p><strong>Updates created panel object</strong></p>
+				<pre class="code">...
+    oObjSddProductPlate.<strong>Update</strong> 
+<span class="keyword">End Sub</span></pre>
+				<p>Method <code>UpdateObject</code> updates the created panel.</p>
+				</li>
+			</ol>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table>
+	<caption><a name="Fig.1"></a>Fig.1: Plate</caption>
+	<tr>
+		<td>
+		<img alt="Plate" src="CAAScdSddUcCreatePlate.png"/></td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

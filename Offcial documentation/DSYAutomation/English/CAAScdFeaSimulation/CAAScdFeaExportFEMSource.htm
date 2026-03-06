@@ -1,0 +1,103 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaExportFEM.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample exports a FEM representation into Abaqus file format(inp). </span>
+<span class="comment">'The Abaqus file will be saved in the temporary folder defined by the TMP environment variable.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'    1- Retrieve the active editor</span>
+<span class="comment">'    2- Retrieve the FEM Root</span>
+<span class="comment">'    3- Retrieve the simulation exporter</span>
+<span class="comment">'    4- Retrieve the exporter arguments</span>
+<span class="comment">'    5- Set the export parameters</span>
+<span class="comment">'    6- Execute the export</span>
+
+<span class="keyword">Sub </span>CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 1- Retrieve the active editor</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> myEditor <span class="keyword">As</span> Editor
+<span class="keyword">Set</span> myEditor = CATIA.ActiveEditor 
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 2- Retrieve the FEM Root</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> myContext <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> myContext = myEditor.GetService("PLMProductService")
+<span class="keyword">Dim</span> myFEMRoot <span class="keyword">As</span> SimFemRoot
+<span class="keyword">For Each</span> myEntity <span class="keyword">In</span> myContext.EditedContent
+
+  <span class="keyword">Dim</span> myRef <span class="keyword">As</span> VPMReference
+  <span class="keyword">Set</span> myRef = myEntity
+
+  <span class="keyword">Dim</span> myReps <span class="keyword">As</span> VPMRepInstances
+  <span class="keyword">Set</span> myReps = myRef.RepInstances
+
+  <span class="keyword">For Each</span> myRep <span class="keyword">In</span> myReps
+    <span class="keyword">Dim</span> myRepRef <span class="keyword">As</span> VPMRepReference
+    <span class="keyword">Set</span> myRepRef = myRep.ReferenceInstanceOf
+    <span class="keyword">Dim</span> attr <span class="keyword">As String</span>
+    attr = myRepRef.GetAttributeValue(&quot;V_discipline&quot;)
+    <span class="keyword">If</span> ( attr = &quot;FEM&quot; ) <span class="keyword">Then</span>
+      <span class="keyword">Set</span> myFEMRoot = myRepRef.GetItem(&quot;SimFemRoot&quot;)
+    <span class="keyword">End if</span>
+  <span class="keyword">Next</span>
+<span class="keyword">Next</span>
+<span class="keyword">If</span> (IsObject(myFEMRoot) = false) <span class="keyword">Then</span>
+  <span class="keyword">Exit Sub</span>
+<span class="keyword">End if</span>
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 3- Retrieve the simulation exporter</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> mySimManagerSIMExport <span class="keyword">As</span> SimManagerSIMExport
+<span class="keyword">Set</span> mySimManagerSIMExport = myFEMRoot.GetItem("SimManagerSIMExport")
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 4- Retrieve the exporter arguments</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> mySimExportArgs <span class="keyword">As</span> SimImportExportArgs
+<span class="keyword">Set</span> mySimExportArgs = mySimManagerSIMExport.Args
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 5- Set the export parameters</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="keyword">Dim</span> myExportPath <span class="keyword">As</span> String
+myExportPath=CATIA.SystemService.Environ("TMP") &amp; "\CAAScdFeaExportFEM.inp"
+ 
+mySimExportArgs.SetPath(myExportPath )
+
+<span class="keyword">Dim</span> myParameters <span class="keyword">As</span> SimParameterSet
+<span class="keyword">Set</span> myParameters = mySimExportArgs.Parameters
+myParameters.SetIntegerParameter "AllowOverwrite", 1
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">' 6- Execute the export</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+mySimManagerSIMExport.Export("Model2Abaqus")
+
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

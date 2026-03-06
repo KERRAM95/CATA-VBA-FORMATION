@@ -1,0 +1,243 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<meta name="GENERATOR" content="Microsoft FrontPage 12.0" />
+<meta name="ProgId" content="FrontPage.Editor.Document" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SFD Opening On Profile Using 3D Objects</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SFD Opening On Profile Using 3D Objects</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SFD Opening on profile using 
+						3D object.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSfdUcCGR.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcSR.3dxml</div>, </code> <code><div class=vb_sample_data>CAAScdSfdUcWT18x179_5.3dxml</div>,<div class=vb_sample_data>CAAScdSfdUcSteel_A90.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcPart.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcCreateOpeningOnProfile.3dxml</div></code> 
+							<code></code> files supplied 
+							in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSfdSFDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where 
+								the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSfdUcCreateOpeningOnProfile3DObjectSource.htm">CAAScdSfdUcCreateOpeningOnProfile3DObjectSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSfdTocSFDesign.htm">Structure Functional Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SFD_CreateOpeningOnProfile&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves a SFD stiffener object</a></li>
+			<li><a href="#Step5">Get 3D Object for creating opening on profile</a></li>
+			<li><a href="#Step6">Creates opening on profile</a></li>
+			<li><a href="#Step7">Removes opening on profile</a></li>
+			<li><a href="#Step8">Updates the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SFD_CreateOpeningOnProfile&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SFD_CreateOpeningOnProfile&quot; from DB and 
+			loads it and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SFDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SFD_CreateOpeningOnProfile&quot;
+ OpenProduct prdName , SFDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SFD model from underlying database the current active 
+			editor is returned in <strong><code>SFDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+			<p>As a next step, the UC retrieves Selection object in SFDProdSel variable. 
+			To retrieve the Selection object <strong><code>SFDPrdEditor </code>
+			</strong>is used.</p>
+			<pre class="code"> ...
+  <span class="keyword">Set</span> SFDProdSel = SFDPrdEditor<strong>.Selection </strong>
+ ...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p>In this step UC retrieves Part object ObjPart variable.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> ObjPart = SFDPrdEditor.<strong>ActiveObject</strong>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves a SFD stiffener object</strong></p>
+			<p>In this step UC retrieves stiffener object.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> RefObjSfdStiffener = ObjPart.<strong>FindObjectByName</strong>(&quot;Stiffener.1&quot;)
+  <span class="keyword">Dim</span> ObjSfdStiffener <span class="keyword">As</span> StrSfdStiffener
+  SFDProdSel.<strong>Add</strong> RefObjSfdStiffener
+  <span class="keyword">Set</span> ObjSfdStiffener = SFDProdSel.<strong>FindObject</strong>(&quot;CATIASfdStiffener&quot;)
+...</pre>
+			<p><code>FindObjectByName</code> method finds object whose name is &quot;Stiffener.1&quot; 
+			and returns reference to it. Here RefObjSfdStiffener is of type <code>Reference</code>. 
+			To retrieve <code>StrSfdStiffener</code> object from <code>Reference</code> 
+			add retrieved reference to the selection and call <code>FindObject</code> 
+			method as shown above. This will return the <code>StrSfdStiffener</code> object 
+			variable.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Get 3D Object for creating opening on profile</strong></p>
+			<pre class="code">...
+<span class="keyword">    Set</span> Obj3DOpeningOnProfileDimensions = StiffenerPart.FindObjectByName("Extrude.1")
+<span class="keyword">    Dim</span> Ref3DObjectOpeningOnProfileDimensions <span class="keyword">As</span> Reference
+<span class="keyword">    Set</span> Ref3DObjectOpeningOnProfileDimensions = ObjPart.CreateReferenceFromObject(Obj3DOpeningOnProfileDimensions)
+...</pre>
+</li>
+			<li>
+			<p><strong><a name="Step6"></a>Creates opening on profile</strong></p>
+			<p>Now, stiffener is available to create opening on it. Call <code>CreateOpeningOnProfile3DObject</code> 
+			method to create opening on profile. <code>CreateOpeningOnProfile3DObject</code> 
+			method takes a profile as input parameter and it returns created opening 
+			as output parameter in <code>ObjStrOpeningOnProfile</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjStrOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile
+  <strong>CreateOpeningOnProfile3DObject</strong> ObjSfdStiffener, Ref3DObjectOpeningOnProfileDimensions, ObjStrOpeningOnProfile
+...</pre>
+<pre class="code">...
+<span class="keyword">  Sub</span> CreateOpening3DObject(iObjSfdStiffener <span class="keyword">As</span> StrSfdStiffener, Ref3DObject <span class="keyword">As</span> Reference, oObjStrOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile)
+    
+<span class="comment">    'Add Opening On Profile</span>
+    AddOpening iObjSfdStiffener, oObjStrOpeningOnProfile
+	
+<span class="comment">    'Get StrOpening from StrOpeningOnProfile</span>
+    <span class="keyword">Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+    <span class="keyword">Set</span> ObjStrOpening = oObjStrOpeningOnProfile.<strong>StrOpening</strong>
+    
+<span class="comment">    'Set opening type catStrOpeningMode3DObject for 3dobject opening</span>
+    ObjStrOpening.<strong>OpeningType</strong> = catStrOpeningMode3DObject
+    
+<span class="comment">    'Set category</span>
+    <span class="keyword">Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjStrCategoryMngt = ObjStrOpening.StrCategoryMngt
+    ObjStrCategoryMngt.<strong>SetCategory</strong> "SldOpening"
+
+<span class="comment">    'Set intersecting element for opening creation</span>
+    <span class="keyword">Dim</span> ObjStrOpening3DObject <span class="keyword">As</span> StrOpening3DObject
+    <span class="keyword">Set</span> ObjStrOpening3DObject = ObjStrOpening.StrOpening3DObject
+    ObjStrOpening3DObject.<strong>IntersectingElement</strong> = Ref3DObject
+    
+<span class="comment">    'Set forming mode</span>
+    <span class="keyword">Set</span> ObjStrOpeningExtrusionMngt = ObjStrOpening.StrOpeningExtrusionMngt
+    ObjStrOpeningExtrusionMngt.<strong>ExtrusionMode</strong> = 0
+    'ObjStrOpening.<strong>FormingMode</strong> = 0
+    
+<span class="comment">    'Update the created opening</span>
+    ObjPart.UpdateObject oObjStrOpeningOnProfile
+    ObjPart.UpdateObject iObjSfdStiffener
+    
+  End Sub
+...</pre>
+<pre class="code">...
+<span class="keyword">Sub</span> AddOpening(iObjSfdStiffener <span class="keyword">As</span> StrSfdStiffener, oObjSfdOpeningOnProfile <span class="keyword">As</span> StrOpeningOnProfile)
+<span class="keyword">    Dim</span> ObjStrOpeningsOnProfile <span class="keyword">As</span> StrOpeningsOnProfile
+ <span class="keyword">   Set</span> ObjStrOpeningsOnProfile = iObjSfdStiffener.<strong>GetOpeningsOnProfile</strong>(0)
+    'Add opening
+<span class="keyword">    Set</span> oObjSfdOpeningOnProfile = ObjStrOpeningsOnProfile.Add
+    
+<span class="keyword">End Sub</span>
+...</pre>
+			
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Removes opening on profile</strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> ObjStrOpeningsOnProfile <span class="keyword">As</span> StrOpeningsOnProfile
+    <span class="keyword">Set</span> ObjStrOpeningsOnProfile = ObjSfdStiffener.<strong>GetOpeningsOnProfile(0)</strong>
+    ObjStrOpeningsOnProfile.<strong>Remove</strong> ObjStrOpeningOnProfile
+...</pre>
+			<p>Object of <code>StrOpeningsOnProfile</code> is retrieved in <code>ObjStrOpeningsOnProfile</code>. 
+			Then on <code>ObjStrOpeningsOnProfile</code> object <code>Remove</code> method 
+			is called to remove the opening. This method takes a input parameter 
+			opening object to remove.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Updates the Part object</strong></p>
+			<pre class="code">...
+    ObjPart.<strong>Update</strong>
+<span class="keyword">End Sub</span></pre>
+			<p><code>Update</code> method updates the <code>ObjPart</code></p>
+			<script type="text/javascript">insertLinkToTop()</script>
+			<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+			<script type="text/javascript">insertCopyright();</script>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+
+</body>
+
+</html>

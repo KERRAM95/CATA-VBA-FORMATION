@@ -1,0 +1,214 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>SMAMpaStructuralModelIDLItf SimBeamProfile (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../SMAMpaStructuralModelIDLItf.htm" href="../SMAMpaStructuralModelIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "SMAMpaStructuralModelIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "SimBeamProfile"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> SimBeamProfile<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_SimBeamProfile_46868','SimBeamProfile','0');</script>
+<section id='maindesc'>
+<b><i> Represents the Beam Profile object.</i></b><br>
+
+ 
+ <!-- @sample -->
+ <dl>
+ <dt><strong>Example:</strong></dt>
+ <dd> Given a <code>SimBehaviors</code> object, you can create a <code>SimBeamProfile</code> as following:
+ <pre>
+ Dim MyBehaviors As SimBehaviors
+ ...
+ Dim MyBeamProfile As SimBeamProfile
+ Set MyBeamProfile = MyBehaviors.Add("SimBeamProfile")
+ </pre>
+ 
+ Given a <code>SimBehaviors</code> object, you can retrieve a <code>SimBeamProfile</code> named "Beam Profile.1" as following:
+ <pre>
+ Dim MyBehaviors As SimBehaviors
+ ...
+ Dim MyBeamProfile As SimBeamProfile
+ Set MyBeamProfile = MyBehaviors.Item("Beam Profile.1")
+ </pre>
+ </dd>
+ <dt><strong>Example in Python:</strong></dt>
+ <dd> Given a <code>SimBehaviors</code> object <code>myBehaviors</code>, you can create a <code>SimBeamProfile</code> as following:
+ <pre>
+ ...
+ myBeamProfile = myBehaviors.Add("SimBeamProfile")
+ </pre>
+ 
+ Given a <code>SimBehaviors</code> object <code>myBehaviors</code>, you can retrieve a <code>SimBeamProfile</code> named "Beam Profile.1" as following:
+ <pre>
+ ...
+ myBeamProfile = myBehaviors.Item("Beam Profile.1")
+ </pre>
+ </dd>
+ </dl>
+ <dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('CATIAFmtBehaviors','','CATIAFmtBehaviors') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Parameters"><b>Parameters</b></a>
+</td><td  id='tdright'>  Returns or sets the list of beam profile parameters.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Shape"><b>Shape</b></a>
+</td><td  id='tdright'>  Returns or sets the shape of the beam profile.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetShearCenter"><b>GetShearCenter</b></a>
+</td><td  id='tdright'>  Retrieves the values of the shear center for beam profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetShearCenter"><b>SetShearCenter</b></a>
+</td><td  id='tdright'>  Sets the values of the shear center for beam profile.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Parameters"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Parameters</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the list of beam profile parameters.
+ The possible values are:
+ <ul>
+   <li><b>Box</b> : {Width(a), Height(b), Thickness(t1), Thickness(t2), Thickness(t3), Thickness(t4)}</li>
+   <li><b>Circular</b> : {Radius(r)}</li>
+ <li><b>General</b> : {Area, I11, I12, I22, J, GammaO, GammaW}</li>
+   <li><b>Hex</b> : {Radius(r), Thickness(t)}</li>
+   <li><b>I_Beam</b> : {Offset(l), Height(h), Width(b1), Width(b2), Thickness(t1), Thickness(t2), Thickness(t3)}</li>
+   <li><b>L_Beam</b> : {Width(a), Height(b), Thickness(t1), Thickness(t2)}</li>
+   <li><b>Pipe</b> : {Radius(r), Thickness(t)}</li>
+   <li><b>Rectangular</b> : {Base(a), Height(b)}</li>
+   <li><b>Trapezoid</b> : {Width(a), Height(b), Width(c), Height(d)}</li>
+   <li><b>T_Beam</b> : {Width(b), Height(h), Length(l), Thickness(t1), Thickness(t2)}</li>
+   <li><b>Channel</b> : {Width(w), Height(h), Flange thickness1(t1), Web thickness2(t2), Reference offset(o)}</li>
+   <li><b>Hat</b> : {Length(l), Height(h), Width(b), Width(b1), Width(b2), Thickness(t1), Thickness(t2), Thickness(t3)}</li>
+ </ul>
+ <table>
+ <tr>
+ <td><b>Parameter</b></td>
+ <td><b>Quantity</b></td>
+ <td><b>Unit</b></td>
+ </tr>
+ <tr>
+ <td>Area</td>
+ <td>AREA</td>
+ <td>m2</td>
+ </tr>
+ <tr>
+ <td>I11, I12, I22, J and GammaO  </td>
+ <td>INERTIA</td>
+ <td>m4</td>
+ </tr>
+ <tr>
+ <td>GammaW</td>
+ <td>WARPING_COEFFICIENT  </td>
+ <td>m6</td>
+ </tr>
+ <tr>
+ <td>All other parameters</td>
+ <td>LENGTH</td>
+ <td>m</td>
+ </tr>
+ </table>
+</dd>
+<a id="Shape"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Shape</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('SimBeamProfileShape','SimBeamProfileShape')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns or sets the shape of the beam profile.
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetShearCenter"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetShearCenter</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oShearCenterXValue</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oShearCenterYValue</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieves the values of the shear center for beam profile. Shear center can be specified only for general shape beam profile.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'>  oShearCenterXValue</span></dt>
+   <dd> [out]    The shear center in local x-direction of beam profile which is used for the beam section. Quantity: LENGTH, units: m
+ 
+ </ dd>
+    <dt><span class='paramitem'>  oShearCenterYValue</span></dt>
+   <dd> [out]    The shear center in local y-direction of beam profile which is used for the beam section. Quantity: LENGTH, units: m
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>    <code>S_OK</code> if successful.
+ </ dd>
+</dl>
+</dd>
+<a id="SetShearCenter"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetShearCenter</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iShearCenterXValue</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iShearCenterYValue</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Sets the values of the shear center for beam profile. Shear center can be specified only for general shape beam profile.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'>  iShearCenterXValue</span></dt>
+   <dd> [in]    The shear center in local x-direction of beam profile which should be used for the beam section. Quantity: LENGTH, units: m
+ 
+ </ dd>
+    <dt><span class='paramitem'>  iShearCenterYValue</span></dt>
+   <dd> [in]    The shear center in local y-direction of beam profile which should be used for the beam section. Quantity: LENGTH, units: m
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>    <code>S_OK</code> if successful.
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

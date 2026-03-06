@@ -1,0 +1,170 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSddUcCreateOpening3DObject.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates a opening using 3d object and removes it.</span>
+<span class="comment">'This script requires sdd model which contains a panel </span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="comment">'   4- Retrieves Service manager</span>
+<span class="comment">'   5- Retrieves plate object</span>
+<span class="comment">'   6- Creates opening</span>
+<span class="comment">'   7- Removes opening</span>
+<span class="comment">'   8- Updates the Part object</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Dim </span>Manager<span class="keyword"> As </span>RfgService
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>SDDProdSel<span class="keyword"> As </span>Selection
+
+
+<span class="keyword">Sub </span>CATMain()
+    
+<span class="comment">'   1- Searches and opens model which is named as &quot;SddProduct&quot;</span>
+<span class="keyword">    Dim </span>SDDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SddProduct&quot;
+    OpenProduct prdName , SDDPrdEditor
+    
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="keyword">    Set </span>SDDProdSel = SDDPrdEditor.Selection
+    
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="keyword">    Dim </span>product1Service  <span class="keyword"> As </span>PLMProductService
+<span class="keyword">    Set </span>product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+<span class="keyword">    Dim </span>ObjVPMRootOccurrence  <span class="keyword"> As </span>VPMRootOccurrence
+<span class="keyword">    Set </span>ObjVPMRootOccurrence = product1Service.RootOccurrence
+<span class="keyword">    Dim </span>ObjVPMReference<span class="keyword"> As </span>VPMReference
+<span class="keyword">    Set </span>ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+<span class="keyword">    Dim </span>ObjVPMRepInstances<span class="keyword"> As </span>VPMRepInstances
+<span class="keyword">    Set </span>ObjVPMRepInstances = ObjVPMReference.RepInstances
+<span class="keyword">    Set </span>ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+
+<span class="comment">'   4- Retrieves Service manager</span>
+<span class="keyword">    Set </span>Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+    
+<span class="comment">'   5- Retrieves a Plate</span>
+<span class="keyword">    Set </span>ListOfInstances = ObjVPMReference.Instances
+<span class="keyword">    Set </span>PlateRef = ListOfInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>PlateRepInstances = PlateRef.RepInstances
+<span class="keyword">    Set </span>PlateRepInstReference = PlateRepInstances.Item(1).ReferenceInstanceOf
+<span class="keyword">    Set </span>PlatePart = PlateRepInstReference.GetItem(&quot;Part&quot;)
+    <span class="comment">'get Sdd plate</span>
+<span class="keyword">    Dim </span>ObjSddProductPlate<span class="keyword"> As </span>SddProductPlate
+    SDDProdSel.Add PlateRef
+<span class="keyword">    Set </span>ObjSddProductPlate = SDDProdSel.FindObject(&quot;CATIASddProductPlate&quot;)
+<span class="keyword">    Dim </span>ObjSddPlate<span class="keyword"> As </span>SddPlate
+<span class="keyword">    Set </span>ObjSddPlate = ObjSddProductPlate.SddPlate
+
+<span class="comment">'   6- Creates opening</span>
+<span class="keyword">    Dim </span>ObjStrOpening<span class="keyword"> As </span>StrOpening
+    CreateOpening3DObject ObjSddPlate, ObjStrOpening
+    
+    
+<span class="comment">'   7- Removes opening</span>
+<span class="keyword">    Dim </span>ObjStrOpenings<span class="keyword"> As </span>StrOpenings
+<span class="keyword">    Set </span>ObjStrOpenings = ObjSddPlate.GetOpenings(0)
+    ObjStrOpenings.Remove ObjStrOpening
+    
+<span class="comment">'   8- Updates the Part object</span>
+    ObjPart.Update
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Opening</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   6.1- Retrieves a cylinder, later which will be used for opening creation as a intersecting profile</span>
+<span class="comment">'   6.2- Retrieves StrOpenings and creates an opening with no properties set</span>
+<span class="comment">'   6.3- Sets opening type to 0 (3d object)</span>
+<span class="comment">'   6.4- Retrieves StrCategoryMngt and sets category </span>
+<span class="comment">'   6.5- Retrieves StrOpening3DObject and sets intersecting profile</span>
+<span class="comment">'   6.6- Sets extrusion mode</span>
+<span class="comment">'   6.7- Updates created opening object.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateOpening3DObject(iObjSddPlate<span class="keyword"> As </span>SddPlate, oObjStrOpening<span class="keyword"> As </span>StrOpening)
+    
+<span class="comment">'   6.1- Retrieve a cylinder, later which will be used for opening creation as a intersecting profile</span>
+<span class="keyword">    Set </span>ObjHybridShapeCylinder = ObjPart.FindObjectByName(&quot;Cylinder.1&quot;)
+<span class="keyword">    Set </span>CylinderRef = ObjPart.CreateReferenceFromObject(ObjHybridShapeCylinder)
+  
+<span class="comment">'   6.2- Retrieves StrOpenings and creates an opening with no properties set</span>
+    <span class="comment">'AddOpening </span>
+<span class="keyword">    Dim </span>ObjStrOpenings<span class="keyword"> As </span>StrOpenings
+<span class="keyword">    Set </span>ObjStrOpenings = iObjSddPlate.GetOpenings(0)
+<span class="keyword">    Set </span>oObjStrOpening = ObjStrOpenings.Add
+    
+<span class="comment">'   6.3- Sets opening type to catStrOpeningMode3DObject (3d object)</span>
+    oObjStrOpening.OpeningType = catStrOpeningMode3DObject
+    
+<span class="comment">'   6.4- Retrieves StrCategoryMngt and sets category </span>
+<span class="keyword">    Dim </span>ObjStrCategoryMngt<span class="keyword"> As </span>StrCategoryMngt
+<span class="keyword">    Set </span>ObjStrCategoryMngt = oObjStrOpening.StrCategoryMngt
+    ObjStrCategoryMngt.SetCategory &quot;SddOpening&quot;
+
+<span class="comment">'   6.5- Retrieves StrOpening3DObject and sets intersecting profile</span>
+<span class="keyword">    Dim </span>ObjStrOpening3DObject<span class="keyword"> As </span>StrOpening3DObject
+<span class="keyword">    Set </span>ObjStrOpening3DObject = oObjStrOpening.StrOpening3DObject
+    ObjStrOpening3DObject.IntersectingElement = CylinderRef
+    
+<span class="comment">'   6.6- Sets forming extrusion mode </span>
+<span class="keyword">    Set </span>ObjStrOpeningExtrusionMngt = oObjStrOpening.StrOpeningExtrusionMngt
+    ObjStrOpeningExtrusionMngt.ExtrusionMode = 1
+    
+<span class="comment">'   6.7- Updates created opening object.</span>
+    <span class="comment">'oObjStrOpening.Update</span>
+<span class="keyword">End Sub</span>
+
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SDDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SDDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

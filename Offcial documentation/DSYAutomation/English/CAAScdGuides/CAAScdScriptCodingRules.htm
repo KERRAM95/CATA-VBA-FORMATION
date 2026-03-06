@@ -1,0 +1,383 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Visual Basic Coding Rules</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Visual Basic Coding Rules</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+  <tbody>
+  <tr>
+    <td>
+      <h2>Abstract</h2>
+      <p>This article presents how to program scripts created in VBScript or Visual Basic for Applications 
+      using Dassault Syst&#232;mes 
+      product lines scripting capabilities.</p>
+      <ul>
+        <li><a href="#General">General Rules and Principles</a></li>
+        <li><a href="#Testability">Rules for Ensuring Testability</a></li>
+        <li><a href="#Rules">Rules for
+          Writing Cross-Platform Scripts</a></li>
+      </ul>
+    </td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="General"></a>General Rules and Principles</h2>
+<p>This document targets scripts developed using Dassault Syst&#232;mes scripting languages and mode specifically 
+script written in VBScript, CATScript or Visual basic for Applications.
+It does not cover all topics needed to develop
+a complex application using for example Visual Basic but most of the rules still
+apply to this kind of application.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="g1"></a>[g1] Use Option Explicit</h3>
+<p>It prevents the compiler/interpreter from automatically creating non declared
+variables, possibly hiding misspelled accesses to existing variables.</p>
+<p>It has to be the very first directive:</p>
+<pre class="code"><span class="keyword">Option Explicit</span>
+...</pre>
+<p>If you are using a recorded macro as a basis, remove the valuation of the
+&quot;Language&quot; variable instead of declaring it like in:</p>
+<pre class="code"><span class="keyword">Dim</span> Language <span class="keyword">As</span> String <span class="comment">&#39; Useless: remove</span>
+Language=&quot;VBScript&quot;    <span class="comment">&#39; Useless: remove</span></pre>
+<table>
+  <tbody>
+  <tr>
+    <th>Metrics</th>
+    <td>Statement is present</td>
+  </tr>
+  <tr>
+    <th>Objective</th>
+    <td>Y</td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="g2"></a>[g2] Handle Errors</h3>
+<p>If errors are not systematically handled, which is often the case when using
+scripting languages, a lot of unpredictable events can take place before the end 
+user identifies a problem. As a default behavior the interpreter will stop
+and display an error message box whenever an error is raised.</p>
+<p>When you want to take corrective actions on an error, disabling the automatic 
+error handing mechanism using <code>On Error Resume Next</code> becomes
+mandatory.</p>
+<ul>
+  <li>Keep as much as possible the automatic error handling mechanism active</li>
+  <li>When you deactivate it, isolate its use to places where it&#39;s mandatory and
+    explicitly handle all errors meanwhile:
+<pre class="code"><span class="keyword">Dim</span> CATIA <span class="keyword">As</span> Object
+<span class="keyword">On Error Resume Next</span>      <span class="comment"> &#39; Disable automatic error handling</span>
+    <span class="keyword">Set</span> CATIA=GetObject(,&quot;CATIA.Application&quot;)
+    iErr = Err.Number     <span class="comment"> &#39; For BasicScript parser (Unix)</span>
+    <span class="keyword">If</span> (iErr &lt;&gt; 0) <span class="keyword">Then</span>   <span class="comment"> &#39; Manually handle all errors</span>
+        <span class="keyword">On Error Goto 0</span>    <span class="comment">&#39; Invalidates the Resume Next and clears the error</span>
+        <span class="keyword">Set</span> CATIA=CreateObject(&quot;CATIA.Application&quot;)
+    <span class="keyword">End If</span>
+<span class="keyword">On Error Goto 0</span>           <span class="comment"> &#39; Invalidates the Resume Next and clears the error</span></pre>
+    </li>
+</ul>
+<table>
+  <tbody>
+  <tr>
+    <th>Metrics</th>
+    <td>Number of lines between an <code>On Error
+      Resume Next</code> and an <code>On Error Goto 0</code> that are
+      not followed by a block <code>If (Err.number &lt;&gt; 0) ... End If</code></td>
+  </tr>
+  <tr>
+    <th>Objective</th>
+    <td>0</td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<!--
+           No out-process supported in V6
+<h3><a name="g3"></a>[g3] For Out-Process Applications, Use CATIA as the Name
+of the Root Object</h3>
+<p>It simplifies reuse of recorded macros and reuse in an in-process context:</p>
+<pre class="code"><span class="keyword">Dim</span> <strong>CATIA</strong> <span class="keyword">As</span> Object
+<span class="keyword">Set</span> CATIA=GetObject(,&quot;CATIA.Application&quot;)
+...</pre>
+<table>
+  <tr>
+    <th>Metrics</th>
+    <td>Number of GetObject or CreateObject
+      concerning CATIA for which the receiving variable is not named
+      &quot;CATIA&quot;</td>
+  </tr>
+  <tr>
+    <th>Objective</th>
+    <td>0</td>
+  </tr>
+</table>
+-->
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="g4"></a>[g4] Declare Supported Languages, And Initial Release</h3>
+<p>The following comments are mandatory. Valid values for <em>Language</em> are
+&quot;VBScript&quot;, &quot;CATScript&quot;, &quot;VBA&quot;,
+&quot;VB.NET&quot;, or &quot;C#&quot;. <em>Release</em> identifies the first supported release.</p>
+<pre class="code">&#39; Language: VBScript
+&#39; Release:  V6R2010</pre>
+<p>Look in [<a href="#References">1</a>] for a complete standard header.</p>
+<p>Note that CATScript is kept for compatibility purpose.</p>
+<table>
+  <tbody>
+  <tr>
+    <th>Metrics</th>
+    <td>The two statements are present and contain
+      valid values</td>
+  </tr>
+  <tr>
+    <th>Objective</th>
+    <td>Y</td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="g5"></a>[g5] Always Type Your Variables (VBA/CATScript/VSTA)</h3>
+<p>Typing objects eases programming and debug:</p>
+<pre class="code"><span class="keyword">Dim</span> VariableOfTypeX <span class="keyword">As</span> TypeX</pre>
+<p>An exception is when you need to use a method of an object that takes an array 
+as an argument (see [<a href="#References">2</a>]). In this case you won&#39;t be able to type your 
+object (VBA/VSTA refuses to compile).</p>
+<table>
+  <tbody>
+  <tr>
+    <th>Metrics</th>
+    <th>Objectives</th>
+  </tr>
+  <tr>
+    <td>Number of Dim statements without an As statement</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>Number of wrongly defined types</td>
+    <td>0</td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Testability"></a>Rules for Ensuring Testability</h2>
+<p>To allow integration in automated test suites, automation scripts must follow
+specific rules.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="t1"></a>[t1] Always Give a Default Value to InputBox</h3>
+<p>In a test case context, this default value will be used as the result of
+<code>InputBox</code>.</p>
+<pre class="code"><span class="keyword">Dim</span> sName <span class="keyword">As</span> String
+<span class="keyword">Set</span> sName = InputBox (&quot;Enter Body Name: &quot;, &quot;&quot;, <strong>&quot;NEWBODY&quot;</strong>)</pre>
+<p>When using <code>MsgBox</code>, if you store the returned value, it will be set to 0.</p>
+<table>
+  <tbody>
+  <tr>
+    <th>Metrics</th>
+    <td>Number of <code>InputBox</code> without a third parameter</td>
+  </tr>
+  <tr>
+    <th>Objective</th>
+    <td>0</td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="t2"></a>[t2] Use Err.Raise to exit on error</h3>
+<p>In a test case context, an error needs to be identified as such.</p>
+<p>Use <code>MsgBox</code> for information messages and <code>Err.Raise</code> for errors. The first and
+third parameters must be valuated, like in:</p>
+<pre class="code"><span class="keyword">If </span>(iShape &gt; cShapes.Count)<span class="keyword"> Then</span>
+    <strong>Err.Raise</strong> _
+        <strong>9999</strong>,_                     <span class="comment">&#39; Number greater than 1000</span>
+        &quot;MyMacro&quot;,_                <span class="comment">&#39; Optional: Name of the Script or the sub</span>
+        <strong>&quot;Shape Number is too big&quot;</strong>  <span class="comment">&#39; Explicit error message</span>
+<span class="keyword">End If</span></pre>
+<p>Don&#39;t use:</p>
+<pre class="code"><span class="keyword">If </span>(iShape &gt; cShapes.Count)<span class="keyword"> Then</span>
+    MsgBox &quot;ERROR: Shape Number is too big&quot;, VBOkOnly
+    <span class="keyword">Exit Sub</span>
+<span class="keyword">End If</span></pre>
+<table>
+  <tbody>
+  <tr>
+    <th>Metrics</th>
+    <td>None (program semantics involved)</td>
+  </tr>
+  <tr>
+    <th>Objective</th>
+    <td>None</td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="Rules"></a>Rules for Writing
+Cross-Platform Scripts</h2>
+<p>The CATScript language has been kept for compatibility purpose. It is 
+processed by a VBScript engine after removal of typing information. CATIA uses slightly different 
+VBScript interpreters depending on the platform it is being run on. Even though these interpreters have a lot in
+common, they also have their own behaviors and list of supported features.</p>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="p1"></a>[p1] Use only  V6 Objects</h3>
+<p>With Windows you can use the <code>CreateObject</code> and <code>GetObject</code> functions to access 
+ActiveX objects. This is not possible with Unix.</p>
+<p>If a V6 alternative exists, use it. A good example of this is the file system access. VBScript provides access to the file system through a set of ActiveX
+    objects bundled with the Windows Scripting Host (<code>CreateObject(&quot;Scripting.FileSystemObject&quot;</code>).</p>
+<p>This is not portable and can be replaced by the portable <strong>FileSystem</strong>,
+<strong>File</strong>, and <strong>Folder</strong> objects, accessible from the
+<strong>Application</strong> object (<code>CATIA.FileSystem</code>).</p>
+<table>
+  <tbody>
+  <tr>
+    <th>Metrics</th>
+    <td>Number of <code>GetObject</code> or CreateObject</td>
+  </tr>
+  <tr>
+    <th>Objective</th>
+    <td>0</td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h3><a name="p6"></a>[p2] Use CATIA.SystemService.ConcatenatePaths to Manage Paths 
+Concatenation</h3>
+<p>Some scripts may require to calculate folder paths using a concatenation of 
+paths from different sources. For example, the following calculates a file 
+absolute path from the content of an environment variable (<code>ROOT_FOLDER</code>) and a literal value:</p>
+<pre class="code"><span class="keyword">Dim</span> sRootPath <span class="keyword">As</span> String
+sRootPath = CATIA.SystemService.Environ(&quot;ROOT_FOLDER&quot;)
+<span class="keyword">Dim</span> sFilePath <span class="keyword">As</span> String
+sFilePath = sRootPath &amp; &quot;/drw/myData.txt&quot;</pre>
+<p>This is not portable, assuming that the environment variable will contain a 
+valid path for the platform on which the macro runs:</p>
+<table>
+  <tbody>
+  <tr>
+    <th>Platform</th>
+    <th>ROOT_FOLDER value</th>
+    <th>sFilePath value</th>
+  </tr>
+  <tr>
+    <td>Unix</td>
+    <td>/u/users/me</td>
+    <td>/u/users/me/drw/myData.txt</td>
+  </tr>
+  <tr>
+    <td>Windows</td>
+    <td>E:\me</td>
+    <td>E:\me/drw/myData.txt</td>
+  </tr>
+</tbody>
+</table>
+<p>Not all functions will be able to deal with a path like the second one, containing at 
+the same time &#39;/&#39; and &#39;\&#39; characters as separators.</p><p>
+</p>
+<p>Use the <code>ConcatenatePaths</code> method of the <strong>SystemService</strong> 
+object for that purpose. It always get a 
+path containing the right separators:</p>
+<pre class="code"><span class="keyword">Dim</span> sRootPath <span class="keyword">As</span> String
+sRootPath = CATIA.SystemService.Environ(&quot;ROOT_FOLDER&quot;)
+<span class="keyword">Dim</span> sFilePath <span class="keyword">As</span> String
+<span class="comment">&#39; here you can use &#39;/&#39; or &#39;\&#39; in the constant part of the path</span>
+sFilePath = CATIA.SystemService.ConcatenatePaths(sRootPath, &quot;drw/myData.txt&quot;</pre>
+<p>This results in the following:</p>
+<table>
+  <tbody>
+  <tr>
+    <th>Platform</th>
+    <th>ROOT_FOLDER value</th>
+    <th>sFilePath value</th>
+  </tr>
+  <tr>
+    <td>Unix</td>
+    <td>/u/users/me</td>
+    <td>/u/users/me/drw/myData.txt</td>
+  </tr>
+  <tr>
+    <td>Windows</td>
+    <td>E:\me</td>
+    <td>E:\me\drw\myData.txt</td>
+  </tr>
+</tbody>
+</table>
+<table>
+  <tbody>
+  <tr>
+    <th>Metrics</th>
+    <td>Number of strings containing &#39;/&#39; or &#39;\&#39; 
+    characters and used in a string concatenation operation</td>
+  </tr>
+  <tr>
+    <th>Objective</th>
+    <td>0</td>
+  </tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+  <tbody>
+  <tr>
+    <td>[1]</td>
+    <td><a href="CAAScdScriptCodePresentation.htm">Code Presentation Rules</a></td>
+  </tr>
+  <tr>
+    <td>[2]</td>
+		<td><a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation Languages, Debug, and Compatibility</a></td>
+  </tr>
+</tbody>
+</table>
+</div>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<h2><a name="History"></a>History</h2>
+<table class="history">
+  <tbody>
+  <tr>
+    <td>Version: <strong>4.0</strong> [Oct 2016]</td>
+    <td>Document updated</td>
+  </tr>
+  <tr>
+    <td>Version: <strong>3.0</strong> [Jul 2007]</td>
+    <td>Document updated</td>
+  </tr>
+  <tr>
+    <td>Version: <strong>2.0</strong> [May 2004]</td>
+    <td>Document updated</td>
+  </tr>
+  <tr>
+    <td>Version: <strong>1.0</strong> [Jan 2000]</td>
+    <td>Document created</td>
+  </tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

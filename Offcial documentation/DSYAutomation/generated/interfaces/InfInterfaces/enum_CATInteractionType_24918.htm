@@ -1,0 +1,101 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>InfInterfaces CATInteractionTypeEnumeration </title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../InfInterfaces.htm" href="../InfInterfaces.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "InfInterfaces";	}
+		function getCurrentObjectName() { 
+ 	return "CATInteractionType"; } 
+	function getCurrentType() { 
+ 	return "enum"; }  
+ </script><h1 class='title1'>CATInteractionType <font style='font-size:small;'>(Enumeration)</font></h1></header><main id='main'> 
+ 
+<section id='maindesc'><section id='objdef'><dl>
+<dt class='dt1'>
+enum <b>CATInteractionType</b> {<pre class='light'>
+  CATSelection,
+  CATIndication,
+  CATMouseMove,
+  CATInputUndo,
+  CATInputRedo,
+  CATEscape,
+  CATOtherEditor,
+  CATExclusiveCommand
+</pre>}
+</dt><dd class='dd1'>
+<b><i> Type of the interaction the user actually implemented.</i></b><br>
+
+ <b>Role</b>: This enum is used by interactive methods such as <script type="text/javascript"> activateLinkAnchor('CATIASelection','SelectElement','CATIASelection.SelectElement') </script> .  
+<dl  class='desclist'>
+  <dt> <b>Values:</b></dt>
+  <dd>
+    <dl class='valuelist'>
+    <dt><span class='paramitem'> CATSelection</span></dt>
+   <dd>   The user selected a feature
+ 
+ </ dd>
+    <dt><span class='paramitem'> CATIndication</span></dt>
+   <dd>   The user indicated a location in a Window of the active Editor 
+ 
+ </ dd>
+    <dt><span class='paramitem'> CATMouseMove</span></dt>
+   <dd>   The user moved the mouse pointer
+ 
+ </ dd>
+    <dt><span class='paramitem'> CATInputUndo</span></dt>
+   <dd>   The user selected the Undo item of the Edit menu
+ 
+ </ dd>
+    <dt><span class='paramitem'> CATInputRedo</span></dt>
+   <dd>   The user selected the Redo item of the Edit menu
+ 
+ </ dd>
+    <dt><span class='paramitem'> CATEscape</span></dt>
+   <dd>   The user pressed the Escape key. The user wants to cancel the script execution. The script must exit
+   immediately
+ 
+ </ dd>
+    <dt><span class='paramitem'> CATOtherEditor</span></dt>
+   <dd>   The user selected the Window (for example the title bar) of an Editor which is not the active Editor.
+   The user wants to cancel the script execution. The script must exit immediately
+ 
+ </ dd>
+    <dt><span class='paramitem'> CATExclusiveCommand</span></dt>
+   <dd>   The user selected an exclusive command. The user wants to cancel the script execution, the script must exit
+   immediately.</br>
+   <b>CAUTION</b>: All scripts should, when an interactive method returns the CATExclusiveCommand value,
+   sequentially:
+   <ul>
+   <li>do the necessary cleanings</li>
+   <li>call CSO.ActivateExclusiveCommand</li>
+   <li>exit the script</li>
+   </ul>
+ </ dd>
+</dl></dd>
+</dl>
+</dd></dl></section></section >
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

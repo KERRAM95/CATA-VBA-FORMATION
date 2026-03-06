@@ -1,0 +1,381 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SFD Flange</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SFD Flange</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case 
+						primarily focuses on the methodology to create SFD flange on Plate.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you 
+						begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSfdUcCGR.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcSR.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcSteel_A42.3dxml</div></code>, <code>
+							<div class=vb_sample_data>CAAScdSfdUcPart.3dxml</div>, <div class=vb_sample_data>CAAScdSfdUcFlange.3dxml</div></code> 
+							and <code></code> files supplied 
+							in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSfdSFDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where 
+								the API CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSfdUcCreateFlangeSource.htm">
+						CAAScdSfdUcCreateFlangeSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSfdTocSFDesign.htm">Structure Functional Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in eight steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as 
+			&quot;SFD_Flange&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves Service manager</a></li>
+			<li><a href="#Step5">Retrieves SfdFactory for getting SFD objects</a></li>			
+			<li><a href="#Step6">Retrieves a SFD panel(&quot;Panel.1.1&quot;) object</a></li>
+			<li><a href="#Step7">Create Flange </a></li>
+			<li><a href="#Step8">Update the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p class="task"><strong><a name="Step1"></a>Searches and opens model 
+			which is named as &quot;SFD_Flange&quot; </strong></p>
+			<p class="task">As a first step, the UC retrieves a model 
+			&quot;SFD_Flange&quot; from DB and loads it and returns object of 
+			the Editor.</p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SFDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SFD_Flange&quot;
+ OpenProduct prdName , SFDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SFDPrdEditor</code></strong>, a Editor object. After 
+			searching and opening of SFD model from underlying database the 
+			current active editor is returned in <strong><code>SFDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step2"></a>Retrieves Selection 
+			Object</strong></p>
+			<p>As a next step, the UC retrieves Selection object in SFDProdSel 
+			variable. To retrieve the Selection object <strong><code>
+			SFDPrdEditor </code>
+			</strong>is used.</p>
+			<pre class="code"> ...
+<span class="keyword">    Set</span> SFDProdSel = SFDPrdEditor<strong>.Selection </strong>
+ ...</pre>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+			<p class="task">In this step UC retrieves Part object ObjPart 
+			variable.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> ObjPart = SFDPrdEditor.<strong>ActiveObject</strong> 
+...</pre>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step4"></a>Retrieves Service 
+			Manager</strong></p>
+			<p class="task">In this step UC retrieves object of RfgService.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.<strong>GetService(&quot;</strong>RfgService<strong>&quot;)</strong> 
+...</pre>
+			<p class="task"><em>GetService</em> method returns the service <code>
+			RfgService</code> in <code>Manager</code> variable. This service 
+			provides various services.</p>
+			</li>
+			<li>
+			<p class="task"><strong><a name="Step5"></a>Retrieves SfdFactory for 
+			getting SFD objects</strong></p>
+			<p class="task">In this step UC retrieves SFDFactory for getting SFD 
+			objects.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> ObjSfdFactory = ObjPart.<strong>GetCustomerFactory</strong>(&quot;SfdFactory&quot;) 
+...</pre>
+			</li>
+
+			<li>
+			<p class="task"><strong><a name="Step6"></a>Retrieves a SFD plate 
+			(&quot;Panel.1.1&quot;) object</strong></p>
+			<p class="task">In this step UC finds a SFD plate in the part and 
+			retrieve StrSfdPlate object using Selection object.</p>
+			<pre class="code">... 
+  <span class="keyword">Set</span> RefSfdPlate = ObjPart.<strong>FindObjectByName(&quot;</strong>Panel.1<strong>.1&quot;)</strong> 
+  <span class="keyword">Dim</span> ObjSfdPlate <span class="keyword">As</span> StrSfdPlate 
+  SFDProdSel.<strong>Add </strong>RefSfdPlate 
+  <span class="keyword">Set</span> ObjSfdPlate = SFDProdSel.<strong>FindObject(&quot;</strong>CATIASfdPlate<strong>&quot;)</strong> 
+...</pre>
+			<p class="task">In above lines, <em>FindObjectByName</em> method 
+			finds object whose name is &quot;Panel.1.1&quot; and returns reference to it. 
+			Here
+			<code>RefSfdPanel</code> is of type <code>Reference</code>. To 
+			retrieve
+			<code>StrSfdPanel</code> object from the reference, add retrieved 
+			reference to the selection and call <em>FindObject</em> method as 
+			shown above. This will give the <code>StrSfdPanel</code> object.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Create Flange</strong></p>
+			<p class="task">Now plate is available to create flange on it. 
+			Call
+			<code>CreateFlange</code> method to create flange. <code>
+			CreateFlange</code> 
+			method takes a plate as input and created flange is returned in 
+			output parameter.</p>
+			<pre class="code">... 
+  <span class="keyword">Dim</span> ObjStrFlange <span class="keyword">As</span> StrFlange 			
+  <strong>CreateFlange</strong> ObjSfdPlate, ObjStrFlange 
+...</pre>
+			
+<p class="task"><code>oObjStrFlange</code> object is retreived from <code>
+AddFlange</code>.</p>
+
+<pre class="code"><span class="keyword">Sub</span> <strong>AddFlange</strong>(iObjSfdPlate <span class="keyword">As</span> StrSfdPlate, oObjStrFlange <span class="keyword">As</span> StrFlange)
+
+  <span class="comment">'Get StrFlanges object</span>
+  <span class="keyword">Dim</span> ObjStrFlanges <span class="keyword">As</span> StrFlanges
+  <span class="keyword">Set</span> ObjStrFlanges = iObjSfdPlate.<strong>Flanges</strong>
+  
+  <span class="comment">'Create a flange</span>
+  <span class="keyword">Set</span> oObjStrFlange = ObjStrFlanges.<strong>Add</strong>
+    
+<span class="keyword">End Sub</span></pre>
+<p class="task"><code>StrFlanges</code> object is retrieved in <code>ObjStrFlanges</code> variable from <code>iObjSfdPlate</code> object. On <code>ObjStrFlanges</code> object <code><strong>Add</strong></code> method is called to create the empty flange. Now Uc needs to set the different properties of the flange like Type, WidthMeasurementType, Start Limit, End Limit,  etc.</p>
+
+<pre class="code">... 
+ <span class="comment"> 'Add Flange</span>
+   <strong>AddFlange</strong> iObjSfdPlate, oObjStrFlange
+  
+    <span class="comment">'Set Type</span>
+    oObjStrFlange.<strong>Type</strong> = <strong>1</strong>
+    
+    <span class="comment">'Set FlangeStartLimit</span>
+    <span class="keyword">Set</span> RefSfdPlane = ObjPart.<strong>FindObjectByName</strong>("<strong>CROSS.40</strong>")
+    <span class="keyword">Dim</span> ObjSfdReferencePlane_1 <span class="keyword">As</span> Reference
+    SFDProdSel.Add RefSfdPlane
+    <span class="keyword">Set</span> ObjSfdReferencePlane_1 = SFDProdSel.<strong>FindObject</strong>("CATIAReference")
+    oObjStrFlange.<strong>FlangeStartLimit</strong> = ObjSfdReferencePlane_1
+    
+    <span class="comment">'Set FlangeEndLimit</span>
+    <span class="keyword">Set</span> RefSfdPlane = ObjPart.<strong>FindObjectByName</strong>("<strong>CROSS.24</strong>")
+    <span class="keyword">Dim</span> ObjSfdReferencePlane_2 <span class="keyword">As</span> Reference
+    SFDProdSel.Add RefSfdPlane
+    <span class="keyword">Set</span> ObjSfdReferencePlane_2 = SFDProdSel.<strong>FindObject</strong>("CATIAReference")
+    oObjStrFlange.<strong>FlangeEndLimit</strong> = ObjSfdReferencePlane_2
+
+    <span class="comment">'Set WidthMeasurementType</span>
+    oObjStrFlange.<strong>WidthMeasurementType</strong> = <strong>1</strong>
+    
+    <span class="comment">'Get OperatedPlate</span>
+    <span class="keyword">Dim</span> ObjSfdPlate_1 <span class="keyword">As</span> Reference
+    <span class="keyword">Set</span> ObjSfdPlate_1 = oObjStrFlange.<strong>OperatedPlate</strong> 
+        
+    <span class="comment">'Get Type</span>
+    <span class="keyword">Dim</span> oType <span class="keyword">As</span> long
+    oType = oObjStrFlange.<strong>Type</strong>
+    
+    <span class="comment">'Get BendingAngle</span>
+    <span class="keyword">Dim</span> oBendingAngle <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> oBendingAngle = oObjStrFlange.<strong>BendingAngle</strong>
+    oBendingAngle.ValuateFromString("<strong>120deg</strong>")
+    
+    <span class="comment">'Get BendingRadius</span>
+    <span class="keyword">Dim</span> oBendingRadius <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> oBendingRadius = oObjStrFlange.<strong>BendingRadius</strong>
+    oBendingRadius.ValuateFromString("<strong>8mm</strong>")
+    
+    <span class="comment">'Get FlangeStartLimit</span>
+    <span class="keyword">Dim</span> oFlangeStartLimit <span class="keyword">As</span> Reference
+    <span class="keyword">Set</span> oFlangeStartLimit = oObjStrFlange.<strong>FlangeStartLimit</strong>
+    
+    <span class="comment">'Get FlangeEndLimit</span>
+    <span class="keyword">Dim</span> oFlangeEndLimit <span class="keyword">As</span> Reference
+    <span class="keyword">Set</span> oFlangeEndLimit = oObjStrFlange.<strong>FlangeEndLimit</strong>
+
+    <span class="comment">'Get FlangeWidth</span>
+    <span class="keyword">Dim</span> oFlangeWidth <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> oFlangeWidth = oObjStrFlange.<strong>FlangeWidth</strong>
+    oFlangeWidth.ValuateFromString("<strong>500mm</strong>")
+    
+    <span class="comment">'Get WidthMeasurementType</span>
+    <span class="keyword">Dim</span> oWidthMeasurementType <span class="keyword">As</span> long
+    <span class="keyword">Set</span> oWidthMeasurementType = oObjStrFlange.<strong>WidthMeasurementType</strong>
+    
+    <span class="comment">'Get StartEndCutOffset</span>
+    <span class="keyword">Dim</span> oStartEndCutOffset <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> oStartEndCutOffset = oObjStrFlange.<strong>StartEndCutOffset</strong>
+    oStartEndCutOffset.ValuateFromString("<strong>10mm</strong>")
+
+    <span class="comment">'Get EndEndCutOffset</span>
+    <span class="keyword">Dim</span> oEndEndCutOffset <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> oEndEndCutOffset = oObjStrFlange.<strong>EndEndCutOffset</strong>
+    oEndEndCutOffset.ValuateFromString("<strong>10mm</strong>")
+
+    <span class="comment">'Get StartEndCutRadius</span>
+    <span class="keyword">Dim</span> oStartEndCutRadius <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> oStartEndCutRadius = oObjStrFlange.<strong>StartEndCutRadius</strong>
+    oStartEndCutRadius.ValuateFromString("<strong>50mm</strong>")
+
+    <span class="comment">'Get EndEndCutRadius</span>
+    <span class="keyword">Dim</span> oEndEndCutRadius<span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> oEndEndCutRadius= oObjStrFlange.<strong>EndEndCutRadius</strong>
+    oEndEndCutRadius.ValuateFromString("<strong>50mm</strong>")
+
+    <span class="comment">'Get StartEndCutDistance</span>
+    <span class="keyword">Dim</span> oStartEndCutDistance <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> oStartEndCutDistance = oObjStrFlange.<strong>StartEndCutDistance</strong>
+    oStartEndCutDistance.ValuateFromString("<strong>100mm</strong>")
+
+    <span class="comment">'Get EndEndCutDistance</span>
+    <span class="keyword">Dim</span> oEndEndCutDistance <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> oEndEndCutDistance = oObjStrFlange.<strong>EndEndCutDistance</strong>
+    oEndEndCutDistance.ValuateFromString("<strong>100mm</strong>")
+
+    <span class="comment">'Get StartEndCutAngle</span>
+    <span class="keyword">Dim</span> oStartEndCutAngle <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> oStartEndCutAngle = oObjStrFlange.<strong>StartEndCutAngle</strong>
+    oStartEndCutAngle.ValuateFromString("<strong>60deg</strong>")
+
+    <span class="comment">'Get EndEndCutAngle</span>
+    <span class="keyword">Dim</span> oEndEndCutAngle <span class="keyword">As</span> Parameter
+    <span class="keyword">Set</span> oEndEndCutAngle = oObjStrFlange.<strong>EndEndCutAngle</strong>
+    oEndEndCutAngle.ValuateFromString("<strong>60deg</strong>")
+
+    <span class="comment">'Set Edges</span>
+    <span class="keyword">Dim</span> EdgeList(1) <span class="keyword">As</span> Variant
+    EdgeList(0) = 4
+    EdgeList(1) = 3
+    oObjStrFlange.<strong>SetEdges</strong> EdgeList
+    
+    <span class="comment">'Get Edge</span>
+    <span class="keyword">Dim</span> ObjSfdReferencePlane_3 <span class="keyword">As</span> Reference
+    <span class="keyword">Set</span> ObjSfdReferencePlane_3 = oObjStrFlange.<strong>Edge</strong> 
+...</pre>
+
+<p class="task">
+<code>Type</code>: Set and get the Type of conversion for flange. 1- Centered, 2- Tangent</p>
+<p class="task">
+<code>FlangeStartLimit</code>: Set and get the Flange Start Limit.</p>
+<p class="task">
+<code>FlangeEndLimit</code>: Set and get the Flange End Limit.</p>
+<p class="task">
+<code>WidthMeasurementType</code>: Set and get the Width Measurement Type. 1- FlangeWidthToInnerFace, 2- FlangeWidthToOuterFace, 3- FlangeWidthToNeutralFibre</p>
+<p class="task">
+<code>OperatedPlate</code>: Get the operated Plate.</p>
+<p class="task">
+<code>BendingAngle</code>: Get the Bending Angle and valuate it.</p>
+<p class="task">
+<code>BendingRadius</code>: Get the Bending Radius and valuate it.</p>
+<p class="task">
+<code>FlangeWidth</code>: Get the Flange Width and valuate it.</p>
+<p class="task">
+<code>StartEndCutOffset</code>: Get the Start EndCut Offset and valuate it.</p>
+<p class="task">
+<code>EndEndCutOffset</code>: Get the End EndCut Offset and valuate it.</p>
+<p class="task">
+<code>StartEndCutRadius</code>: Get the Start EndCut Radius and valuate it.</p>
+<p class="task">
+<code>EndEndCutRadius</code>: Get the End EndCut Radius and valuate it.</p>
+<p class="task">
+<code>StartEndCutDistance</code>: Get the Start EndCut Distance and valuate it.</p>
+<p class="task">
+<code>EndEndCutDistance</code>: Get the End EndCut Distance and valuate it.</p>
+<p class="task">
+<code>StartEndCutAngle</code>: Get the Start EndCut Angle and valuate it.</p>
+<p class="task">
+<code>EndEndCutAngle</code>: Get the End EndCut Angle and valuate it.</p>
+<p class="task">
+<code>SetEdges</code>: Set the Edges on which flanges to be created.</p>
+<p class="task">
+<code>Edge</code>: Get the Edge of Plate.</p>
+
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Update the <code>Part</code> object</strong></p>
+			<pre class="code">...
+    ObjPart.<strong>UpdateObject</strong> oObjStrFlange
+<span class="keyword">End Sub</span></pre>
+			</li>
+		</ol>
+		<table>
+			<caption><a name="Fig.1"></a>Fig.1: Created Flange</caption>
+			<tr>
+				<td>
+				<img alt="Created Flange" src="CAAScdSfdUcCreateFlange.png"/></td>
+			</tr>
+		</table>
+		<script type="text/javascript">insertLinkToTop()</script>
+		<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcCreatefrequencySensor.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+    '--------------------------------------------------------------------------
+<pre>
+<span class="comment">'---------------------------- Sample MACRO written in Basic Script ---------------------------------</span>
+<span class="comment">'This sample creates a frequency sensor.</span>
+
+<span class="comment">'Steps:</span>
+<span class="comment">'    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">'    2- Retrieves the results analysis case</span>
+<span class="comment">'    3- Creates a frequency sensor</span>
+<span class="comment">'    4- Creates the frame selector and sets it to the sensor</span>
+<span class="comment">'    5- Updates the sensor</span>
+<span class="comment">'    6- Retrieves the sensor</span>
+
+<span class="keyword">Sub </span>CATMain()
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    1- Opens the simulation document and retrieves the results manager</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oEditor<span class="keyword"> As </span>Editor
+<span class="keyword">Set </span>oEditor = CATIA.ActiveEditor
+
+<span class="keyword">Dim </span>oProdService<span class="keyword"> As </span>PLMProductService
+<span class="keyword">Set </span>oProdService = oEditor.GetService("PLMProductService")
+
+<span class="keyword">Dim </span>oEntities<span class="keyword"> As </span>PLMEntities
+
+<span class="keyword">If Not </span>oProdService.EditedContent<span class="keyword"> Is Nothing Then</span>
+
+<span class="keyword">Set </span>oEntities = oProdService.EditedContent
+
+<span class="keyword">Dim </span>oEntity<span class="keyword"> As </span>PLMEntity
+<span class="keyword">Dim </span>oSimObjEntity<span class="keyword"> As </span>PLMEntity
+
+<span class="keyword">For </span>Each oEntity<span class="keyword"> In </span>oEntities
+    <span class="keyword">If </span>oEntity.GetCustomType = "SIMObjSimulationObjectGenericDS" Or oEntity.GetCustomType = "DesignSight"<span class="keyword"> Then </span>
+        <span class="keyword">Set </span>oSimObjEntity = oEntity
+    <span class="keyword">End If</span>
+<span class="keyword">Next</span>
+
+<span class="keyword">Dim </span>oSimulationRoot<span class="keyword"> As </span>SimulationReference
+<span class="keyword">Set </span>oSimulationRoot = oSimObjEntity
+    
+<span class="keyword">Dim </span>oResults<span class="keyword"> As </span>SimulationResults
+<span class="keyword">Set </span>oResults = oSimulationRoot.Results
+
+<span class="keyword">Dim </span>oSimulationRepRes<span class="keyword"> As </span>SimulationRepresentation
+<span class="keyword">Set </span>oSimulationRepRes = oResults.Item(1)  
+
+<span class="keyword">Dim </span>oRootRepRes<span class="keyword"> As </span>SimResultRepManager
+<span class="keyword">Set </span>oRootRepRes = oSimulationRepRes.Root    
+
+<span class="keyword">Dim </span>oResultsManager<span class="keyword"> As </span>SimResultsManager
+<span class="keyword">Set </span>oResultsManager = oRootRepRes.GetItem("SimResultsManager")   
+
+<span class="keyword">End If</span>
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    2- Retrieves the results analysis case</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oResultsAnalysisCases<span class="keyword"> As </span>SimResultsAnalysisCases
+<span class="keyword">Set </span>oResultsAnalysisCases = oResultsManager.ResultsAnalysisCases
+
+<span class="keyword">Dim </span>oResultsAnalysisCase<span class="keyword"> As </span>SimResultsAnalysisCase
+<span class="keyword">Set </span>oResultsAnalysisCase = oResultsAnalysisCases.Item(1)
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    3- Creates the sensor</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oFrequencySensor<span class="keyword"> As </span>SimFrequencySensor
+<span class="keyword">Set </span>oFrequencySensor = oResultsAnalysisCase.CreateFrequencySensor
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    4- Creates the frame selector and sets it to the sensor</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+<span class="keyword">Dim </span>oFrameSelector<span class="keyword"> As </span>SimFramesSelection
+<span class="keyword">Set </span>oFrameSelector = oResultsAnalysisCase.CreateFrameSelector
+
+oFrameSelector.SymbolicFrameRange = SimAllFrames
+
+oFrequencySensor.FrameSelector = oFrameSelector
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    5- Updates the sensor</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+oFrequencySensor.Update
+
+<span class="comment">'--------------------------------------------------------------------------</span>
+<span class="comment">'    6- Retrieves the sensor</span>
+<span class="comment">'--------------------------------------------------------------------------</span>
+
+Dim oSensorSet As SimResultsSet
+Set oSensorSet = oResultsAnalysisCase.GetSet("FrequencySensorSet")
+
+Dim oSensor As SimFrequencySensor
+Set oSensor = oSensorSet.Item(1)
+
+<span class="keyword">End Sub</span>
+
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

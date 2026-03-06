@@ -1,0 +1,198 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcStaticSimulation.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+
+<pre class=>
+<span class="comment"># -------------- Sample script written in Python ------------------------------------------</span>
+<span class="comment"># This sample initializes and executes a simulation.</span>
+
+<span class="comment"># Steps:</span>
+<span class="comment">#          1  - Retrieves the simulation and its product
+#          2  - Retrieves the Publications and Composes Links
+#          3  - Creates the FEM Rep and retrieves its Rep Manager
+#          4  - Creates a Mesh on a Part
+#          5  - Creates a Property
+#          6  - Initializes and Creates the Simulation PLM Object
+#          7  - Retrieves the Scenario Manager
+#          8  - Associates the Structural Analysis Case with the FEM rep
+#          9  - Creates and initializes the static step
+#          10 - Retrieves the features and features states sets
+#          11 - Creates features
+#          12 - Launches the simulation	</span>
+<span class="comment"># ============================================================================================</span>
+
+<span class="keyword">import</span> sys, os
+<span class="keyword">from</span> com3dx <span class="keyword">import</span> *
+CATIA = get3dxClient()
+
+<span class="comment">#--------------------------------------------------------------------------
+# 1 - Retrieves the simulation and its product
+#--------------------------------------------------------------------------
+</span>
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+
+<span class="comment">#--------------------------------------------------------------------------
+# 2 - Retrieves the Publications and Composes Links
+#--------------------------------------------------------------------------</span>
+myPublications  = myModel.Publications
+mySupport = myPublications.GetItem("Pump_Housing")
+myClampSupport = myPublications.GetItem("Pump_Housing_Contact_Face")
+myDisplacementRestraintSupport1 = myPublications.GetItem("Pump_Housing_Sym_Face")
+myDisplacementRestraintSupport2 = myPublications.GetItem("Pump_Housing_Sym_Face_2")
+myDisplacementRestraintSupport3 = myPublications.GetItem("Pump_Housing_Sym_Face_3")
+myPressureSupport = myPublications.GetItem("Pump_Housing_Internal_Surfaces")
+
+<span class="comment"># Composing links
+# ---------------</span>
+myLinkToSupport = myProdService.ComposeLink(None, None, mySupport)
+	
+myLinkToClampSupport = myProdService.ComposeLink(None, None, myClampSupport)
+	
+myLinkToDisplacementRestraintSupport1 = myProdService.ComposeLink(None, None, myDisplacementRestraintSupport1)
+	
+myLinkToDisplacementRestraintSupport2 = myProdService.ComposeLink(None, None, myDisplacementRestraintSupport2)
+	
+myLinkToDisplacementRestraintSupport3 = myProdService.ComposeLink(None, None, myDisplacementRestraintSupport3)
+	
+myLinkToPressureSupport = myProdService.ComposeLink(None, None, myPressureSupport)
+
+<span class="comment">#--------------------------------------------------------------------------
+# 3 - Creates the FEM Rep and retrieves its Rep Manager
+#--------------------------------------------------------------------------</span>
+myPrdRepFactory =myModel.GetItem("SimPrdRepFactory")
+myRepRef = myPrdRepFactory.CreatePrdRep("FEM")
+myFEMRoot = myRepRef.GetItem("SimFemRoot")
+myFEMRoot.AddAssociatedRep (mySupport)
+
+<span class="comment">#--------------------------------------------------------------------------
+# 4 - Creates a Mesh on a Part
+#--------------------------------------------------------------------------</span>
+myMeshSet = myFEMRoot.GetSet("SimNodesElements")
+myMeshParts = myMeshSet.MeshParts
+myMeshPart = myMeshParts.Add("CATFmtOctree3DMesher")
+myMeshPart.AddSupport (mySupport)
+
+myMeshPart.SetAttributeValue ("Mesh", "ElementOrder", 1)
+myMeshPart.SetAttributeValue ("Mesh", "SizeValue", 4.0)
+	
+myMeshSet.Update()
+
+<span class="comment">#--------------------------------------------------------------------------
+# 5 - Creates a Property
+#--------------------------------------------------------------------------</span>
+
+myPropertiesSet = myFEMRoot.GetSet("SimProperties")
+mySolidSection = myPropertiesSet.Add("SimSolidSection")
+
+myLinkAccess = mySolidSection.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToSupport)
+	
+mySolidSection.MaterialBehaviorByName = "Behavior.1" 
+
+<span class="comment">#--------------------------------------------------------------------------
+# 6 - Retrieves the Scenario Manager
+#--------------------------------------------------------------------------</span>
+myScenarioManager = MySimulationRoot.GetItem("SimScenarioManager")
+
+<span class="comment">#--------------------------------------------------------------------------
+# 7 - Associates the Structural Analysis Case with the FEM rep
+#--------------------------------------------------------------------------</span>
+myAnalysisCases = myScenarioManager.AnalysisCases
+myAnalysisCase = myAnalysisCases.Item(1)
+myAnalysisCase.FEMRep = myFEMRoot 
+
+<span class="comment">#--------------------------------------------------------------------------
+# 8 - Creates and initializes the static step
+#--------------------------------------------------------------------------</span>
+mySteps = myAnalysisCase.Steps
+myStaticStep = mySteps.Add("SimStaticStep")
+
+myAnalysisCase.CreateDefaultElementTypeAssignment()
+myStaticStep.CreateAnalysisDefaultOutputRequests()
+
+myStaticStep.MaximumIncrements = 1000
+
+<span class="comment">#--------------------------------------------------------------------------
+# 9 - Retrieves the features and features states sets
+#--------------------------------------------------------------------------</span>
+myFeatures = myAnalysisCase.Features
+myFeatureStates = myStaticStep.FeatureStates
+
+<span class="comment">#--------------------------------------------------------------------------
+# 10 - Creates features
+#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Creates a Clamp feature
+# -------------------------</span>
+myClamp = myFeatures.Add("SimClamp")
+myLinkAccess = myClamp.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToClampSupport)
+myFeatureStates.CreateFeatureState (myClamp)
+
+<span class="comment"># Creating a displacement restraint feature
+# -----------------------------------------</span>
+myDisplacementRestraint = myFeatures.Add("SimDisplacementRestraint")
+
+myLinkAccess = myDisplacementRestraint.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToDisplacementRestraintSupport1)
+myLinkAccess.AddLink ("MainSupport", myLinkToDisplacementRestraintSupport2)
+myLinkAccess.AddLink ("MainSupport", myLinkToDisplacementRestraintSupport3)
+
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimTranslation1, False)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimTranslation2, True)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimTranslation3, False)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimRotation1, True)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimRotation2, False)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimRotation3, True)
+
+myFeatureStates.CreateFeatureState (myDisplacementRestraint)
+
+<span class="comment"># Creating a pressure feature
+# ----------------------------</span>
+myPressure = myFeatures.Add("SimPressure")
+myLinkAccess = myPressure.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToPressureSupport)
+
+myPressure.UniformMagnitude = 500.0
+myFeatureStates.CreateFeatureState (myPressure)
+
+<span class="comment">#--------------------------------------------------------------------------
+# 11 - Launches the simulation
+#--------------------------------------------------------------------------</span>
+myExecutionService = myEditor.GetService("SimExecutionService")
+myExecutionService.BasicExecuteAll (MySimulationRoot)
+
+
+<span class="comment"># Switching to the results visualization workbench
+# ------------------------------------------------</span>
+CATIA.StartWorkbench ("SMAHvcResultsVisualizationWorkbench")
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

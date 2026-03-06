@@ -1,0 +1,241 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdUcStaticSimulation.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+<script type="text/javascript">insertCopyright();</script>
+
+
+<pre class=class>
+<span class="comment"># -------------- Sample script written in Python ------------------------------------------</span>
+<span class="comment"># This sample initializes and executes a topology design improvement study.</span>
+
+<span class="comment"># Steps:</span>
+<span class="comment">#          1  - Retrieves the active Product 
+#          2  - Retrieves the Publications and Composes Links
+#          3  - Creates the FEM Rep and retrieves its Rep Manager
+#          4  - Creates a Mesh on a Part
+#          5  - Creates a Property
+#          6  - Initializes and creates the Simulation PLM Object
+#          7  - Retrieves the Scenario Manager
+#          8  - Creates the Structural Analysis Case with the FEM rep
+#          9  - Creates and initializes the static step
+#          10 - Retrieves the structural analysis case features and features states sets
+#          11 - Creates the structural analysis case features
+#          12 - Creates the Topology Design Improvement Study with the structural analysis case	
+#          13 - Retrieves the topology design improvement study  features
+#          14 - Creates the topology design Improvement study  features
+#          15 - Launches the topology design improvement study                                                                              </span>
+<span class="comment"># ============================================================================================</span>
+
+<span class="keyword">import</span> sys, os
+<span class="keyword">from</span> com3dx <span class="keyword">import</span> *
+CATIA = get3dxClient()
+
+<span class="comment">#--------------------------------------------------------------------------
+# 1 - Retrieves the active Product
+#--------------------------------------------------------------------------
+</span>
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myRootOccurrence = myProdService.RootOccurrence
+myModel= myRootOccurrence.ReferenceRootOccurrenceOf
+
+<span class="comment">#--------------------------------------------------------------------------
+# 2 - Retrieves the Publications and Composes Links
+#--------------------------------------------------------------------------</span>
+myPublications  = myModel.Publications
+
+myLoadSupport= myPublications.GetItem("Loading_Support")
+myClampSupport = myPublications.GetItem("Clamp_Support")
+myDesignSpaceSupport= myPublications.GetItem("Design_Space_Support")
+myPreservedRegion1= myPublications.GetItem("Preserved_Region_Support_1")
+myPreservedRegion2= myPublications.GetItem("Preserved_Region_Support_2")
+myPlane = myPublications.GetItem("Symmetry_Control_Support")
+
+<span class="comment"># Composing links
+# ---------------</span>
+myProdService.ComposeLink(myRootOccurrence, Nothing, myLoadSupport)
+myProdService.ComposeLink(myRootOccurrence, Nothing, myClampSupport)
+myProdService.ComposeLink(myRootOccurrence, Nothing, myDesignSpaceSupport)
+myProdService.ComposeLink(myRootOccurrence, Nothing, myPreservedRegion1)
+myProdService.ComposeLink(myRootOccurrence, Nothing, myPreservedRegion2)
+myProdService.ComposeLink(myRootOccurrence, Nothing, myPlane)
+
+<span class="comment">#--------------------------------------------------------------------------
+# 3 - Creates the FEM Rep and retrieves its Rep Manager
+#--------------------------------------------------------------------------</span>
+myPrdRepFactory =myModel.GetItem("SimPrdRepFactory")
+myRepRef = myPrdRepFactory.CreatePrdRep("FEM")
+myRepInstances= myModel.RepInstances
+
+For i = 1 To myRepInstances.Count
+    	 oRepInstance = myRepInstances.Item(i)
+    	 oRepReference = oRepInstance.ReferenceInstanceOf
+    	 If oRepReference.GetAttributeValue("V_discipline") = "FEM" Then
+    	    myRepRef  = oRepReference
+    	    myFEMRoot = oRepReference.GetItem("SimFemRoot")
+    	 End If 
+Next 
+	
+myFEMRoot.AddAssociatedRep (myDesignSpaceSupport)
+
+<span class="comment">#--------------------------------------------------------------------------
+# 4 - Creates a Mesh on a Part
+#--------------------------------------------------------------------------</span>
+myMeshSet = myFEMRoot.GetSet("SimNodesElements")
+myMeshParts = myMeshSet.MeshParts
+myMeshPart = myMeshParts.Add("CATFmt3DRulesMesher")
+myMeshPart.AddSupport (myDesignSpaceSupport)
+
+myMeshPart.SetAttributeValue ("Mesh", "MeshSizeValue", &quot;3.3mm&quot;)
+myMeshPart.SetAttributeValue ("Mesh", "ElementOrder", &quot;1.0&quot;)	
+myMeshSet.Update()
+
+<span class="comment">#--------------------------------------------------------------------------
+# 5 - Creates a Property
+#--------------------------------------------------------------------------</span>
+
+myPropertiesSet = myFEMRoot.GetSet("SimProperties")
+mySolidSection = myPropertiesSet.Add("SimSolidSection")
+
+myLinkAccess = mySolidSection.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToSupport)
+
+<span class="comment">#--------------------------------------------------------------------------
+# 6 - Retrieves the Scenario Manager
+#--------------------------------------------------------------------------</span>
+myScenarioManager = MySimulationRoot.GetItem("SimScenarioManager")
+
+<span class="comment">#--------------------------------------------------------------------------
+# 7 - Associates the Structural Analysis Case with the FEM rep
+#--------------------------------------------------------------------------</span>
+myAnalysisCases = myScenarioManager.AnalysisCases
+myAnalysisCase = myAnalysisCases.AddAnalysisCase(&quot;SimStructuralAnalysisCase&quot;)
+myAnalysisCase.FEMRep = myFEMRoot 
+
+<span class="comment">#--------------------------------------------------------------------------
+# 8 - Creates and initializes the static step
+#--------------------------------------------------------------------------</span>
+mySteps = myAnalysisCase.Steps
+myStaticStep = mySteps.Add("SimStaticStep")
+
+myAnalysisCase.CreateDefaultElementTypeAssignment()
+myStaticStep.CreateAnalysisDefaultOutputRequests()
+
+myStaticStep.MaximumIncrements = 1000
+
+<span class="comment">#--------------------------------------------------------------------------
+# 9 - Retrieves the features and features states sets
+#--------------------------------------------------------------------------</span>
+myAnalysisCaseFeatures<span class="keyword"> </span>= myAnalysisCase.Features
+myAnalysisCaseFeatureStates<span class="keyword"> </span>= myStaticStep.FeatureStates
+
+<span class="comment">#--------------------------------------------------------------------------
+# 10 - Creates features
+#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Creates a displacement restraint feature
+# -----------------------------------------</span>
+myDisplacementRestraint<span class="keyword"> </span>= myAnalysisCaseFeatures<span class="keyword"> </span>.Add("SimDisplacementRestraint")
+myLinkAccess = myDisplacementRestraint.GetItem("SimLinkAccess")
+myLinkAccess.AddLink ("MainSupport", myLinkToClampSupport)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimTranslation1, True)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimTranslation2, True)
+myDisplacementRestraint.SetDofRestraint (win32com.client.constants.SimTranslation3, True)
+
+myAnalysisCaseFeatureStates.CreateFeatureState (myDisplacementRestraint)
+
+<span class="comment"># Creates a bearing load feature
+# ------------------------------</span>
+myBearingLoad= myAnalysisCaseFeatures.Add(&quot;SimBearingLoad&quot;)
+myLinkAccess = myBearingLoad.GetItem(&quot;SimLinkAccess&quot;)
+myLinkAccess.AddLink ("MainSupport", myLinkToLoadSupport)
+myBearingLoad.XMagnitude = 40980
+myBearingLoad.YMagnitude = 40980
+
+myAnalysisCaseFeatureStates.CreateFeatureState myBearingLoad
+
+<span class="comment">#-------------------------------------------------------------------------------
+# Creates the Topology Design Improvement Study with the structural analysis case 
+#--------------------------------------------------------------------------------</span>
+myTopologyStudy= myAnalysisCases.AddAnalysisCase("SimTopologyDesignImprovementStudy")
+myTopologyStudy.AnalysisCase = myAnalysisCase
+
+<span class="comment">#--------------------------------------------------------------------------------
+# Creates the Topology Design Improvement Study Features 
+#--------------------------------------------------------------------------------</span>
+myTopologyFeatures= myTopologyStudy.Features
+
+<span class="comment">#-------------------------------------------------------------------------------	
+# Creating topology design improvement study features 
+#--------------------------------------------------------------------------------</span>
+	
+<span class="comment"># Creating a design space feature
+#--------------------------------</span>
+myDesignSpace= myTopologyFeatures.Add("SimDesignEnvelope")
+myDesignSpace.GetItem("SimLinkAccess")
+myLinkAccess.AddLink "MainSupport", myLinkToPartitionSupport
+
+<span class="comment"># Creating a preserved region feature
+#------------------------------------</span>
+
+myPreservedRegion1= myTopologyFeatures.AddSubFeature("SimPreservedRegion", myDesignSpace)
+myLinkAccess =myPreservedRegion1.GetItem("SimLinkAccess")
+myLinkAccess.AddLink "MainSupport", myLinkToPreservedRegionSupport1
+
+myPreservedRegion2 As SimPreservedRegion
+myPreservedRegion2 = myTopologyFeatures.AddSubFeature("SimPreservedRegion", myDesignSpace)
+myLinkAccess = myPreservedRegion2.GetItem("SimLinkAccess")
+myLinkAccess.AddLink "MainSupport", myLinkToPreservedRegionSupport2
+
+
+<span class="comment"># Creating a nonparametric objective feature
+#-------------------------------------------</span>
+
+myObjective= myTopologyFeatures.Add("SimNonParametricObjective")
+myObjective.Type = SimMaximizeStiffness
+myObjective.TargetMassType = SimRatio
+myObjective.SetTargetMassRatio (0.60)
+
+
+<span class="comment"># Creating a symmetry control feature
+#------------------------------------</span>
+
+mySymmetryControl= myTopologyFeatures.Add("SimSymmetryControl")
+myLinkAccess =mySymmetryControl.GetItem("SimLinkAccess")
+myLinkAccess.AddLink "MainSupport", myDesignSpace
+myLinkAccess = mySymmetryControl.Plane
+myLinkAccess.AddLink "MainSupport", myLinkToSymmetryPlaneSupport
+
+<span class="comment">#--------------------------------------------------------------------------
+# 11 - Launches the simulation
+#--------------------------------------------------------------------------</span>
+myExecutionService = myEditor.GetService("SimExecutionService")
+myExecutionService.BasicExecuteAll (MySimulationRoot)
+
+
+<span class="comment"># Switching to the results visualization workbench
+# ------------------------------------------------</span>
+CATIA.StartWorkbench ("SMAHvcStructureResultsWorkbench")
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

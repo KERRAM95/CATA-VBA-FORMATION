@@ -1,0 +1,297 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating an SDD Opening using 3D Objects</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating an SDD Opening using 3D Objects</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to create a SDD Opening using 
+						3D object.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA and import the
+							<code><div class=vb_sample_data>CAAScdSddUcCreateOpening3DObject.3dxml</div></code>,
+							<code><div class=vb_sample_data>CAAScdSddUcCGR.3dxml</div></code> and <code><div class=vb_sample_data>CAAScdSddUcSR.3dxml</div></code> 
+							files supplied in folder 
+							<code>InstallRootFolder\CAADoc\Doc\English\CAAScdSddSDDesign\samples\</code> 
+							where 
+							<code>InstallRootFolder</code> is the folder where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdSddUcCreateOpening3DObjectSource.htm">CAAScdSddUcCreateOpening3DObjectSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSddTocSDDesign.htm">Structure Design Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;SddProduct&quot;</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves Service manager</a></li>
+			<li><a href="#Step5">Retrieves a Plate object</a></li>
+			<li><a href="#Step6">Creates opening</a></li>
+			<li><a href="#Step7">Removes opening</a></li>
+			<li><a href="#Step8">Updates the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named 
+			as &quot;SddProduct&quot; </strong></p>
+			<p>As a first step, the UC retrieves a model &quot;SddProduct&quot; from DB and 
+			loads it and returns object of the Editor. </p>
+			<pre class="code">... 
+ <span class="keyword">Dim </span>SDDPrdEditor <span class="keyword"> As </span> Editor
+<span class="keyword"> Dim </span>prdName<span class="keyword"> As </span>String
+ prdName = &quot;SddProduct&quot;
+ OpenProduct prdName , SDDPrdEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>SDDPrdEditor</code></strong>, a Editor object. After searching 
+			and opening of SDD model from underlying database the current active 
+			editor is returned in <strong><code>SDDPrdEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+			<p>As a next step, the UC retrieves Selection object in SFDProdSel variable. 
+			To retrieve the Selection object <strong><code>SDDPrdEditor </code>
+			</strong>is used.</p>
+			<pre class="code"> ...
+<span class="keyword">    Set</span> SDDProdSel = SDDPrdEditor<strong>.Selection </strong>
+ ...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves the part object</strong></p>
+			<p>In this step UC retrieves part object.</p>
+			<pre class="code">...
+  
+    <span class="keyword">Dim</span> product1Service <span class="keyword">As</span> PLMProductService
+    <span class="keyword">Set</span> product1Service = SDDPrdEditor.GetService(&quot;PLMProductService&quot;)
+    <span class="keyword">Dim</span> ObjVPMRootOccurrence <span class="keyword">As</span> VPMRootOccurrence
+    <span class="keyword">Set</span> ObjVPMRootOccurrence = product1Service.RootOccurrence
+    <span class="keyword">Dim</span> ObjVPMReference <span class="keyword">As</span> VPMReference
+    <span class="keyword">Set</span> ObjVPMReference = ObjVPMRootOccurrence.ReferenceRootOccurrenceOf
+    <span class="keyword">Dim</span> ObjVPMRepInstances <span class="keyword">As</span> VPMRepInstances
+    <span class="keyword">Set</span> ObjVPMRepInstances = ObjVPMReference.RepInstances
+    <span class="keyword">Set</span> ObjVPMRepReference = ObjVPMRepInstances.Item(1).ReferenceInstanceOf
+    <span class="keyword">Set</span> ObjPart = ObjVPMRepReference.GetItem(&quot;Part&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Retrieves Service manager</strong></p>
+			<p>In this step UC retrieves Service manager variable.</p>
+			<pre class="code">...
+  <span class="keyword">Set</span> Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Retrieves a Plate object</strong></p>
+			<p>In this step UC retrieves plate object.</p>
+			<pre class="code">...
+  
+    <span class="keyword">Set</span> ListOfInstances = ObjVPMReference.Instances
+    <span class="keyword">Set</span> PlateRef = ListOfInstances.Item(1).ReferenceInstanceOf
+    <span class="keyword">Dim</span> ObjSddProductPlate <span class="keyword">As</span> SddProductPlate
+    SDDProdSel.Add PlateRef
+    <span class="keyword">Set</span> ObjSddProductPlate = SDDProdSel.FindObject(&quot;CATIASddProductPlate&quot;)
+    <span class="keyword">Dim</span> ObjSddPlate <span class="keyword">As</span> SddPlate
+    <span class="keyword">Set</span> ObjSddPlate = ObjSddProductPlate.SddPlate
+...</pre>
+			<p><code>FindObject</code> method finds object whose type is &quot;SddProductPlate&quot; 
+			and returns it. To retrieve <code>SddPlate</code> object from <code>
+			ObjSddProductPlate</code> call <code>SddPlate</code> property as shown 
+			above. This will return the <code>SddPlate</code> object variable.
+			</p>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Creates opening</strong></p>
+			<p>Now, plate is available to create opening on it. Call <code>CreateOpening3DObject</code> 
+			method to create opening on panel. <code>CreateOpening3DObject</code> 
+			method takes a SddPlate as input parameter and it returns created opening 
+			as output parameter in <code>ObjStrOpening</code>.</p>
+			<pre class="code">...
+  <span class="keyword">Dim</span> ObjStrOpening <span class="keyword">As</span> StrOpening
+  <strong>CreateOpening3DObject</strong> ObjSddPlate, ObjStrOpening
+...</pre>
+			<p>The method <code>CreateOpening3DObject</code> is detailed as in the 
+			below sub steps.</p>
+			<ol class="task" style="list-style-type: lower-roman">
+				<li>
+				<p><strong>Creates a cylinder, later which will be used for opening 
+				creation as a intersecting profile</strong></p>
+				<pre class="code"><span class="keyword">Sub</span> CreateOpening3DObject(iObjSddPlate <span class="keyword">As</span> SddPlate, oObjStrOpening <span class="keyword">As</span> StrOpening)
+    <span class="keyword">Set</span> ObjHybridShapeCylinder = ObjPart.FindObjectByName(&quot;Cylinder.1&quot;)
+    <span class="keyword">Set</span> CylinderRef = ObjPart.CreateReferenceFromObject(ObjHybridShapeCylinder)
+
+...</pre>
+				<p>In this step Uc creates a cylinder and stores its reference in
+				<code>CylinderRef</code>. Later this created cylinder will be used 
+				for opening creation as a intersecting element.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves <code>StrOpenings</code> and creates an opening 
+				with no properties set</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrOpenings object</span>
+    <span class="keyword">Dim</span> ObjStrOpenings <span class="keyword">As</span> StrOpenings
+    <span class="keyword">Set</span> ObjStrOpenings = iObjSddPlate.<strong>GetOpenings(0)</strong>
+    <span class="comment">&#39;Add opening</span>
+    <span class="keyword">Set</span> oObjStrOpening = ObjStrOpenings.<strong>Add</strong>
+...</pre>
+				<p>Object of <code>StrOpenings</code> is retrieved in <code>ObjStrOpenings</code>. 
+				Then method <code>Add</code> from <code>ObjStrOpenings</code>is 
+				called to create an opening. This creates an opening with not properties 
+				set. Now Uc sets different properties on opening to complete the 
+				creation of the opening.</p>
+				</li>
+				<li>
+				<p><strong>Sets opening type to catStrOpeningMode3DObject </strong></p>
+				<pre class="code">...
+    oObjStrOpening.<strong>OpeningType</strong> = catStrOpeningMode3DObject
+...</pre>
+				<p><code>OpeningType</code> property is set to catStrOpeningMode3DObject. catStrOpeningMode3DObject defines that 
+				opening is created using a 3D object.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves <code>StrCategoryMngt</code> and sets category</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrCategoryMngt object</span>
+    <span class="keyword">Dim</span> ObjStrCategoryMngt <span class="keyword">As</span> StrCategoryMngt
+    <span class="keyword">Set</span> ObjStrCategoryMngt = oObjStrOpening.<strong>StrCategoryMngt</strong>
+    <span class="comment">&#39;set category</span>
+    ObjStrCategoryMngt.<strong>SetCategory</strong> &quot;SddOpening&quot;
+...</pre>
+				<p>Object of <code>StrCategoryMngt</code> is retrieved in <code>
+				ObjStrCategoryMngt</code>. Then method <code>SetCategory</code> 
+				is called to set the category.</p>
+				</li>
+				<li>
+				<p><strong>Retrieves <code>StrOpening3DObject</code> and sets intersecting 
+				profile</strong></p>
+				<pre class="code">...
+    <span class="comment">&#39;Get StrOpening3DObject object</span>
+    <span class="keyword">Dim</span> ObjStrOpening3DObject <span class="keyword">As</span> StrOpening3DObject
+    <span class="keyword">Set</span> ObjStrOpening3DObject = oObjStrOpening.<strong>StrOpening3DObject</strong>
+    <span class="comment">&#39;Set intersecting element</span>
+    ObjStrOpening3DObject.<strong>IntersectingElement</strong> = CylinderRef
+...</pre>
+				<p>Object of <code>StrOpening3DObject</code> is retrieved in
+				<code>ObjStrOpening3DObject</code>. Then created <code>CylinderRef</code> 
+				is assigned to the property <code>IntersectingElement</code>. Opening 
+				will be created at the intersection of plate and cylinder (3D Object).</p>
+				</li>
+				<li>
+				<p><strong>Retrieves StrOpeningExtrusionMngt and sets forming extrusion 
+				mode</strong></p>
+				<pre class="code">...
+    <span class="keyword">Set</span> ObjStrOpeningExtrusionMngt = oObjStrOpening.<strong>StrOpeningExtrusionMngt</strong>
+    ObjStrOpeningExtrusionMngt.<strong>ExtrusionMode</strong> = 1
+...</pre>
+				<p>In this step object forming mode is set. To set the forming mode, 
+				forming mode value is assigned to property <code>ExtrusionMode</code>. 
+				Here 1 defines Before Forming Extrusion Mode..</p>
+				</li>
+			</ol>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Removes opening</strong></p>
+			<pre class="code">...
+    <span class="keyword">Dim</span> ObjStrOpenings <span class="keyword">As</span> StrOpenings
+    <span class="keyword">Set</span> ObjStrOpenings = ObjSddPlate.<strong>GetOpenings(0)</strong>
+    ObjStrOpenings.<strong>Remove</strong> ObjStrOpening
+...</pre>
+			<p>Object of <code>StrOpenings</code> is retrieved in <code>ObjStrOpenings</code>. 
+			Then on <code>ObjStrOpenings</code> object <code>Remove</code> method 
+			is called to remove the opening. This method takes a input parameter 
+			opening object to remove.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step8"></a>Updates the Part object</strong></p>
+			<pre class="code">...
+  ObjPart.<strong>Update</strong>
+<span class="keyword">End Sub</span>
+</pre>
+			<p><code>Update</code> method updates the <code>ObjPart</code></p>
+            </li>
+        </ol>
+            <table>
+                <caption><a name="Fig.1"></a>Fig.1: Opening using 3D Object( before remove opening)</caption>
+                <tr>
+                    <td>
+                        <img alt="Member" src="CAAScdSddUcCreateOpening3DObject.png"/></td>
+                </tr>
+            </table>
+            <script type="text/javascript">insertLinkToTop()</script>
+            <!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+        </td>
+	</tr>
+</table>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

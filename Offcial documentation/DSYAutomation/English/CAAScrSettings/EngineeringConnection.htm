@@ -1,0 +1,421 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+<meta name="topictype" content="Qr" />
+<meta name="devlang" content="common" />
+<link href="../CAADocStyleSheets/caav5.css" rel="stylesheet" type="text/css"/>
+<script src="../CAADocJavaScript/DSDocTocToc.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/DSDocHighlight.js" type="text/javascript">/* */</script>
+<script src="../CAADocJavaScript/submit.js" type="text/javascript">/* */</script>
+<title>EngineeringConnection Setting Repository</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>EngineeringConnection Setting Repository</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="quick">Quick Reference</td>
+	</tr>
+</table>
+<h2>EngineeringConnection</h2>
+<p><strong>Role:</strong> Setting to manage Assembly Design options</p>
+<p><strong>Detailed role:</strong> Engineering Cnx setting contains all options necessary to Engineering Cnx related commands</p>
+<p>The EngineeringConnection repository has the following characteristics:</p>
+<ul>
+  <li><strong>Primary Tab Page</strong>: /Mechanical Design/Assembly Design/Engineering connection</li>
+  <li><strong>Repository File</strong>: EngineeringConnection</li>
+  <li><strong>Version</strong>: 1</li>
+  <li><strong>Full Compatibility</strong>: 1</li>
+  <li><strong>Upward Compatibility</strong>: 1</li>
+<li><strong>Root tab page</strong> /Mechanical Design/Assembly Design/General reused as /Mechanical Design/Assembly Design/Constraints</li>
+</ul>
+<p>EngineeringConnection setting repository attributes:</p>
+<ul>
+  <li><a name="ConstraintCreationMode"></a><strong>ConstraintCreationMode</strong>
+    <br /><strong>Role</strong>: Constraint creation mode
+    <br /><strong>Detailed role</strong>: According to this attribute's value, constraints can be created on any geometry or only on published geometry<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default constraint can be created on any geometry</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>The constraint can be created on any kind of geometry</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>The constraint can only be created on geometry published on the direct child level</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>The constraint can only be created on geometry published on any assembly level</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="ContextualMCXNotif"></a><strong>ContextualMCXNotif</strong>
+    <br /><strong>Role</strong>: Controls weather a contextual engineering connection creation warning will be displayed or not
+    <br /><strong>Detailed role</strong>: According to this attribute's value, when contextual connection is created a warning will be thrown or not <br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default contextual connection warning will be thrown</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>contextual connection warning will be thrown</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>contextual connection warning will not be thrown and by default contextual engineering connection will be created</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="DirectManipForMRXCreation"></a><strong>DirectManipForMRXCreation</strong>
+    <br /><strong>Role</strong>: Controls weather direct manipulation will be used for constraint creation or not
+    <br /><strong>Detailed role</strong>: According to this attribute's value, direct manipulation will be used for constraint creation or not<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: direct manipulation will be used for constraint creation</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>direct manipulation will not be used for constraint creation</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>direct manipulation will be used for constraint creation</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="EnggConnectionAnimateSolve"></a><strong>EnggConnectionAnimateSolve</strong>
+    <br /><strong>Role</strong>: Animates the update solve of consraints
+    <br /><strong>Detailed role</strong>: According to this attribute's value, the animation of solve of constriant is done or not.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default animation is to be done on solve of constraints</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>No animation is done on solve of constraints</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Animation of products is done during solve of constraints</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="EnggConnectionChildNodeVisualizationStatus"></a><strong>EnggConnectionChildNodeVisualizationStatus</strong>
+    <br /><strong>Role</strong>: Controls the visualization display of Engineering Connection in 3D view
+    <br /><strong>Detailed role</strong>: According to this attribute's value, the visualization of Engineering Connection is displayed in the 3D view.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default child node visualization is shown</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>No child node visualization is shown</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Child node visualization is shown on appropriate selections</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="EnggConnectionOrientation"></a><strong>EnggConnectionOrientation</strong>
+    <br /><strong>Role</strong>: Sets the orientation of engineering connection to all instances can move
+    <br /><strong>Detailed role</strong>: According to this attribute's value, the default orientation of engineering connection is set to all instances can move.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default Engineering Connection orientation is not defined</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Orientation is not defined by default</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Engineering Connection orientation is set to all instances can move</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="EnggConnectionSolve"></a><strong>EnggConnectionSolve</strong>
+    <br /><strong>Role</strong>: Controls weather instance will be positioned on creation of constraints or not
+    <br /><strong>Detailed role</strong>: According to this attribute's value, when the constraint is created the instances involves will be position to satisfy the constraint or not<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default Instances will be positioned on constraint creation</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Instances will not be positioned on constraint creation</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Instances will be positioned on constraint creation</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="EnggConnectionType"></a><strong>EnggConnectionType</strong>
+    <br /><strong>Role</strong>: Controls the type of Engineering Connection by default
+    <br /><strong>Detailed role</strong>: According to this attribute's value, the type of Engineering Connection is set to the most equivalent.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default Engineering Connection type is set to the equivalent type when ok is pressed</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>The type of engineering conneciton is not set to the equivalent on pressing ok in the panel</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Engineering Connection type is set to the equivalent type when ok is pressed</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="EnggConnectionVisualizationStatus"></a><strong>EnggConnectionVisualizationStatus</strong>
+    <br /><strong>Role</strong>: Controls the visualization display of Engineering Connection in 3D view
+    <br /><strong>Detailed role</strong>: According to this attribute's value, the visualization of Engineering Connection is displayed in the 3D view.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default no Engineering Connection visualization is shown</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>No Engineering Connection visualization is shown</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Engineering Connection visualization is shown on appropriate selections</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="InterferenceWarningMode"></a><strong>InterferenceWarningMode</strong>
+    <br /><strong>Role</strong>: Interferance Warning when leaving Engineering Connection panel
+    <br /><strong>Detailed role</strong>: According to this attribute's value, a warning can be shown when exiting the Engineering Connection panel if no interference specification have been made or if current interference status does not match current specifications.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default warning are shown</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>No warning is shown</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Warning are shown</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="MCXCreationMode"></a><strong>MCXCreationMode</strong>
+    <br /><strong>Role</strong>: Engineering Connection creation mode
+    <br /><strong>Detailed role</strong>: This attribute is used by Engineering Connection creation commands to decide whether to prevent insert of constraints and enforce use of templates while creating locked engineering connection types<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: By default creation is allowed using templates only</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Creation using templates and constraints</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Creation using templates only</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="MCXDuplicatedAtCopyPaste"></a><strong>MCXDuplicatedAtCopyPaste</strong>
+    <br /><strong>Role</strong>: Controls weather Engineering Connections should be duplicated when components that it can move are copied and pasted
+    <br /><strong>Detailed role</strong>: According to this attribute's value, Engineering Connections will be duplicated at Copy and Paste of components it can move or not<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: Engineering Connections will not be duplicated</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Engineering Connections will not be duplicated</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Engineering Connections will be duplicated</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="MCXParmDisplayInTree"></a><strong>MCXParmDisplayInTree</strong>
+    <br /><strong>Role</strong>: Displays parameters and relations of Engineering Connections in tree
+    <br /><strong>Detailed role</strong>: According to this attribute's value, parameters and relations of Engineering Connections are displayed under its node in tree.<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default parameters and relations of Engineering Connections are not displayed in tree</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>No display of parameters and relations of Engineering Connections in tree</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Displays parameters and relations of Engineering Connections in tree</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="MCXUIForPositioning"></a><strong>MCXUIForPositioning</strong>
+    <br /><strong>Role</strong>: Controls weather MCXUI will be used for positioning or not
+    <br /><strong>Detailed role</strong>: According to this attribute's value, MCXUI will be used for positioning or not<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: MCXUI will not be used for positioning</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>MCXUI will not be used for positioning</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>MCXUI will be used for positioning</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="MRXOrderedList"></a><strong>MRXOrderedList</strong>
+    <br /><strong>Role</strong>: Constraints ordered list for Engineering connection creation
+    <br /><strong>Detailed role</strong>: This attribute is the ordered list, used by commands such as Engineering connection creation, and specifies the constraint creation priority. Note that this array of 12 values must not contain any duplicates<br />
+    <ul>
+      <li><strong>Type</strong>: string</li>
+      <li><strong>Default value</strong>: Tangency</li>
+<li><strong>Default Value Role</strong>: Default order is Contact, FixTogetherTransfo, FixTogether, Coincidence, Offset, Angle, Parallelism, Perpendicularity, Length, Roll, Slide, Tangency</li>
+    </ul>
+  </li>
+  <li><a name="MechanismUpdation"></a><strong>MechanismUpdation</strong>
+    <br /><strong>Role</strong>: [Deprecated 2023x]Controls weather an engineering connection will be added to existing mechanism or not
+    <br /><strong>Detailed role</strong>: According to this attribute's value, an engineering connection will be added to existing mechanism or not<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: by default newly created enginnering connection will not be added to current mechanism, if any, or to first mechanism, otherwise</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>newly created enginnering connection will not be added to current mechanism, if any, or to first mechanism, otherwise</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>newly created enginnering connection will be added to current mechanism, if any, or to first mechanism, otherwise</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="MechanismUpdationNotif"></a><strong>MechanismUpdationNotif</strong>
+    <br /><strong>Role</strong>: [Deprecated 2023x]Controls weather mechanism update warning needs to be displayed with newly created engineering connection or not
+    <br /><strong>Detailed role</strong>: According to this attribute's value, warning to add a newly created engineering connection will be displayed or not<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 1</li>
+<li><strong>Default Value Role</strong>: by default message to add enginnering connection to current mechanism, if any, or to first mechanism, otherwise, will be thrown</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>message to add enginnering connection to current mechanism, if any, or to first mechanism, otherwise, will not be thrown</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>message to add enginnering connection to current mechanism, if any, or to first mechanism, otherwise, will be thrown</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li><a name="QuickConstraintMode"></a><strong>QuickConstraintMode</strong>
+    <br /><strong>Role</strong>: Quick constraint mode
+    <br /><strong>Detailed role</strong>: This attribute is used by commands such as Quick Constraint, which create the most accurate constraint from the context. The priority order may be determined by a predefined list or by the constraints solver<br />
+    <ul>
+      <li><strong>Type</strong>: integer</li>
+      <li><strong>Default value</strong>: 0</li>
+<li><strong>Default Value Role</strong>: By default constraint is created according to the specified order</li>
+      <li><strong>Values</strong>:
+        <table class="fill">
+          <tr>
+            <td>0</td>
+            <td>Use the specified order</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Create verified constraint first</td>
+          </tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+</ul>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Accessing Objects Through Generic Methods</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1><a name="Top"></a>Accessing Objects Through Generic Methods</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="tech">Technical Article</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table class="abstract">
+	<tbody>
+	<tr>
+		<td>
+		<h2>Abstract</h2>
+		<p>This article explains how to transform your V5 automation macros to take 
+		advantage of the Open <strong>3D</strong>EXPERIENCE platform PLM infrastructure. It explains how objects that 
+		were accessed in V5 through generic methods, meaning methods allowing to 
+		retrieve more than one type of object, can be retrieved in <strong>3D</strong>EXPERIENCE platform.</p>
+		<div id="toc">
+		</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<p>In V5 a variety of objects could be seen as aggregated or not by a parent object 
+depending on the products that were available in the installation, for example a
+<strong>StrWorkbench</strong> object could be obtained from a <strong>ProductDocument</strong> 
+object if a product featuring structure design capability was installed and a
+<strong>SPAWorkbench</strong> object could be obtained if a product featuring space 
+analysis capability was installed.</p>
+<p><img alt="0" src="CAAScdV5GetWorkbench.png"/></p>
+<p>Some of those objects were retrieved using two generic methods that have disappeared 
+in <strong>3D</strong>EXPERIENCE platform, the <code>GetWorkbench</code> method of the <code>Document</code> object 
+and the <code>GetTechnologicalObject</code> method of the <code>Product </code>object, 
+and a text string that described what object was to be retrieved. For example, the
+<strong>StrWorkbench</strong> object was retrieved the following way:</p>
+<table id="table1">
+	<tbody>
+	<tr>
+		<th>V5 Automation</th>
+	</tr>
+	<tr>
+		<td>
+		<pre class="code"><span class="comment">' Retrieving the StrWorkbench object associated with a Document using </span>
+<span class="comment">'   - the GetWorkbench generic method</span>
+<span class="comment">'   - a string identifying the object to be retrieved</span>
+<span class="keyword">Dim</span> oStrWorkbench <span class="keyword">As</span> StrWorkbench
+<span class="keyword">Set</span> oStrWorkbench = CATIA.ActiveDocument.GetWorkbench(&quot;StrWorkbench&quot;)
+<span class="comment">'</span>
+<span class="keyword">Set</span> oNewDoc = CATIA.Documents.Add(&quot;Part&quot;)</pre>
+		</td>
+	</tr>
+</tbody>
+</table>
+<p>The generic <code>GetItem</code> method of the <strong>AnyObject</strong> object 
+still exists in <strong>3D</strong>EXPERIENCE platform but may not allow anymore to retrieve all objects that were available 
+in V5.</p>
+<p>How to retrieve objects currently available in <strong>3D</strong>EXPERIENCE platform is described in the <strong>3D</strong>EXPERIENCE platform Adoption 
+documents related to each object. This purpose of this article is to provide a way 
+to retrieve the same information starting from the V5 generic method for the most 
+common objects.</p>
+<table class="border1">
+	<tbody>
+	<tr>
+		<th>Objects</th>
+		<th>Methods</th>
+		<th>Strings</th>
+		<th>Retrieved Objects</th>
+		<th>Comments</th>
+	</tr>
+	<tr>
+		<td>Product</td>
+		<td>GetTechnologicalObject</td>
+		<td>CATAnnotationSets</td>
+		<td>AnnotationSets</td>
+		<td rowspan="2">In <strong>3D</strong>EXPERIENCE platform, Annotation Sets are only defined in a 3D Shape Representation 
+		Reference.<br />
+		Refer to <a href="CAAScdFTAAdoption.htm">3D Functional Tolerancing &amp; Annotation 
+		Changes</a>.</td>
+	</tr>
+	<tr>
+		<td>ProcessDocument</td>
+		<td>GetItem</td>
+		<td>CATAnnotationSets</td>
+		<td>AnnotationSets</td>
+	</tr>
+	<tr>
+		<td>ProductDocument</td>
+		<td>GetWorkbench</td>
+		<td>PCBWorkbench</td>
+		<td>PCBWorkbench</td>
+		<td>Use the
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATPCBoardIDLItf', 'interface', 'PCBService'); return false;">
+		PCBService</a> object.</td>
+	</tr>
+	<tr>
+		<td>ProductDocument</td>
+		<td>GetWorkbench</td>
+		<td>SPAWorkbench</td>
+		<td>SPAWorkbench</td>
+		<td>Part of the objects aggregated by the <strong>SPAWorkbench</strong> 
+		object are now
+		<a href="../CAAScdInfInfrastructure/CAAInfObjService.htm">Service Objects</a>.<br />
+		Refer to <a href="CAAScdSPAAdoption.htm">Space Analysis Changes</a>.</td>
+	</tr>
+</tbody>
+</table>
+<script type="text/javascript">insertLinkToTop();</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

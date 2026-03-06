@@ -1,0 +1,94 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+    <head>
+        <meta http-equiv="Content-Language" content="en-us" />
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+        <meta name="devlang" content="idl" />
+        <link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+        <script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+        <script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+        <script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+        <title>CAAScdCoordinateConverterSource.CATScript</title>
+    </head>
+
+    <body onload="highlightSearchTerms();">
+        <pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment">'This sample shows usage of Space Reference System APIs.</span>
+<span class="comment">'*Warning* The SRS part(The supplied SRS model) need to be set in "Common Geometry Reference" in </span>
+<span class="comment">'           "Common Geometry Resource" table in data setup before running the vb script.</span>
+<span class="comment">'*Warning* Change the user unit to m for this use case </span>
+<span class="comment">'</span>
+<span class="comment">' Steps</span>
+<span class="comment">'   1- Model is already opened in database</span>
+<span class="comment">'   2- Retrieve Selection object from active editor</span>
+<span class="comment">'   3- Create Coordinate Converter</span>
+<span class="comment">'   4- Retrieve Selected Element</span>
+<span class="comment">'   5- Retrieves Instantiate Service</span>
+<span class="comment">'   6- Using Convert method</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+
+<span class="keyword">Sub</span> CATMain()
+<span class="comment">  '   1- Model is already opened in database</span>
+<span class="keyword">  Dim</span> oCurrentActiveEditor <span class="keyword">As</span> Editor
+<span class="keyword">  Set</span> oCurrentActiveEditor = CATIA.ActiveEditor
+
+<span class="comment">  '   2- Retrieve Selection object from active editor</span>
+<span class="keyword">  Dim</span> oObjSelection
+<span class="keyword">  Se</span>t oObjSelection = CATIA.ActiveEditor.Selection
+
+<span class="comment">  '   3- Selection Object updated with selection criteria (Point type)</span>
+<span class="keyword">  Dim</span> strStatus <span class="keyword">As String</span>
+<span class="keyword">  Dim</span> oInputObjectType(<span class="sample">0</span>)
+
+  oInputObjectType(<span class="sample">0</span>) = <span class="aqua">"Point"</span>
+  strStatus = oObjSelection.SelectElement(oInputObjectType, <span class="aqua">"Select a point from spec tree or the 3D Viewer"</span>, <span class="keyword">False</span>)
+
+<span class="comment">  '   4- Retrieve Selected Element</span>
+<span class="keyword">  Dim</span> oSelectedElement <span class="keyword">As</span> SelectedElement
+<span class="keyword">  Set</span> oSelectedElement = oObjSelection.Item(<span class="sample">1</span>)
+<span class="keyword">  Set</span> oPoint = oSelectedElement.Value
+
+<span class="keyword">  Dim</span> oCoordinates(<span class="sample">2</span>)
+  oPoint.GetCoordinates oCoordinates
+
+<span class="comment">  '   5- Retrieves Instantiate Service</span>
+<span class="keyword">  Dim</span> ObjSrsService <span class="keyword">As</span> SrsInstantiateService
+<span class="keyword">  Set</span> ObjSrsService = CATIA.ActiveEditor.GetService(<span class="aqua">"SrsInstantiateService"</span>)
+<span class="keyword">  Dim</span> SrsCoordinateConverter <span class="keyword">As</span> SrsCoordinateConverter
+  ObjSrsService.CreateSrsCoordinateConverter SrsCoordinateConverter
+<span class="keyword">  Set</span> ObjSrsCoordinateConverter = SrsCoordinateConverter
+
+<span class="keyword">  If</span> ObjSrsCoordinateConverter <span class="keyword">Is Nothing Then</span>
+      Err.Raise <span class="sample">1</span>, Err.Source, <span class="aqua">"Cannot retrieved Instantiate Service"</span>
+<span class="keyword">      Exit Sub</span>
+<span class="keyword">  End If</span>
+
+<span class="comment">  '   6- Using Convert method</span>
+<span class="keyword">  Dim</span> X, Y, Z <span class="keyword">As Double</span>
+<span class="keyword">  Dim</span> luSRSCoord(<span class="sample">2</span>) <span class="keyword">As Variant</span>
+<span class="keyword">  Dim</span> result <span class="keyword">As String</span>
+
+  X = oCoordinates(<span class="sample">0</span>)
+  Y = oCoordinates(<span class="sample">1</span>)
+  Z = oCoordinates(<span class="sample">2</span>)
+
+  luSRSCoord(<span class="sample">0</span>) = <span class="aqua">""</span>
+  luSRSCoord(<span class="sample">1</span>) = <span class="aqua">""</span>
+  luSRSCoord(<span class="sample">2</span>) = <span class="aqua">""</span>
+
+  ObjSrsCoordinateConverter.ConvertAbsoluteCoordToSrsCoord X, Y, Z, luSRSCoord
+  result = <span class="aqua">"X="</span> + luSRSCoord(<span class="sample">0</span>) + <span class="aqua">" Y="</span> + luSRSCoord(<span class="sample">1</span>) + <span class="aqua">" Z="</span> + luSRSCoord(<span class="sample">2</span>)
+
+  MsgBox result
+
+<span class="keyword">End Sub</span>
+
+        </pre>
+    </body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Ta" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>VOCServices Object</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="DocHeader">
+	<tbody>
+	<tr>
+		<td class="DocHeader1">
+		<h1>VOCServices Object</h1>
+		</td>
+	</tr>
+</tbody>
+</table>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<table>
+	<tbody>
+	<tr>
+		<td class="ofvbanavunused">See Also</td>
+		<td class="ofvbanavreuse">
+		<a href="../CAAScdInfInfrastructure/CAAInfArchitectureOverview.htm">
+		Legend</a></td>
+		<td class="ofvbanavunused">Use Cases</td>
+		<td class="ofvbanavunused">Properties</td>
+		<td class="ofvbanavreuse">
+		<a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsMeasureIDLItf', 'interface', 'MeasurableService', 'MethodIndex'); return false;">
+		Methods</a></td>
+	</tr>
+</tbody>
+</table>
+<p class="auto"><a href="../CAAScdInfInfrastructure/CAAInfObjService.htm">
+<img src="../CAAScdImages/Service.png" alt="Service Abstract Object" width="252" height="22"/></a><br />
+<img src="../CAAScdImages/parderiv.png" alt="Inheritance Symbol" width="20" height="24"/><a href="#" onclick="javascript:CAAlink('IDL', 'CATOpnsVocIDLItf', 'interface', 'VOCServices');return false;"><img alt="VOCServices Object" src="../CAAScdImages/VOCServices.png" width="252" height="22"/></a><br />
+</p>
+<p>The <strong>VOCServices</strong> object lets you create a Volume from a 
+Reference.</p>
+<h2>Retrieving the VOCServices Object</h2>
+<p>To retrieve the VOCServices Object, you need to call the Service from the 
+Representation Reference of a Part.</p>
+<pre class="code">
+<span class="keyword">Dim</span> myPart <span class="keyword">As</span> Part 
+<span class="keyword">Set</span> myPart = oEditor.ActiveObject 
+<span class="keyword">Dim</span> MyVPMRepRef <span class="keyword">As</span> VPMRepReference 
+<span class="keyword">Set</span> MyVPMRepRef = myPart.Parent 
+
+<span class="keyword">Dim</span> myVOCServices <span class="comment">' As VOCServices </span>
+<span class="keyword">Set</span> myVOCServices = MyVPMRepRef.GetItem(&quot;VOCServices&quot;) 
+</pre>
+<p>&nbsp;</p>
+<h2>Using the VOCServices Object</h2>
+<p>Use the <strong>VOCServices</strong> object to create VOCVolumes. For example, 
+to create an Offset Volume of the Root Occurence of an Assembly :</p>
+<pre class="code">
+<span class="keyword">Dim</span> oRootOcc <span class="keyword">As</span> VPMRootOccurrence 
+<span class="keyword">Set</span> oRootOcc = ...
+
+<span class="keyword">Dim</span> oObjVPMReference <span class="keyword">As</span> VPMReference 
+<span class="keyword">Set</span> oObjVPMReference = oRootOcc.ReferenceRootOccurrenceOf 
+
+<span class="keyword">ReDim</span> MyInputProducts(0) 
+MyInputProducts = Array(oRootOcc) 
+
+<span class="comment">' Creates a new 3DShape</span>
+<span class="keyword">Dim</span> oNewService <span class="keyword">As</span> PLMNewService 
+<span class="keyword">Set</span> oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;) 
+<span class="comment"> </span>
+<span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor 
+oNewService.PLMCreate &quot;3DShape&quot;, oEditor 
+
+<span class="comment">' Gets the Part </span>
+<span class="keyword">Dim</span> myPart <span class="keyword">As</span> Part 
+<span class="keyword">Set</span> myPart = oEditor.ActiveObject 
+<span class="keyword">Dim</span> MyVPMRepRef <span class="keyword">As</span> VPMRepReference 
+<span class="keyword">Set</span> MyVPMRepRef = myPart.Parent
+
+<span class="comment">' Gets the VOC Services</span>
+<span class="keyword">Dim</span> myVOCServices <span class="comment">' As VOCServices </span>
+<span class="keyword">Set</span> myVOCServices = MyVPMRepRef.GetItem(&quot;VOCServices&quot;) 
+
+<span class="comment">' Creates the offset Volume</span>
+myVOCServices.CreateOffset MyInputProducts, ObjVPMReference, 2# 
+</pre>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,242 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>KnowHowIDLItf ExpertRuleSet (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../KnowHowIDLItf.htm" href="../KnowHowIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "KnowHowIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "ExpertRuleSet"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> ExpertRuleSet<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_ExpertRuleSet_19009','ExpertRuleSet','0');</script>
+<section id='maindesc'>
+<b><i> Represents the ExpertRuleSet object which is the editable part of a RuleSet or a RuleBase.</i></b><br>
+
+
+ <dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('CATIAExpertRuleSetRuntime','RuleSetEdition','CATIAExpertRuleSetRuntime.RuleSetEdition') </script>, <script type="text/javascript"> activateLinkAnchor('CATIAExpertRuleSet','CreateRuleSet','CATIAExpertRuleSet.CreateRuleSet') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#CreateCheck"><b>CreateCheck</b></a>
+</td><td  id='tdright'>  Creates a check and adds it to the RuleSet.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateRule"><b>CreateRule</b></a>
+</td><td  id='tdright'>  Creates a rule and adds it to the RuleSet.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CreateRuleSet"><b>CreateRuleSet</b></a>
+</td><td  id='tdright'>  Creates a RuleSet and adds it to the RuleSet.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="CreateCheck"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateCheck</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iCheckVariables</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iCheckBody</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iRuleSet</span>)</span> As <script type="text/javascript"> activateLink('ExpertCheck','ExpertCheck')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a check and adds it to the RuleSet.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd>    The check name
+ 
+ </ dd>
+    <dt><span class='paramitem'> iCheckVariables</span></dt>
+   <dd>    define variables of the check.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iCheckBody</span></dt>
+   <dd>    The check definition
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRuleSet</span></dt>
+   <dd>    The ruleset name where the check is to be aggregated.
+    If this macro is used from the RuleSet where we want to create the check, the param
+    must be equal to value : "".
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created check
+
+ <! @sample >
+ <dt><b>Example:</b>
+ <dd>
+ This example creates the <tt>SolidActivity</tt> check
+ and adds it to the newly created <tt>RuleSet.1</tt> RuleSet then
+ creates the <tt>HoleActivity</tt> check
+ and adds it to the newly created <tt>RuleSet.2</tt> RuleSet
+ <pre>
+ Dim aRuleBase as ExpertRuleBase
+ Set aRuleBase = ...
+ Set CheckSolid = aRuleBase.RuleSet.<font color="red">CreateCheck</font>
+                    ("SolidActivity",
+                     "Sol : Solid",
+                     "Sol.Activity == True",
+                     "RuleSet.1")
+ Dim ruleset2 as ExpertRuleSet
+ Set ruleset2 = aRuleBase.RuleSet.CreateRuleSet ("RuleSet.2", "")
+ Dim CheckHole as ExpertCheck
+ Set CheckHole = ruleset2.<font color="red">CreateCheck</font>
+                     ("HoleActivity",
+                      "H : Hole",
+                      "H.Activity == True",
+                      "")
+ </pre>
+ </dl>
+ To use this method, you need to have the Knowledge Expert Buildtime license.
+ </ dd>
+</dl>
+</dd>
+<a id="CreateRule"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateRule</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iRuleVariables</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iRuleBody</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iRuleSet</span>)</span> As <script type="text/javascript"> activateLink('ExpertRule','ExpertRule')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a rule and adds it to the RuleSet.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd>    The rule name
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRuleVariables</span></dt>
+   <dd>    define variables of the rule.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRuleBody</span></dt>
+   <dd>    The check definition
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRuleSet</span></dt>
+   <dd>    The RuleSet name where this rule aggregated.
+    If this macro is used from the ruleset where we want to aggregate the rule, the param
+    must be equal to value : "".
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created rule
+ <! @sample >
+ <dt><b>Example:</b>
+ <dd>
+ This example creates the <tt>DesactivateIfActivatedOnSolid</tt> rule
+ and adds it to the newly created <tt>RuleSet.1</tt> RuleSet then creates the 
+ <tt>DesactivateIfActivatedOnHole</tt> rule and adds it to the newly created <tt>RuleSet.2</tt>
+ RuleSet
+
+ <pre>
+ Dim aRuleBase as ExpertRuleBase
+ Set aRuleBase = ...
+ Dim rulesolid as ExpertRule
+ Set rulesolid = aRuleBase.RuleSet.<font color="red">CreateRule</font>
+                     ("DesactivateIfActivatedOnSolid",
+                     "Sol : Solid",
+                     "Sol.Activity == True then Sol.Activity = False",
+                     "RuleSet.1")
+ Dim ruleset2 as ExpertRuleSet
+ Set ruleset2 = aRuleBase.RuleSet.CreateRuleSet
+                    ("RuleSet.2",
+                     "")
+ Dim rulehole as ExpertRule
+ Set rulehole = ruleset2.<font color="red">CreateRule</font>
+                    ("DesactivateIfActivatedOnHole",
+                     "H : Hole",
+                     "H.Activity == True then H.Activity = False",
+                     "")
+ </pre>
+ </dl>
+ To use this method, you need to have the Knowledge Expert Buildtime license.
+ </ dd>
+</dl>
+</dd>
+<a id="CreateRuleSet"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>CreateRuleSet</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iName</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iRuleSet</span>)</span> As <script type="text/javascript"> activateLink('ExpertRuleSet','ExpertRuleSet')</script> </span></dt>
+  <dd class='ddmethod'>
+ Creates a RuleSet and adds it to the RuleSet.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iName</span></dt>
+   <dd>    The ruleset name
+ 
+ </ dd>
+    <dt><span class='paramitem'> iRuleSet</span></dt>
+   <dd>    The ruleset name where this ruleset is to be aggregated.
+    If this macro is used from the ruleset or the rulebase where we want to aggregate
+    the ruleset, the param must be equal to value : "".
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The created ruleset
+ <! @sample >
+ <dt><b>Example:</b>
+ <dd>
+ This example, firstly, creates the <tt>RuleSet.1</tt> RuleSet
+ and adds it to the newly created RuleBase. Secondly, it creates <tt>RuleSet.2</tt> RuleSet 
+ and adds it to the ruleset <tt>RuleSet.1</tt>
+ <pre>
+ Dim aRuleBase as ExpertRuleBase
+ Set aRuleBase = ...
+ Dim RS1 as ExpertRuleSet
+ RS1 = aRuleBase.RuleSet.<font color="red">CreateRuleSet</font>
+                    ("RuleSet.1",
+                     "")
+ Dim RS2 as ExpertRuleSet
+ Set RS2 = aRuleBase.RuleSet.<font color="red">CreateRuleSet</font>
+                    ("RuleSet.2",
+                     "RuleSet.1")
+ </pre>
+ </dl>
+ To use this method, you need to have the Knowledge Expert Buildtime license.
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

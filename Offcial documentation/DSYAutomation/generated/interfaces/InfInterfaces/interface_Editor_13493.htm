@@ -1,0 +1,133 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>InfInterfaces Editor (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../InfInterfaces.htm" href="../InfInterfaces.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "InfInterfaces";	}
+		function getCurrentObjectName() { 
+ 	return "Editor"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> Editor<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_Editor_13493','Editor','0');</script>
+<section id='maindesc'>
+<b><i> Represents an editor.</i></b><br>
+
+ In the Model View Controller paradigm, the editor plays the Controller role.
+ The editor federates all the objects that can 
+ be interactively edited in the same window. It holds the
+ current workbench and thus maintains the list of all
+ the commands that can be launched  from menus and toolbars when this window is active
+ to edit the objects it controls according to the root object PLM type.<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#ActiveObject"><b>ActiveObject</b></a>
+</td><td  id='tdright'>  Returns the active object.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Selection"><b>Selection</b></a>
+</td><td  id='tdright'>   Returns the selection object.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetService"><b>GetService</b></a>
+</td><td  id='tdright'>  Returns the specified service.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="ActiveObject"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ActiveObject</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIABase','CATIABase')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the active object.
+ <br>The active object provides editing commands for itself or its content.
+ There is only one active object at a time per editor.
+</dd>
+<a id="Selection"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Selection</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('Selection','Selection')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+  Returns the selection object.
+ <br>The selection object contains the objects the end user selected, usually with the mouse, and which are
+ candidates as subjects for the next action.
+ <! @sample>
+ <dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example returns in <tt>Select1</tt> the selection object of the active editor.
+ <pre>
+ Dim Select1 As Selection
+ Set Select1 = CATIA.ActiveEditor.<font color="red">Selection</font>
+ </pre>
+ </dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetService"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetService</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iService</span>)</span> As <script type="text/javascript"> activateLink('Service','Service')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the specified service.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iService</span></dt>
+   <dd> The identifier of the service to be retrieved
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The specified service
+
+<dl>
+ <dt><b>Example:</b>
+ <dd>
+ This example retrieves in <tt>Service1</tt> the <tt>VisuServices</tt>
+ editor's visualization service from the active editor.
+ <pre>
+ Dim Service1 As Service
+ Set Service1 = CATIA.ActiveEditor.<font color="red">GetService</font>("VisuServices")
+ </pre>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

@@ -1,0 +1,318 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Working With Cylindrical Face Source</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Working with cylindrical face
+'
+'Mission: This use case fundamentally illustrates working with CylindricalFace and a Sketch Based Shape.
+'         The context is creating a circular pattern of a Sketch Based Shape along a cylindrical face.
+'
+'Steps:
+'
+'   1- Creates 3DShape with Geometries
+'   2- Selects and Retrieves Sketch Based Shape
+'   3- Selects and Retrieves Cylindrical Face
+'   4- Creates Circular Pattern
+'--------------------------------------------------------------------------------------------------------------------
+Sub WorkingWithCylindricalFace()
+
+'Error Handling
+On Error GoTo ErrorSub
+
+    '1- Creates 3DShape with Geometries
+    Dim oPart As Part
+    CreatePadsWithCircularShape oPart
+    
+    '2- Selects and retrieves SketchBasedShape
+    'Retrieve Selection object from active editor
+     Dim oObjSelection
+     Set oObjSelection = CATIA.ActiveEditor.Selection
+     
+     'Selection Object updated with selection criteria
+     Dim strStatus As String
+     Dim oInputObjectType(0)
+     
+    'Select the SketchBasedShape
+     oInputObjectType(0) = &quot;SketchBasedShape&quot;
+     strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the shape to pattern&quot;, False)
+    
+    'Retrieve Selected Element
+     Dim oSelectedShape As Shape
+     Set oSelectedShape = oObjSelection.Item(1).Value
+              
+     MsgBox (&quot;Selected SketchBasedShape Name :&quot;) + oSelectedShape.Name
+        
+     'Clear the selection object
+     oObjSelection.Clear
+        
+     '3- Selects and retrieves Cylindrical Face
+     'Select the CylindricalFace
+     oInputObjectType(0) = &quot;CylindricalFace&quot;
+     strStatus = oObjSelection.SelectElement(oInputObjectType, &quot;Select the cylindrical face&quot;, False)
+    
+     'Retrieve Selected Element
+     Dim oSelectedCylindricalFace As CylindricalFace
+     Set oSelectedCylindricalFace = oObjSelection.Item(1).Value
+              
+     MsgBox (&quot;Selected CylindricalFace Name :&quot;) + oSelectedCylindricalFace.Name
+        
+     'Creates a reference from a GenericNaming label
+     Dim oRotationCenter As Reference
+     Set oRotationCenter = oPart.CreateReferenceFromName(&quot;&quot;)
+        
+     '4- Create a circular pattern
+     Set CircPattern = oPart.ShapeFactory.AddNewCircPattern(oSelectedShape, 1, 4, 20#, 45#, 1, 4, oRotationCenter, oSelectedCylindricalFace, True, 0#, True)
+           
+     'Update Part
+     oPart.Update
+        
+'Error Handling
+   GoTo EndSub
+ 
+ErrorSub:
+          MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+          GoTo EndSub
+EndSub:
+End Sub
+
+
+'--------------------------------------------------------------------------------------------------------------------
+'Creates 3DShape with Geometries
+'
+'Steps:
+'
+'  1. Creates a 3DShape
+'  2. Retrieves the Body from the Part
+'  3. Creates Sketch1
+'     3.1- Retrieves the Sketches from the Body
+'     3.2- Retrieves the OriginElements from the Part
+'     3.3- Creates Plane reference
+'     3.4- Creates and sets the Variant data to sketch1Variant
+'     3.5- Creates closed circle
+'  4. Creates Pad1 with Sketch1
+'     4.1- Retrieves Shape Factory from Part
+'     4.2- Creates Pad1 with Sketch1 and PlaneXY
+'  5. Creates Sketch2
+'     5.1- Creates reference2 for Plane XY
+'     5.2- Creates and sets the Variant data to sketch1Variant
+'     5.3- Creates 2d point
+'     5.4- Creates closed circle 2d
+'  6. Creates Pad2 with Sketch2
+'     6.1- AddNewPad Pad2 with Sketch2
+'--------------------------------------------------------------------------------------------------------------------
+
+Sub CreatePadsWithCircularShape(Part1)
+  'Error handling
+  On Error GoTo ErrorSub
+    
+    '1. Creates a 3DShape
+    'Creates a new 3DShape Rep Ref
+    Dim oNewService As PLMNewService
+    Set oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+ 
+    Dim oEditor3DShape As Editor
+    oNewService.PLMCreate &quot;3DShape&quot;, oEditor3DShape
+
+    '1.1 - Retrieves the part from the Active Editor
+    Set Part1 = oEditor3DShape.ActiveObject
+
+    MsgBox (&quot;Part Name :&quot;) + Part1.Name
+
+    '2.  Retrieves the Body from the Part
+    '(Here Part is the MechanicalPart feature)
+    '2.1- Retrieves the Bodies from the Part
+    Dim bodies1 As Bodies
+    Set bodies1 = Part1.Bodies
+
+    '2.2- Retrieves the PartBody from the bodies1
+    Dim body1 As Body
+    Set body1 = bodies1.Item(&quot;PartBody&quot;)
+
+    '3. Creates Sketch1
+    '3.1 -  Retrieves the Sketches from the Body
+    Dim sketches1 As Sketches
+    Set sketches1 = body1.Sketches
+
+    '3.2- Retrieves the OriginElements from the Part
+    Dim originElements1 As OriginElements
+    Set originElements1 = Part1.OriginElements
+
+    '3.3 - Creates Plane reference
+    Dim reference1 As Reference
+    Set reference1 = originElements1.PlaneYZ
+
+    'Adds plane reference to the Sketch
+    Dim sketch1 As Sketch
+    Set sketch1 = sketches1.Add(reference1)
+
+    '3.4 - Creates and sets the Variant data to sketch1Variant
+    Dim arrayOfVariantOfDouble1(8)
+    arrayOfVariantOfDouble1(0) = 0#
+    arrayOfVariantOfDouble1(1) = 0#
+    arrayOfVariantOfDouble1(2) = 0#
+    arrayOfVariantOfDouble1(3) = 0#
+    arrayOfVariantOfDouble1(4) = 1#
+    arrayOfVariantOfDouble1(5) = 0#
+    arrayOfVariantOfDouble1(6) = 0#
+    arrayOfVariantOfDouble1(7) = 0#
+    arrayOfVariantOfDouble1(8) = 1#
+    Set sketch1Variant = sketch1
+    sketch1Variant.SetAbsoluteAxisData arrayOfVariantOfDouble1
+
+    'Sets In work object to Sketch1
+    Part1.InWorkObject = sketch1
+
+    'Creates 2Dfactory
+    Dim factory2D1 As Factory2D
+    Set factory2D1 = sketch1.OpenEdition()
+
+    'Retrieves GeometricElements from sketch
+    Dim geometricElements1 As GeometricElements
+    Set geometricElements1 = sketch1.GeometricElements
+
+    'Retrieves 2d axis
+    Dim axis2D1 As Axis2D
+    Set axis2D1 = geometricElements1.Item(&quot;AbsoluteAxis&quot;)
+
+    '3.5 Creates closed circle
+    Dim circle2D1 As Circle2D
+    Set circle2D1 = factory2D1.CreateClosedCircle(0#, 0#, 49.360087)
+
+    'Retrieve Origin
+    Dim point2D1 As Point2D
+    Set point2D1 = axis2D1.GetItem(&quot;Origin&quot;)
+
+    circle2D1.CenterPoint = point2D1
+
+    circle2D1.ReportName = 3
+
+    'Closes Sketch editiion
+    sketch1.CloseEdition
+
+    Part1.InWorkObject = sketch1
+
+    ' Update part
+    Part1.Update
+
+    '4.1 Retrieves Shape Factory from Part
+    Dim shapeFactory1 As ShapeFactory
+    Set shapeFactory1 = Part1.ShapeFactory
+
+    '4.2 Creates Pad with Sketch1 and PlaneXY
+    Dim pad1 As Pad
+    Set pad1 = shapeFactory1.AddNewPad(sketch1, 20#)
+
+    'Update part
+    Part1.Update
+
+    '5. Creates Sketch2
+    '5.1 Creates reference2 for Plane XY
+    Dim reference2 As Reference
+    Set reference2 = originElements1.PlaneXY
+
+    'Adds refrence2 to the sketches
+    Dim sketch2 As Sketch
+    Set sketch2 = sketches1.Add(reference2)
+
+    '5.2 Creates and sets the Variant data to sketch1Variant
+    Dim arrayOfVariantOfDouble2(8)
+    arrayOfVariantOfDouble2(0) = 0#
+    arrayOfVariantOfDouble2(1) = 0#
+    arrayOfVariantOfDouble2(2) = 0#
+    arrayOfVariantOfDouble2(3) = 1#
+    arrayOfVariantOfDouble2(4) = 0#
+    arrayOfVariantOfDouble2(5) = 0#
+    arrayOfVariantOfDouble2(6) = 0#
+    arrayOfVariantOfDouble2(7) = 1#
+    arrayOfVariantOfDouble2(8) = 0#
+    Set sketch2Variant = sketch2
+    sketch2Variant.SetAbsoluteAxisData arrayOfVariantOfDouble2
+
+    'Sets Sketch 2 as In work object
+    Part1.InWorkObject = sketch2
+
+    'Creates 2d factory
+    Dim factory2D2 As Factory2D
+    Set factory2D2 = sketch2.OpenEdition()
+
+    'Retrieves GeometricalElements
+    Dim geometricElements2 As GeometricElements
+    Set geometricElements2 = sketch2.GeometricElements
+
+    'Retrieves 2d axis
+    Dim axis2D2 As Axis2D
+    Set axis2D2 = geometricElements2.Item(&quot;AbsoluteAxis&quot;)
+
+    '5.3 -Creates 2d point
+    Dim point2D2 As Point2D
+    Set point2D2 = factory2D2.CreatePoint(10.032901, -38.292999)
+
+    point2D2.ReportName = 3
+
+    ' 5.4 Creates closed circle 2d
+    Dim circle2D2 As Circle2D
+    Set circle2D2 = factory2D2.CreateClosedCircle(10.032901, -38.292999, 6.52042)
+
+    circle2D2.CenterPoint = point2D2
+
+    circle2D2.ReportName = 4
+
+    sketch2.CloseEdition
+
+    Part1.InWorkObject = sketch2
+
+    'update part
+    Part1.Update
+
+    '6. Creates pad2
+    '6.1 AddNewPad Pad2 with Sketch2
+    Dim pad2 As Pad
+    Set pad2 = shapeFactory1.AddNewPad(sketch2, 20#)
+
+    ' Set the limit for Pad2
+    Dim limit1 As Limit
+    Set limit1 = pad2.FirstLimit
+
+    Dim length1 As Length
+    Set length1 = limit1.Dimension
+
+    'Sets length value of Pad
+    length1.Value = 40#
+
+    'Update part
+    Part1.Update
+    
+    GoTo EndSub
+
+ErrorSub:
+        MsgBox Str(Err.Number) + &quot;:&quot; + Err.Description
+        GoTo EndSub
+EndSub:
+End Sub</pre>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

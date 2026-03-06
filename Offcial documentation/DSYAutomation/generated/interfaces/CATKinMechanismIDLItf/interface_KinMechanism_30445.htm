@@ -1,0 +1,413 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>CATKinMechanismIDLItf KinMechanism (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../CATKinMechanismIDLItf.htm" href="../CATKinMechanismIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "CATKinMechanismIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "KinMechanism"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> KinMechanism<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_KinMechanism_30445','KinMechanism','0');</script>
+<section id='maindesc'>
+<b><i>   The interface to access the root feature of the Mechanism Representation.</i></b><br>
+
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#Commands"><b>Commands</b></a>
+</td><td  id='tdright'>  Returns the collection containing the mechanism commands.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Joints"><b>Joints</b></a>
+</td><td  id='tdright'>  Returns the collection containing joints in the mechanism.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#MechanismProducts"><b>MechanismProducts</b></a>
+</td><td  id='tdright'>  Returns the list of the mechanism products.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AttachDressupProduct"><b>AttachDressupProduct</b></a>
+</td><td  id='tdright'>  Attaches a product to a given mechanism product thru a dressup link.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CleanSimulation"><b>CleanSimulation</b></a>
+</td><td  id='tdright'>  Cleans the simulation solver.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#DetachDressupProduct"><b>DetachDressupProduct</b></a>
+</td><td  id='tdright'>  Detaches a dressup product previously attached to a mechanism product.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetDressupProducts"><b>GetDressupProducts</b></a>
+</td><td  id='tdright'>  Returns the dressup product list attached to a given mechanism product.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PrepareSimulation"><b>PrepareSimulation</b></a>
+</td><td  id='tdright'>  Prepares the solver to run.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RunCommand"><b>RunCommand</b></a>
+</td><td  id='tdright'>  Makes a step of simulation for a mechanism command.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#RunSimulation"><b>RunSimulation</b></a>
+</td><td  id='tdright'>  Makes a step of simulation for the all mechanism.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="Commands"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Commands</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('KinCommands','KinCommands')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the collection containing the mechanism commands.
+ All the commands that are defined in the mechanism might be accessed thru that collection.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example returns in <tt>MyCommands</tt> the commands created in <tt>MyMECHRoot</tt> :
+ <pre>
+ Dim MyRepRef as VPMRepReference
+ Set MyRepRef = ...
+ Dim disAttr As  String
+ disAttr = MyRepRef.GetAttributeValue("V_discipline")
+ If ( attr = "Mechanism" ) Then
+   Dim MyMECHRoot As KinMechanism
+   Set MyMECHRoot = MyRepRef.GetItem("MECHRep")
+   Dim MyCommands As KinCommands
+   Set MyCommands = MyMECHRoot.<font color="red">Parameters</font>
+ End If 
+ </pre>
+ </dl>
+</dd>
+<a id="Joints"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Joints</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('KinJoints','KinJoints')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the collection containing joints in the mechanism.
+ All the joints that are referenced in the MECH Representation might be accessed thru that collection.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example returns in <tt>MyJoints</tt> the joints referenced in <tt>MyMECHRoot</tt> :
+ <pre>
+ Dim MyRepRef as VPMRepReference
+ Set MyRepRef = ...
+ Dim disAttr As  String
+ disAttr = MyRepRef.GetAttributeValue("V_discipline")
+ If ( attr = "Mechanism" ) Then
+   Dim MyMECHRoot As KinMechanism
+   Set MyMECHRoot = MyRepRef.GetItem("MECHRep")
+   Dim MyJoints As KinJoints
+   Set MyJoints = MyMECHRoot.<font color="red">Joints</font>
+ End If 
+ </pre>
+ </dl>
+</dd>
+<a id="MechanismProducts"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>MechanismProducts</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the list of the mechanism products.
+ This list does not contains the dressup products but only the mechanism products.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>     The products of the mechanism. Each single product is a VPMOccurrence
+ <! @sample >
+ <dt><b>Example:</b>
+ <dd>Identify the list of the mechanism products:
+ <pre>
+  ...
+  Dim MyMechRep  As  KinMechanism
+  Set MyMechRep = MyRepRef.GetItem("MECHRep")
+  ...
+  Dim MechProducts
+  MechProducts = MyRepRef.MechanismProducts
+
+  Dim j As Integer
+  ' loop to identify each attached product
+  For j = 0 To UBound(MechProducts)
+    Dim Product As VPMOccurrence
+    Set Product = MechProducts(j)
+    MsgBox " mechanism product : " & Product.Name
+  Next
+ </pre>
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AttachDressupProduct"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AttachDressupProduct</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iMechanismProduct</span>,<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iAttachedProduct</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Attaches a product to a given mechanism product thru a dressup link.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iMechanismProduct</span></dt>
+   <dd>    A product of the mechanism
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAttachedProduct</span></dt>
+   <dd>    A product to be attached
+ <! @sample >
+ <dt><b>Example:</b>
+ <dd>The mechanism contains a product named "Product 1.1". "Product 2.2" is attached to "Product 1.1":
+ <pre>
+  ...
+  Dim MyMechanism  As KinMechanism
+  ...
+  Dim OccurrencesList As VPMOccurrences
+  Set OccurrencesList = myRootOccurrence.Occurrences
+
+  Dim MechanismPart As VPMOccurrence
+  Set MechanismPart = OccurrencesList.GetItem("Product 1.1")
+
+  Dim Product22 As VPMOccurrence
+  Set Product22 = OccurrencesList.GetItem("Product 2.2")  *
+ 
+  ' Attach Product 2.2 to Product 1.1
+  Call MyMechanism.AttachDressupProduct(MechanismPart, Product22)
+ </pre>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="CleanSimulation"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>CleanSimulation</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Cleans the simulation solver.
+ <br><b>Role</b>: To clean the solver.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example cleans the simulation solver after a simulation.
+ <pre>
+ Dim MyRepRef as VPMRepReference
+ Set MyRepRef = ...
+ Dim disAttr As  String
+ disAttr = MyRepRef.GetAttributeValue("V_discipline")
+ If ( attr = "Mechanism" ) Then
+   Dim MyMECHRoot As KinMechanism
+   Set MyMECHRoot = MyRepRef.GetItem("MECHRep")
+   MyMECHRoot.RunSimulation("OpenDoor",90)
+   MyMECHRoot.<font color="red">CleanSimulation()</font>
+ End If 
+ </pre>
+ </dl>
+</dd>
+<a id="DetachDressupProduct"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>DetachDressupProduct</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iAttachedProduct</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Detaches a dressup product previously attached to a mechanism product.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAttachedProduct</span></dt>
+   <dd>    A product to be detached from the mechanism
+ <! @sample >
+ <dt><b>Example:</b>
+ <dd>"Product 2.2" is detached from the mechanism.":
+ <pre>
+  ...
+  Dim MyMechanism  As KinMechanism
+  ...
+  Dim OccurrencesList As VPMOccurrences
+  Set OccurrencesList = myRootOccurrence.Occurrences
+
+  Dim Product22 As VPMOccurrence
+  Set Product22 = OccurrencesList.GetItem("Product 2.2")  
+
+  ' Detach Product 2.2 from the mechanism
+  Call MyMechanism.DetachDressupProduct(Product22)
+ </pre>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetDressupProducts"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetDressupProducts</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIAVPMOccurrence','CATIAVPMOccurrence')</script> <span class='param'>iMechanismProduct</span>)</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Returns the dressup product list attached to a given mechanism product.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iMechanismProduct</span></dt>
+   <dd>    A product of the mechanism
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>      The dressup product list as a CATSafeArrayVariant. Each single product is a VPMOccurrence
+ <! @sample >
+ <dt><b>Example:</b>
+ <dd>The mechanism contains a product named "Product 1.1". The following example returns all the dressup products attached to "Product 1.1":
+ <pre>
+  ...
+  Dim MyMechanism  As KinMechanism
+  ...
+  Dim OccurrencesList As VPMOccurrences
+  Set OccurrencesList = myRootOccurrence.Occurrences
+
+  Dim MechanismPart As VPMOccurrence
+  Set MechanismPart = OccurrencesList.GetItem("Product 1.1")
+   
+  Dim ListAttached
+  ListAttached = MyMechanism.GetDressupProducts(MechanismPart)
+
+  Dim j As Integer
+  ' loop to identify each attached product
+  For j = 0 To UBound(ListAttached)
+    Dim Product As VPMOccurrence
+    Set Product = ListAttached(j)
+    MsgBox " Attached product : " & Product.Name
+  Next
+ </pre>
+ </ dd>
+</dl>
+</dd>
+<a id="PrepareSimulation"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>PrepareSimulation</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Prepares the solver to run.
+ <br><b>Role</b>: To prepare the mechanism simulation.
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example prepares a simulation for the mechanism <tt>MyMECHRoot</tt> :
+ <pre>
+ Dim MyRepRef as VPMRepReference
+ Set MyRepRef = ...
+ Dim disAttr As  String
+ disAttr = MyRepRef.GetAttributeValue("V_discipline")
+ If ( attr = "Mechanism" ) Then
+   Dim MyMECHRoot As KinMechanism
+   Set MyMECHRoot = MyRepRef.GetItem("MECHRep")
+   MyMECHRoot.<font color="red">PrepareSimulation()</font>
+ End If 
+ </pre>
+ </dl>
+ <br><b>Limitation</b>: It is not possible to simulate a macro mechanism using a mechanism in a sub product.
+ The PrepareSimulation method in such a case fails.
+</dd>
+<a id="RunCommand"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>RunCommand</span><span class='signature'>(<script type="text/javascript"> activateLink('CATVariant','CATVariant')</script> <span class='param'>iCommand</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iValue</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Makes a step of simulation for a mechanism command.
+ <br><b>Role</b>: To run the solver for a command.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iCommand</span></dt>
+   <dd>    The index or the name of the command to run to retrieve from
+    the collection of commands  
+ 
+ </ dd>
+    <dt><span class='paramitem'> iValue</span></dt>
+   <dd>   The targeted value for the simulation (in mm for length and degrees for angle command)
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example makes a simulation step for the mechanism command<tt>"OpenDoor"</tt> 
+ with <tt>90 degrees</tt> as targeted value:
+ <pre>
+ Dim MyRepRef as VPMRepReference
+ Set MyRepRef = ...
+ Dim disAttr As  String
+ disAttr = MyRepRef.GetAttributeValue("V_discipline")
+ If ( attr = "Mechanism" ) Then
+   Dim MyMECHRoot As KinMechanism
+   Set MyMECHRoot = MyRepRef.GetItem("MECHRep")
+   MyMECHRoot.PrepareSimulation()
+   MyMECHRoot.<font color="red">RunSimulation("OpenDoor",90)</font>
+ End If 
+ </pre>
+ </dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="RunSimulation"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>RunSimulation</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iCmdValues</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Makes a step of simulation for the all mechanism.
+ <br><b>Role</b>: To run the solver with given values.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iCmdValues</span></dt>
+   <dd>   The set of values that command will be taken.
+   (in mm for length and degrees for angle command)
+ <! @sample >
+ <dl>
+ <dt><b>Example:</b>
+ <dd>The following example makes a simulation step for the mechanism <tt>MyMECHRoot</tt> 
+ with <tt>MyCmdValues</tt> as targeted values:
+ <pre>
+ Dim MyRepRef as VPMRepReference
+ Set MyRepRef = ...
+ Dim disAttr As  String
+ disAttr = MyRepRef.GetAttributeValue("V_discipline")
+ If ( attr = "Mechanism" ) Then
+   Dim MyMECHRoot As KinMechanism
+   Set MyMECHRoot = MyRepRef.GetItem("MECHRep")
+   MyMECHRoot.PrepareSimulation()
+   Dim MyCmdValues As CATSafeArrayVariant
+   MyMECHRoot.<font color="red">RunSimulation(MyCmdValues)</font>*
+ End If 
+ </pre>
+ </dl>
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

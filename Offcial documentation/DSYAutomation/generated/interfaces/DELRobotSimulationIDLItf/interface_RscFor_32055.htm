@@ -1,0 +1,290 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELRobotSimulationIDLItf RscFor (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELRobotSimulationIDLItf.htm" href="../DELRobotSimulationIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELRobotSimulationIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RscFor"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RscFor<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RscFor_32055','RscFor','0');</script>
+<section id='maindesc'>
+<b><i> Interface representing a Resource For Loop Instruction.</i></b><br>
+
+
+ <br><b>Role</b>: This interface represents a RscFor Instruction in a Resource Task
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#ForIndex"><b>ForIndex</b></a>
+</td><td  id='tdright'>  Get/Set index identifier name (Default identifier is i).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#From"><b>From</b></a>
+</td><td  id='tdright'>  Get/Set the FROM expression (Default is 1).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#To"><b>To</b></a>
+</td><td  id='tdright'>  Get/Set the TO expression (Default is 10).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Type"><b>Type</b></a>
+</td><td  id='tdright'>  Get/Set for-loop type (Default is DELRscForType_Up).
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetIndex"><b>GetIndex</b></a>
+</td><td  id='tdright'>  Get index as RscDataEntity
+ 
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="ForIndex"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>ForIndex</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set index identifier name (Default identifier is i).
+ This identifier can be used in expressions.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iIndex</span></dt>
+   <dd>   For index
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  oIndex   For index
+ 
+ </ dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   Set ResourceSequence = oResourceTask.MainRscSequence
+   ......
+   Dim iIndex
+   iIndex=-1
+   Dim iForIndex As String
+   Dim iForFrom As String
+   Dim iForTo As String
+   DELRscForType iForLoopType
+   ......
+   Set  iForLoopType = DELRscForType_Up
+   Dim oForInstr As RscFor
+   Set oForInstr = ResourceSequence.CreateRscFor(iIndex, iForLoopType, iForIndex, iForFrom, iForTo)
+   Dim Index 
+   Index = oForInstr.ForIndex
+   ......
+   oForInstr.ForIndex = Index
+   </pre>
+</dl>
+</dd>
+<a id="From"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>From</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the FROM expression (Default is 1).
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  oFrom    the from expression.
+ 
+ </ dd>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iFrom</span></dt>
+   <dd>    the from expression.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   ResourceSequence = oResourceTask.RscSequence
+   ......
+   Dim iIndex
+   iIndex=-1
+   Dim iForIndex As String
+   Dim iForFrom As String
+   Dim iForTo As String
+   DELRscForType iForLoopType
+   ......
+   Set  iForLoopType = DELRscForType_Up
+   Dim oForInstr As RscFor
+   Set oForInstr = ResourceSequence.CreateRscFor(iIndex, iForLoopType, iForIndex, iForFrom, iForTo)
+   Dim From
+   From = oForInstr.From
+   ......
+   oForInstr.From = From
+   </pre>
+</dl>
+</dd>
+<a id="To"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>To</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set the TO expression (Default is 10).
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  oTo     the to expression.
+ 
+ </ dd>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iTo</span></dt>
+   <dd>     the to expression.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   Set ResourceSequence = oResourceTask.MainRscSequence
+   ......
+   Dim iIndex
+   iIndex=-1
+   Dim iForIndex As String
+   Dim iForFrom As String
+   Dim iForTo As String
+   DELRscForType iForLoopType
+   ......
+   Set  iForLoopType = DELRscForType_Up
+   Dim oForInstr As RscFor
+   Set oForInstr = ResourceSequence.CreateRscFor(iIndex, iForLoopType, iForIndex, iForFrom, iForTo)
+   Dim To
+   To = oForInstr.To
+   ......
+   oForInstr.To = To
+   </pre>
+</dl>
+</dd>
+<a id="Type"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Type</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELRscForType','DELRscForType')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get/Set for-loop type (Default is DELRscForType_Up).
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iForType</span></dt>
+   <dd>   for-loop type
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  oForType   for-loop type
+ 
+ </ dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   Set ResourceSequence = oResourceTask.MainRscSequence
+   ......
+   Dim iIndex
+   iIndex=-1
+   Dim iForIndex As String
+   Dim iForFrom As String
+   Dim iForTo As String
+   DELRscForType iForLoopType
+   ......
+   Set  iForLoopType = DELRscForType_Up
+   Dim oForInstr As RscFor
+   Set oForInstr = ResourceSequence.CreateRscFor(iIndex, iForLoopType, iForIndex, iForFrom, iForTo)
+   Dim oForType As DELRscForType
+   oForType = oForInstr.Type
+   ......
+   oForInstr.Type = oForType
+   </pre>
+ 
+ </pre></dd>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscForType','','DELRscForType') </script></dd>
+</dl>
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetIndex"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetIndex</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('RscDataEntity','RscDataEntity')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get index as RscDataEntity
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  oIndex   For Index
+ 
+ </ dd>
+  <dt class='example'><b> Example: </b></dt>
+  <dd> <pre class="code">   <pre>
+   Dim oResourceTask As ResourceTask2
+   ......
+   Dim ResourceSequence As RscSequence
+   Set ResourceSequence = oResourceTask.MainRscSequence
+   ......
+   Dim iIndex
+   iIndex=-1
+   Dim iForIndex As String
+   Dim iForFrom As String
+   Dim iForTo As String
+   DELRscForType iForLoopType
+   ......
+   Set  iForLoopType = DELRscForType_Up
+   Dim oForInstr As RscFor
+   Set oForInstr = ResourceSequence.CreateRscFor(iIndex, iForLoopType, iForIndex, iForFrom, iForTo)
+   Dim Index as RscDataEntity
+   Set hIndex = oForInstr.GetIndex()
+   </pre>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

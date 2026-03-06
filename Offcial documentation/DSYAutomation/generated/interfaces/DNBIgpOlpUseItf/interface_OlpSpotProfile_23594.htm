@@ -1,0 +1,1788 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DNBIgpOlpUseItf OlpSpotProfile (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DNBIgpOlpUseItf.htm" href="../DNBIgpOlpUseItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DNBIgpOlpUseItf";	}
+		function getCurrentObjectName() { 
+ 	return "OlpSpotProfile"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> OlpSpotProfile<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_OlpSpotProfile_23594','OlpSpotProfile','0');</script>
+<section id='maindesc'>
+<b><i> A spot profile used for translating a robot program.</i></b><br>
+<BR>
+ <P><font color="red">This interface can only be used by a translator
+ within the Robotics Off-line Programming (OLP)
+ Download or Upload command</font>.</P>
+ 
+ <P>The behavior of this object depends on where it was retrieved from.
+ If the object was retrieved from an <script type="text/javascript"> activateLinkAnchor('DELMIAOlpRobotMotionTarget','','DELMIAOlpRobotMotionTarget') </script> then  this object is used to configure the spot properties of that motion.  
+ The parameters specified with the iMatch input equal to TRUE will be used 
+ to find an existing profile to reuse for this motion.  If no matching 
+ profile is found, a new one will be created.  If the object was retrieved 
+ from 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpController','SpotProfileList','DELMIAOlpController.SpotProfileList') </script> then any modifications to  this object will change an existing or new profile's values directly.</P>
+ 
+ <P>There are 2 types of controller specific parameters on the spot
+ profile: parameters on linked spot schedules and parameters
+ directly stored on the spot profile.  Parameters stored directly on the 
+ spot profile apply to all guns and are accessed using 
+ 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpProfile','GetParameter','DELMIAOlpProfile.GetParameter') </script> and 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpProfile','SetParameter','DELMIAOlpProfile.SetParameter') </script>. Linked spot schedules are gun dependent and are accessed using
+ 
+<script type="text/javascript"> activateLinkAnchor('','GetGunParameter','GetGunParameter') </script> and 
+<script type="text/javascript"> activateLinkAnchor('','SetGunParameter','SetGunParameter') </script>.  When setting linked  spot schedule parameters, existing schedule profiles
+ will be searched for based on the iMatch flag and a matching profile will
+ be linked to the spot profile if found, otherwise a new schedule will be created
+ with the specified parameters and linked.
+ 
+ <P>When spot schedules are linked to the spot profiles some of the spot profile
+ parameters will be overridden by the values from the spot schedule.  The linking
+ is predefined by DELMIA logic and cannot be configured by the translator.  On 
+ download,  if you get the value of an overridden parameter, you will get the 
+ corresponding value from the spot schedule.  WARNING: If a profile has been 
+ created or modified, such as during upload, the value retrieved for an overridden 
+ parameter may not be the value in the spot schedule.
+<section id='idxsum'>
+<article id='propidx'  >
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#GetApproachDirection"><b>GetApproachDirection</b></a>
+</td><td  id='tdright'>  Get the direction the robot approaches the weld point from.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetApproachEnabled"><b>GetApproachEnabled</b></a>
+</td><td  id='tdright'>  Get whether the approach move is enabled.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetApproachGunJointValue"><b>GetApproachGunJointValue</b></a>
+</td><td  id='tdright'>  Get the gun's position at the end of the approach move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetApproachMovingTipClearance"><b>GetApproachMovingTipClearance</b></a>
+</td><td  id='tdright'>  Get the distance from the part for the movable tip at the end of the approach move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetApproachStationaryTipClearance"><b>GetApproachStationaryTipClearance</b></a>
+</td><td  id='tdright'>  Get the distance from the part for the stationary tip at the end of the approach move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetBackupAccel"><b>GetBackupAccel</b></a>
+</td><td  id='tdright'>  Get acceleration for the backup move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetBackupAccuracyProfile"><b>GetBackupAccuracyProfile</b></a>
+</td><td  id='tdright'>  Get the accuracy profile for the backup move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetBackupEnabled"><b>GetBackupEnabled</b></a>
+</td><td  id='tdright'>  Get whether the backup move is enabled.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetBackupStroke"><b>GetBackupStroke</b></a>
+</td><td  id='tdright'>  Get the servo gun backup position.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetGun"><b>GetGun</b></a>
+</td><td  id='tdright'>  Get the OLP gun object used with this spot profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetGunCloseInPositiveDirection"><b>GetGunCloseInPositiveDirection</b></a>
+</td><td  id='tdright'>  Get whether the direction the gun closes when the servo joint values go up (positive).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetGunClosedJointValue"><b>GetGunClosedJointValue</b></a>
+</td><td  id='tdright'>  Get the joint value of the servo gun when the gun is closed.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetGunEnabled"><b>GetGunEnabled</b></a>
+</td><td  id='tdright'>  Get whether the specified gun is enabled.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetGunSchedule"><b>GetGunSchedule</b></a>
+</td><td  id='tdright'>  Get a linked applicative profile weld schedule for a specific gun.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetJointNumber"><b>GetJointNumber</b></a>
+</td><td  id='tdright'>  Get the joint number of the servo gun.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPartThickness"><b>GetPartThickness</b></a>
+</td><td  id='tdright'>  Get the part thickness.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressEndAccel"><b>GetPressEndAccel</b></a>
+</td><td  id='tdright'>  Get acceleration for the pressure end move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressEndAccuracyProfile"><b>GetPressEndAccuracyProfile</b></a>
+</td><td  id='tdright'>  Get the accuracy profile for the pressure end move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressEndEnabled"><b>GetPressEndEnabled</b></a>
+</td><td  id='tdright'>  Get whether the pressure end move is enabled.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressEndGunJointValue"><b>GetPressEndGunJointValue</b></a>
+</td><td  id='tdright'>  Get the gun's position at the end of the pressure end move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressEndMovingTipClearance"><b>GetPressEndMovingTipClearance</b></a>
+</td><td  id='tdright'>  Get the distance from the part for the movable tip at the end of the pressure end move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressEndStationaryTipClearance"><b>GetPressEndStationaryTipClearance</b></a>
+</td><td  id='tdright'>  Get the distance from the part for the stationary tip at the end of the pressure end move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressStartAccel"><b>GetPressStartAccel</b></a>
+</td><td  id='tdright'>  Get acceleration for the pressure start move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressStartAccuracyProfile"><b>GetPressStartAccuracyProfile</b></a>
+</td><td  id='tdright'>  Get the accuracy profile for the pressure start move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressStartEnabled"><b>GetPressStartEnabled</b></a>
+</td><td  id='tdright'>  Get whether the pressure start move is enabled.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressStartGunJointValue"><b>GetPressStartGunJointValue</b></a>
+</td><td  id='tdright'>  Get the gun's position at the end of the pressure start move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressStartMovingTipClearance"><b>GetPressStartMovingTipClearance</b></a>
+</td><td  id='tdright'>  Get the distance from the part for the movable tip at the end of the pressure start move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressStartStationaryTipClearance"><b>GetPressStartStationaryTipClearance</b></a>
+</td><td  id='tdright'>  Get the distance from the part for the stationary tip at the end of the pressure start move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressureAccel"><b>GetPressureAccel</b></a>
+</td><td  id='tdright'>  Get acceleration for the pressure move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressureAccuracyProfile"><b>GetPressureAccuracyProfile</b></a>
+</td><td  id='tdright'>  Get the accuracy profile for the pressure move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressurePushDepth"><b>GetPressurePushDepth</b></a>
+</td><td  id='tdright'>  Get the push depth for the pressure move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetPressureSpeedFactor"><b>GetPressureSpeedFactor</b></a>
+</td><td  id='tdright'>  Get the speed factor for the pressure move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetWeldDelay"><b>GetWeldDelay</b></a>
+</td><td  id='tdright'>  Get welding time.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetWeldPressureStabilizationTime"><b>GetWeldPressureStabilizationTime</b></a>
+</td><td  id='tdright'>  Get welding pressure stabilization time.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#IsGunScheduleSet"><b>IsGunScheduleSet</b></a>
+</td><td  id='tdright'>  Get whether this spot profile has a linked applicative profile weld schedule for a specific gun.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetApproachDirection"><b>SetApproachDirection</b></a>
+</td><td  id='tdright'>  Set the direction the robot approaches the weld point from.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetApproachEnabled"><b>SetApproachEnabled</b></a>
+</td><td  id='tdright'>  Set whether the approach move is enabled.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetApproachGunJointValue"><b>SetApproachGunJointValue</b></a>
+</td><td  id='tdright'>  Set the gun's position at the end of the approach move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetApproachMovingTipClearance"><b>SetApproachMovingTipClearance</b></a>
+</td><td  id='tdright'>  Set the distance from the part for the movable tip at the end of the approach move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetApproachStationaryTipClearance"><b>SetApproachStationaryTipClearance</b></a>
+</td><td  id='tdright'>  Set the distance from the part for the stationary tip at the end of the approach move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetBackupAccel"><b>SetBackupAccel</b></a>
+</td><td  id='tdright'>  Set acceleration for the backup move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetBackupAccuracyProfile"><b>SetBackupAccuracyProfile</b></a>
+</td><td  id='tdright'>  Set the accuracy profile for the backup move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetBackupEnabled"><b>SetBackupEnabled</b></a>
+</td><td  id='tdright'>  Set whether the backup move is enabled.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetBackupStroke"><b>SetBackupStroke</b></a>
+</td><td  id='tdright'>  Set the servo gun backup position.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetGun"><b>SetGun</b></a>
+</td><td  id='tdright'>  Set the OLP gun object used with this spot profile.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetGunCloseInPositiveDirection"><b>SetGunCloseInPositiveDirection</b></a>
+</td><td  id='tdright'>  Set whether the direction the gun closes when the servo joint values go up (positive).
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetGunClosedJointValue"><b>SetGunClosedJointValue</b></a>
+</td><td  id='tdright'>  Set the joint value of the servo gun when the gun is closed.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetGunEnabled"><b>SetGunEnabled</b></a>
+</td><td  id='tdright'>  Set whether the specified gun is enabled.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetGunSchedule"><b>SetGunSchedule</b></a>
+</td><td  id='tdright'>  Set a linked applicative profile weld schedule for a specific gun.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetGunScheduleToNothing"><b>SetGunScheduleToNothing</b></a>
+</td><td  id='tdright'>  Clear a linked applicative profile weld schedule for a specific gun.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetJointNumber"><b>SetJointNumber</b></a>
+</td><td  id='tdright'>  Set the joint number of the servo gun.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPartThickness"><b>SetPartThickness</b></a>
+</td><td  id='tdright'>  Set the part thickness.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressEndAccel"><b>SetPressEndAccel</b></a>
+</td><td  id='tdright'>  Set acceleration for the pressure end move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressEndAccuracyProfile"><b>SetPressEndAccuracyProfile</b></a>
+</td><td  id='tdright'>  Set the accuracy profile for the pressure end move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressEndEnabled"><b>SetPressEndEnabled</b></a>
+</td><td  id='tdright'>  Set whether the pressure end move is enabled.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressEndGunJointValue"><b>SetPressEndGunJointValue</b></a>
+</td><td  id='tdright'>  Set the gun's position at the end of the pressure end move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressEndMovingTipClearance"><b>SetPressEndMovingTipClearance</b></a>
+</td><td  id='tdright'>  Set the distance from the part for the movable tip at the end of the pressure end move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressEndStationaryTipClearance"><b>SetPressEndStationaryTipClearance</b></a>
+</td><td  id='tdright'>  Set the distance from the part for the stationary tip at the end of the pressure end move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressStartAccel"><b>SetPressStartAccel</b></a>
+</td><td  id='tdright'>  Set acceleration for the pressure start move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressStartAccuracyProfile"><b>SetPressStartAccuracyProfile</b></a>
+</td><td  id='tdright'>  Set the accuracy profile for the pressure start move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressStartEnabled"><b>SetPressStartEnabled</b></a>
+</td><td  id='tdright'>  Set whether the pressure start move is enabled.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressStartGunJointValue"><b>SetPressStartGunJointValue</b></a>
+</td><td  id='tdright'>  Set the gun's position at the end of the pressure start move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressStartMovingTipClearance"><b>SetPressStartMovingTipClearance</b></a>
+</td><td  id='tdright'>  Set the distance from the part for the movable tip at the end of the pressure start move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressStartStationaryTipClearance"><b>SetPressStartStationaryTipClearance</b></a>
+</td><td  id='tdright'>  Set the distance from the part for the stationary tip at the end of the pressure start move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressureAccel"><b>SetPressureAccel</b></a>
+</td><td  id='tdright'>  Set acceleration for the pressure move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressureAccuracyProfile"><b>SetPressureAccuracyProfile</b></a>
+</td><td  id='tdright'>  Set the accuracy profile for the pressure move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressurePushDepth"><b>SetPressurePushDepth</b></a>
+</td><td  id='tdright'>  Set the push depth for the pressure move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetPressureSpeedFactor"><b>SetPressureSpeedFactor</b></a>
+</td><td  id='tdright'>  Set the speed factor for the pressure move.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetWeldDelay"><b>SetWeldDelay</b></a>
+</td><td  id='tdright'>  Set the welding time.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetWeldPressureStabilizationTime"><b>SetWeldPressureStabilizationTime</b></a>
+</td><td  id='tdright'>  Set welding pressure stabilization time.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="GetApproachDirection"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetApproachDirection</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELOlpAxisDirection','DELOlpAxisDirection')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the direction the robot approaches the weld point from.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetApproachEnabled"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetApproachEnabled</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get whether the approach move is enabled.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  TRUE if enabled.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetApproachGunJointValue"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetApproachGunJointValue</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the gun's position at the end of the approach move.<BR>
+ This is calculated from the stationary tip clearance, the moving tip clearance,
+ the part thickness, the gun closed joint value, and the gun close direction.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The joint values are in meters.  Only linear joints are currently supported.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetApproachMovingTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetApproachMovingTipClearance</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the distance from the part for the movable tip at the end of the approach move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value in meters.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetApproachStationaryTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetApproachStationaryTipClearance</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the distance from the part for the stationary tip at the end of the approach move.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value in meters.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetBackupAccel"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetBackupAccel</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get acceleration for the backup move.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value as a percentage (1.0 is 100%).
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetBackupAccuracyProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetBackupAccuracyProfile</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpAccuracyProfile','OlpAccuracyProfile')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the accuracy profile for the backup move.<BR>
+ In general you should not modify the profile retrieved from this property
+ because the behavior is not intuitive.
+ If the profile is modified, the spot profile will be updated with an accuracy
+ profile that was matched based on the parameters set.  The accuracy profile
+ will be ignored when trying to find a matching spot profile.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The profile.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetBackupEnabled"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetBackupEnabled</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get whether the backup move is enabled.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  TRUE if enabled.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetBackupStroke"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetBackupStroke</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the servo gun backup position.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value in meters.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetGun"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetGun</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('OlpGun','OlpGun')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the OLP gun object used with this spot profile.<BR>
+ The gun corresponds to a specific joint of a tool device.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2) - a spot profile can control up to 2 guns.  This is not the mapped gun ID.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetGunCloseInPositiveDirection"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetGunCloseInPositiveDirection</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get whether the direction the gun closes when the servo joint values go up (positive).<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetGunClosedJointValue"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetGunClosedJointValue</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the joint value of the servo gun when the gun is closed.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The joint values are in meters.  Only linear joints are currently supported.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetGunEnabled"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetGunEnabled</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get whether the specified gun is enabled.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetGunSchedule"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetGunSchedule</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iProfileType</span>)</span> As <script type="text/javascript"> activateLink('OlpProfile','OlpProfile')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get a linked applicative profile weld schedule for a specific gun.<BR>
+ This will always return a profile which can be configured using SetParameter
+ methods to match an existing profile or create a new one if needed.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iProfileType</span></dt>
+   <dd> The applicative profile type
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The profile.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetJointNumber"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetJointNumber</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('short','short')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the joint number of the servo gun.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPartThickness"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPartThickness</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the part thickness.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value in meters.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressEndAccel"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressEndAccel</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get acceleration for the pressure end move.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value as a percentage (1.0 is 100%).
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressEndAccuracyProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressEndAccuracyProfile</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpAccuracyProfile','OlpAccuracyProfile')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the accuracy profile for the pressure end move.<BR>
+ In general you should not modify the profile retrieved from this property
+ because the behavior is not intuitive.
+ If the profile is modified, the spot profile will be updated with an accuracy
+ profile that was matched based on the parameters set.  The accuracy profile
+ will be ignored when trying to find a matching spot profile.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The profile.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressEndEnabled"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressEndEnabled</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get whether the pressure end move is enabled.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  TRUE if enabled.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressEndGunJointValue"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressEndGunJointValue</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the gun's position at the end of the pressure end move.<BR>
+ This is calculated from the stationary tip clearance, the moving tip clearance,
+ the part thickness, the gun closed joint value, and the gun close direction.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The joint values are in meters.  Only linear joints are currently supported.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressEndMovingTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressEndMovingTipClearance</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the distance from the part for the movable tip at the end of the pressure end move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value in meters.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressEndStationaryTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressEndStationaryTipClearance</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the distance from the part for the stationary tip at the end of the pressure end move.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value in meters.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressStartAccel"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressStartAccel</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get acceleration for the pressure start move.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value as a percentage (1.0 is 100%).
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressStartAccuracyProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressStartAccuracyProfile</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpAccuracyProfile','OlpAccuracyProfile')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the accuracy profile for the pressure start move.<BR>
+ In general you should not modify the profile retrieved from this property
+ because the behavior is not intuitive.
+ If the profile is modified, the spot profile will be updated with an accuracy
+ profile that was matched based on the parameters set.  The accuracy profile
+ will be ignored when trying to find a matching spot profile.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The profile.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressStartEnabled"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressStartEnabled</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get whether the pressure start move is enabled.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  TRUE if enabled.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressStartGunJointValue"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressStartGunJointValue</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the gun's position at the end of the pressure start move.<BR>
+ This is calculated from the stationary tip clearance, the moving tip clearance,
+ the part thickness, the gun closed joint value, and the gun close direction.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The joint values are in meters.  Only linear joints are currently supported.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressStartMovingTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressStartMovingTipClearance</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the distance from the part for the movable tip at the end of the pressure start move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value in meters.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressStartStationaryTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressStartStationaryTipClearance</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the distance from the part for the stationary tip at the end of the pressure start move.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value in meters.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressureAccel"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressureAccel</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get acceleration for the pressure move.<BR>
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value as a percentage (1.0 is 100%).
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressureAccuracyProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressureAccuracyProfile</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('OlpAccuracyProfile','OlpAccuracyProfile')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the accuracy profile for the pressure move.<BR>
+ In general you should not modify the profile retrieved from this property
+ because the behavior is not intuitive.
+ If the profile is modified, the spot profile will be updated with an accuracy
+ profile that was matched based on the parameters set.  The accuracy profile
+ will be ignored when trying to find a matching spot profile.
+ 
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The profile.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressurePushDepth"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressurePushDepth</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the push depth for the pressure move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value in meters.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetPressureSpeedFactor"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetPressureSpeedFactor</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the speed factor for the pressure move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value as a percentage (1.0 is 100%).
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetWeldDelay"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetWeldDelay</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get welding time.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value in seconds.
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetWeldPressureStabilizationTime"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetWeldPressureStabilizationTime</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>)</span> As <script type="text/javascript"> activateLink('double','double')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get welding pressure stabilization time.<BR>
+ This is additional time needed before welding can begin and is added to the weld delay during simulation.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  The value in seconds.
+
+ </ dd>
+</dl>
+</dd>
+<a id="IsGunScheduleSet"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>IsGunScheduleSet</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iProfileType</span>)</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get whether this spot profile has a linked applicative profile weld schedule for a specific gun.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iProfileType</span></dt>
+   <dd> The applicative profile type
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  True if the schedule is set.
+
+ </ dd>
+</dl>
+</dd>
+<a id="SetApproachDirection"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetApproachDirection</span><span class='signature'>(<script type="text/javascript"> activateLink('DELOlpAxisDirection','DELOlpAxisDirection')</script> <span class='param'>iApproachDirection</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the direction the robot approaches the weld point from.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iApproachDirection</span></dt>
+   <dd> The value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetApproachEnabled"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetApproachEnabled</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iEnabled</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set whether the approach move is enabled.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iEnabled</span></dt>
+   <dd> TRUE if enabled.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetApproachGunJointValue"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetApproachGunJointValue</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iJointValue</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the gun's position at the end of the approach move.<BR>
+ You should call either 
+<script type="text/javascript"> activateLinkAnchor('','SetApproachMovingTipClearance','SetApproachMovingTipClearance') </script> or this method.  Specifying both would over constrain the gun position.  For example specify this value if the gun's 
+ position is known but the moving tip clearance is unknown.  The moving tip clearance will be 
+ calculated from the stationary tip clearance, the gun position,
+ the part thickness, the gun closed joint value, and the gun close direction.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDistance</span></dt>
+   <dd> The joint values are in meters.  Only linear joints are currently supported.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+ If TRUE the moving tip clearance will be calculated based on the values set on this 
+ profile.  The value from the candidate matching profile will be used for any parameter 
+ required for this calculation which has not been set.  A profile will match if its 
+ moving tip clearance and other parameters would result in the correct gun joint position.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetApproachMovingTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetApproachMovingTipClearance</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iDistance</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the distance from the part for the movable tip at the end of the approach move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDistance</span></dt>
+   <dd> The value in meters.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetApproachStationaryTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetApproachStationaryTipClearance</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iDistance</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the distance from the part for the stationary tip at the end of the approach move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iDistance</span></dt>
+   <dd> The value in meters.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetBackupAccel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetBackupAccel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iAccel</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set acceleration for the backup move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAccel</span></dt>
+   <dd> The value as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetBackupAccuracyProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetBackupAccuracyProfile</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpAccuracyProfile','OlpAccuracyProfile')</script> <span class='param'>iProfile</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the accuracy profile for the backup move.<BR>
+ You should retrieve the accuracy profile to set on this property 
+ from the 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpController','AccuracyProfileList','DELMIAOlpController.AccuracyProfileList') </script>. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iProfile</span></dt>
+   <dd> The profile.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing spot profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetBackupEnabled"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetBackupEnabled</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iEnabled</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set whether the backup move is enabled.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iEnabled</span></dt>
+   <dd> TRUE if enabled.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetBackupStroke"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetBackupStroke</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iDistance</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the servo gun backup position.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDistance</span></dt>
+   <dd> The value in meters.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetGun"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetGun</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('OlpGun','OlpGun')</script> <span class='param'>iGun</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the OLP gun object used with this spot profile.<BR>
+ The gun corresponds to a specific joint of a tool device.
+ If you set the Gun, you don't need to set the Joint Number - the joint number comes from the mapping the user specified in the UI.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2) - a spot profile can control up to 2 guns.  This is not the mapped gun ID.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iGun</span></dt>
+   <dd> The value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetGunCloseInPositiveDirection"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetGunCloseInPositiveDirection</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iIsPositiveDirection</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set whether the direction the gun closes when the servo joint values go up (positive).<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iIsPositiveDirection</span></dt>
+   <dd> The value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetGunClosedJointValue"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetGunClosedJointValue</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iGunClosedJointValue</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the joint value of the servo gun when the gun is closed.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iGunClosedJointValue</span></dt>
+   <dd> The joint values are in meters.  Only linear joints are currently supported.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetGunEnabled"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetGunEnabled</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iEnabled</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set whether the specified gun is enabled.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iEnabled</span></dt>
+   <dd> The value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetGunSchedule"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetGunSchedule</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('OlpProfile','OlpProfile')</script> <span class='param'>iProfile</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set a linked applicative profile weld schedule for a specific gun.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iProfile</span></dt>
+   <dd> The profile.   
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE then this profile must be linked to an existing spot profile for it to match.
+ If the profile is Nothing and iMatch is TRUE then this profile must not be linked 
+ to an existing spot profile for it to match.  However if the profile is mandatory or the 
+ default values of the profile have the same meaning as having the profile unset, then a 
+ profile set with default values will also match.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetGunScheduleToNothing"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetGunScheduleToNothing</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iProfileType</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Clear a linked applicative profile weld schedule for a specific gun.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iProfileType</span></dt>
+   <dd> The applicative profile type 
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If iMatch is TRUE then this profile must not be linked to an existing spot profile for 
+ it to match.  However if the default values of the profile have the same meaning as 
+ having the profile unset, then a profile set with default values will also match.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetJointNumber"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetJointNumber</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iJointNumber</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the joint number of the servo gun.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iJointNumber</span></dt>
+   <dd> The value.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPartThickness"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPartThickness</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iPartThickness</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the part thickness.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iPartThickness</span></dt>
+   <dd> The value in meters.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressEndAccel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressEndAccel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iAccel</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set acceleration for the pressure end move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAccel</span></dt>
+   <dd> The value as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressEndAccuracyProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressEndAccuracyProfile</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpAccuracyProfile','OlpAccuracyProfile')</script> <span class='param'>iProfile</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the accuracy profile for the pressure end move.<BR>
+ You should retrieve the accuracy profile to set on this property 
+ from the 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpController','AccuracyProfileList','DELMIAOlpController.AccuracyProfileList') </script>. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iProfile</span></dt>
+   <dd> The profile.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing spot profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressEndEnabled"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressEndEnabled</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iEnabled</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set whether the pressure end move is enabled.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iEnabled</span></dt>
+   <dd> TRUE if enabled.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressEndGunJointValue"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressEndGunJointValue</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iJointValue</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the gun's position at the end of the pressure end move.<BR>
+ You should call either 
+<script type="text/javascript"> activateLinkAnchor('','SetPressEndMovingTipClearance','SetPressEndMovingTipClearance') </script> or this method.  Specifying both would over constrain the gun position.  For example specify this value if the gun's 
+ position is known but the moving tip clearance is unknown.  The moving tip clearance will be 
+ calculated from the stationary tip clearance, the gun position,
+ the part thickness, the gun closed joint value, and the gun close direction.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDistance</span></dt>
+   <dd> The joint values are in meters.  Only linear joints are currently supported.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+ If TRUE the moving tip clearance will be calculated based on the values set on this 
+ profile.  The value from the candidate matching profile will be used for any parameter 
+ required for this calculation which has not been set.  A profile will match if its 
+ moving tip clearance and other parameters would result in the correct gun joint position.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressEndMovingTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressEndMovingTipClearance</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iDistance</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the distance from the part for the movable tip at the end of the pressure end move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDistance</span></dt>
+   <dd> The value in meters.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressEndStationaryTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressEndStationaryTipClearance</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iDistance</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the distance from the part for the stationary tip at the end of the pressure end move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iDistance</span></dt>
+   <dd> The value in meters.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressStartAccel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressStartAccel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iAccel</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set acceleration for the pressure start move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAccel</span></dt>
+   <dd> The value as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressStartAccuracyProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressStartAccuracyProfile</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpAccuracyProfile','OlpAccuracyProfile')</script> <span class='param'>iProfile</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the accuracy profile for the pressure start move.<BR>
+ You should retrieve the accuracy profile to set on this property 
+ from the 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpController','AccuracyProfileList','DELMIAOlpController.AccuracyProfileList') </script>. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iProfile</span></dt>
+   <dd> The profile.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing spot profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressStartEnabled"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressStartEnabled</span><span class='signature'>(<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iEnabled</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set whether the pressure start move is enabled.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iEnabled</span></dt>
+   <dd> TRUE if enabled.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressStartGunJointValue"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressStartGunJointValue</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iJointValue</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the gun's position at the end of the pressure start move.<BR>
+ You should call either 
+<script type="text/javascript"> activateLinkAnchor('','SetPressStartMovingTipClearance','SetPressStartMovingTipClearance') </script> or this method.  Specifying both would over constrain the gun position.  For example specify this value if the gun's 
+ position is known but the moving tip clearance is unknown.  The moving tip clearance will be 
+ calculated from the stationary tip clearance, the gun position,
+ the part thickness, the gun closed joint value, and the gun close direction.	
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDistance</span></dt>
+   <dd> The joint values are in meters.  Only linear joints are currently supported.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+ If TRUE the moving tip clearance will be calculated based on the values set on this 
+ profile.  The value from the candidate matching profile will be used for any parameter 
+ required for this calculation which has not been set.  A profile will match if its 
+ moving tip clearance and other parameters would result in the correct gun joint position.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressStartMovingTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressStartMovingTipClearance</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iDistance</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the distance from the part for the movable tip at the end of the pressure start move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iDistance</span></dt>
+   <dd> The value in meters.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressStartStationaryTipClearance"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressStartStationaryTipClearance</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iDistance</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the distance from the part for the stationary tip at the end of the pressure start move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iDistance</span></dt>
+   <dd> The value in meters.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressureAccel"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressureAccel</span><span class='signature'>(<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iAccel</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set acceleration for the pressure move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAccel</span></dt>
+   <dd> The value as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressureAccuracyProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressureAccuracyProfile</span><span class='signature'>(<script type="text/javascript"> activateLink('OlpAccuracyProfile','OlpAccuracyProfile')</script> <span class='param'>iProfile</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the accuracy profile for the pressure move.<BR>
+ You should retrieve the accuracy profile to set on this property 
+ from the 
+<script type="text/javascript"> activateLinkAnchor('DELMIAOlpController','AccuracyProfileList','DELMIAOlpController.AccuracyProfileList') </script>. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iProfile</span></dt>
+   <dd> The profile.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing spot profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressurePushDepth"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressurePushDepth</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iPushDepth</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the push depth for the pressure move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iSpeedFactor</span></dt>
+   <dd> The value as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetPressureSpeedFactor"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetPressureSpeedFactor</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iSpeedFactor</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the speed factor for the pressure move.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iSpeedFactor</span></dt>
+   <dd> The value as a percentage (1.0 is 100%).
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetWeldDelay"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetWeldDelay</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iWeldDelay</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set the welding time.<BR>
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iWeldDelay</span></dt>
+   <dd> The value in seconds.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetWeldPressureStabilizationTime"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetWeldPressureStabilizationTime</span><span class='signature'>(<script type="text/javascript"> activateLink('short','short')</script> <span class='param'>iGunNumber</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>iWeldPressureStabilizationTime</span>,<script type="text/javascript"> activateLink('boolean','boolean')</script> <span class='param'>iMatch</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Set welding pressure stabilization time.<BR>
+ This is additional time needed before welding can begin and is added to the weld delay during simulation.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iGunNumber</span></dt>
+   <dd> The gun number (1 or 2)
+ 
+ </ dd>
+    <dt><span class='paramitem'> iWeldPressureStabilizationTime</span></dt>
+   <dd> The value in seconds.
+ 
+ </ dd>
+    <dt><span class='paramitem'> iMatch</span></dt>
+   <dd> If TRUE use value to find existing profile.
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

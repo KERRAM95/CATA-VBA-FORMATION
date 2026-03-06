@@ -1,0 +1,83 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating 3DShape</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>'---------------------------------------------------------------------------------------------------------------------------
+'COPYRIGHT DASSAULT SYSTEMES 2009
+'---------------------------------------------------------------------------------------------------------------------------
+'Creating 3DShape
+'
+'Mission : This use case creates a new 3DShape and retrieves its associated objects:
+'          its root object, the Part object, and its Product Representation Reference, 
+'          the VPMRepReference object.
+'
+'Steps:		1- Retrieves the service object to create a new PLM object
+'  		2- Creates a new 3DShape
+'   		3- Retrieves its Part Object
+' 		4- Retrieves its Product Representation Reference
+' 		5- Displays the Product Representation Reference<strong> </strong>PLM_ExternalID value
+
+
+'Creates a new 3DShape
+Sub CreateNew3DShape()
+
+
+'Error handling
+On Error GoTo ErrorSub
+
+
+    '1- Retrieves the service object to create a new PLM object
+    Dim oNewService As PLMNewService
+    Set oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;)
+    
+    '2- Creates a new 3DShape
+    Dim oEditor3DShape As Editor
+    oNewService.PLMCreate &quot;3DShape&quot;, oEditor3DShape
+    
+   '3- Retrieves its Part Object
+    Dim oPart3D As Part
+    Set oPart3D = oEditor3DShape.ActiveObject
+    
+    '4- Retrieves its Product Representation Reference
+    Dim oVPMRepRef As VPMRepReference
+    Set oVPMRepRef = oPart3D.Parent
+    
+    '5- Displays the Product Representation Reference PLM_ExternalID value
+    MsgBox oVPMRepRef.GetAttributeValue(&quot;PLM_ExternalID&quot;)
+
+
+    'Error handling
+    GoTo EndSub
+
+
+ErrorSub:
+    MsgBox Err.Description
+EndSub:
+
+
+End Sub
+</pre>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdFeaNumbering.CATScript</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment"># -------------- Sample MACRO written in Basic Script ------------------------------------------</span>
+<span class="comment"># This sample creates a simulation material domain.</span>
+
+<span class="comment"># Steps:</span>
+<span class="comment">#    1 - Retrieves the simulation and its product</span>
+<span class="comment">#    2 - Creates material</span>
+<span class="comment">#    3 - Creates simulation domain</span>
+<span class="comment">#    4 - Creates material option and assign data</span>
+<span class="comment">#    5 - Creates behavior and add options in behavior</span>
+<span class="comment">#    6 - Assign material to part</span>
+
+import sys, os
+from com3dx import *
+CATIA = get3dxClient()
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 1 - Retrieves the simulation and its product</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myEditor = CATIA.ActiveEditor
+myProdService = myEditor.GetService("PLMProductService")
+myEntities = myProdService.EditedContent
+myEntity = myEntities.Item(1)
+MySimulationRoot = myEntity
+myModel = MySimulationRoot.Model
+
+oOpenService = CATIA.GetSessionService("PLMOpenService")
+oOpenService.PLMOpen (myModel)
+
+myProductEditor = CATIA.ActiveEditor
+MyProductService = myProductEditor.GetService("PLMProductService")
+
+myEntities = MyProductService.EditedContent
+myRootProduct = myEntities.Item(1)
+
+myRootOccurrence = MyProductService.RootOccurrence
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 2 - Creates material</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myMaterialService = CATIA.GetSessionService("MATPLMService")
+myCoreMatRef, myMaterialEditor = myMaterialService.PLMCreate ("dsc_matref_ref_Core", None, None)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 3 - Creates simulation domain</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myDomainList = myCoreMatRef.GetDomains (None)
+myDomain = myDomainList.Add ("dsc_matref_rep_SmaOptions", None)
+mySimDomain = myDomain.MaterialDomainContent
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 4 - Creates material option and assign data</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myMaterialOptions = mySimDomain.Options
+
+<span class="comment"># Creation of a density material option</span>
+myDensity = myMaterialOptions.Add("SimDensity")
+
+myDensityColumn = myDensity.GetMaterialTableColumn(win32com.client.constants.SimDensityDensity)
+
+myDensityColumn.SetCellData (1, 7870)
+
+myDensity_2 = mySimDomain.DuplicateAndAddMaterialOption(myDensity)
+
+myDensityColumn = myDensity_2.GetMaterialTableColumn(win32com.client.constants.SimDensityDensity)
+
+myDensityColumn.SetCellData (1, 7860)
+
+<span class="comment"># Creation of an elasticity material option</span>
+myElastic = myMaterialOptions.Add("SimElasticity")
+
+myElastic.ElasticType = win32com.client.constants.SimElasticIsotropic
+myElastic.ModuliTimeScaletype = win32com.client.constants.SimElasticLongTerm
+
+myYoungsModulusColumn = myElastic.GetMaterialTableColumn(win32com.client.constants.SimElasticYoungsModulus)
+
+myYoungsModulusColumn.SetCellData (1, 211000000000.0)
+
+myPoissonsRatioColumn = myElastic.GetMaterialTableColumn(win32com.client.constants.SimElasticPoissonsRatio)
+myPoissonsRatioColumn.SetCellData (1, 0.291)
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 5 - Creates behavior and add options in behavior</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+myBehaviors = mySimDomain.Behaviors
+
+myBehavior = myBehaviors.Add()
+myBehavior_2 = myBehaviors.Add()
+
+myBehaviorOptions = myBehavior.BehaviorOptions
+
+
+myBehaviorOptions.Add (myDensity, 1)
+myBehaviorOptions.Add (myElastic, 2)
+
+myBehaviorOptions = myBehavior_2.BehaviorOptions
+
+myBehaviorOptions.Add (myDensity_2, 1)
+myBehaviorOptions.Add (myElastic, 2)
+
+mySimDomain.DefaultBehavior = myBehavior_2
+
+myBehaviors.Remove (2)
+    
+myMaterialOptions.Remove (1)
+    
+mySimDomain.SyncAllBehaviors
+
+<span class="comment">#--------------------------------------------------------------------------</span>
+<span class="comment"># 6 - Assign material to part</span>
+<span class="comment">#--------------------------------------------------------------------------</span>
+
+<span class="comment"># Retrieve the Part Instance</span>
+
+myInstances = myRootProduct.Instances
+myInstance = myInstances.Item(1)
+
+myInstanceRef = myInstance.ReferenceInstanceOf
+
+myRepInstances = myInstanceRef.RepInstances
+
+myPartRepInstance = myRepInstances.Item(1)
+
+<span class="comment"># Creating link to the part instance</span>
+myLinkToPartInstance = MyProductService.ComposeLink(myRootOccurrence, myPartRepInstance, None)
+
+<span class="comment"># Assigning material</span>
+myCoreAppliedMaterial = myMaterialService.SetMaterialCore (myLinkToPartInstance, myCoreMatRef, None)
+
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+  </body>
+</html>

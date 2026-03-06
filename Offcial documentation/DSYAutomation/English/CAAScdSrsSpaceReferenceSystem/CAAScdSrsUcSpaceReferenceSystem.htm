@@ -1,0 +1,255 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Retrieving SRS Data</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Retrieving SRS Data</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case primarily 
+						focuses on the methodology to retrieve and edit SRS data.</p>
+						<div id="toc">
+						</div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							    <li>Launch CATIA</li>
+                                <li>Assign &quot;Project Dictionary&quot; resource in &quot;Common Geometry Resource&quot; table in data setup. A sample resource <code><div class=vb_sample_data>SpaceReferential_ShipBuilding_Dictionary.3dxml</div></code> is supplied in folder <code>InstallRootFolder\CAADoc\Doc\English\CAAScdSrsSpaceReferenceSystem\samples\</code>
+                        where <code>InstallRootFolder</code> is the folder where 
+									the CAA CD-ROM is installed.</li>
+                                <li>Load a SRS part from database or create one before launching the macro. A sample <code><div class=vb_sample_data>CAAScdSrsUcPart.3dxml</div> </code>is supplied in folder&nbsp; <code>InstallRootFolder\CAADoc\Doc\English\CAAScdSrsSpaceReferenceSystem\samples\</code>
+                        where <code>InstallRootFolder</code> is the folder where 
+									the CAA CD-ROM is installed.</li>
+                                <li>Go to &quot;Space Reference System&quot; application and keep product editor active before launching the macro.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro: 
+                         <a href="CAAScdSpaceReferenceSystemSource.htm">CAAScdSpaceReferenceSystemSource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="CAAScdSrsTocSpaceReferenceSystem.htm">Space Reference System Object Model Map</a></td>
+					</tr>
+					<tr>
+						<td>
+						<a href="../CAAScdInfInfrastructure/CAAInfLaunchingVBUseCase.htm">
+						Launching an Automation Use Case</a></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in fourteen steps:</p>
+		<ol>
+			<li><a href="#Step1">Retrieve the active editor of the Srs product</a></li>
+			<li><a href="#Step2">Retrieves Selection object</a></li>
+			<li><a href="#Step3">Retrieves Part object</a></li>
+			<li><a href="#Step4">Retrieves a grid set</a></li>
+			<li><a href="#Step5">Retrieves the group faces of the grid set</a></li>
+			<li><a href="#Step6">Retrieves a grid face in the grid set</a></li>
+			<li><a href="#Step7">Retrieves short name of the grid face</a></li>
+			<li><a href="#Step8">Sets short name of the grid face</a></li>
+			<li><a href="#Step9">Retrieves the category of the grid face</a></li>
+			<li><a href="#Step10">Sets a new category on the grid face</a></li>
+			<li><a href="#Step11">Retrieves the Reference hull surface of the SRS 
+				part</a></li>
+			<li><a href="#Step12">Retrieves the MidShip plane of the SRS part</a></li>
+			<li><a href="#Step13">Retrieves the CentreLine plane of the SRS part</a></li>
+			<li><a href="#Step14">Updates the Part object</a></li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+				<p><strong><a name="Step1">R</a>etrieves the active editor of the 
+				Srs product</strong></p>
+				<p>As a first step, open a SRS part in editor. The supplied sample &quot;<div class=vb_sample_data>CAAScdSrsUcPart.3dxml</div>&quot; can be imported and open the &quot;SRS_VB_TEST&quot; 3DPart. Retrieve the active editor.</p>
+				<pre class="code">... 
+  <span class="keyword">Dim</span> SRSPrdEditor <span class="keyword">As</span> Editor
+  <span class="keyword">Set</span> SRSPrdEditor  = CATIA.<strong>ActiveEditor</strong> 
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step2"></a>Retrieves Selection Object</strong></p>
+				<p>As a next step, the UC retrieves Selection object in SRSProdSel 
+				variable. To retrieve the Selection object <strong><code>SRSPrdEditor</code>
+				</strong>is used.</p>
+				<pre class="code"> ...
+  <span class="keyword">Set</span> SRSProdSel = SRSPrdEditor<strong>.Selection</strong>
+ ...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step3"></a>Retrieves Part object</strong></p>
+				<p>In this step UC retrieves Part object ObjPart variable.</p>
+				<pre class="code">... 
+  <span class="keyword">Set</span> ObjSrsPart = SRSProdSel.FindObject("CATIASrsPart")
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step4"></a>Retrieves a SRS grid set object from 
+				the list of grid sets present in the SRS part</strong></p>
+				<p>In this step UC retrieves the list of grid sets object ObjSrsGridSets 
+				variable.</p>
+				<pre class="code">... 
+  Set ObjSrsGridSets = ObjSrsPart.SrsGridSets
+...</pre>
+				<p>From the the list of grid sets, individual grid set object ObjSrsGridSet 
+				is retrieved.</p>
+				<pre class="code">... 
+  Set ObjSrsGridSet = ObjSrsGridSets.Item(1)
+...</pre>
+				<p>The method Item returns the individual element at the given index.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step5"></a>Retrieves the group faces of the 
+				grid set</strong></p>
+				<p>Now, grid set is available to retrieve GroupFaces.</p>
+				<pre class="code">...
+   ObjSrsGridSet.GetGroupFaces ObjSrsLastGridFacesAfr, 
+                              ObjSrsLastGridFacesBfr
+...</pre>
+				<p>Here, ObjSrsGridFacesAfterLast is the list of faces which is 
+				last face of a group after origin. ObjSrsGridFacesBeforeLast is 
+				the list of faces which is last face of a group before origin.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step6"></a>Retrieves a grid face in the grid 
+				set</strong></p>
+				<p>In this step UC retrieves a grid face from the list of grid faces</p>
+				<pre class="code">...
+   Set ObjSrsGridFace = ObjSrsLastGridFacesAfr.Item(1)
+...</pre>
+				<p>The method Item returns the individual element at the given index.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step7"></a>Retrieves short name of the grid 
+				face</strong></p>
+				<p>In this step UC retrives short name of the obtained grid face.</p>
+				<pre class="code">...
+    Dim StrShortName As String
+    StrShortName = ObjSrsGridFace.ShortName
+...</pre>
+				<p>The property ShortName is the short name of the grid face.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step8"></a>Sets short name of the grid face</strong></p>
+				<pre class="code">...
+    ObjSrsGridFace.ShortName = StrShortName
+...</pre>
+				<p>ShortName property is used to set the short name of the grid 
+				face.</p>
+			</li>
+			<li>
+				<p><strong><a name="Step9"></a>Retrieve the category on the grid 
+				face</strong></p>
+				<p>In this step UC retrieves the category of the grid face from 
+				the Category property of the grid face.</p>
+				<pre class="code">
+...
+    'Retrieve the category
+    Dim strCategory As String
+    strCategory = ObjSrsGridFace.Category
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step10"></a>Set a new category on the grid face</strong></p>
+				<p>In this step UC sets a new category on the grid face. Before calling this method ensure that the &quot;Project Dictionary&quot; resource having the category to be assigned is set in the &quot;Common Geometry Resource&quot; table in data setup. </p>
+				<pre class="code">...
+    'Sets the Category 
+    strCategory = &quot;WebFrame&quot;
+    ObjSrsGridFace.Category = strCategory
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step11"></a>Retrieves the Reference hull surface 
+				of the SRS part</strong></p>
+				<p>In this step UC retrieves the hull surface from the part.</p>
+				<pre class="code">...
+    Dim ObjSrsRefSurface As Reference
+    Set ObjSrsRefSurface = ObjSrsPart.ReferenceSurface
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step12"></a>Retrieves the MidShip plane of the 
+				SRS part</strong></p>
+				<p>In this step UC retrieves the MidShip plane from the part.</p>
+				<pre class="code">...
+    Dim ObjSrsMidShip As SrsMidShip
+    Set ObjSrsMidShip = ObjSrsPart.MidShip
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step13"></a>Retrieves the CentreLine plane of 
+				the SRS part</strong></p>
+				<p>In this step UC retrieves the CentreLine plane from the part.</p>
+				<pre class="code">...
+    Dim ObjSrsCentreLine As SrsCentreLine
+    Set ObjSrsCentreLine = ObjSrsPart.CentreLine
+...</pre>
+			</li>
+			<li>
+				<p><strong><a name="Step14"></a>Updates the Part object</strong></p>
+				<p>Update is called to update the Part object.</p>
+				<pre class="code">...
+    'Update the Part object
+    ObjPart.Update
+...</pre>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</table>
+<p>&nbsp;&nbsp;&nbsp; </p>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

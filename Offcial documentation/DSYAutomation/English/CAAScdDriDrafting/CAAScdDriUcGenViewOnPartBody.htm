@@ -1,0 +1,279 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a Generative View from 3D Data</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Creating a Generative View from 3D Data</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case 
+						primarily focuses on the methodology to create a 
+						Generative View of a Part Body in an Assembly Context.</p>
+						<div id="toc"></div>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you 
+						begin :</span> 
+						<ul>
+							<li>You should first launch CATIA and import the 
+							<code><div class=vb_sample_data>Skateboard.3dxml</div></code> file supplied in 
+							folder <code>
+							InstallRootFolder\CAADoc\Doc\English\CAAScdDriDrafting\samples\</code> 
+							where <code>InstallRootFolder</code> is the 
+							directory where the CAA CD-ROM is installed.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro :
+						<a href="CAAScdDriUcGenViewOnPartBodySource.htm">
+						CAAScdDriUcGenViewOnPartBodySource.htm</a></span></p>
+						</td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Selection of the required parts</a></li>
+			<li><a href="#Step2">Creation the Part Body Link</a></li>
+			<li><a href="#Step3">Definition the View Projection Plan</a></li>
+			<li><a href="#Step4">Creation the New Drawing Representation</a></li>
+			<li><a href="#Step5">Creation the Generative Front View</a></li>
+			<li><a href="#Step6">Modification the Generative View Link</a></li>
+			<li><a href="#Step7">Update of the Generative View</a></li>			
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1">Selection of the required parts</a></strong></p>
+			<p>The body Part link creation requires, in this order : 
+   		 <br />
+&nbsp;1
+- The Part Body
+   		 <br />
+&nbsp;2
+- The Product Representation Instance of the Reference on which the Part Body is defined 
+   		 <br />
+&nbsp;3
+- The first Sub-Product containing the RepInstance
+   		 </p>
+			<p>Before you start the macro, you have to select these three 
+			elements as 
+			shown in the figure 1.</p>
+			<p>&nbsp;</p>
+			
+			<table>
+				<caption><a name="Fig.1"></a>Fig.1: Selection of the parts required for the creation of the Part Body Link</caption>
+				<tr>
+					<td>
+					<img alt="" height="400" src="images/CAAScdDriUcGenViewOnPartBodyPicture1.png" width="600"/></td>
+				</tr>
+			</table>
+
+			<p>&nbsp;</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2">Creation the Part Body Link</a></strong></p>
+
+			<p>First, the UC retrieves the selection and creates the Part Body Link by 
+			storring them in the right order in a CATSafeArrayVariant.</p>
+			<pre class="code"> ...
+<span class="keyword">Dim</span> mySel <span class="comment">' As Selection </span>
+<span class="keyword">Set</span> mySel = CATIA.ActiveEditor.Selection 
+
+<span class="keyword">If</span> (mySel.Count2 &lt;&gt; 0) <span class="keyword">Then</span> 
+  <span class="keyword">Dim</span> i <span class="keyword">As</span> Integer 
+  <span class="keyword">Dim</span> linkPartBody(2) <span class="keyword">As</span> Variant 
+
+  <span class="keyword">For</span> i = 1 <span class="keyword">To</span> mySel.Count2 
+
+     <span class="keyword">If</span> (TypeName(mySel.Item2(i).Value) = &quot;VPMRepInstance&quot;) <span class="keyword">Then</span> 
+        <span class="keyword">Set</span> linkPartBody(1) = mySel.Item2(i).Value 
+
+     <span class="keyword">ElseIf</span> (TypeName(mySel.Item2(i).Value) = &quot;Body&quot;) <span class="keyword">Then</span> 
+        <span class="keyword">Set</span> linkPartBody(0) = mySel.Item2(i).Value 
+
+     <span class="keyword">ElseIf</span> (TypeName(mySel.Item2(i).Value) = &quot;VPMOccurrence&quot;) <span class="keyword">Then</span> 
+        <span class="keyword">Set</span> linkPartBody(2) = mySel.Item2(i).Value 
+
+     <span class="keyword">End If </span>
+  <span class="keyword">Next</span> 
+  ...
+			</pre> 
+<p>Then, the UC retrieves the drawing service object from the CATIA service.</p>
+			<pre class="code"> ...
+  <span class="keyword">Dim</span> myDrwServ <span class="comment">' As DrawingGenService </span>
+  <span class="keyword">Set</span> myDrwServ = CATIA.GetSessionService(&quot;CATDrawingGenService&quot;) 
+...</pre>
+<p>At last, it checks the Link integrity.</p>
+<pre class="code"> ...
+  <span class="keyword">If</span> myDrwServ.CheckViewLinkIntegrity(linkPartBody) = False <span class="keyword">Then</span> 
+     MsgBox &quot;Select :&quot; &amp; vbCr &amp; &quot;- A Part Body&quot; &amp; vbCr &amp; &quot;- The Product Representation Instance of the Reference on which the Part Body is Defined&quot; &amp; vbCr &amp; &quot;The first Sub-Product containing the Representation Instance&quot; 
+     <span class="keyword">Exit</span> <span class="keyword">Sub</span> 
+  <span class="keyword">End If  </span>
+ ...
+</pre>
+			</li>
+		    <li>
+			<p><strong><a name="Step3">Definition the View Projection Plan</a></strong></p>
+			<p>In this step UC asks to select a Projection Plan.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> InputObjectType(0), Status 
+<span class="keyword">Dim</span> projPlane <span class="comment">' As PlanarFace </span>
+
+InputObjectType(0) = &quot;PlanarFace&quot; 
+mySel.Clear 
+Status = mySel.SelectElement2(InputObjectType, &quot;Select a projection plane&quot;, True) 
+<span class="keyword">If</span> Status = &quot;Cancel&quot; Or Status = &quot;Undo&quot; <span class="keyword">Then</span> 
+  <span class="keyword">Exit</span> <span class="keyword">Sub</span> 
+<span class="keyword">End If </span>
+<span class="keyword">Set</span> projPlane = mySel.Item(1).Value 
+mySel.Clear 
+...
+</pre>
+<p>Then, it stores the projection plane as a CATSafeArrayVariant with the coordinates of 2 vectors.</p>
+<pre class="code">... 
+<span class="keyword">Dim</span> firstAxis(2), secondAxis(2) 
+projPlane.GetFirstAxis (firstAxis) 
+projPlane.GetSecondAxis (secondAxis) 
+
+<span class="keyword">Dim</span> myListOfPlane(5) 
+myListOfPlane(0) = firstAxis(0) 
+myListOfPlane(1) = firstAxis(1) 
+myListOfPlane(2) = firstAxis(2) 
+myListOfPlane(3) = secondAxis(0) 
+myListOfPlane(4) = secondAxis(1) 
+myListOfPlane(5) = secondAxis(2) 
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4">Creation the New Drawing Representation</a></strong></p>
+			<p>In this step UC creates the new Drawing.</p>
+			<p>First, it creates a new Drawing Editor.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oNewService <span class="keyword">As</span> PLMNewService 
+<span class="keyword">Set</span> oNewService = CATIA.GetSessionService(&quot;PLMNewService&quot;) 
+
+<span class="keyword">Dim</span> oEditor <span class="keyword">As</span> Editor 
+oNewService.PLMCreate &quot;Drawing&quot;, oEditor 
+...</pre>
+<p>Then, it gets the drawing root from the Editor.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> oDrawingRoot <span class="keyword">As</span> DrawingRoot 
+<span class="keyword">Set</span> oDrawingRoot = oEditor.ActiveObject
+...</pre> 
+<p>It sets the drawing standard.</p>
+<pre class="code">...
+oDrawingRoot.Standard = &quot;ISO&quot;
+...</pre> 
+<p>It sets the sheet style to the automatically created sheet.</p>
+<pre class="code">...
+oDrawingRoot.ActiveSheet.SheetStyle = &quot;A0 ISO&quot; 
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5">Creation the Generative Front View</a></strong></p>
+			<p>First, the UC retrieves the Generative View factory.</p>
+			<pre class="code">...
+   <span class="keyword">Dim</span> cDrawingViews <span class="keyword">As</span> DrawingViews 
+   <span class="keyword">Set</span> cDrawingViews = oDrawingRoot.Sheets.ActiveSheet.Views 
+
+   <span class="keyword">Dim</span> oGenViewFactory <span class="keyword">As</span> DrawingDefineGenView 
+   <span class="keyword">Set</span> oGenViewFactory = cDrawingViews.DrawingDefineGenView 
+...</pre>
+<p>Then, it defines the new created view as a Generative View.</p>
+<pre class="code">...
+   <span class="keyword">Dim</span> myDefGenView <span class="comment">' As DrawingDefineGenView  </span>
+   <span class="keyword">Set</span> myDefGenView = cDrawingViews.DrawingDefineGenView 
+...</pre>
+<p>It retrieves a Generative View Properties.</p>
+<pre class="code">...
+   <span class="keyword">Dim</span> myGenViewProp <span class="keyword">As</span> DrawingGenViewProperties 
+   <span class="keyword">Set</span> myGenViewProp = myDrwServ.DrawingGenViewProp 
+...</pre>
+<p>At last, it creates the Generative View of the Sub-Product.</p>
+<p>The Generative view can't be directly created on the Part Body. The solution 
+here is to create the view on the sub product and then to modify its link.</p>
+<pre class="code">...
+   <span class="keyword">Dim</span> myListOfPLMInst(0) <span class="keyword">As</span> Variant
+   <span class="keyword">Set</span> myListOfPLMInst(0) = linkPartBody(2) 
+
+   <span class="keyword">Dim</span> myNewFrontView <span class="keyword">As</span> DrawingView 
+   <span class="keyword">Set</span> myNewFrontView = myDefGenView.DefineFrontView(100, 100, myListOfPLMInst, myListOfPlane, &quot;&quot;, False, myGenViewProp) 
+...</pre>
+<p>The sixth argument is set to false to postpone updating the drawing after the link modification. </p>
+
+			</li>
+			<li>
+			<p><strong><a name="Step6">Modification the Generative View Link</a></strong></p>
+			<p>In this step UC modifies the link of the view created in the 
+			previous section.</p>
+			<pre class="code">...
+myNewFrontView.DrawingGenView.PutLinks 1, linkPartBody 
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step7">Update of the Generative View</a></strong></p>
+			<p>At last, it updates the view.</p>
+			<pre class="code">...
+myNewFrontView.DrawingGenView.Update
+...</pre>
+<table>
+	<caption><a name="Fig.2"></a>Fig.2: The Generated Drawing</caption>
+	<tr>
+		<td>
+		<img alt="" height="400" src="images/CAAScdDriUcGenViewOnPartBodyPicture2.png" width="400"/></td>
+	</tr>
+</table>
+			</li>
+ 		</ol>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

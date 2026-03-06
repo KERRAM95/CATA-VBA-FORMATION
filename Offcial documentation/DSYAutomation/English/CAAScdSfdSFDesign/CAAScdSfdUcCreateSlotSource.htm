@@ -1,0 +1,347 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>CAAScdSfdUcCreateSlot.CATScript</title></head>
+
+<body onload="highlightSearchTerms();">
+
+<pre>
+<span class="comment">'-------------- Sample MACRO written in Basic Script ------------------------------------------ </span>
+<span class="comment">'This sample creates a sfd slot and edit it.</span>
+<span class="comment">'This script requires sfd model which contains two intersecting panels and a stiffener on one </span>
+<span class="comment">'of the panel. Stiffener is running through the panel.</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   1- Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</span>
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="comment">'   4- Retrieves a SFD stiffener object</span>
+<span class="comment">'   5- Retrieves a SFD panel object.</span>
+<span class="comment">'   6- Creates Slot.</span>
+<span class="comment">'   7- Edits slot data.</span>
+<span class="comment">'   8- Removes created slot from the panel</span>
+<span class="comment">'   9- Updates the Part object.</span>
+<span class="comment">'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+Language=&quot;VBSCRIPT&quot; 
+<span class="keyword">Dim </span>ObjPart<span class="keyword"> As </span>Part
+<span class="keyword">Dim </span>SFDProdSel<span class="keyword"> As </span>Selection
+
+<span class="keyword">Sub </span>CATMain()
+<span class="comment">'   1- Searches and opens model which is named as &quot;SFD_VB_TEST&quot;</span>
+<span class="keyword">    Dim </span>SFDPrdEditor<span class="keyword"> As </span>Editor
+<span class="keyword">    Dim </span>prdName<span class="keyword"> As </span>String
+    prdName = &quot;SFD_VB_TEST&quot;
+    OpenProduct prdName , SFDPrdEditor
+    
+<span class="comment">'   2- Retrieves Selection object </span>
+<span class="keyword">    Set </span>SFDProdSel = SFDPrdEditor.Selection
+
+<span class="comment">'   3- Retrieves Part object </span>
+<span class="keyword">    Set </span>ObjPart = SFDPrdEditor.ActiveObject
+
+<span class="comment">'   4- Retrieves a SFD stiffener object</span>
+<span class="keyword">    Dim </span>ObjSfdStiffener<span class="keyword"> As </span>StrSfdStiffener
+    CreateStiffener ObjSfdStiffener
+    
+<span class="comment">'   5- Retrieves a SFD panel object.</span>
+    <span class="comment">'Get already created panel</span>
+<span class="keyword">    Set </span>RefObjSfdPanel = ObjPart.FindObjectByName(&quot;Panel.3&quot;)
+<span class="keyword">    Dim </span>ObjSfdPanel<span class="keyword"> As </span>SfdPanel
+    SFDProdSel.Add (RefObjSfdPanel)
+<span class="keyword">    Set </span>ObjSfdPanel = SFDProdSel.FindObject(&quot;CATIASfdPanel&quot;)
+
+<span class="comment">'   6- Creates Slot.</span>
+<span class="keyword">    Dim </span>ObjStrSlot<span class="keyword"> As </span>StrSlot
+    CreateSlot ObjSfdPanel, ObjSfdStiffener, ObjStrSlot
+    
+<span class="comment">'   7- Edits slot data.</span>
+    EditSlotData ObjStrSlot
+
+<span class="comment">'   8- Removes created slot from the panel</span>
+    RemoveSlot ObjSfdPanel
+
+<span class="comment">'   9- Updates the Part object.</span>
+    ObjPart.Update
+
+<span class="keyword">End Sub</span>
+
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create Slot</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   6.1- Retrieves StrSlots object and and create an slot with no data        </span>
+<span class="comment">'   6.2- Sets penetrating profile for slot</span>
+<span class="comment">'   6.3- sets slot parameters</span>
+<span class="comment">'   6.4- Retrieves SfdConnectionSet object from SfdPart object and updates the ConnectionSet</span>
+<span class="comment">'   6.5- Updates StrSlot object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateSlot(iObjSfdPanel<span class="keyword"> As </span>SfdPanel, iObjSfdStiffener<span class="keyword"> As </span>StrSfdStiffener, oObjStrSlot<span class="keyword"> As </span>StrSlot)
+
+<span class="comment">'   6.1- Retrieves StrSlots object and and create an slot with no data        </span>
+    <span class="comment">'Get StrSlots object</span>
+<span class="keyword">    Dim </span>ObjStrSlots<span class="keyword"> As </span>StrSlots
+<span class="keyword">    Set </span>ObjStrSlots = iObjSfdPanel.StrSlots
+    <span class="comment">'Create StrSlot</span>
+<span class="keyword">    Set </span>oObjStrSlot = ObjStrSlots.Add
+    
+<span class="comment">'   6.2- Sets penetrating profile for slot</span>
+    <span class="comment">'set penetrating element</span>
+<span class="keyword">    Dim </span>PenetratingElem<span class="keyword"> As </span>Reference
+<span class="keyword">    Set </span>PenetratingElem = ObjPart.CreateReferenceFromObject(iObjSfdStiffener)
+    oObjStrSlot.SetPenetratingProfile PenetratingElem
+    
+<span class="comment">'   6.3- sets slot parameters</span>
+    SetSlotParameters oObjStrSlot, iObjSfdPanel
+    
+<span class="comment">'   6.4- Retrieves SfdConnectionSet object from SfdPart object and updates the ConnectionSet</span>
+<span class="keyword">    Dim </span>ObjSfdPart<span class="keyword"> As </span>SfdPart
+    SFDProdSel.Add (ObjPart)
+<span class="keyword">    Set </span>ObjSfdPart = SFDProdSel.FindObject(&quot;CATIASfdPart&quot;)
+<span class="keyword">    Dim </span>ObjSfdConnectionSet<span class="keyword"> As </span>SfdConnectionSet
+<span class="keyword">    Set </span>ObjSfdConnectionSet = ObjSfdPart.GetConnectionsSet
+    ObjSfdConnectionSet.UpdateConnectionsSet UpdatedCnx, RemovedCnx, UnkStatusCnx
+    
+<span class="comment">'   6.5- Updates created Slot object</span>
+    ObjPart.UpdateObject oObjStrSlot
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'set Slot parameters</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   6.3.1- Retrieves StrDetailFeature object </span>
+<span class="comment">'   6.3.2- Sets Slot type    </span>
+<span class="comment">'   6.3.3- Sets slot name</span>
+<span class="comment">'   6.3.4- Retrieves list of parameters of impacted object </span>
+<span class="comment">'   6.3.5- Creates parameters and stores role of each parameter in an array</span>
+<span class="comment">'   6.3.6- Sets parameters</span>
+<span class="comment">'   6.3.7- Updates the ObjStrDetailFeature object</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>SetSlotParameters(iObjStrSlot<span class="keyword"> As </span>StrSlot, iObjSfdPanel<span class="keyword"> As </span>SfdPanel)
+<span class="comment">'   6.3.1- Retrieves StrDetailFeature object </span>
+<span class="keyword">    Dim </span>ObjStrDetailFeature<span class="keyword"> As </span>StrDetailFeature
+<span class="keyword">    Set </span>ObjStrDetailFeature = iObjStrSlot.StrDetailFeature
+
+<span class="comment">'   6.3.2- Sets Slot type    </span>
+    ObjStrDetailFeature.Type = &quot;RECT&quot;
+
+<span class="comment">'   6.3.3- Sets slot name</span>
+    ObjStrDetailFeature.FeatureName = &quot;RECT_UNI_WT&quot;
+    
+<span class="comment">'   6.3.4- Retrieves list of parameters of impacted object </span>
+<span class="keyword">    Set </span>ObjPartParameters = ObjPart.Parameters
+    <span class="comment">'parameters will be aggregated under impacted </span>
+    <span class="comment">'object(here impacted object is iObjSfdPanel)</span>
+<span class="keyword">    Set </span>HBParameters = ObjPartParameters.SubList(iObjSfdPanel, True)
+
+<span class="comment">'   6.3.5- Creates parameters and stores role of each parameter in an array</span>
+<span class="keyword">    Set </span>DBB = HBParameters.CreateDimension(&quot;DBB&quot;, &quot;LENGTH&quot;, &quot;300&quot;)
+<span class="keyword">    Set </span>DR = HBParameters.CreateDimension(&quot;DR&quot;, &quot;LENGTH&quot;, &quot;200&quot;)
+<span class="keyword">    Set </span>DL = HBParameters.CreateDimension(&quot;DL&quot;, &quot;LENGTH&quot;, &quot;200&quot;)
+<span class="keyword">    Set </span>DTT = HBParameters.CreateDimension(&quot;DTT&quot;, &quot;LENGTH&quot;, &quot;50&quot;)
+    <span class="comment">'Define parameter roles in an array</span>
+<span class="keyword">    Dim </span>ParamRoles(3)<span class="keyword"> As </span>Variant
+    ParamRoles(1) = &quot;DBB&quot;
+    ParamRoles(2) = &quot;DR&quot;
+    ParamRoles(3) = &quot;DL&quot;
+    ParamRoles(0) = &quot;DTT&quot;
+
+<span class="comment">'   6.3.6- Sets parameters</span>
+    ObjStrDetailFeature.SetParameters HBParameters, ParamRoles
+    
+<span class="comment">'   6.3.7- Updates the ObjStrDetailFeature object</span>
+    ObjStrDetailFeature.Update
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Edit slot data </span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   7.1- Retrieves StrDetailFeature object using created slot</span>
+<span class="comment">'   7.2- Retrieves slot parameters </span>
+<span class="comment">'   7.3- Changes the slot parameter value</span>
+<span class="comment">'   7.4- Updates the connection coordinate and visualiztion for slot</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>EditSlotData(iObjStrSlot<span class="keyword"> As </span>StrSlot)
+<span class="comment">'   7.1- Retrieves StrDetailFeature object using created slot</span>
+<span class="keyword">    Dim </span>ObjStrDetailFeature<span class="keyword"> As </span>StrDetailFeature
+<span class="keyword">    Set </span>ObjStrDetailFeature = iObjStrSlot.StrDetailFeature
+
+<span class="comment">'   7.2- Retrieves slot parameters </span>
+<span class="keyword">    Dim </span>SlotParameters<span class="keyword"> As </span>StrParameters
+<span class="keyword">    Set </span>SlotParameters = ObjStrDetailFeature.GetParameters
+
+<span class="comment">'   7.3- Changes the slot parameter value</span>
+<span class="keyword">    Dim </span>DBBParameter<span class="keyword"> As </span>Parameter
+<span class="keyword">    Set </span>DBBParameter = SlotParameters.Item(1)
+    DBBParameter.ValuateFromString(&quot;500mm&quot;)
+
+<span class="comment">'   7.4- Updates the connection coordinate and visualiztion for slot</span>
+    ObjStrDetailFeature.Update
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Remove the slot</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'     8.1- Retrieves StrSlots object</span>
+<span class="comment">'     8.3- Removes the first slot</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>RemoveSlot (iObjSfdPanel<span class="keyword"> As </span>SfdPanel)
+<span class="comment">'   8.1- Retrieves StrSlots object</span>
+<span class="keyword">    Dim </span>ObjStrSlots<span class="keyword"> As </span>StrSlots
+<span class="keyword">    Set </span>ObjStrSlots = iObjSfdPanel.StrSlots
+    
+<span class="comment">'   8.2- Removes the first slot</span>
+<span class="keyword">    Dim </span>ObjStrSlot<span class="keyword"> As </span>StrSlot
+<span class="keyword">    Set </span>ObjStrSlot = ObjStrSlots.Item(1)
+    ObjStrSlots.Remove (ObjStrSlot)
+    
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Create a stiffener</span>
+<span class="comment">'</span>
+<span class="comment">''Steps</span>
+<span class="comment">'   4.1- Retrieves a SFD panel(&quot;panel.1&quot;) object</span>
+<span class="comment">'   4.2- Retrieves the StrSfdStiffeners object from panel. Then AddStiffener method from object StrSfdStiffeners </span>
+<span class="comment">'        will create a new empty stiffener.</span>
+<span class="comment">'   4.3- Set different properties of the stiffener like material. Retrieve the StrMaterialMngt object from StrSfdStiffener</span>
+<span class="comment">'        object and set the material for the stiffener using SetMaterial method.</span>
+<span class="comment">'   4.4- To set the category retrieve the StrCategoryMngt object from StrSfdStiffener object and set category using </span>
+<span class="comment">'        SetCategory method.</span>
+<span class="comment">'   4.5- Sets the ProfileType property of the stiffener to 5 (here 5 </span>
+<span class="comment">'        means profile is created with the intersection of two surfaces).</span>
+<span class="comment">'   4.6- Retrieves the StrSectionMngt object from the created stiffener object and sets the different section </span>
+<span class="comment">'        parameters like section name, anchor point, web orientation, flange orientation.</span>
+<span class="comment">'   4.7- Retrieves the StrProfileLimitMngt object from the created stiffener object and sets the Start limit </span>
+<span class="comment">'        and End limit of the stiffener to the panel.</span>
+<span class="comment">'   4.8- Retrieves the StrProfileSurSurf object from the created stiffener object and sets two surfaces which are </span>
+<span class="comment">'        intersecting with each other. At the intersection of these two surfaces stiffener will be created.   </span>
+<span class="comment">'   4.9- Updates the created stiffener. </span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span>CreateStiffener (oObjSfdStiffener<span class="keyword"> As </span>StrSfdStiffener)
+<span class="comment">'   4.1- Retrieves a SFD panel(&quot;panel.1&quot;) object</span>
+<span class="keyword">    Set </span>RefSfdPanel = ObjPart.FindObjectByName(&quot;Panel.1&quot;)
+<span class="keyword">    Dim </span>ObjSfdPanel<span class="keyword"> As </span>SfdPanel
+    SFDProdSel.Add RefSfdPanel
+<span class="keyword">    Set </span>ObjSfdPanel = SFDProdSel.FindObject(&quot;CATIASfdPanel&quot;)
+    
+<span class="comment">'   4.2- Retrieves the StrSfdStiffeners object from panel. Then AddStiffener method from object StrSfdStiffeners </span>
+<span class="comment">'        will create a new empty stiffener.</span>
+    <span class="comment">'Get StrSfdStiffeners object</span>
+<span class="keyword">    Dim </span>ObjSfdStiffeners<span class="keyword"> As </span>StrSfdStiffeners
+<span class="keyword">    Set </span>ObjSfdStiffeners = ObjSfdPanel.StrSfdStiffeners
+    <span class="comment">'Add stiffener</span>
+<span class="keyword">    Set </span>oObjSfdStiffener = ObjSfdStiffeners.AddStiffener
+    
+<span class="comment">'   4.3- Set different properties of the stiffener like material. Retrieve the StrMaterialMngt object from StrSfdStiffener</span>
+<span class="comment">'        object and set the material for the stiffener using SetMaterial method.</span>
+    <span class="comment">'Get StrMaterialMngt object</span>
+<span class="keyword">    Dim </span>ObjMaterialMngt<span class="keyword"> As </span>StrMaterialMngt
+<span class="keyword">    Set </span>ObjMaterialMngt = oObjSfdStiffener.StrMaterialMngt
+    <span class="comment">'Set material of the stiffener</span>
+    ObjMaterialMngt.SetMaterial (&quot;Steel A42&quot;)
+    
+<span class="comment">'   4.4- To set the category retrieve the StrCategoryMngt object from StrSfdStiffener object and set category using </span>
+<span class="comment">'        SetCategory method.</span>
+    <span class="comment">'Get StrCategoryMngt object</span>
+<span class="keyword">    Dim </span>ObjStrCategoryMngt<span class="keyword"> As </span>StrCategoryMngt
+<span class="keyword">    Set </span>ObjStrCategoryMngt = oObjSfdStiffener.StrCategoryMngt
+    <span class="comment">'Set category of the stiffener</span>
+    ObjStrCategoryMngt.SetCategory &quot;SldStiffener&quot;
+
+<span class="comment">'   4.5- Sets the ProfileType property of the stiffener to catStrProfileModeSurfSurf (here catStrProfileModeSurfSurf </span>
+<span class="comment">'        means profile is created with the intersection of two surfaces).</span>
+    <span class="comment">'Set type of the stiffener </span>
+    oObjSfdStiffener.ProfileType = catStrProfileModeSurfSurf
+    
+<span class="comment">'   4.6- Retrieves the StrSectionMngt object from the created stiffener object and sets the different section </span>
+<span class="comment">'        parameters like section name, anchor point, web orientation, flange orientation.</span>
+    <span class="comment">'Get StrSectionMngt object</span>
+<span class="keyword">    Dim </span>ObjStrSectionMngt<span class="keyword"> As </span>StrSectionMngt
+<span class="keyword">    Set </span>ObjStrSectionMngt = oObjSfdStiffener.StrSectionMngt
+    <span class="comment">'Set different section parameters</span>
+    ObjStrSectionMngt.SetSectionName (&quot;WT18x179.5&quot;)
+    ObjStrSectionMngt.AnchorPoint = &quot;catStrTopCenter&quot;
+    ObjStrSectionMngt.WebOrientation = 1
+    ObjStrSectionMngt.FlangeOrientation = 1
+    
+<span class="comment">'   4.7- Retrieves the StrProfileLimitMngt object from the created stiffener object and sets the Start limit </span>
+<span class="comment">'        and End limit of the stiffener to the panel.</span>
+    <span class="comment">'Get StrProfileLimitMngt object</span>
+<span class="keyword">    Dim </span>ObjStrProfileLimitMngt<span class="keyword"> As </span>StrProfileLimitMngt
+<span class="keyword">    Set </span>ObjStrProfileLimitMngt = oObjSfdStiffener.StrProfileLimitMngt
+    <span class="comment">'set the profile limits</span>
+<span class="keyword">    Set </span>Manager = CATIA.ActiveEditor.GetService(&quot;RfgService&quot;)
+<span class="keyword">    Set </span>ObjStartLimit = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.60&quot;)
+<span class="keyword">    Set </span>StartLimit = ObjPart.CreateReferenceFromObject(ObjStartLimit)
+    ObjStrProfileLimitMngt.SetLimitingObject 1, StartLimit
+<span class="keyword">    Set </span>ObjEndLimit = Manager.GetReferencePlane(ObjPart, 2, &quot;CROSS.110&quot;)
+<span class="keyword">    Set </span>EndLimit = ObjPart.CreateReferenceFromObject(ObjEndLimit)
+    ObjStrProfileLimitMngt.SetLimitingObject 2, EndLimit
+
+<span class="comment">'   4.8- Retrieves the StrProfileSurSurf object from the created stiffener object and sets two surfaces which are </span>
+<span class="comment">'        intersecting with each other. At the intersection of these two surfaces stiffener will be created.   </span>
+    <span class="comment">'Get StrProfileSurfSurf object</span>
+<span class="keyword">    Dim </span>ObjStrProfileSurfSurf<span class="keyword"> As </span>StrProfileSurfSurf
+<span class="keyword">    Set </span>ObjStrProfileSurfSurf = oObjSfdStiffener.StrProfileSurfSurf
+    
+<span class="keyword">    Dim </span>DMS<span class="keyword"> As </span>Reference
+<span class="keyword">    Set </span>DMS = ObjSfdPanel.GetDelimitedSupport
+    ObjStrProfileSurfSurf.FirstSurface = DMS
+<span class="keyword">    Set </span>ObjWebSupport = Manager.GetReferencePlane(ObjPart, 3, &quot;LONG.-4&quot;)
+<span class="keyword">    Set </span>WebSupport = ObjPart.CreateReferenceFromObject(ObjWebSupport)
+    ObjStrProfileSurfSurf.SecondSurface = WebSupport
+   
+<span class="comment">'   4.9- Updates the created stiffener. </span>
+    ObjPart.UpdateObject oObjSfdStiffener
+
+<span class="keyword">End Sub</span>
+
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="comment">'Searches a product and open it.</span>
+<span class="comment">''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''</span>
+<span class="keyword">Sub </span><strong>OpenProduct</strong>(byVal prdName as String, SFDPrdEditor<span class="keyword"> As </span>Editor)
+
+    <span class="comment">'Get the Search Service.</span>
+    <span class="keyword">Set </span>oSearchService = CATIA.GetSessionService(&quot;Search&quot;)
+    <span class="keyword">Dim</span> oDBSearch <span class="keyword">As</span> DatabaseSearch 
+    <span class="keyword">Set</span> oDBSearch = oSearchService.DatabaseSearch
+    oDBSearch.BaseType = &quot;VPMReference&quot;
+    <span class="comment">' To retrieve the product by its Title, use V_Name attribute</span>
+    <span class="comment">' To retrieve the product by its Name, use PLM_ExternalID attribute</span>
+    oDBSearch.AddEasyCriteria &quot;V_Name&quot;, prdName
+    oSearchService.Search
+    <span class="comment">'Retrieve the first entity.</span>
+    <span class="keyword">Dim</span> oEntity <span class="keyword">As</span> PLMEntity 
+    <span class="keyword">Set</span> oEntity = oDBSearch.Results.Item(1)
+    <span class="comment">'Get the PLMOpen service &amp; Open the first retrieved entity.</span>
+    <span class="keyword">Dim</span> oPLMOpenService <span class="keyword">As</span> PLMOpenService
+    <span class="keyword">Set </span>oPLMOpenService = CATIA.GetSessionService(&quot;PLMOpenService&quot;)
+    <span class="comment">'Get the editor.</span>
+    oPLMOpenService.PLMOpen oEntity , SFDPrdEditor
+    
+<span class="keyword">End Sub</span>
+</pre>
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

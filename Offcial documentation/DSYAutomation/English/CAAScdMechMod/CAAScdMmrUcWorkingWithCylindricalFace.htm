@@ -1,0 +1,330 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Working with Cylindrical Face</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table>
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Working with Cylindrical Face</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates working with Cylindrical Face
+						<span class="style2">and a Sketch Based Shape. The context 
+						is creating a circular pattern of a Sketch Based Shape along 
+						a cylindrical face.</span></p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>Launch CATIA</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdMmrUcWorkingWithCylindricalFaceSource.htm">
+						CAAScdMmrUcWorkingWithCylindricalFaceSource.htm</a></span></p><span class="run-in">
+						</span></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjSelection.htm">Selection Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrTocPart.htm">Part Object Model Map</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="indented">
+	<tbody>
+	<tr>
+		<td>
+		<p>This use case can be divided in 4 steps</p>
+		<ol>
+			<li><a href="#Step1">Creates 3DShape with Geometries</a></li>
+			<li><a href="#Step2">Selects and Retrieves Sketch Based Shape</a></li>
+			<li><a href="#Fig.3">Selects and Retrieves Cylindrical Face</a></li>
+			<li><a href="#Step4">Creates Circular Pattern</a></li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Creates 3DShape with Geometries</strong></p>
+			<pre class="code">... 
+   <span class="keyword">Dim</span> oPart <span class="keyword">As</span> Part
+   <strong>CreatePadsWithCircularShape</strong> oPart
+...</pre>
+			<p>The <em>CreatePadsWithCircularShape</em> sub routine creates a new 
+			3DShape with geometry as shown in the following [<a href="#Fig.1">Fig.1</a>].
+			</p>
+			<table>
+				<caption><a name="Fig.1"></a>Fig.1: 3DShape with Two Circular Pads</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="3DShape with Two Circular Pads" src="CAAScdMmrUcWorkingWithCylindricalFace_in.jpg" width="478" height="334"/>-</td>
+				</tr>
+			</tbody>
+			</table>
+			<p><code>oPart</code> is the<a href="CAAMmrObjPart.htm"> 
+			Part Object </a>of the 3D Shape, the object aggregating all the objects 
+			making up the 3D shape, whose <code>Pad.1</code> and <code>Pad.2</code> 
+			are used to create the circular pattern. </p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Selects and Retrieves Sketch 
+			Based Shape</strong></p>
+			<p>We then retrieve Selection object from active editor</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oObjSelection
+<span class="keyword">Set</span> oObjSelection = CATIA.ActiveEditor.<strong>Selection</strong>
+...</pre>
+			<p>A call to <em>Selection</em> Property of the Active Editor returns
+			<code>oObjSelection</code>, a <em>Selection</em> object. It is significant 
+			to note here that we haven't declared a type for <code>oObjSelection</code> 
+			(as for several other variables, further ahead in this macro). The section 
+			&quot;Virtual Function Table Compatibility&quot; in the technical article &quot;About 
+			Automation Languages, Debug, and Compatibility&quot; [<a href="#References">1</a>] 
+			provides an explanation for why these variables are not typed. </p>
+			<p>Now we prompts the user to select the Sketch Based Shape, 
+			a <em>SketchBasedShape</em> type object to create circular pattern 
+			on cylindrical face .</p>
+			<pre class="code">...
+oInputObjectType(0) = &quot;SketchBasedShape&quot;
+Status = oObjSelection.<strong>SelectElement</strong>(oInputObjectType, &quot;Select the shape to pattern&quot;, False)
+...</pre>
+			<p>&quot;SketchBasedShape&quot; is appended to an array (<code>oInputObjectType</code>), 
+			which now represents the select criteria. </p>
+			<p>A call to <em>SelectElement</em> method of the <em>Selection</em> 
+			object, <code>oObjSelection</code> runs an interactive Selection command 
+			and waits for the selection of the Sketch Based Shape element. </p>
+			<p>Next step retrieves a <code>Shape</code> from the Selection Object.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oSelectedShape <span class="keyword">As</span> Shape
+<span class="keyword">Set</span> oSelectedShape = oObjSelection.<strong>Item</strong>(1).Value
+
+MsgBox (&quot;Selected SketchBasedShape Name :&quot;) + oSelectedShape.Name
+...</pre>
+			<p>A call to Item on <code>oObjSelection</code> retrieves
+			<code>oSelectedShape</code> object of the Shape. </p>
+			<p>Then we display the <code>Shape</code> object name using
+			<em>Name</em> property of <code>Shape</code> object, <code>oSelectedShape</code>.
+			</p>
+			<table>
+				<caption><a name="Fig.2"></a>Fig. 2: Selection of SketchBasedShape</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Selection of SketchBasedShape" src="CAAScdMmrUcWorkingWithCylindricalFace_2.jpg" width="449" height="300"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>In this step we select the Sketch Based Shape of the pad2 this will 
+			be used as pattern shape. Above [<a href="#Fig.2">Fig.2</a>] shows the 
+			section of SketchBasedShape (highlighted in blue) object. </p>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Select and Retrieves Cylindrical 
+			Face</strong>.</p>
+			<p>Before we make a new selection we need to clear the 
+			selection object. </p>
+			<pre class="code">...
+oObjSelection.Clear		
+..</pre>
+			<p>A <em>Clear</em> method of <code>Selection</code> object,
+			<code>oObjSelection</code> clears the previously selected object (<code>Shape</code> 
+			object) from this <code>Selection</code> object.</p>
+			<p>Next we prompts the user to select the Cylindrical face, 
+			a <em><strong>CylindricalFace</strong></em> type object</p>
+			<pre class="code">...
+oInputObjectType(0) = &quot;CylindricalFace&quot;
+Status = oObjSelection.<strong>SelectElement</strong>(oInputObjectType, &quot;Select the neutral face&quot;, False)
+...</pre>
+			<p>&quot;CylindricalFace&quot; type is appended to an array (<code>oInputObjectType</code>), 
+			which now represents the select criteria. </p>
+			<p>A call to <em>SelectElement</em> method of the <em>Selection</em> 
+			object, <code>oObjSelection</code> runs an interactive Selection command 
+			and waits for the selection of the Cylindrical Face element. </p>
+			<p>Next step retrieves a CylindricalFace from the Selection Object.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oSelectedCylindricalFace<span class="keyword"> As</span> CylindricalFace
+<span class="keyword">Set</span> oSelectedCylindricalFace= oObjSelection.<strong>Item</strong>(1).Value
+
+MsgBox (&quot;Selected CylindricalFace Name :&quot;) + oSelectedCylindricalFace.Name
+...</pre>
+			<p>A call to Item on <code>oObjSelection</code> retrieves
+			<code>oSelectedCylindricalFace</code> object of the <em>CylindricalFace</em> 
+			.</p>
+			<p>Then we display the <em>CylindricalFace</em> object 
+			name using <em>Name</em> property of <code>Shape</code> object,
+			<code>oSelectedCylindricalFace</code>.</p>
+			<table>
+				<caption><a name="Fig.3"></a>Fig. 3: Selection of Cylindrical Face</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Selection of Cylindrical Face" src="CAAScdMmrUcWorkingWithCylindricalFace_3.jpg" width="734" height="325"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>In this step we have selected <em>CylindricalFace</em> of the Pad1 
+			on which pattern will be created. above [<a href="#Fig.3">Fig.3</a>] 
+			shows selected object <em>CylindricalFace </em>(highlighted in blue) 
+			of the Pad1.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Creates Circular Pattern</strong></p>
+			<p>For creation of circular pattern we need Rotation Center so we create 
+			first reference from Generic Naming label</p>
+			<p>Rotation Center is the point or vertex that specifies the pattern 
+			center of rotation </p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oRotationCenter <span class="keyword">As</span> Reference
+<span class="keyword">Set</span> oRotationCenter = oPart.<strong>CreateReferenceFromName</strong>(&quot;&quot;)
+...</pre>
+			<p>A <em>CreateReferenceFromName</em> method of the Part 
+			object creates Reference from the generic naming label. here we provide 
+			an empty string (&quot;&quot;) since we do not want any specific reference.</p>
+			<p>Now we create actual circular pattern with selected 
+			Shape object, <code>oSelectedShape</code> as pattern, on selected CylindricalFace,
+			<code>oSelectedCylindricalFace</code>.</p>
+			<pre class="code">...
+Set CircPattern = oPart.ShapeFactory.<strong>AddNewCircPattern</strong>(oSelectedShape, 1, 4, 20#, 45#, 1, 4, oRotationCenter, oSelectedCylindricalFace, True, 0#, True)   
+
+oPart.Update
+...</pre>
+			<p>A <code>AddNewCircPattern</code> method of the <code>
+			ShapeFactory</code> creates a circular pattern on selected <em>CylindricalFace</em> 
+			(<code>oSelectedCylindricalFace</code>) with selected <em>Shape</em> 
+			(<code>oSelectedShape</code>) as input pattern object.</p>
+			<p>The arguments for the creation of circular pattern are 
+			as follows </p>
+			<ul>
+				<li><code>oSelectedShape</code>, a shape to be copied 
+				by the circular pattern, in this case we have selected <em>SketchBasedShape</em> 
+				(<code>oSelectedShape</code>).</li>
+				<li>1, number of times <code>oSelectedShape</code> will 
+				be copied along pattern radial direction (in this it will not add 
+				in radial direction since number is 1).</li>
+				<li>4, number of times <code>oSelectedShape</code> will 
+				be copied along pattern angular direction (as we can see in the 
+				following <a href="#Fig.4">Fig.4</a>).</li>
+				<li>20,distance that will separate two consecutive copies 
+				in the pattern along its radial direction (in this case it will 
+				not be applicable).</li>
+				<li>45,angle that will separate two consecutive copies 
+				in the pattern along its angular direction.</li>
+				<li>1, Specifies the position of the original shape
+				<code>oSelectedShape</code> among its copies along the radial direction.</li>
+				<li>4, Specifies the position of the original shape
+				<code>oSelectedShape</code> among its copies along the angular direction.</li>
+				<li><code>oRotationCenter</code>, the point or vertex
+				that specifies the pattern center of rotation.</li>
+				<li><code>oSelectedCylindricalFace</code>, the line 
+				or linear edge that specifies the axis around which instances will 
+				be rotated relative to each other The following.</li>
+				<li>True, boolean type, True indicates that Item 
+				to Duplicate are copied in the direction of the natural orientation 
+				of Rotation Axis.</li>
+				<li>0,The angle applied to the direction iRotationAxis 
+				prior to applying the pattern. The original shape iShapeToCopy is 
+				used as the rotation center. Nevertheless, the copied shapes themselves 
+				are not rotated. This allows the definition of a circular pattern 
+				relatively to existing geometry, but not necessarily parallel to 
+				it.</li>
+				<li>True, a boolean type, the instances of Item 
+				to duplicate copied by the pattern should be kept parallel to each 
+				other (True).</li>
+			</ul>
+			<p>Then we update the Part object (<code>oPart</code>) 
+			using call <em>Update</em> method. </p>
+			<table>
+				<caption><a name="Fig.4"></a>Fig. 4: Circular Pattern</caption>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Circular Pattern" src="CAAScdMmrUcWorkingWithCylindricalFace_out.jpg" width="468" height="326"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<p>The above [<a href="#Fig.4">Fig.4</a>] shows the circular pattern 
+			of SketchBasedShape generated along cylindrical face. The newly created 
+			Pattern highlighted in blue.</p>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+<h2><a name="References"></a>References</h2>
+<div id="ref">
+<table class="reference">
+	<tbody>
+	<tr>
+		<td>[<a name="1"></a>1]</td>
+		<td><a href="../CAAScdInfInfrastructure/CAAInfHints.htm">About 
+		Microsoft Automation Languages, Debug, and Compatibility</a></td>
+	</tr>
+</tbody>
+</table>
+</div>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

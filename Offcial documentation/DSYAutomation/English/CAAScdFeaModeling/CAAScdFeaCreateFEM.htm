@@ -1,0 +1,198 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Creating a FEM rep and managing its associated shapes</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tr>
+		<td class="DocHeader1">
+			<h1>Creating a FEM rep and managing its associated shapes</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="DocHeader3" style="width: 1807px">
+		<table class="DocHeaderIntro">
+			<tr>
+				<td class="Intro1">
+					<p class="header">This use case primarily 
+						focuses on the methodology to create a FEM representation 
+						and to manage associated shapes.</p>
+					<hr class="header" />
+				</td>
+			</tr>
+			<tr>
+				<td class="Intro2"><span class="run-in">Before you begin:</span> 
+					Note that:<ul>
+						<li>You should first launch CATIA and import the
+						<code><div class=vb_sample_data>CAAScdFeaProductWithoutFEM.3dxml</div></code> file 
+						supplied in the folder <code>
+						InstallRootFolder\CAADoc\Doc\English\CAAScdFeaModeling\samples\</code> 
+						where <code>InstallRootFolder</code> is the folder 
+						where the API CD-ROM is installed.</li>
+						</ul>
+					<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdFeaCreateFEMSource.htm">CAAScdFeaCreateFEMSource.htm</a></span></p>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<table class="indented">
+	<tr>
+		<td>
+		<p>This use case can be divided in seven steps:</p>
+		<ol>
+			<li><a href="#Step1">Searches and opens model which is named as &quot;CAAScdFeaProductWithoutFEM&quot;</a></li>
+			<li><a href="#Step2">Retrieves the root product</a></li>
+			<li><a href="#Step3">Retrieves the PartBody</a></li>
+			<li><a href="#Step4">Creates the FEM representation and retrieve its root object</a></li>
+			<li><a href="#Step5">Associates the PartBody with the FEM representation</a></li>
+			<li><a href="#Step6">Checks if the FEM representation have at least one associated shape</a></li>
+			<li><a href="#Step7">Removes an associated shapes</a></li>			
+		</ol>
+		</td>
+	</tr>
+</table>
+<table class="table1">
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p><strong><a name="Step1"></a>Searches and opens model which is named as 
+			&quot;CAAScdFeaProductWithoutFEM&quot;</strong></p>
+			<p>As a first step, the UC retrieves the model named &quot;CAAScdFeaProductWithoutFEM&quot;, loads it, and returns object of the Editor. </p>
+<pre class="code">... 
+<span class="keyword">Dim </span>myEditor<span class="keyword"> As </span>Editor
+OpenProduct myEditor
+...</pre>
+			<p>The function <strong><code>OpenProduct</code></strong> returns
+			<strong><code>MyEditor</code></strong>, an Editor object. After searching 
+			and opening of &quot;CAAScdFeaProductWithoutFEM&quot; product from underlying database the 
+			current active editor is returned in <strong><code>MyEditor</code></strong>.</p>
+			</li>
+			<li>
+			<p><strong><a name="Step2"></a>Retrieves the root product</strong></p>
+			<p>As a next step, the UC retrieves the root product object from the returned editor.</p>
+<pre class="code"> ...
+<span class="keyword">Dim</span> MyRootOcc <span class="keyword">As</span> VPMRootOccurrence
+<span class="keyword">Set</span> MyRootOcc = MyEditor.ActiveObject
+
+<span class="keyword">Dim</span> MyRootProduct <span class="keyword">As </span>VPMReference
+<span class="keyword">Set</span> MyRootProduct = MyRootOcc.PLMEntity
+ ...
+</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step3"></a>Retrieves the PartBody</strong></p>
+			<p>In this step UC retrieves the main body of the 3D shape aggregated by the root product.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> MyContext <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> MyContext = MyEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> MyPart <span class="keyword">As</span> Part
+<span class="keyword">Dim</span> MyPartInstance <span class="keyword">As</span> VPMRepInstance
+<span class="keyword">Dim</span> MyBody <span class="keyword">As</span> Body
+<span class="keyword">For Each</span> MyEntity <span class="keyword">In</span> MyContext.EditedContent
+     <span class="keyword">Dim</span> MyRef <span class="keyword">As</span> VPMReference
+     <span class="keyword">Set</span> MyRef = MyEntity
+     
+     <span class="keyword">Dim</span> MyReps <span class="keyword">As</span> VPMRepInstances
+     <span class="keyword">Set</span> MyReps = MyRef.RepInstances
+     
+     <span class="keyword">For Each</span> MyRep <span class="keyword">In</span> MyReps
+         <span class="keyword">Dim</span> MyRepRef <span class="keyword">As</span> VPMRepReference
+         <span class="keyword">Set</span> MyRepRef = MyRep.ReferenceInstanceOf
+         <span class="keyword">Dim</span> attr <span class="keyword">As String</span>
+         attr = MyRepRef.GatAttributValue(&quot;V_discipline&quot;)
+         
+         <span class="keyword">If</span> (attr = &quot;Design&quot;) <span class="keyword">Then</span>
+             <span class="keyword">Set</span> MyPart = MyRepRef.GetItem(&quot;Part&quot;)
+             <span class="keyword">Set</span> MyPartInstance = MyRep
+             <span class="keyword">Set</span> MyBody = MyPart.MainBody
+         <span class="keyword">End If</span>
+     <span class="keyword">Next</span>  
+<span class="keyword">Next</span>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step4"></a>Creates the FEM representation and retrieve its root object</strong></p>
+			<p>In this step UC creates a new FEM representation object. To perform the creation,
+			a simulation representation factory has to be retrieved on the reference object which 
+			will aggregate the FEM representation.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> MyPrdRepFactory <span class="keyword">As</span> SimPrdRepFactory
+<span class="keyword">Set</span> MyPrdRepFactory = MyRootProduct.GetItem(&quot;SimPrdRepFactory&quot;)
+<span class="keyword">Dim</span> MyFemRepRef <span class="keyword">As</span> VPMRepReference
+<span class="keyword">Set</span> MyFemRepRef = MyPrdRepFactory.CreatePrdRep(&quot;FEM&quot;)
+<span class="keyword">Dim</span> MyFemRepRoot <span class="keyword">As</span> SimFemRoot
+<span class="keyword">Set</span> MyFemRepRoot = MyFemRepRef.GetItem(&quot;SimFemRoot&quot;)
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step5"></a>Associates the PartBody with the FEM representation</strong></p>
+			<p>In this step UC appends the main body previously retrieved to the associated shapes 
+			of the FEM representation.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> MyProductService <span class="keyword">As</span> PLMProductService
+<span class="keyword">Set</span> MyProductService = MyEditor.GetService(&quot;PLMProductService&quot;)
+
+<span class="keyword">Dim</span> MyReference <span class="keyword">As</span> Reference
+<span class="keyword">Set</span> MyReference = MyPart.CreateReferenceFromObject(MyBody)
+<span class="keyword">Dim</span> MyLink <span class="keyword">As</span> AnyObject
+<span class="keyword">Set</span> MyLink = MyProductService.ComposeLink(MyRootOcc, MyPartInstance, MyReference)
+MyFemRepRoot.AddAssociatedRep MyLink
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step6"></a>Checks if the FEM representation have at least one 
+			associated shape</strong></p>
+			<p>In this step UC checks if the FEM representation has at least one associated shape.</p>
+<pre class="code">...
+<span class="keyword">Dim</span> bHasAnAssociatedRep <span class="keyword">As Boolean</span>
+bHasAnAssociatedRep = MyFemRepRoot.HasAnAssociatedRep
+<span class="keyword">If</span> (bHasAnAssociatedRep = False) <span class="keyword">Then</span>
+    MsgBox "Error while associating the PartBody to the FEM Rep!"
+    <span class="keyword">Exit Sub</span>
+<span class="keyword">End If</span>
+...</pre>
+			</li>
+			<li>
+			<p><strong><a name="Step7"></a>Removes an associated shapes</strong></p>
+			<p>In this step UC removes the main body previously retrieved from 
+			the associated shapes of the new FEM representation.</p>
+<pre class="code">...
+MyFemRepRoot.RemoveAssociatedRep MyLink
+bHasAnAssociatedRep = MyFemRepRoot.HasAnAssociatedRep
+<span class="keyword">If</span> (bHasAnAssociatedRep = True) <span class="keyword">Then</span>
+    MsgBox "Error while removing the associated shape from the FEM Rep!"
+    <span class="keyword">Exit Sub</span>
+<span class="keyword">End If</span>
+...</pre>
+			</li>
+	</ol>
+	</td>
+	</tr>
+</table>	
+
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="topictype" content="Uc" />
+<meta name="devlang" content="idl" />
+<meta name="devlang" content="idl" />
+<link rel="stylesheet" type="text/css" href="../CAADocStyleSheets/caav5.css"/>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocTocToc.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/DSDocHighlight.js">/* */</script>
+<script type="text/javascript" src="../CAADocJavaScript/submit.js">/* */</script>
+<title>Working with Rectilinear Edge</title>
+</head>
+
+<body onload="highlightSearchTerms();">
+
+<table class="table1">
+	<tbody>
+	<tr>
+		<td class="DocHeader3">
+		<table class="DocHeader">
+			<tbody>
+			<tr>
+				<td class="DocHeader1" colspan="2">
+				<h1>Working with Rectilinear Edge</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="DocHeader4" colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td class="DocHeader3">
+				<table class="DocHeaderIntro">
+					<tbody>
+					<tr>
+						<td class="Intro1">
+						<p class="header"><a name="hj-top"></a>This use case fundamentally 
+						illustrates about working with Rectilinear Edge. In this 
+						use case we learn how retrieve and use the RectilinearTriDimFeatEdge, 
+						RectilinearBiDimFeatEdge and RectilinearMonoDimFeatEdge.</p>
+						<hr class="header" /></td>
+					</tr>
+					<tr>
+						<td class="Intro2"><span class="run-in">Before you begin:</span> 
+						Note that:<ul>
+							<li>You should first launch CATIA.</li>
+							<li>The macro should essentially be launched from a 
+							Part Editor (meaning input data is always a PLM Product 
+							Representation Reference).</li>
+							<li>Product/Part editor must be active before launching 
+							the macro.</li>
+						</ul>
+						<p><span class="run-in">Where to find the macro:
+						<a href="CAAScdMmrUcWorkingWithRectilinearDimFeatEdgeSource.htm">
+						CAAScdMmrUcWorkingWithRectilinearDimFeatEdgeSource.htm</a></span></p><span class="run-in">
+						</span></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+				<td class="DocHeader2">
+				<table class="DocTopics">
+					<tbody>
+					<tr>
+						<td class="TopicsTitle">Related Topics</td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjEditor.htm">Editor Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="../CAAScdInfInfrastructure/CAAInfObjSelection.htm">Selection Object</a></td>
+					</tr>
+					<tr>
+						<td><a href="CAAMmrTocPart.htm">Part Object Model Map</a></td>
+					</tr>
+				</tbody>
+				</table>
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		</td>
+	</tr>
+</tbody>
+</table>
+<table class="table1">
+	<tbody>
+	<tr>
+		<td>
+		<ol class="task">
+			<li>
+			<p>Prolog</p>
+			<p>The macro begins with the <strong>WorkingWithRectilinearDimFeatEdge</strong> 
+			main subroutine. It typically begins with the following extract of code, 
+			which serves as a built-in &quot;error handling&quot; mechanism.</p>
+			<pre class="code"><span class="keyword">Sub</span><strong> WorkingWithRectilinearDimFeatEdge</strong>()
+
+<span class="keyword">On Error GoTo </span>ErrorSub
+...</pre>
+			<p>The first instruction means that when a method will throw an error, 
+			the macro will skip to the line named, <strong>ErrorSub</strong>. See the step
+			<a href="#Epilog">Epilog</a>.</p>
+			<p><code>WorkingWithRectilinearDimFeatEdge</code> subroutine firstly 
+			retrieves Part object from selection. Then we select and retrieve face 
+			on which user want to create hole. Next we select the rectilinear edge 
+			(RectilinearTriDimFeatEdge or RectilinearBiDimFeatEdge or RectilinearMonoDimFeatEdge). 
+			Then we create hole and set the hole properties and finally we set the 
+			direction of hole which is same as the selected rectilinear edge.</p>
+			</li>
+			<li>
+			<p>Here, we retrieve the current active Editor object to 
+			select PLM object</p>
+			<pre class="code">... 
+<span class="keyword">Dim</span> oCurrentActiveEditor <span class="keyword">As</span> <strong>Editor</strong>
+<span class="keyword">Set</span> oCurrentActiveEditor = CATIA.<strong>ActiveEditor</strong>
+...</pre>
+			<p>Return a <strong>Editor</strong> object from the Application object (CATIA) 
+			using the <strong>ActiveEditor </strong>method. </p>
+			</li>
+			<li>
+			<p>We then retrieve Selection object from active editor</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oObjSelection
+<span class="keyword">Set</span> oObjSelection = oCurrentActiveEditor.<strong>Selection</strong>
+...</pre>
+			<p>Return a <strong>Selection</strong> object from the Active Editor using <strong>
+			Selection</strong> method. It is significant to note here that we haven't 
+			declared a type for <code>oObjSelection</code> (as for several other 
+			variables, further ahead in this macro). The section &quot;Tips about VB 
+			and VBA&quot; in the technical article &quot;About VB, VBA, Debug, and Compatibility&quot; 
+			[] provides an explanation for why these variables are not typed.
+			</p>
+			</li>
+			<li>
+			<p>The selection object retrieved above is now updated 
+			with the selection criteria (&quot;Part&quot;). The following image shows 
+			sample Object from which user could select Part object (Representation).</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Part Updated" src="CAAScdMmrUcWorkingWithRectilinearDimFeatEdge_in.jpg" width="445" height="266"/></td>
+				</tr>
+			</tbody>
+			</table>
+			<pre class="code">...
+<span class="keyword">Dim</span> strStatus<strong> </strong><span class="keyword">As</span> String
+<span class="keyword">Dim</span> oInputObjectType(0)
+
+oInputObjectType(0) = &quot;Part&quot;
+strStatus = oObjSelection.<strong>SelectElement</strong>(<strong>oInputObjectType</strong>, &quot;Select a Part Element from spec tree or the 3D Viewer&quot;, False)
+...</pre>
+			<p>&quot;<strong><em>Part</em></strong>&quot; type is appended to 
+			an array (<code>oInputObjectType</code>), which now represents the select 
+			criteria. The selection object (<code>oObjSelection</code>) is then 
+			updated with this select criteria, with a call to <code>SelectElement</code> 
+			method. </p>
+			<p>At this stage, the application prompts an end user to 
+			select a <em>Part</em> from the spec tree or the 3D Viewer (second argument 
+			of the <code>SelectElement</code> method, represents the prompt message)</p>
+			<p>The last argument is false, indicating the end user 
+			will always be invited to select something in the spec tree or the 3D 
+			Viewer, though an entity (of the type set as filter in the selection 
+			criteria) has already been selected by the end-user.</p>
+			<p>Once the user does the selection, the application proceeds 
+			further.</p>
+			</li>
+			<li>
+			<p>Now that the user has made a selection in the spec tree 
+			or the 3D Viewer, the current step retrieves it (a <em><strong>Part</strong></em>) 
+			from the Selection Object which contains it.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oSelectedElement <span class="keyword">As</span> SelectedElement
+<span class="keyword">Set</span> oSelectedElement<strong> </strong> =  oObjSelection.<strong>Item</strong>(1)
+
+<span class="keyword">Dim</span> oPart <span class="keyword">As</span> <strong>Part</strong>
+<span class="keyword">Set</span> oPart = oSelectedElement<strong>.Value</strong>
+
+MsgBox (&quot;Selected Part Name :&quot;) + oPart.<strong>Name</strong>
+...</pre>
+			<p>A call to <code>SelectionObject::Item</code> at index 
+			1, on <code>oObjSelection</code> returns the selected entity, as a
+			<em>SelectedElement</em> type (<code>oSelectedElement</code>). </p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns <code>oPart</code>, a <em>Part</em> type representing the selection.</p>
+			<p>Then we display the <em>Part</em> object name using
+			<code>Part::Name</code>.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdMmrUcWorkingWithRectilinearDimFeatEdge_1.jpg" width="209" height="107"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Next we select and retrieve face on which user want 
+			to create hole. </p>
+			<p>Before new selection we need to clear the selection object. </p>
+			<pre class="code">...
+oObjSelection.Clear		
+..</pre>
+			<p>A call to <code>Selection::Clear</code> , on <code>oObjSelection</code> 
+			clears the previously selected object (Part) from this Selection object.</p>
+			<p>Then prompt the user to select the Face, a <em>Face</em> 
+			type object</p>
+			<pre class="code">...
+oInputObjectType(0) = &quot;Face&quot;
+Status = oObjSelection.<strong>SelectElement</strong>(oInputObjectType, &quot;Select the face to draft&quot;, False)
+...</pre>
+			<p>&quot;Face&quot; type is appended to an array (<code>oInputObjectType</code>), 
+			which now represents the select criteria. The selection object (<code>oObjSelection</code>) 
+			is then updated with this select criteria, with a call to <code>SelectElement</code> 
+			method. </p>
+			<p>At this stage, the application waits for an end user to select a 
+			face to draft from the spec tree or the 3D Viewer (second argument of 
+			the <code>SelectElement</code> method, represents the prompt message)</p>
+			<p>Now that the user has made a selection in the spec tree or the 3D 
+			Viewer, the current step retrieves it (a face) from the Selection Object 
+			which contains it.</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oFace <span class="keyword">As</span> Face
+<span class="keyword">Set</span> oFace = oObjSelection.<strong>Item</strong>(1).<strong>Value</strong>
+
+MsgBox (&quot;Selected Face Name :&quot;) + oFace.Name
+...</pre>
+			<p>A call to <code>SelectionObject::Item</code> at index 
+			1, on <code>oObjSelection</code> returns the selected entity, as a
+			<em>SelectedElement</em> type (<code>oSelectedElement</code>). </p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns <code>oFace</code>, a <em>Face</em> type representing the selection.
+			</p>
+			<p>Then we display the <em>face</em> object name using
+			<code>Face::Name</code>.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Prompt" src="CAAScdMmrUcWorkingWithRectilinearDimFeatEdge_2.jpg" width="641" height="381"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>Create hole on selected face</p>
+			<p>Next select Rectilinear Edge for hole direction.</p>
+			<p>Prompt the user to select the RectilinearTriDimFeatEdge 
+			or RectilinearBiDimFeatEdge or RectilinearMonoDimFeatEdge. </p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oEnabledObjectSelection(2)
+oEnabledObjectSelection(0) = &quot;RectilinearTriDimFeatEdge&quot;
+oEnabledObjectSelection(1) = &quot;RectilinearBiDimFeatEdge&quot;
+oEnabledObjectSelection(2) = &quot;RectilinearMonoDimFeatEdge&quot;
+Status = oObjSelection.<strong>SelectElement</strong>(oEnabledObjectSelection, &quot;Select the hole direction&quot;, False)
+...</pre>
+			<p>&quot; RectilinearTriDimFeatEdge&quot;, &quot;RectilinearBiDimFeatEdge&quot; and &quot;RectilinearMonoDimFeatEdge&quot; 
+			types are appended to an array (<code>oEnabledObjectSelection</code>), 
+			which now represents the select criteria. The selection object (<code>oObjSelection</code>) 
+			is then updated with this select criteria, with a call to <code>SelectElement</code> 
+			method. </p>
+			<p>At this stage, the application waits for an end user to select RectilinearTriDimFeatEdge 
+			or RectilinearBiDimFeatEdge or RectilinearMonoDimFeatEdge from the spec 
+			tree or the 3D Viewer (second argument of the <code>SelectElement</code> 
+			method, represents the prompt message)</p>
+			<p>Now create hole</p>
+			<pre class="code">...
+<span class="keyword">Dim</span> oHole <span class="keyword">As</span> Hole
+<span class="keyword">Set</span> oHole = oPart.ShapeFactory.<strong>AddNewHoleFromPoint</strong>(20#, -5.5, 1.07, oFace, 10#)
+...</pre>
+			<p>A call to <code>Part::ShapeFactory</code> , on <code>
+			oPart </code>returns the Factory object.</p>
+			<p>Next a call to <code>Factory::AddNewHoleFromPoint</code> 
+			create a hole <code>oHole</code>, a <em>Hole</em> type) on selected 
+			face.</p>
+			<p>Then we set the ThreadingMode and ThreadSide for 
+			the hole</p>
+			<pre class="code">...
+oHole.<strong>ThreadingMode</strong> = 1
+        
+oHole.<strong>ThreadSide</strong> = 0
+...</pre>
+			<p>A call to <code>Hole::ThreadingMode</code> sets the threading mode. 
+			In this case we are setting threading mode by giving 1 as enum 
+			value as an input.</p>
+			<p>Next as call to <code>Hole::ThreadSide</code> sets the thread side. 
+			In this case we are setting threading side by giving 0 as enum value 
+			as an input.</p>
+			<p>The user has made alrady selection in the spec tree or the 3D Viewer, 
+			the current step retrieves it (RectilinearTriDimFeatEdge or RectilinearBiDimFeatEdge 
+			or RectilinearMonoDimFeatEdge) from the Selection Object which contains 
+			it. Then set the hole direction.</p>
+			<pre class="code">...
+oHole.<strong>SetDirection</strong> oObjSelection.Item(1).Value
+...</pre>
+			<p>A call to <code>SelectionObject::Item</code> at index 
+			1, on <code>oObjSelection</code> returns the selected entity, as a
+			<em>SelectedElement</em> type (<code>oSelectedElement</code>). </p>
+			<p>Next a call to <code>SelectedElement::Value</code> on 
+			the selected entity <code>oSelectedElement</code> (retrieved above) 
+			returns a variant representing the RectilinearTriDimFeatEdge or RectilinearBiDimFeatEdge 
+			or RectilinearMonoDimFeatEdge type according to selection.</p>
+			<p>Next a call <code>Hole::SetDirection </code>sets the 
+			direction of hole with retrieved variant in above.</p>
+			<p>Then we update Part object</p>
+			<pre class="code">...
+oPart.<strong>Update</strong>
+...</pre>
+			<p>Then we update the Part object (<code>oPart</code>) 
+			using call <code>Part::Update</code>. After this call we can see the 
+			created line as shown in below image.</p>
+			<table>
+				<tbody>
+				<tr>
+					<td>
+					<img alt="Part Update" src="CAAScdMmrUcWorkingWithRectilinearDimFeatEdge_out.jpg" width="467" height="363"/></td>
+				</tr>
+			</tbody>
+			</table>
+			</li>
+			<li>
+			<p>We then save the changes.</p>
+			<pre class="code">...
+CATIA.GetSessionService(&quot;PLMPropagateService&quot;).<strong>Save</strong>
+...</pre>
+			<p>We next save this product/ Representation in the database. 
+			It is done with calls which occur in the following sequence</p>
+			<ul>
+				<li>A call to <code>Application::GetSessionService</code> 
+				on CATIA (an Application object, defined internally by VB) returns 
+				a <em>PLMPropagateService</em> object</li>
+				<li>The next call to <code>PLMPropagateService::Save</code> 
+				eventually saves this representation n the database.</li>
+			</ul>
+			</li>
+			<li>
+			<p><a name="Epilog"></a>Epilog</p>
+			<p>The following extract of code is primarily meant for 
+			error-handling purpose. Any run time error that the macro encounters 
+			results in the execution flow reaching this part of the code, and then 
+			terminating with a normal exit from subroutine scope.</p>
+			<pre class="code">...
+    <span class="keyword">GoTo</span> EndSub
+    
+ErrorSub:
+    MsgBox Err.Description
+
+EndSub:
+<span class="keyword">End Sub</span></pre>
+			</li>
+		</ol>
+		</td>
+	</tr>
+</tbody>
+</table>
+
+<script type="text/javascript">insertLinkToTop()</script>
+<!-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-comment-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
+<script type="text/javascript">insertCopyright();</script>
+
+</body>
+
+</html>

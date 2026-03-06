@@ -1,0 +1,582 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>PLMAccessIDLItf DatabaseSearch (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../PLMAccessIDLItf.htm" href="../PLMAccessIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "PLMAccessIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "DatabaseSearch"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> DatabaseSearch<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_DatabaseSearch_22557','DatabaseSearch','0');</script>
+<section id='maindesc'>
+<b><i> Interface representing a Search object.</i></b><br>
+
+ Interactively it corresponds to a tab page in the Search browser.
+ <p>
+ <br><b>Role</b>: Define the attribute criteria and trigger a Search in database.
+ <p>
+ Example of how to create a new DatabaseSearch from <script type="text/javascript"> activateLinkAnchor('CATIASearchService:','','CATIASearchService:') </script> <pre>
+ Dim aSearchSrv as SearchService
+ Set aSearchSrv = CATIA.GetSessionService("Search") 
+ Dim aDBSearch as DatabaseSearch
+ Set aDBSearch = aSearchSrv.DatabaseSearch
+ You can add the different criteria on this object to prepare your search.
+ Finally call 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchService','Search','CATIASearchService.Search') </script> to execute the search and bring the results. Note : Trying to get another DatabaseSearch on the same SearchService instance is not allowed. 
+ </pre>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#AllMinorVersions"><b>AllMinorVersions</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Specifies if search should return the All Minor version of an object.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#BaseType"><b>BaseType</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Sets the type of object to search for, the string must be an internal name of the type
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Condition"><b>Condition</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Sets the condition to use between attribute criteria
+ Applicable only for Extended mode.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Extension"><b>Extension</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Sets the extension type of object to search for, the string must be an internal name of the extension
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#LatestVersion"><b>LatestVersion</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Specifies if search should return the latest version of an object.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Mode"><b>Mode</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Sets the mode of the search
+ 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#PageCount"><b>PageCount</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Returns the total number of search fetch query calls required to retrieve all search results from the server.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Results"><b>Results</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Get the search results fetched till now.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SearchCount"><b>SearchCount</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Returns the total count of objects found matching the search criteria.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Title"><b>Title</b></a>
+</td><td  id='tdright'>  Sets the title of the tab in the search browser displaying results of this search
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#AddEasyCriteria"><b>AddEasyCriteria</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Add an attribute criteria to the query 
+ Applicable only in case of Easy mode, see enum 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AddExtendedCriteria"><b>AddExtendedCriteria</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Add an attribute criteria to the query 
+ Applicable only in case of Extended mode, see enum 
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AddExtendedRangeCriteria"><b>AddExtendedRangeCriteria</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Add an attribute criteria in form of range to the query.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AddPredefinedCriteria"><b>AddPredefinedCriteria</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Add a criteria With a PQ Abbreviation, e.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#NextPage"><b>NextPage</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Fetch the results of next page, these results are appended to the existing results.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetExpertExpression"><b>SetExpertExpression</b></a>
+</td><td  id='tdright'> 
+ <br><b>Role</b>: Set the expression to use for the search.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SortBy"><b>SortBy</b></a>
+</td><td  id='tdright'>  
+ <br><b>Role</b>: Sets the sort definition for search results.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="AllMinorVersions"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>AllMinorVersions</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iAllMinorVersions</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Specifies if search should return the All Minor version of an object.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLatestVersion</span></dt>
+   <dd> iAllMinorVersions = 1 : search will return All Minor versions
+ iAllMinorVersions = 0 : search BSF version only
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>AllMinorVersions criteria was successfully set <dd>  
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="BaseType"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>BaseType</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iBaseType</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Sets the type of object to search for, the string must be an internal name of the type
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iBaseType</span></dt>
+   <dd> Type of the object
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>Type was successfully set <dd>
+ <dt><code>E_INVALIDARG</code>Could not find the model type corresponding to the input type<dd>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="Condition"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Condition</span><span class='signature'>(<script type="text/javascript"> activateLink('SearchCondition','SearchCondition')</script> <span class='param'>iCondition</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Sets the condition to use between attribute criteria
+ Applicable only for Extended mode.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iCondition</span></dt>
+   <dd> 
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>Condition was successfully set <dd>
+ <dt><code>E_FAIL</code>Search mode is not Extended mode <dd>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="Extension"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Extension</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iExtension</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Sets the extension type of object to search for, the string must be an internal name of the extension
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iExtension</span></dt>
+   <dd> Extension of the base type
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>Extension was successfully set <dd>
+ <dt><code>E_FAIL</code>Could not find the model type corresponding to the input type or input type is not an extension <dd>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="LatestVersion"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>LatestVersion</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iLatestVersion</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Specifies if search should return the latest version of an object.  
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iLatestVersion</span></dt>
+   <dd> iLatestVersion = 1 : search will return the latest version
+ iLatestVersion = 0 : normal search
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>LatestVersion criteria was successfully set <dd>  
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="Mode"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Mode</span><span class='signature'>(<script type="text/javascript"> activateLink('SearchMode','SearchMode')</script> <span class='param'>iMode</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Sets the mode of the search
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iMode</span></dt>
+   <dd> Mode of the search, see enum 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchEnum','SearchMode','CATIASearchEnum.SearchMode') </script> 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>Mode was set correctly <dd>  
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="PageCount"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>PageCount</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Returns the total number of search fetch query calls required to retrieve all search results from the server.   
+ This call must be done after 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchService','Search','CATIASearchService.Search') </script> is done to execute the search. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> page</span></dt>
+   <dd> Number of pages
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>On Sucess<dd>
+ <dt><code>E_FAIL</code>Failed to get the search count<dd>
+ </dl>
+
+ </ dd>
+</dl>
+</dd>
+<a id="Results"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Results</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIAPLMEntities','CATIAPLMEntities')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Get the search results fetched till now.  
+ This call must be done after 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchService','Search','CATIASearchService.Search') </script> is done to execute the search.   
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oResults</span></dt>
+   <dd> Search results
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>All the displayed results were retrived successfully from the Search Browser<dd>
+ <dt><code>E_FAIL</code>Failed to get the results from the Search Browser <dd>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="SearchCount"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SearchCount</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Returns the total count of objects found matching the search criteria. 
+ NOTE : Search results are retrieved from server in form of "fetch page"(s) of size 50 each. </br>
+	By default only results of first page are displayed in the UI (i.e. max 50)
+ Search count is the total no. of results avaialable for the given criteria.  
+ This call must be done after 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchService','Search','CATIASearchService.Search') </script> is done to execute the search. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> oSearchCount</span></dt>
+   <dd> Search count
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>On Sucess<dd>
+ <dt><code>E_FAIL</code>Failed to get the search count<dd>
+ </dl>
+
+ </ dd>
+</dl>
+</dd>
+<a id="Title"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>Title</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iTitle</span>)</span> (Write Only)</span></dt>
+  <dd class='ddmethod'>
+ Sets the title of the tab in the search browser displaying results of this search
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="AddEasyCriteria"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddEasyCriteria</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iAttrId</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iAttrValue</span>)</span></span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Add an attribute criteria to the query 
+ Applicable only in case of Easy mode, see enum 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchEnum','SearchMode','CATIASearchEnum.SearchMode') </script>. Operator used the first applicable operator depending upon the attribute type
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAttrId</span></dt>
+   <dd> Attribute Id, it must belong to the EZQuery mask
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAttrValue</span></dt>
+   <dd> Attribute value
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>Attribute criteria was successfully added <dd>
+ <dt><code>E_FAIL</code>When Easy mode is not set<dd>
+ <dt><code>E_INVALIDARG</code>Type is not set or attribute not found on the EZ query mask either for type or extension<dd>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="AddExtendedCriteria"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddExtendedCriteria</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iAttrId</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iAttrValue</span>,<script type="text/javascript"> activateLink('SearchOperator','SearchOperator')</script> <span class='param'>iOperator</span>)</span></span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Add an attribute criteria to the query 
+ Applicable only in case of Extended mode, see enum 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchEnum','SearchMode','CATIASearchEnum.SearchMode') </script>. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAttrId</span></dt>
+   <dd> Attribute Id, it must belong to the Query mask
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAttrValue</span></dt>
+   <dd> Attribute value
+ 
+ </ dd>
+    <dt><span class='paramitem'> iOperator</span></dt>
+   <dd> See enum 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchEnum#SearchOperator','','CATIASearchEnum#SearchOperator') </script>, note that available operators depend upon the type of the attribute To know the available operators refer to the "Extended" tab of "Advanced Search" UI
+ Range operators (BETWEEN and NOT_BETWEEN) are not supported by this call, instead use #AddExtenedRangeCriteria
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>Attribute criteria was successfully added <dd>
+ <dt><code>E_FAIL</code>When Extended mode is not set or range operator is given as input<dd>
+ <dt><code>E_INVALIDARG</code>Type is not set or attribute not found on the Query mask either for type or extension or input operator not applicable to use with the attribute <dd>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="AddExtendedRangeCriteria"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddExtendedRangeCriteria</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iAttrId</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iAttrStartValue</span>,<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iAttrEndValue</span>,<script type="text/javascript"> activateLink('SearchOperator','SearchOperator')</script> <span class='param'>iOperator</span>)</span></span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Add an attribute criteria in form of range to the query. 
+ Applicable only in case of Extended mode, see enum 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchEnum','SearchMode','CATIASearchEnum.SearchMode') </script>. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iAttrId</span></dt>
+   <dd> Attribute Id, it must belong to the Query mask
+ 
+ </ dd>
+    <dt><span class='paramitem'> iAttrValue</span></dt>
+   <dd> Attribute value
+ 
+ </ dd>
+    <dt><span class='paramitem'> iOperator</span></dt>
+   <dd> It must be either BETWEEN or NOT_BETWEEN, See enum 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchEnum','SearchOperator','CATIASearchEnum.SearchOperator') </script> 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>Attribute criteria was successfully added <dd>
+ <dt><code>E_FAIL</code>When Extended mode is not set or range operator is not given as input<dd>
+ <dt><code>E_INVALIDARG</code>Type is not set or attribute not found on the Query mask either for type or extension or input operator not applicable to use with the attribute <dd>
+ </dl>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="AddPredefinedCriteria"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>AddPredefinedCriteria</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iCriteriaWithPQAbbreviation</span>)</span></span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Add a criteria With a PQ Abbreviation, e.g "prd:MyProduct"
+ Applicable only in case of Predefined mode, see enum 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchEnum','SearchMode','CATIASearchEnum.SearchMode') </script>. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iCriteriaWithPQAbbreviation</span></dt>
+   <dd> Criteria With a PQ Abbreviation, e.g "prd:MyProduct"
+ The input string must contain an abbreviation seperated from the criteria by ":"
+ The PQ abbreviation (i.e. "prd" in above example) is NLS compliant, so same script must be modified to use on another language OS.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>Criteria was successfully added <dd>
+ <dt><code>E_FAIL</code>When Predefined mode is not set<dd>
+ <dt><code>E_INVALIDARG</code>Input string is not in good format, or input abbreviation is invalid<dd>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="NextPage"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>NextPage</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Fetch the results of next page, these results are appended to the existing results.  
+ This call must be done after 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchService','Search','CATIASearchService.Search') </script> is done to execute the search.  
+<dl  class='desclist'>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>Results of next page were fetched successfully<dd>
+ <dt><code>E_FAIL</code>Failed to get the next page of results<dd>
+ <dt><code>E_INVALIDARG</code>Asking for next page after end page is already reached<dd>
+ </dl>
+
+ </ dd>
+</dl>
+</dd>
+<a id="SetExpertExpression"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SetExpertExpression</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iExpression</span>)</span></span></dt>
+  <dd class='ddmethod'>
+
+ <br><b>Role</b>: Set the expression to use for the search. 
+ Applicable only in case of Expert mode, see enum 
+<script type="text/javascript"> activateLinkAnchor('CATIASearchEnum','SearchMode','CATIASearchEnum.SearchMode') </script>. 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iExpression</span></dt>
+   <dd> Query Expression to use.
+ You can directly copy an expression from the "Expert" tab of the "Adavnced Search" UI and uset it here.
+ It is an NLS compliant expressio so same script must be modified to use on another language OS.
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>Expression was successfully set.<dd>
+ <dt><code>E_FAIL</code>Expert mode is not set <dd>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<a id="SortBy"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>SortBy</span><span class='signature'>(<script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> <span class='param'>iSortByAttr</span>,<script type="text/javascript"> activateLink('SearchSortOrder','SearchSortOrder')</script> <span class='param'>iSortOrder</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ 
+ <br><b>Role</b>: Sets the sort definition for search results.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iSortByAttr</span></dt>
+   <dd> The attribute to use for sorting the results
+ 
+ </ dd>
+    <dt><span class='paramitem'> iSortOrder</span></dt>
+   <dd> The sort order, see CATIASearchEnum#SearchSortOrder
+ 
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  <dl>
+ <dt><code>S_OK</code>Sort definition was successfully added <dd>
+ <dt><code>E_FAIL</code>Base type for search is not set, or attribute does not belong to either type or extension<dd>
+ </dl>
+ </ dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+

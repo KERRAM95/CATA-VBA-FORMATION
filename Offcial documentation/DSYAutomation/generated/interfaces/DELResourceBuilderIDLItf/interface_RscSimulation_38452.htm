@@ -1,0 +1,1050 @@
+<!doctype html >
+<html>
+<head>
+ <meta http-equiv="Content-Language" content="en-us"> 
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+ <meta name="Generator" content="mihGene v1.1">
+ <meta http-equiv="Expires" content="Tue, 04 Dec 1993 21:29:02 GMT">
+ <title>DELResourceBuilderIDLItf RscSimulation (Object)</title>
+<link href="../_index/cdg.css" rel="stylesheet" type="text/css"> 
+<link rel="Stylesheet" type="text/css" href="../../../caav5.css">
+<script language="Javascript" id="jsLinkjs" type="text/javascript" src="../_index/jslink.js"></script> 
+<script language="Javascript" id="jsFwLinkjs" type="text/javascript" src="jsFwLink.js"></script> 
+<script language="Javascript" id="jsTreejs" type="text/javascript" src="../_index/jsTree.js"></script>  
+</head>
+<body>
+<header><nav id='topnav'><div id="indexView" class="menu1">	 
+ <a id="multiview" class="onglet" rel="../_index/main.htm" href="../_index/main.htm">All Frameworks</a>   
+ <a id="multiview" class="onglet"  rel="../_index/tree.htm" href="../_index/tree.htm">Class Hierarchy</a>   
+ <a id="multiview" class="onglet"  rel="../DELResourceBuilderIDLItf.htm" href="../DELResourceBuilderIDLItf.htm">This Framework</a>
+<a id="multiview" class="onglet"  rel="../_index/HomeIdx.htm" href="../_index/HomeIdx.htm">Indexes</a>  
+ <a id="multiviewP" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'0')"  >Previous</a>  
+ 	<a id="multiviewN" class="onglet" href="javascript:openLinkNP(getCurrentObjectName(),getCurrentType(),'1')"  >Next</a> 
+ </div></nav><hr/> 
+<script type="text/javascript" > 
+ 	function getCurrentLevel() { 
+ return "";	} 
+	function getCurrentFw() { 
+	return "DELResourceBuilderIDLItf";	}
+		function getCurrentObjectName() { 
+ 	return "RscSimulation"; } 
+	function getCurrentType() { 
+ 	return "interface"; }  
+ </script><h1 class='title1'> RscSimulation<font style='font-size:small;'> (Object)</font> </h1> </header><main id='main'> 
+ 
+<script type="text/javascript" > 
+ generatedFatherClass('interface_RscSimulation_38452','RscSimulation','0');</script>
+<section id='maindesc'>
+<b><i> Interface to manipulate the kinematics of the a programmable resource.</i></b><br>
+
+
+ <strong>Role</strong>:
+  This interface provides methods to manipulate the different degrees of 
+freedom of a programmable resource (as well as its inverse kinematics 
+if available).
+<br>
+To simulate an assembly containing kinematics, users must specify for 
+which motion group the simulation is required. Motion groups can be 
+retrieved from <script type="text/javascript"> activateLinkAnchor('DELMIARscMotionController','ListControlledResources','DELMIARscMotionController.ListControlledResources') </script>.<br>
+To use this API, users must always do the following:
+<ul>
+<li>call 
+<script type="text/javascript"> activateLinkAnchor('','Initialize','Initialize') </script> before any other calls.</li><li>call 
+<script type="text/javascript"> activateLinkAnchor('','Finalize','Finalize') </script> after usage.</li></ul>
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<dd>Let assume there is a robot opened as a root entity in a given editor.
+<pre>
+ Dim MainResource As Variant
+ Set MainResource = CATIA.ActiveEditor.ActiveObject
+
+ Dim MySimulatedResource As RscSimulation
+ Set MySimulatedResource = MainResource.GetItem("<font color="red"><b>CAARscSimulation</b></font>")
+ 
+ If Not MySimulatedResource Is Nothing Then
+
+ End If
+</pre>
+</dl>
+<b>Note:</b>API documentation will include sample code referring to:
+<ul>
+<li><b>MySimulatedResource</b> as a variable of type <b>RscSimulation</b>.</li>
+<li><b>MainResource</b> as the resource to be simulated (can be obtained 
+through selection or model scanning.</li>
+</ul>
+<b>Remark:</b>All API will not work if the 
+<script type="text/javascript"> activateLinkAnchor('','Initialize','Initialize') </script> has not been performed.
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELMIARscMotionController','','DELMIARscMotionController') </script></dd>
+</dl>
+<section id='idxsum'>
+<article id='propidx'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Property Index</th></tr> 
+ <tr><td  id='tdleft'>
+    <a href="#AllPostureNames"><b>AllPostureNames</b></a>
+</td><td  id='tdright'>  Retrieves the list of all configuration names on the given robot.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#AllToolProfileNames"><b>AllToolProfileNames</b></a>
+</td><td  id='tdright'>  Retrieves the list of all configuration names on the given robot.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CanBeSimulated"><b>CanBeSimulated</b></a>
+</td><td  id='tdright'>  Indicates if the current resource can be simulated.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CurrentPosture"><b>CurrentPosture</b></a>
+</td><td  id='tdright'>  Indicates if which robot configuration is currently set.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#CurrentToolProfile"><b>CurrentToolProfile</b></a>
+</td><td  id='tdright'>  Indicates which tool profile is currently in use.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SimulatedDOFCount"><b>SimulatedDOFCount</b></a>
+</td><td  id='tdright'>  Returns the DOF count of the current simulated resource.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SimulationState"><b>SimulationState</b></a>
+</td><td  id='tdright'>  Returns the simulation state of the resource.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SimulationVisualizationUpdate"><b>SimulationVisualizationUpdate</b></a>
+</td><td  id='tdright'>  Indicates the simulation visualization update currently in used.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SpecificDOFCount"><b>SpecificDOFCount</b></a>
+</td><td  id='tdright'>  Retrieves the number of specific DOF.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SupportIK"><b>SupportIK</b></a>
+</td><td  id='tdright'>  Indicates if the current resource has any inverse kinematics capabilities.
+</td></tr> </tbody></table></nav>
+</article><article id='fctdef'  >
+<nav id='idxnav'> <table class='fill'  id='idxtab'><tbody> 
+ <tr><th colspan = '2' >Method Index</th></tr>
+ <tr><td  id='tdleft'>
+    <a href="#Finalize"><b>Finalize</b></a>
+</td><td  id='tdright'>   Clean the simulation entity.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetBasePart"><b>GetBasePart</b></a>
+</td><td  id='tdright'>  Retrieve the base part.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetDOFLimits"><b>GetDOFLimits</b></a>
+</td><td  id='tdright'>  Retrieve the current limits for a given DOF index.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetDOFType"><b>GetDOFType</b></a>
+</td><td  id='tdright'>  Retrieve the type of joint for a given DOF index.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetDOFValues"><b>GetDOFValues</b></a>
+</td><td  id='tdright'>  Get the DOF values for a resource kinematics.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetFixedPart"><b>GetFixedPart</b></a>
+</td><td  id='tdright'>  Retrieve the fixed part.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetMountLocation"><b>GetMountLocation</b></a>
+</td><td  id='tdright'>  Retrieve the current mount location.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetMountOffset"><b>GetMountOffset</b></a>
+</td><td  id='tdright'>  Retrieve the current mount offset.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetMountPart"><b>GetMountPart</b></a>
+</td><td  id='tdright'>  Retrieve the current mount part.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetRelatedSimulatedResourceDOFCount"><b>GetRelatedSimulatedResourceDOFCount</b></a>
+</td><td  id='tdright'>  Retrieve the simulated resource DOF count.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetRelatedSimulatedResourcesCount"><b>GetRelatedSimulatedResourcesCount</b></a>
+</td><td  id='tdright'>  Retrieves the number of related simulated resources.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetRelatedSimulatedResourcesObjects"><b>GetRelatedSimulatedResourcesObjects</b></a>
+</td><td  id='tdright'>  Retrieve the simulated resource related to this one.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetSpecificDOFLimits"><b>GetSpecificDOFLimits</b></a>
+</td><td  id='tdright'>  Retrieve the current limits for a given DOF index.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetSpecificDOFType"><b>GetSpecificDOFType</b></a>
+</td><td  id='tdright'>  Retrieve the type of joint for a given DOF index.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetSpecificDOFValues"><b>GetSpecificDOFValues</b></a>
+</td><td  id='tdright'>  Get the specific DOF values for a resource kinematics.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#GetTCPValues"><b>GetTCPValues</b></a>
+</td><td  id='tdright'>  Get the cartesian value of the current resource target location.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#Initialize"><b>Initialize</b></a>
+</td><td  id='tdright'>   Initializes the simulation for a given control entity.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetDOFValues"><b>SetDOFValues</b></a>
+</td><td  id='tdright'>  Set the DOF values for a resource kinematics.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetSpecificDOFValues"><b>SetSpecificDOFValues</b></a>
+</td><td  id='tdright'>  Set the specific DOF values for a resource kinematics.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#SetTCPValues"><b>SetTCPValues</b></a>
+</td><td  id='tdright'>  Set the cartesian value of the current resource target location to reach.
+</td></tr>  <tr><td  id='tdleft'>
+    <a href="#UpdateVisualization"><b>UpdateVisualization</b></a>
+</td><td  id='tdright'>  Update the visualization upon changes of position.
+</td></tr> </tbody></table></nav>
+</article></section>
+<br class='brsect'/><section id='objdesc'>
+<article id='propdef'  class='defblock'>
+ <h2 class='title2'><a id="Properties"></a>Properties</h2> <br> <dl>
+<a id="AllPostureNames"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>AllPostureNames</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Retrieves the list of all configuration names on the given robot. Only 
+applicable when the resource has inverse kinematics. Be aware, a resource 
+may not be able to reach properly a given target location for a specific 
+config, although other configurations are feasible.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyPostureID As String
+ Dim MyListPostureID
+ MyListPostureID = MySimulatedResource.<font color="red"><b>AllPostureNames</b></font>
+ For II = LBound(MyListPostureID) To UBound(MyListPostureID)
+   Set MyPostureID = MyListPostureID(II)
+   <font color="green">'uncomment next line to display value</font>
+   <font color="green">'MsgBox ("Posture name:" & MyPostureID)</font>
+ Next
+</pre>
+</dl>
+</dd>
+<a id="AllToolProfileNames"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>AllToolProfileNames</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Retrieves the list of all configuration names on the given robot. Only 
+applicable when the resource has inverse kinematics. Be aware, a resource 
+may not be able to reach properly a given target location for a specific 
+config, although other configurations are feasible.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyToolProfileID As String
+ Dim MyListToolProfileID
+ MyListToolProfileID = MySimulatedResource.<font color="red"><b>AllToolProfileNames</b></font>
+ For II = LBound(MyListToolProfileID) To UBound(MyListToolProfileID)
+   Set MyToolProfileID = MyListToolProfileID(II)
+   <font color="green">'uncomment next line to display value</font>
+   <font color="green">'MsgBox ("ToolProfile name:" & MyToolProfileID)</font>
+ Next
+</pre>
+</dl>
+</dd>
+<a id="CanBeSimulated"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CanBeSimulated</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Indicates if the current resource can be simulated. A given resource may 
+not be simulated if:
+<ul>
+<li>There is no proper control object</li>
+<li>initialization has failed (or missing) due to wrong kinematics 
+definition</li>
+<li>There is no proper license</li>
+</ul>
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim bCanBeSimulated As Boolean
+ bCanBeSimulated = MySimulatedResource.<font color="red"><b>CanBeSimulated</b></font>
+</pre>
+</dl>
+
+</dd>
+<a id="CurrentPosture"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CurrentPosture</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Indicates if which robot configuration is currently set. Only applicable 
+when the resource has inverse kinematics. Be aware, a resource may not be 
+able to reach properly a given target location for a specific config, 
+although other configurations are feasible.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyPostureID As String
+ MyPostureID = MySimulatedResource.<font color="red"><b>CurrentPosture</b></font>
+</pre>
+</dl>
+
+</dd>
+<a id="CurrentToolProfile"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>CurrentToolProfile</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATBSTR','CATBSTR')</script> </span></dt>
+  <dd class='ddmethod'>
+ Indicates which tool profile is currently in use. The tool profile is 
+used to manage the tool offset. Only applicable when the resource has 
+inverse kinematics.Each tool profile defines both:
+<ul>
+<li>the type of tool (mobile or fixed)</li>
+<li>the offset</li>
+</ul>
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyToolProfileName As String
+ MyToolProfileName = MySimulatedResource.<font color="red"><b>CurrentToolProfile</b></font>
+</pre>
+</dl>
+
+</dd>
+<a id="SimulatedDOFCount"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SimulatedDOFCount</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the DOF count of the current simulated resource.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim iRscDOFCount As Integer
+ iRscDOFCount = MySimulatedResource.<font color="red"><b>SimulatedDOFCount</b></font>
+ <font color="green">'uncomment next line to display value</font>
+ <font color="green">'MsgBox ("Number of motion group:" & CStr(iRscDOFCount))</font>
+</pre>
+</dl>
+
+</dd>
+<a id="SimulationState"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SimulationState</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELRscSimulationStatus','DELRscSimulationStatus')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Returns the simulation state of the resource. The simulated resource is 
+always into a certain simulation state. Users may check the simulation 
+state of the resource after performing some changes (DOF values or inverse 
+kinematics).
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MySimStatus As DELRscSimulationStatus
+ MySimStatus = MySimulatedResource.<font color="red"><b>SimulationState</b></font>
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscSimulationStatus','','DELRscSimulationStatus') </script></dd>
+</dl>
+</dd>
+<a id="SimulationVisualizationUpdate"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SimulationVisualizationUpdate</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('DELRscSimulationVisualizationUpdate','DELRscSimulationVisualizationUpdate')</script> </span></dt>
+  <dd class='ddmethod'>
+ Indicates the simulation visualization update currently in used. 
+Simulation visualization update mode is used to control the display upon 
+changes (DOF values, configuration, TCP). By default it is activated 
+(<tt>DELRscSimulationVisualizationUpdate_ON</tt>).
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ MySimulatedResource.<font color="red"><b>SimulationVisualizationUpdate</b></font&gt;=DELRscSimulationVisualizationUpdate_ON
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscSimulationVisualizationUpdate','','DELRscSimulationVisualizationUpdate') </script></dd>
+</dl>
+</dd>
+<a id="SpecificDOFCount"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SpecificDOFCount</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('long','long')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Retrieves the number of specific DOF. Specific DOF are specific degrees 
+of freedom the current resource has. Typically, the elbow  angle on 
+special 7 axis robot is one of them.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim iSpecificDOFCount As Integer
+ iSpecificDOFCount = MySimulatedResource.<font color="red"><b>SpecificDOFCount</b></font>
+ <font color="green">'uncomment next line to display value</font>
+ <font color="green">'MsgBox ("Number of specific DOF count:" & CStr(iSpecificDOFCount))</font>
+</pre>
+</dl>
+</dd>
+<a id="SupportIK"></a><dt class='dtmethod'>
+
+<span class='property'>Property <span class='objname'>SupportIK</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('boolean','boolean')</script>  (Read Only)</span></dt>
+  <dd class='ddmethod'>
+ Indicates if the current resource has any inverse kinematics capabilities.
+ This API can be used to check if existing API related to inverse 
+kinematics capabilities are supported (like 
+<script type="text/javascript"> activateLinkAnchor('','SetTCPValues','SetTCPValues') </script>.)
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyIKStatus As Boolean
+ MyIKStatus = MySimulatedResource.<font color="red"><b>SupportIK</b></font>
+</pre>
+</dl>
+
+</dd>
+<br></dl>
+</article><article id='fctdef'  class='defblock'>
+ <h2 class='title2'><a id="Methods"></a>Methods</h2> <br><dl>
+<a id="Finalize"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Finalize</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iMode</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Clean the simulation entity. Call this API after there is no more usage 
+of the simulation for this resource.
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iMode</span></dt>
+   <dd> Internal usage. Set the value to 0.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ MySimulatedResource.<font color="red"><b>Finalize</b></font>(0)
+</pre>
+</dl>
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="GetBasePart"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetBasePart</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve the base part. Only applicable when the resource has inverse 
+kinematics.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyBasePart As VPMOccurrence
+ Set MyBasePart = MySimulatedResource.<font color="red">GetBasePart</b></font>()
+ <font color="green">'uncomment next line to display value</font>
+ <font color="green">'MsgBox ("Base part name:" & MyBasePart.Name)</font>
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('CATIAVPMOccurrence','','CATIAVPMOccurrence') </script></dd>
+</dl>
+</dd>
+<a id="GetDOFLimits"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetDOFLimits</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iDOFIndex</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oLower</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oUpper</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieve the current limits for a given DOF index. The index must be 
+within 1 and 
+<script type="text/javascript"> activateLinkAnchor('','SimulatedDOFCount','SimulatedDOFCount') </script> included.
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim iDOFIndex As Integer
+ Dim LowerLimit As Double
+ Dim UpperLimit As Double
+ <font color="green">'valuation of iDOFIndex</font>
+ MySimulatedResource.<font color="red"><b>GetDOFLimits</b></font> iDOFIndex, LowerLimit, UpperLimit.
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscJointType','','DELRscJointType') </script></dd>
+</dl>
+</dd>
+<a id="GetDOFType"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetDOFType</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iDOFIndex</span>)</span> As <script type="text/javascript"> activateLink('DELRscJointType','DELRscJointType')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve the type of joint for a given DOF index. The index must be 
+within 1 and 
+<script type="text/javascript"> activateLinkAnchor('','SimulatedDOFCount','SimulatedDOFCount') </script> included.
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim iDOFIndex As Integer
+ Dim MyJointType As DELRscJointType
+ <font color="green">'valuation of iDOFIndex</font>
+ MyJointType = MySimulatedResource.<font color="red"><b>GetDOFType</b></font> iDOFIndex, LowerLimit, UpperLimit.
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscJointType','','DELRscJointType') </script></dd>
+</dl>
+</dd>
+<a id="GetDOFValues"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetDOFValues</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the DOF values for a resource kinematics. The array must have the 
+same size as the simulated DOF count provided by 
+<script type="text/javascript"> activateLinkAnchor('','SimulatedDOFCount','SimulatedDOFCount') </script>.
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyDOFValuesList
+ MyDOFValuesList = MySimulatedResource.<font color="red"><b>GetDOFValues</b></font>()
+</pre>
+</dl>
+<b>Important remark:</b> the list of values also contain external axes 
+values. In case of external axes, the list of values is structured as 
+follows:
+<ul>
+<li>first comes the DOF values for the main resource (robot)</li>
+<li>then comes the DOF values for the other mechanism</li>
+</ul>
+To identify which DOF values are matching which resource, similar order 
+is keep with 
+<script type="text/javascript"> activateLinkAnchor('','GetRelatedSimulatedResourcesObjects','GetRelatedSimulatedResourcesObjects') </script>. From there, it is possible to identify each individual resource DOF count using 
+
+<script type="text/javascript"> activateLinkAnchor('','GetRelatedSimulatedResourceDOFCount','GetRelatedSimulatedResourceDOFCount') </script>.
+</dd>
+<a id="GetFixedPart"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetFixedPart</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iLocal</span>)</span> As <script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve the fixed part. It can be either:
+<ul>
+<li>0: the fixed part of the robot</li>
+<li>1: the fixed part of the rail if there is a rail as external axes</li>
+</ul>
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyFixPart As VPMOccurrence
+ Set MyFixPart = MySimulatedResource.<font color="red"><b>GetFixedPart</b></font>(0)
+ <font color="green">'uncomment next line to display value</font>
+ <font color="green">'MsgBox ("Fix part name:" & MyFixPart.Name)</font>
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('CATIAVPMOccurrence','','CATIAVPMOccurrence') </script></dd>
+</dl>
+</dd>
+<a id="GetMountLocation"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetMountLocation</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('RscTransform','RscTransform')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve the current mount location. The mount location is the coordinate 
+where the tool can be mounted.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyMountOffset As RscTransform
+ Set MyMountOffset = MySimulatedResource.<font color="red">GetMountLocation</b></font>()
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELMIARscTransform','','DELMIARscTransform') </script></dd>
+</dl>
+</dd>
+<a id="GetMountOffset"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetMountOffset</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('RscTransform','RscTransform')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve the current mount offset. The mount offset is the transformation 
+containing the difference between the mount part location and the mounting 
+point on the mount part.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyMountOffset As RscTransform
+ Set MyMountOffset = MySimulatedResource.<font color="red">GetMountOffset</b></font>()
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELMIARscTransform','','DELMIARscTransform') </script></dd>
+</dl>
+</dd>
+<a id="GetMountPart"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetMountPart</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve the current mount part. The mount part is the product where 
+tooling can be mounted. 
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyBasePart As VPMOccurrence
+ Set MyBasePart = MySimulatedResource.<font color="red">GetBasePart</b></font>()
+ <font color="green">'uncomment next line to display value</font>
+ <font color="green">'MsgBox ("Base part name:" & MyBasePart.Name)</font>
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('CATIAVPMOccurrence','','CATIAVPMOccurrence') </script></dd>
+</dl>
+</dd>
+<a id="GetRelatedSimulatedResourceDOFCount"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetRelatedSimulatedResourceDOFCount</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iRelatedResource</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve the simulated resource DOF count. This is applicable 
+for resources driving others (like a robot and its external axes). This 
+method can be used to identify the order of the simulated resources in 
+terms of DOF values thanks to <b>DELRscMotionControllerType_Default</b>. 
+It is used in conjunction with 
+<script type="text/javascript"> activateLinkAnchor('','GetRelatedSimulatedResourcesObjects','GetRelatedSimulatedResourcesObjects') </script>.</ul>
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iRelatedResource</span></dt>
+   <dd> A given resource retrieved with <b>GetRelatedSimulatedResourcesObjects</b>.
+
+
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  Simulation DOF count for the associated resource.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim AnyOccurrence As VPMOccurrence
+ Dim ListRelated
+ ListRelated = MySimulatedResource.GetRelatedSimulatedResourcesObjects(DELRscMotionControllerType_EndOfArm)
+ 
+ For ee = LBound(ListRelated) To UBound(ListRelated)
+     MsgBox ("Index:" & CStr(ee))
+     Set AnyOccurrence = ListRelated(ee)
+     Dim iRscDOFCount As Integer
+     iRscDOFCount = MySimulatedResource.<font color="red"></b>GetRelatedSimulatedResourceDOFCount</b></font>(AnyOccurrence)
+ Next
+</pre>
+</dl>
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetRelatedSimulatedResourcesCount"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetRelatedSimulatedResourcesCount</span><span class='signature'>(<script type="text/javascript"> activateLink('DELRscMotionControllerType','DELRscMotionControllerType')</script> <span class='param'>iType</span>)</span> As <script type="text/javascript"> activateLink('long','long')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieves the number of related simulated resources. This is applicable 
+for resources driving others (like a robot and its external axes). If the 
+input argument is set to <b>DELRscMotionControllerType_Default</b>, all 
+resources including the current one will be included.
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd> Type of control used to simulate the resource.
+
+
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  Return the number of resources of a given control type.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim iRelatedResourceCount As Integer
+ iRelatedResourceCount = MySimulatedResource.<font color="red"></b>GetRelatedSimulatedResourcesCount</b></font>(DELRscMotionControllerType_EndOfArm)
+ <font color="green">'uncomment next line to display value</font>
+ <font color="green">'MsgBox ("End of arm count:" & CStr(iRelatedResourceCount))</font>
+</pre>
+</dl>
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetRelatedSimulatedResourcesObjects"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetRelatedSimulatedResourcesObjects</span><span class='signature'>(<script type="text/javascript"> activateLink('DELRscMotionControllerType','DELRscMotionControllerType')</script> <span class='param'>iType</span>)</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve the simulated resource related to this one. This is applicable 
+for resources driving others (like a robot and its external axes). This 
+method can be used to identify the order of the simulated resources in 
+terms of DOF values thanks to <b>DELRscMotionControllerType_Default</b>. 
+It will return all simulated resources in a order similar to 
+<script type="text/javascript"> activateLinkAnchor('','GetDOFValues','GetDOFValues') </script>. In that case, use it in conjunction with 
+<script type="text/javascript"> activateLinkAnchor('','GetRelatedSimulatedResourceDOFCount','GetRelatedSimulatedResourceDOFCount') </script>.</ul>
+
+
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iType</span></dt>
+   <dd> Type of control used to simulate the resource.
+
+
+ </ dd>
+</dl></dd>
+  <dt class='return'> <b>Returns:</b> </dt> 
+  <dd>  List of resources for a given control type.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim AnyOccurrence As VPMOccurrence
+ Dim ListRelated
+ ListRelated = MySimulatedResource.<font color="red"></b>GetRelatedSimulatedResourcesObjects</b></font>(DELRscMotionControllerType_EndOfArm)
+ 
+ For ee = LBound(ListRelated) To UBound(ListRelated)
+     Set AnyOccurrence = ListRelated(ee)
+     MsgBox ("Related Resource[" & CStr(ee + 1) & "]=" & CStr(AnyOccurrence.Name))
+ Next
+</pre>
+</dl>
+
+ </ dd>
+</dl>
+</dd>
+<a id="GetSpecificDOFLimits"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>GetSpecificDOFLimits</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iDOFIndex</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oLower</span>,<script type="text/javascript"> activateLink('double','double')</script> <span class='param'>oUpper</span>)</span></span></dt>
+  <dd class='ddmethod'>
+ Retrieve the current limits for a given DOF index. The index must be 
+within 1 and 
+<script type="text/javascript"> activateLinkAnchor('','SimulatedDOFCount','SimulatedDOFCount') </script> included.
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim iDOFIndex As Integer
+ Dim LowerLimit As Double
+ Dim UpperLimit As Double
+ <font color="green">'valuation of iDOFIndex</font>
+ MySimulatedResource.<font color="red"><b>GetSpecificDOFLimits</b></font> iDOFIndex, LowerLimit, UpperLimit.
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscJointType','','DELRscJointType') </script></dd>
+</dl>
+</dd>
+<a id="GetSpecificDOFType"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetSpecificDOFType</span><span class='signature'>(<script type="text/javascript"> activateLink('long','long')</script> <span class='param'>iDOFIndex</span>)</span> As <script type="text/javascript"> activateLink('DELRscJointType','DELRscJointType')</script> </span></dt>
+  <dd class='ddmethod'>
+ Retrieve the type of joint for a given DOF index. The index must be 
+within 1 and 
+<script type="text/javascript"> activateLinkAnchor('','SimulatedDOFCount','SimulatedDOFCount') </script> included.
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim iDOFIndex As Integer
+ Dim MyJointType As DELRscJointType
+ <font color="green">'valuation of iDOFIndex</font>
+ MyJointType = MySimulatedResource.<font color="red"><b>GetSpecificDOFType</b></font> iDOFIndex, LowerLimit, UpperLimit.
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscJointType','','DELRscJointType') </script></dd>
+</dl>
+</dd>
+<a id="GetSpecificDOFValues"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetSpecificDOFValues</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the specific DOF values for a resource kinematics. The array has the 
+same size as the specific DOF count provided by 
+<script type="text/javascript"> activateLinkAnchor('','SpecificDOFCount','SpecificDOFCount') </script>. Only applicable during simulation.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MySpecificDOFValuesList
+ MySpecificDOFValuesList = MySimulatedResource.<font color="red"><b>GetSpecificDOFValues</b></font>()
+</pre>
+</dl>
+
+</dd>
+<a id="GetTCPValues"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>GetTCPValues</span><span class='signature'>()</span> As <script type="text/javascript"> activateLink('RscTransform','RscTransform')</script> </span></dt>
+  <dd class='ddmethod'>
+ Get the cartesian value of the current resource target location. 
+Only applicable when the resource has inverse kinematics.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MyTransform As RscTransform
+ Set MyTransform = MySimulatedResource.<font color="red"></b>GetTCPValues</b></font>
+</pre>
+</dl>
+
+</dd>
+<a id="Initialize"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>Initialize</span><span class='signature'>(<script type="text/javascript"> activateLink('CATIABase','CATIABase')</script> <span class='param'>iRscControlEntity</span>)</span></span></dt>
+  <dd class='ddmethod'>
+  Initializes the simulation for a given control entity.
+The motion group is a control entity to drive properly the kinematics 
+assembly. This API must be called before any usage of this object API. To 
+retrieve existing motion group, please use 
+<script type="text/javascript"> activateLinkAnchor('DELMIARscMotionController','ListMotionGroups','DELMIARscMotionController.ListMotionGroups') </script>.
+ 
+<dl  class='desclist'>
+  <dt> <b>Parameters:</b></dt>
+  <dd>
+    <dl class='paramlist' >
+    <dt><span class='paramitem'> iRscControlEntity</span></dt>
+   <dd>  Motion group object. When simulating the current resource, the motion 
+group object must be passed as an input parameter.
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ <font color="green">'retrieval of the motion group</font>
+ Dim MyMotionResource As RscMotionController
+ Set MyMotionResource = MainResource.GetItem("<font color="red"><b>CAARscMotionController</b></font>")
+ If Not MyMotionResource Is Nothing Then
+   Dim NbMotionGroup As Integer
+   NbMotionGroup = UBound(ListMG) + 1
+
+   Dim <b>MyMG</b> As RscMotionGroup
+   If NbMotionGroup &lt;&gt; 0 Then
+       Set MyMG = ListMG(0)
+   End If
+
+   If Not MyMG Is Nothing Then
+     Dim MySimulatedResource As RscSimulation
+     Set SimObject = MainResource.GetItem("CAARscSimulation")
+     If Not SimObject Is Nothing Then
+       <font color="green">'simulation preparation</font>
+       SimObject.<font color="red"><b>Initialize</b></font> MyMG
+     End If
+     
+ End If
+</pre>
+</dl>
+
+ </ dd>
+</dl></dd>
+</dl>
+</dd>
+<a id="SetDOFValues"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>SetDOFValues</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iValues</span>)</span> As <script type="text/javascript"> activateLink('DELRscSimulationStatus','DELRscSimulationStatus')</script> </span></dt>
+  <dd class='ddmethod'>
+ Set the DOF values for a resource kinematics. The array must have the 
+same size as the simulated DOF count provided by 
+<script type="text/javascript"> activateLinkAnchor('','SimulatedDOFCount','SimulatedDOFCount') </script>.
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+
+ Dim iRscDOFCount As Integer
+ iRscDOFCount = MySimulatedResource.SimulatedDOFCount
+ Dim NewDOFValues <font color="green">'array for VBScript</font>
+ ReDim NewDOFValues(iRscDOFCount-1)
+ For KK = 0 To UBound(NewDOFValues)
+   NewDOFValues(KK) = 0.5
+ Next
+
+ Dim MySimStatus As DELRscSimulationStatus
+ MySimStatus = MySimulatedResource.<font color="red"><b>SetDOFValues</b></font>(NewDOFValues)
+</pre>
+</dl>
+<b>Important remark:</b> the list of values also contain external axes 
+values. In case of external axes, the list of values is structured as 
+follows:
+<ul>
+<li>first comes the DOF values for the main resource (robot)</li>
+<li>then comes the DOF values for the other mechanism</li>
+</ul>
+To identify which DOF values are matching which resource, similar order 
+is keep with 
+<script type="text/javascript"> activateLinkAnchor('','GetRelatedSimulatedResourcesObjects','GetRelatedSimulatedResourcesObjects') </script>. From there, it is possible to identify each individual resource DOF count using 
+
+<script type="text/javascript"> activateLinkAnchor('','GetRelatedSimulatedResourceDOFCount','GetRelatedSimulatedResourceDOFCount') </script>.<br>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is significantly different:
+<pre>
+ Dim iRscDOFCount As Integer
+ iRscDOFCount = MySimulatedResource.HomePositionDOFCount
+ Dim NewDOFValues() As Variant <font color="green">'array for VBA</font>
+ ReDim NewDOFValues(iRscDOFCount-1)
+ For KK = 0 To UBound(NewDOFValues)
+   NewDOFValues(KK) = 0.5
+ Next
+ Dim MyObj <font color="green">'need to change typing due to early typing for VBA</font>
+ Set MyObj = MySimulatedResource
+ Dim MySimStatus As DELRscSimulationStatus
+ MySimStatus = MyObj.<font color="red"><b>SetDOFValues</b></font>(NewDOFValues)
+</pre>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscSimulationStatus','','DELRscSimulationStatus') </script></dd>
+</dl>
+</dd>
+<a id="SetSpecificDOFValues"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>SetSpecificDOFValues</span><span class='signature'>(<script type="text/javascript"> activateLink('CATSafeArrayVariant','CATSafeArrayVariant')</script> <span class='param'>iValues</span>)</span> As <script type="text/javascript"> activateLink('DELRscSimulationStatus','DELRscSimulationStatus')</script> </span></dt>
+  <dd class='ddmethod'>
+ Set the specific DOF values for a resource kinematics. The array has the 
+same size as the specific DOF count provided by 
+<script type="text/javascript"> activateLinkAnchor('','SpecificDOFCount','SpecificDOFCount') </script>.
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+
+ Dim iRscSpecificDOFCount As Integer
+ iRscSpecificDOFCount = MySimulatedResource.SpecificDOFCount
+ Dim NewDOFValues <font color="green">'array for VBScript</font>
+ ReDim NewDOFValues(iRscSpecificDOFCount-1)
+ For KK = 0 To UBound(NewDOFValues)
+   NewDOFValues(KK) = 0.5
+ Next
+
+ Dim MySimStatus As DELRscSimulationStatus
+ MySimStatus = MySimulatedResource.<font color="red"><b>SetSpecificDOFValues</b></font>(NewDOFValues)
+</pre>
+</dl>
+<b>Note:</b> previous example is for CATScript. In case of VBA, the syntax 
+is significantly different:
+<pre>
+ Dim iRscSpecificDOFCount As Integer
+ iRscSpecificDOFCount = MySimulatedResource.SpecificDOFCount
+ Dim NewDOFValues() As Variant <font color="green">'array for VBA</font>
+ ReDim NewDOFValues(iRscSpecificDOFCount-1)
+ For KK = 0 To UBound(NewDOFValues)
+   NewDOFValues(KK) = 0.5
+ Next
+ Dim MyObj <font color="green">'need to change typing due to early typing for VBA</font>
+ Set MyObj = MySimulatedResource
+ Dim MySimStatus As DELRscSimulationStatus
+ MySimStatus = MyObj.<font color="red"><b>SetSpecificDOFValues</b></font>(NewDOFValues)
+</pre>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscSimulationStatus','','DELRscSimulationStatus') </script></dd>
+</dl>
+</dd>
+<a id="SetTCPValues"></a><dt class='dtmethod'>
+
+<span class='property'>Func <span class='objname'>SetTCPValues</span><span class='signature'>(<script type="text/javascript"> activateLink('RscTransform','RscTransform')</script> <span class='param'>iValues</span>)</span> As <script type="text/javascript"> activateLink('DELRscSimulationStatus','DELRscSimulationStatus')</script> </span></dt>
+  <dd class='ddmethod'>
+ Set the cartesian value of the current resource target location to reach. 
+Only applicable when the resource has inverse kinematics. Transformation 
+can be retrieved from 
+<script type="text/javascript"> activateLinkAnchor('','GetTCPValues','GetTCPValues') </script> and duplicated through 
+<script type="text/javascript"> activateLinkAnchor('DELMIARscTransform','Duplicate','DELMIARscTransform.Duplicate') </script>.
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ Dim MySimStatus As DELRscSimulationStatus
+ MySimStatus = MySimulatedResource.SetTCPValues(MyTransform)
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscSimulationStatus','','DELRscSimulationStatus') </script></dd>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELMIARscTransform','','DELMIARscTransform') </script></dd>
+</dl>
+</dd>
+<a id="UpdateVisualization"></a><dt class='dtmethod'>
+
+<span class='property'>Sub <span class='objname'>UpdateVisualization</span><span class='signature'>()</span></span></dt>
+  <dd class='ddmethod'>
+ Update the visualization upon changes of position. This API can be used 
+as a manual visualization update, especially when 
+
+<script type="text/javascript"> activateLinkAnchor('','SimulationVisualizationUpdate','SimulationVisualizationUpdate') </script> is deactivated (<tt>DELRscSimulationVisualizationUpdate_OFF</tt>)
+
+<!-- @sample -->
+<dl>
+<dt><b>Example:</b>
+<pre>
+ MySimulatedResource.<font color="red"><b>UpdateVisualization</b></font>
+</pre>
+</dl>
+
+
+<dl  class='desclist'>
+  <dt> <b>See also:</b></dt> 
+  <dd> <script type="text/javascript"> activateLinkAnchor('DELRscSimulationVisualizationUpdate','','DELRscSimulationVisualizationUpdate') </script></dd>
+</dl>
+</dd>
+<br></dl>
+</article></section>
+</main><footer><hr/><p><i>Copyright &#169; 1999-2025, Dassault Syst&#232;mes. All rights reserved.
+</i></p></footer>
+</body>
+</html>
+
